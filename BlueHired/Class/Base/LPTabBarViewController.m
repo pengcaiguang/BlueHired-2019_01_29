@@ -30,7 +30,7 @@
     NSMutableArray *normalImages = [NSMutableArray array];
     NSMutableArray *selectedImages = [NSMutableArray array];
     
-    controllers = [NSMutableArray arrayWithArray:@[@"LPMainVC",@"LPInformationVC",@"LPCircleVC",@"LPMainVC"]];
+    controllers = [NSMutableArray arrayWithArray:@[@"LPMineVC",@"LPInformationVC",@"LPCircleVC",@"LPMainVC"]];
     titleArrays = [NSMutableArray arrayWithArray:@[@"首页",@"资讯",@"圈子",@"我的"]];
     
     for (int index = 0; index<controllers.count; index++) {
@@ -56,14 +56,10 @@
         
         navigationViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:[titleArrays objectAtIndex:index] image:normalImage selectedImage:selectedImage];
         
-        //        [navigationViewController.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor colorWithRed:161 green:161 blue:161 alpha:1.0],NSForegroundColorAttributeName, nil] forState:UIControlStateNormal];
         [navigationViewController.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor colorWithHexString:@"#FF3CAFFF"],NSForegroundColorAttributeName, nil] forState:UIControlStateSelected];
-        
-        //        navigationViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(6,0,-6,0);
-        navigationViewController.tabBarItem.tag = index ;
-        //        [navigationViewController.tabBarItem setTitlePositionAdjustment: UIOffsetMake(0,-4)];
-        
-        
+        [navigationViewController.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor colorWithHexString:@"#FF5E5E5E"],NSForegroundColorAttributeName, nil] forState:UIControlStateNormal];
+
+        navigationViewController.tabBarItem.tag = index;
         [viewControllers addObject:navigationViewController];
         
     }
