@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		39138DA4778A75826AAD22ED /* libPods-BlueHiredUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82479EF595BD37AB322E0AA9 /* libPods-BlueHiredUITests.a */; };
+		BE82CAE860C97254269F44AD /* libPods-BlueHired.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB5A5321875E124A6C52C8B /* libPods-BlueHired.a */; };
 		DC7383252133E33E0055DC10 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7383242133E33E0055DC10 /* AppDelegate.m */; };
 		DC7383282133E33E0055DC10 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7383272133E33E0055DC10 /* ViewController.m */; };
 		DC73832B2133E33E0055DC10 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DC7383292133E33E0055DC10 /* Main.storyboard */; };
@@ -15,6 +17,7 @@
 		DC7383332133E3670055DC10 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7383322133E3670055DC10 /* main.m */; };
 		DC73833D2133E3680055DC10 /* BlueHiredTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DC73833C2133E3680055DC10 /* BlueHiredTests.m */; };
 		DC7383482133E3680055DC10 /* BlueHiredUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7383472133E3680055DC10 /* BlueHiredUITests.m */; };
+		DD9C491243746BE284EDF63A /* libPods-BlueHiredTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F2990BA484C987BEAA6D77E9 /* libPods-BlueHiredTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +38,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0B5AEFAB0E6764927C17DDE2 /* Pods-BlueHiredUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlueHiredUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlueHiredUITests/Pods-BlueHiredUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		4FD02EE4915B3B8981F023F1 /* Pods-BlueHired.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlueHired.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlueHired/Pods-BlueHired.debug.xcconfig"; sourceTree = "<group>"; };
+		82479EF595BD37AB322E0AA9 /* libPods-BlueHiredUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BlueHiredUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		92E3EB858257F39A6762B321 /* Pods-BlueHiredTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlueHiredTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlueHiredTests/Pods-BlueHiredTests.debug.xcconfig"; sourceTree = "<group>"; };
+		992D1B12C5F757999ACD5D40 /* Pods-BlueHired.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlueHired.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlueHired/Pods-BlueHired.release.xcconfig"; sourceTree = "<group>"; };
+		BBC93F1DC28C278E85E3A307 /* Pods-BlueHiredUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlueHiredUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlueHiredUITests/Pods-BlueHiredUITests.release.xcconfig"; sourceTree = "<group>"; };
 		DC7383202133E33E0055DC10 /* BlueHired.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlueHired.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC7383232133E33E0055DC10 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		DC7383242133E33E0055DC10 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -51,6 +60,9 @@
 		DC7383432133E3680055DC10 /* BlueHiredUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlueHiredUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC7383472133E3680055DC10 /* BlueHiredUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BlueHiredUITests.m; sourceTree = "<group>"; };
 		DC7383492133E3680055DC10 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DCB5A5321875E124A6C52C8B /* libPods-BlueHired.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BlueHired.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E94B224D8D8E2D47E74AC9DB /* Pods-BlueHiredTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlueHiredTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlueHiredTests/Pods-BlueHiredTests.release.xcconfig"; sourceTree = "<group>"; };
+		F2990BA484C987BEAA6D77E9 /* libPods-BlueHiredTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BlueHiredTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE82CAE860C97254269F44AD /* libPods-BlueHired.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +78,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD9C491243746BE284EDF63A /* libPods-BlueHiredTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,12 +86,36 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				39138DA4778A75826AAD22ED /* libPods-BlueHiredUITests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1ABBBFEFDF1ECC1A0863FFDF /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				4FD02EE4915B3B8981F023F1 /* Pods-BlueHired.debug.xcconfig */,
+				992D1B12C5F757999ACD5D40 /* Pods-BlueHired.release.xcconfig */,
+				92E3EB858257F39A6762B321 /* Pods-BlueHiredTests.debug.xcconfig */,
+				E94B224D8D8E2D47E74AC9DB /* Pods-BlueHiredTests.release.xcconfig */,
+				0B5AEFAB0E6764927C17DDE2 /* Pods-BlueHiredUITests.debug.xcconfig */,
+				BBC93F1DC28C278E85E3A307 /* Pods-BlueHiredUITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		3A29534E777751FACE05724E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DCB5A5321875E124A6C52C8B /* libPods-BlueHired.a */,
+				F2990BA484C987BEAA6D77E9 /* libPods-BlueHiredTests.a */,
+				82479EF595BD37AB322E0AA9 /* libPods-BlueHiredUITests.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		DC7383172133E33E0055DC10 = {
 			isa = PBXGroup;
 			children = (
@@ -85,6 +123,8 @@
 				DC73833B2133E3680055DC10 /* BlueHiredTests */,
 				DC7383462133E3680055DC10 /* BlueHiredUITests */,
 				DC7383212133E33E0055DC10 /* Products */,
+				1ABBBFEFDF1ECC1A0863FFDF /* Pods */,
+				3A29534E777751FACE05724E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -139,6 +179,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DC73834C2133E3680055DC10 /* Build configuration list for PBXNativeTarget "BlueHired" */;
 			buildPhases = (
+				B6D0020080C04D67D0E77C48 /* [CP] Check Pods Manifest.lock */,
 				DC73831C2133E33E0055DC10 /* Sources */,
 				DC73831D2133E33E0055DC10 /* Frameworks */,
 				DC73831E2133E33E0055DC10 /* Resources */,
@@ -156,6 +197,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DC73834F2133E3680055DC10 /* Build configuration list for PBXNativeTarget "BlueHiredTests" */;
 			buildPhases = (
+				612335D1F8ABFC339276EA87 /* [CP] Check Pods Manifest.lock */,
 				DC7383342133E3680055DC10 /* Sources */,
 				DC7383352133E3680055DC10 /* Frameworks */,
 				DC7383362133E3680055DC10 /* Resources */,
@@ -174,6 +216,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DC7383522133E3680055DC10 /* Build configuration list for PBXNativeTarget "BlueHiredUITests" */;
 			buildPhases = (
+				40B14BC0DFCE195C070E0CF0 /* [CP] Check Pods Manifest.lock */,
 				DC73833F2133E3680055DC10 /* Sources */,
 				DC7383402133E3680055DC10 /* Frameworks */,
 				DC7383412133E3680055DC10 /* Resources */,
@@ -256,6 +299,75 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		40B14BC0DFCE195C070E0CF0 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-BlueHiredUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		612335D1F8ABFC339276EA87 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-BlueHiredTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B6D0020080C04D67D0E77C48 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-BlueHired-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		DC73831C2133E33E0055DC10 /* Sources */ = {
@@ -431,6 +543,7 @@
 		};
 		DC73834D2133E3680055DC10 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4FD02EE4915B3B8981F023F1 /* Pods-BlueHired.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -447,6 +560,7 @@
 		};
 		DC73834E2133E3680055DC10 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 992D1B12C5F757999ACD5D40 /* Pods-BlueHired.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -463,6 +577,7 @@
 		};
 		DC7383502133E3680055DC10 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 92E3EB858257F39A6762B321 /* Pods-BlueHiredTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -481,6 +596,7 @@
 		};
 		DC7383512133E3680055DC10 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E94B224D8D8E2D47E74AC9DB /* Pods-BlueHiredTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -499,6 +615,7 @@
 		};
 		DC7383532133E3680055DC10 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0B5AEFAB0E6764927C17DDE2 /* Pods-BlueHiredUITests.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = BlueHiredUITests/Info.plist;
@@ -516,6 +633,7 @@
 		};
 		DC7383542133E3680055DC10 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BBC93F1DC28C278E85E3A307 /* Pods-BlueHiredUITests.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = BlueHiredUITests/Info.plist;
