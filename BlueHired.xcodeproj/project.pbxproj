@@ -17,6 +17,13 @@
 		DC7383332133E3670055DC10 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7383322133E3670055DC10 /* main.m */; };
 		DC73833D2133E3680055DC10 /* BlueHiredTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DC73833C2133E3680055DC10 /* BlueHiredTests.m */; };
 		DC7383482133E3680055DC10 /* BlueHiredUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7383472133E3680055DC10 /* BlueHiredUITests.m */; };
+		DC73835A2133EAD30055DC10 /* LPBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7383592133EAD30055DC10 /* LPBaseViewController.m */; };
+		DC7383612133EB2A0055DC10 /* LPMainVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7383602133EB2A0055DC10 /* LPMainVC.m */; };
+		DC73836A2133EC040055DC10 /* LPCircleVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7383692133EC040055DC10 /* LPCircleVC.m */; };
+		DC73836D2133EC1B0055DC10 /* LPInformationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC73836C2133EC1B0055DC10 /* LPInformationVC.m */; };
+		DC7383712133EC320055DC10 /* LPMineVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7383702133EC320055DC10 /* LPMineVC.m */; };
+		DC7383792133EE800055DC10 /* LPTabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7383782133EE800055DC10 /* LPTabBarViewController.m */; };
+		DC73837D2133F1110055DC10 /* UIColor+Color.m in Sources */ = {isa = PBXBuildFile; fileRef = DC73837C2133F1110055DC10 /* UIColor+Color.m */; };
 		DD9C491243746BE284EDF63A /* libPods-BlueHiredTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F2990BA484C987BEAA6D77E9 /* libPods-BlueHiredTests.a */; };
 /* End PBXBuildFile section */
 
@@ -60,6 +67,24 @@
 		DC7383432133E3680055DC10 /* BlueHiredUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlueHiredUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC7383472133E3680055DC10 /* BlueHiredUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BlueHiredUITests.m; sourceTree = "<group>"; };
 		DC7383492133E3680055DC10 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DC7383582133EAD30055DC10 /* LPBaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPBaseViewController.h; sourceTree = "<group>"; };
+		DC7383592133EAD30055DC10 /* LPBaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPBaseViewController.m; sourceTree = "<group>"; };
+		DC73835F2133EB2A0055DC10 /* LPMainVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LPMainVC.h; sourceTree = "<group>"; };
+		DC7383602133EB2A0055DC10 /* LPMainVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LPMainVC.m; sourceTree = "<group>"; };
+		DC7383682133EC040055DC10 /* LPCircleVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPCircleVC.h; sourceTree = "<group>"; };
+		DC7383692133EC040055DC10 /* LPCircleVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPCircleVC.m; sourceTree = "<group>"; };
+		DC73836B2133EC1B0055DC10 /* LPInformationVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPInformationVC.h; sourceTree = "<group>"; };
+		DC73836C2133EC1B0055DC10 /* LPInformationVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPInformationVC.m; sourceTree = "<group>"; };
+		DC73836F2133EC320055DC10 /* LPMineVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPMineVC.h; sourceTree = "<group>"; };
+		DC7383702133EC320055DC10 /* LPMineVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPMineVC.m; sourceTree = "<group>"; };
+		DC7383732133EC8B0055DC10 /* LPPrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPPrefixHeader.pch; sourceTree = "<group>"; };
+		DC7383742133EDEE0055DC10 /* MacroDefine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MacroDefine.h; sourceTree = "<group>"; };
+		DC7383752133EE0D0055DC10 /* ApiKeys.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ApiKeys.h; sourceTree = "<group>"; };
+		DC7383762133EE190055DC10 /* Heads.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Heads.h; sourceTree = "<group>"; };
+		DC7383772133EE800055DC10 /* LPTabBarViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPTabBarViewController.h; sourceTree = "<group>"; };
+		DC7383782133EE800055DC10 /* LPTabBarViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPTabBarViewController.m; sourceTree = "<group>"; };
+		DC73837B2133F1110055DC10 /* UIColor+Color.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIColor+Color.h"; sourceTree = "<group>"; };
+		DC73837C2133F1110055DC10 /* UIColor+Color.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Color.m"; sourceTree = "<group>"; };
 		DCB5A5321875E124A6C52C8B /* libPods-BlueHired.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BlueHired.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E94B224D8D8E2D47E74AC9DB /* Pods-BlueHiredTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlueHiredTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlueHiredTests/Pods-BlueHiredTests.release.xcconfig"; sourceTree = "<group>"; };
 		F2990BA484C987BEAA6D77E9 /* libPods-BlueHiredTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BlueHiredTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -141,6 +166,7 @@
 		DC7383222133E33E0055DC10 /* BlueHired */ = {
 			isa = PBXGroup;
 			children = (
+				DC7383552133EAAF0055DC10 /* Class */,
 				DC7383232133E33E0055DC10 /* AppDelegate.h */,
 				DC7383242133E33E0055DC10 /* AppDelegate.m */,
 				DC7383262133E33E0055DC10 /* ViewController.h */,
@@ -172,6 +198,119 @@
 			path = BlueHiredUITests;
 			sourceTree = "<group>";
 		};
+		DC7383552133EAAF0055DC10 /* Class */ = {
+			isa = PBXGroup;
+			children = (
+				DC73837A2133F0F00055DC10 /* Categories */,
+				DC7383722133EC630055DC10 /* MacroPch */,
+				DC7383562133EAAF0055DC10 /* Base */,
+				DC7383622133EBEB0055DC10 /* Circle */,
+				DC7383642133EBEB0055DC10 /* Information */,
+				DC7383572133EAAF0055DC10 /* Main */,
+				DC7383662133EBEB0055DC10 /* Mine */,
+			);
+			path = Class;
+			sourceTree = "<group>";
+		};
+		DC7383562133EAAF0055DC10 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				DC7383582133EAD30055DC10 /* LPBaseViewController.h */,
+				DC7383592133EAD30055DC10 /* LPBaseViewController.m */,
+				DC7383772133EE800055DC10 /* LPTabBarViewController.h */,
+				DC7383782133EE800055DC10 /* LPTabBarViewController.m */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		DC7383572133EAAF0055DC10 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				DC73835E2133EB2A0055DC10 /* Controller */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		DC73835E2133EB2A0055DC10 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				DC73835F2133EB2A0055DC10 /* LPMainVC.h */,
+				DC7383602133EB2A0055DC10 /* LPMainVC.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		DC7383622133EBEB0055DC10 /* Circle */ = {
+			isa = PBXGroup;
+			children = (
+				DC7383632133EBEB0055DC10 /* Controller */,
+			);
+			path = Circle;
+			sourceTree = "<group>";
+		};
+		DC7383632133EBEB0055DC10 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				DC7383682133EC040055DC10 /* LPCircleVC.h */,
+				DC7383692133EC040055DC10 /* LPCircleVC.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		DC7383642133EBEB0055DC10 /* Information */ = {
+			isa = PBXGroup;
+			children = (
+				DC7383652133EBEB0055DC10 /* Controller */,
+			);
+			path = Information;
+			sourceTree = "<group>";
+		};
+		DC7383652133EBEB0055DC10 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				DC73836B2133EC1B0055DC10 /* LPInformationVC.h */,
+				DC73836C2133EC1B0055DC10 /* LPInformationVC.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		DC7383662133EBEB0055DC10 /* Mine */ = {
+			isa = PBXGroup;
+			children = (
+				DC7383672133EBEB0055DC10 /* Controller */,
+			);
+			path = Mine;
+			sourceTree = "<group>";
+		};
+		DC7383672133EBEB0055DC10 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				DC73836F2133EC320055DC10 /* LPMineVC.h */,
+				DC7383702133EC320055DC10 /* LPMineVC.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		DC7383722133EC630055DC10 /* MacroPch */ = {
+			isa = PBXGroup;
+			children = (
+				DC7383732133EC8B0055DC10 /* LPPrefixHeader.pch */,
+				DC7383742133EDEE0055DC10 /* MacroDefine.h */,
+				DC7383752133EE0D0055DC10 /* ApiKeys.h */,
+				DC7383762133EE190055DC10 /* Heads.h */,
+			);
+			path = MacroPch;
+			sourceTree = "<group>";
+		};
+		DC73837A2133F0F00055DC10 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				DC73837B2133F1110055DC10 /* UIColor+Color.h */,
+				DC73837C2133F1110055DC10 /* UIColor+Color.m */,
+			);
+			path = Categories;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -183,6 +322,7 @@
 				DC73831C2133E33E0055DC10 /* Sources */,
 				DC73831D2133E33E0055DC10 /* Frameworks */,
 				DC73831E2133E33E0055DC10 /* Resources */,
+				20C7C07DD64ACDEB20819A09 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -237,6 +377,7 @@
 		DC7383182133E33E0055DC10 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = LP;
 				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = lanpin;
 				TargetAttributes = {
@@ -301,20 +442,36 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		40B14BC0DFCE195C070E0CF0 /* [CP] Check Pods Manifest.lock */ = {
+		20C7C07DD64ACDEB20819A09 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-BlueHired/Pods-BlueHired-resources.sh",
+				"${PODS_ROOT}/IQKeyboardManager/IQKeyboardManager/Resources/IQKeyboardManager.bundle",
+				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/IQKeyboardManager.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MJRefresh.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BlueHired/Pods-BlueHired-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		40B14BC0DFCE195C070E0CF0 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-BlueHiredUITests-checkManifestLockResult.txt",
 			);
@@ -328,15 +485,11 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-BlueHiredTests-checkManifestLockResult.txt",
 			);
@@ -350,15 +503,11 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-BlueHired-checkManifestLockResult.txt",
 			);
@@ -374,9 +523,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DC7383612133EB2A0055DC10 /* LPMainVC.m in Sources */,
+				DC7383792133EE800055DC10 /* LPTabBarViewController.m in Sources */,
+				DC73836D2133EC1B0055DC10 /* LPInformationVC.m in Sources */,
+				DC73837D2133F1110055DC10 /* UIColor+Color.m in Sources */,
 				DC7383282133E33E0055DC10 /* ViewController.m in Sources */,
+				DC7383712133EC320055DC10 /* LPMineVC.m in Sources */,
 				DC7383332133E3670055DC10 /* main.m in Sources */,
 				DC7383252133E33E0055DC10 /* AppDelegate.m in Sources */,
+				DC73836A2133EC040055DC10 /* LPCircleVC.m in Sources */,
+				DC73835A2133EAD30055DC10 /* LPBaseViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -547,6 +703,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/BlueHired/Class/MacroPch/LPPrefixHeader.pch";
 				INFOPLIST_FILE = BlueHired/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -564,6 +721,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/BlueHired/Class/MacroPch/LPPrefixHeader.pch";
 				INFOPLIST_FILE = BlueHired/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

@@ -7,8 +7,10 @@
 //
 
 #import "AppDelegate.h"
+#import "LPTabBarViewController.h"
 
 @interface AppDelegate ()
+@property (nonatomic, strong) LPTabBarViewController *mainTabBarController;
 
 @end
 
@@ -17,9 +19,29 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    IQKeyboardManager *manager = [IQKeyboardManager sharedManager];
+    manager.enable = YES;
+    manager.shouldResignOnTouchOutside = YES;
+    manager.shouldToolbarUsesTextFieldTintColor = YES;
+    manager.enableAutoToolbar = NO;
+    
+    [self showTabVc:0];
+
+    
     return YES;
 }
-
+-(void)showTabVc:(NSInteger)tabIndex{
+    if (!self.mainTabBarController) {
+        _mainTabBarController = [[LPTabBarViewController alloc] init];
+        //        self.window.rootViewController = _mainTabBarController;
+        //        [self.window makeKeyAndVisible];
+    }
+    self.window.rootViewController = _mainTabBarController;
+    [self.window makeKeyAndVisible];
+    [self.mainTabBarController setSelectedIndex:tabIndex];
+    
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
