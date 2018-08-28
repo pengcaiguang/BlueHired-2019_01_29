@@ -19,6 +19,7 @@
 
 
 #import "UIColor+Color.h"
+#import "UIImage+Image.h"
 #import "UIWindow+Window.h"
 #import "UIView+MBProgressHUD.h"
 

@@ -8,26 +8,33 @@
 
 #import "LPMainVC.h"
 #import "LPSearchBar.h"
-#import "LPMineCell.h"
+#import "LPMainCell.h"
+#import "LPWorklistModel.h"
+#import "SDCycleScrollView.h"
 
+static NSString *LPMainCellID = @"LPMainCell";
 
-static NSString *LPMineCellID = @"LPMineCell";
-
-@interface LPMainVC ()<UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource>
+@interface LPMainVC ()<UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,SDCycleScrollViewDelegate>
 
 @property (nonatomic, strong)UITableView *tableview;
 @property(nonatomic,strong) UIView *tableHeaderView;
+@property(nonatomic,strong) SDCycleScrollView *cycleScrollView;
 
+@property(nonatomic,assign) NSInteger page;
+@property(nonatomic,strong) LPWorklistModel *model;
+@property(nonatomic,strong) NSMutableArray <LPWorklistDataWorkListModel *>*listArray;
 @end
 
 @implementation LPMainVC
-
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.navigationController.navigationBar.translucent = NO;
     self.navigationController.navigationBar.barTintColor = [UIColor baseColor];
+    
+    self.page = 1;
+    self.listArray = [NSMutableArray array];
     
     [self setLeftButton];
     [self setSearchView];
@@ -64,7 +71,7 @@ static NSString *LPMineCellID = @"LPMineCell";
         make.left.equalTo(pimageView.mas_right).offset(3);
         make.centerY.mas_equalTo(leftBarButtonView);
     }];
-    cityLabel.text = @"东莞";
+    cityLabel.text = @"全国";
     cityLabel.font = [UIFont systemFontOfSize:15];
     cityLabel.textColor = [UIColor whiteColor];
     
@@ -109,6 +116,40 @@ static NSString *LPMineCellID = @"LPMineCell";
     }
     return searchBar;
 }
+-(void)setModel:(LPWorklistModel *)model{
+    _model = model;
+    if ([self.model.code integerValue] == 0) {
+        NSMutableArray *array = [NSMutableArray array];
+        for (LPWorklistDataSlideshowListModel *model in self.model.data.slideshowList) {
+            [array addObject:model.mechanismUrl];
+        }
+        self.cycleScrollView.imageURLStringsGroup = array;
+        [self updataHeaderView];
+        
+        if (self.page == 1) {
+            self.listArray = [NSMutableArray array];
+        }
+        if (self.model.data.workList.count > 0) {
+            self.page += 1;
+            [self.listArray addObjectsFromArray:self.model.data.workList];
+            [self.tableview reloadData];
+        }else{
+            [self.tableview.mj_footer endRefreshingWithNoMoreData];
+        }
+    }else{
+        [self.view showLoadingMeg:@"网络错误" time:MESSAGE_SHOW_TIME];
+    }
+}
+-(void)updataHeaderView{
+    if (self.model.data.slideshowList.count <= 0) {
+        return;
+    }
+    CGSize size = [UIImage getImageSizeWithURL:self.model.data.slideshowList[0].mechanismUrl];
+    CGFloat s = SCREEN_WIDTH/size.width;
+    self.tableHeaderView.frame = CGRectMake(0, 0, SCREEN_WIDTH, size.height*s + 40);
+    self.cycleScrollView.frame = CGRectMake(0, 0, SCREEN_WIDTH, size.height*s);
+}
+
 -(void)touchSelectCityButton{
     NSLog(@"touchSelectCityButton");
     
@@ -118,30 +159,38 @@ static NSString *LPMineCellID = @"LPMineCell";
 }
 
 #pragma mark - TableViewDelegate & Datasource
--(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    return 157;
-}
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 20;
+    return self.listArray.count;
 }
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    LPMineCell *cell = [tableView dequeueReusableCellWithIdentifier:LPMineCellID];
+    LPMainCell *cell = [tableView dequeueReusableCellWithIdentifier:LPMainCellID];
     if(cell == nil){
-        cell = [[LPMineCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:LPMineCellID];
+        cell = [[LPMainCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:LPMainCellID];
     }
-    cell.textLabel.text = [NSString stringWithFormat:@"%ld",indexPath.row];
+    cell.model = self.listArray[indexPath.row];
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
+#pragma mark - SDCycleScrollViewDelegate
+
+- (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didSelectItemAtIndex:(NSInteger)index{
+    NSLog(@"---点击了第%ld张图片", (long)index);
+}
+
 #pragma mark - request
 -(void)request{
-    [NetApiManager requestWorklistWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
+    NSDictionary *dic = @{
+                          @"page":@(self.page)
+                          };
+    [NetApiManager requestWorklistWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         [self.tableview.mj_header endRefreshing];
         [self.tableview.mj_footer endRefreshing];
+        self.model = [LPWorklistModel mj_objectWithKeyValues:responseObject];
+        
     }];
 }
 
@@ -156,13 +205,15 @@ static NSString *LPMineCellID = @"LPMineCell";
         _tableview.estimatedRowHeight = 100;
         _tableview.tableHeaderView = self.tableHeaderView;
         _tableview.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+        _tableview.separatorColor = [UIColor baseColor];
         _tableview.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
-        [_tableview registerNib:[UINib nibWithNibName:LPMineCellID bundle:nil] forCellReuseIdentifier:LPMineCellID];
-        _tableview.mj_header = [MJRefreshHeader headerWithRefreshingBlock:^{
+        [_tableview registerNib:[UINib nibWithNibName:LPMainCellID bundle:nil] forCellReuseIdentifier:LPMainCellID];
+        _tableview.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+            self.page = 1;
             [self request];
         }];
         _tableview.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
-            
+            [self request];
         }];
     }
     return _tableview;
@@ -171,9 +222,18 @@ static NSString *LPMineCellID = @"LPMineCell";
     if (!_tableHeaderView){
         _tableHeaderView = [[UIView alloc]init];
         _tableHeaderView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 157);
-        _tableHeaderView.backgroundColor = [UIColor lightGrayColor];
+        [_tableHeaderView addSubview:self.cycleScrollView];
     }
     return _tableHeaderView;
+}
+
+-(SDCycleScrollView *)cycleScrollView{
+    if (!_cycleScrollView) {
+        _cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 117) delegate:self placeholderImage:nil];
+        _cycleScrollView.pageControlAliment = SDCycleScrollViewPageContolAlimentRight;
+        _cycleScrollView.currentPageDotColor = [UIColor whiteColor]; // 自定义分页控件小圆标颜色
+    }
+    return _cycleScrollView;
 }
 
 - (void)didReceiveMemoryWarning {

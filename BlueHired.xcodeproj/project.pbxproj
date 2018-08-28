@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		39138DA4778A75826AAD22ED /* libPods-BlueHiredUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82479EF595BD37AB322E0AA9 /* libPods-BlueHiredUITests.a */; };
 		BE82CAE860C97254269F44AD /* libPods-BlueHired.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB5A5321875E124A6C52C8B /* libPods-BlueHired.a */; };
+		DC44DB9621351F6D00D00FAC /* NullSafe.m in Sources */ = {isa = PBXBuildFile; fileRef = DC44DB9521351F6D00D00FAC /* NullSafe.m */; };
+		DC44DB99213526C600D00FAC /* UIImage+Image.m in Sources */ = {isa = PBXBuildFile; fileRef = DC44DB98213526C600D00FAC /* UIImage+Image.m */; };
 		DC7383252133E33E0055DC10 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7383242133E33E0055DC10 /* AppDelegate.m */; };
 		DC7383282133E33E0055DC10 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7383272133E33E0055DC10 /* ViewController.m */; };
 		DC73832B2133E33E0055DC10 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DC7383292133E33E0055DC10 /* Main.storyboard */; };
@@ -35,6 +37,9 @@
 		DC73839B2134EAEF0055DC10 /* UIWindow+Window.m in Sources */ = {isa = PBXBuildFile; fileRef = DC73839A2134EAEF0055DC10 /* UIWindow+Window.m */; };
 		DC73839F2134EBC10055DC10 /* LPUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = DC73839E2134EBC10055DC10 /* LPUserDefaults.m */; };
 		DC7383A22134EF300055DC10 /* UIView+MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7383A12134EF300055DC10 /* UIView+MBProgressHUD.m */; };
+		DC7383A72134F6580055DC10 /* LPMainCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7383A52134F6580055DC10 /* LPMainCell.m */; };
+		DC7383A82134F6580055DC10 /* LPMainCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC7383A62134F6580055DC10 /* LPMainCell.xib */; };
+		DC7383AC2134F7B50055DC10 /* LPWorklistModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7383AB2134F7B50055DC10 /* LPWorklistModel.m */; };
 		DD9C491243746BE284EDF63A /* libPods-BlueHiredTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F2990BA484C987BEAA6D77E9 /* libPods-BlueHiredTests.a */; };
 /* End PBXBuildFile section */
 
@@ -62,6 +67,9 @@
 		92E3EB858257F39A6762B321 /* Pods-BlueHiredTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlueHiredTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlueHiredTests/Pods-BlueHiredTests.debug.xcconfig"; sourceTree = "<group>"; };
 		992D1B12C5F757999ACD5D40 /* Pods-BlueHired.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlueHired.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlueHired/Pods-BlueHired.release.xcconfig"; sourceTree = "<group>"; };
 		BBC93F1DC28C278E85E3A307 /* Pods-BlueHiredUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlueHiredUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlueHiredUITests/Pods-BlueHiredUITests.release.xcconfig"; sourceTree = "<group>"; };
+		DC44DB9521351F6D00D00FAC /* NullSafe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NullSafe.m; sourceTree = "<group>"; };
+		DC44DB97213526C600D00FAC /* UIImage+Image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Image.h"; sourceTree = "<group>"; };
+		DC44DB98213526C600D00FAC /* UIImage+Image.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Image.m"; sourceTree = "<group>"; };
 		DC7383202133E33E0055DC10 /* BlueHired.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlueHired.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC7383232133E33E0055DC10 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		DC7383242133E33E0055DC10 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -117,6 +125,11 @@
 		DC73839E2134EBC10055DC10 /* LPUserDefaults.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPUserDefaults.m; sourceTree = "<group>"; };
 		DC7383A02134EF300055DC10 /* UIView+MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+MBProgressHUD.h"; sourceTree = "<group>"; };
 		DC7383A12134EF300055DC10 /* UIView+MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+MBProgressHUD.m"; sourceTree = "<group>"; };
+		DC7383A42134F6580055DC10 /* LPMainCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPMainCell.h; sourceTree = "<group>"; };
+		DC7383A52134F6580055DC10 /* LPMainCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPMainCell.m; sourceTree = "<group>"; };
+		DC7383A62134F6580055DC10 /* LPMainCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPMainCell.xib; sourceTree = "<group>"; };
+		DC7383AA2134F7B50055DC10 /* LPWorklistModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPWorklistModel.h; sourceTree = "<group>"; };
+		DC7383AB2134F7B50055DC10 /* LPWorklistModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPWorklistModel.m; sourceTree = "<group>"; };
 		DCB5A5321875E124A6C52C8B /* libPods-BlueHired.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BlueHired.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E94B224D8D8E2D47E74AC9DB /* Pods-BlueHiredTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlueHiredTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlueHiredTests/Pods-BlueHiredTests.release.xcconfig"; sourceTree = "<group>"; };
 		F2990BA484C987BEAA6D77E9 /* libPods-BlueHiredTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BlueHiredTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -259,6 +272,8 @@
 		DC7383572133EAAF0055DC10 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				DC7383A92134F79D0055DC10 /* Model */,
+				DC7383A32134F6380055DC10 /* View */,
 				DC73835E2133EB2A0055DC10 /* Controller */,
 			);
 			path = Main;
@@ -345,6 +360,8 @@
 				DC73839A2134EAEF0055DC10 /* UIWindow+Window.m */,
 				DC73837B2133F1110055DC10 /* UIColor+Color.h */,
 				DC73837C2133F1110055DC10 /* UIColor+Color.m */,
+				DC44DB97213526C600D00FAC /* UIImage+Image.h */,
+				DC44DB98213526C600D00FAC /* UIImage+Image.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -400,8 +417,28 @@
 			children = (
 				DC73839D2134EBC10055DC10 /* LPUserDefaults.h */,
 				DC73839E2134EBC10055DC10 /* LPUserDefaults.m */,
+				DC44DB9521351F6D00D00FAC /* NullSafe.m */,
 			);
 			path = Until;
+			sourceTree = "<group>";
+		};
+		DC7383A32134F6380055DC10 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DC7383A42134F6580055DC10 /* LPMainCell.h */,
+				DC7383A52134F6580055DC10 /* LPMainCell.m */,
+				DC7383A62134F6580055DC10 /* LPMainCell.xib */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		DC7383A92134F79D0055DC10 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DC7383AA2134F7B50055DC10 /* LPWorklistModel.h */,
+				DC7383AB2134F7B50055DC10 /* LPWorklistModel.m */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -516,6 +553,7 @@
 				DC7383302133E3670055DC10 /* LaunchScreen.storyboard in Resources */,
 				DC73832D2133E3670055DC10 /* Assets.xcassets in Resources */,
 				DC73832B2133E33E0055DC10 /* Main.storyboard in Resources */,
+				DC7383A82134F6580055DC10 /* LPMainCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -626,10 +664,14 @@
 				DC73836D2133EC1B0055DC10 /* LPInformationVC.m in Sources */,
 				DC7383982134E95E0055DC10 /* NetApiManager.m in Sources */,
 				DC7383872134DC200055DC10 /* LPMineCell.m in Sources */,
+				DC44DB99213526C600D00FAC /* UIImage+Image.m in Sources */,
 				DC73837D2133F1110055DC10 /* UIColor+Color.m in Sources */,
 				DC7383282133E33E0055DC10 /* ViewController.m in Sources */,
+				DC44DB9621351F6D00D00FAC /* NullSafe.m in Sources */,
+				DC7383A72134F6580055DC10 /* LPMainCell.m in Sources */,
 				DC7383972134E95E0055DC10 /* NetRequestManager.m in Sources */,
 				DC7383952134E95E0055DC10 /* NetInstance.m in Sources */,
+				DC7383AC2134F7B50055DC10 /* LPWorklistModel.m in Sources */,
 				DC7383712133EC320055DC10 /* LPMineVC.m in Sources */,
 				DC7383A22134EF300055DC10 /* UIView+MBProgressHUD.m in Sources */,
 				DC7383332133E3670055DC10 /* main.m in Sources */,
