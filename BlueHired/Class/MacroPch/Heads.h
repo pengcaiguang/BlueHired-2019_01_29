@@ -27,6 +27,6 @@
 
 #import "LPUserDefaults.h"
 #import "NetApiManager.h"
-
+#import "DeviceUtils.h"
 
 #endif /* Heads_h */

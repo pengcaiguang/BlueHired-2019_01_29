@@ -13,6 +13,9 @@
 		DC44DB99213526C600D00FAC /* UIImage+Image.m in Sources */ = {isa = PBXBuildFile; fileRef = DC44DB98213526C600D00FAC /* UIImage+Image.m */; };
 		DC44DB9C21352B8000D00FAC /* LPNoDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = DC44DB9B21352B8000D00FAC /* LPNoDataView.m */; };
 		DC44DBA021353D5800D00FAC /* LPLabelListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC44DB9F21353D5800D00FAC /* LPLabelListModel.m */; };
+		DC44DBA321354D6A00D00FAC /* DeviceUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = DC44DBA121354D6A00D00FAC /* DeviceUtils.m */; };
+		DC44DBA821354E8500D00FAC /* LPInformationCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC44DBA621354E8500D00FAC /* LPInformationCollectionViewCell.m */; };
+		DC44DBA921354E8500D00FAC /* LPInformationCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC44DBA721354E8500D00FAC /* LPInformationCollectionViewCell.xib */; };
 		DC7383252133E33E0055DC10 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7383242133E33E0055DC10 /* AppDelegate.m */; };
 		DC7383282133E33E0055DC10 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7383272133E33E0055DC10 /* ViewController.m */; };
 		DC73832B2133E33E0055DC10 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DC7383292133E33E0055DC10 /* Main.storyboard */; };
@@ -76,6 +79,11 @@
 		DC44DB9B21352B8000D00FAC /* LPNoDataView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPNoDataView.m; sourceTree = "<group>"; };
 		DC44DB9E21353D5800D00FAC /* LPLabelListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPLabelListModel.h; sourceTree = "<group>"; };
 		DC44DB9F21353D5800D00FAC /* LPLabelListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPLabelListModel.m; sourceTree = "<group>"; };
+		DC44DBA121354D6A00D00FAC /* DeviceUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceUtils.m; sourceTree = "<group>"; };
+		DC44DBA221354D6A00D00FAC /* DeviceUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceUtils.h; sourceTree = "<group>"; };
+		DC44DBA521354E8500D00FAC /* LPInformationCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPInformationCollectionViewCell.h; sourceTree = "<group>"; };
+		DC44DBA621354E8500D00FAC /* LPInformationCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPInformationCollectionViewCell.m; sourceTree = "<group>"; };
+		DC44DBA721354E8500D00FAC /* LPInformationCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPInformationCollectionViewCell.xib; sourceTree = "<group>"; };
 		DC7383202133E33E0055DC10 /* BlueHired.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlueHired.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC7383232133E33E0055DC10 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		DC7383242133E33E0055DC10 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -201,6 +209,16 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		DC44DBA421354E6900D00FAC /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DC44DBA521354E8500D00FAC /* LPInformationCollectionViewCell.h */,
+				DC44DBA621354E8500D00FAC /* LPInformationCollectionViewCell.m */,
+				DC44DBA721354E8500D00FAC /* LPInformationCollectionViewCell.xib */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		DC7383172133E33E0055DC10 = {
 			isa = PBXGroup;
 			children = (
@@ -323,6 +341,7 @@
 		DC7383642133EBEB0055DC10 /* Information */ = {
 			isa = PBXGroup;
 			children = (
+				DC44DBA421354E6900D00FAC /* View */,
 				DC44DB9D21353D3500D00FAC /* Model */,
 				DC7383652133EBEB0055DC10 /* Controller */,
 			);
@@ -436,6 +455,8 @@
 				DC73839D2134EBC10055DC10 /* LPUserDefaults.h */,
 				DC73839E2134EBC10055DC10 /* LPUserDefaults.m */,
 				DC44DB9521351F6D00D00FAC /* NullSafe.m */,
+				DC44DBA221354D6A00D00FAC /* DeviceUtils.h */,
+				DC44DBA121354D6A00D00FAC /* DeviceUtils.m */,
 			);
 			path = Until;
 			sourceTree = "<group>";
@@ -570,6 +591,7 @@
 				DC7383882134DC200055DC10 /* LPMineCell.xib in Resources */,
 				DC7383302133E3670055DC10 /* LaunchScreen.storyboard in Resources */,
 				DC73832D2133E3670055DC10 /* Assets.xcassets in Resources */,
+				DC44DBA921354E8500D00FAC /* LPInformationCollectionViewCell.xib in Resources */,
 				DC73832B2133E33E0055DC10 /* Main.storyboard in Resources */,
 				DC7383A82134F6580055DC10 /* LPMainCell.xib in Resources */,
 			);
@@ -675,6 +697,8 @@
 			files = (
 				DC7383962134E95E0055DC10 /* MoninNet.m in Sources */,
 				DC7383942134E95E0055DC10 /* NetRequestEnty.m in Sources */,
+				DC44DBA321354D6A00D00FAC /* DeviceUtils.m in Sources */,
+				DC44DBA821354E8500D00FAC /* LPInformationCollectionViewCell.m in Sources */,
 				DC7383612133EB2A0055DC10 /* LPMainVC.m in Sources */,
 				DC73839F2134EBC10055DC10 /* LPUserDefaults.m in Sources */,
 				DC73838221341EBD0055DC10 /* LPSearchBar.m in Sources */,

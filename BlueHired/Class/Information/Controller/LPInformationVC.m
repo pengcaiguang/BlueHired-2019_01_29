@@ -9,12 +9,18 @@
 #import "LPInformationVC.h"
 #import "LPSearchBar.h"
 #import "LPLabelListModel.h"
+#import "LPInformationCollectionViewCell.h"
 
-@interface LPInformationVC ()<UISearchBarDelegate>
+static NSString *LPInformationCollectionViewCellID = @"LPInformationCollectionViewCell";
+
+@interface LPInformationVC ()<UISearchBarDelegate,UICollectionViewDelegate,UICollectionViewDataSource>
 @property(nonatomic,strong) LPLabelListModel *labelListModel;
 @property(nonatomic,strong) UIView *labelListView;
 @property(nonatomic,strong) UIView *lineView;
 @property(nonatomic,strong) NSMutableArray <UILabel *>*labelArray;
+
+@property (nonatomic,strong) UICollectionView *collectionView;
+
 
 @end
 
@@ -28,6 +34,12 @@
     
     self.labelArray = [NSMutableArray array];
     
+//    self.extendedLayoutIncludesOpaqueBars = YES;
+//    if (@available(iOS 11.0, *)) {
+//        self.collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+//    } else {
+//        self.automaticallyAdjustsScrollViewInsets = NO;
+//    }
     [self setNavigationButton];
     [self setSearchView];
     
@@ -38,9 +50,15 @@
         make.right.mas_equalTo(0);
         make.height.mas_equalTo(50);
     }];
+    [self.view addSubview:self.collectionView];
+    [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.labelListView.mas_bottom).offset(0);
+        make.left.mas_equalTo(0);
+        make.right.mas_equalTo(0);
+        make.bottom.mas_equalTo(-49);
+    }];
+
     [self requestLabellist];
-    
-    
     
 }
 - (UIStatusBarStyle)preferredStatusBarStyle{
@@ -87,7 +105,9 @@
 -(void)setLabelListModel:(LPLabelListModel *)labelListModel{
     _labelListModel = labelListModel;
     if ([labelListModel.code integerValue] == 0) {
-        
+        if (labelListModel.data.count <= 0) {
+            return;
+        }
         UIScrollView *scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 50)];
         [self.labelListView addSubview:scrollView];
         scrollView.showsHorizontalScrollIndicator = NO;
@@ -121,22 +141,40 @@
         self.lineView.backgroundColor = [UIColor baseColor];
         [scrollView addSubview:self.lineView];
         self.labelArray[0].textColor = [UIColor blackColor];
+        
+        [self.collectionView reloadData];
     }else{
         [self.view showLoadingMeg:NETE_ERROR_MESSAGE time:MESSAGE_SHOW_TIME];
     }
 }
 
 -(void)touchLabel:(UITapGestureRecognizer *)tap{
-    CGFloat x = CGRectGetMinX(self.labelArray[[tap view].tag].frame);
-    CGFloat w = CGRectGetWidth(self.labelArray[[tap view].tag].frame);
+    NSInteger index = [tap view].tag;
+    [self selectButtonAtIndex:index];
+    [self scrollToItenIndex:index];
+}
+-(void)selectButtonAtIndex:(NSInteger)index{
+    CGFloat x = CGRectGetMinX(self.labelArray[index].frame);
+    CGFloat w = CGRectGetWidth(self.labelArray[index].frame);
     for (UILabel *label in self.labelArray) {
         label.textColor = [UIColor grayColor];
     }
-    self.labelArray[[tap view].tag].textColor = [UIColor blackColor];
+    self.labelArray[index].textColor = [UIColor blackColor];
     [UIView animateWithDuration:0.2 animations:^{
         self.lineView.frame = CGRectMake(x, 48, w, 2);
     }];
+    
 }
+-(void)scrollToItenIndex:(NSInteger)index{
+    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:YES];
+}
+#pragma mark -- UICollectionViewDelegate
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    CGFloat pageWidth = scrollView.frame.size.width;
+    int page = floor((scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
+    [self selectButtonAtIndex:page];
+}
+
 #pragma mark - request
 -(void)requestLabellist{
     NSDictionary *dic = @{
@@ -148,6 +186,60 @@
     }];
 }
 
+#pragma mark -- UICollectionViewDataSource
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return self.labelListModel.data.count;
+}
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    LPInformationCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:LPInformationCollectionViewCellID forIndexPath:indexPath];
+
+    cell.contentView.backgroundColor = randomColor;
+    return cell;
+//    if (indexPath.item == 0) {
+//        JWMarketSellCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:JWMarketSellCollectionViewCellId forIndexPath:indexPath];
+//        cell.type = self.selectType;
+//        WEAK_SELF();
+//        cell.marketSellCollectionViewWillBeginDragging = ^{
+//            [weakSelf selectViewHideen];
+//        };
+//        return cell;
+//
+//    }else{
+//        JWMarketBuyCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:JWMarketBuyCollectionViewCellId forIndexPath:indexPath];
+//        cell.type = self.selectType;
+//        WEAK_SELF();
+//        cell.marketBuyCollectionViewWillBeginDragging = ^{
+//            [weakSelf selectViewHideen];
+//        };
+//        return cell;
+//    }
+    
+}
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return 1;
+}
+#pragma mark -- UICollectionViewDelegateFlowLayout
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+    if ([DeviceUtils deviceType] == IPhone_X) {
+        return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-88-50-49);
+    }else{
+        return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-64-50-49);
+    }
+}
+
+-(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section{
+    return CGSizeMake(0, 0);
+}
+
+-(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section{
+    return CGSizeMake(0, 0);
+}
+
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
+    return UIEdgeInsetsMake(0, 0, 0, 0);
+}
+
 #pragma mark - lazy
 -(UIView *)labelListView{
     if (!_labelListView) {
@@ -156,6 +248,25 @@
     return _labelListView;
 }
 
+- (UICollectionView *)collectionView{
+    if (!_collectionView) {
+        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+        // 设置collectionView的滚动方向，需要注意的是如果使用了collectionview的headerview或者footerview的话， 如果设置了水平滚动方向的话，那么就只有宽度起作用了了
+        [layout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
+        // layout.minimumInteritemSpacing = 10;// 垂直方向的间距
+        layout.minimumLineSpacing = 0; // 水平方向的间距
+        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
+        _collectionView.backgroundColor = [UIColor whiteColor];
+        _collectionView.showsHorizontalScrollIndicator = NO;
+        _collectionView.dataSource = self;
+        _collectionView.delegate = self;
+        _collectionView.pagingEnabled = YES;
+        [_collectionView registerNib:[UINib nibWithNibName:LPInformationCollectionViewCellID bundle:nil] forCellWithReuseIdentifier:LPInformationCollectionViewCellID];
+//        [_collectionView registerNib:[UINib nibWithNibName:JWMarketSellCollectionViewCellId bundle:nil] forCellWithReuseIdentifier:JWMarketSellCollectionViewCellId];
+        
+    }
+    return _collectionView;
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
