@@ -121,7 +121,6 @@
 //*  首页
 /************************************************************/
 
-
 + (void)requestWorklistWithParam:(id)paramer
                       withHandle:(response)responseHandle{
     NSString * appendURLString = @"work/query_worklist";
@@ -131,5 +130,20 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
+#pragma mark - 资讯
+/************************************************************/
+//*  资讯
+/************************************************************/
+
++ (void)requestLabellistWithParam:(id)paramer
+                       withHandle:(response)responseHandle{
+    NSString * appendURLString = @"/platform/get_label_list";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
+
 
 @end

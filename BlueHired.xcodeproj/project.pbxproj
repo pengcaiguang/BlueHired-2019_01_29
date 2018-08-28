@@ -12,6 +12,7 @@
 		DC44DB9621351F6D00D00FAC /* NullSafe.m in Sources */ = {isa = PBXBuildFile; fileRef = DC44DB9521351F6D00D00FAC /* NullSafe.m */; };
 		DC44DB99213526C600D00FAC /* UIImage+Image.m in Sources */ = {isa = PBXBuildFile; fileRef = DC44DB98213526C600D00FAC /* UIImage+Image.m */; };
 		DC44DB9C21352B8000D00FAC /* LPNoDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = DC44DB9B21352B8000D00FAC /* LPNoDataView.m */; };
+		DC44DBA021353D5800D00FAC /* LPLabelListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC44DB9F21353D5800D00FAC /* LPLabelListModel.m */; };
 		DC7383252133E33E0055DC10 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7383242133E33E0055DC10 /* AppDelegate.m */; };
 		DC7383282133E33E0055DC10 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7383272133E33E0055DC10 /* ViewController.m */; };
 		DC73832B2133E33E0055DC10 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DC7383292133E33E0055DC10 /* Main.storyboard */; };
@@ -73,6 +74,8 @@
 		DC44DB98213526C600D00FAC /* UIImage+Image.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Image.m"; sourceTree = "<group>"; };
 		DC44DB9A21352B8000D00FAC /* LPNoDataView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPNoDataView.h; sourceTree = "<group>"; };
 		DC44DB9B21352B8000D00FAC /* LPNoDataView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPNoDataView.m; sourceTree = "<group>"; };
+		DC44DB9E21353D5800D00FAC /* LPLabelListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPLabelListModel.h; sourceTree = "<group>"; };
+		DC44DB9F21353D5800D00FAC /* LPLabelListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPLabelListModel.m; sourceTree = "<group>"; };
 		DC7383202133E33E0055DC10 /* BlueHired.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlueHired.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC7383232133E33E0055DC10 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		DC7383242133E33E0055DC10 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -187,6 +190,15 @@
 				82479EF595BD37AB322E0AA9 /* libPods-BlueHiredUITests.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DC44DB9D21353D3500D00FAC /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DC44DB9E21353D5800D00FAC /* LPLabelListModel.h */,
+				DC44DB9F21353D5800D00FAC /* LPLabelListModel.m */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		DC7383172133E33E0055DC10 = {
@@ -311,6 +323,7 @@
 		DC7383642133EBEB0055DC10 /* Information */ = {
 			isa = PBXGroup;
 			children = (
+				DC44DB9D21353D3500D00FAC /* Model */,
 				DC7383652133EBEB0055DC10 /* Controller */,
 			);
 			path = Information;
@@ -680,6 +693,7 @@
 				DC7383AC2134F7B50055DC10 /* LPWorklistModel.m in Sources */,
 				DC7383712133EC320055DC10 /* LPMineVC.m in Sources */,
 				DC7383A22134EF300055DC10 /* UIView+MBProgressHUD.m in Sources */,
+				DC44DBA021353D5800D00FAC /* LPLabelListModel.m in Sources */,
 				DC7383332133E3670055DC10 /* main.m in Sources */,
 				DC7383252133E33E0055DC10 /* AppDelegate.m in Sources */,
 				DC73836A2133EC040055DC10 /* LPCircleVC.m in Sources */,

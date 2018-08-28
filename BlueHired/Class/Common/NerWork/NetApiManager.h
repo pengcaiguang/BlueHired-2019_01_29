@@ -50,6 +50,13 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 + (void)requestWorklistWithParam:(id)paramer
                       withHandle:(response)responseHandle;
 
+#pragma mark - 资讯
+/************************************************************/
+//*  资讯
+/************************************************************/
+
++ (void)requestLabellistWithParam:(id)paramer
+                       withHandle:(response)responseHandle;
 @end
 
 

@@ -46,7 +46,9 @@ static NSString *LPMainCellID = @"LPMainCell";
     }];
     [self request];
 }
-
+- (UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
 -(void)setLeftButton{
     UIView *leftBarButtonView = [[UIView alloc]init];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:leftBarButtonView];
@@ -140,7 +142,7 @@ static NSString *LPMainCellID = @"LPMainCell";
             [self.tableview.mj_footer endRefreshingWithNoMoreData];
         }
     }else{
-        [self.view showLoadingMeg:@"网络错误" time:MESSAGE_SHOW_TIME];
+        [self.view showLoadingMeg:NETE_ERROR_MESSAGE time:MESSAGE_SHOW_TIME];
     }
 }
 -(void)addNodataView{
@@ -161,9 +163,7 @@ static NSString *LPMainCellID = @"LPMainCell";
     NSLog(@"touchSelectCityButton");
     
 }
-- (UIStatusBarStyle)preferredStatusBarStyle{
-    return UIStatusBarStyleLightContent;
-}
+
 
 #pragma mark - TableViewDelegate & Datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -204,7 +204,6 @@ static NSString *LPMainCellID = @"LPMainCell";
         [self.tableview.mj_header endRefreshing];
         [self.tableview.mj_footer endRefreshing];
         self.model = [LPWorklistModel mj_objectWithKeyValues:responseObject];
-        
     }];
 }
 
