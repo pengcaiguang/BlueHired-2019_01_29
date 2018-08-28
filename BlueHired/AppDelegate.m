@@ -25,7 +25,8 @@
     manager.shouldResignOnTouchOutside = YES;
     manager.shouldToolbarUsesTextFieldTintColor = YES;
     manager.enableAutoToolbar = NO;
-    
+    [self startCheckNet];
+
     [self showTabVc:0];
 
     
@@ -42,7 +43,23 @@
     [self.mainTabBarController setSelectedIndex:tabIndex];
     
 }
-
+//退出登录
+- (void)LoginOut {
+//    //移除token 等用户信息
+//    kUserDefaultsRemove(ktoken);
+//    kUserDefaultsRemove(kcredentials);
+//    kUserDefaultsRemove(kLoginStatus);
+//    //跳转到登录页面
+//    JWLoginVC *vc = [[JWLoginVC alloc]init];
+//    RTRootNavigationController *navi = [[RTRootNavigationController alloc]initWithRootViewController:vc];
+//    self.window.rootViewController = navi;
+//    [self.window makeKeyAndVisible];
+}
+//启动网络监控
+-(void)startCheckNet{
+    _moninNet = [[MoninNet alloc]init];
+    [_moninNet startMoninNet];
+}
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.

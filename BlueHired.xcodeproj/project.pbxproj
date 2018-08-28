@@ -27,6 +27,14 @@
 		DC73838221341EBD0055DC10 /* LPSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = DC73838121341EBD0055DC10 /* LPSearchBar.m */; };
 		DC7383872134DC200055DC10 /* LPMineCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7383852134DC200055DC10 /* LPMineCell.m */; };
 		DC7383882134DC200055DC10 /* LPMineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC7383862134DC200055DC10 /* LPMineCell.xib */; };
+		DC7383942134E95E0055DC10 /* NetRequestEnty.m in Sources */ = {isa = PBXBuildFile; fileRef = DC73838A2134E95C0055DC10 /* NetRequestEnty.m */; };
+		DC7383952134E95E0055DC10 /* NetInstance.m in Sources */ = {isa = PBXBuildFile; fileRef = DC73838D2134E95D0055DC10 /* NetInstance.m */; };
+		DC7383962134E95E0055DC10 /* MoninNet.m in Sources */ = {isa = PBXBuildFile; fileRef = DC73838E2134E95D0055DC10 /* MoninNet.m */; };
+		DC7383972134E95E0055DC10 /* NetRequestManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7383922134E95E0055DC10 /* NetRequestManager.m */; };
+		DC7383982134E95E0055DC10 /* NetApiManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7383932134E95E0055DC10 /* NetApiManager.m */; };
+		DC73839B2134EAEF0055DC10 /* UIWindow+Window.m in Sources */ = {isa = PBXBuildFile; fileRef = DC73839A2134EAEF0055DC10 /* UIWindow+Window.m */; };
+		DC73839F2134EBC10055DC10 /* LPUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = DC73839E2134EBC10055DC10 /* LPUserDefaults.m */; };
+		DC7383A22134EF300055DC10 /* UIView+MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7383A12134EF300055DC10 /* UIView+MBProgressHUD.m */; };
 		DD9C491243746BE284EDF63A /* libPods-BlueHiredTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F2990BA484C987BEAA6D77E9 /* libPods-BlueHiredTests.a */; };
 /* End PBXBuildFile section */
 
@@ -93,6 +101,22 @@
 		DC7383842134DC200055DC10 /* LPMineCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPMineCell.h; sourceTree = "<group>"; };
 		DC7383852134DC200055DC10 /* LPMineCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPMineCell.m; sourceTree = "<group>"; };
 		DC7383862134DC200055DC10 /* LPMineCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPMineCell.xib; sourceTree = "<group>"; };
+		DC73838A2134E95C0055DC10 /* NetRequestEnty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetRequestEnty.m; sourceTree = "<group>"; };
+		DC73838B2134E95D0055DC10 /* MoninNet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoninNet.h; sourceTree = "<group>"; };
+		DC73838C2134E95D0055DC10 /* NetRequestEnty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetRequestEnty.h; sourceTree = "<group>"; };
+		DC73838D2134E95D0055DC10 /* NetInstance.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetInstance.m; sourceTree = "<group>"; };
+		DC73838E2134E95D0055DC10 /* MoninNet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoninNet.m; sourceTree = "<group>"; };
+		DC73838F2134E95D0055DC10 /* NetRequestManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetRequestManager.h; sourceTree = "<group>"; };
+		DC7383902134E95E0055DC10 /* NetApiManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetApiManager.h; sourceTree = "<group>"; };
+		DC7383912134E95E0055DC10 /* NetInstance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetInstance.h; sourceTree = "<group>"; };
+		DC7383922134E95E0055DC10 /* NetRequestManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetRequestManager.m; sourceTree = "<group>"; };
+		DC7383932134E95E0055DC10 /* NetApiManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetApiManager.m; sourceTree = "<group>"; };
+		DC7383992134EAEE0055DC10 /* UIWindow+Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIWindow+Window.h"; sourceTree = "<group>"; };
+		DC73839A2134EAEF0055DC10 /* UIWindow+Window.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIWindow+Window.m"; sourceTree = "<group>"; };
+		DC73839D2134EBC10055DC10 /* LPUserDefaults.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPUserDefaults.h; sourceTree = "<group>"; };
+		DC73839E2134EBC10055DC10 /* LPUserDefaults.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPUserDefaults.m; sourceTree = "<group>"; };
+		DC7383A02134EF300055DC10 /* UIView+MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+MBProgressHUD.h"; sourceTree = "<group>"; };
+		DC7383A12134EF300055DC10 /* UIView+MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+MBProgressHUD.m"; sourceTree = "<group>"; };
 		DCB5A5321875E124A6C52C8B /* libPods-BlueHired.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BlueHired.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E94B224D8D8E2D47E74AC9DB /* Pods-BlueHiredTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlueHiredTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlueHiredTests/Pods-BlueHiredTests.release.xcconfig"; sourceTree = "<group>"; };
 		F2990BA484C987BEAA6D77E9 /* libPods-BlueHiredTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BlueHiredTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -315,6 +339,10 @@
 		DC73837A2133F0F00055DC10 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				DC7383A02134EF300055DC10 /* UIView+MBProgressHUD.h */,
+				DC7383A12134EF300055DC10 /* UIView+MBProgressHUD.m */,
+				DC7383992134EAEE0055DC10 /* UIWindow+Window.h */,
+				DC73839A2134EAEF0055DC10 /* UIWindow+Window.m */,
 				DC73837B2133F1110055DC10 /* UIColor+Color.h */,
 				DC73837C2133F1110055DC10 /* UIColor+Color.m */,
 			);
@@ -324,6 +352,8 @@
 		DC73837E21341EA10055DC10 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				DC73839C2134EBB40055DC10 /* Until */,
+				DC7383892134E9520055DC10 /* NerWork */,
 				DC73837F21341EA10055DC10 /* View */,
 			);
 			path = Common;
@@ -346,6 +376,32 @@
 				DC7383862134DC200055DC10 /* LPMineCell.xib */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		DC7383892134E9520055DC10 /* NerWork */ = {
+			isa = PBXGroup;
+			children = (
+				DC73838B2134E95D0055DC10 /* MoninNet.h */,
+				DC73838E2134E95D0055DC10 /* MoninNet.m */,
+				DC7383902134E95E0055DC10 /* NetApiManager.h */,
+				DC7383932134E95E0055DC10 /* NetApiManager.m */,
+				DC7383912134E95E0055DC10 /* NetInstance.h */,
+				DC73838D2134E95D0055DC10 /* NetInstance.m */,
+				DC73838C2134E95D0055DC10 /* NetRequestEnty.h */,
+				DC73838A2134E95C0055DC10 /* NetRequestEnty.m */,
+				DC73838F2134E95D0055DC10 /* NetRequestManager.h */,
+				DC7383922134E95E0055DC10 /* NetRequestManager.m */,
+			);
+			path = NerWork;
+			sourceTree = "<group>";
+		};
+		DC73839C2134EBB40055DC10 /* Until */ = {
+			isa = PBXGroup;
+			children = (
+				DC73839D2134EBC10055DC10 /* LPUserDefaults.h */,
+				DC73839E2134EBC10055DC10 /* LPUserDefaults.m */,
+			);
+			path = Until;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -561,18 +617,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DC7383962134E95E0055DC10 /* MoninNet.m in Sources */,
+				DC7383942134E95E0055DC10 /* NetRequestEnty.m in Sources */,
 				DC7383612133EB2A0055DC10 /* LPMainVC.m in Sources */,
+				DC73839F2134EBC10055DC10 /* LPUserDefaults.m in Sources */,
 				DC73838221341EBD0055DC10 /* LPSearchBar.m in Sources */,
 				DC7383792133EE800055DC10 /* LPTabBarViewController.m in Sources */,
 				DC73836D2133EC1B0055DC10 /* LPInformationVC.m in Sources */,
+				DC7383982134E95E0055DC10 /* NetApiManager.m in Sources */,
 				DC7383872134DC200055DC10 /* LPMineCell.m in Sources */,
 				DC73837D2133F1110055DC10 /* UIColor+Color.m in Sources */,
 				DC7383282133E33E0055DC10 /* ViewController.m in Sources */,
+				DC7383972134E95E0055DC10 /* NetRequestManager.m in Sources */,
+				DC7383952134E95E0055DC10 /* NetInstance.m in Sources */,
 				DC7383712133EC320055DC10 /* LPMineVC.m in Sources */,
+				DC7383A22134EF300055DC10 /* UIView+MBProgressHUD.m in Sources */,
 				DC7383332133E3670055DC10 /* main.m in Sources */,
 				DC7383252133E33E0055DC10 /* AppDelegate.m in Sources */,
 				DC73836A2133EC040055DC10 /* LPCircleVC.m in Sources */,
 				DC73835A2133EAD30055DC10 /* LPBaseViewController.m in Sources */,
+				DC73839B2134EAEF0055DC10 /* UIWindow+Window.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,11 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MoninNet.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
+@property (strong,nonatomic) MoninNet* moninNet;
 
+//退出登录
+- (void)LoginOut;
 @end
 

@@ -30,7 +30,7 @@
     NSMutableArray *normalImages = [NSMutableArray array];
     NSMutableArray *selectedImages = [NSMutableArray array];
     
-    controllers = [NSMutableArray arrayWithArray:@[@"LPMineVC",@"LPInformationVC",@"LPCircleVC",@"LPMainVC"]];
+    controllers = [NSMutableArray arrayWithArray:@[@"LPMainVC",@"LPInformationVC",@"LPCircleVC",@"LPMineVC"]];
     titleArrays = [NSMutableArray arrayWithArray:@[@"首页",@"资讯",@"圈子",@"我的"]];
     
     for (int index = 0; index<controllers.count; index++) {
