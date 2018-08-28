@@ -23,6 +23,7 @@
 #import "UIWindow+Window.h"
 #import "UIView+MBProgressHUD.h"
 
+#import "LPNoDataView.h"
 
 #import "LPUserDefaults.h"
 #import "NetApiManager.h"

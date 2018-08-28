@@ -19,6 +19,8 @@ static NSString *LPMainCellID = @"LPMainCell";
 @property (nonatomic, strong)UITableView *tableview;
 @property(nonatomic,strong) UIView *tableHeaderView;
 @property(nonatomic,strong) SDCycleScrollView *cycleScrollView;
+@property(nonatomic,strong) UIButton *sortButton;
+@property(nonatomic,strong) UIButton *screenButton;
 
 @property(nonatomic,assign) NSInteger page;
 @property(nonatomic,strong) LPWorklistModel *model;
@@ -118,13 +120,14 @@ static NSString *LPMainCellID = @"LPMainCell";
 }
 -(void)setModel:(LPWorklistModel *)model{
     _model = model;
+//    [self addNodataView];
     if ([self.model.code integerValue] == 0) {
         NSMutableArray *array = [NSMutableArray array];
         for (LPWorklistDataSlideshowListModel *model in self.model.data.slideshowList) {
             [array addObject:model.mechanismUrl];
         }
         self.cycleScrollView.imageURLStringsGroup = array;
-        [self updataHeaderView];
+//        [self updataHeaderView];
         
         if (self.page == 1) {
             self.listArray = [NSMutableArray array];
@@ -139,6 +142,10 @@ static NSString *LPMainCellID = @"LPMainCell";
     }else{
         [self.view showLoadingMeg:@"网络错误" time:MESSAGE_SHOW_TIME];
     }
+}
+-(void)addNodataView{
+    LPNoDataView *noDataView = [[LPNoDataView alloc]initWithFrame:CGRectMake(0, 240, SCREEN_WIDTH, SCREEN_HEIGHT-240-49-64)];
+    [self.tableview addSubview:noDataView];
 }
 -(void)updataHeaderView{
     if (self.model.data.slideshowList.count <= 0) {
@@ -180,6 +187,13 @@ static NSString *LPMainCellID = @"LPMainCell";
     NSLog(@"---点击了第%ld张图片", (long)index);
 }
 
+#pragma mark - target
+-(void)touchSortButton:(UIButton *)button{
+    button.selected = !button.isSelected;
+}
+-(void)touchScreenButton:(UIButton *)button{
+    
+}
 #pragma mark - request
 -(void)request{
     NSDictionary *dic = @{
@@ -221,15 +235,47 @@ static NSString *LPMainCellID = @"LPMainCell";
 -(UIView *)tableHeaderView{
     if (!_tableHeaderView){
         _tableHeaderView = [[UIView alloc]init];
-        _tableHeaderView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 157);
+        _tableHeaderView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 240);
         [_tableHeaderView addSubview:self.cycleScrollView];
+        [_tableHeaderView addSubview:self.sortButton];
+        [_tableHeaderView addSubview:self.screenButton];
     }
     return _tableHeaderView;
+}
+-(UIButton *)sortButton{
+    if (!_sortButton) {
+        _sortButton = [[UIButton alloc]init];
+        _sortButton.frame = CGRectMake(13, 210, 70, 20);
+        [_sortButton setTitle:@"综合排序" forState:UIControlStateNormal];
+        [_sortButton setImage:[UIImage imageNamed:@"sort_normal"] forState:UIControlStateNormal];
+        [_sortButton setImage:[UIImage imageNamed:@"sort_selected"] forState:UIControlStateSelected];
+        [_sortButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [_sortButton setTitleColor:[UIColor baseColor] forState:UIControlStateSelected];
+        _sortButton.titleLabel.font = [UIFont systemFontOfSize:14];
+        _sortButton.titleEdgeInsets = UIEdgeInsetsMake(0, -_sortButton.imageView.frame.size.width - _sortButton.frame.size.width + _sortButton.titleLabel.intrinsicContentSize.width, 0, 0);
+        _sortButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -_sortButton.titleLabel.frame.size.width - _sortButton.frame.size.width + _sortButton.imageView.frame.size.width);
+        [_sortButton addTarget:self action:@selector(touchSortButton:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _sortButton;
+}
+-(UIButton *)screenButton{
+    if (!_screenButton) {
+        _screenButton = [[UIButton alloc]init];
+        _screenButton.frame = CGRectMake(SCREEN_WIDTH-45-13, 210, 45, 20);
+        [_screenButton setTitle:@"筛选" forState:UIControlStateNormal];
+        [_screenButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [_screenButton setImage:[UIImage imageNamed:@"screen_normal"] forState:UIControlStateNormal];
+        _screenButton.titleLabel.font = [UIFont systemFontOfSize:14];
+        _screenButton.titleEdgeInsets = UIEdgeInsetsMake(0, -_screenButton.imageView.frame.size.width - _screenButton.frame.size.width + _screenButton.titleLabel.intrinsicContentSize.width, 0, 0);
+        _screenButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -_screenButton.titleLabel.frame.size.width - _screenButton.frame.size.width + _screenButton.imageView.frame.size.width);
+        [_screenButton addTarget:self action:@selector(touchScreenButton:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _screenButton;
 }
 
 -(SDCycleScrollView *)cycleScrollView{
     if (!_cycleScrollView) {
-        _cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 117) delegate:self placeholderImage:nil];
+        _cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 200) delegate:self placeholderImage:nil];
         _cycleScrollView.pageControlAliment = SDCycleScrollViewPageContolAlimentRight;
         _cycleScrollView.currentPageDotColor = [UIColor whiteColor]; // 自定义分页控件小圆标颜色
     }
