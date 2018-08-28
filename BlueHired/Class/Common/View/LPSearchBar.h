@@ -1,5 +1,5 @@
 //
-//  UIColor+Color.h
+//  LPSearchBar.h
 //  BlueHired
 //
 //  Created by 邢晓亮 on 2018/8/27.
@@ -8,9 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UIColor (Color)
-+(UIColor *) colorWithHexString: (NSString *) hexString;
+@interface LPSearchBar : UISearchBar
 
-+ (UIColor *)baseColor;
+@property(nonatomic)  UIEdgeInsets contentInset;
 
 @end
