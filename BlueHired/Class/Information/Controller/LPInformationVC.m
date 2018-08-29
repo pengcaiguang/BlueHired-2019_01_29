@@ -199,25 +199,6 @@ static NSString *LPInformationCollectionViewCellID = @"LPInformationCollectionVi
     cell.labelListDataModel = self.labelListModel.data[indexPath.row];
     cell.contentView.backgroundColor = randomColor;
     return cell;
-//    if (indexPath.item == 0) {
-//        JWMarketSellCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:JWMarketSellCollectionViewCellId forIndexPath:indexPath];
-//        cell.type = self.selectType;
-//        WEAK_SELF();
-//        cell.marketSellCollectionViewWillBeginDragging = ^{
-//            [weakSelf selectViewHideen];
-//        };
-//        return cell;
-//
-//    }else{
-//        JWMarketBuyCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:JWMarketBuyCollectionViewCellId forIndexPath:indexPath];
-//        cell.type = self.selectType;
-//        WEAK_SELF();
-//        cell.marketBuyCollectionViewWillBeginDragging = ^{
-//            [weakSelf selectViewHideen];
-//        };
-//        return cell;
-//    }
-    
 }
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     return 1;
