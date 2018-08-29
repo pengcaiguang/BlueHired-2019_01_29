@@ -22,6 +22,8 @@
 #import "UIImage+Image.h"
 #import "UIWindow+Window.h"
 #import "UIView+MBProgressHUD.h"
+#import "NSString+String.h"
+
 
 #import "LPNoDataView.h"
 

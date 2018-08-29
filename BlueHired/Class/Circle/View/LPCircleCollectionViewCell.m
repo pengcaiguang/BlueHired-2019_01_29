@@ -8,14 +8,25 @@
 
 #import "LPCircleCollectionViewCell.h"
 #import "LPMoodTypeModel.h"
+#import "LPMoodListModel.h"
+#import "LPCircleListCell.h"
+
+static NSString *LPCircleListCellID = @"LPCircleListCell";
 
 @interface LPCircleCollectionViewCell ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong)UITableView *tableview;
 @property(nonatomic,strong) UIView *tableHeaderView;
+@property(nonatomic,strong) UIButton *expandbutton;
 @property(nonatomic,assign) NSInteger page;
 
 @property(nonatomic,strong) LPMoodTypeModel *moodTypeModel;
+@property(nonatomic,strong) LPMoodTypeDataModel *selectMoodTypeDataModel;
+
 @property(nonatomic,strong) NSMutableArray <UILabel *>*labelArray;
+
+@property(nonatomic,strong) LPMoodListModel *moodListModel;
+@property(nonatomic,strong) NSMutableArray <LPMoodListDataModel *>*moodListArray;
+
 @end
 
 @implementation LPCircleCollectionViewCell
@@ -25,6 +36,7 @@
     // Initialization code
     self.page = 1;
     self.labelArray = [NSMutableArray array];
+    self.moodListArray = [NSMutableArray array];
     
     [self.contentView addSubview:self.tableview];
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -33,17 +45,33 @@
 }
 #pragma mark - setdata
 -(void)setIndex:(NSInteger)index{
+    _index = index;
     if (index == 0) {
         [self requestMoodType];
     }
+    [self requestMoodList];
 }
 
 
 -(void)setMoodTypeModel:(LPMoodTypeModel *)moodTypeModel{
+    if (_moodTypeModel) {
+        if ([_moodTypeModel.mj_keyValues isEqual:moodTypeModel.mj_keyValues]) {
+            return;
+        }
+    }
     _moodTypeModel = moodTypeModel;
     if (moodTypeModel.data.count > 0 ) {
         self.tableview.tableHeaderView = self.tableHeaderView;
         self.tableHeaderView.clipsToBounds = YES;
+        if (moodTypeModel.data.count > 4) {
+            [self.tableHeaderView addSubview:self.expandbutton];
+            [self.expandbutton mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.mas_equalTo(0);
+                make.right.mas_equalTo(0);
+                make.bottom.mas_equalTo(0);
+                make.height.mas_equalTo(20);
+            }];
+        }
         
         CGFloat space = (SCREEN_WIDTH-37*4)/8;
         for (int i = 0; i<moodTypeModel.data.count; i++) {
@@ -65,22 +93,46 @@
             [self.tableHeaderView addSubview:label];
             [self.tableHeaderView insertSubview:label atIndex:0];
             [self.labelArray addObject:label];
-            self.labelArray[0].textColor = [UIColor baseColor];
         }
+        self.labelArray[0].textColor = [UIColor baseColor];
+        self.selectMoodTypeDataModel = moodTypeModel.data[0];
+
     }
 }
+
+-(void)setMoodListModel:(LPMoodListModel *)moodListModel{
+    _moodListModel = moodListModel;
+    if ([moodListModel.code integerValue] == 0) {
+        if (self.page == 1) {
+            self.moodListArray = [NSMutableArray array];
+        }
+        if (moodListModel.data.count > 0) {
+            self.page += 1;
+            [self.moodListArray addObjectsFromArray:moodListModel.data];
+            [self.tableview reloadData];
+        }else{
+            [self.tableview.mj_footer endRefreshingWithNoMoreData];
+        }
+    }else{
+        [self.contentView showLoadingMeg:NETE_ERROR_MESSAGE time:MESSAGE_SHOW_TIME];
+    }
+}
+
 -(void)touchMoodType:(UITapGestureRecognizer *)tap{
     NSInteger index = [tap view].tag;
     for (UILabel *label in self.labelArray) {
         label.textColor = [UIColor blackColor];
     }
     self.labelArray[index].textColor = [UIColor baseColor];
+    self.selectMoodTypeDataModel = self.moodTypeModel.data[index];
+    self.page = 1;
+    [self requestMoodList];
 }
 
 -(void)touchExpandButton:(UIButton *)button{
     button.selected = !button.isSelected;
     if (button.selected) {
-        self.tableHeaderView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 190);
+        self.tableHeaderView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 110 + floor(self.moodTypeModel.data.count%4)*80);
     }else{
         self.tableHeaderView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 110);
     }
@@ -89,17 +141,15 @@
 
 #pragma mark - TableViewDelegate & Datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 20;
+    return self.moodListArray.count;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    static NSString *rid=@"cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:rid];
+    LPCircleListCell *cell = [tableView dequeueReusableCellWithIdentifier:LPCircleListCellID];
     if(cell == nil){
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rid];
+        cell = [[LPCircleListCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:LPCircleListCellID];
     }
-    cell.textLabel.text = [NSString stringWithFormat:@"%ld",indexPath.row];
-    cell.backgroundColor = randomColor;
+    cell.model = self.moodListArray[indexPath.row];
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -111,7 +161,37 @@
         NSLog(@"%@",responseObject);
         self.moodTypeModel = [LPMoodTypeModel mj_objectWithKeyValues:responseObject];
     }];
-    
+}
+
+-(void)requestMoodList{
+    NSInteger type = 0;
+    switch (self.index) {
+        case 0:
+            type = 0;
+            break;
+        case 1:
+            type = 2;
+            break;
+            
+        case 2:
+            type = 1;
+            break;
+            
+        default:
+            break;
+    }
+    NSDictionary *dic = @{
+                          @"moodTypeId":self.selectMoodTypeDataModel.id ? self.selectMoodTypeDataModel.id : @"",
+                          @"page":@(self.page),
+                          @"type":@(type)
+                          };
+    [NetApiManager requestMoodListWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        [self.tableview.mj_header endRefreshing];
+        [self.tableview.mj_footer endRefreshing];
+
+        self.moodListModel = [LPMoodListModel mj_objectWithKeyValues:responseObject];
+    }];
 }
 
 #pragma mark lazy
@@ -125,16 +205,14 @@
         _tableview.estimatedRowHeight = 100;
         _tableview.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         _tableview.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
-//        [_tableview registerNib:[UINib nibWithNibName:LPInformationSingleCellID bundle:nil] forCellReuseIdentifier:LPInformationSingleCellID];
+        [_tableview registerNib:[UINib nibWithNibName:LPCircleListCellID bundle:nil] forCellReuseIdentifier:LPCircleListCellID];
         
         _tableview.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
             self.page = 1;
-            [self.tableview.mj_header endRefreshing];
-//            [self requestMoodType];
+            [self requestMoodList];
         }];
         _tableview.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
-//            [self requestMoodType];
-            [self.tableview.mj_footer endRefreshing];
+            [self requestMoodList];
 
         }];
     }
@@ -145,26 +223,26 @@
         _tableHeaderView = [[UIView alloc]init];
         _tableHeaderView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 110);
         
-        UIButton *expandbutton = [[UIButton alloc]init];
-        [_tableHeaderView addSubview:expandbutton];
-        [expandbutton mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.mas_equalTo(0);
-            make.right.mas_equalTo(0);
-            make.bottom.mas_equalTo(0);
-            make.height.mas_equalTo(20);
-        }];
-        [expandbutton setTitle:@"点击展开" forState:UIControlStateNormal];
-        [expandbutton setTitle:@"点击收起" forState:UIControlStateSelected];
-        [expandbutton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-        [expandbutton setImage:[UIImage imageNamed:@"expand_img"] forState:UIControlStateNormal];
-        [expandbutton setImage:[UIImage imageNamed:@"shrinkage_img"] forState:UIControlStateSelected];
-        expandbutton.backgroundColor = [UIColor colorWithHexString:@"#F2F2F2"];
-        expandbutton.titleLabel.font = [UIFont systemFontOfSize:10];
-        [expandbutton addTarget:self action:@selector(touchExpandButton:) forControlEvents:UIControlEventTouchUpInside];
-        expandbutton.titleEdgeInsets = UIEdgeInsetsMake(0, -expandbutton.imageView.frame.size.width - expandbutton.titleLabel.intrinsicContentSize.width-5, 0, 0);
-        expandbutton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -expandbutton.titleLabel.intrinsicContentSize.width -expandbutton.imageView.frame.size.width-5);
+        
         
     }
     return _tableHeaderView;
+}
+-(UIButton *)expandbutton{
+    if (!_expandbutton) {
+        _expandbutton = [[UIButton alloc]init];
+        [_expandbutton setTitle:@"点击展开" forState:UIControlStateNormal];
+        [_expandbutton setTitle:@"点击收起" forState:UIControlStateSelected];
+        [_expandbutton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        [_expandbutton setImage:[UIImage imageNamed:@"expand_img"] forState:UIControlStateNormal];
+        [_expandbutton setImage:[UIImage imageNamed:@"shrinkage_img"] forState:UIControlStateSelected];
+        _expandbutton.backgroundColor = [UIColor colorWithHexString:@"#F2F2F2"];
+        _expandbutton.titleLabel.font = [UIFont systemFontOfSize:10];
+        [_expandbutton addTarget:self action:@selector(touchExpandButton:) forControlEvents:UIControlEventTouchUpInside];
+        _expandbutton.titleEdgeInsets = UIEdgeInsetsMake(0, -_expandbutton.imageView.frame.size.width - _expandbutton.titleLabel.intrinsicContentSize.width-5, 0, 0);
+        _expandbutton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -_expandbutton.titleLabel.intrinsicContentSize.width -_expandbutton.imageView.frame.size.width-5);
+    }
+    return _expandbutton;
+    
 }
 @end

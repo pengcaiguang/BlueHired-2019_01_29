@@ -68,6 +68,9 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //查看圈子种类
 + (void)requestMoodTypeWithParam:(id)paramer
                       withHandle:(response)responseHandle;
+//查看圈子列表
++ (void)requestMoodListWithParam:(id)paramer
+                      withHandle:(response)responseHandle;
 @end
 
 

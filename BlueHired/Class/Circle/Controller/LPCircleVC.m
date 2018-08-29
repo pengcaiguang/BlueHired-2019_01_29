@@ -33,6 +33,7 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
     [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
+    [self addSendButton];
 }
 - (UIStatusBarStyle)preferredStatusBarStyle{
     return UIStatusBarStyleLightContent;
@@ -75,6 +76,21 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
     }];
     self.lineView.backgroundColor = [UIColor whiteColor];
 }
+-(void)addSendButton{
+    UIButton *button = [[UIButton alloc]init];
+    [self.view addSubview:button];
+    [button mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(50, 50));
+        make.right.mas_equalTo(-20);
+        make.bottom.mas_equalTo(-89);
+    }];
+    [button setImage:[UIImage imageNamed:@"sendDynamic_img"] forState:UIControlStateNormal];
+    button.backgroundColor = [UIColor colorWithHexString:@"#FB5454"];
+    button.layer.masksToBounds = YES;
+    button.layer.cornerRadius = 25;
+}
+
+
 -(void)touchTitleButton:(UIButton *)button{
     NSInteger index = [self.buttonArray indexOfObject:button];
     [self selectButtonAtIndex:index];

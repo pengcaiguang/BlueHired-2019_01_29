@@ -19,9 +19,11 @@
     self.essayNameLabel.text = model.essayName;
     [self.essayUrlImageView sd_setImageWithURL:[NSURL URLWithString:model.essayUrl]];
     self.essayAuthorLabel.text = model.essayAuthor;
-    self.viewLabel.text = model.view;
-    self.commentTotalLabel.text = model.commentTotal;
-    self.praiseTotalLabel.text = model.praiseTotal;
+    
+    self.viewLabel.text = model.view ? [model.view stringValue] : @"0";
+    self.commentTotalLabel.text = model.commentTotal ? [model.commentTotal stringValue] : @"0";
+    self.praiseTotalLabel.text = model.praiseTotal ? [model.praiseTotal stringValue] : @"0";
+    
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

@@ -18,7 +18,7 @@
 @interface LPEssaylistDataModel : NSObject
 @property (nonatomic, copy) NSNumber *choiceStatus;
 @property (nonatomic, copy) NSNumber *collectionStatus;
-@property (nonatomic, copy) NSString *commentTotal;
+@property (nonatomic, copy) NSNumber *commentTotal;
 @property (nonatomic, copy) NSString *essayAuthor;
 @property (nonatomic, copy) NSString *essayDetails;
 @property (nonatomic, copy) NSString *essayName;
@@ -27,7 +27,7 @@
 @property (nonatomic, copy) NSString *key;
 @property (nonatomic, copy) NSNumber *labelId;
 @property (nonatomic, copy) NSNumber *likeStatus;
-@property (nonatomic, copy) NSString *praiseTotal;
+@property (nonatomic, copy) NSNumber *praiseTotal;
 @property (nonatomic, copy) NSString *time;
-@property (nonatomic, copy) NSString *view;
+@property (nonatomic, copy) NSNumber *view;
 @end

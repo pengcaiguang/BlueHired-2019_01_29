@@ -169,5 +169,17 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
+//查看圈子列表
++ (void)requestMoodListWithParam:(id)paramer
+                      withHandle:(response)responseHandle{
+    NSString * appendURLString = @"/mood/get_mood_list";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+
 
 @end
