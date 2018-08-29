@@ -46,7 +46,7 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 /************************************************************/
 //*  首页
 /************************************************************/
-//配置信息
+//首页列表
 + (void)requestWorklistWithParam:(id)paramer
                       withHandle:(response)responseHandle;
 
@@ -54,11 +54,20 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 /************************************************************/
 //*  资讯
 /************************************************************/
-
+//资讯分类
 + (void)requestLabellistWithParam:(id)paramer
                        withHandle:(response)responseHandle;
+//资讯列表
 + (void)requestEssaylistWithParam:(id)paramer
                        withHandle:(response)responseHandle;
+
+#pragma mark - 圈子
+/************************************************************/
+//*  圈子
+/************************************************************/
+//查看圈子种类
++ (void)requestMoodTypeWithParam:(id)paramer
+                      withHandle:(response)responseHandle;
 @end
 
 

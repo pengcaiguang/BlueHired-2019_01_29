@@ -10,4 +10,6 @@
 
 @interface LPCircleCollectionViewCell : UICollectionViewCell
 
+@property(nonatomic,assign) NSInteger index;
+
 @end

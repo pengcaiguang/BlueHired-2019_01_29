@@ -120,7 +120,7 @@
 /************************************************************/
 //*  首页
 /************************************************************/
-
+//首页列表
 + (void)requestWorklistWithParam:(id)paramer
                       withHandle:(response)responseHandle{
     NSString * appendURLString = @"work/query_worklist";
@@ -134,7 +134,7 @@
 /************************************************************/
 //*  资讯
 /************************************************************/
-
+//资讯分类
 + (void)requestLabellistWithParam:(id)paramer
                        withHandle:(response)responseHandle{
     NSString * appendURLString = @"/platform/get_label_list";
@@ -144,7 +144,7 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
-
+//资讯列表
 + (void)requestEssaylistWithParam:(id)paramer
                        withHandle:(response)responseHandle{
     NSString * appendURLString = @"/essay/get_essay_list";
@@ -154,4 +154,20 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
+
+#pragma mark - 圈子
+/************************************************************/
+//*  圈子
+/************************************************************/
+//查看圈子种类
++ (void)requestMoodTypeWithParam:(id)paramer
+                      withHandle:(response)responseHandle{
+    NSString * appendURLString = @"/mood/get_mood_type";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
+
 @end

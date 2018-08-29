@@ -113,6 +113,7 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
     LPCircleCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:LPCircleCollectionViewCellID forIndexPath:indexPath];
 //    cell.labelListDataModel = self.labelListModel.data[indexPath.row];
     cell.contentView.backgroundColor = randomColor;
+    cell.index = indexPath.row;
     return cell;
     
 }
