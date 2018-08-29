@@ -16,7 +16,7 @@
 @end
 
 @interface LPLabelListDataModel : NSObject
-@property (nonatomic, copy) NSString *id;
+@property (nonatomic, copy) NSNumber *id;
 @property (nonatomic, copy) NSString *labelName;
 @property (nonatomic, copy) NSNumber *labelType;
 @property (nonatomic, copy) NSString *labelUrl;

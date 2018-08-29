@@ -57,9 +57,12 @@ static NSString *LPInformationCollectionViewCellID = @"LPInformationCollectionVi
         make.right.mas_equalTo(0);
         make.bottom.mas_equalTo(-49);
     }];
-
-    [self requestLabellist];
-    
+}
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    if (self.labelArray.count <= 0) {
+        [self requestLabellist];
+    }
 }
 - (UIStatusBarStyle)preferredStatusBarStyle{
     return UIStatusBarStyleLightContent;
@@ -193,7 +196,7 @@ static NSString *LPInformationCollectionViewCellID = @"LPInformationCollectionVi
 }
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     LPInformationCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:LPInformationCollectionViewCellID forIndexPath:indexPath];
-
+    cell.labelListDataModel = self.labelListModel.data[indexPath.row];
     cell.contentView.backgroundColor = randomColor;
     return cell;
 //    if (indexPath.item == 0) {

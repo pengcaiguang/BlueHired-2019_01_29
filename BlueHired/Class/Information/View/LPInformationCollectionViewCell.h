@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LPLabelListModel.h"
 
 @interface LPInformationCollectionViewCell : UICollectionViewCell
-
+@property(nonatomic,strong) LPLabelListDataModel *labelListDataModel;
 @end

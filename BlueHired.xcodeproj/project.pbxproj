@@ -16,6 +16,13 @@
 		DC44DBA321354D6A00D00FAC /* DeviceUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = DC44DBA121354D6A00D00FAC /* DeviceUtils.m */; };
 		DC44DBA821354E8500D00FAC /* LPInformationCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC44DBA621354E8500D00FAC /* LPInformationCollectionViewCell.m */; };
 		DC44DBA921354E8500D00FAC /* LPInformationCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC44DBA721354E8500D00FAC /* LPInformationCollectionViewCell.xib */; };
+		DC5C388021362EB300B3CF6E /* LPEssaylistModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC5C387F21362EB300B3CF6E /* LPEssaylistModel.m */; };
+		DC5C38842136372F00B3CF6E /* LPInformationSingleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC5C38822136372F00B3CF6E /* LPInformationSingleCell.m */; };
+		DC5C38852136372F00B3CF6E /* LPInformationSingleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC5C38832136372F00B3CF6E /* LPInformationSingleCell.xib */; };
+		DC5C3889213640A300B3CF6E /* LPInformationMoreCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC5C3887213640A300B3CF6E /* LPInformationMoreCell.m */; };
+		DC5C388A213640A300B3CF6E /* LPInformationMoreCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC5C3888213640A300B3CF6E /* LPInformationMoreCell.xib */; };
+		DC5C388E213645E000B3CF6E /* LPInformationMoreImageCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC5C388C213645E000B3CF6E /* LPInformationMoreImageCollectionViewCell.m */; };
+		DC5C388F213645E000B3CF6E /* LPInformationMoreImageCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC5C388D213645E000B3CF6E /* LPInformationMoreImageCollectionViewCell.xib */; };
 		DC7383252133E33E0055DC10 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7383242133E33E0055DC10 /* AppDelegate.m */; };
 		DC7383282133E33E0055DC10 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7383272133E33E0055DC10 /* ViewController.m */; };
 		DC73832B2133E33E0055DC10 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DC7383292133E33E0055DC10 /* Main.storyboard */; };
@@ -84,6 +91,17 @@
 		DC44DBA521354E8500D00FAC /* LPInformationCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPInformationCollectionViewCell.h; sourceTree = "<group>"; };
 		DC44DBA621354E8500D00FAC /* LPInformationCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPInformationCollectionViewCell.m; sourceTree = "<group>"; };
 		DC44DBA721354E8500D00FAC /* LPInformationCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPInformationCollectionViewCell.xib; sourceTree = "<group>"; };
+		DC5C387E21362EB300B3CF6E /* LPEssaylistModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPEssaylistModel.h; sourceTree = "<group>"; };
+		DC5C387F21362EB300B3CF6E /* LPEssaylistModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPEssaylistModel.m; sourceTree = "<group>"; };
+		DC5C38812136372F00B3CF6E /* LPInformationSingleCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPInformationSingleCell.h; sourceTree = "<group>"; };
+		DC5C38822136372F00B3CF6E /* LPInformationSingleCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPInformationSingleCell.m; sourceTree = "<group>"; };
+		DC5C38832136372F00B3CF6E /* LPInformationSingleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPInformationSingleCell.xib; sourceTree = "<group>"; };
+		DC5C3886213640A300B3CF6E /* LPInformationMoreCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPInformationMoreCell.h; sourceTree = "<group>"; };
+		DC5C3887213640A300B3CF6E /* LPInformationMoreCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPInformationMoreCell.m; sourceTree = "<group>"; };
+		DC5C3888213640A300B3CF6E /* LPInformationMoreCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPInformationMoreCell.xib; sourceTree = "<group>"; };
+		DC5C388B213645E000B3CF6E /* LPInformationMoreImageCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPInformationMoreImageCollectionViewCell.h; sourceTree = "<group>"; };
+		DC5C388C213645E000B3CF6E /* LPInformationMoreImageCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPInformationMoreImageCollectionViewCell.m; sourceTree = "<group>"; };
+		DC5C388D213645E000B3CF6E /* LPInformationMoreImageCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPInformationMoreImageCollectionViewCell.xib; sourceTree = "<group>"; };
 		DC7383202133E33E0055DC10 /* BlueHired.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlueHired.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC7383232133E33E0055DC10 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		DC7383242133E33E0055DC10 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -205,6 +223,8 @@
 			children = (
 				DC44DB9E21353D5800D00FAC /* LPLabelListModel.h */,
 				DC44DB9F21353D5800D00FAC /* LPLabelListModel.m */,
+				DC5C387E21362EB300B3CF6E /* LPEssaylistModel.h */,
+				DC5C387F21362EB300B3CF6E /* LPEssaylistModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -215,6 +235,15 @@
 				DC44DBA521354E8500D00FAC /* LPInformationCollectionViewCell.h */,
 				DC44DBA621354E8500D00FAC /* LPInformationCollectionViewCell.m */,
 				DC44DBA721354E8500D00FAC /* LPInformationCollectionViewCell.xib */,
+				DC5C38812136372F00B3CF6E /* LPInformationSingleCell.h */,
+				DC5C38822136372F00B3CF6E /* LPInformationSingleCell.m */,
+				DC5C38832136372F00B3CF6E /* LPInformationSingleCell.xib */,
+				DC5C3886213640A300B3CF6E /* LPInformationMoreCell.h */,
+				DC5C3887213640A300B3CF6E /* LPInformationMoreCell.m */,
+				DC5C3888213640A300B3CF6E /* LPInformationMoreCell.xib */,
+				DC5C388B213645E000B3CF6E /* LPInformationMoreImageCollectionViewCell.h */,
+				DC5C388C213645E000B3CF6E /* LPInformationMoreImageCollectionViewCell.m */,
+				DC5C388D213645E000B3CF6E /* LPInformationMoreImageCollectionViewCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -594,6 +623,9 @@
 				DC44DBA921354E8500D00FAC /* LPInformationCollectionViewCell.xib in Resources */,
 				DC73832B2133E33E0055DC10 /* Main.storyboard in Resources */,
 				DC7383A82134F6580055DC10 /* LPMainCell.xib in Resources */,
+				DC5C38852136372F00B3CF6E /* LPInformationSingleCell.xib in Resources */,
+				DC5C388F213645E000B3CF6E /* LPInformationMoreImageCollectionViewCell.xib in Resources */,
+				DC5C388A213640A300B3CF6E /* LPInformationMoreCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -695,9 +727,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DC5C38842136372F00B3CF6E /* LPInformationSingleCell.m in Sources */,
 				DC7383962134E95E0055DC10 /* MoninNet.m in Sources */,
 				DC7383942134E95E0055DC10 /* NetRequestEnty.m in Sources */,
 				DC44DBA321354D6A00D00FAC /* DeviceUtils.m in Sources */,
+				DC5C388E213645E000B3CF6E /* LPInformationMoreImageCollectionViewCell.m in Sources */,
 				DC44DBA821354E8500D00FAC /* LPInformationCollectionViewCell.m in Sources */,
 				DC7383612133EB2A0055DC10 /* LPMainVC.m in Sources */,
 				DC73839F2134EBC10055DC10 /* LPUserDefaults.m in Sources */,
@@ -713,6 +747,7 @@
 				DC44DB9621351F6D00D00FAC /* NullSafe.m in Sources */,
 				DC7383A72134F6580055DC10 /* LPMainCell.m in Sources */,
 				DC7383972134E95E0055DC10 /* NetRequestManager.m in Sources */,
+				DC5C3889213640A300B3CF6E /* LPInformationMoreCell.m in Sources */,
 				DC7383952134E95E0055DC10 /* NetInstance.m in Sources */,
 				DC7383AC2134F7B50055DC10 /* LPWorklistModel.m in Sources */,
 				DC7383712133EC320055DC10 /* LPMineVC.m in Sources */,
@@ -723,6 +758,7 @@
 				DC73836A2133EC040055DC10 /* LPCircleVC.m in Sources */,
 				DC73835A2133EAD30055DC10 /* LPBaseViewController.m in Sources */,
 				DC73839B2134EAEF0055DC10 /* UIWindow+Window.m in Sources */,
+				DC5C388021362EB300B3CF6E /* LPEssaylistModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

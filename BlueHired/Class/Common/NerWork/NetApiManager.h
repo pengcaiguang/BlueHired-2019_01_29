@@ -57,6 +57,8 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 
 + (void)requestLabellistWithParam:(id)paramer
                        withHandle:(response)responseHandle;
++ (void)requestEssaylistWithParam:(id)paramer
+                       withHandle:(response)responseHandle;
 @end
 
 

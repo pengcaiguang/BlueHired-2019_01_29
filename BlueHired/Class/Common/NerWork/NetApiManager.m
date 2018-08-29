@@ -145,5 +145,13 @@
     [NetRequestManager requestWithEnty:enty];
 }
 
-
++ (void)requestEssaylistWithParam:(id)paramer
+                       withHandle:(response)responseHandle{
+    NSString * appendURLString = @"/essay/get_essay_list";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
 @end
