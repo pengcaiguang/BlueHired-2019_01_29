@@ -8,6 +8,7 @@
 
 #import "LPLoginVC.h"
 #import "LPRegisteredVC.h"
+#import "LPForgetPassWordVC.h"
 
 @interface LPLoginVC ()<UITextFieldDelegate>
 
@@ -27,8 +28,9 @@
 }
 
 -(void)setupUI{
+    self.navigationItem.title = @"登陆";
     self.view.backgroundColor = [UIColor whiteColor];
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
+//    [self.navigationController setNavigationBarHidden:YES animated:YES];
     
     UIImageView *logoImg = [[UIImageView alloc]init];
     [self.view addSubview:logoImg];
@@ -219,6 +221,8 @@
 }
 -(void)touchForgetPassWord:(UIButton *)button{
     NSLog(@"忘记密码");
+    LPForgetPassWordVC * vc = [[LPForgetPassWordVC alloc]init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 -(void)touchLoginButton:(UIButton *)button{

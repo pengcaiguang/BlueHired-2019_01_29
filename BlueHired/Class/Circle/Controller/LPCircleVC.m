@@ -9,6 +9,7 @@
 #import "LPCircleVC.h"
 #import "LPSearchBar.h"
 #import "LPCircleCollectionViewCell.h"
+#import "LPLoginVC.h"
 
 static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
 
@@ -27,6 +28,8 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
     // Do any additional setup after loading the view.
     self.navigationController.navigationBar.translucent = NO;
     self.navigationController.navigationBar.barTintColor = [UIColor baseColor];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:[UIColor baseColor]] forBarMetrics:UIBarMetricsDefault];
+
     [self setNavigationButton];
     [self setupTitleView];
     [self.view addSubview:self.collectionView];
@@ -41,7 +44,7 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
 -(void)setNavigationButton{
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"logo_Information" WithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStyleDone target:self action:nil];
     self.navigationItem.leftBarButtonItem.enabled = NO;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"message" WithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStyleDone target:self action:nil];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"message" WithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStyleDone target:self action:@selector(touchMessageButton)];
 }
 -(void)setupTitleView{
     UIView *navigationView = [[UIView alloc]init];
@@ -76,6 +79,11 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
     }];
     self.lineView.backgroundColor = [UIColor whiteColor];
 }
+-(void)touchMessageButton{
+    if ([LoginUtils validationLogin:self]) {
+        
+    }
+}
 -(void)addSendButton{
     UIButton *button = [[UIButton alloc]init];
     [self.view addSubview:button];
@@ -88,6 +96,15 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
     button.backgroundColor = [UIColor colorWithHexString:@"#FB5454"];
     button.layer.masksToBounds = YES;
     button.layer.cornerRadius = 25;
+    [button addTarget:self action:@selector(touchSendButton) forControlEvents:UIControlEventTouchUpInside];
+}
+-(void)touchSendButton{
+    if ([LoginUtils validationLogin:self]) {
+        
+    }
+}
+-(void)validationLogin{
+    
 }
 
 

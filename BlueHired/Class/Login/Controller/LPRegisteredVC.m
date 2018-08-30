@@ -22,13 +22,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.view.backgroundColor = [UIColor whiteColor];
-    
-    self.navigationItem.title = @"注册";
     [self setupUI];
 }
 
 -(void)setupUI{
+    self.navigationItem.title = @"注册";
     self.view.backgroundColor = [UIColor whiteColor];
     
     UIImageView *logoImg = [[UIImageView alloc]init];
@@ -281,6 +279,17 @@
         //so easy
         else if (self.phoneTextField.text.length >= 11) {
             self.phoneTextField.text = [textField.text substringToIndex:11];
+            return NO;
+        }
+    }
+    if (textField == self.verificationCodeTextField) {
+        //这里的if时候为了获取删除操作,如果没有次if会造成当达到字数限制后删除键也不能使用的后果.
+        if (range.length == 1 && string.length == 0) {
+            return YES;
+        }
+        //so easy
+        else if (self.verificationCodeTextField.text.length >= 6) {
+            self.verificationCodeTextField.text = [textField.text substringToIndex:6];
             return NO;
         }
     }

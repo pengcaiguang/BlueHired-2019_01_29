@@ -64,6 +64,8 @@
 		DC7A32D52137C2EC00E09C6C /* LPLoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7A32D42137C2EC00E09C6C /* LPLoginVC.m */; };
 		DC7A32D82137D7E200E09C6C /* LPRegisteredVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7A32D72137D7E200E09C6C /* LPRegisteredVC.m */; };
 		DC7A32DB2137DADD00E09C6C /* UIViewController+BackItem.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7A32D92137DADC00E09C6C /* UIViewController+BackItem.m */; };
+		DC7A32DE2137E61100E09C6C /* LPForgetPassWordVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7A32DD2137E61100E09C6C /* LPForgetPassWordVC.m */; };
+		DC7A32E12137E99300E09C6C /* LoginUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7A32E02137E99300E09C6C /* LoginUtils.m */; };
 		DD9C491243746BE284EDF63A /* libPods-BlueHiredTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F2990BA484C987BEAA6D77E9 /* libPods-BlueHiredTests.a */; };
 /* End PBXBuildFile section */
 
@@ -195,6 +197,10 @@
 		DC7A32D72137D7E200E09C6C /* LPRegisteredVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPRegisteredVC.m; sourceTree = "<group>"; };
 		DC7A32D92137DADC00E09C6C /* UIViewController+BackItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+BackItem.m"; sourceTree = "<group>"; };
 		DC7A32DA2137DADD00E09C6C /* UIViewController+BackItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+BackItem.h"; sourceTree = "<group>"; };
+		DC7A32DC2137E61100E09C6C /* LPForgetPassWordVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPForgetPassWordVC.h; sourceTree = "<group>"; };
+		DC7A32DD2137E61100E09C6C /* LPForgetPassWordVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPForgetPassWordVC.m; sourceTree = "<group>"; };
+		DC7A32DF2137E99300E09C6C /* LoginUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginUtils.h; sourceTree = "<group>"; };
+		DC7A32E02137E99300E09C6C /* LoginUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginUtils.m; sourceTree = "<group>"; };
 		DCB5A5321875E124A6C52C8B /* libPods-BlueHired.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BlueHired.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E94B224D8D8E2D47E74AC9DB /* Pods-BlueHiredTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlueHiredTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlueHiredTests/Pods-BlueHiredTests.release.xcconfig"; sourceTree = "<group>"; };
 		F2990BA484C987BEAA6D77E9 /* libPods-BlueHiredTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BlueHiredTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -553,6 +559,8 @@
 				DC44DB9521351F6D00D00FAC /* NullSafe.m */,
 				DC44DBA221354D6A00D00FAC /* DeviceUtils.h */,
 				DC44DBA121354D6A00D00FAC /* DeviceUtils.m */,
+				DC7A32DF2137E99300E09C6C /* LoginUtils.h */,
+				DC7A32E02137E99300E09C6C /* LoginUtils.m */,
 			);
 			path = Until;
 			sourceTree = "<group>";
@@ -591,6 +599,8 @@
 				DC7A32D42137C2EC00E09C6C /* LPLoginVC.m */,
 				DC7A32D62137D7E200E09C6C /* LPRegisteredVC.h */,
 				DC7A32D72137D7E200E09C6C /* LPRegisteredVC.m */,
+				DC7A32DC2137E61100E09C6C /* LPForgetPassWordVC.h */,
+				DC7A32DD2137E61100E09C6C /* LPForgetPassWordVC.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -838,9 +848,11 @@
 				DC5C389921366D1A00B3CF6E /* LPMoodTypeModel.m in Sources */,
 				DC44DB99213526C600D00FAC /* UIImage+Image.m in Sources */,
 				DC73837D2133F1110055DC10 /* UIColor+Color.m in Sources */,
+				DC7A32DE2137E61100E09C6C /* LPForgetPassWordVC.m in Sources */,
 				DC7383282133E33E0055DC10 /* ViewController.m in Sources */,
 				DC44DB9621351F6D00D00FAC /* NullSafe.m in Sources */,
 				DC7383A72134F6580055DC10 /* LPMainCell.m in Sources */,
+				DC7A32E12137E99300E09C6C /* LoginUtils.m in Sources */,
 				DC7383972134E95E0055DC10 /* NetRequestManager.m in Sources */,
 				DC5C3889213640A300B3CF6E /* LPInformationMoreCell.m in Sources */,
 				DC7383952134E95E0055DC10 /* NetInstance.m in Sources */,

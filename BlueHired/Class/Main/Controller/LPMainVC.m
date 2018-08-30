@@ -34,6 +34,8 @@ static NSString *LPMainCellID = @"LPMainCell";
     // Do any additional setup after loading the view.
     self.navigationController.navigationBar.translucent = NO;
     self.navigationController.navigationBar.barTintColor = [UIColor baseColor];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:[UIColor baseColor]] forBarMetrics:UIBarMetricsDefault];
+
     
     self.page = 1;
     self.listArray = [NSMutableArray array];

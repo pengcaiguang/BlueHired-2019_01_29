@@ -20,6 +20,7 @@
     
     [self createTabControllers];
 
+    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageWithColor:[UIColor whiteColor]] forBarMetrics:UIBarMetricsDefault];
 }
 
 -(void)createTabControllers{

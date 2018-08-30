@@ -31,7 +31,8 @@ static NSString *LPInformationCollectionViewCellID = @"LPInformationCollectionVi
     // Do any additional setup after loading the view.
     self.navigationController.navigationBar.translucent = NO;
     self.navigationController.navigationBar.barTintColor = [UIColor baseColor];
-    
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:[UIColor baseColor]] forBarMetrics:UIBarMetricsDefault];
+
     self.labelArray = [NSMutableArray array];
     
 //    self.extendedLayoutIncludesOpaqueBars = YES;
@@ -70,9 +71,13 @@ static NSString *LPInformationCollectionViewCellID = @"LPInformationCollectionVi
 -(void)setNavigationButton{
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"logo_Information" WithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStyleDone target:self action:nil];
     self.navigationItem.leftBarButtonItem.enabled = NO;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"message" WithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStyleDone target:self action:nil];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"message" WithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStyleDone target:self action:@selector(touchMessageButton)];
 }
-
+-(void)touchMessageButton{
+    if ([LoginUtils validationLogin:self]) {
+        
+    }
+}
 -(void)setSearchView{
     LPSearchBar *searchBar = [self addSearchBarWithFrame:CGRectMake(0, 0, SCREEN_WIDTH - 2 * 44 - 2 * 15, 44)];
     UIView *wrapView = [[UIView alloc] initWithFrame:searchBar.frame];

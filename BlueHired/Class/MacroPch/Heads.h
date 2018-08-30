@@ -30,5 +30,6 @@
 #import "LPUserDefaults.h"
 #import "NetApiManager.h"
 #import "DeviceUtils.h"
+#import "LoginUtils.h"
 
 #endif /* Heads_h */

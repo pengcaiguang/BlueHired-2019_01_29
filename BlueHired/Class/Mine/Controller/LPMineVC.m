@@ -128,10 +128,8 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (!AlreadyLogin) {
-        LPLoginVC *vc = [[LPLoginVC alloc]init];
-        vc.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:vc animated:YES];
+    if ([LoginUtils validationLogin:self]) {
+        
     }
 }
 

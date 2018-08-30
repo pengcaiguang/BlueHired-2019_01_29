@@ -63,7 +63,6 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
             }else{
                 [self.listArray addObject:model];
             }
-            [self.tableview reloadData];
         }
         if (self.choiceListArray.count > 0) {
             self.tableview.tableHeaderView = self.cycleScrollView;
@@ -87,6 +86,8 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
         }else{
             [self.tableview.mj_footer endRefreshingWithNoMoreData];
         }
+        [self.tableview reloadData];
+
     }else{
         [self.contentView showLoadingMeg:NETE_ERROR_MESSAGE time:MESSAGE_SHOW_TIME];
     }
@@ -98,8 +99,13 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSArray *array = [self.listArray[indexPath.row].essayUrl componentsSeparatedByString:@";"];
-    if (array.count <= 1) {
+    NSArray *array = @[];
+    if (self.listArray.count > indexPath.row) {
+        array = [self.listArray[indexPath.row].essayUrl componentsSeparatedByString:@";"];
+    }
+    if (array.count ==0) {
+        return nil;
+    }else if (array.count == 1) {
         LPInformationSingleCell *cell = [tableView dequeueReusableCellWithIdentifier:LPInformationSingleCellID];
         if(cell == nil){
             cell = [[LPInformationSingleCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:LPInformationSingleCellID];
