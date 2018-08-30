@@ -12,14 +12,33 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="KGk-i7-Jjw" customClass="LPMineCardCell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="238" id="KGk-i7-Jjw" customClass="LPMineCardCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="172"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="171.5"/>
                 <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4Aq-S2-cX5">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="172"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="172" id="PlY-Ly-sdT"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="4Aq-S2-cX5" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="ApC-Of-mbZ"/>
+                    <constraint firstItem="4Aq-S2-cX5" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="Rk9-cD-Yvl"/>
+                    <constraint firstAttribute="bottom" secondItem="4Aq-S2-cX5" secondAttribute="bottom" constant="-0.5" id="bmq-Et-Ike"/>
+                    <constraint firstAttribute="trailing" secondItem="4Aq-S2-cX5" secondAttribute="trailing" id="f1Y-OM-y95"/>
+                </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <connections>
+                <outlet property="cellBgView" destination="4Aq-S2-cX5" id="KLe-xK-ppL"/>
+            </connections>
+            <point key="canvasLocation" x="-26" y="106"/>
         </tableViewCell>
     </objects>
 </document>

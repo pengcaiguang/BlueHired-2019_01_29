@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface LPMineCardCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UIView *cellBgView;
 
 @end
