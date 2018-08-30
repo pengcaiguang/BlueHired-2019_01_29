@@ -9,6 +9,7 @@
 #import "LPMineVC.h"
 #import "LPMineCell.h"
 #import "LPMineCardCell.h"
+#import "LPLoginVC.h"
 
 static NSString *LPMineCellID = @"LPMineCell";
 static NSString *LPMineCardCellID = @"LPMineCardCell";
@@ -127,6 +128,11 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (!AlreadyLogin) {
+        LPLoginVC *vc = [[LPLoginVC alloc]init];
+        vc.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 #pragma mark lazy

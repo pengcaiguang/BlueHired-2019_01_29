@@ -9,5 +9,10 @@
 #import <Foundation/Foundation.h>
 
 @interface NSString (String)
+//毫秒时间戳转时间
 + (NSString *)convertStringToTime:(NSString *)timeString;
+
+//验证手机号
++ (BOOL)isMobilePhoneNumber:(NSString *)mobileNum;
+
 @end

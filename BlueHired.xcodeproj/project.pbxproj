@@ -61,6 +61,7 @@
 		DC7383AC2134F7B50055DC10 /* LPWorklistModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7383AB2134F7B50055DC10 /* LPWorklistModel.m */; };
 		DC7A32CF21379BCA00E09C6C /* LPMineCardCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7A32CD21379BCA00E09C6C /* LPMineCardCell.m */; };
 		DC7A32D021379BCA00E09C6C /* LPMineCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC7A32CE21379BCA00E09C6C /* LPMineCardCell.xib */; };
+		DC7A32D52137C2EC00E09C6C /* LPLoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7A32D42137C2EC00E09C6C /* LPLoginVC.m */; };
 		DD9C491243746BE284EDF63A /* libPods-BlueHiredTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F2990BA484C987BEAA6D77E9 /* libPods-BlueHiredTests.a */; };
 /* End PBXBuildFile section */
 
@@ -186,6 +187,8 @@
 		DC7A32CC21379BCA00E09C6C /* LPMineCardCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPMineCardCell.h; sourceTree = "<group>"; };
 		DC7A32CD21379BCA00E09C6C /* LPMineCardCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPMineCardCell.m; sourceTree = "<group>"; };
 		DC7A32CE21379BCA00E09C6C /* LPMineCardCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPMineCardCell.xib; sourceTree = "<group>"; };
+		DC7A32D32137C2EC00E09C6C /* LPLoginVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPLoginVC.h; sourceTree = "<group>"; };
+		DC7A32D42137C2EC00E09C6C /* LPLoginVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPLoginVC.m; sourceTree = "<group>"; };
 		DCB5A5321875E124A6C52C8B /* libPods-BlueHired.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BlueHired.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E94B224D8D8E2D47E74AC9DB /* Pods-BlueHiredTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlueHiredTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlueHiredTests/Pods-BlueHiredTests.release.xcconfig"; sourceTree = "<group>"; };
 		F2990BA484C987BEAA6D77E9 /* libPods-BlueHiredTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BlueHiredTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -356,11 +359,12 @@
 		DC7383552133EAAF0055DC10 /* Class */ = {
 			isa = PBXGroup;
 			children = (
-				DC73837E21341EA10055DC10 /* Common */,
 				DC7383562133EAAF0055DC10 /* Base */,
 				DC73837A2133F0F00055DC10 /* Categories */,
 				DC7383622133EBEB0055DC10 /* Circle */,
+				DC73837E21341EA10055DC10 /* Common */,
 				DC7383642133EBEB0055DC10 /* Information */,
+				DC7A32D12137C26100E09C6C /* Login */,
 				DC7383722133EC630055DC10 /* MacroPch */,
 				DC7383572133EAAF0055DC10 /* Main */,
 				DC7383662133EBEB0055DC10 /* Mine */,
@@ -382,9 +386,9 @@
 		DC7383572133EAAF0055DC10 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				DC73835E2133EB2A0055DC10 /* Controller */,
 				DC7383A92134F79D0055DC10 /* Model */,
 				DC7383A32134F6380055DC10 /* View */,
-				DC73835E2133EB2A0055DC10 /* Controller */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -401,9 +405,9 @@
 		DC7383622133EBEB0055DC10 /* Circle */ = {
 			isa = PBXGroup;
 			children = (
+				DC7383632133EBEB0055DC10 /* Controller */,
 				DC5C389621366D0E00B3CF6E /* Model */,
 				DC5C38902136680C00B3CF6E /* View */,
-				DC7383632133EBEB0055DC10 /* Controller */,
 			);
 			path = Circle;
 			sourceTree = "<group>";
@@ -420,9 +424,9 @@
 		DC7383642133EBEB0055DC10 /* Information */ = {
 			isa = PBXGroup;
 			children = (
-				DC44DBA421354E6900D00FAC /* View */,
-				DC44DB9D21353D3500D00FAC /* Model */,
 				DC7383652133EBEB0055DC10 /* Controller */,
+				DC44DB9D21353D3500D00FAC /* Model */,
+				DC44DBA421354E6900D00FAC /* View */,
 			);
 			path = Information;
 			sourceTree = "<group>";
@@ -439,8 +443,8 @@
 		DC7383662133EBEB0055DC10 /* Mine */ = {
 			isa = PBXGroup;
 			children = (
-				DC7383832134DBEB0055DC10 /* View */,
 				DC7383672133EBEB0055DC10 /* Controller */,
+				DC7383832134DBEB0055DC10 /* View */,
 			);
 			path = Mine;
 			sourceTree = "<group>";
@@ -457,10 +461,10 @@
 		DC7383722133EC630055DC10 /* MacroPch */ = {
 			isa = PBXGroup;
 			children = (
-				DC7383732133EC8B0055DC10 /* LPPrefixHeader.pch */,
-				DC7383742133EDEE0055DC10 /* MacroDefine.h */,
 				DC7383752133EE0D0055DC10 /* ApiKeys.h */,
 				DC7383762133EE190055DC10 /* Heads.h */,
+				DC7383732133EC8B0055DC10 /* LPPrefixHeader.pch */,
+				DC7383742133EDEE0055DC10 /* MacroDefine.h */,
 			);
 			path = MacroPch;
 			sourceTree = "<group>";
@@ -485,8 +489,8 @@
 		DC73837E21341EA10055DC10 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				DC73839C2134EBB40055DC10 /* Until */,
 				DC7383892134E9520055DC10 /* NerWork */,
+				DC73839C2134EBB40055DC10 /* Until */,
 				DC73837F21341EA10055DC10 /* View */,
 			);
 			path = Common;
@@ -562,6 +566,23 @@
 				DC7383AB2134F7B50055DC10 /* LPWorklistModel.m */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		DC7A32D12137C26100E09C6C /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				DC7A32D22137C28000E09C6C /* Controller */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		DC7A32D22137C28000E09C6C /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				DC7A32D32137C2EC00E09C6C /* LPLoginVC.h */,
+				DC7A32D42137C2EC00E09C6C /* LPLoginVC.m */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -796,6 +817,7 @@
 				DC7A32CF21379BCA00E09C6C /* LPMineCardCell.m in Sources */,
 				DC73838221341EBD0055DC10 /* LPSearchBar.m in Sources */,
 				DC7383792133EE800055DC10 /* LPTabBarViewController.m in Sources */,
+				DC7A32D52137C2EC00E09C6C /* LPLoginVC.m in Sources */,
 				DC5C38A421369B9B00B3CF6E /* NSString+String.m in Sources */,
 				DC44DB9C21352B8000D00FAC /* LPNoDataView.m in Sources */,
 				DC73836D2133EC1B0055DC10 /* LPInformationVC.m in Sources */,
