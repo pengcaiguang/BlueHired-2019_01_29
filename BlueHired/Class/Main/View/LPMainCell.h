@@ -17,6 +17,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *wageRangeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *keyLabel;
 @property (weak, nonatomic) IBOutlet UILabel *postNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *isApplyLabel;
+
+@property (weak, nonatomic) IBOutlet UILabel *workTypeNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *applyNumberLabel;
 
 @property(nonatomic,strong) LPWorklistDataWorkListModel *model;
 @end

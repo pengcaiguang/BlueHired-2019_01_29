@@ -79,7 +79,7 @@
                         <color key="textColor" red="0.26666666666666666" green="0.26666666666666666" blue="0.26666666666666666" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.29999999999999999" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7F0-35-DFR">
+                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.29999999999999999" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="已报名" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7F0-35-DFR">
                         <rect key="frame" x="13" y="82" width="94" height="15"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -89,17 +89,33 @@
                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8CF-MW-lg8">
+                        <rect key="frame" x="114" y="84" width="29" height="14"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                        <color key="textColor" red="0.26666666666666666" green="0.26666666666666666" blue="0.26666666666666666" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F1w-ke-PLu">
+                        <rect key="frame" x="163" y="84" width="29" height="14"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                        <color key="textColor" red="0.2666666667" green="0.2666666667" blue="0.2666666667" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="8CF-MW-lg8" firstAttribute="leading" secondItem="cVt-xy-Bjq" secondAttribute="trailing" constant="7" id="04A-Be-Woq"/>
                     <constraint firstItem="7F0-35-DFR" firstAttribute="trailing" secondItem="cVt-xy-Bjq" secondAttribute="trailing" id="5Qb-rp-3ka"/>
+                    <constraint firstItem="F1w-ke-PLu" firstAttribute="centerY" secondItem="8CF-MW-lg8" secondAttribute="centerY" id="IyB-Bg-qQk"/>
                     <constraint firstItem="7F0-35-DFR" firstAttribute="bottom" secondItem="cVt-xy-Bjq" secondAttribute="bottom" id="KCv-NV-eBj"/>
                     <constraint firstAttribute="trailing" secondItem="Ypl-xF-2d4" secondAttribute="trailing" constant="11" id="LRt-cI-aZ4"/>
                     <constraint firstAttribute="bottom" secondItem="cVt-xy-Bjq" secondAttribute="bottom" constant="14.5" id="MU3-Jk-cWT"/>
                     <constraint firstAttribute="bottom" secondItem="1Kl-Ni-ilO" secondAttribute="bottom" constant="11" id="NLb-Ld-A9a"/>
+                    <constraint firstItem="F1w-ke-PLu" firstAttribute="leading" secondItem="8CF-MW-lg8" secondAttribute="trailing" constant="20" id="OY1-5a-Is1"/>
                     <constraint firstItem="cVt-xy-Bjq" firstAttribute="leading" secondItem="WTs-tP-dyM" secondAttribute="leading" constant="13" id="ObM-KF-hd1"/>
                     <constraint firstItem="06y-XB-zi3" firstAttribute="leading" secondItem="WTs-tP-dyM" secondAttribute="leading" constant="13" id="RVk-Ev-whj"/>
                     <constraint firstItem="cVt-xy-Bjq" firstAttribute="top" secondItem="06y-XB-zi3" secondAttribute="bottom" constant="14" id="Ufz-LD-z6J"/>
                     <constraint firstItem="Ypl-xF-2d4" firstAttribute="centerY" secondItem="06y-XB-zi3" secondAttribute="centerY" id="Vso-Uj-hH3"/>
+                    <constraint firstItem="8CF-MW-lg8" firstAttribute="top" secondItem="Gvv-sg-Acf" secondAttribute="bottom" constant="10" id="Vwb-Dr-rGV"/>
                     <constraint firstAttribute="trailing" secondItem="1Kl-Ni-ilO" secondAttribute="trailing" constant="14" id="W0K-zs-Ecf"/>
                     <constraint firstItem="Gvv-sg-Acf" firstAttribute="leading" secondItem="cVt-xy-Bjq" secondAttribute="trailing" constant="7" id="bLX-qL-VGU"/>
                     <constraint firstItem="Ypl-xF-2d4" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="MIJ-Fz-pES" secondAttribute="trailing" constant="9" id="h4H-rk-709"/>
@@ -115,6 +131,8 @@
             <viewLayoutGuide key="safeArea" id="9O2-hE-2qx"/>
             <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
             <connections>
+                <outlet property="applyNumberLabel" destination="F1w-ke-PLu" id="G2q-lG-aRv"/>
+                <outlet property="isApplyLabel" destination="7F0-35-DFR" id="Ank-XF-xhh"/>
                 <outlet property="keyLabel" destination="Gvv-sg-Acf" id="nni-IZ-LTr"/>
                 <outlet property="lendTypeLabel" destination="MIJ-Fz-pES" id="Q0n-kw-wN1"/>
                 <outlet property="mechanismNameLabel" destination="06y-XB-zi3" id="gxS-5Y-2Qp"/>
@@ -122,6 +140,7 @@
                 <outlet property="mechanismUrlImageView" destination="cVt-xy-Bjq" id="AzU-8w-wSz"/>
                 <outlet property="postNameLabel" destination="1Kl-Ni-ilO" id="aug-Pf-Fhh"/>
                 <outlet property="wageRangeLabel" destination="zNZ-a9-UOC" id="6LP-bQ-4wK"/>
+                <outlet property="workTypeNameLabel" destination="8CF-MW-lg8" id="kaA-K6-cmo"/>
             </connections>
         </tableViewCell>
     </objects>

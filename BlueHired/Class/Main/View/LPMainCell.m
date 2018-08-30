@@ -22,17 +22,12 @@
     self.lendTypeLabel.layer.cornerRadius = 3.0;
     self.lendTypeLabel.layer.borderWidth = 0.5;
     self.lendTypeLabel.layer.borderColor = [UIColor colorWithHexString:@"#0CAFFF"].CGColor;
-    
 }
 
 -(void)setModel:(LPWorklistDataWorkListModel *)model{
     _model = model;
     self.mechanismNameLabel.text = model.mechanismName;
-    if ([model.lendType integerValue] == 1) {
-        self.lendTypeLabel.hidden = NO;
-    }else{
-        self.lendTypeLabel.hidden = YES;
-    }
+    self.lendTypeLabel.hidden = !model.lendType;
     
     [self.mechanismUrlImageView sd_setImageWithURL:[NSURL URLWithString:model.mechanismUrl]];
     self.mechanismScoreLabel.text = [NSString stringWithFormat:@"%@分",model.mechanismScore];
@@ -40,6 +35,10 @@
     self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/月",model.wageRange];
     self.keyLabel.text = model.key;
     self.postNameLabel.text = model.postName;
+    self.isApplyLabel.hidden = !model.isApply;
+    self.workTypeNameLabel.text = [NSString stringWithFormat:@"需%@%@人",model.workTypeName,model.maxNumber];
+    self.applyNumberLabel.text = [NSString stringWithFormat:@"已报名：%@人",model.applyNumber ? model.applyNumber : @"0"];
+
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
