@@ -1,34 +1,35 @@
 //
-//  LPLoginVC.m
+//  LPRegisteredVC.m
 //  BlueHired
 //
 //  Created by 邢晓亮 on 2018/8/30.
 //  Copyright © 2018年 lanpin. All rights reserved.
 //
 
-#import "LPLoginVC.h"
 #import "LPRegisteredVC.h"
 
-@interface LPLoginVC ()<UITextFieldDelegate>
-
+@interface LPRegisteredVC ()<UITextFieldDelegate>
 @property(nonatomic,strong) UITextField *phoneTextField;
 @property(nonatomic,strong) UIView *phoneLineView;
 @property(nonatomic,strong) UITextField *passwordTextField;
 @property(nonatomic,strong) UIView *passwordLineView;
-
+@property(nonatomic,strong) UITextField *verificationCodeTextField;
+@property(nonatomic,strong) UIView *verificationCodeLineView;
 @end
 
-@implementation LPLoginVC
+@implementation LPRegisteredVC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.view.backgroundColor = [UIColor whiteColor];
+    
+    self.navigationItem.title = @"注册";
     [self setupUI];
 }
 
 -(void)setupUI{
     self.view.backgroundColor = [UIColor whiteColor];
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
     
     UIImageView *logoImg = [[UIImageView alloc]init];
     [self.view addSubview:logoImg];
@@ -74,7 +75,7 @@
         make.right.mas_equalTo(0);
         make.height.mas_equalTo(30);
         make.centerY.equalTo(phoneBgView);
-
+        
     }];
     self.phoneTextField.delegate = self;
     self.phoneTextField.placeholder = @"请输入手机号码";
@@ -122,7 +123,7 @@
     self.passwordTextField.placeholder = @"请输入6-16位密码";
     self.passwordTextField.tintColor = [UIColor baseColor];
     self.passwordTextField.secureTextEntry = YES;
-
+    
     UIButton *showPasswordButton = [[UIButton alloc]init];
     [passwordBgView addSubview:showPasswordButton];
     [showPasswordButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -133,7 +134,6 @@
     [showPasswordButton setImage:[UIImage imageNamed:@"show_eye_img"] forState:UIControlStateNormal];
     [showPasswordButton setImage:[UIImage imageNamed:@"hide_eye_img"] forState:UIControlStateSelected];
     [showPasswordButton addTarget:self action:@selector(touchShowPasswordButton:) forControlEvents:UIControlEventTouchUpInside];
-    
     
     self.passwordLineView = [[UIView alloc]init];
     [passwordBgView addSubview:self.passwordLineView];
@@ -146,65 +146,89 @@
     self.passwordLineView.backgroundColor = [UIColor lightGrayColor];
     
     
-    UIButton *keepPassWord = [[UIButton alloc]init];
-    [self.view addSubview:keepPassWord];
-    [keepPassWord mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(50);
-        make.top.equalTo(passwordBgView.mas_bottom).offset(20);
-    }];
-    [keepPassWord setTitle:@"记住密码" forState:UIControlStateNormal];
-    [keepPassWord setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
-    [keepPassWord setImage:[UIImage imageNamed:@""] forState:UIControlStateSelected];
-    keepPassWord.titleLabel.font = [UIFont systemFontOfSize:12];
-    [keepPassWord setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-    [keepPassWord addTarget:self action:@selector(touchKeepPassWord:) forControlEvents:UIControlEventTouchUpInside];
-
-    UIButton *forgetPassWord = [[UIButton alloc]init];
-    [self.view addSubview:forgetPassWord];
-    [forgetPassWord mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.mas_equalTo(-50);
-        make.top.equalTo(passwordBgView.mas_bottom).offset(20);
-    }];
-    [forgetPassWord setTitle:@"忘记密码" forState:UIControlStateNormal];
-    forgetPassWord.titleLabel.font = [UIFont systemFontOfSize:12];
-    [forgetPassWord setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-    [forgetPassWord addTarget:self action:@selector(touchForgetPassWord:) forControlEvents:UIControlEventTouchUpInside];
-
-    
-    UIButton *loginButton = [[UIButton alloc]init];
-    [self.view addSubview:loginButton];
-    [loginButton mas_makeConstraints:^(MASConstraintMaker *make) {
+    UIView *verificationCodeBgView = [[UIView alloc]init];
+    [self.view addSubview:verificationCodeBgView];
+    [verificationCodeBgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(50);
         make.right.mas_equalTo(-50);
-        make.top.equalTo(passwordBgView.mas_bottom).offset(80);
+        make.top.equalTo(passwordBgView.mas_bottom).offset(40);
         make.height.mas_equalTo(40);
     }];
-    [loginButton setTitle:@"登陆" forState:UIControlStateNormal];
-    [loginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    loginButton.titleLabel.font = [UIFont systemFontOfSize:17];
-    loginButton.backgroundColor = [UIColor baseColor];
-    loginButton.layer.masksToBounds = YES;
-    loginButton.layer.cornerRadius = 20;
-    [loginButton addTarget:self action:@selector(touchLoginButton:) forControlEvents:UIControlEventTouchUpInside];
+    UIImageView *verificationCodeImg = [[UIImageView alloc]init];
+    [verificationCodeBgView addSubview:verificationCodeImg];
+    [verificationCodeImg mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(0);
+        make.centerY.equalTo(verificationCodeBgView);
+        make.size.mas_equalTo(CGSizeMake(15, 18));
+    }];
+    verificationCodeImg.image = [UIImage imageNamed:@"verificationCode"];
+    
+    self.verificationCodeTextField = [[UITextField alloc]init];
+    [verificationCodeBgView addSubview:self.verificationCodeTextField];
+    [self.verificationCodeTextField mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(30);
+        make.right.mas_equalTo(-100);
+        make.height.mas_equalTo(30);
+        make.centerY.equalTo(verificationCodeBgView);
+    }];
+    self.verificationCodeTextField.delegate = self;
+    self.verificationCodeTextField.placeholder = @"请输入验证码";
+    self.verificationCodeTextField.tintColor = [UIColor baseColor];
+    
+    UIButton *getVerificationCodeButton = [[UIButton alloc]init];
+    [verificationCodeBgView addSubview:getVerificationCodeButton];
+    [getVerificationCodeButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.mas_equalTo(0);
+        make.size.mas_equalTo(CGSizeMake(100, 16));
+        make.centerY.equalTo(verificationCodeBgView);
+    }];
+    getVerificationCodeButton.titleLabel.font = [UIFont systemFontOfSize:15];
+    [getVerificationCodeButton setTitle:@"获取验证码" forState:UIControlStateNormal];
+    [getVerificationCodeButton setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
+    [getVerificationCodeButton addTarget:self action:@selector(touchGetVerificationCodeButtonButton:) forControlEvents:UIControlEventTouchUpInside];
+    
+    self.verificationCodeLineView = [[UIView alloc]init];
+    [verificationCodeBgView addSubview:self.verificationCodeLineView];
+    [self.verificationCodeLineView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(0);
+        make.right.mas_equalTo(0);
+        make.bottom.mas_equalTo(0);
+        make.height.mas_equalTo(1);
+    }];
+    self.verificationCodeLineView.backgroundColor = [UIColor lightGrayColor];
+    
+    
+    UIButton *userAgreementButton = [[UIButton alloc]init];
+    [self.view addSubview:userAgreementButton];
+    [userAgreementButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(50);
+        make.right.mas_equalTo(-50);
+        make.top.equalTo(verificationCodeBgView.mas_bottom).offset(20);
+    }];
+    [userAgreementButton setTitle:@"我已阅读，并同意《用户注册协议》" forState:UIControlStateNormal];
+    [userAgreementButton setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+    [userAgreementButton setImage:[UIImage imageNamed:@""] forState:UIControlStateSelected];
+    userAgreementButton.titleLabel.font = [UIFont systemFontOfSize:12];
+    [userAgreementButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+    [userAgreementButton addTarget:self action:@selector(touchUserAgreementButton:) forControlEvents:UIControlEventTouchUpInside];
+    
     
     UIButton *registeredButton = [[UIButton alloc]init];
     [self.view addSubview:registeredButton];
     [registeredButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(50);
         make.right.mas_equalTo(-50);
-        make.top.equalTo(loginButton.mas_bottom).offset(20);
+        make.top.equalTo(verificationCodeBgView.mas_bottom).offset(80);
         make.height.mas_equalTo(40);
     }];
-    [registeredButton setTitle:@"注册" forState:UIControlStateNormal];
-    [registeredButton setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
+    [registeredButton setTitle:@"确认" forState:UIControlStateNormal];
+    [registeredButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     registeredButton.titleLabel.font = [UIFont systemFontOfSize:17];
-    registeredButton.backgroundColor = [UIColor whiteColor];
+    registeredButton.backgroundColor = [UIColor baseColor];
     registeredButton.layer.masksToBounds = YES;
     registeredButton.layer.cornerRadius = 20;
-    registeredButton.layer.borderColor = [UIColor baseColor].CGColor;
-    registeredButton.layer.borderWidth = 0.5;
     [registeredButton addTarget:self action:@selector(touchRegisteredButton:) forControlEvents:UIControlEventTouchUpInside];
-
+    
 }
 
 
@@ -213,16 +237,15 @@
     button.selected = !button.isSelected;
     self.passwordTextField.secureTextEntry = !button.isSelected;
 }
-
--(void)touchKeepPassWord:(UIButton *)button{
-    NSLog(@"记住密码");
+-(void)touchGetVerificationCodeButtonButton:(UIButton *)button{
+    NSLog(@"获取验证码");
 }
--(void)touchForgetPassWord:(UIButton *)button{
-    NSLog(@"忘记密码");
+-(void)touchUserAgreementButton:(UIButton *)button{
+    NSLog(@"用户协议");
 }
 
--(void)touchLoginButton:(UIButton *)button{
-    NSLog(@"登陆");
+-(void)touchRegisteredButton:(UIButton *)button{
+    NSLog(@"确认");
     if (self.phoneTextField.text.length <= 0 || ![NSString isMobilePhoneNumber:self.phoneTextField.text]) {
         [self.view showLoadingMeg:@"请输入正确的手机号" time:MESSAGE_SHOW_TIME];
         return;
@@ -231,13 +254,11 @@
         [self.view showLoadingMeg:@"请输入6-16位密码" time:MESSAGE_SHOW_TIME];
         return;
     }
+    if (self.verificationCodeTextField.text.length <= 0) {
+        [self.view showLoadingMeg:@"请输入验证码" time:MESSAGE_SHOW_TIME];
+        return;
+    }
 }
-
--(void)touchRegisteredButton:(UIButton *)button{
-    LPRegisteredVC *vc = [[LPRegisteredVC alloc]init];
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
 
 #pragma mark - textfield
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
@@ -264,20 +285,27 @@
         }
     }
     return YES;
-
+    
 }
 -(void)textFieldDidBeginEditing:(UITextField *)textField{
     if ([textField isEqual:self.phoneTextField]) {
         self.phoneLineView.backgroundColor = [UIColor baseColor];
         self.passwordLineView.backgroundColor = [UIColor lightGrayColor];
-    }else{
+        self.verificationCodeLineView.backgroundColor = [UIColor lightGrayColor];
+    }else if ([textField isEqual:self.passwordTextField]) {
         self.phoneLineView.backgroundColor = [UIColor lightGrayColor];
         self.passwordLineView.backgroundColor = [UIColor baseColor];
+        self.verificationCodeLineView.backgroundColor = [UIColor lightGrayColor];
+    }else{
+        self.phoneLineView.backgroundColor = [UIColor lightGrayColor];
+        self.passwordLineView.backgroundColor = [UIColor lightGrayColor];
+        self.verificationCodeLineView.backgroundColor = [UIColor baseColor];
     }
 }
 -(void)textFieldDidEndEditing:(UITextField *)textField{
     self.phoneLineView.backgroundColor = [UIColor lightGrayColor];
     self.passwordLineView.backgroundColor = [UIColor lightGrayColor];
+    self.verificationCodeLineView.backgroundColor = [UIColor lightGrayColor];
 }
 
 - (void)didReceiveMemoryWarning {
