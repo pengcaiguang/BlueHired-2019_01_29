@@ -66,6 +66,7 @@
 		DC7A32DB2137DADD00E09C6C /* UIViewController+BackItem.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7A32D92137DADC00E09C6C /* UIViewController+BackItem.m */; };
 		DC7A32DE2137E61100E09C6C /* LPForgetPassWordVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7A32DD2137E61100E09C6C /* LPForgetPassWordVC.m */; };
 		DC7A32E12137E99300E09C6C /* LoginUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7A32E02137E99300E09C6C /* LoginUtils.m */; };
+		DC7A32E42138074900E09C6C /* LPSetVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7A32E32138074900E09C6C /* LPSetVC.m */; };
 		DD9C491243746BE284EDF63A /* libPods-BlueHiredTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F2990BA484C987BEAA6D77E9 /* libPods-BlueHiredTests.a */; };
 /* End PBXBuildFile section */
 
@@ -201,6 +202,8 @@
 		DC7A32DD2137E61100E09C6C /* LPForgetPassWordVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPForgetPassWordVC.m; sourceTree = "<group>"; };
 		DC7A32DF2137E99300E09C6C /* LoginUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginUtils.h; sourceTree = "<group>"; };
 		DC7A32E02137E99300E09C6C /* LoginUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginUtils.m; sourceTree = "<group>"; };
+		DC7A32E22138074900E09C6C /* LPSetVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPSetVC.h; sourceTree = "<group>"; };
+		DC7A32E32138074900E09C6C /* LPSetVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPSetVC.m; sourceTree = "<group>"; };
 		DCB5A5321875E124A6C52C8B /* libPods-BlueHired.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BlueHired.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E94B224D8D8E2D47E74AC9DB /* Pods-BlueHiredTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlueHiredTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlueHiredTests/Pods-BlueHiredTests.release.xcconfig"; sourceTree = "<group>"; };
 		F2990BA484C987BEAA6D77E9 /* libPods-BlueHiredTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BlueHiredTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -466,6 +469,8 @@
 			children = (
 				DC73836F2133EC320055DC10 /* LPMineVC.h */,
 				DC7383702133EC320055DC10 /* LPMineVC.m */,
+				DC7A32E22138074900E09C6C /* LPSetVC.h */,
+				DC7A32E32138074900E09C6C /* LPSetVC.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -835,6 +840,7 @@
 				DC44DBA821354E8500D00FAC /* LPInformationCollectionViewCell.m in Sources */,
 				DC7383612133EB2A0055DC10 /* LPMainVC.m in Sources */,
 				DC73839F2134EBC10055DC10 /* LPUserDefaults.m in Sources */,
+				DC7A32E42138074900E09C6C /* LPSetVC.m in Sources */,
 				DC7A32CF21379BCA00E09C6C /* LPMineCardCell.m in Sources */,
 				DC73838221341EBD0055DC10 /* LPSearchBar.m in Sources */,
 				DC7383792133EE800055DC10 /* LPTabBarViewController.m in Sources */,

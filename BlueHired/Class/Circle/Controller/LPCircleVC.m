@@ -66,7 +66,7 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
     self.buttonArray[0].selected = YES;
     [self.buttonArray mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedSpacing:10 leadSpacing:10 tailSpacing:10];
     [self.buttonArray mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.mas_equalTo(-0);
+        make.bottom.mas_equalTo(-5);
     }];
     
     self.lineView = [[UIView alloc]init];

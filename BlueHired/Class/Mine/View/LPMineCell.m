@@ -7,12 +7,18 @@
 //
 
 #import "LPMineCell.h"
+#import "LPSetVC.h"
 
 @implementation LPMineCell
 
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
+}
+- (IBAction)touchSetButton:(id)sender {
+    LPSetVC *vc = [[LPSetVC alloc]init];
+    vc.hidesBottomBarWhenPushed = YES;
+    [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
