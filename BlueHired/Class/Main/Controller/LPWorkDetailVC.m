@@ -45,6 +45,7 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
 #pragma mark - setdata
 -(void)setModel:(LPWorkDetailModel *)model{
     _model = model;
+    [self.tableview reloadData];
 }
 
 #pragma mark - TableViewDelegate & Datasource
@@ -133,6 +134,7 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == 0) {
         LPWorkDetailHeadCell *cell = [tableView dequeueReusableCellWithIdentifier:LPWorkDetailHeadCellID];
+        cell.model = self.model;
         return cell;
     }else{
         LPWorkDetailTextCell *cell = [tableView dequeueReusableCellWithIdentifier:LPWorkDetailTextCellID];
