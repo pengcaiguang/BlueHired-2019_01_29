@@ -11,10 +11,12 @@
 #import "LPMainCell.h"
 #import "LPWorklistModel.h"
 #import "SDCycleScrollView.h"
+#import "LPSortAlertView.h"
+#import "LPScreenAlertView.h"
 
 static NSString *LPMainCellID = @"LPMainCell";
 
-@interface LPMainVC ()<UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,SDCycleScrollViewDelegate>
+@interface LPMainVC ()<UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,SDCycleScrollViewDelegate,LPSortAlertViewDelegate>
 
 @property (nonatomic, strong)UITableView *tableview;
 @property(nonatomic,strong) UIView *tableHeaderView;
@@ -22,9 +24,14 @@ static NSString *LPMainCellID = @"LPMainCell";
 @property(nonatomic,strong) UIButton *sortButton;
 @property(nonatomic,strong) UIButton *screenButton;
 
+@property(nonatomic,strong) LPSortAlertView *sortAlertView;
+@property(nonatomic,strong) LPScreenAlertView *screenAlertView;
+
 @property(nonatomic,assign) NSInteger page;
 @property(nonatomic,strong) LPWorklistModel *model;
 @property(nonatomic,strong) NSMutableArray <LPWorklistDataWorkListModel *>*listArray;
+
+@property(nonatomic,assign) NSInteger orderType;
 @end
 
 @implementation LPMainVC
@@ -192,13 +199,24 @@ static NSString *LPMainCellID = @"LPMainCell";
 #pragma mark - target
 -(void)touchSortButton:(UIButton *)button{
     button.selected = !button.isSelected;
+    self.sortAlertView.hidden = !button.isSelected;
 }
+
+#pragma mark - LPSortAlertViewDelegate
+-(void)touchTableView:(NSInteger)index{
+    self.orderType = index;
+    self.page = 1;
+    [self request];
+}
+
 -(void)touchScreenButton:(UIButton *)button{
-    
+    button.selected = !button.isSelected;
+    self.screenAlertView.hidden = !button.isSelected;
 }
 #pragma mark - request
 -(void)request{
     NSDictionary *dic = @{
+                          @"orderType":self.orderType ? @(self.orderType) : @"",
                           @"page":@(self.page)
                           };
     [NetApiManager requestWorklistWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
@@ -240,6 +258,10 @@ static NSString *LPMainCellID = @"LPMainCell";
         [_tableHeaderView addSubview:self.cycleScrollView];
         [_tableHeaderView addSubview:self.sortButton];
         [_tableHeaderView addSubview:self.screenButton];
+        UIView *lineView = [[UIView alloc]init];
+        lineView.frame = CGRectMake(0, 239.5, SCREEN_WIDTH, 0.5);
+        lineView.backgroundColor = [UIColor baseColor];
+        [_tableHeaderView addSubview:lineView];
     }
     return _tableHeaderView;
 }
@@ -272,6 +294,21 @@ static NSString *LPMainCellID = @"LPMainCell";
         [_screenButton addTarget:self action:@selector(touchScreenButton:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _screenButton;
+}
+-(LPSortAlertView *)sortAlertView{
+    if (!_sortAlertView) {
+        _sortAlertView = [[LPSortAlertView alloc]init];
+        _sortAlertView.touchButton = self.sortButton;
+        _sortAlertView.delegate = self;
+    }
+    return _sortAlertView;
+}
+-(LPScreenAlertView *)screenAlertView{
+    if (!_screenAlertView) {
+        _screenAlertView = [[LPScreenAlertView alloc]init];
+        _screenAlertView.touchButton = self.screenButton;
+    }
+    return _screenAlertView;
 }
 
 -(SDCycleScrollView *)cycleScrollView{

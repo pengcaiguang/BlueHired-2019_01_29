@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		39138DA4778A75826AAD22ED /* libPods-BlueHiredUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82479EF595BD37AB322E0AA9 /* libPods-BlueHiredUITests.a */; };
 		BE82CAE860C97254269F44AD /* libPods-BlueHired.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB5A5321875E124A6C52C8B /* libPods-BlueHired.a */; };
+		DC30E18F2138D9CB000C7A91 /* LPScreenAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = DC30E18E2138D9CB000C7A91 /* LPScreenAlertView.m */; };
 		DC44DB9621351F6D00D00FAC /* NullSafe.m in Sources */ = {isa = PBXBuildFile; fileRef = DC44DB9521351F6D00D00FAC /* NullSafe.m */; };
 		DC44DB99213526C600D00FAC /* UIImage+Image.m in Sources */ = {isa = PBXBuildFile; fileRef = DC44DB98213526C600D00FAC /* UIImage+Image.m */; };
 		DC44DB9C21352B8000D00FAC /* LPNoDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = DC44DB9B21352B8000D00FAC /* LPNoDataView.m */; };
@@ -67,6 +68,7 @@
 		DC7A32DE2137E61100E09C6C /* LPForgetPassWordVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7A32DD2137E61100E09C6C /* LPForgetPassWordVC.m */; };
 		DC7A32E12137E99300E09C6C /* LoginUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7A32E02137E99300E09C6C /* LoginUtils.m */; };
 		DC7A32E42138074900E09C6C /* LPSetVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7A32E32138074900E09C6C /* LPSetVC.m */; };
+		DC7A32E7213812E200E09C6C /* LPSortAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7A32E6213812E200E09C6C /* LPSortAlertView.m */; };
 		DD9C491243746BE284EDF63A /* libPods-BlueHiredTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F2990BA484C987BEAA6D77E9 /* libPods-BlueHiredTests.a */; };
 /* End PBXBuildFile section */
 
@@ -94,6 +96,8 @@
 		92E3EB858257F39A6762B321 /* Pods-BlueHiredTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlueHiredTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlueHiredTests/Pods-BlueHiredTests.debug.xcconfig"; sourceTree = "<group>"; };
 		992D1B12C5F757999ACD5D40 /* Pods-BlueHired.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlueHired.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlueHired/Pods-BlueHired.release.xcconfig"; sourceTree = "<group>"; };
 		BBC93F1DC28C278E85E3A307 /* Pods-BlueHiredUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlueHiredUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlueHiredUITests/Pods-BlueHiredUITests.release.xcconfig"; sourceTree = "<group>"; };
+		DC30E18D2138D9CB000C7A91 /* LPScreenAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPScreenAlertView.h; sourceTree = "<group>"; };
+		DC30E18E2138D9CB000C7A91 /* LPScreenAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPScreenAlertView.m; sourceTree = "<group>"; };
 		DC44DB9521351F6D00D00FAC /* NullSafe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NullSafe.m; sourceTree = "<group>"; };
 		DC44DB97213526C600D00FAC /* UIImage+Image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Image.h"; sourceTree = "<group>"; };
 		DC44DB98213526C600D00FAC /* UIImage+Image.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Image.m"; sourceTree = "<group>"; };
@@ -204,6 +208,8 @@
 		DC7A32E02137E99300E09C6C /* LoginUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginUtils.m; sourceTree = "<group>"; };
 		DC7A32E22138074900E09C6C /* LPSetVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPSetVC.h; sourceTree = "<group>"; };
 		DC7A32E32138074900E09C6C /* LPSetVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPSetVC.m; sourceTree = "<group>"; };
+		DC7A32E5213812E200E09C6C /* LPSortAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPSortAlertView.h; sourceTree = "<group>"; };
+		DC7A32E6213812E200E09C6C /* LPSortAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPSortAlertView.m; sourceTree = "<group>"; };
 		DCB5A5321875E124A6C52C8B /* libPods-BlueHired.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BlueHired.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E94B224D8D8E2D47E74AC9DB /* Pods-BlueHiredTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlueHiredTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlueHiredTests/Pods-BlueHiredTests.release.xcconfig"; sourceTree = "<group>"; };
 		F2990BA484C987BEAA6D77E9 /* libPods-BlueHiredTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BlueHiredTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -576,6 +582,10 @@
 				DC7383A42134F6580055DC10 /* LPMainCell.h */,
 				DC7383A52134F6580055DC10 /* LPMainCell.m */,
 				DC7383A62134F6580055DC10 /* LPMainCell.xib */,
+				DC7A32E5213812E200E09C6C /* LPSortAlertView.h */,
+				DC7A32E6213812E200E09C6C /* LPSortAlertView.m */,
+				DC30E18D2138D9CB000C7A91 /* LPScreenAlertView.h */,
+				DC30E18E2138D9CB000C7A91 /* LPScreenAlertView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -847,6 +857,7 @@
 				DC7A32D52137C2EC00E09C6C /* LPLoginVC.m in Sources */,
 				DC5C38A421369B9B00B3CF6E /* NSString+String.m in Sources */,
 				DC44DB9C21352B8000D00FAC /* LPNoDataView.m in Sources */,
+				DC7A32E7213812E200E09C6C /* LPSortAlertView.m in Sources */,
 				DC7A32D82137D7E200E09C6C /* LPRegisteredVC.m in Sources */,
 				DC73836D2133EC1B0055DC10 /* LPInformationVC.m in Sources */,
 				DC7383982134E95E0055DC10 /* NetApiManager.m in Sources */,
@@ -867,6 +878,7 @@
 				DC7383712133EC320055DC10 /* LPMineVC.m in Sources */,
 				DC5C38942136682200B3CF6E /* LPCircleCollectionViewCell.m in Sources */,
 				DC7383A22134EF300055DC10 /* UIView+MBProgressHUD.m in Sources */,
+				DC30E18F2138D9CB000C7A91 /* LPScreenAlertView.m in Sources */,
 				DC5C38A1213690C000B3CF6E /* LPMoodListModel.m in Sources */,
 				DC44DBA021353D5800D00FAC /* LPLabelListModel.m in Sources */,
 				DC7383332133E3670055DC10 /* main.m in Sources */,
