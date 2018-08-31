@@ -109,10 +109,10 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
         if (moodListModel.data.count > 0) {
             self.page += 1;
             [self.moodListArray addObjectsFromArray:moodListModel.data];
-            [self.tableview reloadData];
         }else{
             [self.tableview.mj_footer endRefreshingWithNoMoreData];
         }
+        [self.tableview reloadData];
     }else{
         [self.contentView showLoadingMeg:NETE_ERROR_MESSAGE time:MESSAGE_SHOW_TIME];
     }

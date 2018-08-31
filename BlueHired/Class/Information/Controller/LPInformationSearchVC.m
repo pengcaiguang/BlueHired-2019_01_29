@@ -114,7 +114,7 @@ static NSString *InformationSearchHistory = @"InformationSearchHistory";
     [self.navigationController pushViewController:vc animated:YES];
 }
 
--(void)clearHisory{
+-(void)clearHistory{
     kUserDefaultsRemove(InformationSearchHistory);
     self.textArray = nil;
     [self.tableview reloadData];
@@ -160,7 +160,8 @@ static NSString *InformationSearchHistory = @"InformationSearchHistory";
     button.titleLabel.font = [UIFont systemFontOfSize:16];
     [button setImage:[UIImage imageNamed:@"delete_search"] forState:UIControlStateNormal];
     [button setTitle:@"清空历史记录" forState:UIControlStateNormal];
-    
+    [button addTarget:self action:@selector(clearHistory) forControlEvents:UIControlEventTouchUpInside];
+
     
     
     return view;

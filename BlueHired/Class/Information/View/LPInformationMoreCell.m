@@ -57,7 +57,7 @@ static NSString *LPInformationMoreImageCollectionViewCellID = @"LPInformationMor
 
 #pragma mark -- UICollectionViewDelegateFlowLayout
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    return CGSizeMake((SCREEN_WIDTH-20-28)/3 , 56);
+    return CGSizeMake((SCREEN_WIDTH-20-28)/3 , 76);
 }
 
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section{
