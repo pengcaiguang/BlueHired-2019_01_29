@@ -8,11 +8,15 @@
 
 #import "LPMainSearchVC.h"
 #import "LPSearchBar.h"
+#import "LPMainSearchResultVC.h"
+
+static NSString *MainSearchHistory = @"MainSearchHistory";
 
 @interface LPMainSearchVC ()<UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong)UITableView *tableview;
 
-@property(nonatomic,strong) NSArray *textArray;
+@property(nonatomic,copy) NSArray *textArray;
+@property(nonatomic,copy) NSString *searchWord;
 
 @end
 
@@ -22,6 +26,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    
+    
     self.view.backgroundColor = [UIColor whiteColor];
     [self setSearchView];
     [self setSearchButton];
@@ -30,6 +36,13 @@
         make.edges.equalTo(self.view);
     }];
 }
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.textArray = (NSArray *)kUserDefaultsValue(MainSearchHistory);
+    [self.tableview reloadData];
+}
+
 -(void)setSearchView{
     LPSearchBar *searchBar = [self addSearchBarWithFrame:CGRectMake(0, 0, SCREEN_WIDTH - 2 * 44 - 2 * 15, 44)];
     [searchBar becomeFirstResponder];
@@ -71,7 +84,44 @@
     button.layer.masksToBounds = YES;
     button.layer.cornerRadius = 14;
     [button setBackgroundImage:[UIImage imageNamed:@"search_btn_bgView"] forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(touchSearchButton) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:button];
+}
+
+-(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
+    self.searchWord = searchBar.text;
+    [self saveWords];
+    [self push];
+}
+
+
+-(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
+    NSLog(@"-%@",searchBar.text);
+    self.searchWord = searchBar.text;
+}
+-(void)touchSearchButton{
+    [self saveWords];
+    [self push];
+}
+
+-(void)saveWords{
+    NSMutableArray *array = [NSMutableArray arrayWithArray:self.textArray];
+    if (![array containsObject:self.searchWord]) {
+        [array insertObject:self.searchWord atIndex:0];
+        kUserDefaultsSave([array copy], MainSearchHistory);
+    }
+}
+
+-(void)push{
+    LPMainSearchResultVC *vc = [[LPMainSearchResultVC alloc]init];
+    vc.string = self.searchWord;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+-(void)clearHisory{
+    kUserDefaultsRemove(MainSearchHistory);
+    self.textArray = nil;
+    [self.tableview reloadData];
 }
 
 #pragma mark - TableViewDelegate & Datasource
@@ -111,10 +161,10 @@
         make.width.mas_equalTo(120);
     }];
     [button setTitleColor:[UIColor colorWithHexString:@"#666666"] forState:UIControlStateNormal];
-    button.titleLabel.font = [UIFont systemFontOfSize:16];
+    button.titleLabel.font = [UIFont systemFontOfSize:12];
     [button setImage:[UIImage imageNamed:@"delete_search"] forState:UIControlStateNormal];
     [button setTitle:@"清空历史记录" forState:UIControlStateNormal];
-    
+    [button addTarget:self action:@selector(clearHisory) forControlEvents:UIControlEventTouchUpInside];
 
 
     return view;
@@ -125,7 +175,9 @@
     if(cell == nil){
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rid];
     }
-    cell.textLabel.text = [NSString stringWithFormat:@"%ld",indexPath.row];
+    cell.textLabel.font = [UIFont systemFontOfSize:14];
+    cell.textLabel.textColor = [UIColor colorWithHexString:@"#666666"];
+    cell.textLabel.text = self.textArray[indexPath.row];
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

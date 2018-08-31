@@ -12,6 +12,7 @@
 		DC30E18F2138D9CB000C7A91 /* LPScreenAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = DC30E18E2138D9CB000C7A91 /* LPScreenAlertView.m */; };
 		DC30E1922138E622000C7A91 /* LPMainSearchVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC30E1912138E622000C7A91 /* LPMainSearchVC.m */; };
 		DC30E1952138F51B000C7A91 /* LPInformationSearchVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC30E1942138F51B000C7A91 /* LPInformationSearchVC.m */; };
+		DC30E19821391303000C7A91 /* LPMainSearchResultVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC30E19721391303000C7A91 /* LPMainSearchResultVC.m */; };
 		DC44DB9621351F6D00D00FAC /* NullSafe.m in Sources */ = {isa = PBXBuildFile; fileRef = DC44DB9521351F6D00D00FAC /* NullSafe.m */; };
 		DC44DB99213526C600D00FAC /* UIImage+Image.m in Sources */ = {isa = PBXBuildFile; fileRef = DC44DB98213526C600D00FAC /* UIImage+Image.m */; };
 		DC44DB9C21352B8000D00FAC /* LPNoDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = DC44DB9B21352B8000D00FAC /* LPNoDataView.m */; };
@@ -104,6 +105,8 @@
 		DC30E1912138E622000C7A91 /* LPMainSearchVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPMainSearchVC.m; sourceTree = "<group>"; };
 		DC30E1932138F51B000C7A91 /* LPInformationSearchVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPInformationSearchVC.h; sourceTree = "<group>"; };
 		DC30E1942138F51B000C7A91 /* LPInformationSearchVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPInformationSearchVC.m; sourceTree = "<group>"; };
+		DC30E19621391303000C7A91 /* LPMainSearchResultVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPMainSearchResultVC.h; sourceTree = "<group>"; };
+		DC30E19721391303000C7A91 /* LPMainSearchResultVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPMainSearchResultVC.m; sourceTree = "<group>"; };
 		DC44DB9521351F6D00D00FAC /* NullSafe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NullSafe.m; sourceTree = "<group>"; };
 		DC44DB97213526C600D00FAC /* UIImage+Image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Image.h"; sourceTree = "<group>"; };
 		DC44DB98213526C600D00FAC /* UIImage+Image.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Image.m"; sourceTree = "<group>"; };
@@ -427,6 +430,8 @@
 				DC7383602133EB2A0055DC10 /* LPMainVC.m */,
 				DC30E1902138E622000C7A91 /* LPMainSearchVC.h */,
 				DC30E1912138E622000C7A91 /* LPMainSearchVC.m */,
+				DC30E19621391303000C7A91 /* LPMainSearchResultVC.h */,
+				DC30E19721391303000C7A91 /* LPMainSearchResultVC.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -891,6 +896,7 @@
 				DC5C38942136682200B3CF6E /* LPCircleCollectionViewCell.m in Sources */,
 				DC7383A22134EF300055DC10 /* UIView+MBProgressHUD.m in Sources */,
 				DC30E18F2138D9CB000C7A91 /* LPScreenAlertView.m in Sources */,
+				DC30E19821391303000C7A91 /* LPMainSearchResultVC.m in Sources */,
 				DC5C38A1213690C000B3CF6E /* LPMoodListModel.m in Sources */,
 				DC44DBA021353D5800D00FAC /* LPLabelListModel.m in Sources */,
 				DC7383332133E3670055DC10 /* main.m in Sources */,
