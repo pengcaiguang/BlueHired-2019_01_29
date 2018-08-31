@@ -239,8 +239,8 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
         _expandbutton.backgroundColor = [UIColor colorWithHexString:@"#F2F2F2"];
         _expandbutton.titleLabel.font = [UIFont systemFontOfSize:10];
         [_expandbutton addTarget:self action:@selector(touchExpandButton:) forControlEvents:UIControlEventTouchUpInside];
-        _expandbutton.titleEdgeInsets = UIEdgeInsetsMake(0, -_expandbutton.imageView.frame.size.width - _expandbutton.titleLabel.intrinsicContentSize.width-10, 0, 0);
-        _expandbutton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -_expandbutton.titleLabel.intrinsicContentSize.width -_expandbutton.imageView.frame.size.width-10);
+        _expandbutton.titleEdgeInsets = UIEdgeInsetsMake(0, -_expandbutton.imageView.frame.size.width - _expandbutton.titleLabel.intrinsicContentSize.width + 10, 0, 0);
+        _expandbutton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -_expandbutton.titleLabel.intrinsicContentSize.width -_expandbutton.imageView.frame.size.width-30);
     }
     return _expandbutton;
     

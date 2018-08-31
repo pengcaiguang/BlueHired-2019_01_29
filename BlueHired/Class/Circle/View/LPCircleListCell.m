@@ -31,8 +31,21 @@
     if (kStringIsEmpty(model.moodUrl)) {
         self.imageBgView_constraint_height.constant = 0;
     }else{
-//        NSArray *imageArray = [model.moodUrl componentsSeparatedByString:@";"];
+        NSArray *imageArray = [model.moodUrl componentsSeparatedByString:@";"];
+        CGFloat imgw = (SCREEN_WIDTH-70 - 10)/3;
+        
+        for (int i = 0; i < imageArray.count; i++) {
+            UIImageView *imageView = [[UIImageView alloc]init];
+            imageView.frame = CGRectMake((imgw + 5)* (i%3), floor(i/3)*(imgw + 5), imgw, imgw);
+            [imageView sd_setImageWithURL:[NSURL URLWithString:imageArray[i]]];
+            [self.imageBgView addSubview:imageView];
+        }
+        self.imageBgView_constraint_height.constant = ceil(imageArray.count/3)*imgw + floor(imageArray.count/3)*5;
     }
+    
+    
+    
+    
     
 }
 
