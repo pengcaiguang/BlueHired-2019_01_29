@@ -87,7 +87,6 @@
         _tableview.frame = CGRectMake(SCREEN_WIDTH, 0, SCREEN_WIDTH/3*2, SCREEN_HEIGHT);
         _tableview.delegate = self;
         _tableview.dataSource = self;
-        _tableview.scrollEnabled = NO;
         _tableview.tableFooterView = [[UIView alloc]init];
         _tableview.rowHeight = UITableViewAutomaticDimension;
         _tableview.estimatedRowHeight = 44;

@@ -82,7 +82,6 @@ static NSInteger rowHeight = 44;
         _tableview = [[UITableView alloc]init];
         _tableview.delegate = self;
         _tableview.dataSource = self;
-        _tableview.scrollEnabled = NO;
         _tableview.tableFooterView = [[UIView alloc]init];
         _tableview.rowHeight = UITableViewAutomaticDimension;
         _tableview.estimatedRowHeight = 44;

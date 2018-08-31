@@ -10,6 +10,8 @@
 		39138DA4778A75826AAD22ED /* libPods-BlueHiredUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82479EF595BD37AB322E0AA9 /* libPods-BlueHiredUITests.a */; };
 		BE82CAE860C97254269F44AD /* libPods-BlueHired.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB5A5321875E124A6C52C8B /* libPods-BlueHired.a */; };
 		DC30E18F2138D9CB000C7A91 /* LPScreenAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = DC30E18E2138D9CB000C7A91 /* LPScreenAlertView.m */; };
+		DC30E1922138E622000C7A91 /* LPMainSearchVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC30E1912138E622000C7A91 /* LPMainSearchVC.m */; };
+		DC30E1952138F51B000C7A91 /* LPInformationSearchVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC30E1942138F51B000C7A91 /* LPInformationSearchVC.m */; };
 		DC44DB9621351F6D00D00FAC /* NullSafe.m in Sources */ = {isa = PBXBuildFile; fileRef = DC44DB9521351F6D00D00FAC /* NullSafe.m */; };
 		DC44DB99213526C600D00FAC /* UIImage+Image.m in Sources */ = {isa = PBXBuildFile; fileRef = DC44DB98213526C600D00FAC /* UIImage+Image.m */; };
 		DC44DB9C21352B8000D00FAC /* LPNoDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = DC44DB9B21352B8000D00FAC /* LPNoDataView.m */; };
@@ -98,6 +100,10 @@
 		BBC93F1DC28C278E85E3A307 /* Pods-BlueHiredUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlueHiredUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlueHiredUITests/Pods-BlueHiredUITests.release.xcconfig"; sourceTree = "<group>"; };
 		DC30E18D2138D9CB000C7A91 /* LPScreenAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPScreenAlertView.h; sourceTree = "<group>"; };
 		DC30E18E2138D9CB000C7A91 /* LPScreenAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPScreenAlertView.m; sourceTree = "<group>"; };
+		DC30E1902138E622000C7A91 /* LPMainSearchVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPMainSearchVC.h; sourceTree = "<group>"; };
+		DC30E1912138E622000C7A91 /* LPMainSearchVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPMainSearchVC.m; sourceTree = "<group>"; };
+		DC30E1932138F51B000C7A91 /* LPInformationSearchVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPInformationSearchVC.h; sourceTree = "<group>"; };
+		DC30E1942138F51B000C7A91 /* LPInformationSearchVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPInformationSearchVC.m; sourceTree = "<group>"; };
 		DC44DB9521351F6D00D00FAC /* NullSafe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NullSafe.m; sourceTree = "<group>"; };
 		DC44DB97213526C600D00FAC /* UIImage+Image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Image.h"; sourceTree = "<group>"; };
 		DC44DB98213526C600D00FAC /* UIImage+Image.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Image.m"; sourceTree = "<group>"; };
@@ -419,6 +425,8 @@
 			children = (
 				DC73835F2133EB2A0055DC10 /* LPMainVC.h */,
 				DC7383602133EB2A0055DC10 /* LPMainVC.m */,
+				DC30E1902138E622000C7A91 /* LPMainSearchVC.h */,
+				DC30E1912138E622000C7A91 /* LPMainSearchVC.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -457,6 +465,8 @@
 			children = (
 				DC73836B2133EC1B0055DC10 /* LPInformationVC.h */,
 				DC73836C2133EC1B0055DC10 /* LPInformationVC.m */,
+				DC30E1932138F51B000C7A91 /* LPInformationSearchVC.h */,
+				DC30E1942138F51B000C7A91 /* LPInformationSearchVC.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -844,6 +854,7 @@
 				DC5C38842136372F00B3CF6E /* LPInformationSingleCell.m in Sources */,
 				DC7383962134E95E0055DC10 /* MoninNet.m in Sources */,
 				DC7383942134E95E0055DC10 /* NetRequestEnty.m in Sources */,
+				DC30E1952138F51B000C7A91 /* LPInformationSearchVC.m in Sources */,
 				DC44DBA321354D6A00D00FAC /* DeviceUtils.m in Sources */,
 				DC7A32DB2137DADD00E09C6C /* UIViewController+BackItem.m in Sources */,
 				DC5C388E213645E000B3CF6E /* LPInformationMoreImageCollectionViewCell.m in Sources */,
@@ -855,6 +866,7 @@
 				DC73838221341EBD0055DC10 /* LPSearchBar.m in Sources */,
 				DC7383792133EE800055DC10 /* LPTabBarViewController.m in Sources */,
 				DC7A32D52137C2EC00E09C6C /* LPLoginVC.m in Sources */,
+				DC30E1922138E622000C7A91 /* LPMainSearchVC.m in Sources */,
 				DC5C38A421369B9B00B3CF6E /* NSString+String.m in Sources */,
 				DC44DB9C21352B8000D00FAC /* LPNoDataView.m in Sources */,
 				DC7A32E7213812E200E09C6C /* LPSortAlertView.m in Sources */,

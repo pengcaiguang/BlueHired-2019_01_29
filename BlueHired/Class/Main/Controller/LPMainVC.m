@@ -13,6 +13,7 @@
 #import "SDCycleScrollView.h"
 #import "LPSortAlertView.h"
 #import "LPScreenAlertView.h"
+#import "LPMainSearchVC.h"
 
 static NSString *LPMainCellID = @"LPMainCell";
 
@@ -146,10 +147,11 @@ static NSString *LPMainCellID = @"LPMainCell";
         if (self.model.data.workList.count > 0) {
             self.page += 1;
             [self.listArray addObjectsFromArray:self.model.data.workList];
-            [self.tableview reloadData];
         }else{
             [self.tableview.mj_footer endRefreshingWithNoMoreData];
         }
+        [self.tableview reloadData];
+
     }else{
         [self.view showLoadingMeg:NETE_ERROR_MESSAGE time:MESSAGE_SHOW_TIME];
     }
@@ -188,6 +190,14 @@ static NSString *LPMainCellID = @"LPMainCell";
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+#pragma mark - search
+-(BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar{
+    LPMainSearchVC *vc = [[LPMainSearchVC alloc]init];
+    vc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
+    return NO;
 }
 
 #pragma mark - SDCycleScrollViewDelegate

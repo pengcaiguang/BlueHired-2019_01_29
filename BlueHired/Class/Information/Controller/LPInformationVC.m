@@ -10,6 +10,7 @@
 #import "LPSearchBar.h"
 #import "LPLabelListModel.h"
 #import "LPInformationCollectionViewCell.h"
+#import "LPInformationSearchVC.h"
 
 static NSString *LPInformationCollectionViewCellID = @"LPInformationCollectionViewCell";
 
@@ -176,6 +177,14 @@ static NSString *LPInformationCollectionViewCellID = @"LPInformationCollectionVi
 -(void)scrollToItenIndex:(NSInteger)index{
     [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:YES];
 }
+#pragma mark - search
+-(BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar{
+    LPInformationSearchVC *vc = [[LPInformationSearchVC alloc]init];
+    vc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
+    return NO;
+}
+
 #pragma mark -- UICollectionViewDelegate
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     CGFloat pageWidth = scrollView.frame.size.width;
