@@ -10,4 +10,6 @@
 
 @interface LPNoDataView : UIView
 
+-(void)image:(UIImage *)image text:(NSString *)text;
+
 @end

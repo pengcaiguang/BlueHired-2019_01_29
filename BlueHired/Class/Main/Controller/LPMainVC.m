@@ -226,6 +226,7 @@ static NSString *LPMainCellID = @"LPMainCell";
 #pragma mark - request
 -(void)request{
     NSDictionary *dic = @{
+                          @"type":@(0),
                           @"orderType":self.orderType ? @(self.orderType) : @"",
                           @"page":@(self.page)
                           };

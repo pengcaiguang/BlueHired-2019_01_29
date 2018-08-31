@@ -91,7 +91,7 @@ static NSString *MainSearchHistory = @"MainSearchHistory";
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
     self.searchWord = searchBar.text;
     [self saveWords];
-    [self push];
+    [self search:self.searchWord];
 }
 
 
@@ -101,7 +101,7 @@ static NSString *MainSearchHistory = @"MainSearchHistory";
 }
 -(void)touchSearchButton{
     [self saveWords];
-    [self push];
+    [self search:self.searchWord];
 }
 
 -(void)saveWords{
@@ -112,9 +112,9 @@ static NSString *MainSearchHistory = @"MainSearchHistory";
     }
 }
 
--(void)push{
+-(void)search:(NSString *)string{
     LPMainSearchResultVC *vc = [[LPMainSearchResultVC alloc]init];
-    vc.string = self.searchWord;
+    vc.string = string;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -182,6 +182,7 @@ static NSString *MainSearchHistory = @"MainSearchHistory";
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [self search:self.textArray[indexPath.row]];
 }
 #pragma mark lazy
 - (UITableView *)tableview{
