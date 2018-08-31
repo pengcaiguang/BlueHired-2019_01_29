@@ -130,6 +130,18 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
+
+//招聘详情
++ (void)requestWorkDetailWithParam:(id)paramer
+                        withHandle:(response)responseHandle{
+    NSString * appendURLString = @"work/query_workdetail";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
+
 #pragma mark - 资讯
 /************************************************************/
 //*  资讯

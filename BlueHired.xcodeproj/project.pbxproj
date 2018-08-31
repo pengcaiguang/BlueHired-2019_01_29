@@ -14,6 +14,12 @@
 		DC30E1952138F51B000C7A91 /* LPInformationSearchVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC30E1942138F51B000C7A91 /* LPInformationSearchVC.m */; };
 		DC30E19821391303000C7A91 /* LPMainSearchResultVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC30E19721391303000C7A91 /* LPMainSearchResultVC.m */; };
 		DC30E19B21391DAD000C7A91 /* LPInformationSearchResultVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC30E19A21391DAD000C7A91 /* LPInformationSearchResultVC.m */; };
+		DC30E19E21392E23000C7A91 /* LPWorkDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC30E19D21392E23000C7A91 /* LPWorkDetailVC.m */; };
+		DC30E1A121393255000C7A91 /* LPWorkDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC30E1A021393255000C7A91 /* LPWorkDetailModel.m */; };
+		DC30E1A521393BB0000C7A91 /* LPWorkDetailHeadCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC30E1A321393BB0000C7A91 /* LPWorkDetailHeadCell.m */; };
+		DC30E1A621393BB0000C7A91 /* LPWorkDetailHeadCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC30E1A421393BB0000C7A91 /* LPWorkDetailHeadCell.xib */; };
+		DC30E1AF21394055000C7A91 /* LPWorkDetailTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC30E1AD21394055000C7A91 /* LPWorkDetailTextCell.m */; };
+		DC30E1B021394055000C7A91 /* LPWorkDetailTextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC30E1AE21394055000C7A91 /* LPWorkDetailTextCell.xib */; };
 		DC44DB9621351F6D00D00FAC /* NullSafe.m in Sources */ = {isa = PBXBuildFile; fileRef = DC44DB9521351F6D00D00FAC /* NullSafe.m */; };
 		DC44DB99213526C600D00FAC /* UIImage+Image.m in Sources */ = {isa = PBXBuildFile; fileRef = DC44DB98213526C600D00FAC /* UIImage+Image.m */; };
 		DC44DB9C21352B8000D00FAC /* LPNoDataView.m in Sources */ = {isa = PBXBuildFile; fileRef = DC44DB9B21352B8000D00FAC /* LPNoDataView.m */; };
@@ -110,6 +116,16 @@
 		DC30E19721391303000C7A91 /* LPMainSearchResultVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPMainSearchResultVC.m; sourceTree = "<group>"; };
 		DC30E19921391DAD000C7A91 /* LPInformationSearchResultVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPInformationSearchResultVC.h; sourceTree = "<group>"; };
 		DC30E19A21391DAD000C7A91 /* LPInformationSearchResultVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPInformationSearchResultVC.m; sourceTree = "<group>"; };
+		DC30E19C21392E23000C7A91 /* LPWorkDetailVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPWorkDetailVC.h; sourceTree = "<group>"; };
+		DC30E19D21392E23000C7A91 /* LPWorkDetailVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPWorkDetailVC.m; sourceTree = "<group>"; };
+		DC30E19F21393255000C7A91 /* LPWorkDetailModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPWorkDetailModel.h; sourceTree = "<group>"; };
+		DC30E1A021393255000C7A91 /* LPWorkDetailModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPWorkDetailModel.m; sourceTree = "<group>"; };
+		DC30E1A221393BB0000C7A91 /* LPWorkDetailHeadCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPWorkDetailHeadCell.h; sourceTree = "<group>"; };
+		DC30E1A321393BB0000C7A91 /* LPWorkDetailHeadCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPWorkDetailHeadCell.m; sourceTree = "<group>"; };
+		DC30E1A421393BB0000C7A91 /* LPWorkDetailHeadCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPWorkDetailHeadCell.xib; sourceTree = "<group>"; };
+		DC30E1AC21394055000C7A91 /* LPWorkDetailTextCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPWorkDetailTextCell.h; sourceTree = "<group>"; };
+		DC30E1AD21394055000C7A91 /* LPWorkDetailTextCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPWorkDetailTextCell.m; sourceTree = "<group>"; };
+		DC30E1AE21394055000C7A91 /* LPWorkDetailTextCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPWorkDetailTextCell.xib; sourceTree = "<group>"; };
 		DC44DB9521351F6D00D00FAC /* NullSafe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NullSafe.m; sourceTree = "<group>"; };
 		DC44DB97213526C600D00FAC /* UIImage+Image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Image.h"; sourceTree = "<group>"; };
 		DC44DB98213526C600D00FAC /* UIImage+Image.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Image.m"; sourceTree = "<group>"; };
@@ -435,6 +451,8 @@
 				DC30E1912138E622000C7A91 /* LPMainSearchVC.m */,
 				DC30E19621391303000C7A91 /* LPMainSearchResultVC.h */,
 				DC30E19721391303000C7A91 /* LPMainSearchResultVC.m */,
+				DC30E19C21392E23000C7A91 /* LPWorkDetailVC.h */,
+				DC30E19D21392E23000C7A91 /* LPWorkDetailVC.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -606,6 +624,12 @@
 				DC7A32E6213812E200E09C6C /* LPSortAlertView.m */,
 				DC30E18D2138D9CB000C7A91 /* LPScreenAlertView.h */,
 				DC30E18E2138D9CB000C7A91 /* LPScreenAlertView.m */,
+				DC30E1A221393BB0000C7A91 /* LPWorkDetailHeadCell.h */,
+				DC30E1A321393BB0000C7A91 /* LPWorkDetailHeadCell.m */,
+				DC30E1A421393BB0000C7A91 /* LPWorkDetailHeadCell.xib */,
+				DC30E1AC21394055000C7A91 /* LPWorkDetailTextCell.h */,
+				DC30E1AD21394055000C7A91 /* LPWorkDetailTextCell.m */,
+				DC30E1AE21394055000C7A91 /* LPWorkDetailTextCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -615,6 +639,8 @@
 			children = (
 				DC7383AA2134F7B50055DC10 /* LPWorklistModel.h */,
 				DC7383AB2134F7B50055DC10 /* LPWorklistModel.m */,
+				DC30E19F21393255000C7A91 /* LPWorkDetailModel.h */,
+				DC30E1A021393255000C7A91 /* LPWorkDetailModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -750,8 +776,10 @@
 			files = (
 				DC7383882134DC200055DC10 /* LPMineCell.xib in Resources */,
 				DC7383302133E3670055DC10 /* LaunchScreen.storyboard in Resources */,
+				DC30E1B021394055000C7A91 /* LPWorkDetailTextCell.xib in Resources */,
 				DC73832D2133E3670055DC10 /* Assets.xcassets in Resources */,
 				DC44DBA921354E8500D00FAC /* LPInformationCollectionViewCell.xib in Resources */,
+				DC30E1A621393BB0000C7A91 /* LPWorkDetailHeadCell.xib in Resources */,
 				DC5C38952136682200B3CF6E /* LPCircleCollectionViewCell.xib in Resources */,
 				DC73832B2133E33E0055DC10 /* Main.storyboard in Resources */,
 				DC7383A82134F6580055DC10 /* LPMainCell.xib in Resources */,
@@ -873,7 +901,9 @@
 				DC73839F2134EBC10055DC10 /* LPUserDefaults.m in Sources */,
 				DC7A32E42138074900E09C6C /* LPSetVC.m in Sources */,
 				DC7A32CF21379BCA00E09C6C /* LPMineCardCell.m in Sources */,
+				DC30E1A521393BB0000C7A91 /* LPWorkDetailHeadCell.m in Sources */,
 				DC73838221341EBD0055DC10 /* LPSearchBar.m in Sources */,
+				DC30E1A121393255000C7A91 /* LPWorkDetailModel.m in Sources */,
 				DC7383792133EE800055DC10 /* LPTabBarViewController.m in Sources */,
 				DC7A32D52137C2EC00E09C6C /* LPLoginVC.m in Sources */,
 				DC30E1922138E622000C7A91 /* LPMainSearchVC.m in Sources */,
@@ -881,6 +911,7 @@
 				DC44DB9C21352B8000D00FAC /* LPNoDataView.m in Sources */,
 				DC30E19B21391DAD000C7A91 /* LPInformationSearchResultVC.m in Sources */,
 				DC7A32E7213812E200E09C6C /* LPSortAlertView.m in Sources */,
+				DC30E19E21392E23000C7A91 /* LPWorkDetailVC.m in Sources */,
 				DC7A32D82137D7E200E09C6C /* LPRegisteredVC.m in Sources */,
 				DC73836D2133EC1B0055DC10 /* LPInformationVC.m in Sources */,
 				DC7383982134E95E0055DC10 /* NetApiManager.m in Sources */,
@@ -892,6 +923,7 @@
 				DC7383282133E33E0055DC10 /* ViewController.m in Sources */,
 				DC44DB9621351F6D00D00FAC /* NullSafe.m in Sources */,
 				DC7383A72134F6580055DC10 /* LPMainCell.m in Sources */,
+				DC30E1AF21394055000C7A91 /* LPWorkDetailTextCell.m in Sources */,
 				DC7A32E12137E99300E09C6C /* LoginUtils.m in Sources */,
 				DC7383972134E95E0055DC10 /* NetRequestManager.m in Sources */,
 				DC5C3889213640A300B3CF6E /* LPInformationMoreCell.m in Sources */,

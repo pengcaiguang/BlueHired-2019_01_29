@@ -14,6 +14,7 @@
 #import "LPSortAlertView.h"
 #import "LPScreenAlertView.h"
 #import "LPMainSearchVC.h"
+#import "LPWorkDetailVC.h"
 
 static NSString *LPMainCellID = @"LPMainCell";
 
@@ -190,6 +191,10 @@ static NSString *LPMainCellID = @"LPMainCell";
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    LPWorkDetailVC *vc = [[LPWorkDetailVC alloc]init];
+    vc.hidesBottomBarWhenPushed = YES;
+    vc.workListModel = self.listArray[indexPath.row];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - search
