@@ -1,50 +1,41 @@
 //
-//  LPInformationCollectionViewCell.m
+//  LPInformationSearchResultVC.m
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/8/28.
+//  Created by 邢晓亮 on 2018/8/31.
 //  Copyright © 2018年 lanpin. All rights reserved.
 //
 
-#import "LPInformationCollectionViewCell.h"
+#import "LPInformationSearchResultVC.h"
 #import "LPEssaylistModel.h"
-#import "SDCycleScrollView.h"
 #import "LPInformationSingleCell.h"
 #import "LPInformationMoreCell.h"
 
 static NSString *LPInformationSingleCellID = @"LPInformationSingleCell";
 static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
 
-@interface LPInformationCollectionViewCell ()<UITableViewDelegate,UITableViewDataSource,SDCycleScrollViewDelegate>
+@interface LPInformationSearchResultVC ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong)UITableView *tableview;
-@property (nonatomic, assign) NSNumber *labelListModelId;
 @property(nonatomic,assign) NSInteger page;
 
 @property(nonatomic,strong) LPEssaylistModel *model;
 @property(nonatomic,strong) NSMutableArray <LPEssaylistDataModel *>*listArray;
-@property(nonatomic,strong) SDCycleScrollView *cycleScrollView;
-@property(nonatomic,strong) NSMutableArray <LPEssaylistDataModel *>*choiceListArray;
-
 @end
 
-@implementation LPInformationCollectionViewCell
+@implementation LPInformationSearchResultVC
 
-- (void)awakeFromNib {
-    [super awakeFromNib];
-    // Initialization code
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+    self.view.backgroundColor = [UIColor whiteColor];
+    self.navigationItem.title = @"搜索结果";
     self.page = 1;
     self.listArray = [NSMutableArray array];
-    self.choiceListArray = [NSMutableArray array];
     
-    [self.contentView addSubview:self.tableview];
+    [self.view addSubview:self.tableview];
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.contentView);
+        make.edges.equalTo(self.view);
     }];
-}
--(void)setLabelListDataModel:(LPLabelListDataModel *)labelListDataModel{
-    _labelListDataModel = labelListDataModel;
-    self.labelListModelId = labelListDataModel.id;
-    self.page = 1;
     [self requestEssaylist];
 
 }
@@ -53,42 +44,28 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
     if ([model.code integerValue] == 0) {
         if (self.page == 1) {
             self.listArray = [NSMutableArray array];
-            self.choiceListArray = [NSMutableArray array];
         }
-        for (LPEssaylistDataModel *model in self.model.data) {
-            if ([model.choiceStatus integerValue] == 1) {
-                [self.choiceListArray addObject:model];
-            }else{
-                [self.listArray addObject:model];
-            }
-        }
-        if (self.choiceListArray.count > 0) {
-            self.tableview.tableHeaderView = self.cycleScrollView;
-            NSMutableArray *imgArray = [NSMutableArray array];
-            NSMutableArray *titleArray = [NSMutableArray array];
-
-            for (LPEssaylistDataModel *model in self.choiceListArray) {
-                [imgArray addObject:model.essayUrl];
-                [titleArray addObject:model.essayName];
-            }
-            self.cycleScrollView.imageURLStringsGroup = imgArray;
-            self.cycleScrollView.titlesGroup = titleArray;
-        }else{
-            self.tableview.tableHeaderView = [[UIView alloc]init];
-        }
-        
         if (self.model.data.count > 0) {
             self.page += 1;
-//            [self.listArray addObjectsFromArray:self.model.data];
-//            [self.tableview reloadData];
+            [self.listArray addObjectsFromArray:self.model.data];
         }else{
             [self.tableview.mj_footer endRefreshingWithNoMoreData];
         }
+        if (self.listArray.count == 0) {
+            [self addNodataView];
+        }
         [self.tableview reloadData];
-
+        
     }else{
-        [self.contentView showLoadingMeg:NETE_ERROR_MESSAGE time:MESSAGE_SHOW_TIME];
+        [self.view showLoadingMeg:NETE_ERROR_MESSAGE time:MESSAGE_SHOW_TIME];
     }
+}
+-(void)addNodataView{
+    LPNoDataView *noDataView = [[LPNoDataView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+    [self.view addSubview:noDataView];
+    [noDataView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view);
+    }];
 }
 
 #pragma mark - TableViewDelegate & Datasource
@@ -120,14 +97,14 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
     }
     
 }
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
-
 #pragma mark - request
 -(void)requestEssaylist{
     NSDictionary *dic = @{
-                          @"labelId":self.labelListModelId,
+                          @"key":self.string,
                           @"page":@(self.page)
                           };
     [NetApiManager requestEssaylistWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
@@ -137,7 +114,6 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
         self.model = [LPEssaylistModel mj_objectWithKeyValues:responseObject];
     }];
 }
-
 #pragma mark lazy
 - (UITableView *)tableview{
     if (!_tableview) {
@@ -162,12 +138,19 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
     }
     return _tableview;
 }
--(SDCycleScrollView *)cycleScrollView{
-    if (!_cycleScrollView) {
-        _cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 200) delegate:self placeholderImage:nil];
-        _cycleScrollView.pageControlAliment = SDCycleScrollViewPageContolAlimentRight;
-        _cycleScrollView.currentPageDotColor = [UIColor whiteColor]; // 自定义分页控件小圆标颜色
-    }
-    return _cycleScrollView;
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
 }
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
 @end

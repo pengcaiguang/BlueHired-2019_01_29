@@ -8,12 +8,16 @@
 
 #import "LPInformationSearchVC.h"
 #import "LPSearchBar.h"
+#import "LPInformationSearchResultVC.h"
+
+static NSString *InformationSearchHistory = @"InformationSearchHistory";
+
 
 @interface LPInformationSearchVC ()<UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong)UITableView *tableview;
 
-@property(nonatomic,strong) NSArray *textArray;
-
+@property(nonatomic,copy) NSArray *textArray;
+@property(nonatomic,copy) NSString *searchWord;
 @end
 
 @implementation LPInformationSearchVC
@@ -30,6 +34,12 @@
         make.edges.equalTo(self.view);
     }];
 }
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.textArray = (NSArray *)kUserDefaultsValue(InformationSearchHistory);
+    [self.tableview reloadData];
+}
+
 -(void)setSearchView{
     LPSearchBar *searchBar = [self addSearchBarWithFrame:CGRectMake(0, 0, SCREEN_WIDTH - 2 * 44 - 2 * 15, 44)];
     [searchBar becomeFirstResponder];
@@ -72,6 +82,42 @@
     button.layer.cornerRadius = 14;
     [button setBackgroundImage:[UIImage imageNamed:@"search_btn_bgView"] forState:UIControlStateNormal];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:button];
+}
+
+-(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
+    self.searchWord = searchBar.text;
+    [self saveWords];
+    [self search:self.searchWord];
+}
+
+
+-(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
+    NSLog(@"-%@",searchBar.text);
+    self.searchWord = searchBar.text;
+}
+-(void)touchSearchButton{
+    [self saveWords];
+    [self search:self.searchWord];
+}
+
+-(void)saveWords{
+    NSMutableArray *array = [NSMutableArray arrayWithArray:self.textArray];
+    if (![array containsObject:self.searchWord]) {
+        [array insertObject:self.searchWord atIndex:0];
+        kUserDefaultsSave([array copy], InformationSearchHistory);
+    }
+}
+
+-(void)search:(NSString *)string{
+    LPInformationSearchResultVC *vc = [[LPInformationSearchResultVC alloc]init];
+    vc.string = string;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+-(void)clearHisory{
+    kUserDefaultsRemove(InformationSearchHistory);
+    self.textArray = nil;
+    [self.tableview reloadData];
 }
 
 #pragma mark - TableViewDelegate & Datasource
@@ -125,11 +171,14 @@
     if(cell == nil){
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rid];
     }
-    cell.textLabel.text = [NSString stringWithFormat:@"%ld",indexPath.row];
+    cell.textLabel.font = [UIFont systemFontOfSize:14];
+    cell.textLabel.textColor = [UIColor colorWithHexString:@"#666666"];
+    cell.textLabel.text = self.textArray[indexPath.row];
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [self search:self.textArray[indexPath.row]];
 }
 #pragma mark lazy
 - (UITableView *)tableview{
