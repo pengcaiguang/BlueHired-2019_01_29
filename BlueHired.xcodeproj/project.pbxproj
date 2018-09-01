@@ -27,6 +27,7 @@
 		DC44DBA321354D6A00D00FAC /* DeviceUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = DC44DBA121354D6A00D00FAC /* DeviceUtils.m */; };
 		DC44DBA821354E8500D00FAC /* LPInformationCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC44DBA621354E8500D00FAC /* LPInformationCollectionViewCell.m */; };
 		DC44DBA921354E8500D00FAC /* LPInformationCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC44DBA721354E8500D00FAC /* LPInformationCollectionViewCell.xib */; };
+		DC49D867213A6BB2009BFCB0 /* LPEssayDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC49D866213A6BB2009BFCB0 /* LPEssayDetailVC.m */; };
 		DC5C388021362EB300B3CF6E /* LPEssaylistModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC5C387F21362EB300B3CF6E /* LPEssaylistModel.m */; };
 		DC5C38842136372F00B3CF6E /* LPInformationSingleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC5C38822136372F00B3CF6E /* LPInformationSingleCell.m */; };
 		DC5C38852136372F00B3CF6E /* LPInformationSingleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC5C38832136372F00B3CF6E /* LPInformationSingleCell.xib */; };
@@ -138,6 +139,8 @@
 		DC44DBA521354E8500D00FAC /* LPInformationCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPInformationCollectionViewCell.h; sourceTree = "<group>"; };
 		DC44DBA621354E8500D00FAC /* LPInformationCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPInformationCollectionViewCell.m; sourceTree = "<group>"; };
 		DC44DBA721354E8500D00FAC /* LPInformationCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPInformationCollectionViewCell.xib; sourceTree = "<group>"; };
+		DC49D865213A6BB2009BFCB0 /* LPEssayDetailVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPEssayDetailVC.h; sourceTree = "<group>"; };
+		DC49D866213A6BB2009BFCB0 /* LPEssayDetailVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPEssayDetailVC.m; sourceTree = "<group>"; };
 		DC5C387E21362EB300B3CF6E /* LPEssaylistModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPEssaylistModel.h; sourceTree = "<group>"; };
 		DC5C387F21362EB300B3CF6E /* LPEssaylistModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPEssaylistModel.m; sourceTree = "<group>"; };
 		DC5C38812136372F00B3CF6E /* LPInformationSingleCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPInformationSingleCell.h; sourceTree = "<group>"; };
@@ -495,6 +498,8 @@
 				DC30E1942138F51B000C7A91 /* LPInformationSearchVC.m */,
 				DC30E19921391DAD000C7A91 /* LPInformationSearchResultVC.h */,
 				DC30E19A21391DAD000C7A91 /* LPInformationSearchResultVC.m */,
+				DC49D865213A6BB2009BFCB0 /* LPEssayDetailVC.h */,
+				DC49D866213A6BB2009BFCB0 /* LPEssayDetailVC.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -896,6 +901,7 @@
 				DC44DBA321354D6A00D00FAC /* DeviceUtils.m in Sources */,
 				DC7A32DB2137DADD00E09C6C /* UIViewController+BackItem.m in Sources */,
 				DC5C388E213645E000B3CF6E /* LPInformationMoreImageCollectionViewCell.m in Sources */,
+				DC49D867213A6BB2009BFCB0 /* LPEssayDetailVC.m in Sources */,
 				DC44DBA821354E8500D00FAC /* LPInformationCollectionViewCell.m in Sources */,
 				DC7383612133EB2A0055DC10 /* LPMainVC.m in Sources */,
 				DC73839F2134EBC10055DC10 /* LPUserDefaults.m in Sources */,

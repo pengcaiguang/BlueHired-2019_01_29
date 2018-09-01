@@ -11,6 +11,7 @@
 #import "SDCycleScrollView.h"
 #import "LPInformationSingleCell.h"
 #import "LPInformationMoreCell.h"
+#import "LPEssayDetailVC.h"
 
 static NSString *LPInformationSingleCellID = @"LPInformationSingleCell";
 static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
@@ -122,6 +123,10 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    LPEssayDetailVC *vc = [[LPEssayDetailVC alloc]init];
+    vc.hidesBottomBarWhenPushed = YES;
+    vc.essaylistDataModel = self.listArray[indexPath.row];
+    [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - request

@@ -149,7 +149,7 @@
 //资讯分类
 + (void)requestLabellistWithParam:(id)paramer
                        withHandle:(response)responseHandle{
-    NSString * appendURLString = @"/platform/get_label_list";
+    NSString * appendURLString = @"platform/get_label_list";
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
@@ -159,14 +159,23 @@
 //资讯列表
 + (void)requestEssaylistWithParam:(id)paramer
                        withHandle:(response)responseHandle{
-    NSString * appendURLString = @"/essay/get_essay_list";
+    NSString * appendURLString = @"essay/get_essay_list";
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
-
+//资讯详情
++ (void)requestEssayWithParam:(id)paramer
+                   withHandle:(response)responseHandle{
+    NSString * appendURLString = @"essay/get_essay";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
 #pragma mark - 圈子
 /************************************************************/
 //*  圈子
@@ -174,7 +183,7 @@
 //查看圈子种类
 + (void)requestMoodTypeWithParam:(id)paramer
                       withHandle:(response)responseHandle{
-    NSString * appendURLString = @"/mood/get_mood_type";
+    NSString * appendURLString = @"mood/get_mood_type";
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
@@ -184,7 +193,7 @@
 //查看圈子列表
 + (void)requestMoodListWithParam:(id)paramer
                       withHandle:(response)responseHandle{
-    NSString * appendURLString = @"/mood/get_mood_list";
+    NSString * appendURLString = @"mood/get_mood_list";
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer

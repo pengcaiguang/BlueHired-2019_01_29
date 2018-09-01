@@ -23,7 +23,7 @@
 @property (nonatomic, copy) NSString *essayDetails;
 @property (nonatomic, copy) NSString *essayName;
 @property (nonatomic, copy) NSString *essayUrl;
-@property (nonatomic, copy) NSString *id;
+@property (nonatomic, copy) NSNumber *id;
 @property (nonatomic, copy) NSString *key;
 @property (nonatomic, copy) NSNumber *labelId;
 @property (nonatomic, copy) NSNumber *likeStatus;
