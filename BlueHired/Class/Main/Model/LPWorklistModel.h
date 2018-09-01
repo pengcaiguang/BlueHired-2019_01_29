@@ -17,7 +17,7 @@
 
 @class LPWorklistDataSlideshowListModel,LPWorklistDataWorkListModel;
 @interface LPWorklistDataModel : NSObject
-@property (nonatomic, copy) NSArray <LPWorklistDataSlideshowListModel *> *slideshowList;
+@property (nonatomic, copy) NSArray <LPWorklistDataWorkListModel *> *slideshowList;
 @property (nonatomic, copy) NSArray <LPWorklistDataWorkListModel *> *workList;
 @end
 

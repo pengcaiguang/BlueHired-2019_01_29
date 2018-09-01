@@ -136,7 +136,7 @@ static NSString *LPMainCellID = @"LPMainCell";
 //    [self addNodataView];
     if ([self.model.code integerValue] == 0) {
         NSMutableArray *array = [NSMutableArray array];
-        for (LPWorklistDataSlideshowListModel *model in self.model.data.slideshowList) {
+        for (LPWorklistDataWorkListModel *model in self.model.data.slideshowList) {
             [array addObject:model.mechanismUrl];
         }
         self.cycleScrollView.imageURLStringsGroup = array;
@@ -206,9 +206,12 @@ static NSString *LPMainCellID = @"LPMainCell";
 }
 
 #pragma mark - SDCycleScrollViewDelegate
-
 - (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didSelectItemAtIndex:(NSInteger)index{
     NSLog(@"---点击了第%ld张图片", (long)index);
+    LPWorkDetailVC *vc = [[LPWorkDetailVC alloc]init];
+    vc.hidesBottomBarWhenPushed = YES;
+    vc.workListModel = self.model.data.slideshowList[index];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - target

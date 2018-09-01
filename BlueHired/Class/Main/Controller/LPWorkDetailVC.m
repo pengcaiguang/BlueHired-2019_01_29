@@ -88,7 +88,8 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
             [button setImage:[UIImage imageNamed:@"collection_selected"] forState:UIControlStateSelected];
         }
         button.titleLabel.font = [UIFont systemFontOfSize:11];
-//        [button addTarget:self action:@selector(touchTitleButton:) forControlEvents:UIControlEventTouchUpInside];
+        button.tag = i;
+        [button addTarget:self action:@selector(touchBottomButton:) forControlEvents:UIControlEventTouchUpInside];
         [self.bottomButtonArray addObject:button];
     }
     [self.bottomButtonArray mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedSpacing:10 leadSpacing:10 tailSpacing:10];
@@ -100,6 +101,13 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
     for (UIButton *button in self.bottomButtonArray) {
         button.titleEdgeInsets = UIEdgeInsetsMake(0, -button.imageView.frame.size.width, -button.imageView.frame.size.height, 0);
         button.imageEdgeInsets = UIEdgeInsetsMake(-button.titleLabel.intrinsicContentSize.height, 0, 0, -button.titleLabel.intrinsicContentSize.width);
+    }
+}
+
+-(void)touchBottomButton:(UIButton *)button{
+    if ([LoginUtils validationLogin:self]) {
+        NSInteger index = button.tag;
+        NSLog(@"%ld",index);
     }
 }
 
