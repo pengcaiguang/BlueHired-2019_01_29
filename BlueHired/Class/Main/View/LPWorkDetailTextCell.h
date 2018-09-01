@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface LPWorkDetailTextCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UILabel *detailTitleLabel;
+@property (weak, nonatomic) IBOutlet UILabel *detailLabel;
 
 @end

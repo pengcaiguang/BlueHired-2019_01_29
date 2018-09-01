@@ -22,6 +22,9 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
 @property(nonatomic,strong) NSMutableArray <UIButton *>*buttonArray;
 @property(nonatomic,strong) UIView *lineView;
 
+@property(nonatomic,strong) NSArray *textArray;
+@property(nonatomic,strong) NSMutableArray <UIButton *> *bottomButtonArray;
+
 
 @end
 
@@ -34,12 +37,70 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = @"企业详情";
     self.buttonArray = [NSMutableArray array];
-    
+    self.bottomButtonArray = [NSMutableArray array];
+    self.textArray = @[@"入职要求",@"薪资福利",@"住宿餐饮",@"工作时间",@"面试材料",@"其他说明"];
+
     [self.view addSubview:self.tableview];
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.view);
+//        make.edges.equalTo(self.view);
+        make.top.mas_equalTo(0);
+        make.left.mas_equalTo(0);
+        make.right.mas_equalTo(0);
+        make.bottom.mas_equalTo(-48);
     }];
+    [self setBottomView];
     [self requestWorkDetail];
+}
+
+-(void)setBottomView{
+    
+    UIView *bottomBgView = [[UIView alloc]init];
+    [self.view addSubview:bottomBgView];
+    ;    [bottomBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(0);
+        make.right.mas_equalTo(-136);
+        make.bottom.mas_equalTo(0);
+        make.height.mas_equalTo(48);
+    }];
+    
+    UIButton *signUpButton = [[UIButton alloc]init];
+    [self.view addSubview:signUpButton];
+    [signUpButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.mas_equalTo(0);
+        make.bottom.mas_equalTo(0);
+        make.height.mas_equalTo(48);
+        make.width.mas_equalTo(136);
+    }];
+    [signUpButton setTitle:@"入职报名" forState:UIControlStateNormal];
+    [signUpButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    signUpButton.backgroundColor = [UIColor baseColor];
+    signUpButton.titleLabel.font = [UIFont systemFontOfSize:17];
+    
+    NSArray *imgArray = @[@"collection_normal",@"share_btn",@"customersService"];
+    NSArray *titleArray = @[@"收藏",@"分享",@"咨询"];
+    for (int i =0; i<titleArray.count; i++) {
+        UIButton *button = [[UIButton alloc]init];
+        [bottomBgView addSubview:button];
+        [button setTitle:titleArray[i] forState:UIControlStateNormal];
+        [button setTitleColor:[UIColor colorWithHexString:@"#424242"] forState:UIControlStateNormal];
+        [button setImage:[UIImage imageNamed:imgArray[i]] forState:UIControlStateNormal];
+        if (i == 0) {
+            [button setImage:[UIImage imageNamed:@"collection_selected"] forState:UIControlStateSelected];
+        }
+        button.titleLabel.font = [UIFont systemFontOfSize:11];
+//        [button addTarget:self action:@selector(touchTitleButton:) forControlEvents:UIControlEventTouchUpInside];
+        [self.bottomButtonArray addObject:button];
+    }
+    [self.bottomButtonArray mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedSpacing:10 leadSpacing:10 tailSpacing:10];
+    [self.bottomButtonArray mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(5);
+        make.bottom.mas_equalTo(-5);
+    }];
+    
+    for (UIButton *button in self.bottomButtonArray) {
+        button.titleEdgeInsets = UIEdgeInsetsMake(0, -button.imageView.frame.size.width, -button.imageView.frame.size.height, 0);
+        button.imageEdgeInsets = UIEdgeInsetsMake(-button.titleLabel.intrinsicContentSize.height, 0, 0, -button.titleLabel.intrinsicContentSize.width);
+    }
 }
 
 #pragma mark - setdata
@@ -50,20 +111,25 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
 
 #pragma mark - TableViewDelegate & Datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 2;
+    return 3;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     if (section == 0) {
         return 0.1;
-    }else{
+    }else if (section == 1) {
         return 50;
+    }else{
+        return 20;
     }
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if (section == 0) {
         return 1;
+    }else if (section == 1){
+        return 6;
+    }else{
+        return 2;
     }
-    return 8;
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
@@ -74,13 +140,12 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
         UIScrollView *scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 50)];
         [view addSubview:scrollView];
         scrollView.showsHorizontalScrollIndicator = NO;
-        NSArray *textArray = @[@"入职要求",@"薪资福利",@"住宿餐饮",@"工作时间",@"面试材料",@"其他说明"];
         
-        CGFloat btnw = SCREEN_WIDTH/textArray.count;
-        for (int i = 0; i <textArray.count; i++) {
+        CGFloat btnw = SCREEN_WIDTH/self.textArray.count;
+        for (int i = 0; i <self.textArray.count; i++) {
             UIButton *button = [[UIButton alloc]init];
             button.frame = CGRectMake(btnw*i, 0, btnw, 50);
-            [button setTitle:textArray[i] forState:UIControlStateNormal];
+            [button setTitle:self.textArray[i] forState:UIControlStateNormal];
             [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
             [button setTitleColor:[UIColor baseColor] forState:UIControlStateSelected];
             button.tag = i;
@@ -136,9 +201,50 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
         LPWorkDetailHeadCell *cell = [tableView dequeueReusableCellWithIdentifier:LPWorkDetailHeadCellID];
         cell.model = self.model;
         return cell;
-    }else{
+    }else if (indexPath.section == 1){
         LPWorkDetailTextCell *cell = [tableView dequeueReusableCellWithIdentifier:LPWorkDetailTextCellID];
+        cell.detailTitleLabel.text = self.textArray[indexPath.row];
+        if (indexPath.row == 0) {
+            NSString *string=[self.model.data.workDemand stringByReplacingOccurrencesOfString:@"<p>"withString:@" "];
+            string = [string stringByReplacingOccurrencesOfString:@"</p>"withString:@"\n"];
+            cell.detailLabel.text = string;
+        }else if (indexPath.row == 1){
+            NSString *string=[self.model.data.workSalary stringByReplacingOccurrencesOfString:@"<p>"withString:@" "];
+            string = [string stringByReplacingOccurrencesOfString:@"</p>"withString:@"\n"];
+            cell.detailLabel.text = string;
+        }else if (indexPath.row == 2){
+            NSString *string=[self.model.data.eatSleep stringByReplacingOccurrencesOfString:@"<p>"withString:@" "];
+            string = [string stringByReplacingOccurrencesOfString:@"</p>"withString:@"\n"];
+            cell.detailLabel.text = string;
+        }else if (indexPath.row == 3){
+            NSString *string=[self.model.data.workTime stringByReplacingOccurrencesOfString:@"<p>"withString:@" "];
+            string = [string stringByReplacingOccurrencesOfString:@"</p>"withString:@"\n"];
+            cell.detailLabel.text = string;
+        }else if (indexPath.row == 4){
+            NSString *string=[self.model.data.workKnow stringByReplacingOccurrencesOfString:@"<p>"withString:@" "];
+            string = [string stringByReplacingOccurrencesOfString:@"</p>"withString:@"\n"];
+            cell.detailLabel.text = string;
+        }else if (indexPath.row == 5){
+            NSString *string=[self.model.data.remarks stringByReplacingOccurrencesOfString:@"<p>"withString:@" "];
+            string = [string stringByReplacingOccurrencesOfString:@"</p>"withString:@"\n"];
+            cell.detailLabel.text = string;
+        }
+        
         return cell;
+    }else{
+        if (indexPath.row == 0) {
+            LPWorkDetailTextCell *cell = [tableView dequeueReusableCellWithIdentifier:LPWorkDetailTextCellID];
+            cell.detailTitleLabel.text = @"企业简介";
+            cell.detailLabel.text = self.model.data.mechanismDetails;
+            return cell;
+        }else{
+            UITableViewCell *cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+            cell.imageView.image = [UIImage imageNamed:@"detail_location"];
+            cell.textLabel.textColor = [UIColor colorWithHexString:@"#444444"];
+            cell.textLabel.font = [UIFont systemFontOfSize:14];
+            cell.textLabel.text = [NSString stringWithFormat:@"地址：%@",self.model.data.mechanismAddress];
+            return cell;
+        }
     }
     
 }
@@ -170,8 +276,6 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
         _tableview.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
         [_tableview registerNib:[UINib nibWithNibName:LPWorkDetailHeadCellID bundle:nil] forCellReuseIdentifier:LPWorkDetailHeadCellID];
         [_tableview registerNib:[UINib nibWithNibName:LPWorkDetailTextCellID bundle:nil] forCellReuseIdentifier:LPWorkDetailTextCellID];
-
-        
         
     }
     return _tableview;

@@ -21,6 +21,9 @@
     [super awakeFromNib];
     // Initialization code
     [self.imageBgView addSubview:self.cycleScrollView];
+    [self.cycleScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.imageBgView);
+    }];
 }
 
 -(void)setModel:(LPWorkDetailModel *)model{
@@ -28,7 +31,7 @@
     self.mechanismNameLabel.text = model.data.mechanismName;
     self.mechanismScoreLabel.text = [NSString stringWithFormat:@"%@分",model.data.mechanismScore];
     self.postNameLabel.text = model.data.postName;
-    self.wageRangeLabel.text = model.data.wageRange;
+    self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/月",model.data.wageRange];
     
     self.workTypeNameLabel.text = [NSString stringWithFormat:@"需%@：%@人",model.data.workTypeName,model.data.maxNumber ? model.data.maxNumber : @"0"];
     self.applyNumberLabel.text = [NSString stringWithFormat:@"已报名：%@人",model.data.applyNumber ? model.data.applyNumber : @"0"];
@@ -60,7 +63,7 @@
 
 -(SDCycleScrollView *)cycleScrollView{
     if (!_cycleScrollView) {
-        _cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 180) delegate:self placeholderImage:nil];
+        _cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectZero delegate:self placeholderImage:nil];
         _cycleScrollView.pageControlAliment = SDCycleScrollViewPageContolAlimentRight;
         _cycleScrollView.currentPageDotColor = [UIColor whiteColor]; // 自定义分页控件小圆标颜色
     }
