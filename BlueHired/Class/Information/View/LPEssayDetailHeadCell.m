@@ -24,8 +24,6 @@
     [self.wkWebView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.webBgView);
     }];
-//    self.wkWebView.backgroundColor = [UIColor redColor];
-
 }
 
 -(void)setModel:(LPEssayDetailModel *)model{
@@ -43,41 +41,12 @@
     
     if (!kStringIsEmpty(model.data.essayDetails)) {
 //        [self.wkWebView loadHTMLString:model.data.essayDetails baseURL:nil];
-        
         [self.wkWebView loadHTMLString:[NSString stringWithFormat:@"<html><head><meta content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0\" name=\"viewport\"><style type=\"text/css\">img{display: inline-block;max-width: 100%%}</style></head><body>\%@</body></html>",model.data.essayDetails] baseURL: nil];
 
-        
     }
     
 }
 
-
-//- (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation
-//{
-//
-////    [webView evaluateJavaScript:@"document.getElementById(\"content\").offsetTop"completionHandler:^(id _Nullable result,NSError * _Nullable error) {
-////        //获取页面高度，并重置webview的frame
-////        CGFloat lastHeight  = [result doubleValue];
-////        NSLog(@"%f",lastHeight);
-//////        self.wkWebView.frame = CGRectMake(14, 0, SCREEN_WIDTH - 28, lastHeight);
-////        self.webBgView_constraint_height.constant = lastHeight;
-//////        webHeight = lastHeight;
-////        [self.tableView beginUpdates];
-////        [self.tableView endUpdates];
-////    }];
-//
-//    [webView evaluateJavaScript:@"document.getElementById(\"content\").offsetHeight;"completionHandler:^(id _Nullable result,NSError *_Nullable error) {
-//        //获取页面高度，并重置webview的frame
-//        CGFloat documentHeight = [result doubleValue];
-//        NSLog(@"%f",documentHeight);
-//
-////        CGRect frame = webView.frame;
-////        frame.size.height = documentHeight;
-////        webView.frame = frame;
-//    }];
-//
-//
-//}
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
     self.wkWebView.scrollView.scrollEnabled = NO;
@@ -86,12 +55,9 @@
                   CGFloat documentHeight = [result doubleValue];
                   NSLog(@"%f",documentHeight);
                   self.webBgView_constraint_height.constant = documentHeight;
-                  
                   [self.tableView beginUpdates];
                   [self.tableView endUpdates];
-                  
-                  //result 就是加载完成后 webView的实际高度
-                  //获取后返回重新布局
+
               }];
 }
 
@@ -114,9 +80,6 @@
         _wkWebView.userInteractionEnabled = NO;
         _wkWebView.scrollView.bounces = NO;
         [_wkWebView sizeToFit];
-
-        //开了支持滑动返回
-//        _wkWebView.allowsBackForwardNavigationGestures = YES;
     }
     return _wkWebView;
 }

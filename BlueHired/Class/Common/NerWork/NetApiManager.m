@@ -176,6 +176,27 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
+//增加新闻浏览量
++ (void)requestSetEssayViewWithParam:(id)paramer
+                          withHandle:(response)responseHandle{
+    NSString * appendURLString = @"essay/set_essay_view";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
+//获取评论列表
++ (void)requestCommentListWithParam:(id)paramer
+                         withHandle:(response)responseHandle{
+    NSString * appendURLString = @"comment/get_comment_list";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
+
 #pragma mark - 圈子
 /************************************************************/
 //*  圈子

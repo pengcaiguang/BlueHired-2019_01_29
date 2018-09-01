@@ -9,6 +9,7 @@
 #import "LPEssayDetailVC.h"
 #import "LPEssayDetailHeadCell.h"
 #import "LPEssayDetailModel.h"
+#import "LPCommentListModel.h"
 
 static NSString *LPEssayDetailHeadCellID = @"LPEssayDetailHeadCell";
 
@@ -17,6 +18,11 @@ static NSString *LPEssayDetailHeadCellID = @"LPEssayDetailHeadCell";
 @property (nonatomic, strong)UITableView *tableview;
 
 @property(nonatomic,strong) LPEssayDetailModel *model;
+@property(nonatomic,assign) NSInteger page;
+
+@property(nonatomic,strong) LPCommentListModel *commentListModel;
+@property(nonatomic,strong) NSMutableArray *commentListArray;
+
 
 @end
 
@@ -28,28 +34,86 @@ static NSString *LPEssayDetailHeadCellID = @"LPEssayDetailHeadCell";
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = @"资讯详情";
 
+    self.page = 1;
+    self.commentListArray = [NSMutableArray array];
+    
     [self.view addSubview:self.tableview];
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
     [self requestEssay];
+    [self requestSetEssayView];
+    [self requestCommentList];
 }
 
 -(void)setModel:(LPEssayDetailModel *)model{
     _model = model;
     [self.tableview reloadData];
 }
+-(void)setCommentListModel:(LPCommentListModel *)commentListModel{
+    _commentListModel = commentListModel;
+    if ([commentListModel.code integerValue] == 0) {
+        if (self.page == 1) {
+            self.commentListArray = [NSMutableArray array];
+        }
+        if (commentListModel.data.count > 0) {
+            self.page += 1;
+            [self.commentListArray addObjectsFromArray:commentListModel.data];
+        }else{
+            [self.tableview.mj_footer endRefreshingWithNoMoreData];
+        }
+        [self.tableview reloadSections:[[NSIndexSet alloc]initWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
+        
+    }else{
+        [self.view showLoadingMeg:NETE_ERROR_MESSAGE time:MESSAGE_SHOW_TIME];
+    }
+}
 
 #pragma mark - TableViewDelegate & Datasource
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 2;
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    if (section == 0) {
+        return 0.1;
+    }else{
+        return 30;
+    }
+}
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 1;
+    if (section == 0) {
+        return 1;
+    }else{
+        return self.commentListArray.count+20;
+    }
+}
+
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    if (section == 1) {
+        UIView *view = [[UIView alloc]init];
+        view.backgroundColor = [UIColor whiteColor];
+        UILabel *label = [[UILabel alloc]init];
+        label.frame = CGRectMake(16, 0, SCREEN_WIDTH-16, 30);
+        label.textColor = [UIColor colorWithHexString:@"#1B1B1B"];
+        label.font = [UIFont systemFontOfSize:12];
+        label.text = [NSString stringWithFormat:@"全部评论（%ld）",self.commentListArray.count];
+        [view addSubview:label];
+        return view;
+    }else{
+        return nil;
+    }
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    LPEssayDetailHeadCell *cell = [tableView dequeueReusableCellWithIdentifier:LPEssayDetailHeadCellID];
-    cell.model = self.model;
-    return cell;
-    
+    if (indexPath.section == 0) {
+        LPEssayDetailHeadCell *cell = [tableView dequeueReusableCellWithIdentifier:LPEssayDetailHeadCellID];
+        cell.model = self.model;
+        return cell;
+    }else{
+        UITableViewCell *cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
+        cell.textLabel.text = [NSString stringWithFormat:@"%ld",indexPath.row];
+        return cell;
+    }
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -62,6 +126,26 @@ static NSString *LPEssayDetailHeadCellID = @"LPEssayDetailHeadCell";
     [NetApiManager requestEssayWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         self.model = [LPEssayDetailModel mj_objectWithKeyValues:responseObject];
+    }];
+}
+
+-(void)requestSetEssayView{
+    NSDictionary *dic = @{
+                          @"id":self.essaylistDataModel.id
+                          };
+    [NetApiManager requestSetEssayViewWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+    }];
+}
+-(void)requestCommentList{
+    NSDictionary *dic = @{
+                          @"type":@(1),
+                          @"page":@(self.page),
+                          @"id":self.essaylistDataModel.id
+                          };
+    [NetApiManager requestCommentListWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        self.commentListModel = [LPCommentListModel mj_objectWithKeyValues:responseObject];
     }];
 }
 

@@ -66,6 +66,12 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //资讯详情
 + (void)requestEssayWithParam:(id)paramer
                    withHandle:(response)responseHandle;
+//增加新闻浏览量
++ (void)requestSetEssayViewWithParam:(id)paramer
+                          withHandle:(response)responseHandle;
+//获取评论列表
++ (void)requestCommentListWithParam:(id)paramer
+                         withHandle:(response)responseHandle;
 #pragma mark - 圈子
 /************************************************************/
 //*  圈子
