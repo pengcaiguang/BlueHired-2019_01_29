@@ -28,6 +28,9 @@
 		DC44DBA821354E8500D00FAC /* LPInformationCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC44DBA621354E8500D00FAC /* LPInformationCollectionViewCell.m */; };
 		DC44DBA921354E8500D00FAC /* LPInformationCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC44DBA721354E8500D00FAC /* LPInformationCollectionViewCell.xib */; };
 		DC49D867213A6BB2009BFCB0 /* LPEssayDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC49D866213A6BB2009BFCB0 /* LPEssayDetailVC.m */; };
+		DC49D86B213A74B3009BFCB0 /* LPEssayDetailHeadCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC49D869213A74B3009BFCB0 /* LPEssayDetailHeadCell.m */; };
+		DC49D86C213A74B3009BFCB0 /* LPEssayDetailHeadCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC49D86A213A74B3009BFCB0 /* LPEssayDetailHeadCell.xib */; };
+		DC49D86F213A7751009BFCB0 /* LPEssayDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC49D86E213A7751009BFCB0 /* LPEssayDetailModel.m */; };
 		DC5C388021362EB300B3CF6E /* LPEssaylistModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC5C387F21362EB300B3CF6E /* LPEssaylistModel.m */; };
 		DC5C38842136372F00B3CF6E /* LPInformationSingleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC5C38822136372F00B3CF6E /* LPInformationSingleCell.m */; };
 		DC5C38852136372F00B3CF6E /* LPInformationSingleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC5C38832136372F00B3CF6E /* LPInformationSingleCell.xib */; };
@@ -141,6 +144,11 @@
 		DC44DBA721354E8500D00FAC /* LPInformationCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPInformationCollectionViewCell.xib; sourceTree = "<group>"; };
 		DC49D865213A6BB2009BFCB0 /* LPEssayDetailVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPEssayDetailVC.h; sourceTree = "<group>"; };
 		DC49D866213A6BB2009BFCB0 /* LPEssayDetailVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPEssayDetailVC.m; sourceTree = "<group>"; };
+		DC49D868213A74B3009BFCB0 /* LPEssayDetailHeadCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPEssayDetailHeadCell.h; sourceTree = "<group>"; };
+		DC49D869213A74B3009BFCB0 /* LPEssayDetailHeadCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPEssayDetailHeadCell.m; sourceTree = "<group>"; };
+		DC49D86A213A74B3009BFCB0 /* LPEssayDetailHeadCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPEssayDetailHeadCell.xib; sourceTree = "<group>"; };
+		DC49D86D213A7751009BFCB0 /* LPEssayDetailModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPEssayDetailModel.h; sourceTree = "<group>"; };
+		DC49D86E213A7751009BFCB0 /* LPEssayDetailModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPEssayDetailModel.m; sourceTree = "<group>"; };
 		DC5C387E21362EB300B3CF6E /* LPEssaylistModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPEssaylistModel.h; sourceTree = "<group>"; };
 		DC5C387F21362EB300B3CF6E /* LPEssaylistModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPEssaylistModel.m; sourceTree = "<group>"; };
 		DC5C38812136372F00B3CF6E /* LPInformationSingleCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPInformationSingleCell.h; sourceTree = "<group>"; };
@@ -304,6 +312,8 @@
 				DC44DB9F21353D5800D00FAC /* LPLabelListModel.m */,
 				DC5C387E21362EB300B3CF6E /* LPEssaylistModel.h */,
 				DC5C387F21362EB300B3CF6E /* LPEssaylistModel.m */,
+				DC49D86D213A7751009BFCB0 /* LPEssayDetailModel.h */,
+				DC49D86E213A7751009BFCB0 /* LPEssayDetailModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -323,6 +333,9 @@
 				DC5C388B213645E000B3CF6E /* LPInformationMoreImageCollectionViewCell.h */,
 				DC5C388C213645E000B3CF6E /* LPInformationMoreImageCollectionViewCell.m */,
 				DC5C388D213645E000B3CF6E /* LPInformationMoreImageCollectionViewCell.xib */,
+				DC49D868213A74B3009BFCB0 /* LPEssayDetailHeadCell.h */,
+				DC49D869213A74B3009BFCB0 /* LPEssayDetailHeadCell.m */,
+				DC49D86A213A74B3009BFCB0 /* LPEssayDetailHeadCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -787,6 +800,7 @@
 				DC30E1A621393BB0000C7A91 /* LPWorkDetailHeadCell.xib in Resources */,
 				DC5C38952136682200B3CF6E /* LPCircleCollectionViewCell.xib in Resources */,
 				DC73832B2133E33E0055DC10 /* Main.storyboard in Resources */,
+				DC49D86C213A74B3009BFCB0 /* LPEssayDetailHeadCell.xib in Resources */,
 				DC7383A82134F6580055DC10 /* LPMainCell.xib in Resources */,
 				DC5C389E213682F500B3CF6E /* LPCircleListCell.xib in Resources */,
 				DC5C38852136372F00B3CF6E /* LPInformationSingleCell.xib in Resources */,
@@ -914,6 +928,7 @@
 				DC7A32D52137C2EC00E09C6C /* LPLoginVC.m in Sources */,
 				DC30E1922138E622000C7A91 /* LPMainSearchVC.m in Sources */,
 				DC5C38A421369B9B00B3CF6E /* NSString+String.m in Sources */,
+				DC49D86F213A7751009BFCB0 /* LPEssayDetailModel.m in Sources */,
 				DC44DB9C21352B8000D00FAC /* LPNoDataView.m in Sources */,
 				DC30E19B21391DAD000C7A91 /* LPInformationSearchResultVC.m in Sources */,
 				DC7A32E7213812E200E09C6C /* LPSortAlertView.m in Sources */,
@@ -926,6 +941,7 @@
 				DC44DB99213526C600D00FAC /* UIImage+Image.m in Sources */,
 				DC73837D2133F1110055DC10 /* UIColor+Color.m in Sources */,
 				DC7A32DE2137E61100E09C6C /* LPForgetPassWordVC.m in Sources */,
+				DC49D86B213A74B3009BFCB0 /* LPEssayDetailHeadCell.m in Sources */,
 				DC7383282133E33E0055DC10 /* ViewController.m in Sources */,
 				DC44DB9621351F6D00D00FAC /* NullSafe.m in Sources */,
 				DC7383A72134F6580055DC10 /* LPMainCell.m in Sources */,
