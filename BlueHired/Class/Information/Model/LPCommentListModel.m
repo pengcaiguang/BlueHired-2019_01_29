@@ -17,6 +17,10 @@
 @end
 
 @implementation LPCommentListDataModel
-
++ (NSDictionary *)objectClassInArray {
+    return @{
+             @"commentList": @"LPCommentListDataModel",
+             };
+}
 @end
 

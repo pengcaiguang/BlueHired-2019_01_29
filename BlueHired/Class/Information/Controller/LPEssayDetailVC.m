@@ -8,11 +8,13 @@
 
 #import "LPEssayDetailVC.h"
 #import "LPEssayDetailHeadCell.h"
+#import "LPEssayDetailCommentCell.h"
 #import "LPEssayDetailModel.h"
 #import "LPCommentListModel.h"
 
-static NSString *LPEssayDetailHeadCellID = @"LPEssayDetailHeadCell";
 
+static NSString *LPEssayDetailHeadCellID = @"LPEssayDetailHeadCell";
+static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
 
 @interface LPEssayDetailVC ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong)UITableView *tableview;
@@ -21,7 +23,7 @@ static NSString *LPEssayDetailHeadCellID = @"LPEssayDetailHeadCell";
 @property(nonatomic,assign) NSInteger page;
 
 @property(nonatomic,strong) LPCommentListModel *commentListModel;
-@property(nonatomic,strong) NSMutableArray *commentListArray;
+@property(nonatomic,strong) NSMutableArray <LPCommentListDataModel *>*commentListArray;
 
 
 @end
@@ -48,7 +50,8 @@ static NSString *LPEssayDetailHeadCellID = @"LPEssayDetailHeadCell";
 
 -(void)setModel:(LPEssayDetailModel *)model{
     _model = model;
-    [self.tableview reloadData];
+    [self.tableview reloadSections:[[NSIndexSet alloc]initWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+//    [self.tableview reloadData];
 }
 -(void)setCommentListModel:(LPCommentListModel *)commentListModel{
     _commentListModel = commentListModel;
@@ -59,10 +62,10 @@ static NSString *LPEssayDetailHeadCellID = @"LPEssayDetailHeadCell";
         if (commentListModel.data.count > 0) {
             self.page += 1;
             [self.commentListArray addObjectsFromArray:commentListModel.data];
+            [self.tableview reloadSections:[[NSIndexSet alloc]initWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
         }else{
             [self.tableview.mj_footer endRefreshingWithNoMoreData];
         }
-        [self.tableview reloadSections:[[NSIndexSet alloc]initWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
         
     }else{
         [self.view showLoadingMeg:NETE_ERROR_MESSAGE time:MESSAGE_SHOW_TIME];
@@ -84,7 +87,7 @@ static NSString *LPEssayDetailHeadCellID = @"LPEssayDetailHeadCell";
     if (section == 0) {
         return 1;
     }else{
-        return self.commentListArray.count+20;
+        return self.commentListArray.count;
     }
 }
 
@@ -110,8 +113,8 @@ static NSString *LPEssayDetailHeadCellID = @"LPEssayDetailHeadCell";
         cell.model = self.model;
         return cell;
     }else{
-        UITableViewCell *cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
-        cell.textLabel.text = [NSString stringWithFormat:@"%ld",indexPath.row];
+        LPEssayDetailCommentCell *cell = [tableView dequeueReusableCellWithIdentifier:LPEssayDetailCommentCellID];
+        cell.model = self.commentListArray[indexPath.row];
         return cell;
     }
 }
@@ -161,6 +164,8 @@ static NSString *LPEssayDetailHeadCellID = @"LPEssayDetailHeadCell";
         _tableview.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         _tableview.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
         [_tableview registerNib:[UINib nibWithNibName:LPEssayDetailHeadCellID bundle:nil] forCellReuseIdentifier:LPEssayDetailHeadCellID];
+        [_tableview registerNib:[UINib nibWithNibName:LPEssayDetailCommentCellID bundle:nil] forCellReuseIdentifier:LPEssayDetailCommentCellID];
+
         
 //        [_tableview registerNib:[UINib nibWithNibName:LPInformationMoreCellID bundle:nil] forCellReuseIdentifier:LPInformationMoreCellID];
         
@@ -168,9 +173,9 @@ static NSString *LPEssayDetailHeadCellID = @"LPEssayDetailHeadCell";
 //            self.page = 1;
 //            [self requestEssaylist];
 //        }];
-//        _tableview.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
-//            [self requestEssaylist];
-//        }];
+        _tableview.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+            [self requestCommentList];
+        }];
     }
     return _tableview;
 }

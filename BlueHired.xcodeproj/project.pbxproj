@@ -10,6 +10,10 @@
 		39138DA4778A75826AAD22ED /* libPods-BlueHiredUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82479EF595BD37AB322E0AA9 /* libPods-BlueHiredUITests.a */; };
 		BE82CAE860C97254269F44AD /* libPods-BlueHired.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB5A5321875E124A6C52C8B /* libPods-BlueHired.a */; };
 		DC17FE2D213A9A9100635F05 /* LPCommentListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC17FE2C213A9A9100635F05 /* LPCommentListModel.m */; };
+		DC290F2F213CC55000EC3FCC /* LPEssayDetailCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC290F2D213CC55000EC3FCC /* LPEssayDetailCommentCell.m */; };
+		DC290F30213CC55000EC3FCC /* LPEssayDetailCommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC290F2E213CC55000EC3FCC /* LPEssayDetailCommentCell.xib */; };
+		DC290F34213CDDEB00EC3FCC /* LPEssayDetailCommentReplyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC290F32213CDDEB00EC3FCC /* LPEssayDetailCommentReplyCell.m */; };
+		DC290F35213CDDEB00EC3FCC /* LPEssayDetailCommentReplyCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC290F33213CDDEB00EC3FCC /* LPEssayDetailCommentReplyCell.xib */; };
 		DC30E18F2138D9CB000C7A91 /* LPScreenAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = DC30E18E2138D9CB000C7A91 /* LPScreenAlertView.m */; };
 		DC30E1922138E622000C7A91 /* LPMainSearchVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC30E1912138E622000C7A91 /* LPMainSearchVC.m */; };
 		DC30E1952138F51B000C7A91 /* LPInformationSearchVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC30E1942138F51B000C7A91 /* LPInformationSearchVC.m */; };
@@ -113,6 +117,12 @@
 		BBC93F1DC28C278E85E3A307 /* Pods-BlueHiredUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlueHiredUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlueHiredUITests/Pods-BlueHiredUITests.release.xcconfig"; sourceTree = "<group>"; };
 		DC17FE2B213A9A9100635F05 /* LPCommentListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPCommentListModel.h; sourceTree = "<group>"; };
 		DC17FE2C213A9A9100635F05 /* LPCommentListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPCommentListModel.m; sourceTree = "<group>"; };
+		DC290F2C213CC55000EC3FCC /* LPEssayDetailCommentCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPEssayDetailCommentCell.h; sourceTree = "<group>"; };
+		DC290F2D213CC55000EC3FCC /* LPEssayDetailCommentCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPEssayDetailCommentCell.m; sourceTree = "<group>"; };
+		DC290F2E213CC55000EC3FCC /* LPEssayDetailCommentCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPEssayDetailCommentCell.xib; sourceTree = "<group>"; };
+		DC290F31213CDDEB00EC3FCC /* LPEssayDetailCommentReplyCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPEssayDetailCommentReplyCell.h; sourceTree = "<group>"; };
+		DC290F32213CDDEB00EC3FCC /* LPEssayDetailCommentReplyCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPEssayDetailCommentReplyCell.m; sourceTree = "<group>"; };
+		DC290F33213CDDEB00EC3FCC /* LPEssayDetailCommentReplyCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPEssayDetailCommentReplyCell.xib; sourceTree = "<group>"; };
 		DC30E18D2138D9CB000C7A91 /* LPScreenAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPScreenAlertView.h; sourceTree = "<group>"; };
 		DC30E18E2138D9CB000C7A91 /* LPScreenAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPScreenAlertView.m; sourceTree = "<group>"; };
 		DC30E1902138E622000C7A91 /* LPMainSearchVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPMainSearchVC.h; sourceTree = "<group>"; };
@@ -341,6 +351,12 @@
 				DC49D868213A74B3009BFCB0 /* LPEssayDetailHeadCell.h */,
 				DC49D869213A74B3009BFCB0 /* LPEssayDetailHeadCell.m */,
 				DC49D86A213A74B3009BFCB0 /* LPEssayDetailHeadCell.xib */,
+				DC290F2C213CC55000EC3FCC /* LPEssayDetailCommentCell.h */,
+				DC290F2D213CC55000EC3FCC /* LPEssayDetailCommentCell.m */,
+				DC290F2E213CC55000EC3FCC /* LPEssayDetailCommentCell.xib */,
+				DC290F31213CDDEB00EC3FCC /* LPEssayDetailCommentReplyCell.h */,
+				DC290F32213CDDEB00EC3FCC /* LPEssayDetailCommentReplyCell.m */,
+				DC290F33213CDDEB00EC3FCC /* LPEssayDetailCommentReplyCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -797,10 +813,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DC290F35213CDDEB00EC3FCC /* LPEssayDetailCommentReplyCell.xib in Resources */,
 				DC7383882134DC200055DC10 /* LPMineCell.xib in Resources */,
 				DC7383302133E3670055DC10 /* LaunchScreen.storyboard in Resources */,
 				DC30E1B021394055000C7A91 /* LPWorkDetailTextCell.xib in Resources */,
 				DC73832D2133E3670055DC10 /* Assets.xcassets in Resources */,
+				DC290F30213CC55000EC3FCC /* LPEssayDetailCommentCell.xib in Resources */,
 				DC44DBA921354E8500D00FAC /* LPInformationCollectionViewCell.xib in Resources */,
 				DC30E1A621393BB0000C7A91 /* LPWorkDetailHeadCell.xib in Resources */,
 				DC5C38952136682200B3CF6E /* LPCircleCollectionViewCell.xib in Resources */,
@@ -943,8 +961,10 @@
 				DC73836D2133EC1B0055DC10 /* LPInformationVC.m in Sources */,
 				DC7383982134E95E0055DC10 /* NetApiManager.m in Sources */,
 				DC7383872134DC200055DC10 /* LPMineCell.m in Sources */,
+				DC290F2F213CC55000EC3FCC /* LPEssayDetailCommentCell.m in Sources */,
 				DC5C389921366D1A00B3CF6E /* LPMoodTypeModel.m in Sources */,
 				DC44DB99213526C600D00FAC /* UIImage+Image.m in Sources */,
+				DC290F34213CDDEB00EC3FCC /* LPEssayDetailCommentReplyCell.m in Sources */,
 				DC73837D2133F1110055DC10 /* UIColor+Color.m in Sources */,
 				DC7A32DE2137E61100E09C6C /* LPForgetPassWordVC.m in Sources */,
 				DC49D86B213A74B3009BFCB0 /* LPEssayDetailHeadCell.m in Sources */,

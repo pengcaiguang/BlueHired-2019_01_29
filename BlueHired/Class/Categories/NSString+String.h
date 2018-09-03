@@ -11,6 +11,8 @@
 @interface NSString (String)
 //毫秒时间戳转时间
 + (NSString *)convertStringToTime:(NSString *)timeString;
+//毫秒时间戳转几天前
++ (NSString *) compareCurrentTime:(NSString *)str;
 
 //验证手机号
 + (BOOL)isMobilePhoneNumber:(NSString *)mobileNum;
