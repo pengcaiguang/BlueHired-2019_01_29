@@ -72,4 +72,10 @@
             result[12], result[13], result[14], result[15]
             ];
 }
+
+-(CGRect)getStringSize:(CGSize )size font:(UIFont *)font{
+    CGRect rect = [self boundingRectWithSize:size options:NSStringDrawingUsesFontLeading|NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : font} context:nil];
+    return rect;
+}
+
 @end

@@ -15,6 +15,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *mechanismScoreLabel;
 @property (weak, nonatomic) IBOutlet UILabel *postNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *wageRangeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *keyLabel;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *keyLabel_constraint_width;
 
 @property (weak, nonatomic) IBOutlet UILabel *workTypeNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *applyNumberLabel;

@@ -105,6 +105,10 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
 }
 
 -(void)touchBottomButton:(UIButton *)button{
+    if (button.tag == 2) {
+        NSLog(@"咨询");
+        return;
+    }
     if ([LoginUtils validationLogin:self]) {
         NSInteger index = button.tag;
         NSLog(@"%ld",index);

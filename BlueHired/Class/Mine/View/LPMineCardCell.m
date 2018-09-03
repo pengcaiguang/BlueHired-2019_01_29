@@ -46,7 +46,14 @@
 }
 
 -(void)touchBgView:(UITapGestureRecognizer *)tap{
-    NSLog(@"%ld",[tap view].tag);
+    NSInteger index = [tap view].tag;
+    if (index == 4) {
+        NSLog(@"企业点评");
+    }else{
+        if ([LoginUtils validationLogin:[UIWindow visibleViewController]]) {
+            
+        }
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
