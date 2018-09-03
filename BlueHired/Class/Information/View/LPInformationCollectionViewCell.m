@@ -44,6 +44,8 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
         make.edges.equalTo(self.contentView);
     }];
 }
+
+
 -(void)setLabelListDataModel:(LPLabelListDataModel *)labelListDataModel{
     _labelListDataModel = labelListDataModel;
     self.labelListModelId = labelListDataModel.id;
@@ -125,14 +127,32 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    self.selectRow = indexPath.row;
     
     LPEssayDetailVC *vc = [[LPEssayDetailVC alloc]init];
     vc.hidesBottomBarWhenPushed = YES;
     vc.essaylistDataModel = self.listArray[indexPath.row];
     [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        if ([cell isKindOfClass:[LPInformationSingleCell class]]) {
+            LPInformationSingleCell *c = (LPInformationSingleCell *)cell;
+            c.viewLabel.text = [NSString stringWithFormat:@"%ld",[c.viewLabel.text integerValue] + 1];
+        }else if ([cell isKindOfClass:[LPInformationMoreCell class]]) {
+            LPInformationMoreCell *c = (LPInformationMoreCell *)cell;
+            c.viewLabel.text = [NSString stringWithFormat:@"%ld",[c.viewLabel.text integerValue] + 1];
+        }
+    });
+    
 }
-
+#pragma mark - SDCycleScrollViewDelegate
+- (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didSelectItemAtIndex:(NSInteger)index{
+    NSLog(@"---点击了第%ld张图片", (long)index);
+    LPEssayDetailVC *vc = [[LPEssayDetailVC alloc]init];
+    vc.hidesBottomBarWhenPushed = YES;
+    vc.essaylistDataModel = self.choiceListArray[index];
+    [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+}
 #pragma mark - request
 -(void)requestEssaylist{
     NSDictionary *dic = @{
