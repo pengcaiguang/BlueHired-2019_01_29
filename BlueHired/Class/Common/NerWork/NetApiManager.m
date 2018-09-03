@@ -222,6 +222,19 @@
     [NetRequestManager requestWithEnty:enty];
 }
 
-
+#pragma mark - 我的
+/************************************************************/
+//*  我的
+/************************************************************/
+//登陆
++ (void)requestLoginWithParam:(id)paramer
+                   withHandle:(response)responseHandle{
+    NSString * appendURLString = @"login/login";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
 
 @end

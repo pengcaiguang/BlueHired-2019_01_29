@@ -17,4 +17,6 @@
 //验证手机号
 + (BOOL)isMobilePhoneNumber:(NSString *)mobileNum;
 
+
+- (NSString *)md5;
 @end

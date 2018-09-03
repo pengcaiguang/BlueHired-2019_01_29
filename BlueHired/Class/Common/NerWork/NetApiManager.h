@@ -82,6 +82,14 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //查看圈子列表
 + (void)requestMoodListWithParam:(id)paramer
                       withHandle:(response)responseHandle;
+
+#pragma mark - 我的
+/************************************************************/
+//*  我的
+/************************************************************/
+//登陆
++ (void)requestLoginWithParam:(id)paramer
+                   withHandle:(response)responseHandle;
 @end
 
 

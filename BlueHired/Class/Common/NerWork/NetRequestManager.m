@@ -28,7 +28,9 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
     if (requestEnty.requestType == 0) { //请求方式 0:get
         NSLog(@"\n\nGET requestEnty.params == %@",requestEnty.params);
         AFHTTPSessionManager *manager = [self initHttpManager];
+
         if (AlreadyLogin) {
+            [manager.requestSerializer setValue:@"cook" forHTTPHeaderField:@"Cookie"];
             [manager.requestSerializer setValue:kUserDefaultsValue(ktoken) forHTTPHeaderField:@"JW-AUTH-TOKEN"];
             [manager.requestSerializer setValue:kUserDefaultsValue(kcredentials) forHTTPHeaderField:@"JW-AUTH-CREDENTIALS"];
         }
@@ -50,7 +52,9 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
     }else if (requestEnty.requestType == 1){//请求方式 1:post
         NSLog(@"\n\nPOST requestEnty.params == %@",requestEnty.params);
         AFHTTPSessionManager *manager = [self initHttpManager];
+
         if (AlreadyLogin) {
+            [manager.requestSerializer setValue:@"cook" forHTTPHeaderField:@"Cookie"];
             [manager.requestSerializer setValue:kUserDefaultsValue(ktoken) forHTTPHeaderField:@"JW-AUTH-TOKEN"];
             [manager.requestSerializer setValue:kUserDefaultsValue(kcredentials) forHTTPHeaderField:@"JW-AUTH-CREDENTIALS"];
         }
@@ -73,7 +77,9 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
     }else if (requestEnty.requestType == 2){// 2:上传单张图片
         NSLog(@"\n\nPOST 单张图片上传requestEnty.params == %@",requestEnty.params);
         AFHTTPSessionManager *manager = [self initHttpManager];
+
         if (AlreadyLogin) {
+            [manager.requestSerializer setValue:@"cook" forHTTPHeaderField:@"Cookie"];
             [manager.requestSerializer setValue:kUserDefaultsValue(ktoken) forHTTPHeaderField:@"JW-AUTH-TOKEN"];
             [manager.requestSerializer setValue:kUserDefaultsValue(kcredentials) forHTTPHeaderField:@"JW-AUTH-CREDENTIALS"];
         }
@@ -105,7 +111,9 @@ constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
     }else if (requestEnty.requestType == 3){//3:上传多张图片
         NSLog(@"\n\nPOST 多张图片上传requestEnty.params == %@",requestEnty.params);
         AFHTTPSessionManager *manager = [self initHttpManager];
+
         if (AlreadyLogin) {
+            [manager.requestSerializer setValue:@"cook" forHTTPHeaderField:@"Cookie"];
             [manager.requestSerializer setValue:kUserDefaultsValue(ktoken) forHTTPHeaderField:@"JW-AUTH-TOKEN"];
             [manager.requestSerializer setValue:kUserDefaultsValue(kcredentials) forHTTPHeaderField:@"JW-AUTH-CREDENTIALS"];
         }

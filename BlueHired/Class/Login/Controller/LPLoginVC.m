@@ -235,6 +235,16 @@
         [self.view showLoadingMeg:@"请输入6-16位密码" time:MESSAGE_SHOW_TIME];
         return;
     }
+    
+    NSDictionary *dic = @{
+                          @"phone":self.phoneTextField.text,
+                          @"password":[self.passwordTextField.text md5]
+                          };
+    
+    [NetApiManager requestLoginWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+    }];
+    
 }
 
 -(void)touchRegisteredButton:(UIButton *)button{
