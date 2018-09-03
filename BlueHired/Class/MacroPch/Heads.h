@@ -31,5 +31,6 @@
 #import "NetApiManager.h"
 #import "DeviceUtils.h"
 #import "LoginUtils.h"
+#import "GJAlert2.h"
 
 #endif /* Heads_h */

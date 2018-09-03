@@ -122,6 +122,7 @@ static NSString *LPMainCellID = @"LPMainCell";
         [searchField setBackgroundColor:[UIColor whiteColor]];
         searchField.layer.cornerRadius = 14;
         searchField.layer.masksToBounds = YES;
+        searchField.font = [UIFont systemFontOfSize:13];
     }
     if (YES) {
         CGFloat height = searchBar.bounds.size.height;
@@ -242,7 +243,11 @@ static NSString *LPMainCellID = @"LPMainCell";
         NSLog(@"%@",responseObject);
         [self.tableview.mj_header endRefreshing];
         [self.tableview.mj_footer endRefreshing];
-        self.model = [LPWorklistModel mj_objectWithKeyValues:responseObject];
+        if (isSuccess) {
+            self.model = [LPWorklistModel mj_objectWithKeyValues:responseObject];
+        }else{
+            [self.view showLoadingMeg:@"网络错误" time:MESSAGE_SHOW_TIME];
+        }
     }];
 }
 

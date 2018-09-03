@@ -159,7 +159,11 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
 -(void)requestMoodType{
     [NetApiManager requestMoodTypeWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
-        self.moodTypeModel = [LPMoodTypeModel mj_objectWithKeyValues:responseObject];
+        if (isSuccess) {
+            self.moodTypeModel = [LPMoodTypeModel mj_objectWithKeyValues:responseObject];
+        }else{
+            [[UIWindow visibleViewController].view showLoadingMeg:@"网络错误" time:MESSAGE_SHOW_TIME];
+        }
     }];
 }
 

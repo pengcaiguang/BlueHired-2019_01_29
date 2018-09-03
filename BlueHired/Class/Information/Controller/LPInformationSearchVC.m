@@ -63,6 +63,7 @@ static NSString *InformationSearchHistory = @"InformationSearchHistory";
         [searchField setBackgroundColor:[UIColor whiteColor]];
         searchField.layer.cornerRadius = 14;
         searchField.layer.masksToBounds = YES;
+        searchField.font = [UIFont systemFontOfSize:13];
     }
     if (YES) {
         CGFloat height = searchBar.bounds.size.height;

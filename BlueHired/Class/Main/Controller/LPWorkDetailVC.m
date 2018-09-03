@@ -107,6 +107,21 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
 -(void)touchBottomButton:(UIButton *)button{
     if (button.tag == 2) {
         NSLog(@"咨询");
+        NSString *number = @"18888888888";
+        NSString *string = [NSString stringWithFormat:@"姓名：老王 \n联系方式：%@ \n微信搜索客服号码添加即可添加客服微信",number];
+        GJAlert2 *alert = [[GJAlert2 alloc]initWithTitle:@"客服联系方式" message:string buttonTitles:@[@"复制号码",@"立即拨打"] buttonsColor:@[[UIColor colorWithHexString:@"#666666"],[UIColor colorWithHexString:@"#434343"]] buttonClick:^(NSInteger buttonIndex) {
+            if (buttonIndex == 0) {
+                UIPasteboard*pasteboard = [UIPasteboard generalPasteboard];
+                pasteboard.string = number;
+                [self.view showLoadingMeg:@"复制成功" time:MESSAGE_SHOW_TIME];
+            }else{
+                NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel:%@",number];
+                UIWebView * callWebview = [[UIWebView alloc] init];
+                [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
+                [self.view addSubview:callWebview];
+            }
+        }];
+        [alert show];
         return;
     }
     if ([LoginUtils validationLogin:self]) {
@@ -272,7 +287,11 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
                           };
     [NetApiManager requestWorkDetailWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
-        self.model = [LPWorkDetailModel mj_objectWithKeyValues:responseObject];
+        if (isSuccess) {
+            self.model = [LPWorkDetailModel mj_objectWithKeyValues:responseObject];
+        }else{
+            [self.view showLoadingMeg:@"网络错误" time:MESSAGE_SHOW_TIME];
+        }
     }];
 }
 #pragma mark lazy

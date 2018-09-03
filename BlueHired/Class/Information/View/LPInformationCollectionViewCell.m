@@ -163,7 +163,11 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
         NSLog(@"%@",responseObject);
         [self.tableview.mj_header endRefreshing];
         [self.tableview.mj_footer endRefreshing];
-        self.model = [LPEssaylistModel mj_objectWithKeyValues:responseObject];
+        if (isSuccess) {
+            self.model = [LPEssaylistModel mj_objectWithKeyValues:responseObject];
+        }else{
+            [[UIWindow visibleViewController].view showLoadingMeg:@"网络错误" time:MESSAGE_SHOW_TIME];
+        }
     }];
 }
 

@@ -100,6 +100,7 @@ static NSString *LPInformationCollectionViewCellID = @"LPInformationCollectionVi
         [searchField setBackgroundColor:[UIColor whiteColor]];
         searchField.layer.cornerRadius = 14;
         searchField.layer.masksToBounds = YES;
+        searchField.font = [UIFont systemFontOfSize:13];
     }
     if (YES) {
         CGFloat height = searchBar.bounds.size.height;
@@ -199,7 +200,11 @@ static NSString *LPInformationCollectionViewCellID = @"LPInformationCollectionVi
                           };
     [NetApiManager requestLabellistWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
-        self.labelListModel = [LPLabelListModel mj_objectWithKeyValues:responseObject];
+        if (isSuccess) {
+            self.labelListModel = [LPLabelListModel mj_objectWithKeyValues:responseObject];
+        }else{
+            [self.view showLoadingMeg:@"网络错误" time:MESSAGE_SHOW_TIME];
+        }
     }];
 }
 

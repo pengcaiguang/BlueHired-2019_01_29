@@ -15,6 +15,7 @@
 		DC290F34213CDDEB00EC3FCC /* LPEssayDetailCommentReplyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC290F32213CDDEB00EC3FCC /* LPEssayDetailCommentReplyCell.m */; };
 		DC290F35213CDDEB00EC3FCC /* LPEssayDetailCommentReplyCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC290F33213CDDEB00EC3FCC /* LPEssayDetailCommentReplyCell.xib */; };
 		DC290F38213D0AA300EC3FCC /* LPCommentDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC290F37213D0AA300EC3FCC /* LPCommentDetailVC.m */; };
+		DC290F3B213D31D400EC3FCC /* GJAlert2.m in Sources */ = {isa = PBXBuildFile; fileRef = DC290F39213D31D300EC3FCC /* GJAlert2.m */; };
 		DC30E18F2138D9CB000C7A91 /* LPScreenAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = DC30E18E2138D9CB000C7A91 /* LPScreenAlertView.m */; };
 		DC30E1922138E622000C7A91 /* LPMainSearchVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC30E1912138E622000C7A91 /* LPMainSearchVC.m */; };
 		DC30E1952138F51B000C7A91 /* LPInformationSearchVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC30E1942138F51B000C7A91 /* LPInformationSearchVC.m */; };
@@ -126,6 +127,8 @@
 		DC290F33213CDDEB00EC3FCC /* LPEssayDetailCommentReplyCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPEssayDetailCommentReplyCell.xib; sourceTree = "<group>"; };
 		DC290F36213D0AA300EC3FCC /* LPCommentDetailVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPCommentDetailVC.h; sourceTree = "<group>"; };
 		DC290F37213D0AA300EC3FCC /* LPCommentDetailVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPCommentDetailVC.m; sourceTree = "<group>"; };
+		DC290F39213D31D300EC3FCC /* GJAlert2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GJAlert2.m; sourceTree = "<group>"; };
+		DC290F3A213D31D400EC3FCC /* GJAlert2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GJAlert2.h; sourceTree = "<group>"; };
 		DC30E18D2138D9CB000C7A91 /* LPScreenAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPScreenAlertView.h; sourceTree = "<group>"; };
 		DC30E18E2138D9CB000C7A91 /* LPScreenAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPScreenAlertView.m; sourceTree = "<group>"; };
 		DC30E1902138E622000C7A91 /* LPMainSearchVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPMainSearchVC.h; sourceTree = "<group>"; };
@@ -610,6 +613,8 @@
 				DC73838121341EBD0055DC10 /* LPSearchBar.m */,
 				DC44DB9A21352B8000D00FAC /* LPNoDataView.h */,
 				DC44DB9B21352B8000D00FAC /* LPNoDataView.m */,
+				DC290F3A213D31D400EC3FCC /* GJAlert2.h */,
+				DC290F39213D31D300EC3FCC /* GJAlert2.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -936,6 +941,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DC290F3B213D31D400EC3FCC /* GJAlert2.m in Sources */,
 				DC5C38842136372F00B3CF6E /* LPInformationSingleCell.m in Sources */,
 				DC7383962134E95E0055DC10 /* MoninNet.m in Sources */,
 				DC7383942134E95E0055DC10 /* NetRequestEnty.m in Sources */,

@@ -191,7 +191,11 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
                           };
     [NetApiManager requestCommentListWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
-        self.commentListModel = [LPCommentListModel mj_objectWithKeyValues:responseObject];
+        if (isSuccess) {
+            self.commentListModel = [LPCommentListModel mj_objectWithKeyValues:responseObject];
+        }else{
+            [self.view showLoadingMeg:@"网络错误" time:MESSAGE_SHOW_TIME];
+        }
     }];
 }
 #pragma mark - lazy

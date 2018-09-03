@@ -38,9 +38,14 @@
     self.workTypeNameLabel.text = [NSString stringWithFormat:@"需%@：%@人",model.data.workTypeName,model.data.maxNumber ? model.data.maxNumber : @"0"];
     self.applyNumberLabel.text = [NSString stringWithFormat:@"已报名：%@人",model.data.applyNumber ? model.data.applyNumber : @"0"];
     
-    self.keyLabel.text = model.data.key;
-    CGRect rect = [model.data.key getStringSize:CGSizeMake(MAXFLOAT, MAXFLOAT) font:[UIFont systemFontOfSize:12]];
-    self.keyLabel_constraint_width.constant = rect.size.width + 10;
+    if (model.data.key.length > 0) {
+        self.keyLabel.text = model.data.key;
+        CGRect rect = [model.data.key getStringSize:CGSizeMake(MAXFLOAT, MAXFLOAT) font:[UIFont systemFontOfSize:12]];
+        self.keyLabel_constraint_width.constant = rect.size.width + 10;
+    }else{
+        self.keyLabel_constraint_width.constant = 0;
+    }
+    
     
     NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:self.workTypeNameLabel.text];
     NSRange range = [[str string] rangeOfString:[NSString stringWithFormat:@"%@人",model.data.maxNumber ? model.data.maxNumber : @"0"]];
