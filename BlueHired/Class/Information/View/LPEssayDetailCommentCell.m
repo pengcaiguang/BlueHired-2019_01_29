@@ -8,15 +8,16 @@
 
 #import "LPEssayDetailCommentCell.h"
 #import "LPEssayDetailCommentReplyCell.h"
+#import "LPCommentDetailVC.h"
 
 static NSString *LPEssayDetailCommentReplyCellID = @"LPEssayDetailCommentReplyCell";
 
 @interface LPEssayDetailCommentCell ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong)UITableView *tableview;
 
-@property(nonatomic,strong) UIView *replyView;
-@property(nonatomic,strong) UILabel *nameLabel;
-@property(nonatomic,strong) UILabel *contentLabel;
+//@property(nonatomic,strong) UIView *replyView;
+//@property(nonatomic,strong) UILabel *nameLabel;
+//@property(nonatomic,strong) UILabel *contentLabel;
 @end
 
 @implementation LPEssayDetailCommentCell
@@ -29,7 +30,9 @@ static NSString *LPEssayDetailCommentReplyCellID = @"LPEssayDetailCommentReplyCe
 }
 - (IBAction)touchReplyButton:(id)sender {
     if ([LoginUtils validationLogin:[UIWindow visibleViewController]]) {
-        
+        if ([self.delegate respondsToSelector:@selector(touchReplyButton)]) {
+            [self.delegate touchReplyButton];
+        }
     }
 }
 
@@ -111,56 +114,59 @@ static NSString *LPEssayDetailCommentReplyCellID = @"LPEssayDetailCommentReplyCe
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (indexPath.row == 3) {
+    if (indexPath.row == 2) {
         NSLog(@"查看全部");
+        LPCommentDetailVC *vc = [[LPCommentDetailVC alloc]init];
+        vc.commentListDatamodel = self.model;
+        [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
     }
 }
 
--(void)addReply{
-    [self.replyView addSubview:self.nameLabel];
-    [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(5);
-        make.top.mas_equalTo(5);
-    }];
-    
-    [self.replyView addSubview:self.contentLabel];
-    [self.contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(5);
-        make.right.mas_equalTo(-5);
-        make.bottom.mas_equalTo(-5);
-        make.left.equalTo(self.nameLabel.mas_right).offset(5);
-    }];
-    [self.nameLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];  //设置水平方向抗压缩优先级高 水平方向可以正常显示
-    [self.contentLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];  //设置垂直方向挤压缩优先级高 垂直方向可以正常显示
-    
-}
+//-(void)addReply{
+//    [self.replyView addSubview:self.nameLabel];
+//    [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.mas_equalTo(5);
+//        make.top.mas_equalTo(5);
+//    }];
+//
+//    [self.replyView addSubview:self.contentLabel];
+//    [self.contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.mas_equalTo(5);
+//        make.right.mas_equalTo(-5);
+//        make.bottom.mas_equalTo(-5);
+//        make.left.equalTo(self.nameLabel.mas_right).offset(5);
+//    }];
+//    [self.nameLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];  //设置水平方向抗压缩优先级高 水平方向可以正常显示
+//    [self.contentLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];  //设置垂直方向挤压缩优先级高 垂直方向可以正常显示
+//
+//}
 
 
 #pragma mark - lazy
--(UIView *)replyView{
-    if (!_replyView) {
-        _replyView = [[UIView alloc]init];
-    }
-    return _replyView;
-}
-
--(UILabel *)nameLabel{
-    if (!_nameLabel) {
-        _nameLabel = [[UILabel alloc]init];
-        _nameLabel.textColor = [UIColor colorWithHexString:@"#1B1B1B"];
-        _nameLabel.font = [UIFont systemFontOfSize:13];
-    }
-    return _nameLabel;
-}
--(UILabel *)contentLabel{
-    if (!_contentLabel) {
-        _contentLabel = [[UILabel alloc]init];
-        _contentLabel.textColor = [UIColor colorWithHexString:@"#444444"];
-        _contentLabel.font = [UIFont systemFontOfSize:13];
-        _contentLabel.numberOfLines = 0;
-    }
-    return _contentLabel;
-}
+//-(UIView *)replyView{
+//    if (!_replyView) {
+//        _replyView = [[UIView alloc]init];
+//    }
+//    return _replyView;
+//}
+//
+//-(UILabel *)nameLabel{
+//    if (!_nameLabel) {
+//        _nameLabel = [[UILabel alloc]init];
+//        _nameLabel.textColor = [UIColor colorWithHexString:@"#1B1B1B"];
+//        _nameLabel.font = [UIFont systemFontOfSize:13];
+//    }
+//    return _nameLabel;
+//}
+//-(UILabel *)contentLabel{
+//    if (!_contentLabel) {
+//        _contentLabel = [[UILabel alloc]init];
+//        _contentLabel.textColor = [UIColor colorWithHexString:@"#444444"];
+//        _contentLabel.font = [UIFont systemFontOfSize:13];
+//        _contentLabel.numberOfLines = 0;
+//    }
+//    return _contentLabel;
+//}
 
 
 - (UITableView *)tableview{

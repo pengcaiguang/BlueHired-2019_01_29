@@ -26,6 +26,8 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
 @property(nonatomic,strong) SDCycleScrollView *cycleScrollView;
 @property(nonatomic,strong) NSMutableArray <LPEssaylistDataModel *>*choiceListArray;
 
+@property(nonatomic,assign) NSInteger selectRow;
+
 @end
 
 @implementation LPInformationCollectionViewCell
@@ -123,6 +125,8 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    self.selectRow = indexPath.row;
+    
     LPEssayDetailVC *vc = [[LPEssayDetailVC alloc]init];
     vc.hidesBottomBarWhenPushed = YES;
     vc.essaylistDataModel = self.listArray[indexPath.row];

@@ -80,7 +80,7 @@
                         <rect key="frame" x="52" y="99.5" width="257" height="1"/>
                         <color key="backgroundColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.94901960784313721" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="MyM-FW-FFI"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" id="MyM-FW-FFI"/>
                         </constraints>
                     </view>
                 </subviews>

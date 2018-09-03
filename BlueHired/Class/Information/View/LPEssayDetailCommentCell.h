@@ -9,6 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "LPCommentListModel.h"
 
+@protocol LPEssayDetailCommentCellDelegate<NSObject>
+
+-(void)touchReplyButton;
+
+@end
+
 @interface LPEssayDetailCommentCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *userUrlImgView;
 @property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
@@ -18,5 +24,7 @@
 @property (weak, nonatomic) IBOutlet UIView *replyBgView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *replyBgView_constraint_height;
 @property(nonatomic,strong) LPCommentListDataModel *model;
+
+@property (nonatomic,assign)id <LPEssayDetailCommentCellDelegate>delegate;
 
 @end

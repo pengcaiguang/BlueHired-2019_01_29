@@ -14,6 +14,7 @@
 		DC290F30213CC55000EC3FCC /* LPEssayDetailCommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC290F2E213CC55000EC3FCC /* LPEssayDetailCommentCell.xib */; };
 		DC290F34213CDDEB00EC3FCC /* LPEssayDetailCommentReplyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC290F32213CDDEB00EC3FCC /* LPEssayDetailCommentReplyCell.m */; };
 		DC290F35213CDDEB00EC3FCC /* LPEssayDetailCommentReplyCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC290F33213CDDEB00EC3FCC /* LPEssayDetailCommentReplyCell.xib */; };
+		DC290F38213D0AA300EC3FCC /* LPCommentDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC290F37213D0AA300EC3FCC /* LPCommentDetailVC.m */; };
 		DC30E18F2138D9CB000C7A91 /* LPScreenAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = DC30E18E2138D9CB000C7A91 /* LPScreenAlertView.m */; };
 		DC30E1922138E622000C7A91 /* LPMainSearchVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC30E1912138E622000C7A91 /* LPMainSearchVC.m */; };
 		DC30E1952138F51B000C7A91 /* LPInformationSearchVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC30E1942138F51B000C7A91 /* LPInformationSearchVC.m */; };
@@ -123,6 +124,8 @@
 		DC290F31213CDDEB00EC3FCC /* LPEssayDetailCommentReplyCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPEssayDetailCommentReplyCell.h; sourceTree = "<group>"; };
 		DC290F32213CDDEB00EC3FCC /* LPEssayDetailCommentReplyCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPEssayDetailCommentReplyCell.m; sourceTree = "<group>"; };
 		DC290F33213CDDEB00EC3FCC /* LPEssayDetailCommentReplyCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPEssayDetailCommentReplyCell.xib; sourceTree = "<group>"; };
+		DC290F36213D0AA300EC3FCC /* LPCommentDetailVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPCommentDetailVC.h; sourceTree = "<group>"; };
+		DC290F37213D0AA300EC3FCC /* LPCommentDetailVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPCommentDetailVC.m; sourceTree = "<group>"; };
 		DC30E18D2138D9CB000C7A91 /* LPScreenAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPScreenAlertView.h; sourceTree = "<group>"; };
 		DC30E18E2138D9CB000C7A91 /* LPScreenAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPScreenAlertView.m; sourceTree = "<group>"; };
 		DC30E1902138E622000C7A91 /* LPMainSearchVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPMainSearchVC.h; sourceTree = "<group>"; };
@@ -534,6 +537,8 @@
 				DC30E19A21391DAD000C7A91 /* LPInformationSearchResultVC.m */,
 				DC49D865213A6BB2009BFCB0 /* LPEssayDetailVC.h */,
 				DC49D866213A6BB2009BFCB0 /* LPEssayDetailVC.m */,
+				DC290F36213D0AA300EC3FCC /* LPCommentDetailVC.h */,
+				DC290F37213D0AA300EC3FCC /* LPCommentDetailVC.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -987,6 +992,7 @@
 				DC44DBA021353D5800D00FAC /* LPLabelListModel.m in Sources */,
 				DC7383332133E3670055DC10 /* main.m in Sources */,
 				DC7383252133E33E0055DC10 /* AppDelegate.m in Sources */,
+				DC290F38213D0AA300EC3FCC /* LPCommentDetailVC.m in Sources */,
 				DC73836A2133EC040055DC10 /* LPCircleVC.m in Sources */,
 				DC73835A2133EAD30055DC10 /* LPBaseViewController.m in Sources */,
 				DC73839B2134EAEF0055DC10 /* UIWindow+Window.m in Sources */,

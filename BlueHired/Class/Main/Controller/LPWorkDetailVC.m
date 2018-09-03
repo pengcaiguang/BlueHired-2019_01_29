@@ -56,7 +56,7 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
     
     UIView *bottomBgView = [[UIView alloc]init];
     [self.view addSubview:bottomBgView];
-    ;    [bottomBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [bottomBgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(-136);
         make.bottom.mas_equalTo(0);
