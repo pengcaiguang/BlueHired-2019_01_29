@@ -11,19 +11,22 @@
 #import "SCIndexViewConfiguration.h"
 #import "UITableView+SCIndexView.h"
 #import "LPCityCell.h"
+#import "LPSearchBar.h"
 
 static NSString *LPCityCellID = @"LPCityCell";
 
 static NSString *CityRecently = @"CityRecently";
 
-@interface LPSelectCityVC ()<UITableViewDelegate,UITableViewDataSource>
+@interface LPSelectCityVC ()<UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate>
 
 @property (nonatomic, strong)UITableView *tableview;
 
+@property(nonatomic,strong) LPCityDataManager *manager;
 @property(nonatomic,strong) NSArray *firstLetterArray;
 @property(nonatomic,strong) NSDictionary *listDic;
 
 @property(nonatomic,strong) NSArray *recentlyArray;
+@property(nonatomic,assign) BOOL isSearch;
 
 @end
 
@@ -33,7 +36,7 @@ static NSString *CityRecently = @"CityRecently";
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];
-    
+    self.isSearch = NO;
     self.recentlyArray = (NSArray *)kUserDefaultsValue(CityRecently);
     if (self.recentlyArray.count == 0) {
         NSMutableArray *mu = [NSMutableArray array];
@@ -45,21 +48,94 @@ static NSString *CityRecently = @"CityRecently";
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
-    
+    [self setSearchView];
     [self setData];
     
 }
-
--(void)setData{
-    LPCityDataManager *manager = [LPCityDataManager shareInstance];
-    [manager areaSqliteDBData];
+-(void)setSearchView{
+    LPSearchBar *searchBar = [self addSearchBar];
+    UIView *wrapView = [[UIView alloc]init];
+    wrapView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 28);
+    wrapView.layer.cornerRadius = 14;
+    wrapView.layer.masksToBounds = YES;
+    self.navigationItem.titleView = wrapView;
     
-    NSArray *cityArray = [manager getCity];
+    [wrapView addSubview:searchBar];
+    [searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(0);
+        make.right.mas_equalTo(0);
+        make.top.mas_equalTo(0);
+        make.bottom.mas_equalTo(0);
+        
+    }];
+}
+- (LPSearchBar *)addSearchBar{
+    
+    self.definesPresentationContext = YES;
+    
+    LPSearchBar *searchBar = [[LPSearchBar alloc]init];
+    searchBar.delegate = self;
+    searchBar.placeholder = @"城市中文名或拼音";
+    [searchBar setShowsCancelButton:NO];
+    [searchBar setTintColor:[UIColor lightGrayColor]];
+    
+    
+    UITextField *searchField = [searchBar valueForKey:@"searchField"];
+    if (searchField) {
+        [searchField setBackgroundColor:[UIColor whiteColor]];
+        searchField.layer.cornerRadius = 14;
+        searchField.layer.masksToBounds = YES;
+        searchField.font = [UIFont systemFontOfSize:13];
+    }
+    if (YES) {
+        CGFloat height = searchBar.bounds.size.height;
+        CGFloat top = (height - 28.0) / 2.0;
+        CGFloat bottom = top;
+        searchBar.contentInset = UIEdgeInsetsMake(top, 0, bottom, 0);
+    }
+    return searchBar;
+}
+-(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
+    NSLog(@"-%@",searchBar.text);
+    if (searchText.length  == 0) {
+        self.isSearch = NO;
+        NSArray *cityArray = [self.manager getCity];
+        [self addNodataViewHidden:YES];
+        [self sortArray:cityArray];
+    }else{
+        self.isSearch = YES;
+        NSArray *array = [self.manager query:searchBar.text];
+        if (array.count > 0) {
+            [self addNodataViewHidden:YES];
+            [self sortArray:array];
+        }else{
+            [self addNodataViewHidden:NO];
+        }
+    }
+}
+-(void)addNodataViewHidden:(BOOL)hidden{
+    BOOL has = NO;
+    for (UIView *view in self.view.subviews) {
+        if ([view isKindOfClass:[LPNoDataView class]]) {
+            view.hidden = hidden;
+            has = YES;
+        }
+    }
+    if (!has) {
+        LPNoDataView *noDataView = [[LPNoDataView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+        [self.view addSubview:noDataView];
+        [noDataView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self.view);
+        }];
+        noDataView.hidden = hidden;
+    }
+}
+-(void)setData{
+    NSArray *cityArray = [self.manager getCity];
     [self sortArray:cityArray];
 }
 
 -(void)sortArray:(NSArray *)cityArray{
-    NSLog(@"%@",cityArray);
     
     NSMutableArray *modelCityArray = [NSMutableArray array];
     
@@ -75,12 +151,23 @@ static NSString *CityRecently = @"CityRecently";
     }
     NSSet *set = [NSSet setWithArray:firstArray];
     NSMutableArray *array = [[set allObjects] mutableCopy];
-    [array insertObject:@"热门" atIndex:0];
-    [array insertObject:@"最近" atIndex:0];
+    if (!self.isSearch) {
+        [array insertObject:@"热门" atIndex:0];
+        [array insertObject:@"最近" atIndex:0];
+    }
 
     self.firstLetterArray = [array copy];
     //索引
-    self.tableview.sc_indexViewDataSource = self.firstLetterArray.copy;
+    NSMutableArray *ar = [NSMutableArray array];
+    for (NSString *str in self.firstLetterArray) {
+        if (str.length > 1) {
+            NSString *s =  [str substringToIndex:1];
+            [ar addObject:s];
+        }else{
+            [ar addObject:str];
+        }
+    }
+    self.tableview.sc_indexViewDataSource = ar.copy;
     
     NSMutableDictionary *dic = [[NSMutableDictionary alloc]init];
     
@@ -140,6 +227,10 @@ static NSString *CityRecently = @"CityRecently";
     return self.firstLetterArray.count;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    if (self.isSearch) {
+        NSArray *array = self.listDic[self.firstLetterArray[section]];
+        return array.count;
+    }
     if (section == 0 || section == 1) {
         return 1;
     }
@@ -155,6 +246,9 @@ static NSString *CityRecently = @"CityRecently";
 //}
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (self.isSearch) {
+        return 44;
+    }
     if (indexPath.section == 0 || indexPath.section == 1) {
         NSArray <LPCityModel *>*array = self.listDic[self.firstLetterArray[indexPath.section]];
         CGFloat h = 30 * ceilf(array.count/3.0) + 10 * (ceilf(array.count/3.0) -1) + 40;
@@ -165,7 +259,16 @@ static NSString *CityRecently = @"CityRecently";
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
+    if (self.isSearch) {
+        static NSString *rid=@"cell";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:rid];
+        if(cell == nil){
+            cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rid];
+        }
+        NSArray <LPCityModel *>*array = self.listDic[self.firstLetterArray[indexPath.section]];
+        cell.textLabel.text = array[indexPath.row].c_name;
+        return cell;
+    }
     if (indexPath.section == 0 || indexPath.section == 1) {
         LPCityCell *cell = [tableView dequeueReusableCellWithIdentifier:LPCityCellID];
         NSArray <LPCityModel *>*array = self.listDic[self.firstLetterArray[indexPath.section]];
@@ -236,10 +339,18 @@ static NSString *CityRecently = @"CityRecently";
         
         SCIndexViewConfiguration *configuration = [SCIndexViewConfiguration configurationWithIndexViewStyle:SCIndexViewStyleCenterToast];
         configuration.indexItemSelectedBackgroundColor = [UIColor baseColor];
+        configuration.indicatorTextFont = [UIFont systemFontOfSize:58];
         _tableview.sc_indexViewConfiguration = configuration;
         
     }
     return _tableview;
+}
+-(LPCityDataManager *)manager{
+    if (!_manager) {
+        _manager = [LPCityDataManager shareInstance];
+        [_manager areaSqliteDBData];
+    }
+    return _manager;
 }
 
 - (void)didReceiveMemoryWarning {

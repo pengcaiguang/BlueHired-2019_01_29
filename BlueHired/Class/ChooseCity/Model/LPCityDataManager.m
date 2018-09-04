@@ -78,8 +78,25 @@ static LPCityDataManager *manager = nil;
                             [rs stringForColumn:@"c_province"],@"c_province",nil];
         [array addObject:dic];
     }
-    [self.db close];
+//    [self.db close];
     return array;
 }
 
+-(NSArray *)query:(NSString *)string{
+    NSString *sql=[NSString stringWithFormat:@"SELECT * FROM cities WHERE c_name LIKE '%%%@%%' or c_pinyin LIKE '%%%@%%' or c_province LIKE '%%%@%%';",string,string,string];
+    
+    FMResultSet *rs = [self.db executeQuery:sql];
+    NSMutableArray*array = [[NSMutableArray alloc]init];
+    while ([rs next]) {
+        NSDictionary*dic = [[NSDictionary alloc]initWithObjectsAndKeys:
+                            [rs stringForColumn:@"id"],@"id",
+                            [rs stringForColumn:@"c_name"],@"c_name",
+                            [rs stringForColumn:@"c_pinyin"],@"c_pinyin",
+                            [rs stringForColumn:@"c_code"],@"c_code",
+                            [rs stringForColumn:@"c_province"],@"c_province",nil];
+        [array addObject:dic];
+    }
+//    [self.db close];
+    return array;
+}
 @end

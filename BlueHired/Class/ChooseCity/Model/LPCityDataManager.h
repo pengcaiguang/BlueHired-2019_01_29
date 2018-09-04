@@ -15,6 +15,6 @@
 
 - (void)areaSqliteDBData;
 - (NSArray*)getCity;
-
+-(NSArray *)query:(NSString *)string;
 
 @end
