@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		39138DA4778A75826AAD22ED /* libPods-BlueHiredUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82479EF595BD37AB322E0AA9 /* libPods-BlueHiredUITests.a */; };
 		BE82CAE860C97254269F44AD /* libPods-BlueHired.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB5A5321875E124A6C52C8B /* libPods-BlueHired.a */; };
+		DC13BB4D213E1C3B00800955 /* LPCityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC13BB4C213E1C3B00800955 /* LPCityModel.m */; };
 		DC17FE2D213A9A9100635F05 /* LPCommentListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC17FE2C213A9A9100635F05 /* LPCommentListModel.m */; };
 		DC290F2F213CC55000EC3FCC /* LPEssayDetailCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC290F2D213CC55000EC3FCC /* LPEssayDetailCommentCell.m */; };
 		DC290F30213CC55000EC3FCC /* LPEssayDetailCommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC290F2E213CC55000EC3FCC /* LPEssayDetailCommentCell.xib */; };
@@ -117,6 +118,8 @@
 		92E3EB858257F39A6762B321 /* Pods-BlueHiredTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlueHiredTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlueHiredTests/Pods-BlueHiredTests.debug.xcconfig"; sourceTree = "<group>"; };
 		992D1B12C5F757999ACD5D40 /* Pods-BlueHired.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlueHired.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlueHired/Pods-BlueHired.release.xcconfig"; sourceTree = "<group>"; };
 		BBC93F1DC28C278E85E3A307 /* Pods-BlueHiredUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlueHiredUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlueHiredUITests/Pods-BlueHiredUITests.release.xcconfig"; sourceTree = "<group>"; };
+		DC13BB4B213E1C3B00800955 /* LPCityModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPCityModel.h; sourceTree = "<group>"; };
+		DC13BB4C213E1C3B00800955 /* LPCityModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPCityModel.m; sourceTree = "<group>"; };
 		DC17FE2B213A9A9100635F05 /* LPCommentListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPCommentListModel.h; sourceTree = "<group>"; };
 		DC17FE2C213A9A9100635F05 /* LPCommentListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPCommentListModel.m; sourceTree = "<group>"; };
 		DC290F2C213CC55000EC3FCC /* LPEssayDetailCommentCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPEssayDetailCommentCell.h; sourceTree = "<group>"; };
@@ -324,6 +327,31 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		DC13BB48213E1BF600800955 /* ChooseCity */ = {
+			isa = PBXGroup;
+			children = (
+				DC13BB4A213E1C1C00800955 /* Controller */,
+				DC13BB49213E1C1C00800955 /* Model */,
+			);
+			path = ChooseCity;
+			sourceTree = "<group>";
+		};
+		DC13BB49213E1C1C00800955 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DC13BB4B213E1C3B00800955 /* LPCityModel.h */,
+				DC13BB4C213E1C3B00800955 /* LPCityModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DC13BB4A213E1C1C00800955 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
 		DC44DB9D21353D3500D00FAC /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -453,6 +481,7 @@
 			children = (
 				DC7383562133EAAF0055DC10 /* Base */,
 				DC73837A2133F0F00055DC10 /* Categories */,
+				DC13BB48213E1BF600800955 /* ChooseCity */,
 				DC7383622133EBEB0055DC10 /* Circle */,
 				DC73837E21341EA10055DC10 /* Common */,
 				DC7383642133EBEB0055DC10 /* Information */,
@@ -962,6 +991,7 @@
 				DC7383792133EE800055DC10 /* LPTabBarViewController.m in Sources */,
 				DC7A32D52137C2EC00E09C6C /* LPLoginVC.m in Sources */,
 				DC30E1922138E622000C7A91 /* LPMainSearchVC.m in Sources */,
+				DC13BB4D213E1C3B00800955 /* LPCityModel.m in Sources */,
 				DC5C38A421369B9B00B3CF6E /* NSString+String.m in Sources */,
 				DC49D86F213A7751009BFCB0 /* LPEssayDetailModel.m in Sources */,
 				DC44DB9C21352B8000D00FAC /* LPNoDataView.m in Sources */,

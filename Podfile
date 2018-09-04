@@ -20,7 +20,8 @@ target 'BlueHired' do
     pod 'MBProgressHUD'
     pod 'IQKeyboardManager'
     pod 'SDCycleScrollView','~> 1.75'
-    
+    pod 'FMDB'
+
     
     
   target 'BlueHiredTests' do
