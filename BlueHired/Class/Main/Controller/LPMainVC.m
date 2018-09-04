@@ -10,6 +10,7 @@
 #import "LPSearchBar.h"
 #import "LPMainCell.h"
 #import "LPWorklistModel.h"
+#import "LPMechanismlistModel.h"
 #import "SDCycleScrollView.h"
 #import "LPSortAlertView.h"
 #import "LPScreenAlertView.h"
@@ -34,6 +35,8 @@ static NSString *LPMainCellID = @"LPMainCell";
 @property(nonatomic,assign) NSInteger page;
 @property(nonatomic,strong) LPWorklistModel *model;
 @property(nonatomic,strong) NSMutableArray <LPWorklistDataWorkListModel *>*listArray;
+
+@property(nonatomic,strong) LPMechanismlistModel *mechanismlistModel;
 
 @property(nonatomic,assign) NSInteger orderType;
 @property(nonatomic,strong) NSString *mechanismAddress;
@@ -60,6 +63,7 @@ static NSString *LPMainCellID = @"LPMainCell";
         make.edges.equalTo(self.view);
     }];
     [self request];
+    [self requestMechanismlist];
 }
 - (UIStatusBarStyle)preferredStatusBarStyle{
     return UIStatusBarStyleLightContent;
@@ -147,6 +151,11 @@ static NSString *LPMainCellID = @"LPMainCell";
         searchBar.contentInset = UIEdgeInsetsMake(top, 0, bottom, 0);
     }
     return searchBar;
+}
+#pragma mark - setter
+-(void)setMechanismlistModel:(LPMechanismlistModel *)mechanismlistModel{
+    _mechanismlistModel = mechanismlistModel;
+    self.screenAlertView.mechanismlistModel = mechanismlistModel;
 }
 -(void)setModel:(LPWorklistModel *)model{
     _model = model;
@@ -269,7 +278,7 @@ static NSString *LPMainCellID = @"LPMainCell";
                           @"type":@(0),
                           @"orderType":self.orderType ? @(self.orderType) : @"",
                           @"page":@(self.page),
-                          @"mechanismAddress":self.mechanismAddress ? self.mechanismAddress : @""
+                          @"mechanismAddress":self.mechanismAddress ? self.mechanismAddress : @"china"
                           };
     [NetApiManager requestWorklistWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
@@ -277,6 +286,16 @@ static NSString *LPMainCellID = @"LPMainCell";
         [self.tableview.mj_footer endRefreshing];
         if (isSuccess) {
             self.model = [LPWorklistModel mj_objectWithKeyValues:responseObject];
+        }else{
+            [self.view showLoadingMeg:@"网络错误" time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+-(void)requestMechanismlist{
+    [NetApiManager requestMechanismlistWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            self.mechanismlistModel = [LPMechanismlistModel mj_objectWithKeyValues:responseObject];
         }else{
             [self.view showLoadingMeg:@"网络错误" time:MESSAGE_SHOW_TIME];
         }

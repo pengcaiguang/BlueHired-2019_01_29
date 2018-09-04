@@ -78,7 +78,6 @@ static LPCityDataManager *manager = nil;
                             [rs stringForColumn:@"c_province"],@"c_province",nil];
         [array addObject:dic];
     }
-//    [self.db close];
     return array;
 }
 
@@ -96,7 +95,6 @@ static LPCityDataManager *manager = nil;
                             [rs stringForColumn:@"c_province"],@"c_province",nil];
         [array addObject:dic];
     }
-//    [self.db close];
     return array;
 }
 @end

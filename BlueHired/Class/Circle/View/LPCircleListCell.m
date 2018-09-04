@@ -29,8 +29,10 @@
     self.commentTotalLabel.text = model.commentTotal ? [model.commentTotal stringValue] : @"0";
     
     if (kStringIsEmpty(model.moodUrl)) {
+        self.imageBgView.hidden = YES;
         self.imageBgView_constraint_height.constant = 0;
     }else{
+        self.imageBgView.hidden = NO;
         NSArray *imageArray = [model.moodUrl componentsSeparatedByString:@";"];
         CGFloat imgw = (SCREEN_WIDTH-70 - 10)/3;
         

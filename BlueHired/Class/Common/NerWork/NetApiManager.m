@@ -130,6 +130,16 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
+//查询所有行业/工种
++ (void)requestMechanismlistWithParam:(id)paramer
+                           withHandle:(response)responseHandle{
+    NSString * appendURLString = @"work/query_mechanismlist";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
 
 //招聘详情
 + (void)requestWorkDetailWithParam:(id)paramer

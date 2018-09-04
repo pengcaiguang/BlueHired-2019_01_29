@@ -49,7 +49,9 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //首页列表
 + (void)requestWorklistWithParam:(id)paramer
                       withHandle:(response)responseHandle;
-
+//查询所有行业/工种
++ (void)requestMechanismlistWithParam:(id)paramer
+                           withHandle:(response)responseHandle;
 //招聘详情
 + (void)requestWorkDetailWithParam:(id)paramer
                         withHandle:(response)responseHandle;

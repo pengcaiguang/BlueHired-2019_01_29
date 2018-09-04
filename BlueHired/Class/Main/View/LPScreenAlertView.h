@@ -7,9 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LPMechanismlistModel.h"
 
 @interface LPScreenAlertView : UIView
 
 @property(nonatomic,strong) UIButton *touchButton;
+
+@property(nonatomic,strong) LPMechanismlistModel *mechanismlistModel;
 
 @end
