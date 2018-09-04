@@ -19,10 +19,11 @@
 
 static NSString *LPMainCellID = @"LPMainCell";
 
-@interface LPMainVC ()<UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,SDCycleScrollViewDelegate,LPSortAlertViewDelegate>
+@interface LPMainVC ()<UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,SDCycleScrollViewDelegate,LPSortAlertViewDelegate,LPSelectCityVCDelegate>
 
 @property (nonatomic, strong)UITableView *tableview;
 @property(nonatomic,strong) UIView *tableHeaderView;
+@property(nonatomic,strong) UILabel *cityLabel;
 @property(nonatomic,strong) SDCycleScrollView *cycleScrollView;
 @property(nonatomic,strong) UIButton *sortButton;
 @property(nonatomic,strong) UIButton *screenButton;
@@ -35,6 +36,8 @@ static NSString *LPMainCellID = @"LPMainCell";
 @property(nonatomic,strong) NSMutableArray <LPWorklistDataWorkListModel *>*listArray;
 
 @property(nonatomic,assign) NSInteger orderType;
+@property(nonatomic,strong) NSString *mechanismAddress;
+
 @end
 
 @implementation LPMainVC
@@ -81,20 +84,20 @@ static NSString *LPMainCellID = @"LPMainCell";
     }];
     pimageView.image = [UIImage imageNamed:@"positioning"];
     
-    UILabel *cityLabel = [[UILabel alloc]init];
-    [leftBarButtonView addSubview:cityLabel];
-    [cityLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.cityLabel = [[UILabel alloc]init];
+    [leftBarButtonView addSubview:self.cityLabel];
+    [self.cityLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(pimageView.mas_right).offset(3);
         make.centerY.mas_equalTo(leftBarButtonView);
     }];
-    cityLabel.text = @"全国";
-    cityLabel.font = [UIFont systemFontOfSize:15];
-    cityLabel.textColor = [UIColor whiteColor];
+    self.cityLabel.text = @"全国";
+    self.cityLabel.font = [UIFont systemFontOfSize:15];
+    self.cityLabel.textColor = [UIColor whiteColor];
     
     UIImageView *dimageView = [[UIImageView alloc]init];
     [leftBarButtonView addSubview:dimageView];
     [dimageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(cityLabel.mas_right).offset(3);
+        make.left.equalTo(self.cityLabel.mas_right).offset(3);
         make.centerY.equalTo(leftBarButtonView);
         make.size.mas_equalTo(CGSizeMake(11, 6));
         make.right.equalTo(leftBarButtonView.mas_right).offset(0);
@@ -103,16 +106,28 @@ static NSString *LPMainCellID = @"LPMainCell";
 }
 
 -(void)setSearchView{
-    LPSearchBar *searchBar = [self addSearchBarWithFrame:CGRectMake(0, 0, SCREEN_WIDTH - 2 * 44 - 2 * 15, 44)];
-    UIView *wrapView = [[UIView alloc] initWithFrame:searchBar.frame];
-    [wrapView addSubview:searchBar];
+    LPSearchBar *searchBar = [self addSearchBar];
+    UIView *wrapView = [[UIView alloc]init];
+    wrapView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 28);
+    wrapView.layer.cornerRadius = 14;
+    wrapView.layer.masksToBounds = YES;
     self.navigationItem.titleView = wrapView;
+
+    [wrapView addSubview:searchBar];
+    [searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(0);
+        make.right.mas_equalTo(0);
+        make.top.mas_equalTo(0);
+        make.bottom.mas_equalTo(0);
+        
+    }];
 }
-- (LPSearchBar *)addSearchBarWithFrame:(CGRect)frame {
+- (LPSearchBar *)addSearchBar{
     
     self.definesPresentationContext = YES;
     
-    LPSearchBar *searchBar = [[LPSearchBar alloc]initWithFrame:frame];
+    LPSearchBar *searchBar = [[LPSearchBar alloc]init];
+    
     searchBar.delegate = self;
     searchBar.placeholder = @"请输入企业名称或关键字";
     [searchBar setShowsCancelButton:NO];
@@ -177,10 +192,22 @@ static NSString *LPMainCellID = @"LPMainCell";
     NSLog(@"touchSelectCityButton");
     LPSelectCityVC *vc = [[LPSelectCityVC alloc]init];
     vc.hidesBottomBarWhenPushed = YES;
+    vc.delegate = self;
     [self.navigationController pushViewController:vc animated:YES];
     
 }
-
+#pragma mark - LPSelectCityVCDelegate
+-(void)selectCity:(LPCityModel *)model{
+    if ([model.c_name isEqualToString:@"全国"]) {
+        self.mechanismAddress = @"china";
+    }else{
+        self.mechanismAddress = model.c_name;
+    }
+    self.cityLabel.text = model.c_name;
+    self.orderType = 0;
+    self.page = 1;
+    [self request];
+}
 
 #pragma mark - TableViewDelegate & Datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -241,7 +268,8 @@ static NSString *LPMainCellID = @"LPMainCell";
     NSDictionary *dic = @{
                           @"type":@(0),
                           @"orderType":self.orderType ? @(self.orderType) : @"",
-                          @"page":@(self.page)
+                          @"page":@(self.page),
+                          @"mechanismAddress":self.mechanismAddress ? self.mechanismAddress : @""
                           };
     [NetApiManager requestWorklistWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);

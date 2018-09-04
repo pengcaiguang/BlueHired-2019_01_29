@@ -7,7 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LPCityModel.h"
+
+@protocol LPSelectCityVCDelegate<NSObject>
+
+-(void)selectCity:(LPCityModel *)model;
+
+@end
 
 @interface LPSelectCityVC : UIViewController
+
+@property (nonatomic,assign)id <LPSelectCityVCDelegate>delegate;
 
 @end

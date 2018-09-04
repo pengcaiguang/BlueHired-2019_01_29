@@ -13,6 +13,8 @@
 		DC13BB50213E1FD100800955 /* LPCityDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DC13BB4F213E1FD100800955 /* LPCityDataManager.m */; };
 		DC13BB52213E205A00800955 /* china_cities_v2.db in Resources */ = {isa = PBXBuildFile; fileRef = DC13BB51213E205A00800955 /* china_cities_v2.db */; };
 		DC13BB55213E23CF00800955 /* LPSelectCityVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC13BB54213E23CF00800955 /* LPSelectCityVC.m */; };
+		DC13BB5A213E5B6A00800955 /* LPCityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC13BB58213E5B6A00800955 /* LPCityCell.m */; };
+		DC13BB5B213E5B6A00800955 /* LPCityCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC13BB59213E5B6A00800955 /* LPCityCell.xib */; };
 		DC17FE2D213A9A9100635F05 /* LPCommentListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC17FE2C213A9A9100635F05 /* LPCommentListModel.m */; };
 		DC290F2F213CC55000EC3FCC /* LPEssayDetailCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC290F2D213CC55000EC3FCC /* LPEssayDetailCommentCell.m */; };
 		DC290F30213CC55000EC3FCC /* LPEssayDetailCommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC290F2E213CC55000EC3FCC /* LPEssayDetailCommentCell.xib */; };
@@ -128,6 +130,9 @@
 		DC13BB51213E205A00800955 /* china_cities_v2.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = china_cities_v2.db; sourceTree = "<group>"; };
 		DC13BB53213E23CF00800955 /* LPSelectCityVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPSelectCityVC.h; sourceTree = "<group>"; };
 		DC13BB54213E23CF00800955 /* LPSelectCityVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPSelectCityVC.m; sourceTree = "<group>"; };
+		DC13BB57213E5B6A00800955 /* LPCityCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPCityCell.h; sourceTree = "<group>"; };
+		DC13BB58213E5B6A00800955 /* LPCityCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPCityCell.m; sourceTree = "<group>"; };
+		DC13BB59213E5B6A00800955 /* LPCityCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPCityCell.xib; sourceTree = "<group>"; };
 		DC17FE2B213A9A9100635F05 /* LPCommentListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPCommentListModel.h; sourceTree = "<group>"; };
 		DC17FE2C213A9A9100635F05 /* LPCommentListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPCommentListModel.m; sourceTree = "<group>"; };
 		DC290F2C213CC55000EC3FCC /* LPEssayDetailCommentCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPEssayDetailCommentCell.h; sourceTree = "<group>"; };
@@ -338,6 +343,7 @@
 		DC13BB48213E1BF600800955 /* ChooseCity */ = {
 			isa = PBXGroup;
 			children = (
+				DC13BB56213E5B5400800955 /* View */,
 				DC13BB4A213E1C1C00800955 /* Controller */,
 				DC13BB49213E1C1C00800955 /* Model */,
 			);
@@ -363,6 +369,16 @@
 				DC13BB54213E23CF00800955 /* LPSelectCityVC.m */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		DC13BB56213E5B5400800955 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DC13BB57213E5B6A00800955 /* LPCityCell.h */,
+				DC13BB58213E5B6A00800955 /* LPCityCell.m */,
+				DC13BB59213E5B6A00800955 /* LPCityCell.xib */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		DC44DB9D21353D3500D00FAC /* Model */ = {
@@ -869,6 +885,7 @@
 				DC7383882134DC200055DC10 /* LPMineCell.xib in Resources */,
 				DC7383302133E3670055DC10 /* LaunchScreen.storyboard in Resources */,
 				DC30E1B021394055000C7A91 /* LPWorkDetailTextCell.xib in Resources */,
+				DC13BB5B213E5B6A00800955 /* LPCityCell.xib in Resources */,
 				DC73832D2133E3670055DC10 /* Assets.xcassets in Resources */,
 				DC290F30213CC55000EC3FCC /* LPEssayDetailCommentCell.xib in Resources */,
 				DC44DBA921354E8500D00FAC /* LPInformationCollectionViewCell.xib in Resources */,
@@ -1014,6 +1031,7 @@
 				DC7A32E7213812E200E09C6C /* LPSortAlertView.m in Sources */,
 				DC30E19E21392E23000C7A91 /* LPWorkDetailVC.m in Sources */,
 				DC7A32D82137D7E200E09C6C /* LPRegisteredVC.m in Sources */,
+				DC13BB5A213E5B6A00800955 /* LPCityCell.m in Sources */,
 				DC73836D2133EC1B0055DC10 /* LPInformationVC.m in Sources */,
 				DC7383982134E95E0055DC10 /* NetApiManager.m in Sources */,
 				DC7383872134DC200055DC10 /* LPMineCell.m in Sources */,
