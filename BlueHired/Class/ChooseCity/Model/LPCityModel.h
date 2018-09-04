@@ -13,7 +13,9 @@
 @property(nonatomic,copy) NSNumber *id;
 @property(nonatomic,copy) NSString *c_name;
 @property(nonatomic,copy) NSNumber *c_code;
-@property(nonatomic,copy) NSNumber *c_pinyin;
-@property(nonatomic,copy) NSNumber *c_province;
+@property(nonatomic,copy) NSString *c_pinyin;
+@property(nonatomic,copy) NSString *c_province;
+@property(nonatomic,copy) NSString *c_firstLetter;
+
 
 @end

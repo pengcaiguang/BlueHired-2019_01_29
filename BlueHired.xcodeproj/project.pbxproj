@@ -10,6 +10,9 @@
 		39138DA4778A75826AAD22ED /* libPods-BlueHiredUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 82479EF595BD37AB322E0AA9 /* libPods-BlueHiredUITests.a */; };
 		BE82CAE860C97254269F44AD /* libPods-BlueHired.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB5A5321875E124A6C52C8B /* libPods-BlueHired.a */; };
 		DC13BB4D213E1C3B00800955 /* LPCityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC13BB4C213E1C3B00800955 /* LPCityModel.m */; };
+		DC13BB50213E1FD100800955 /* LPCityDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DC13BB4F213E1FD100800955 /* LPCityDataManager.m */; };
+		DC13BB52213E205A00800955 /* china_cities_v2.db in Resources */ = {isa = PBXBuildFile; fileRef = DC13BB51213E205A00800955 /* china_cities_v2.db */; };
+		DC13BB55213E23CF00800955 /* LPSelectCityVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC13BB54213E23CF00800955 /* LPSelectCityVC.m */; };
 		DC17FE2D213A9A9100635F05 /* LPCommentListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC17FE2C213A9A9100635F05 /* LPCommentListModel.m */; };
 		DC290F2F213CC55000EC3FCC /* LPEssayDetailCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC290F2D213CC55000EC3FCC /* LPEssayDetailCommentCell.m */; };
 		DC290F30213CC55000EC3FCC /* LPEssayDetailCommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC290F2E213CC55000EC3FCC /* LPEssayDetailCommentCell.xib */; };
@@ -120,6 +123,11 @@
 		BBC93F1DC28C278E85E3A307 /* Pods-BlueHiredUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlueHiredUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlueHiredUITests/Pods-BlueHiredUITests.release.xcconfig"; sourceTree = "<group>"; };
 		DC13BB4B213E1C3B00800955 /* LPCityModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPCityModel.h; sourceTree = "<group>"; };
 		DC13BB4C213E1C3B00800955 /* LPCityModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPCityModel.m; sourceTree = "<group>"; };
+		DC13BB4E213E1FD100800955 /* LPCityDataManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPCityDataManager.h; sourceTree = "<group>"; };
+		DC13BB4F213E1FD100800955 /* LPCityDataManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPCityDataManager.m; sourceTree = "<group>"; };
+		DC13BB51213E205A00800955 /* china_cities_v2.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = china_cities_v2.db; sourceTree = "<group>"; };
+		DC13BB53213E23CF00800955 /* LPSelectCityVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPSelectCityVC.h; sourceTree = "<group>"; };
+		DC13BB54213E23CF00800955 /* LPSelectCityVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPSelectCityVC.m; sourceTree = "<group>"; };
 		DC17FE2B213A9A9100635F05 /* LPCommentListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPCommentListModel.h; sourceTree = "<group>"; };
 		DC17FE2C213A9A9100635F05 /* LPCommentListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPCommentListModel.m; sourceTree = "<group>"; };
 		DC290F2C213CC55000EC3FCC /* LPEssayDetailCommentCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPEssayDetailCommentCell.h; sourceTree = "<group>"; };
@@ -339,8 +347,11 @@
 		DC13BB49213E1C1C00800955 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				DC13BB51213E205A00800955 /* china_cities_v2.db */,
 				DC13BB4B213E1C3B00800955 /* LPCityModel.h */,
 				DC13BB4C213E1C3B00800955 /* LPCityModel.m */,
+				DC13BB4E213E1FD100800955 /* LPCityDataManager.h */,
+				DC13BB4F213E1FD100800955 /* LPCityDataManager.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -348,6 +359,8 @@
 		DC13BB4A213E1C1C00800955 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				DC13BB53213E23CF00800955 /* LPSelectCityVC.h */,
+				DC13BB54213E23CF00800955 /* LPSelectCityVC.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -862,6 +875,7 @@
 				DC30E1A621393BB0000C7A91 /* LPWorkDetailHeadCell.xib in Resources */,
 				DC5C38952136682200B3CF6E /* LPCircleCollectionViewCell.xib in Resources */,
 				DC73832B2133E33E0055DC10 /* Main.storyboard in Resources */,
+				DC13BB52213E205A00800955 /* china_cities_v2.db in Resources */,
 				DC49D86C213A74B3009BFCB0 /* LPEssayDetailHeadCell.xib in Resources */,
 				DC7383A82134F6580055DC10 /* LPMainCell.xib in Resources */,
 				DC5C389E213682F500B3CF6E /* LPCircleListCell.xib in Resources */,
@@ -994,6 +1008,7 @@
 				DC13BB4D213E1C3B00800955 /* LPCityModel.m in Sources */,
 				DC5C38A421369B9B00B3CF6E /* NSString+String.m in Sources */,
 				DC49D86F213A7751009BFCB0 /* LPEssayDetailModel.m in Sources */,
+				DC13BB50213E1FD100800955 /* LPCityDataManager.m in Sources */,
 				DC44DB9C21352B8000D00FAC /* LPNoDataView.m in Sources */,
 				DC30E19B21391DAD000C7A91 /* LPInformationSearchResultVC.m in Sources */,
 				DC7A32E7213812E200E09C6C /* LPSortAlertView.m in Sources */,
@@ -1020,6 +1035,7 @@
 				DC7383AC2134F7B50055DC10 /* LPWorklistModel.m in Sources */,
 				DC5C389D213682F500B3CF6E /* LPCircleListCell.m in Sources */,
 				DC7383712133EC320055DC10 /* LPMineVC.m in Sources */,
+				DC13BB55213E23CF00800955 /* LPSelectCityVC.m in Sources */,
 				DC5C38942136682200B3CF6E /* LPCircleCollectionViewCell.m in Sources */,
 				DC7383A22134EF300055DC10 /* UIView+MBProgressHUD.m in Sources */,
 				DC30E18F2138D9CB000C7A91 /* LPScreenAlertView.m in Sources */,

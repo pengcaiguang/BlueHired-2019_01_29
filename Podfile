@@ -22,6 +22,7 @@ target 'BlueHired' do
     pod 'SDCycleScrollView','~> 1.75'
     pod 'FMDB'
 
+    pod 'SCIndexView'
     
     
   target 'BlueHiredTests' do

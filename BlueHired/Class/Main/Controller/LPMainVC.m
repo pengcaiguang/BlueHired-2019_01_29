@@ -15,6 +15,7 @@
 #import "LPScreenAlertView.h"
 #import "LPMainSearchVC.h"
 #import "LPWorkDetailVC.h"
+#import "LPSelectCityVC.h"
 
 static NSString *LPMainCellID = @"LPMainCell";
 
@@ -174,6 +175,9 @@ static NSString *LPMainCellID = @"LPMainCell";
 
 -(void)touchSelectCityButton{
     NSLog(@"touchSelectCityButton");
+    LPSelectCityVC *vc = [[LPSelectCityVC alloc]init];
+    vc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
     
 }
 

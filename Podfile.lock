@@ -25,6 +25,7 @@ PODS:
   - RTRootNavigationController (0.6.7):
     - RTRootNavigationController/Core (= 0.6.7)
   - RTRootNavigationController/Core (0.6.7)
+  - SCIndexView (2.1.1)
   - SDCycleScrollView (1.75):
     - SDWebImage (>= 4.0.0)
   - SDWebImage (4.4.2):
@@ -40,6 +41,7 @@ DEPENDENCIES:
   - MJExtension
   - MJRefresh
   - RTRootNavigationController
+  - SCIndexView
   - SDCycleScrollView (~> 1.75)
   - SDWebImage
 
@@ -53,6 +55,7 @@ SPEC REPOS:
     - MJExtension
     - MJRefresh
     - RTRootNavigationController
+    - SCIndexView
     - SDCycleScrollView
     - SDWebImage
 
@@ -65,9 +68,10 @@ SPEC CHECKSUMS:
   MJExtension: 19bc33ce2eee2d319760f5622562cf581a6ff756
   MJRefresh: 0efa19656679d70a0f47cbe76e56c2271fe53a97
   RTRootNavigationController: d6aa6cbb78a3eaecea4f6e4df63f15dd887836b8
+  SCIndexView: b68cded2054ddf3000cdaa56f17627dfb1041c78
   SDCycleScrollView: 884b88f0266dd4708a0e1934975c69cb971707b1
   SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
 
-PODFILE CHECKSUM: fd2e52181aa48dff1dab3cdc971f519d45dc4bba
+PODFILE CHECKSUM: 8f1c945097b7b07ee826445ea946e56a360ec8d2
 
 COCOAPODS: 1.5.3
