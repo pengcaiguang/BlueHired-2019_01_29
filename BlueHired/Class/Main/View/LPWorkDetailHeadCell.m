@@ -33,7 +33,11 @@
     self.mechanismNameLabel.text = model.data.mechanismName;
     self.mechanismScoreLabel.text = [NSString stringWithFormat:@"%@分",model.data.mechanismScore];
     self.postNameLabel.text = model.data.postName;
-    self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/月",model.data.wageRange];
+    if ([model.data.postName isEqualToString:@"小时工"]) {
+        self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/时",model.data.workMoney];
+    }else{
+        self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/月",model.data.wageRange];
+    }
     
     self.workTypeNameLabel.text = [NSString stringWithFormat:@"需%@：%@人",model.data.workTypeName,model.data.maxNumber ? model.data.maxNumber : @"0"];
     self.applyNumberLabel.text = [NSString stringWithFormat:@"已报名：%@人",model.data.applyNumber ? model.data.applyNumber : @"0"];
