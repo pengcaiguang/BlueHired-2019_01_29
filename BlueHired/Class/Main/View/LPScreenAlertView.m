@@ -20,6 +20,9 @@
 @property(nonatomic,strong) NSMutableArray *buttonGongzhongArray;
 
 
+@property(nonatomic,copy) NSString *typeId;
+@property(nonatomic,copy) NSString *workType;
+
 @end
 
 @implementation LPScreenAlertView
@@ -110,6 +113,9 @@
     button.backgroundColor = [UIColor colorWithHexString:@"#E8F6FF"];
     button.layer.borderColor = [UIColor baseColor].CGColor;
     button.layer.borderWidth = 0.5;
+    
+    self.typeId = self.mechanismlistModel.data.mechanismTypeList[button.tag].id.stringValue;
+    
 }
 -(void)touchGongzhongButton:(UIButton *)button{
     for (UIButton *btn in self.buttonGongzhongArray) {
@@ -120,6 +126,16 @@
     button.backgroundColor = [UIColor colorWithHexString:@"#E8F6FF"];
     button.layer.borderColor = [UIColor baseColor].CGColor;
     button.layer.borderWidth = 0.5;
+    switch (button.tag) {
+        case 0:
+            self.workType = @"1";
+            break;
+        case 1:
+            self.workType = @"0";
+            break;
+        default:
+            break;
+    }
 }
 
 -(void)setHidden:(BOOL)hidden{
@@ -172,6 +188,8 @@
 
 -(void)touchBottomButton:(UIButton *)button{
     if (button.tag == 0) {
+        self.typeId = nil;
+        self.workType = nil;
         for (UIButton *btn in self.buttonHangyeArray) {
             btn.backgroundColor = [UIColor colorWithHexString:@"#EBEBEB"];
             btn.layer.borderColor = [UIColor whiteColor].CGColor;
@@ -184,6 +202,9 @@
         }
     }else{
         [self hidden];
+        if ([self.delegate respondsToSelector:@selector(selectMechanismTypeId:workType:)]) {
+            [self.delegate selectMechanismTypeId:self.typeId workType:self.workType];
+        }
     }
 }
 #pragma mark lazy

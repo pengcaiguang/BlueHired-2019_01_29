@@ -20,7 +20,7 @@
 
 static NSString *LPMainCellID = @"LPMainCell";
 
-@interface LPMainVC ()<UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,SDCycleScrollViewDelegate,LPSortAlertViewDelegate,LPSelectCityVCDelegate>
+@interface LPMainVC ()<UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,SDCycleScrollViewDelegate,LPSortAlertViewDelegate,LPSelectCityVCDelegate,LPScreenAlertViewDelegate>
 
 @property (nonatomic, strong)UITableView *tableview;
 @property(nonatomic,strong) UIView *tableHeaderView;
@@ -40,6 +40,9 @@ static NSString *LPMainCellID = @"LPMainCell";
 
 @property(nonatomic,assign) NSInteger orderType;
 @property(nonatomic,strong) NSString *mechanismAddress;
+@property(nonatomic,copy) NSString *mechanismTypeId;
+@property(nonatomic,copy) NSString *workType;
+
 
 @end
 
@@ -159,7 +162,6 @@ static NSString *LPMainCellID = @"LPMainCell";
 }
 -(void)setModel:(LPWorklistModel *)model{
     _model = model;
-//    [self addNodataView];
     if ([self.model.code integerValue] == 0) {
         NSMutableArray *array = [NSMutableArray array];
         for (LPWorklistDataWorkListModel *model in self.model.data.slideshowList) {
@@ -174,19 +176,40 @@ static NSString *LPMainCellID = @"LPMainCell";
         if (self.model.data.workList.count > 0) {
             self.page += 1;
             [self.listArray addObjectsFromArray:self.model.data.workList];
-        }else{
-            [self.tableview.mj_footer endRefreshingWithNoMoreData];
-        }
-        [self.tableview reloadData];
+            [self.tableview reloadData];
 
+        }else{
+            if (self.page == 1) {
+                [self.tableview reloadData];
+            }else{
+                [self.tableview.mj_footer endRefreshingWithNoMoreData];
+            }
+        }
+
+        if (self.listArray.count == 0) {
+            [self addNodataViewHidden:NO];
+        }else{
+            [self addNodataViewHidden:YES];
+        }
     }else{
         [self.view showLoadingMeg:NETE_ERROR_MESSAGE time:MESSAGE_SHOW_TIME];
     }
 }
--(void)addNodataView{
-    LPNoDataView *noDataView = [[LPNoDataView alloc]initWithFrame:CGRectMake(0, 240, SCREEN_WIDTH, SCREEN_HEIGHT-240-49-64)];
-    [self.tableview addSubview:noDataView];
+-(void)addNodataViewHidden:(BOOL)hidden{
+    BOOL has = NO;
+    for (UIView *view in self.tableview.subviews) {
+        if ([view isKindOfClass:[LPNoDataView class]]) {
+            view.hidden = hidden;
+            has = YES;
+        }
+    }
+    if (!has) {
+        LPNoDataView *noDataView = [[LPNoDataView alloc]initWithFrame:CGRectMake(0, 240, SCREEN_WIDTH, SCREEN_HEIGHT-240-49-64)];
+        [self.tableview addSubview:noDataView];
+        noDataView.hidden = hidden;
+    }
 }
+
 -(void)updataHeaderView{
     if (self.model.data.slideshowList.count <= 0) {
         return;
@@ -272,13 +295,23 @@ static NSString *LPMainCellID = @"LPMainCell";
     button.selected = !button.isSelected;
     self.screenAlertView.hidden = !button.isSelected;
 }
+#pragma mark - LPScreenAlertViewDelegate
+-(void)selectMechanismTypeId:(NSString *)typeId workType:(NSString *)workType{
+    self.mechanismTypeId = typeId;
+    self.workType = workType;
+    self.orderType = 0;
+    self.page = 1;
+    [self request];
+}
 #pragma mark - request
 -(void)request{
     NSDictionary *dic = @{
                           @"type":@(0),
                           @"orderType":self.orderType ? @(self.orderType) : @"",
                           @"page":@(self.page),
-                          @"mechanismAddress":self.mechanismAddress ? self.mechanismAddress : @"china"
+                          @"mechanismAddress":self.mechanismAddress ? self.mechanismAddress : @"china",
+                          @"mechanismTypeId":self.mechanismTypeId ? self.mechanismTypeId : @"",
+                          @"workType":self.workType ? self.workType : @""
                           };
     [NetApiManager requestWorklistWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
@@ -382,6 +415,7 @@ static NSString *LPMainCellID = @"LPMainCell";
     if (!_screenAlertView) {
         _screenAlertView = [[LPScreenAlertView alloc]init];
         _screenAlertView.touchButton = self.screenButton;
+        _screenAlertView.delegate = self;
     }
     return _screenAlertView;
 }

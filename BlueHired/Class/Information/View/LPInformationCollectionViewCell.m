@@ -85,11 +85,11 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
         if (self.model.data.count > 0) {
             self.page += 1;
 //            [self.listArray addObjectsFromArray:self.model.data];
-//            [self.tableview reloadData];
+            [self.tableview reloadData];
         }else{
             [self.tableview.mj_footer endRefreshingWithNoMoreData];
         }
-        [self.tableview reloadData];
+//        [self.tableview reloadData];
 
     }else{
         [self.contentView showLoadingMeg:NETE_ERROR_MESSAGE time:MESSAGE_SHOW_TIME];

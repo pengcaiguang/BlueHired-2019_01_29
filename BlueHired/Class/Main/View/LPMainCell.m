@@ -32,9 +32,14 @@
     [self.mechanismUrlImageView sd_setImageWithURL:[NSURL URLWithString:model.mechanismUrl]];
     self.mechanismScoreLabel.text = [NSString stringWithFormat:@"%@分",model.mechanismScore];
     
-    self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/月",model.wageRange];
     self.keyLabel.text = model.key;
     self.postNameLabel.text = model.postName;
+    if ([model.postName isEqualToString:@"小时工"]) {
+        self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/时",model.workMoney];
+    }else{
+        self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/月",model.wageRange];
+    }
+    
     self.isApplyLabel.hidden = !model.isApply;
     self.workTypeNameLabel.text = [NSString stringWithFormat:@"需%@%@人",model.workTypeName,model.maxNumber];
     self.applyNumberLabel.text = [NSString stringWithFormat:@"已报名：%@人",model.applyNumber ? model.applyNumber : @"0"];
