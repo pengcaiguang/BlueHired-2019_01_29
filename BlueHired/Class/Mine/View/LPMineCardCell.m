@@ -7,6 +7,7 @@
 //
 
 #import "LPMineCardCell.h"
+#import "LPBusinessReviewVC.h"
 
 @implementation LPMineCardCell
 
@@ -49,6 +50,9 @@
     NSInteger index = [tap view].tag;
     if (index == 4) {
         NSLog(@"企业点评");
+        LPBusinessReviewVC *vc = [[LPBusinessReviewVC alloc]init];
+        vc.hidesBottomBarWhenPushed = YES;
+        [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
     }else{
         if ([LoginUtils validationLogin:[UIWindow visibleViewController]]) {
             

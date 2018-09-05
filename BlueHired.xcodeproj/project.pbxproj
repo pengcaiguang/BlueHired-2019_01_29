@@ -97,6 +97,12 @@
 		DC7A32E12137E99300E09C6C /* LoginUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7A32E02137E99300E09C6C /* LoginUtils.m */; };
 		DC7A32E42138074900E09C6C /* LPSetVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7A32E32138074900E09C6C /* LPSetVC.m */; };
 		DC7A32E7213812E200E09C6C /* LPSortAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7A32E6213812E200E09C6C /* LPSortAlertView.m */; };
+		DCF5D9BC213F892D009F5DCE /* LPBusinessReviewVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF5D9BB213F892D009F5DCE /* LPBusinessReviewVC.m */; };
+		DCF5D9C0213FA395009F5DCE /* LPMechanismcommentMechanismlistModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF5D9BF213FA395009F5DCE /* LPMechanismcommentMechanismlistModel.m */; };
+		DCF5D9C5213FA5BD009F5DCE /* LPBusinessReviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF5D9C3213FA5BD009F5DCE /* LPBusinessReviewCell.m */; };
+		DCF5D9C6213FA5BD009F5DCE /* LPBusinessReviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DCF5D9C4213FA5BD009F5DCE /* LPBusinessReviewCell.xib */; };
+		DCF5D9C9213FB4D1009F5DCE /* LPBusinessReviewSearchVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF5D9C8213FB4D1009F5DCE /* LPBusinessReviewSearchVC.m */; };
+		DCF5D9CC213FB5CF009F5DCE /* LPBusinessReviewSearchResultVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF5D9CB213FB5CF009F5DCE /* LPBusinessReviewSearchResultVC.m */; };
 		DD9C491243746BE284EDF63A /* libPods-BlueHiredTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F2990BA484C987BEAA6D77E9 /* libPods-BlueHiredTests.a */; };
 /* End PBXBuildFile section */
 
@@ -288,6 +294,17 @@
 		DC7A32E5213812E200E09C6C /* LPSortAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPSortAlertView.h; sourceTree = "<group>"; };
 		DC7A32E6213812E200E09C6C /* LPSortAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPSortAlertView.m; sourceTree = "<group>"; };
 		DCB5A5321875E124A6C52C8B /* libPods-BlueHired.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BlueHired.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCF5D9BA213F892D009F5DCE /* LPBusinessReviewVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPBusinessReviewVC.h; sourceTree = "<group>"; };
+		DCF5D9BB213F892D009F5DCE /* LPBusinessReviewVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPBusinessReviewVC.m; sourceTree = "<group>"; };
+		DCF5D9BE213FA395009F5DCE /* LPMechanismcommentMechanismlistModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPMechanismcommentMechanismlistModel.h; sourceTree = "<group>"; };
+		DCF5D9BF213FA395009F5DCE /* LPMechanismcommentMechanismlistModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPMechanismcommentMechanismlistModel.m; sourceTree = "<group>"; };
+		DCF5D9C2213FA5BD009F5DCE /* LPBusinessReviewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPBusinessReviewCell.h; sourceTree = "<group>"; };
+		DCF5D9C3213FA5BD009F5DCE /* LPBusinessReviewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPBusinessReviewCell.m; sourceTree = "<group>"; };
+		DCF5D9C4213FA5BD009F5DCE /* LPBusinessReviewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPBusinessReviewCell.xib; sourceTree = "<group>"; };
+		DCF5D9C7213FB4D1009F5DCE /* LPBusinessReviewSearchVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPBusinessReviewSearchVC.h; sourceTree = "<group>"; };
+		DCF5D9C8213FB4D1009F5DCE /* LPBusinessReviewSearchVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPBusinessReviewSearchVC.m; sourceTree = "<group>"; };
+		DCF5D9CA213FB5CF009F5DCE /* LPBusinessReviewSearchResultVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPBusinessReviewSearchResultVC.h; sourceTree = "<group>"; };
+		DCF5D9CB213FB5CF009F5DCE /* LPBusinessReviewSearchResultVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPBusinessReviewSearchResultVC.m; sourceTree = "<group>"; };
 		E94B224D8D8E2D47E74AC9DB /* Pods-BlueHiredTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlueHiredTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlueHiredTests/Pods-BlueHiredTests.release.xcconfig"; sourceTree = "<group>"; };
 		F2990BA484C987BEAA6D77E9 /* libPods-BlueHiredTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BlueHiredTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -511,6 +528,7 @@
 		DC7383552133EAAF0055DC10 /* Class */ = {
 			isa = PBXGroup;
 			children = (
+				DCF5D9B8213F8905009F5DCE /* BusinessReview */,
 				DC7383562133EAAF0055DC10 /* Base */,
 				DC73837A2133F0F00055DC10 /* Categories */,
 				DC13BB48213E1BF600800955 /* ChooseCity */,
@@ -778,6 +796,48 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
+		DCF5D9B8213F8905009F5DCE /* BusinessReview */ = {
+			isa = PBXGroup;
+			children = (
+				DCF5D9C1213FA592009F5DCE /* View */,
+				DCF5D9BD213FA389009F5DCE /* Model */,
+				DCF5D9B9213F8916009F5DCE /* Controller */,
+			);
+			path = BusinessReview;
+			sourceTree = "<group>";
+		};
+		DCF5D9B9213F8916009F5DCE /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				DCF5D9BA213F892D009F5DCE /* LPBusinessReviewVC.h */,
+				DCF5D9BB213F892D009F5DCE /* LPBusinessReviewVC.m */,
+				DCF5D9C7213FB4D1009F5DCE /* LPBusinessReviewSearchVC.h */,
+				DCF5D9C8213FB4D1009F5DCE /* LPBusinessReviewSearchVC.m */,
+				DCF5D9CA213FB5CF009F5DCE /* LPBusinessReviewSearchResultVC.h */,
+				DCF5D9CB213FB5CF009F5DCE /* LPBusinessReviewSearchResultVC.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		DCF5D9BD213FA389009F5DCE /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DCF5D9BE213FA395009F5DCE /* LPMechanismcommentMechanismlistModel.h */,
+				DCF5D9BF213FA395009F5DCE /* LPMechanismcommentMechanismlistModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DCF5D9C1213FA592009F5DCE /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DCF5D9C2213FA5BD009F5DCE /* LPBusinessReviewCell.h */,
+				DCF5D9C3213FA5BD009F5DCE /* LPBusinessReviewCell.m */,
+				DCF5D9C4213FA5BD009F5DCE /* LPBusinessReviewCell.xib */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -901,6 +961,7 @@
 				DC49D86C213A74B3009BFCB0 /* LPEssayDetailHeadCell.xib in Resources */,
 				DC7383A82134F6580055DC10 /* LPMainCell.xib in Resources */,
 				DC5C389E213682F500B3CF6E /* LPCircleListCell.xib in Resources */,
+				DCF5D9C6213FA5BD009F5DCE /* LPBusinessReviewCell.xib in Resources */,
 				DC5C38852136372F00B3CF6E /* LPInformationSingleCell.xib in Resources */,
 				DC5C388F213645E000B3CF6E /* LPInformationMoreImageCollectionViewCell.xib in Resources */,
 				DC7A32D021379BCA00E09C6C /* LPMineCardCell.xib in Resources */,
@@ -1014,6 +1075,7 @@
 				DC44DBA321354D6A00D00FAC /* DeviceUtils.m in Sources */,
 				DC7A32DB2137DADD00E09C6C /* UIViewController+BackItem.m in Sources */,
 				DC5C388E213645E000B3CF6E /* LPInformationMoreImageCollectionViewCell.m in Sources */,
+				DCF5D9C9213FB4D1009F5DCE /* LPBusinessReviewSearchVC.m in Sources */,
 				DC49D867213A6BB2009BFCB0 /* LPEssayDetailVC.m in Sources */,
 				DC44DBA821354E8500D00FAC /* LPInformationCollectionViewCell.m in Sources */,
 				DC17FE2D213A9A9100635F05 /* LPCommentListModel.m in Sources */,
@@ -1059,11 +1121,15 @@
 				DC7383AC2134F7B50055DC10 /* LPWorklistModel.m in Sources */,
 				DC5C389D213682F500B3CF6E /* LPCircleListCell.m in Sources */,
 				DC7383712133EC320055DC10 /* LPMineVC.m in Sources */,
+				DCF5D9C5213FA5BD009F5DCE /* LPBusinessReviewCell.m in Sources */,
 				DC13BB55213E23CF00800955 /* LPSelectCityVC.m in Sources */,
 				DC5C38942136682200B3CF6E /* LPCircleCollectionViewCell.m in Sources */,
 				DC7383A22134EF300055DC10 /* UIView+MBProgressHUD.m in Sources */,
 				DC30E18F2138D9CB000C7A91 /* LPScreenAlertView.m in Sources */,
 				DC30E19821391303000C7A91 /* LPMainSearchResultVC.m in Sources */,
+				DCF5D9C0213FA395009F5DCE /* LPMechanismcommentMechanismlistModel.m in Sources */,
+				DCF5D9BC213F892D009F5DCE /* LPBusinessReviewVC.m in Sources */,
+				DCF5D9CC213FB5CF009F5DCE /* LPBusinessReviewSearchResultVC.m in Sources */,
 				DC5C38A1213690C000B3CF6E /* LPMoodListModel.m in Sources */,
 				DC44DBA021353D5800D00FAC /* LPLabelListModel.m in Sources */,
 				DC7383332133E3670055DC10 /* main.m in Sources */,

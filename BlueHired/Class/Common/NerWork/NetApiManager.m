@@ -247,4 +247,19 @@
     [NetRequestManager requestWithEnty:enty];
 }
 
+#pragma mark - 企业点评
+/************************************************************/
+//*  企业点评
+/************************************************************/
+//查询所有企业
++ (void)requestMechanismcommentMechanismlistWithParam:(id)paramer
+                                           withHandle:(response)responseHandle{
+    NSString * appendURLString = @"mechanismcomment/query_mechanismlist";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
+
 @end

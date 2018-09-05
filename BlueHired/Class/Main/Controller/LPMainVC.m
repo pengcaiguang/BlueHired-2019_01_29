@@ -226,8 +226,8 @@ static NSString *LPMainCellID = @"LPMainCell";
     vc.hidesBottomBarWhenPushed = YES;
     vc.delegate = self;
     [self.navigationController pushViewController:vc animated:YES];
-    
 }
+
 #pragma mark - LPSelectCityVCDelegate
 -(void)selectCity:(LPCityModel *)model{
     if ([model.c_name isEqualToString:@"全国"]) {

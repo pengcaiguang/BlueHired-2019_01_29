@@ -92,6 +92,14 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //登陆
 + (void)requestLoginWithParam:(id)paramer
                    withHandle:(response)responseHandle;
+
+#pragma mark - 企业点评
+/************************************************************/
+//*  企业点评
+/************************************************************/
+//查询所有企业
++ (void)requestMechanismcommentMechanismlistWithParam:(id)paramer
+                                           withHandle:(response)responseHandle;
 @end
 
 
