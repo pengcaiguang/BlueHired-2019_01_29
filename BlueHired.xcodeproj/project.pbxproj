@@ -103,6 +103,8 @@
 		DCF5D9C6213FA5BD009F5DCE /* LPBusinessReviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DCF5D9C4213FA5BD009F5DCE /* LPBusinessReviewCell.xib */; };
 		DCF5D9C9213FB4D1009F5DCE /* LPBusinessReviewSearchVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF5D9C8213FB4D1009F5DCE /* LPBusinessReviewSearchVC.m */; };
 		DCF5D9CC213FB5CF009F5DCE /* LPBusinessReviewSearchResultVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF5D9CB213FB5CF009F5DCE /* LPBusinessReviewSearchResultVC.m */; };
+		DCF5D9CF213FB7D9009F5DCE /* LPBusinessReviewDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF5D9CE213FB7D9009F5DCE /* LPBusinessReviewDetailVC.m */; };
+		DCF5D9D2213FC1CE009F5DCE /* LPMechanismcommentDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF5D9D1213FC1CE009F5DCE /* LPMechanismcommentDetailModel.m */; };
 		DD9C491243746BE284EDF63A /* libPods-BlueHiredTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F2990BA484C987BEAA6D77E9 /* libPods-BlueHiredTests.a */; };
 /* End PBXBuildFile section */
 
@@ -305,6 +307,10 @@
 		DCF5D9C8213FB4D1009F5DCE /* LPBusinessReviewSearchVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPBusinessReviewSearchVC.m; sourceTree = "<group>"; };
 		DCF5D9CA213FB5CF009F5DCE /* LPBusinessReviewSearchResultVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPBusinessReviewSearchResultVC.h; sourceTree = "<group>"; };
 		DCF5D9CB213FB5CF009F5DCE /* LPBusinessReviewSearchResultVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPBusinessReviewSearchResultVC.m; sourceTree = "<group>"; };
+		DCF5D9CD213FB7D9009F5DCE /* LPBusinessReviewDetailVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPBusinessReviewDetailVC.h; sourceTree = "<group>"; };
+		DCF5D9CE213FB7D9009F5DCE /* LPBusinessReviewDetailVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPBusinessReviewDetailVC.m; sourceTree = "<group>"; };
+		DCF5D9D0213FC1CE009F5DCE /* LPMechanismcommentDetailModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPMechanismcommentDetailModel.h; sourceTree = "<group>"; };
+		DCF5D9D1213FC1CE009F5DCE /* LPMechanismcommentDetailModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPMechanismcommentDetailModel.m; sourceTree = "<group>"; };
 		E94B224D8D8E2D47E74AC9DB /* Pods-BlueHiredTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlueHiredTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlueHiredTests/Pods-BlueHiredTests.release.xcconfig"; sourceTree = "<group>"; };
 		F2990BA484C987BEAA6D77E9 /* libPods-BlueHiredTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BlueHiredTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -815,6 +821,8 @@
 				DCF5D9C8213FB4D1009F5DCE /* LPBusinessReviewSearchVC.m */,
 				DCF5D9CA213FB5CF009F5DCE /* LPBusinessReviewSearchResultVC.h */,
 				DCF5D9CB213FB5CF009F5DCE /* LPBusinessReviewSearchResultVC.m */,
+				DCF5D9CD213FB7D9009F5DCE /* LPBusinessReviewDetailVC.h */,
+				DCF5D9CE213FB7D9009F5DCE /* LPBusinessReviewDetailVC.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -824,6 +832,8 @@
 			children = (
 				DCF5D9BE213FA395009F5DCE /* LPMechanismcommentMechanismlistModel.h */,
 				DCF5D9BF213FA395009F5DCE /* LPMechanismcommentMechanismlistModel.m */,
+				DCF5D9D0213FC1CE009F5DCE /* LPMechanismcommentDetailModel.h */,
+				DCF5D9D1213FC1CE009F5DCE /* LPMechanismcommentDetailModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1079,6 +1089,7 @@
 				DC49D867213A6BB2009BFCB0 /* LPEssayDetailVC.m in Sources */,
 				DC44DBA821354E8500D00FAC /* LPInformationCollectionViewCell.m in Sources */,
 				DC17FE2D213A9A9100635F05 /* LPCommentListModel.m in Sources */,
+				DCF5D9D2213FC1CE009F5DCE /* LPMechanismcommentDetailModel.m in Sources */,
 				DC7383612133EB2A0055DC10 /* LPMainVC.m in Sources */,
 				DC73839F2134EBC10055DC10 /* LPUserDefaults.m in Sources */,
 				DC7A32E42138074900E09C6C /* LPSetVC.m in Sources */,
@@ -1109,6 +1120,7 @@
 				DC73837D2133F1110055DC10 /* UIColor+Color.m in Sources */,
 				DC7A32DE2137E61100E09C6C /* LPForgetPassWordVC.m in Sources */,
 				DC49D86B213A74B3009BFCB0 /* LPEssayDetailHeadCell.m in Sources */,
+				DCF5D9CF213FB7D9009F5DCE /* LPBusinessReviewDetailVC.m in Sources */,
 				DC7383282133E33E0055DC10 /* ViewController.m in Sources */,
 				DC44DB9621351F6D00D00FAC /* NullSafe.m in Sources */,
 				DC13BB5E213EA10200800955 /* LPMechanismlistModel.m in Sources */,

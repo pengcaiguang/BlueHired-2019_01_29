@@ -9,6 +9,7 @@
 #import "LPMainSearchResultVC.h"
 #import "LPMainCell.h"
 #import "LPWorklistModel.h"
+#import "LPWorkDetailVC.h"
 
 static NSString *LPMainCellID = @"LPMainCell";
 
@@ -85,6 +86,9 @@ static NSString *LPMainCellID = @"LPMainCell";
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    LPWorkDetailVC *vc = [[LPWorkDetailVC alloc]init];
+    vc.workListModel = self.listArray[indexPath.row];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - request

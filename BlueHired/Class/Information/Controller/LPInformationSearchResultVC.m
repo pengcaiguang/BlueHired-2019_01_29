@@ -10,6 +10,7 @@
 #import "LPEssaylistModel.h"
 #import "LPInformationSingleCell.h"
 #import "LPInformationMoreCell.h"
+#import "LPEssayDetailVC.h"
 
 static NSString *LPInformationSingleCellID = @"LPInformationSingleCell";
 static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
@@ -100,6 +101,20 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    LPEssayDetailVC *vc = [[LPEssayDetailVC alloc]init];
+    vc.essaylistDataModel = self.listArray[indexPath.row];
+    [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        if ([cell isKindOfClass:[LPInformationSingleCell class]]) {
+            LPInformationSingleCell *c = (LPInformationSingleCell *)cell;
+            c.viewLabel.text = [NSString stringWithFormat:@"%ld",[c.viewLabel.text integerValue] + 1];
+        }else if ([cell isKindOfClass:[LPInformationMoreCell class]]) {
+            LPInformationMoreCell *c = (LPInformationMoreCell *)cell;
+            c.viewLabel.text = [NSString stringWithFormat:@"%ld",[c.viewLabel.text integerValue] + 1];
+        }
+    });
 }
 #pragma mark - request
 -(void)requestEssaylist{

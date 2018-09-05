@@ -9,6 +9,7 @@
 #import "LPBusinessReviewSearchResultVC.h"
 #import "LPMechanismcommentMechanismlistModel.h"
 #import "LPBusinessReviewCell.h"
+#import "LPBusinessReviewDetailVC.h"
 
 static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
 
@@ -124,6 +125,9 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    LPBusinessReviewDetailVC *vc = [[LPBusinessReviewDetailVC alloc]init];
+    vc.mechanismlistDataModel = self.listArray[indexPath.row];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 #pragma mark lazy
 - (UITableView *)tableview{
@@ -135,7 +139,6 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
         _tableview.rowHeight = UITableViewAutomaticDimension;
         _tableview.estimatedRowHeight = 100;
         _tableview.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-        _tableview.separatorColor = [UIColor baseColor];
         _tableview.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
         [_tableview registerNib:[UINib nibWithNibName:LPBusinessReviewCellID bundle:nil] forCellReuseIdentifier:LPBusinessReviewCellID];
         _tableview.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{

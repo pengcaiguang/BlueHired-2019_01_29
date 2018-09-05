@@ -12,6 +12,7 @@
 #import "LPSelectCityVC.h"
 #import "LPSearchBar.h"
 #import "LPBusinessReviewSearchVC.h"
+#import "LPBusinessReviewDetailVC.h"
 
 static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
 
@@ -36,8 +37,7 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = @"企业点评";
     self.page = 1;
-    [self setLeftButton];
-    [self setSearchView];
+    [self setTitleView];
     [self.view addSubview:self.tableview];
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.edges.equalTo(self.view);
@@ -49,7 +49,7 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
     [self requestMechanismcommentMechanismlist];
 }
 
--(void)setLeftButton{
+-(void)setTitleView{
     UIView *bgView = [[UIView alloc]init];
     [self.view addSubview:bgView];
     [bgView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -124,9 +124,6 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
     
 }
 
--(void)setSearchView{
-    
-}
 - (LPSearchBar *)addSearchBar{
     
     self.definesPresentationContext = YES;
@@ -258,6 +255,9 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    LPBusinessReviewDetailVC *vc = [[LPBusinessReviewDetailVC alloc]init];
+    vc.mechanismlistDataModel = self.listArray[indexPath.row];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 #pragma mark lazy
 - (UITableView *)tableview{
@@ -269,7 +269,6 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
         _tableview.rowHeight = UITableViewAutomaticDimension;
         _tableview.estimatedRowHeight = 100;
         _tableview.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-        _tableview.separatorColor = [UIColor baseColor];
         _tableview.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
         [_tableview registerNib:[UINib nibWithNibName:LPBusinessReviewCellID bundle:nil] forCellReuseIdentifier:LPBusinessReviewCellID];
         _tableview.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{

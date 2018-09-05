@@ -262,4 +262,14 @@
     [NetRequestManager requestWithEnty:enty];
 }
 
+//企业点评详情
++ (void)requestMechanismcommentDeatilWithParam:(id)paramer
+                                    withHandle:(response)responseHandle{
+    NSString * appendURLString = @"mechanismcomment/query_deatil";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
 @end

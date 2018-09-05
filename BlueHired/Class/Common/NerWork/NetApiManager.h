@@ -100,6 +100,9 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //查询所有企业
 + (void)requestMechanismcommentMechanismlistWithParam:(id)paramer
                                            withHandle:(response)responseHandle;
+//企业点评详情
++ (void)requestMechanismcommentDeatilWithParam:(id)paramer
+                                    withHandle:(response)responseHandle;
 @end
 
 
