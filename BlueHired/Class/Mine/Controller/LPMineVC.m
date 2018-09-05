@@ -35,9 +35,16 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
         make.right.mas_equalTo(0);
         make.bottom.mas_equalTo(0);
     }];
-    
-
 }
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+//    kUserDefaultsSave(@"0", kLoginStatus);
+    if (AlreadyLogin) {
+        [self requestUserMaterial];
+    }
+}
+
 - (UIStatusBarStyle)preferredStatusBarStyle{
     return UIStatusBarStyleLightContent;
 }
@@ -131,6 +138,22 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
     if ([LoginUtils validationLogin:self]) {
         
     }
+}
+
+#pragma mark - request
+-(void)requestUserMaterial{
+    NSString *string = kUserDefaultsValue(LOGINID);
+    NSDictionary *dic = @{
+                          @"id":string
+                          };
+    [NetApiManager requestUserMaterialWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
 }
 
 #pragma mark lazy

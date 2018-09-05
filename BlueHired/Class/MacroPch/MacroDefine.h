@@ -31,6 +31,9 @@
 /**
  * 登录成功后保存
  */
+
+#define LOGINID  @"LOGINID"
+
 //登录状态
 #define kLoginStatus    @"LoginStatus"
 //登录Token

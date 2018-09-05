@@ -85,13 +85,24 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 + (void)requestMoodListWithParam:(id)paramer
                       withHandle:(response)responseHandle;
 
-#pragma mark - 我的
+#pragma mark - 登陆注册
 /************************************************************/
-//*  我的
+//*  登陆注册
 /************************************************************/
 //登陆
 + (void)requestLoginWithParam:(id)paramer
                    withHandle:(response)responseHandle;
+
+#pragma mark - 我的
+/************************************************************/
+//*  我的
+/************************************************************/
+//查询用户个人资料
++ (void)requestUserMaterialWithParam:(id)paramer
+                          withHandle:(response)responseHandle;
+//查询当天是否签到
++ (void)requestSelectCurIsSignWithParam:(id)paramer
+                             withHandle:(response)responseHandle;
 
 #pragma mark - 企业点评
 /************************************************************/

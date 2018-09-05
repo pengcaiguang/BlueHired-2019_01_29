@@ -232,9 +232,9 @@
     [NetRequestManager requestWithEnty:enty];
 }
 
-#pragma mark - 我的
+#pragma mark - 登陆注册
 /************************************************************/
-//*  我的
+//*  登陆注册
 /************************************************************/
 //登陆
 + (void)requestLoginWithParam:(id)paramer
@@ -247,6 +247,30 @@
     [NetRequestManager requestWithEnty:enty];
 }
 
+#pragma mark - 我的
+/************************************************************/
+//*  我的
+/************************************************************/
+//查询用户个人资料
++ (void)requestUserMaterialWithParam:(id)paramer
+                          withHandle:(response)responseHandle{
+    NSString * appendURLString = @"userMaterial/select";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
+//查询当天是否签到
++ (void)requestSelectCurIsSignWithParam:(id)paramer
+                             withHandle:(response)responseHandle{
+    NSString * appendURLString = @"userSign/selectCurIsSign";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
 #pragma mark - 企业点评
 /************************************************************/
 //*  企业点评

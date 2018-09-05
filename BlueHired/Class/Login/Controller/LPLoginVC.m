@@ -10,6 +10,10 @@
 #import "LPRegisteredVC.h"
 #import "LPForgetPassWordVC.h"
 
+static NSString *PHONEUSERSAVE = @"PHONEUSERSAVE";
+static NSString *PASSWORDUSERSAVE = @"PASSWORDUSERSAVE";
+
+
 @interface LPLoginVC ()<UITextFieldDelegate>
 
 @property(nonatomic,strong) UITextField *phoneTextField;
@@ -17,6 +21,7 @@
 @property(nonatomic,strong) UITextField *passwordTextField;
 @property(nonatomic,strong) UIView *passwordLineView;
 
+@property(nonatomic,assign) BOOL keepPassword;
 @end
 
 @implementation LPLoginVC
@@ -84,6 +89,7 @@
     self.phoneTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     self.phoneTextField.keyboardType = UIKeyboardTypeNumberPad;
     
+    
     self.phoneLineView = [[UIView alloc]init];
     [phoneBgView addSubview:self.phoneLineView];
     [self.phoneLineView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -125,6 +131,7 @@
     self.passwordTextField.tintColor = [UIColor baseColor];
     self.passwordTextField.secureTextEntry = YES;
 
+    
     UIButton *showPasswordButton = [[UIButton alloc]init];
     [passwordBgView addSubview:showPasswordButton];
     [showPasswordButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -150,17 +157,20 @@
     
     UIButton *keepPassWord = [[UIButton alloc]init];
     [self.view addSubview:keepPassWord];
+
     [keepPassWord mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(50);
         make.top.equalTo(passwordBgView.mas_bottom).offset(20);
+        make.width.mas_equalTo(70);
     }];
     [keepPassWord setTitle:@"记住密码" forState:UIControlStateNormal];
-    [keepPassWord setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
-    [keepPassWord setImage:[UIImage imageNamed:@""] forState:UIControlStateSelected];
+    [keepPassWord setImage:[UIImage imageNamed:@"button_noselected"] forState:UIControlStateNormal];
+    [keepPassWord setImage:[UIImage imageNamed:@"button_selected"] forState:UIControlStateSelected];
     keepPassWord.titleLabel.font = [UIFont systemFontOfSize:12];
     [keepPassWord setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
     [keepPassWord addTarget:self action:@selector(touchKeepPassWord:) forControlEvents:UIControlEventTouchUpInside];
-
+    [keepPassWord setTitleEdgeInsets:UIEdgeInsetsMake(0.0, 10, 0.0, 0.0)];
+    
     UIButton *forgetPassWord = [[UIButton alloc]init];
     [self.view addSubview:forgetPassWord];
     [forgetPassWord mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -207,6 +217,16 @@
     registeredButton.layer.borderWidth = 0.5;
     [registeredButton addTarget:self action:@selector(touchRegisteredButton:) forControlEvents:UIControlEventTouchUpInside];
 
+    
+    NSString *phone = kUserDefaultsValue(PHONEUSERSAVE);
+    if (!kStringIsEmpty(phone)) {
+        self.phoneTextField.text = phone;
+    }
+    NSString *password = kUserDefaultsValue(PASSWORDUSERSAVE);
+    if (!kStringIsEmpty(password)) {
+        self.passwordTextField.text = password;
+        keepPassWord.selected = YES;
+    }
 }
 
 
@@ -218,6 +238,8 @@
 
 -(void)touchKeepPassWord:(UIButton *)button{
     NSLog(@"记住密码");
+    button.selected = !button.isSelected;
+    self.keepPassword = button.isSelected;
 }
 -(void)touchForgetPassWord:(UIButton *)button{
     NSLog(@"忘记密码");
@@ -236,15 +258,38 @@
         return;
     }
     
+    NSString *passwordmd5 = [self.passwordTextField.text md5];
+    NSString *newPasswordmd5 = [[NSString stringWithFormat:@"%@lanpin123.com",passwordmd5] md5];
+    
     NSDictionary *dic = @{
+                          @"type":@(1),
                           @"phone":self.phoneTextField.text,
-                          @"password":[self.passwordTextField.text md5]
+                          @"password":newPasswordmd5
                           };
     
     [NetApiManager requestLoginWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            
+            if ([responseObject[@"data"] isEqualToString:@"null"]) {
+                [self.view showLoadingMeg:@"用户不存在" time:MESSAGE_SHOW_TIME];
+            }else if ([responseObject[@"data"] isEqualToString:@"error"]) {
+                [self.view showLoadingMeg:@"密码错误" time:MESSAGE_SHOW_TIME];
+            }else{
+                kUserDefaultsSave(responseObject[@"data"], LOGINID);
+                if (self.keepPassword) {
+                    [self save];
+                }
+                kUserDefaultsSave(@"1", kLoginStatus);
+                [self.navigationController popViewControllerAnimated:YES];
+            }
+        }
     }];
-    
+}
+
+-(void)save{
+    kUserDefaultsSave(self.phoneTextField.text, PHONEUSERSAVE);
+    kUserDefaultsSave(self.passwordTextField.text, PASSWORDUSERSAVE);
 }
 
 -(void)touchRegisteredButton:(UIButton *)button{
