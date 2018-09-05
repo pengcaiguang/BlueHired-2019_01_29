@@ -42,13 +42,8 @@
             [imageView sd_setImageWithURL:[NSURL URLWithString:imageArray[i]]];
             [self.imageBgView addSubview:imageView];
         }
-        self.imageBgView_constraint_height.constant = ceil(imageArray.count/3)*imgw + floor(imageArray.count/3)*5;
+        self.imageBgView_constraint_height.constant = ceil(imageArray.count/3.0)*imgw + floor(imageArray.count/3)*5;
     }
-    
-    
-    
-    
-    
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

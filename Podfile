@@ -21,7 +21,7 @@ target 'BlueHired' do
     pod 'IQKeyboardManager'
     pod 'SDCycleScrollView','~> 1.75'
     pod 'FMDB'
-
+    pod 'FSCalendar'
     pod 'SCIndexView'
     
     

@@ -534,8 +534,8 @@
 		DC7383552133EAAF0055DC10 /* Class */ = {
 			isa = PBXGroup;
 			children = (
-				DCF5D9B8213F8905009F5DCE /* BusinessReview */,
 				DC7383562133EAAF0055DC10 /* Base */,
+				DCF5D9B8213F8905009F5DCE /* BusinessReview */,
 				DC73837A2133F0F00055DC10 /* Categories */,
 				DC13BB48213E1BF600800955 /* ChooseCity */,
 				DC7383622133EBEB0055DC10 /* Circle */,
