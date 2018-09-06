@@ -86,6 +86,7 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
         [button setImage:[UIImage imageNamed:imgArray[i]] forState:UIControlStateNormal];
         if (i == 0) {
             [button setImage:[UIImage imageNamed:@"collection_selected"] forState:UIControlStateSelected];
+            [button addTarget:self action:@selector(preventFlicker:) forControlEvents:UIControlEventAllTouchEvents];
         }
         button.titleLabel.font = [UIFont systemFontOfSize:11];
         button.tag = i;
@@ -126,10 +127,14 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
     }
     if ([LoginUtils validationLogin:self]) {
         NSInteger index = button.tag;
-        NSLog(@"%ld",index);
+        if (index == 0) {
+            [self requestSetCollection];
+        }
     }
 }
-
+- (void)preventFlicker:(UIButton *)button {
+    button.highlighted = NO;
+}
 #pragma mark - setdata
 -(void)setModel:(LPWorkDetailModel *)model{
     _model = model;
@@ -294,6 +299,27 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
         }
     }];
 }
+-(void)requestSetCollection{
+    NSDictionary *dic = @{
+                          @"type":@(1),
+                          @"id":self.workListModel.id
+                          };
+    [NetApiManager requestSetCollectionWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if (!ISNIL(responseObject[@"data"])) {
+                if ([responseObject[@"data"] integerValue] == 0) {
+                    self.bottomButtonArray[0].selected = YES;
+                }else if ([responseObject[@"data"] integerValue] == 1) {
+                    self.bottomButtonArray[0].selected = NO;
+                }
+            }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+
 #pragma mark lazy
 - (UITableView *)tableview{
     if (!_tableview) {

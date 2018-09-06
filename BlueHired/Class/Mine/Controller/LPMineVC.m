@@ -179,7 +179,7 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
         NSLog(@"%@",responseObject);
         [self.tableview.mj_header endRefreshing];
         if (isSuccess) {
-            if (kStringIsEmpty(responseObject[@"data"])) {
+            if (!kStringIsEmpty(responseObject[@"data"])) {
                 if ([responseObject[@"data"] integerValue] == 0) {
                     self.signin = NO;
                 }else if ([responseObject[@"data"] integerValue] == 1) {

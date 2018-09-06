@@ -55,6 +55,9 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //招聘详情
 + (void)requestWorkDetailWithParam:(id)paramer
                         withHandle:(response)responseHandle;
+//收藏接口
++ (void)requestSetCollectionWithParam:(id)paramer
+                           withHandle:(response)responseHandle;
 #pragma mark - 资讯
 /************************************************************/
 //*  资讯

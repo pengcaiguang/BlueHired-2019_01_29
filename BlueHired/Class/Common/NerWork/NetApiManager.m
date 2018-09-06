@@ -152,6 +152,18 @@
     [NetRequestManager requestWithEnty:enty];
 }
 
+//收藏接口
++ (void)requestSetCollectionWithParam:(id)paramer
+                           withHandle:(response)responseHandle{
+    NSString * appendURLString = @"social/set_collection";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+
 #pragma mark - 资讯
 /************************************************************/
 //*  资讯
