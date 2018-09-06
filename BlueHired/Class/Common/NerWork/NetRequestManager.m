@@ -31,8 +31,8 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
 
         if (AlreadyLogin) {
             [manager.requestSerializer setValue:kUserDefaultsValue(COOKIES) forHTTPHeaderField:@"Cookie"];
-//            [manager.requestSerializer setValue:kUserDefaultsValue(ktoken) forHTTPHeaderField:@"JW-AUTH-TOKEN"];
-//            [manager.requestSerializer setValue:kUserDefaultsValue(kcredentials) forHTTPHeaderField:@"JW-AUTH-CREDENTIALS"];
+        }else{
+            [manager.requestSerializer setValue:nil forHTTPHeaderField:@"Cookie"];
         }
         [manager GET:requestEnty.requestUrl
           parameters:requestEnty.params
@@ -40,6 +40,10 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
                 
             } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 [self commonCheckErrorCode:responseObject];
+                if ([requestEnty.requestUrl containsString:@"login/user_sign_out"]) {
+                    kUserDefaultsSave(nil, COOKIES);
+                }
+                
                 requestEnty.responseHandle(YES,responseObject);
                 
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -55,8 +59,8 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
 
         if (AlreadyLogin) {
             [manager.requestSerializer setValue:kUserDefaultsValue(COOKIES) forHTTPHeaderField:@"Cookie"];
-//            [manager.requestSerializer setValue:kUserDefaultsValue(ktoken) forHTTPHeaderField:@"JW-AUTH-TOKEN"];
-//            [manager.requestSerializer setValue:kUserDefaultsValue(kcredentials) forHTTPHeaderField:@"JW-AUTH-CREDENTIALS"];
+        }else{
+            [manager.requestSerializer setValue:nil forHTTPHeaderField:@"Cookie"];
         }
         [manager POST:requestEnty.requestUrl
            parameters:requestEnty.params
@@ -64,26 +68,14 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
                  
              } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                  
-                 // 获取所有数据报头信息
-                 NSHTTPURLResponse *HTTPResponse = (NSHTTPURLResponse *)task.response;
-                 NSDictionary *fields = [HTTPResponse allHeaderFields];// 原生NSURLConnection写法
-                 NSLog(@"fields = %@", [fields description]);
-//                 // 获取cookie方法1
-//                 NSArray *cookies = [NSHTTPCookie cookiesWithResponseHeaderFields:fields forURL:[NSURL URLWithString:requestEnty.requestUrl]];
-//                 for(NSHTTPCookie *cookie in cookies)
-//                 {
-//                     NSLog(@"cookie1 －> %@", cookie);
-//                 }
-                 // 获取cookie方法2
-                 NSString *cookieString = [[HTTPResponse allHeaderFields] valueForKey:@"Set-Cookie"];
-//                 NSLog(@"cookie2 －> %@", cookieString);
-//                 // 获取cookie方法3
-//                 NSHTTPCookieStorage *cookieJar = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-//                 for(NSHTTPCookie *cookie in [cookieJar cookies])
-//                 {
-//                     NSLog(@"cookie3 －> %@", cookie);
-//                 }
-                 kUserDefaultsSave(cookieString, COOKIES);
+                 NSHTTPURLResponse* response = (NSHTTPURLResponse* )task.response;
+                 NSDictionary *allHeaderFieldsDic = response.allHeaderFields;
+                 NSString *setCookie = allHeaderFieldsDic[@"Set-Cookie"];
+                 if (setCookie != nil) {
+                     NSString *cookie = [[setCookie componentsSeparatedByString:@";"] objectAtIndex:0];
+                     NSLog(@"cookie : %@", cookie); // 这里可对cookie进行存储
+                     kUserDefaultsSave(cookie, COOKIES);
+                 }
                  
                  [self commonCheckErrorCode:responseObject];
                  requestEnty.responseHandle(YES,responseObject);
@@ -102,8 +94,8 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
 
         if (AlreadyLogin) {
             [manager.requestSerializer setValue:kUserDefaultsValue(COOKIES) forHTTPHeaderField:@"Cookie"];
-//            [manager.requestSerializer setValue:kUserDefaultsValue(ktoken) forHTTPHeaderField:@"JW-AUTH-TOKEN"];
-//            [manager.requestSerializer setValue:kUserDefaultsValue(kcredentials) forHTTPHeaderField:@"JW-AUTH-CREDENTIALS"];
+        }else{
+            [manager.requestSerializer setValue:nil forHTTPHeaderField:@"Cookie"];
         }
         [manager POST:requestEnty.requestUrl
            parameters:requestEnty.params
@@ -136,8 +128,8 @@ constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
 
         if (AlreadyLogin) {
             [manager.requestSerializer setValue:kUserDefaultsValue(COOKIES) forHTTPHeaderField:@"Cookie"];
-//            [manager.requestSerializer setValue:kUserDefaultsValue(ktoken) forHTTPHeaderField:@"JW-AUTH-TOKEN"];
-//            [manager.requestSerializer setValue:kUserDefaultsValue(kcredentials) forHTTPHeaderField:@"JW-AUTH-CREDENTIALS"];
+        }else{
+            [manager.requestSerializer setValue:nil forHTTPHeaderField:@"Cookie"];
         }
         [manager POST:requestEnty.requestUrl
            parameters:requestEnty.params

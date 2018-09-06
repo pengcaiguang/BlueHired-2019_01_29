@@ -92,7 +92,9 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //登陆
 + (void)requestLoginWithParam:(id)paramer
                    withHandle:(response)responseHandle;
-
+//退出登陆
++ (void)requestSignoutWithParam:(id)paramer
+                     withHandle:(response)responseHandle;
 #pragma mark - 我的
 /************************************************************/
 //*  我的

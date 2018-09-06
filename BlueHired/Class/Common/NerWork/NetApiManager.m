@@ -246,7 +246,16 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
-
+//退出登陆
++ (void)requestSignoutWithParam:(id)paramer
+                     withHandle:(response)responseHandle{
+    NSString * appendURLString = @"login/user_sign_out";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
 #pragma mark - 我的
 /************************************************************/
 //*  我的

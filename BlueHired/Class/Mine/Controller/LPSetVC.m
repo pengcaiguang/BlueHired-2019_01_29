@@ -18,11 +18,39 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = @"设置中心";
     [self.view addSubview:self.tableview];
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.view);
+//        make.edges.equalTo(self.view);
+        make.left.mas_equalTo(0);
+        make.right.mas_equalTo(0);
+        make.bottom.mas_equalTo(-120);
+        make.top.mas_equalTo(0);
     }];
+    if (AlreadyLogin) {
+        [self setLogoutButton];
+    }
+}
+-(void)setLogoutButton{
+    UIButton *button = [[UIButton alloc]init];
+    [self.view addSubview:button];
+    [button mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(14);
+        make.right.mas_equalTo(-14);
+        make.height.mas_equalTo(48);
+        make.bottom.mas_equalTo(-60);
+    }];
+    [button setTitle:@"退出登陆" forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    button.backgroundColor = [UIColor baseColor];
+    button.layer.masksToBounds = YES;
+    button.layer.cornerRadius = 5.0;
+    [button addTarget:self action:@selector(touchLogoutButton) forControlEvents:UIControlEventTouchUpInside];
+}
+-(void)touchLogoutButton{
+    NSLog(@"退出登陆");
+    [self requestSignout];
 }
 #pragma mark - TableViewDelegate & Datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -57,6 +85,19 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+#pragma mark - request
+-(void)requestSignout{
+    [NetApiManager requestSignoutWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            kUserDefaultsSave(@"0", kLoginStatus);
+            [self.navigationController popViewControllerAnimated:YES];
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
 }
 
 #pragma mark lazy
