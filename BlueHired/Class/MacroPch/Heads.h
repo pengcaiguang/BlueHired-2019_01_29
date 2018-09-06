@@ -32,5 +32,7 @@
 #import "DeviceUtils.h"
 #import "LoginUtils.h"
 #import "GJAlert2.h"
+#import "GJAlertText.h"
+#import "GJAlertMessage.h"
 
 #endif /* Heads_h */

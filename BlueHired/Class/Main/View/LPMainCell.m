@@ -40,7 +40,7 @@
         self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/月",model.wageRange];
     }
     
-    self.isApplyLabel.hidden = !model.isApply;
+    self.isApplyLabel.hidden = model.isApply;
     self.workTypeNameLabel.text = [NSString stringWithFormat:@"需%@%@人",model.workTypeName,model.maxNumber];
     self.applyNumberLabel.text = [NSString stringWithFormat:@"已报名：%@人",model.applyNumber ? model.applyNumber : @"0"];
 

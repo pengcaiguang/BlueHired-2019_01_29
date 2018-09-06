@@ -26,7 +26,9 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
 
 @property(nonatomic,strong) NSArray *textArray;
 @property(nonatomic,strong) NSMutableArray <UIButton *> *bottomButtonArray;
+@property(nonatomic,strong) UIButton *signUpButton;
 
+@property(nonatomic,strong) NSString *userName;
 
 @end
 
@@ -66,20 +68,22 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
         make.height.mas_equalTo(48);
     }];
     
-    UIButton *signUpButton = [[UIButton alloc]init];
-    [self.view addSubview:signUpButton];
-    [signUpButton mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.signUpButton = [[UIButton alloc]init];
+    [self.view addSubview:self.signUpButton];
+    [self.signUpButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.mas_equalTo(0);
         make.bottom.mas_equalTo(0);
         make.height.mas_equalTo(48);
         make.width.mas_equalTo(136);
     }];
-    [signUpButton setTitle:@"入职报名" forState:UIControlStateNormal];
-    [signUpButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    signUpButton.backgroundColor = [UIColor baseColor];
-    signUpButton.titleLabel.font = [UIFont systemFontOfSize:17];
-    [signUpButton addTarget:self action:@selector(touchSiginUpButton) forControlEvents:UIControlEventTouchUpInside];
-    
+    [self.signUpButton setTitle:@"入职报名" forState:UIControlStateNormal];
+    [self.signUpButton setTitle:@"取消报名" forState:UIControlStateSelected];
+    [self.signUpButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.signUpButton.backgroundColor = [UIColor baseColor];
+    self.signUpButton.titleLabel.font = [UIFont systemFontOfSize:17];
+    [self.signUpButton addTarget:self action:@selector(touchSiginUpButton) forControlEvents:UIControlEventTouchUpInside];
+    [self.signUpButton addTarget:self action:@selector(preventFlicker:) forControlEvents:UIControlEventAllTouchEvents];
+
     
     NSArray *imgArray = @[@"collection_normal",@"share_btn",@"customersService"];
     NSArray *titleArray = @[@"收藏",@"分享",@"咨询"];
@@ -110,7 +114,29 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
     }
 }
 -(void)touchSiginUpButton{
-    [self requestEntryApply];
+    if (!self.isApplyOrIsCollectionModel.data.isApply) {
+        GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"是否取消报名" message:nil buttonTitles:@[@"否",@"是"] buttonsColor:@[[UIColor colorWithHexString:@"#666666"],[UIColor baseColor]] buttonClick:^(NSInteger buttonIndex) {
+            if (buttonIndex == 0) {
+
+            }else{
+
+            }
+        }];
+        [alert show];
+        return;
+    }
+    if (kStringIsEmpty(self.isApplyOrIsCollectionModel.data.userName)) {
+        GJAlertText *alert = [[GJAlertText alloc]initWithTitle:@"企业入职报名，请填写您的真实姓名！" message:@"请填写真实姓名" buttonTitles:@[@"取消",@"确定"] buttonsColor:@[[UIColor colorWithHexString:@"#666666"],[UIColor baseColor]] buttonClick:^(NSInteger buttonIndex , NSString * string) {
+            if (buttonIndex == 0) {
+            }else{
+                self.userName = string;
+                [self requestEntryApply];
+            }
+        }];
+        [alert show];
+    }else{
+        [self requestEntryApply];
+    }
 }
 -(void)touchBottomButton:(UIButton *)button{
     if (button.tag == 2) {
@@ -149,11 +175,8 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
 }
 -(void)setIsApplyOrIsCollectionModel:(LPIsApplyOrIsCollectionModel *)isApplyOrIsCollectionModel{
     _isApplyOrIsCollectionModel = isApplyOrIsCollectionModel;
-    if (isApplyOrIsCollectionModel.data.isCollection) {
-        self.bottomButtonArray[0].selected = NO;
-    }else{
-        self.bottomButtonArray[0].selected = YES;
-    }
+    self.bottomButtonArray[0].selected = !isApplyOrIsCollectionModel.data.isCollection;
+    self.signUpButton.selected = !isApplyOrIsCollectionModel.data.isApply;
 }
 #pragma mark - TableViewDelegate & Datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -354,7 +377,7 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
                           @"reMoney":self.model.data.reMoney,
                           @"reTime":self.model.data.reTime,
                           @"recruitAddress":self.model.data.recruitAddress,
-                          @"userName":self.isApplyOrIsCollectionModel.data.userName,
+                          @"userName":self.isApplyOrIsCollectionModel.data.userName ? self.isApplyOrIsCollectionModel.data.userName : self.userName,
                           @"workId":self.workListModel.id,
                           @"workName":self.model.data.workTypeName,
                           };

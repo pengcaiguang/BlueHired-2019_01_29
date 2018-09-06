@@ -19,6 +19,8 @@
 		DC17FE2D213A9A9100635F05 /* LPCommentListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC17FE2C213A9A9100635F05 /* LPCommentListModel.m */; };
 		DC22957F2140BBE70002A095 /* LPUserMaterialModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC22957E2140BBE70002A095 /* LPUserMaterialModel.m */; };
 		DC229582214106D10002A095 /* LPIsApplyOrIsCollectionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC229581214106D10002A095 /* LPIsApplyOrIsCollectionModel.m */; };
+		DC2295852141143F0002A095 /* GJAlertText.m in Sources */ = {isa = PBXBuildFile; fileRef = DC2295842141143F0002A095 /* GJAlertText.m */; };
+		DC2295882141230A0002A095 /* GJAlertMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = DC2295872141230A0002A095 /* GJAlertMessage.m */; };
 		DC290F2F213CC55000EC3FCC /* LPEssayDetailCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC290F2D213CC55000EC3FCC /* LPEssayDetailCommentCell.m */; };
 		DC290F30213CC55000EC3FCC /* LPEssayDetailCommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC290F2E213CC55000EC3FCC /* LPEssayDetailCommentCell.xib */; };
 		DC290F34213CDDEB00EC3FCC /* LPEssayDetailCommentReplyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC290F32213CDDEB00EC3FCC /* LPEssayDetailCommentReplyCell.m */; };
@@ -152,6 +154,10 @@
 		DC22957E2140BBE70002A095 /* LPUserMaterialModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPUserMaterialModel.m; sourceTree = "<group>"; };
 		DC229580214106D10002A095 /* LPIsApplyOrIsCollectionModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPIsApplyOrIsCollectionModel.h; sourceTree = "<group>"; };
 		DC229581214106D10002A095 /* LPIsApplyOrIsCollectionModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPIsApplyOrIsCollectionModel.m; sourceTree = "<group>"; };
+		DC2295832141143F0002A095 /* GJAlertText.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GJAlertText.h; sourceTree = "<group>"; };
+		DC2295842141143F0002A095 /* GJAlertText.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GJAlertText.m; sourceTree = "<group>"; };
+		DC2295862141230A0002A095 /* GJAlertMessage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GJAlertMessage.h; sourceTree = "<group>"; };
+		DC2295872141230A0002A095 /* GJAlertMessage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GJAlertMessage.m; sourceTree = "<group>"; };
 		DC290F2C213CC55000EC3FCC /* LPEssayDetailCommentCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPEssayDetailCommentCell.h; sourceTree = "<group>"; };
 		DC290F2D213CC55000EC3FCC /* LPEssayDetailCommentCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPEssayDetailCommentCell.m; sourceTree = "<group>"; };
 		DC290F2E213CC55000EC3FCC /* LPEssayDetailCommentCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPEssayDetailCommentCell.xib; sourceTree = "<group>"; };
@@ -716,6 +722,10 @@
 				DC44DB9B21352B8000D00FAC /* LPNoDataView.m */,
 				DC290F3A213D31D400EC3FCC /* GJAlert2.h */,
 				DC290F39213D31D300EC3FCC /* GJAlert2.m */,
+				DC2295832141143F0002A095 /* GJAlertText.h */,
+				DC2295842141143F0002A095 /* GJAlertText.m */,
+				DC2295862141230A0002A095 /* GJAlertMessage.h */,
+				DC2295872141230A0002A095 /* GJAlertMessage.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1096,6 +1106,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DC290F3B213D31D400EC3FCC /* GJAlert2.m in Sources */,
+				DC2295852141143F0002A095 /* GJAlertText.m in Sources */,
 				DC5C38842136372F00B3CF6E /* LPInformationSingleCell.m in Sources */,
 				DC7383962134E95E0055DC10 /* MoninNet.m in Sources */,
 				DC7383942134E95E0055DC10 /* NetRequestEnty.m in Sources */,
@@ -1111,6 +1122,7 @@
 				DC7383612133EB2A0055DC10 /* LPMainVC.m in Sources */,
 				DC73839F2134EBC10055DC10 /* LPUserDefaults.m in Sources */,
 				DC7A32E42138074900E09C6C /* LPSetVC.m in Sources */,
+				DC2295882141230A0002A095 /* GJAlertMessage.m in Sources */,
 				DC7A32CF21379BCA00E09C6C /* LPMineCardCell.m in Sources */,
 				DC30E1A521393BB0000C7A91 /* LPWorkDetailHeadCell.m in Sources */,
 				DC73838221341EBD0055DC10 /* LPSearchBar.m in Sources */,

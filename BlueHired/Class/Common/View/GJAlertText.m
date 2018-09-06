@@ -1,23 +1,23 @@
 //
-//  GJAlert.m
-//  GJPersonal
+//  GJAlertText.m
+//  BlueHired
 //
-//  Created by zab on 16/1/15.
-//  Copyright © 2016年 xinyi. All rights reserved.
+//  Created by 邢晓亮 on 2018/9/6.
+//  Copyright © 2018年 lanpin. All rights reserved.
 //
 
-#import "GJAlert2.h"
+#import "GJAlertText.h"
 
 #define coverColor(r, g, b) [UIColor colorWithRed:(r/255.0) green:(g/255.0) blue:(b/255.0) alpha:1.0]
-@protocol GJAlertViewDelegate <NSObject>
+@protocol GJAlertViewTextDelegate <NSObject>
 @optional
-- (void)buttonClick:(NSInteger)buttonIndex;
+- (void)buttonClick:(NSInteger)buttonIndex string:(NSString *)string;
 
 - (void)contentViewClick;
 
 @end
 
-@interface GJAlertView2 : UIView
+@interface GJAlertViewText : UIView
 @property (nonatomic,strong) UIView *coverView;
 @property (nonatomic,strong) UIView *alertView;
 @property(nonatomic,strong)NSString *title;
@@ -25,12 +25,13 @@
 @property(nonatomic,strong)NSArray *buttonTitles;
 @property(nonatomic,strong)NSArray *buttonColors;
 
-@property(nonatomic,strong)id<GJAlertViewDelegate>delegate;
+@property(nonatomic,strong) NSString *textFieldString;
+@property(nonatomic,strong)id<GJAlertViewTextDelegate>delegate;
 
 - (void)showAlert;
 - (void)hideAlert;
 @end
-@implementation GJAlertView2
+@implementation GJAlertViewText
 - (void)setupCoverView{
     self.coverView = [[UIView alloc] initWithFrame:self.frame];
     self.coverView.backgroundColor = [UIColor blackColor];
@@ -64,7 +65,7 @@
         make.left.mas_equalTo(15);
         make.right.mas_equalTo(-15);
     }];
-
+    
     labelTitle.text = _title;
     labelTitle.textAlignment = NSTextAlignmentCenter;
     labelTitle.font = [UIFont systemFontOfSize:17];
@@ -80,7 +81,7 @@
         make.right.mas_equalTo(0);
         make.height.mas_equalTo(0.5);
     }];
-
+    
     line0.backgroundColor = [UIColor colorWithHexString:@"#EEEEEE"];
     
     
@@ -91,36 +92,37 @@
         make.left.mas_equalTo(15);
         make.right.mas_equalTo(-15);
     }];
-
-    UILabel *labelMessage = [[UILabel alloc]init];
-    [_alertView addSubview:labelMessage];
-    [labelMessage mas_makeConstraints:^(MASConstraintMaker *make) {
+    
+    
+    UITextField *textField = [[UITextField alloc]init];
+    [_alertView addSubview:textField];
+    [textField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(labelTitle.mas_bottom).offset(30);
         make.left.mas_equalTo(30);
         make.right.mas_equalTo(-30);
         make.bottom.mas_equalTo(-70);
+        make.height.mas_equalTo(35);
     }];
-    labelMessage.text = _message;
-    labelMessage.font = [UIFont systemFontOfSize:16];
-    labelMessage.textColor = [UIColor colorWithHexString:@"#1B1B1B"];
-    labelMessage.numberOfLines = 0;
+    [textField addTarget:self action:@selector(textFieldChanged:) forControlEvents:UIControlEventEditingChanged];
+    textField.layer.masksToBounds = YES;
+    textField.layer.cornerRadius = 5.0;
+    textField.placeholder = _message;
+    textField.layer.borderWidth = 0.5;
+    textField.layer.borderColor = [UIColor colorWithHexString:@"#AAAAAA"].CGColor;
+    textField.font = [UIFont systemFontOfSize:16];
     
-    
-    
-
-    NSMutableAttributedString *noteStr = [[NSMutableAttributedString alloc] initWithString:labelMessage.text];
-
-    NSRange range1 = NSMakeRange(0, labelMessage.text.length);
-    NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
-    paragraphStyle.lineSpacing = 10;
-    [noteStr addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:range1];
-    [noteStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#1B1B1B"] range:range1];
-    
-    NSRange range = NSMakeRange(labelMessage.text.length-18, 18);
-    [noteStr addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:12] range:range];
-    [noteStr addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#666666"] range:range];
-
-    labelMessage.attributedText = noteStr;
+//    UILabel *labelMessage = [[UILabel alloc]init];
+//    [_alertView addSubview:labelMessage];
+//    [labelMessage mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(labelTitle.mas_bottom).offset(30);
+//        make.left.mas_equalTo(30);
+//        make.right.mas_equalTo(30);
+//        make.bottom.mas_equalTo(-70);
+//    }];
+//    labelMessage.text = _message;
+//    labelMessage.font = [UIFont systemFontOfSize:16];
+//    labelMessage.textColor = [UIColor colorWithHexString:@"#1B1B1B"];
+//    labelMessage.numberOfLines = 0;
     
     
     
@@ -136,12 +138,11 @@
         make.bottom.mas_equalTo(-42);
     }];
     line.backgroundColor = [UIColor colorWithHexString:@"#EEEEEE"];
-        
+    
     CGFloat buttonWidth = (self.frame.size.width - marginleft*2 - 60 - (_buttonTitles.count - 1)*spacing)/_buttonTitles.count;
     CGFloat leadingX = 0.0;
     NSInteger i = 0;
     
-    NSArray *imgArray = @[@"copy_img",@"call_phone"];
     
     for (NSString *btnTitle in _buttonTitles) {
         leadingX = buttonWidth * i + spacing *i + marginleft;
@@ -154,12 +155,11 @@
             make.width.mas_equalTo(buttonWidth);
             make.height.mas_equalTo(42);
         }];
-        [button setImage:[UIImage imageNamed:imgArray[i]] forState:UIControlStateNormal];
         [button setTitle:btnTitle forState:UIControlStateNormal];
         button.titleLabel.font = [UIFont systemFontOfSize:15];
         if (_buttonColors && _buttonColors.count > i) {
             [button setTitleColor:[_buttonColors objectAtIndex:i] forState:UIControlStateNormal];
-
+            
         }
         button.layer.cornerRadius = 3.0;
         [button addTarget:self action:@selector(btnTap:) forControlEvents:UIControlEventTouchUpInside];
@@ -170,6 +170,10 @@
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapDismiss:)];
     [_coverView addGestureRecognizer:tap];
 }
+-(void)textFieldChanged:(UITextField *)textField{
+    self.textFieldString = textField.text;
+}
+
 - (id)initWithTitle:(NSString *)title message:(NSString *)message buttonTitles:(NSArray *)buttonTitles buttonsColor:(NSArray *)buttonColors{
     self = [super initWithFrame:[[UIScreen mainScreen]bounds]];
     if (self) {
@@ -194,21 +198,21 @@
     } completion:^(BOOL finished) {
         
     }];
-//    self.alertView.transform = CGAffineTransformMakeScale(1.2, 1.2);
-//    [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-//        self.alertView.transform = CGAffineTransformMakeScale(1.0, 1.0);
-//    } completion:^(BOOL finished) {
-//    }];
-
+    //    self.alertView.transform = CGAffineTransformMakeScale(1.2, 1.2);
+    //    [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
+    //        self.alertView.transform = CGAffineTransformMakeScale(1.0, 1.0);
+    //    } completion:^(BOOL finished) {
+    //    }];
     
-  
-//    CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"transform.scale"];
-//    animation.values = @[@(1.3), @(1.0)];
-//    animation.keyTimes = @[@(0), @(1.0)];
-//    animation.timingFunctions = @[[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear],[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
-//    animation.duration = duration;
-//    [self.alertView.layer addAnimation:animation forKey:@"bouce"];
-  
+    
+    
+    //    CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"transform.scale"];
+    //    animation.values = @[@(1.3), @(1.0)];
+    //    animation.keyTimes = @[@(0), @(1.0)];
+    //    animation.timingFunctions = @[[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear],[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear]];
+    //    animation.duration = duration;
+    //    [self.alertView.layer addAnimation:animation forKey:@"bouce"];
+    
 }
 
 - (void)hideAlert{
@@ -231,8 +235,8 @@
     }
 }
 - (void)btnTap:(UIButton *)button{
-    if ([_delegate respondsToSelector:@selector(buttonClick:)]) {
-        [_delegate buttonClick:button.tag];
+    if ([_delegate respondsToSelector:@selector(buttonClick:string:)]) {
+        [_delegate buttonClick:button.tag string:self.textFieldString];
     }
 }
 
@@ -247,18 +251,18 @@
 }
 @end
 
-@interface GJAlert2 ()<GJAlertViewDelegate>
-@property(nonatomic,strong)GJAlertView2 *gjAlertView;
-@property(nonatomic,copy)AlertBlock alertBlock;
+@interface GJAlertText ()<GJAlertViewTextDelegate>
+@property(nonatomic,strong)GJAlertViewText *gjAlertView;
+@property(nonatomic,copy)AlertTextBlock alertTextBlock;
 
 @end
-@implementation GJAlert2
-- (id)initWithTitle:(NSString *)title message:(NSString *)message buttonTitles:(NSArray *)buttonTitles buttonsColor:(NSArray *)buttonColors buttonClick:(void(^)(NSInteger buttonIndex))block{
+@implementation GJAlertText
+- (id)initWithTitle:(NSString *)title message:(NSString *)message buttonTitles:(NSArray *)buttonTitles buttonsColor:(NSArray *)buttonColors buttonClick:(void(^)(NSInteger buttonIndex , NSString * string))block{
     self = [super init];
     if (self) {
-        self.gjAlertView = [[GJAlertView2 alloc] initWithTitle:title message:message buttonTitles:buttonTitles buttonsColor:buttonColors];
+        self.gjAlertView = [[GJAlertViewText alloc] initWithTitle:title message:message buttonTitles:buttonTitles buttonsColor:buttonColors];
         self.gjAlertView.delegate = self;
-        self.alertBlock = block;
+        self.alertTextBlock = block;
     }
     return self;
 }
@@ -275,14 +279,14 @@
     [self.gjAlertView hideAlert];
 }
 
-#pragma mark GJAlertViewDelegate
+#pragma mark GJAlertViewTextDelegate
 - (void)contentViewClick{
     [self dismiss];
 }
-- (void)buttonClick:(NSInteger)buttonIndex{
+- (void)buttonClick:(NSInteger)buttonIndex string:(NSString *)string{
     __weak typeof(self) weakSelf = self;
-    if (_alertBlock) {
-        _alertBlock(buttonIndex);
+    if (_alertTextBlock) {
+        _alertTextBlock(buttonIndex , string);
         [weakSelf dismiss];
     }
 }
