@@ -22,8 +22,10 @@
 @property (nonatomic,strong) UIView *alertView;
 @property(nonatomic,strong)NSString *title;
 @property(nonatomic,strong)NSString *message;
+@property(nonatomic,assign) NSTextAlignment textAlignment;
 @property(nonatomic,strong)NSArray *buttonTitles;
 @property(nonatomic,strong)NSArray *buttonColors;
+@property(nonatomic,strong) NSArray *buttonsBackgroundColors;
 
 @property(nonatomic,strong)id<GJAlertViewMessageDelegate>delegate;
 
@@ -95,12 +97,18 @@
     labelMessage.font = [UIFont systemFontOfSize:16];
     labelMessage.textColor = [UIColor colorWithHexString:@"#1B1B1B"];
     labelMessage.numberOfLines = 0;
-    labelMessage.textAlignment = NSTextAlignmentCenter;
-    labelMessage.backgroundColor = [UIColor redColor];
+    labelMessage.textAlignment = _textAlignment;
+    
+    if (labelMessage.text) {
+        NSMutableAttributedString *noteStr = [[NSMutableAttributedString alloc] initWithString:labelMessage.text];
+        NSRange range1 = NSMakeRange(0, labelMessage.text.length);
+        NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
+        paragraphStyle.lineSpacing = 10;
+        [noteStr addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:range1];
+        labelMessage.attributedText = noteStr;
+    }
     
     
-    CGFloat spacing = 10.0;
-    CGFloat marginleft = 20.0;
     
     UIView *line = [[UIView alloc]init];
     [_alertView addSubview:line];
@@ -112,11 +120,12 @@
     }];
     line.backgroundColor = [UIColor colorWithHexString:@"#EEEEEE"];
     
+    
+    CGFloat spacing = 0.0;
+    CGFloat marginleft = 0.0;
     CGFloat buttonWidth = (self.frame.size.width - marginleft*2 - 60 - (_buttonTitles.count - 1)*spacing)/_buttonTitles.count;
     CGFloat leadingX = 0.0;
     NSInteger i = 0;
-    
-    
     for (NSString *btnTitle in _buttonTitles) {
         leadingX = buttonWidth * i + spacing *i + marginleft;
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -132,12 +141,16 @@
         button.titleLabel.font = [UIFont systemFontOfSize:15];
         if (_buttonColors && _buttonColors.count > i) {
             [button setTitleColor:[_buttonColors objectAtIndex:i] forState:UIControlStateNormal];
-            
+        }else{
+            [button setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
         }
-        button.layer.cornerRadius = 3.0;
+        if (_buttonsBackgroundColors && _buttonsBackgroundColors.count > i) {
+            button.backgroundColor = [_buttonsBackgroundColors objectAtIndex:i];
+        }else{
+            button.backgroundColor = [UIColor whiteColor];
+        }
         [button addTarget:self action:@selector(btnTap:) forControlEvents:UIControlEventTouchUpInside];
         button.tag = i;
-        
         i++;
     }
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapDismiss:)];
@@ -145,13 +158,15 @@
 }
 
 
-- (id)initWithTitle:(NSString *)title message:(NSString *)message buttonTitles:(NSArray *)buttonTitles buttonsColor:(NSArray *)buttonColors{
+- (id)initWithTitle:(NSString *)title message:(NSString *)message textAlignment:(NSTextAlignment)textAlignment buttonTitles:(NSArray *)buttonTitles buttonsColor:(NSArray *)buttonColors  buttonsBackgroundColors:(NSArray *)buttonsBackgroundColors{
     self = [super initWithFrame:[[UIScreen mainScreen]bounds]];
     if (self) {
         self.title = title;
         self.message = message;
+        self.textAlignment = textAlignment;
         self.buttonTitles = buttonTitles;
         self.buttonColors = buttonColors;
+        self.buttonsBackgroundColors = buttonsBackgroundColors;
         [self setupCoverView];
         [self setupContentView];
     }
@@ -228,10 +243,10 @@
 
 @end
 @implementation GJAlertMessage
-- (id)initWithTitle:(NSString *)title message:(NSString *)message buttonTitles:(NSArray *)buttonTitles buttonsColor:(NSArray *)buttonColors buttonClick:(void(^)(NSInteger buttonIndex))block{
+- (id)initWithTitle:(NSString *)title message:(NSString *)message textAlignment:(NSTextAlignment)textAlignment buttonTitles:(NSArray *)buttonTitles buttonsColor:(NSArray *)buttonColors buttonsBackgroundColors:(NSArray *)buttonsBackgroundColors buttonClick:(void (^)(NSInteger))block{
     self = [super init];
     if (self) {
-        self.gjAlertView = [[GJAlertViewMessage alloc] initWithTitle:title message:message buttonTitles:buttonTitles buttonsColor:buttonColors];
+        self.gjAlertView = [[GJAlertViewMessage alloc] initWithTitle:title message:message textAlignment:textAlignment buttonTitles:buttonTitles buttonsColor:buttonColors buttonsBackgroundColors:buttonsBackgroundColors];
         self.gjAlertView.delegate = self;
         self.AlertMessageBlock = block;
     }

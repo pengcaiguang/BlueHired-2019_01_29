@@ -22,6 +22,8 @@
     self.lendTypeLabel.layer.cornerRadius = 3.0;
     self.lendTypeLabel.layer.borderWidth = 0.5;
     self.lendTypeLabel.layer.borderColor = [UIColor colorWithHexString:@"#0CAFFF"].CGColor;
+    
+    self.isApplyLabel.hidden = YES;
 }
 
 -(void)setModel:(LPWorklistDataWorkListModel *)model{
@@ -39,15 +41,19 @@
     }else{
         self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/月",model.wageRange];
     }
-    
     self.isApplyLabel.hidden = model.isApply;
     self.workTypeNameLabel.text = [NSString stringWithFormat:@"需%@%@人",model.workTypeName,model.maxNumber];
     self.applyNumberLabel.text = [NSString stringWithFormat:@"已报名：%@人",model.applyNumber ? model.applyNumber : @"0"];
 
 }
+
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+    [super setHighlighted:highlighted animated:animated];
+    self.isApplyLabel.backgroundColor = [UIColor colorWithHexString:@"#000000"];
+}
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
+    self.isApplyLabel.backgroundColor = [UIColor colorWithHexString:@"#000000"];
     // Configure the view for the selected state
 }
 

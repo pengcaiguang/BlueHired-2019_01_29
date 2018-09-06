@@ -255,9 +255,15 @@ static NSString *LPMainCellID = @"LPMainCell";
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    LPMainCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    
     LPWorkDetailVC *vc = [[LPWorkDetailVC alloc]init];
     vc.hidesBottomBarWhenPushed = YES;
     vc.workListModel = self.listArray[indexPath.row];
+    vc.block = ^(BOOL isApply) {
+        cell.isApplyLabel.hidden = isApply;
+    };
     [self.navigationController pushViewController:vc animated:YES];
 }
 

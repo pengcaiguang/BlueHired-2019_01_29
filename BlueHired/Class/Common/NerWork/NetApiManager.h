@@ -62,8 +62,13 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 + (void)requestIsApplyOrIsCollectionWithParam:(id)paramer
                                    withHandle:(response)responseHandle;
 //入职报名
-+ (void)requestEntryApplyWithParam:(id)paramer
-                        withHandle:(response)responseHandle;
++ (void)requestEntryApplyWithUrl:(NSString *)urlString
+                       withParam:(id)paramer
+                      withHandle:(response)responseHandle;
+//取消报名
++ (void)requestCancleApplyWithUrl:(NSString *)urlString
+                        withParam:(id)paramer
+                       withHandle:(response)responseHandle;
 #pragma mark - 资讯
 /************************************************************/
 //*  资讯

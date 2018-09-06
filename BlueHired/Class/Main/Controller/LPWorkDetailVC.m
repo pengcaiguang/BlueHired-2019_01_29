@@ -57,6 +57,13 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
     [self requestIsApplyOrIsCollection];
 }
 
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    if (self.block) {
+        self.block(self.isApplyOrIsCollectionModel.data.isApply);
+    }
+}
+
 -(void)setBottomView{
     
     UIView *bottomBgView = [[UIView alloc]init];
@@ -115,11 +122,9 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
 }
 -(void)touchSiginUpButton{
     if (!self.isApplyOrIsCollectionModel.data.isApply) {
-        GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"是否取消报名" message:nil buttonTitles:@[@"否",@"是"] buttonsColor:@[[UIColor colorWithHexString:@"#666666"],[UIColor baseColor]] buttonClick:^(NSInteger buttonIndex) {
-            if (buttonIndex == 0) {
-
-            }else{
-
+        GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"是否取消报名" message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"否",@"是"] buttonsColor:@[[UIColor colorWithHexString:@"#666666"],[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor],[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
+            if (buttonIndex == 1) {
+                [self requestCancleApply];
             }
         }];
         [alert show];
@@ -168,6 +173,16 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
 - (void)preventFlicker:(UIButton *)button {
     button.highlighted = NO;
 }
+-(void)applySuccessAlert{
+    NSString *string = [NSString stringWithFormat:@"姓名：%@\n报名企业：%@",self.isApplyOrIsCollectionModel.data.userName,self.model.data.mechanismName];
+    GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"报名成功" message:string textAlignment:NSTextAlignmentLeft buttonTitles:@[@"查看详情"] buttonsColor:@[[UIColor whiteColor]] buttonsBackgroundColors:@[[UIColor baseColor]] buttonClick:^(NSInteger buttonIndex) {
+        if (buttonIndex == 0) {
+            NSLog(@"查看详情");
+        }
+    }];
+    [alert show];
+}
+
 #pragma mark - setdata
 -(void)setModel:(LPWorkDetailModel *)model{
     _model = model;
@@ -175,8 +190,10 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
 }
 -(void)setIsApplyOrIsCollectionModel:(LPIsApplyOrIsCollectionModel *)isApplyOrIsCollectionModel{
     _isApplyOrIsCollectionModel = isApplyOrIsCollectionModel;
-    self.bottomButtonArray[0].selected = !isApplyOrIsCollectionModel.data.isCollection;
-    self.signUpButton.selected = !isApplyOrIsCollectionModel.data.isApply;
+    if (isApplyOrIsCollectionModel.data) {
+        self.bottomButtonArray[0].selected = !isApplyOrIsCollectionModel.data.isCollection;
+        self.signUpButton.selected = !isApplyOrIsCollectionModel.data.isApply;
+    }
 }
 #pragma mark - TableViewDelegate & Datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -381,12 +398,34 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
                           @"workId":self.workListModel.id,
                           @"workName":self.model.data.workTypeName,
                           };
-    [NetApiManager requestEntryApplyWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+    NSString * string = @"work/entryApply?type=0";
+    [NetApiManager requestEntryApplyWithUrl:string withParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            if (!ISNIL(responseObject[@"data"])) {
-                if ([responseObject[@"data"] isEqualToString:@"error"]) {
-                    [self.view showLoadingMeg:responseObject[@"msg"] ? responseObject[@"msg"] : NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME*2];
+            if (!ISNIL(responseObject[@"code"])) {
+                if ([responseObject[@"code"] integerValue] == 0) {
+                    [self requestIsApplyOrIsCollection];
+                    [self applySuccessAlert];
+                }else{
+                    if ([responseObject[@"data"] isKindOfClass:[NSString class]]) {
+                        [self.view showLoadingMeg:responseObject[@"msg"] ? responseObject[@"msg"] : NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME*2];
+                    }
+                }
+            }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+-(void)requestCancleApply{
+    NSString *string = [NSString stringWithFormat:@"work/cancleApply?workId=%@",self.workListModel.id];
+    [NetApiManager requestCancleApplyWithUrl:string withParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if (!ISNIL(responseObject[@"code"])) {
+                if ([responseObject[@"code"] integerValue] == 0) {
+                    self.signUpButton.selected = NO;
+                    [self requestIsApplyOrIsCollection];
                 }
             }
         }else{

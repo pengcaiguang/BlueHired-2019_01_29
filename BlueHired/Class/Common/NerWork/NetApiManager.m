@@ -174,10 +174,20 @@
     [NetRequestManager requestWithEnty:enty];
 }
 //入职报名
-+ (void)requestEntryApplyWithParam:(id)paramer
-                        withHandle:(response)responseHandle{
-    NSString * appendURLString = @"work/entryApply?type=0";
-    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
++ (void)requestEntryApplyWithUrl:(NSString *)urlString
+                       withParam:(id)paramer
+                      withHandle:(response)responseHandle{
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:urlString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
+//取消报名
++ (void)requestCancleApplyWithUrl:(NSString *)urlString
+                        withParam:(id)paramer
+                       withHandle:(response)responseHandle{
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:urlString
                                                 withRequestEnty:RequestTypePost
                                                       withParam:paramer
                                                      withHandle:responseHandle];
