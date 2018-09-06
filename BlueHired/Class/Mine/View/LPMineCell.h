@@ -23,8 +23,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *moneyLabel;
 @property (weak, nonatomic) IBOutlet UIButton *showMoneyButton;
 
+@property (weak, nonatomic) IBOutlet UIButton *signInButton;
 
 
 @property(nonatomic,strong) LPUserMaterialModel *userMaterialModel;
+@property(nonatomic,assign) BOOL signin;
 
 @end

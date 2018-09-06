@@ -82,6 +82,9 @@
                                 <state key="normal" title="签到">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <connections>
+                                    <action selector="touchSignInButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="chR-sw-FnJ"/>
+                                </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="cXc-6e-JCS">
                                 <rect key="frame" x="53" y="111" width="15" height="15"/>
@@ -133,6 +136,9 @@
                         <state key="normal" title="编辑">
                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </state>
+                        <connections>
+                            <action selector="touchEditButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="pYv-NK-mho"/>
+                        </connections>
                     </button>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="igP-QG-jZ6">
                         <rect key="frame" x="12" y="179" width="296" height="96"/>
@@ -264,6 +270,7 @@
                 <outlet property="moodNumLabel" destination="vcv-0E-jj2" id="A44-W3-Z91"/>
                 <outlet property="scoreLabel" destination="YnD-6P-HpH" id="UcB-Sw-560"/>
                 <outlet property="showMoneyButton" destination="1I5-o7-F4R" id="AfB-Et-oe8"/>
+                <outlet property="signInButton" destination="3Nq-OP-pty" id="6gq-PR-sMk"/>
                 <outlet property="user_nameLabel" destination="yPv-qA-VvS" id="KRM-bh-U3J"/>
                 <outlet property="user_sexImgView" destination="cXc-6e-JCS" id="vgm-rx-szv"/>
                 <outlet property="user_urlImgView" destination="YzP-B1-eds" id="JwJ-ar-XeU"/>

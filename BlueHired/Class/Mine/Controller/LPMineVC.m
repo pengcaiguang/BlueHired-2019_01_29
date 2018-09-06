@@ -19,6 +19,7 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
 @property (nonatomic, strong)UITableView *tableview;
 
 @property(nonatomic,strong) LPUserMaterialModel *userMaterialModel;
+@property(nonatomic,assign) BOOL signin;
 
 @end
 
@@ -45,6 +46,9 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
 //    kUserDefaultsSave(@"0", kLoginStatus);
     if (AlreadyLogin) {
         [self requestUserMaterial];
+        [self requestSelectCurIsSign];
+    }else{
+        self.userMaterialModel = nil;
     }
 }
 
@@ -71,6 +75,10 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
 -(void)setUserMaterialModel:(LPUserMaterialModel *)userMaterialModel{
     _userMaterialModel = userMaterialModel;
     [self.tableview reloadData];
+}
+-(void)setSignin:(BOOL)signin{
+    _signin = signin;
+    [self.tableview reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 #pragma mark - TableViewDelegate & Datasource
@@ -100,6 +108,7 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
             cell = [[LPMineCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:LPMineCellID];
         }
         cell.userMaterialModel = self.userMaterialModel;
+        cell.signin = self.signin;
         return cell;
     }
     if (indexPath.section == 1) {
@@ -157,6 +166,7 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
                           };
     [NetApiManager requestUserMaterialWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
+        [self.tableview.mj_header endRefreshing];
         if (isSuccess) {
             self.userMaterialModel = [LPUserMaterialModel mj_objectWithKeyValues:responseObject];
         }else{
@@ -164,7 +174,25 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
         }
     }];
 }
-
+-(void)requestSelectCurIsSign{
+    [NetApiManager requestSelectCurIsSignWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        [self.tableview.mj_header endRefreshing];
+        if (isSuccess) {
+            if (kStringIsEmpty(responseObject[@"data"])) {
+                if ([responseObject[@"data"] integerValue] == 0) {
+                    self.signin = NO;
+                }else if ([responseObject[@"data"] integerValue] == 1) {
+                    self.signin = YES;
+                }
+            }
+            
+            
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
 #pragma mark lazy
 - (UITableView *)tableview{
     if (!_tableview) {
@@ -184,6 +212,10 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
         _tableview.sectionFooterHeight = 10;
         _tableview.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, CGFLOAT_MIN)];
         
+        _tableview.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+            [self requestUserMaterial];
+            [self requestSelectCurIsSign];
+        }];
     }
     return _tableview;
 }
