@@ -78,6 +78,8 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
     [signUpButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     signUpButton.backgroundColor = [UIColor baseColor];
     signUpButton.titleLabel.font = [UIFont systemFontOfSize:17];
+    [signUpButton addTarget:self action:@selector(touchSiginUpButton) forControlEvents:UIControlEventTouchUpInside];
+    
     
     NSArray *imgArray = @[@"collection_normal",@"share_btn",@"customersService"];
     NSArray *titleArray = @[@"收藏",@"分享",@"咨询"];
@@ -107,7 +109,9 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
         button.imageEdgeInsets = UIEdgeInsetsMake(-button.titleLabel.intrinsicContentSize.height, 0, 0, -button.titleLabel.intrinsicContentSize.width);
     }
 }
-
+-(void)touchSiginUpButton{
+    [self requestEntryApply];
+}
 -(void)touchBottomButton:(UIButton *)button{
     if (button.tag == 2) {
         NSLog(@"咨询");
@@ -342,7 +346,31 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
         }
     }];
 }
-
+-(void)requestEntryApply{
+    NSDictionary *dic = @{
+                          @"interviewTime":self.model.data.interviewTime,
+                          @"mechanismId":self.model.data.mechanismId,
+                          @"mechanismName":self.model.data.mechanismName,
+                          @"reMoney":self.model.data.reMoney,
+                          @"reTime":self.model.data.reTime,
+                          @"recruitAddress":self.model.data.recruitAddress,
+                          @"userName":self.isApplyOrIsCollectionModel.data.userName,
+                          @"workId":self.workListModel.id,
+                          @"workName":self.model.data.workTypeName,
+                          };
+    [NetApiManager requestEntryApplyWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if (!ISNIL(responseObject[@"data"])) {
+                if ([responseObject[@"data"] isEqualToString:@"error"]) {
+                    [self.view showLoadingMeg:responseObject[@"msg"] ? responseObject[@"msg"] : NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME*2];
+                }
+            }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
 #pragma mark lazy
 - (UITableView *)tableview{
     if (!_tableview) {

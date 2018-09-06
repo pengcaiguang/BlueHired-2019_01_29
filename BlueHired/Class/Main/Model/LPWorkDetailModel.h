@@ -46,7 +46,7 @@
 @property (nonatomic, copy) NSNumber *reTime;
 @property (nonatomic, copy) NSString *recruitAddress;
 @property (nonatomic, copy) NSString *remarks;
-@property (nonatomic, assign) BOOL status;
+@property (nonatomic, copy) NSNumber *status;
 @property (nonatomic, copy) NSString *wageRange;
 @property (nonatomic, copy) NSString *workDemand;
 @property (nonatomic, copy) NSString *workKnow;

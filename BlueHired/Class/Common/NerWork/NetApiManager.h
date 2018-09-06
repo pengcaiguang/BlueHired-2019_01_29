@@ -61,6 +61,9 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //查询是否报名/收藏公司/实名认证
 + (void)requestIsApplyOrIsCollectionWithParam:(id)paramer
                                    withHandle:(response)responseHandle;
+//入职报名
++ (void)requestEntryApplyWithParam:(id)paramer
+                        withHandle:(response)responseHandle;
 #pragma mark - 资讯
 /************************************************************/
 //*  资讯

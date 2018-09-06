@@ -173,7 +173,16 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
-
+//入职报名
++ (void)requestEntryApplyWithParam:(id)paramer
+                        withHandle:(response)responseHandle{
+    NSString * appendURLString = @"work/entryApply?type=0";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
 #pragma mark - 资讯
 /************************************************************/
 //*  资讯
