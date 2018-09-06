@@ -99,6 +99,7 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
         if(cell == nil){
             cell = [[LPMineCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:LPMineCellID];
         }
+        cell.userMaterialModel = self.userMaterialModel;
         return cell;
     }
     if (indexPath.section == 1) {

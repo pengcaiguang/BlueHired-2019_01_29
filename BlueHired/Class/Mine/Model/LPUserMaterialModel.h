@@ -29,7 +29,7 @@
 @property (nonatomic, copy) NSNumber *score;
 @property (nonatomic, copy) NSString *shipping_address;
 @property (nonatomic, copy) NSString *user_name;
-@property (nonatomic, copy) NSString *user_sex;
+@property (nonatomic, copy) NSNumber *user_sex;
 @property (nonatomic, copy) NSString *user_url;
 @property (nonatomic, copy) NSNumber *workStatus;
 @property (nonatomic, copy) NSString *work_type;
