@@ -33,6 +33,7 @@
  */
 
 #define LOGINID  @"LOGINID"
+#define COOKIES  @"COOKIES"
 
 //登录状态
 #define kLoginStatus    @"LoginStatus"

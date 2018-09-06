@@ -10,12 +10,15 @@
 #import "LPMineCell.h"
 #import "LPMineCardCell.h"
 #import "LPLoginVC.h"
+#import "LPUserMaterialModel.h"
 
 static NSString *LPMineCellID = @"LPMineCell";
 static NSString *LPMineCardCellID = @"LPMineCardCell";
 
 @interface LPMineVC ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong)UITableView *tableview;
+
+@property(nonatomic,strong) LPUserMaterialModel *userMaterialModel;
 
 @end
 
@@ -64,6 +67,11 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
 //    [self preferredStatusBarStyle];
 //    [self setStatusBarBackgroundColor:[UIColor clearColor]];
 //}
+
+-(void)setUserMaterialModel:(LPUserMaterialModel *)userMaterialModel{
+    _userMaterialModel = userMaterialModel;
+    [self.tableview reloadData];
+}
 
 #pragma mark - TableViewDelegate & Datasource
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -149,7 +157,7 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
     [NetApiManager requestUserMaterialWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            
+            self.userMaterialModel = [LPUserMaterialModel mj_objectWithKeyValues:responseObject];
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

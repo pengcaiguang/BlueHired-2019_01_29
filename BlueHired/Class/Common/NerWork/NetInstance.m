@@ -65,8 +65,6 @@ static NetInstance * singleInstance = nil;
     NSMutableDictionary *dict = [[NSMutableDictionary alloc]init];
     if (AlreadyLogin) {
 //        [dict setObject:kUserDefaultsValue(kLoginToken) forKey:@"token"];
-//        [dict setObject:kUserDefaultsValue(ktoken) forKey:@"JW-AUTH-TOKEN"];
-//        [dict setObject:kUserDefaultsValue(kcredentials) forKey:@"JW-AUTH-CREDENTIALS"];
     }
     NSLog(@"dict == 基础参数 == %@",dict);
     return dict;
