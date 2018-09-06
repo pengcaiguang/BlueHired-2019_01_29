@@ -193,6 +193,16 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
+//查询面试预约列表
++ (void)requestWorkorderlistWithParam:(id)paramer
+                           withHandle:(response)responseHandle{
+    NSString * appendURLString = @"work/query_workorderlist";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
 #pragma mark - 资讯
 /************************************************************/
 //*  资讯

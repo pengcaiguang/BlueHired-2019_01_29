@@ -21,6 +21,9 @@
 		DC229582214106D10002A095 /* LPIsApplyOrIsCollectionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC229581214106D10002A095 /* LPIsApplyOrIsCollectionModel.m */; };
 		DC2295852141143F0002A095 /* GJAlertText.m in Sources */ = {isa = PBXBuildFile; fileRef = DC2295842141143F0002A095 /* GJAlertText.m */; };
 		DC2295882141230A0002A095 /* GJAlertMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = DC2295872141230A0002A095 /* GJAlertMessage.m */; };
+		DC22958B214150BC0002A095 /* LPWorkorderListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC22958A214150BC0002A095 /* LPWorkorderListVC.m */; };
+		DC22958F214152370002A095 /* LPWorkorderListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC22958D214152370002A095 /* LPWorkorderListCell.m */; };
+		DC229590214152370002A095 /* LPWorkorderListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC22958E214152370002A095 /* LPWorkorderListCell.xib */; };
 		DC290F2F213CC55000EC3FCC /* LPEssayDetailCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC290F2D213CC55000EC3FCC /* LPEssayDetailCommentCell.m */; };
 		DC290F30213CC55000EC3FCC /* LPEssayDetailCommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC290F2E213CC55000EC3FCC /* LPEssayDetailCommentCell.xib */; };
 		DC290F34213CDDEB00EC3FCC /* LPEssayDetailCommentReplyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC290F32213CDDEB00EC3FCC /* LPEssayDetailCommentReplyCell.m */; };
@@ -158,6 +161,11 @@
 		DC2295842141143F0002A095 /* GJAlertText.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GJAlertText.m; sourceTree = "<group>"; };
 		DC2295862141230A0002A095 /* GJAlertMessage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GJAlertMessage.h; sourceTree = "<group>"; };
 		DC2295872141230A0002A095 /* GJAlertMessage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GJAlertMessage.m; sourceTree = "<group>"; };
+		DC229589214150BC0002A095 /* LPWorkorderListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPWorkorderListVC.h; sourceTree = "<group>"; };
+		DC22958A214150BC0002A095 /* LPWorkorderListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPWorkorderListVC.m; sourceTree = "<group>"; };
+		DC22958C214152370002A095 /* LPWorkorderListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPWorkorderListCell.h; sourceTree = "<group>"; };
+		DC22958D214152370002A095 /* LPWorkorderListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPWorkorderListCell.m; sourceTree = "<group>"; };
+		DC22958E214152370002A095 /* LPWorkorderListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPWorkorderListCell.xib; sourceTree = "<group>"; };
 		DC290F2C213CC55000EC3FCC /* LPEssayDetailCommentCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPEssayDetailCommentCell.h; sourceTree = "<group>"; };
 		DC290F2D213CC55000EC3FCC /* LPEssayDetailCommentCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPEssayDetailCommentCell.m; sourceTree = "<group>"; };
 		DC290F2E213CC55000EC3FCC /* LPEssayDetailCommentCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPEssayDetailCommentCell.xib; sourceTree = "<group>"; };
@@ -602,6 +610,8 @@
 				DC30E19721391303000C7A91 /* LPMainSearchResultVC.m */,
 				DC30E19C21392E23000C7A91 /* LPWorkDetailVC.h */,
 				DC30E19D21392E23000C7A91 /* LPWorkDetailVC.m */,
+				DC229589214150BC0002A095 /* LPWorkorderListVC.h */,
+				DC22958A214150BC0002A095 /* LPWorkorderListVC.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -790,6 +800,9 @@
 				DC30E1AC21394055000C7A91 /* LPWorkDetailTextCell.h */,
 				DC30E1AD21394055000C7A91 /* LPWorkDetailTextCell.m */,
 				DC30E1AE21394055000C7A91 /* LPWorkDetailTextCell.xib */,
+				DC22958C214152370002A095 /* LPWorkorderListCell.h */,
+				DC22958D214152370002A095 /* LPWorkorderListCell.m */,
+				DC22958E214152370002A095 /* LPWorkorderListCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -991,6 +1004,7 @@
 				DC13BB5B213E5B6A00800955 /* LPCityCell.xib in Resources */,
 				DC73832D2133E3670055DC10 /* Assets.xcassets in Resources */,
 				DC290F30213CC55000EC3FCC /* LPEssayDetailCommentCell.xib in Resources */,
+				DC229590214152370002A095 /* LPWorkorderListCell.xib in Resources */,
 				DC44DBA921354E8500D00FAC /* LPInformationCollectionViewCell.xib in Resources */,
 				DC30E1A621393BB0000C7A91 /* LPWorkDetailHeadCell.xib in Resources */,
 				DC5C38952136682200B3CF6E /* LPCircleCollectionViewCell.xib in Resources */,
@@ -1112,9 +1126,11 @@
 				DC7383942134E95E0055DC10 /* NetRequestEnty.m in Sources */,
 				DC30E1952138F51B000C7A91 /* LPInformationSearchVC.m in Sources */,
 				DC44DBA321354D6A00D00FAC /* DeviceUtils.m in Sources */,
+				DC22958F214152370002A095 /* LPWorkorderListCell.m in Sources */,
 				DC7A32DB2137DADD00E09C6C /* UIViewController+BackItem.m in Sources */,
 				DC5C388E213645E000B3CF6E /* LPInformationMoreImageCollectionViewCell.m in Sources */,
 				DCF5D9C9213FB4D1009F5DCE /* LPBusinessReviewSearchVC.m in Sources */,
+				DC22958B214150BC0002A095 /* LPWorkorderListVC.m in Sources */,
 				DC49D867213A6BB2009BFCB0 /* LPEssayDetailVC.m in Sources */,
 				DC44DBA821354E8500D00FAC /* LPInformationCollectionViewCell.m in Sources */,
 				DC17FE2D213A9A9100635F05 /* LPCommentListModel.m in Sources */,

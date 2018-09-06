@@ -69,6 +69,9 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 + (void)requestCancleApplyWithUrl:(NSString *)urlString
                         withParam:(id)paramer
                        withHandle:(response)responseHandle;
+//查询面试预约列表
++ (void)requestWorkorderlistWithParam:(id)paramer
+                           withHandle:(response)responseHandle;
 #pragma mark - 资讯
 /************************************************************/
 //*  资讯

@@ -11,6 +11,7 @@
 #import "LPWorkDetailHeadCell.h"
 #import "LPWorkDetailTextCell.h"
 #import "LPIsApplyOrIsCollectionModel.h"
+#import "LPWorkorderListVC.h"
 
 static NSString *LPWorkDetailHeadCellID = @"LPWorkDetailHeadCell";
 static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
@@ -121,6 +122,9 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
     }
 }
 -(void)touchSiginUpButton{
+    LPWorkorderListVC *vc = [[LPWorkorderListVC alloc]init];
+    [self.navigationController pushViewController:vc animated:YES];
+    return;
     if (!self.isApplyOrIsCollectionModel.data.isApply) {
         GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"是否取消报名" message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"否",@"是"] buttonsColor:@[[UIColor colorWithHexString:@"#666666"],[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor],[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
             if (buttonIndex == 1) {
@@ -177,7 +181,8 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
     NSString *string = [NSString stringWithFormat:@"姓名：%@\n报名企业：%@",self.isApplyOrIsCollectionModel.data.userName,self.model.data.mechanismName];
     GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"报名成功" message:string textAlignment:NSTextAlignmentLeft buttonTitles:@[@"查看详情"] buttonsColor:@[[UIColor whiteColor]] buttonsBackgroundColors:@[[UIColor baseColor]] buttonClick:^(NSInteger buttonIndex) {
         if (buttonIndex == 0) {
-            NSLog(@"查看详情");
+            LPWorkorderListVC *vc = [[LPWorkorderListVC alloc]init];
+            [self.navigationController pushViewController:vc animated:YES];
         }
     }];
     [alert show];
