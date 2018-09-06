@@ -10,6 +10,7 @@
 #import "LPWorkDetailModel.h"
 #import "LPWorkDetailHeadCell.h"
 #import "LPWorkDetailTextCell.h"
+#import "LPIsApplyOrIsCollectionModel.h"
 
 static NSString *LPWorkDetailHeadCellID = @"LPWorkDetailHeadCell";
 static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
@@ -19,6 +20,7 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
 
 @property(nonatomic,strong) LPWorkDetailModel *model;
 
+@property(nonatomic,strong) LPIsApplyOrIsCollectionModel *isApplyOrIsCollectionModel;
 @property(nonatomic,strong) NSMutableArray <UIButton *>*buttonArray;
 @property(nonatomic,strong) UIView *lineView;
 
@@ -50,6 +52,7 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
     }];
     [self setBottomView];
     [self requestWorkDetail];
+    [self requestIsApplyOrIsCollection];
 }
 
 -(void)setBottomView{
@@ -140,7 +143,14 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
     _model = model;
     [self.tableview reloadData];
 }
-
+-(void)setIsApplyOrIsCollectionModel:(LPIsApplyOrIsCollectionModel *)isApplyOrIsCollectionModel{
+    _isApplyOrIsCollectionModel = isApplyOrIsCollectionModel;
+    if (isApplyOrIsCollectionModel.data.isCollection) {
+        self.bottomButtonArray[0].selected = NO;
+    }else{
+        self.bottomButtonArray[0].selected = YES;
+    }
+}
 #pragma mark - TableViewDelegate & Datasource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 3;
@@ -314,6 +324,19 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
                     self.bottomButtonArray[0].selected = NO;
                 }
             }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+-(void)requestIsApplyOrIsCollection{
+    NSDictionary *dic = @{
+                          @"workId":self.workListModel.id
+                          };
+    [NetApiManager requestIsApplyOrIsCollectionWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            self.isApplyOrIsCollectionModel = [LPIsApplyOrIsCollectionModel mj_objectWithKeyValues:responseObject];
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

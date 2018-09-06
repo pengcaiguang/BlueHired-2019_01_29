@@ -58,6 +58,9 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //收藏接口
 + (void)requestSetCollectionWithParam:(id)paramer
                            withHandle:(response)responseHandle;
+//查询是否报名/收藏公司/实名认证
++ (void)requestIsApplyOrIsCollectionWithParam:(id)paramer
+                                   withHandle:(response)responseHandle;
 #pragma mark - 资讯
 /************************************************************/
 //*  资讯

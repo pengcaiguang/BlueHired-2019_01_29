@@ -18,6 +18,7 @@
 		DC13BB5E213EA10200800955 /* LPMechanismlistModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC13BB5D213EA10200800955 /* LPMechanismlistModel.m */; };
 		DC17FE2D213A9A9100635F05 /* LPCommentListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC17FE2C213A9A9100635F05 /* LPCommentListModel.m */; };
 		DC22957F2140BBE70002A095 /* LPUserMaterialModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC22957E2140BBE70002A095 /* LPUserMaterialModel.m */; };
+		DC229582214106D10002A095 /* LPIsApplyOrIsCollectionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC229581214106D10002A095 /* LPIsApplyOrIsCollectionModel.m */; };
 		DC290F2F213CC55000EC3FCC /* LPEssayDetailCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC290F2D213CC55000EC3FCC /* LPEssayDetailCommentCell.m */; };
 		DC290F30213CC55000EC3FCC /* LPEssayDetailCommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC290F2E213CC55000EC3FCC /* LPEssayDetailCommentCell.xib */; };
 		DC290F34213CDDEB00EC3FCC /* LPEssayDetailCommentReplyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC290F32213CDDEB00EC3FCC /* LPEssayDetailCommentReplyCell.m */; };
@@ -149,6 +150,8 @@
 		DC17FE2C213A9A9100635F05 /* LPCommentListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPCommentListModel.m; sourceTree = "<group>"; };
 		DC22957D2140BBE70002A095 /* LPUserMaterialModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPUserMaterialModel.h; sourceTree = "<group>"; };
 		DC22957E2140BBE70002A095 /* LPUserMaterialModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPUserMaterialModel.m; sourceTree = "<group>"; };
+		DC229580214106D10002A095 /* LPIsApplyOrIsCollectionModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPIsApplyOrIsCollectionModel.h; sourceTree = "<group>"; };
+		DC229581214106D10002A095 /* LPIsApplyOrIsCollectionModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPIsApplyOrIsCollectionModel.m; sourceTree = "<group>"; };
 		DC290F2C213CC55000EC3FCC /* LPEssayDetailCommentCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPEssayDetailCommentCell.h; sourceTree = "<group>"; };
 		DC290F2D213CC55000EC3FCC /* LPEssayDetailCommentCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPEssayDetailCommentCell.m; sourceTree = "<group>"; };
 		DC290F2E213CC55000EC3FCC /* LPEssayDetailCommentCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPEssayDetailCommentCell.xib; sourceTree = "<group>"; };
@@ -790,6 +793,8 @@
 				DC30E1A021393255000C7A91 /* LPWorkDetailModel.m */,
 				DC13BB5C213EA10200800955 /* LPMechanismlistModel.h */,
 				DC13BB5D213EA10200800955 /* LPMechanismlistModel.m */,
+				DC229580214106D10002A095 /* LPIsApplyOrIsCollectionModel.h */,
+				DC229581214106D10002A095 /* LPIsApplyOrIsCollectionModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1119,6 +1124,7 @@
 				DC13BB50213E1FD100800955 /* LPCityDataManager.m in Sources */,
 				DC44DB9C21352B8000D00FAC /* LPNoDataView.m in Sources */,
 				DC30E19B21391DAD000C7A91 /* LPInformationSearchResultVC.m in Sources */,
+				DC229582214106D10002A095 /* LPIsApplyOrIsCollectionModel.m in Sources */,
 				DC7A32E7213812E200E09C6C /* LPSortAlertView.m in Sources */,
 				DC30E19E21392E23000C7A91 /* LPWorkDetailVC.m in Sources */,
 				DC7A32D82137D7E200E09C6C /* LPRegisteredVC.m in Sources */,

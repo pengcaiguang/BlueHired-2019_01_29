@@ -163,6 +163,16 @@
     [NetRequestManager requestWithEnty:enty];
 }
 
+//查询是否报名/收藏公司/实名认证
++ (void)requestIsApplyOrIsCollectionWithParam:(id)paramer
+                                   withHandle:(response)responseHandle{
+    NSString * appendURLString = @"work/query_isApplyOrIsCollection";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
 
 #pragma mark - 资讯
 /************************************************************/
