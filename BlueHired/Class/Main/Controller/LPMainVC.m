@@ -55,16 +55,21 @@ static NSString *LPMainCellID = @"LPMainCell";
     self.navigationController.navigationBar.barTintColor = [UIColor baseColor];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:[UIColor baseColor]] forBarMetrics:UIBarMetricsDefault];
 
-    
-    self.page = 1;
-    self.listArray = [NSMutableArray array];
-    
     [self setLeftButton];
     [self setSearchView];
     [self.view addSubview:self.tableview];
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
+//    self.page = 1;
+//    self.listArray = [NSMutableArray array];
+//    [self request];
+//    [self requestMechanismlist];
+}
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.page = 1;
+//    self.listArray = [NSMutableArray array];
     [self request];
     [self requestMechanismlist];
 }
@@ -255,19 +260,9 @@ static NSString *LPMainCellID = @"LPMainCell";
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    LPMainCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    
     LPWorkDetailVC *vc = [[LPWorkDetailVC alloc]init];
     vc.hidesBottomBarWhenPushed = YES;
     vc.workListModel = self.listArray[indexPath.row];
-    vc.block = ^(NSInteger isApply) {
-        if (isApply == 0) {
-            cell.isApplyLabel.hidden = NO;
-        }else{
-            cell.isApplyLabel.hidden = YES;
-        }
-    };
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -317,8 +312,8 @@ static NSString *LPMainCellID = @"LPMainCell";
 -(void)request{
     NSDictionary *dic = @{
                           @"type":@(0),
-                          @"orderType":self.orderType ? @(self.orderType) : @"",
                           @"page":@(self.page),
+                          @"orderType":self.orderType ? @(self.orderType) : @"",
                           @"mechanismAddress":self.mechanismAddress ? self.mechanismAddress : @"china",
                           @"mechanismTypeId":self.mechanismTypeId ? self.mechanismTypeId : @"",
                           @"workType":self.workType ? self.workType : @""

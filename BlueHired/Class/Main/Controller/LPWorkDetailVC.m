@@ -66,15 +66,6 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
     }
 }
 
--(void)viewWillDisappear:(BOOL)animated{
-    [super viewWillDisappear:animated];
-    if (self.block) {
-        if (self.isApplyOrIsCollectionModel.data.isApply) {
-            self.block([self.isApplyOrIsCollectionModel.data.isApply integerValue]);
-        }
-    }
-}
-
 -(void)setBottomView{
     
     UIView *bottomBgView = [[UIView alloc]init];
@@ -136,7 +127,7 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
         //    LPWorkorderListVC *vc = [[LPWorkorderListVC alloc]init];
         //    [self.navigationController pushViewController:vc animated:YES];
         //    return;
-        if (!self.isApplyOrIsCollectionModel.data.isApply) {
+        if ([self.isApplyOrIsCollectionModel.data.isApply integerValue] == 0) {
             GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"是否取消报名" message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"否",@"是"] buttonsColor:@[[UIColor colorWithHexString:@"#666666"],[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor],[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
                 if (buttonIndex == 1) {
                     [self requestCancleApply];
