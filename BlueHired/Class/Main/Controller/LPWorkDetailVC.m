@@ -54,8 +54,16 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
         make.bottom.mas_equalTo(-48);
     }];
     [self setBottomView];
+//    [self requestWorkDetail];
+//    if (AlreadyLogin) {
+//        [self requestIsApplyOrIsCollection];
+//    }
+}
+-(void)viewWillAppear:(BOOL)animated{
     [self requestWorkDetail];
-    [self requestIsApplyOrIsCollection];
+    if (AlreadyLogin) {
+        [self requestIsApplyOrIsCollection];
+    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -122,29 +130,31 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
     }
 }
 -(void)touchSiginUpButton{
-    LPWorkorderListVC *vc = [[LPWorkorderListVC alloc]init];
-    [self.navigationController pushViewController:vc animated:YES];
-    return;
-    if (!self.isApplyOrIsCollectionModel.data.isApply) {
-        GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"是否取消报名" message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"否",@"是"] buttonsColor:@[[UIColor colorWithHexString:@"#666666"],[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor],[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
-            if (buttonIndex == 1) {
-                [self requestCancleApply];
-            }
-        }];
-        [alert show];
-        return;
-    }
-    if (kStringIsEmpty(self.isApplyOrIsCollectionModel.data.userName)) {
-        GJAlertText *alert = [[GJAlertText alloc]initWithTitle:@"企业入职报名，请填写您的真实姓名！" message:@"请填写真实姓名" buttonTitles:@[@"取消",@"确定"] buttonsColor:@[[UIColor colorWithHexString:@"#666666"],[UIColor baseColor]] buttonClick:^(NSInteger buttonIndex , NSString * string) {
-            if (buttonIndex == 0) {
-            }else{
-                self.userName = string;
-                [self requestEntryApply];
-            }
-        }];
-        [alert show];
-    }else{
-        [self requestEntryApply];
+    if ([LoginUtils validationLogin:self]) {
+        //    LPWorkorderListVC *vc = [[LPWorkorderListVC alloc]init];
+        //    [self.navigationController pushViewController:vc animated:YES];
+        //    return;
+        if (!self.isApplyOrIsCollectionModel.data.isApply) {
+            GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"是否取消报名" message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"否",@"是"] buttonsColor:@[[UIColor colorWithHexString:@"#666666"],[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor],[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
+                if (buttonIndex == 1) {
+                    [self requestCancleApply];
+                }
+            }];
+            [alert show];
+            return;
+        }
+        if (kStringIsEmpty(self.isApplyOrIsCollectionModel.data.userName)) {
+            GJAlertText *alert = [[GJAlertText alloc]initWithTitle:@"企业入职报名，请填写您的真实姓名！" message:@"请填写真实姓名" buttonTitles:@[@"取消",@"确定"] buttonsColor:@[[UIColor colorWithHexString:@"#666666"],[UIColor baseColor]] buttonClick:^(NSInteger buttonIndex , NSString * string) {
+                if (buttonIndex == 0) {
+                }else{
+                    self.userName = string;
+                    [self requestEntryApply];
+                }
+            }];
+            [alert show];
+        }else{
+            [self requestEntryApply];
+        }
     }
 }
 -(void)touchBottomButton:(UIButton *)button{

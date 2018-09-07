@@ -104,6 +104,7 @@
 		DC7A32E12137E99300E09C6C /* LoginUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7A32E02137E99300E09C6C /* LoginUtils.m */; };
 		DC7A32E42138074900E09C6C /* LPSetVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7A32E32138074900E09C6C /* LPSetVC.m */; };
 		DC7A32E7213812E200E09C6C /* LPSortAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7A32E6213812E200E09C6C /* LPSortAlertView.m */; };
+		DCE1FD2421420AAB009C38BF /* LPWorkorderListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DCE1FD2321420AAB009C38BF /* LPWorkorderListModel.m */; };
 		DCF5D9BC213F892D009F5DCE /* LPBusinessReviewVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF5D9BB213F892D009F5DCE /* LPBusinessReviewVC.m */; };
 		DCF5D9C0213FA395009F5DCE /* LPMechanismcommentMechanismlistModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF5D9BF213FA395009F5DCE /* LPMechanismcommentMechanismlistModel.m */; };
 		DCF5D9C5213FA5BD009F5DCE /* LPBusinessReviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF5D9C3213FA5BD009F5DCE /* LPBusinessReviewCell.m */; };
@@ -316,6 +317,8 @@
 		DC7A32E5213812E200E09C6C /* LPSortAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPSortAlertView.h; sourceTree = "<group>"; };
 		DC7A32E6213812E200E09C6C /* LPSortAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPSortAlertView.m; sourceTree = "<group>"; };
 		DCB5A5321875E124A6C52C8B /* libPods-BlueHired.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BlueHired.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCE1FD2221420AAB009C38BF /* LPWorkorderListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPWorkorderListModel.h; sourceTree = "<group>"; };
+		DCE1FD2321420AAB009C38BF /* LPWorkorderListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPWorkorderListModel.m; sourceTree = "<group>"; };
 		DCF5D9BA213F892D009F5DCE /* LPBusinessReviewVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPBusinessReviewVC.h; sourceTree = "<group>"; };
 		DCF5D9BB213F892D009F5DCE /* LPBusinessReviewVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPBusinessReviewVC.m; sourceTree = "<group>"; };
 		DCF5D9BE213FA395009F5DCE /* LPMechanismcommentMechanismlistModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPMechanismcommentMechanismlistModel.h; sourceTree = "<group>"; };
@@ -818,6 +821,8 @@
 				DC13BB5D213EA10200800955 /* LPMechanismlistModel.m */,
 				DC229580214106D10002A095 /* LPIsApplyOrIsCollectionModel.h */,
 				DC229581214106D10002A095 /* LPIsApplyOrIsCollectionModel.m */,
+				DCE1FD2221420AAB009C38BF /* LPWorkorderListModel.h */,
+				DCE1FD2321420AAB009C38BF /* LPWorkorderListModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1131,6 +1136,7 @@
 				DC5C388E213645E000B3CF6E /* LPInformationMoreImageCollectionViewCell.m in Sources */,
 				DCF5D9C9213FB4D1009F5DCE /* LPBusinessReviewSearchVC.m in Sources */,
 				DC22958B214150BC0002A095 /* LPWorkorderListVC.m in Sources */,
+				DCE1FD2421420AAB009C38BF /* LPWorkorderListModel.m in Sources */,
 				DC49D867213A6BB2009BFCB0 /* LPEssayDetailVC.m in Sources */,
 				DC44DBA821354E8500D00FAC /* LPInformationCollectionViewCell.m in Sources */,
 				DC17FE2D213A9A9100635F05 /* LPCommentListModel.m in Sources */,

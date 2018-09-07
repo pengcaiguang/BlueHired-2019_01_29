@@ -199,33 +199,35 @@ constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
 //}
 
 
-+(BOOL)commonCheckErrorCode:(id)responseObject
-{
++(BOOL)commonCheckErrorCode:(id)responseObject{
     if ([responseObject isKindOfClass:[NSDictionary class]]) {
         NSString * codeStr = [NSString stringWithFormat:@"%@",responseObject[@"code"]];
-        NSString * msgStr = [NSString stringWithFormat:@"%@",responseObject[@"msg"]];
-        if (kStringIsEmpty(msgStr)) {
-            msgStr = TOKEN_ERROR_MESSAGE;
-        }
-        NSString * security = [NSString stringWithFormat:@"%@",responseObject[@"security"]];
-
-        if (kStringIsEmpty(security)) {
-            NSString * token = [NSString stringWithFormat:@"%@",responseObject[@"security"][@"token"]];
-            if (kStringIsEmpty(token)) {
-                kUserDefaultsSave(token, ktoken);
-            }
-            
-        }
-        if ([codeStr integerValue] == 1) {
+//        NSString * msgStr = [NSString stringWithFormat:@"%@",responseObject[@"msg"]];
+//        if (kStringIsEmpty(msgStr)) {
+//            msgStr = TOKEN_ERROR_MESSAGE;
+//        }
+//        NSString * security = [NSString stringWithFormat:@"%@",responseObject[@"security"]];
+//
+//        if (kStringIsEmpty(security)) {
+//            NSString * token = [NSString stringWithFormat:@"%@",responseObject[@"security"][@"token"]];
+//            if (kStringIsEmpty(token)) {
+//                kUserDefaultsSave(token, ktoken);
+//            }
+//        }
+        if ([codeStr integerValue] == 10002) {
+            kUserDefaultsSave(@"0", kLoginStatus);
             return YES;
-        }else if([codeStr integerValue] == 2){
-            [self performSelector:@selector(tokenErrorBackToLoginVC) withObject:nil afterDelay:MESSAGE_SHOW_TIME];
-            return NO;
-        }else if([codeStr integerValue] == 10){
-            return NO;
         }else{
-            return NO;
+            return YES;
         }
+//        else if([codeStr integerValue] == 2){
+//            [self performSelector:@selector(tokenErrorBackToLoginVC) withObject:nil afterDelay:MESSAGE_SHOW_TIME];
+//            return NO;
+//        }else if([codeStr integerValue] == 10){
+//            return NO;
+//        }else{
+//            return NO;
+//        }
         
 //        if ([codeStr isEqualToString:@"101"]) { //2017.7.27约定token错误唯一错误码为101
 //            [[UIWindow visibleViewController].view showLoadingMeg:msgStr time:MESSAGE_SHOW_TIME];

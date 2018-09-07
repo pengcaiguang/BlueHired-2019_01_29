@@ -8,11 +8,16 @@
 
 #import "LPWorkorderListVC.h"
 #import "LPWorkorderListCell.h"
+#import "LPWorkorderListModel.h"
 
 static NSString *LPWorkorderListCellID = @"LPWorkorderListCell";
 
-@interface LPWorkorderListVC ()<UITableViewDelegate,UITableViewDataSource>
+@interface LPWorkorderListVC ()<UITableViewDelegate,UITableViewDataSource,LPWorkorderListCellDelegate>
 @property (nonatomic, strong)UITableView *tableview;
+
+@property(nonatomic,strong) LPWorkorderListModel *model;
+@property(nonatomic,strong) NSMutableArray <LPWorkorderListDataModel *>*listArray;
+@property(nonatomic,assign) NSInteger selectWorkId;
 
 @end
 
@@ -30,25 +35,80 @@ static NSString *LPWorkorderListCellID = @"LPWorkorderListCell";
     [self requestWorkorderlist];
 }
 
+-(void)setModel:(LPWorkorderListModel *)model{
+    _model = model;
+    _model = model;
+    if ([self.model.code integerValue] == 0) {
+        
+        self.listArray = [NSMutableArray array];
+        
+        if (self.model.data.count > 0) {
+            [self.listArray addObjectsFromArray:self.model.data];
+            [self.tableview reloadData];
+        }else{
+            [self addNodataView];
+        }
+    }else{
+        [self.view showLoadingMeg:NETE_ERROR_MESSAGE time:MESSAGE_SHOW_TIME];
+    }
+}
+-(void)addNodataView{
+    LPNoDataView *noDataView = [[LPNoDataView alloc]initWithFrame:CGRectZero];
+    [self.view addSubview:noDataView];
+    [noDataView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view);
+    }];
+}
 #pragma mark - TableViewDelegate & Datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 20;
+    return self.listArray.count;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     LPWorkorderListCell *cell = [tableView dequeueReusableCellWithIdentifier:LPWorkorderListCellID];
+    cell.model = self.listArray[indexPath.row];
+    cell.delegate = self;
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
+#pragma mark - LPWorkorderListCellDelegate
+-(void)buttonClick:(NSInteger)buttonIndex workId:(NSInteger)workId{
+    self.selectWorkId = workId;
+    if (buttonIndex == 0) {
+        //删除
+    }else{
+        GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"是否取消报名" message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"否",@"是"] buttonsColor:@[[UIColor colorWithHexString:@"#666666"],[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor],[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
+            if (buttonIndex == 1) {
+                [self requestCancleApply];
+            }
+        }];
+        [alert show];
+    }
+}
 #pragma mark - request
 -(void)requestWorkorderlist{
     [NetApiManager requestWorkorderlistWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            
+            self.model = [LPWorkorderListModel mj_objectWithKeyValues:responseObject];
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+-(void)requestCancleApply{
+    NSString *string = [NSString stringWithFormat:@"work/cancleApply?workId=%ld",self.selectWorkId];
+    [NetApiManager requestCancleApplyWithUrl:string withParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if (!ISNIL(responseObject[@"code"])) {
+                if ([responseObject[@"code"] integerValue] == 0) {
+                    [self requestWorkorderlist];
+                }
+            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
