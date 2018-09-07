@@ -25,7 +25,7 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
 @property(nonatomic,strong) LPCommentListModel *commentListModel;
 @property(nonatomic,strong) NSMutableArray <LPCommentListDataModel *>*commentListArray;
 
-@property(nonatomic,strong) NSMutableArray *bottomButtonArray;
+@property(nonatomic,strong) NSMutableArray <UIButton *>*bottomButtonArray;
 @property(nonatomic,strong) UITextField *commentTextField;
 
 
@@ -111,6 +111,7 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
         }else if(i == 1) {
             [button setImage:[UIImage imageNamed:@"praise_selected"] forState:UIControlStateSelected];
         }
+        [button addTarget:self action:@selector(preventFlicker:) forControlEvents:UIControlEventAllTouchEvents];
         button.tag = i;
         [button addTarget:self action:@selector(touchBottomButton:) forControlEvents:UIControlEventTouchUpInside];
         [self.bottomButtonArray addObject:button];
@@ -122,15 +123,29 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
         make.size.mas_equalTo(CGSizeMake(21, 20));
     }];
 }
-
+- (void)preventFlicker:(UIButton *)button {
+    button.highlighted = NO;
+}
 -(void)touchBottomButton:(UIButton *)button{
     if ([LoginUtils validationLogin:self]) {
         NSInteger index = button.tag;
-        NSLog(@"%ld",index);
+        if (index == 0) {
+            [self requestSetCollection];
+        }
     }
 }
 -(void)setModel:(LPEssayDetailModel *)model{
     _model = model;
+    if (model.data.likeStatus) {
+        self.bottomButtonArray[1].selected = YES;
+    }else{
+        self.bottomButtonArray[1].selected = NO;
+    }
+    if (model.data.collectionStatus) {
+        self.bottomButtonArray[0].selected = YES;
+    }else{
+        self.bottomButtonArray[0].selected = NO;
+    }
     [self.tableview reloadSections:[[NSIndexSet alloc]initWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
 //    [self.tableview reloadData];
 }
@@ -248,6 +263,26 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
             self.commentListModel = [LPCommentListModel mj_objectWithKeyValues:responseObject];
         }else{
             [self.view showLoadingMeg:@"网络错误" time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+-(void)requestSetCollection{
+    NSDictionary *dic = @{
+                          @"type":@(2),
+                          @"id":self.essaylistDataModel.id
+                          };
+    [NetApiManager requestSetCollectionWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if (!ISNIL(responseObject[@"data"])) {
+                if ([responseObject[@"data"] integerValue] == 0) {
+                    self.bottomButtonArray[0].selected = YES;
+                }else if ([responseObject[@"data"] integerValue] == 1) {
+                    self.bottomButtonArray[0].selected = NO;
+                }
+            }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
     }];
 }

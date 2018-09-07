@@ -18,8 +18,8 @@
 
 @interface LPEssayDetailDataModel : NSObject
 
-@property (nonatomic, assign) BOOL choiceStatus;
-@property (nonatomic, assign) BOOL collectionStatus;
+@property (nonatomic, copy) NSString *choiceStatus;
+@property (nonatomic, copy) NSString *collectionStatus;
 @property (nonatomic, copy) NSNumber *commentTotal;
 @property (nonatomic, copy) NSString *essayAuthor;
 @property (nonatomic, copy) NSString *essayDetails;
@@ -28,7 +28,7 @@
 @property (nonatomic, copy) NSNumber *id;
 @property (nonatomic, copy) NSString *key;
 @property (nonatomic, copy) NSNumber *labelId;
-@property (nonatomic, assign) BOOL likeStatus;
+@property (nonatomic, copy) NSString *likeStatus;
 @property (nonatomic, copy) NSNumber *praiseTotal;
 @property (nonatomic, copy) NSNumber *time;
 @property (nonatomic, copy) NSNumber *view;
