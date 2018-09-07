@@ -47,7 +47,12 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
     if (AlreadyLogin) {
         [self requestUserMaterial];
         [self requestSelectCurIsSign];
+        self.tableview.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+            [self requestUserMaterial];
+            [self requestSelectCurIsSign];
+        }];
     }else{
+        self.tableview.mj_header = nil;
         self.userMaterialModel = nil;
     }
 }

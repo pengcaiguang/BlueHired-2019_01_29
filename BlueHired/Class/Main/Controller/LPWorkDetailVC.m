@@ -69,7 +69,9 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
 -(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     if (self.block) {
-        self.block(self.isApplyOrIsCollectionModel.data.isApply);
+        if (self.isApplyOrIsCollectionModel.data.isApply) {
+            self.block([self.isApplyOrIsCollectionModel.data.isApply integerValue]);
+        }
     }
 }
 
@@ -201,13 +203,34 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
 #pragma mark - setdata
 -(void)setModel:(LPWorkDetailModel *)model{
     _model = model;
+    if ([model.data.status integerValue] == 1) {// "status": 1,//0正在招工1已经招满
+        [self.signUpButton setTitle:@"停止报名" forState:UIControlStateNormal];
+        self.signUpButton.backgroundColor = [UIColor colorWithHexString:@"#939393"];
+        self.signUpButton.enabled = NO;
+    }
     [self.tableview reloadData];
 }
 -(void)setIsApplyOrIsCollectionModel:(LPIsApplyOrIsCollectionModel *)isApplyOrIsCollectionModel{
     _isApplyOrIsCollectionModel = isApplyOrIsCollectionModel;
     if (isApplyOrIsCollectionModel.data) {
-        self.bottomButtonArray[0].selected = !isApplyOrIsCollectionModel.data.isCollection;
-        self.signUpButton.selected = !isApplyOrIsCollectionModel.data.isApply;
+        if ([isApplyOrIsCollectionModel.data.isCollection integerValue] == 0) {
+            self.bottomButtonArray[0].selected = YES;
+        }else{
+            self.bottomButtonArray[0].selected = NO;
+        }
+        if (self.model) {
+            if ([self.model.data.status integerValue] == 1) {// "status": 1,//0正在招工1已经招满
+                [self.signUpButton setTitle:@"停止报名" forState:UIControlStateNormal];
+                self.signUpButton.backgroundColor = [UIColor colorWithHexString:@"#939393"];
+                self.signUpButton.enabled = NO;
+            }else{
+                if ([isApplyOrIsCollectionModel.data.isApply integerValue] == 0) {
+                    self.signUpButton.selected = YES;
+                }else{
+                    self.signUpButton.selected = NO;
+                }
+            }
+        }
     }
 }
 #pragma mark - TableViewDelegate & Datasource

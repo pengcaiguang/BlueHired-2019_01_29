@@ -16,7 +16,7 @@
 @end
 
 @interface LPIsApplyOrIsCollectionDataModel : NSObject
-@property (nonatomic, assign) BOOL isApply;
-@property (nonatomic, assign) BOOL isCollection;
+@property (nonatomic, copy) NSNumber *isApply;
+@property (nonatomic, copy) NSNumber *isCollection;
 @property (nonatomic, copy) NSString *userName;
 @end

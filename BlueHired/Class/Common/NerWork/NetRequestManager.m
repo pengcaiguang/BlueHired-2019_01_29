@@ -41,7 +41,7 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
             } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 [self commonCheckErrorCode:responseObject];
                 if ([requestEnty.requestUrl containsString:@"login/user_sign_out"]) {
-                    kUserDefaultsSave(nil, COOKIES);
+                    kUserDefaultsRemove(COOKIES);
                 }
                 
                 requestEnty.responseHandle(YES,responseObject);

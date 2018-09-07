@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "LPWorklistModel.h"
 
-typedef void(^LPWorkDetailVCBlock)(BOOL isApply);
+typedef void(^LPWorkDetailVCBlock)(NSInteger isApply);
 
 @interface LPWorkDetailVC : UIViewController
 

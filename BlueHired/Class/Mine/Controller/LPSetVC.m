@@ -92,7 +92,8 @@
     [NetApiManager requestSignoutWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            kUserDefaultsSave(@"0", kLoginStatus);
+            kUserDefaultsRemove(LOGINID);
+            kUserDefaultsRemove(kLoginStatus);
             [self.navigationController popViewControllerAnimated:YES];
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];

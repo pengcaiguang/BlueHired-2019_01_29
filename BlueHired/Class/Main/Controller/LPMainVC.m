@@ -261,8 +261,12 @@ static NSString *LPMainCellID = @"LPMainCell";
     LPWorkDetailVC *vc = [[LPWorkDetailVC alloc]init];
     vc.hidesBottomBarWhenPushed = YES;
     vc.workListModel = self.listArray[indexPath.row];
-    vc.block = ^(BOOL isApply) {
-        cell.isApplyLabel.hidden = isApply;
+    vc.block = ^(NSInteger isApply) {
+        if (isApply == 0) {
+            cell.isApplyLabel.hidden = NO;
+        }else{
+            cell.isApplyLabel.hidden = YES;
+        }
     };
     [self.navigationController pushViewController:vc animated:YES];
 }
