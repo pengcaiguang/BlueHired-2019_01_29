@@ -65,6 +65,7 @@ static NSString *LPInformationCollectionViewCellID = @"LPInformationCollectionVi
     if (self.labelArray.count <= 0) {
         [self requestLabellist];
     }
+    [self.collectionView reloadData];
 }
 - (UIStatusBarStyle)preferredStatusBarStyle{
     return UIStatusBarStyleLightContent;
@@ -216,7 +217,6 @@ static NSString *LPInformationCollectionViewCellID = @"LPInformationCollectionVi
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     LPInformationCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:LPInformationCollectionViewCellID forIndexPath:indexPath];
     cell.labelListDataModel = self.labelListModel.data[indexPath.row];
-    cell.contentView.backgroundColor = randomColor;
     return cell;
 }
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {

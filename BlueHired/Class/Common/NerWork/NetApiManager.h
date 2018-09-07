@@ -91,6 +91,9 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //获取评论列表
 + (void)requestCommentListWithParam:(id)paramer
                          withHandle:(response)responseHandle;
+//点赞（取消）
++ (void)requestSocialSetlikeWithParam:(id)paramer
+                           withHandle:(response)responseHandle;
 #pragma mark - 圈子
 /************************************************************/
 //*  圈子

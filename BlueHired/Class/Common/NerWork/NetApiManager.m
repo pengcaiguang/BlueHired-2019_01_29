@@ -257,7 +257,16 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
-
+//点赞（取消）
++ (void)requestSocialSetlikeWithParam:(id)paramer
+                           withHandle:(response)responseHandle{
+    NSString * appendURLString = @"social/set_like";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
 #pragma mark - 圈子
 /************************************************************/
 //*  圈子

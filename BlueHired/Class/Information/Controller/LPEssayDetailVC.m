@@ -131,6 +131,8 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
         NSInteger index = button.tag;
         if (index == 0) {
             [self requestSetCollection];
+        }else if (index == 1){
+            [self requestSocialSetlike];
         }
     }
 }
@@ -279,6 +281,27 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
                     self.bottomButtonArray[0].selected = YES;
                 }else if ([responseObject[@"data"] integerValue] == 1) {
                     self.bottomButtonArray[0].selected = NO;
+                }
+            }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+
+-(void)requestSocialSetlike{
+    NSDictionary *dic = @{
+                          @"type":@(1),
+                          @"id":self.essaylistDataModel.id
+                          };
+    [NetApiManager requestSocialSetlikeWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if (!ISNIL(responseObject[@"data"])) {
+                if ([responseObject[@"data"] integerValue] == 0) {
+                    self.bottomButtonArray[1].selected = YES;
+                }else if ([responseObject[@"data"] integerValue] == 1) {
+                    self.bottomButtonArray[1].selected = NO;
                 }
             }
         }else{
