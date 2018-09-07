@@ -17,7 +17,8 @@
 -(void)setModel:(LPEssaylistDataModel *)model{
     _model = model;
     self.essayNameLabel.text = model.essayName;
-    [self.essayUrlImageView sd_setImageWithURL:[NSURL URLWithString:model.essayUrl]];
+    NSArray *imageArray = [model.essayUrl componentsSeparatedByString:@";"];
+    [self.essayUrlImageView sd_setImageWithURL:[NSURL URLWithString:imageArray[0]]];
     self.essayAuthorLabel.text = model.essayAuthor;
     
     self.viewLabel.text = model.view ? [model.view stringValue] : @"0";

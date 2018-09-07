@@ -108,7 +108,7 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
     }
     if (array.count ==0) {
         return nil;
-    }else if (array.count == 1) {
+    }else if (array.count == 1 || array.count == 2) {
         LPInformationSingleCell *cell = [tableView dequeueReusableCellWithIdentifier:LPInformationSingleCellID];
         if(cell == nil){
             cell = [[LPInformationSingleCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:LPInformationSingleCellID];
