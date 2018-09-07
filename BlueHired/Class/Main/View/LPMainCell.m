@@ -23,7 +23,6 @@
     self.lendTypeLabel.layer.borderWidth = 0.5;
     self.lendTypeLabel.layer.borderColor = [UIColor colorWithHexString:@"#0CAFFF"].CGColor;
     
-    self.isApplyLabel.hidden = YES;
 }
 
 -(void)setModel:(LPWorklistDataWorkListModel *)model{
@@ -41,8 +40,24 @@
     }else{
         self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/月",model.wageRange];
     }
-    self.isApplyLabel.hidden = model.isApply;
-    self.workTypeNameLabel.text = [NSString stringWithFormat:@"需%@%@人",model.workTypeName,model.maxNumber];
+    if (model.isApply) {
+        if ([model.isApply integerValue] == 0) {
+            self.isApplyLabel.hidden = NO;
+        }else{
+            self.isApplyLabel.hidden = YES;
+        }
+    }else{
+        self.isApplyLabel.hidden = YES;
+    }
+    
+    if ([model.status integerValue] == 0) {
+        self.workTypeNameLabel.text = [NSString stringWithFormat:@"需%@%@人",model.workTypeName,model.maxNumber];
+        self.workTypeNameLabel.textColor = [UIColor colorWithHexString:@"#444444"];
+    }else{
+        self.workTypeNameLabel.text = @"已招满";
+        self.workTypeNameLabel.textColor = [UIColor colorWithHexString:@"#FF6666"];
+    }
+    
     self.applyNumberLabel.text = [NSString stringWithFormat:@"已报名：%@人",model.applyNumber ? model.applyNumber : @"0"];
 
 }

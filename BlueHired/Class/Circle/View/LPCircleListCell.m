@@ -28,6 +28,9 @@
     self.praiseTotalLabel.text = model.praiseTotal ? [model.praiseTotal stringValue] : @"0";
     self.commentTotalLabel.text = model.commentTotal ? [model.commentTotal stringValue] : @"0";
     
+    for (UIView *view in self.imageBgView.subviews) {
+        [view removeFromSuperview];
+    }
     if (kStringIsEmpty(model.moodUrl)) {
         self.imageBgView.hidden = YES;
         self.imageBgView_constraint_height.constant = 0;

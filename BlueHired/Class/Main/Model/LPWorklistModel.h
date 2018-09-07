@@ -72,9 +72,9 @@
 @property (nonatomic, copy) NSNumber *id;
 @property (nonatomic, copy) NSString *imageList;
 @property (nonatomic, copy) NSString *interviewTime;
-@property (nonatomic, assign) BOOL isApply;
+@property (nonatomic, copy) NSNumber *isApply;
 @property (nonatomic, copy) NSString *key;
-@property (nonatomic, assign) BOOL lendType;
+@property (nonatomic, copy) NSNumber *lendType;
 @property (nonatomic, copy) NSNumber *manageMoney;
 @property (nonatomic, copy) NSNumber *maxNumber;
 @property (nonatomic, copy) NSString *mechanismAddress;
