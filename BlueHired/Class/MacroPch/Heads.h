@@ -24,7 +24,7 @@
 #import "UIView+MBProgressHUD.h"
 #import "NSString+String.h"
 
-
+#import "LPUserMaterialModel.h"
 #import "LPNoDataView.h"
 
 #import "LPUserDefaults.h"

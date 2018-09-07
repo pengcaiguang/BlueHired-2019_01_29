@@ -11,7 +11,7 @@
 
 @protocol LPEssayDetailCommentCellDelegate<NSObject>
 
--(void)touchReplyButton;
+-(void)touchReplyButton:(LPCommentListDataModel *)model;
 
 @end
 

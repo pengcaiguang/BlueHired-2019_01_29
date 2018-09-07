@@ -30,8 +30,8 @@ static NSString *LPEssayDetailCommentReplyCellID = @"LPEssayDetailCommentReplyCe
 }
 - (IBAction)touchReplyButton:(id)sender {
     if ([LoginUtils validationLogin:[UIWindow visibleViewController]]) {
-        if ([self.delegate respondsToSelector:@selector(touchReplyButton)]) {
-            [self.delegate touchReplyButton];
+        if ([self.delegate respondsToSelector:@selector(touchReplyButton:)]) {
+            [self.delegate touchReplyButton:self.model];
         }
     }
 }
@@ -43,6 +43,9 @@ static NSString *LPEssayDetailCommentReplyCellID = @"LPEssayDetailCommentReplyCe
     self.commentDetailsLabel.text = model.commentDetails;
     self.timeLabel.text = [NSString compareCurrentTime:[model.time stringValue]];
     
+    for (UIView *view in self.replyBgView.subviews) {
+        [view removeFromSuperview];
+    }
     if (model.commentList.count > 0) {
     
         [self.replyBgView addSubview:self.tableview];
@@ -55,44 +58,9 @@ static NSString *LPEssayDetailCommentReplyCellID = @"LPEssayDetailCommentReplyCe
         self.replyBgView_constraint_height.constant = 27 * (model.commentList.count > 3 ? 3 : model.commentList.count);
         
         [self.tableview reloadData];
-
-        
-//        for (int i = 0; i< model.commentList.count; i++) {
-//            if (i == 0) {
-//                [self.replyBgView addSubview:self.replyView];
-//                [self addReply];
-//                [self.replyView mas_makeConstraints:^(MASConstraintMaker *make) {
-//                    make.top.mas_equalTo(0);
-//                    make.left.mas_equalTo(0);
-//                    make.right.mas_equalTo(0);
-//                    make.bottom.mas_equalTo(0);
-//                }];
-//
-//                self.nameLabel.text = [NSString stringWithFormat:@"%@:",model.commentList[0].userName];
-//                //            self.contentLabel.text = model.commentList[0].commentDetails;
-//                self.contentLabel.text = @"是你发互粉撒的身份萨达说 广安市广东省个挥洒胡歌萨达高送蛋糕。USA官方代购噶送蛋糕";
-//            }else if (i == 1){
-//                [self.replyBgView addSubview:self.replyView];
-//                [self addReply];
-//                [self.replyView mas_makeConstraints:^(MASConstraintMaker *make) {
-//                    make.left.mas_equalTo(0);
-//                    make.right.mas_equalTo(0);
-//
-//                    make.top.mas_equalTo(50);
-//                    make.bottom.mas_equalTo(0);
-//                }];
-//
-//                self.nameLabel.text = [NSString stringWithFormat:@"%@:",model.commentList[0].userName];
-//                //            self.contentLabel.text = model.commentList[0].commentDetails;
-//                self.contentLabel.text = @"是你发互粉撒的身份萨达说 广安市广东省个挥洒胡歌萨达高送蛋糕。USA官方代购噶送蛋糕";
-//            }else{
-//                return;
-//            }
-//        }
-    
+    }else{
+        self.replyBgView_constraint_height.constant = 0;
     }
-    
-//    self.replyBgView_constraint_height.constant = 50;
 }
 
 

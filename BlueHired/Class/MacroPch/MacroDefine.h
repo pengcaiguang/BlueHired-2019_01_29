@@ -43,10 +43,10 @@
 #define AlreadyLogin    [kUserDefaultsValue(kLoginStatus) boolValue]
 
 //DeviceToken
-#define kDeviceToken   @"kDeviceToken"
+#define kDeviceToken     @"kDeviceToken"
 #define kcredentials      @"credentials"
 #define ktoken            @"token"
-
+#define USERINFO           @"USERINFO"
 /**
  * 通用提示语
  */

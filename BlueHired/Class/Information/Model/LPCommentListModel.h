@@ -21,7 +21,7 @@
 @property (nonatomic, copy) NSNumber *commentId;
 @property (nonatomic, copy) NSNumber *commentType;
 @property (nonatomic, copy) NSString *grading;
-@property (nonatomic, copy) NSString *id;
+@property (nonatomic, copy) NSNumber *id;
 @property (nonatomic, copy) NSNumber *time;
 @property (nonatomic, copy) NSString *userId;
 @property (nonatomic, copy) NSString *userName;

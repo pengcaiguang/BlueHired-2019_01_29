@@ -267,6 +267,17 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
+//添加评论
++ (void)requestCommentAddcommentWithParam:(id)paramer
+                               withHandle:(response)responseHandle{
+    NSString * appendURLString = @"comment/add_comment";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
+
 #pragma mark - 圈子
 /************************************************************/
 //*  圈子

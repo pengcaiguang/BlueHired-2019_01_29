@@ -25,8 +25,15 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
 @property(nonatomic,strong) LPCommentListModel *commentListModel;
 @property(nonatomic,strong) NSMutableArray <LPCommentListDataModel *>*commentListArray;
 
+@property(nonatomic,strong) UIView *searchBgView;
+@property(nonatomic,strong) UIView *bottomBgView;
 @property(nonatomic,strong) NSMutableArray <UIButton *>*bottomButtonArray;
 @property(nonatomic,strong) UITextField *commentTextField;
+@property(nonatomic,strong) UIButton *sendButton;
+
+@property(nonatomic,assign) BOOL isComment;
+@property(nonatomic,assign) NSInteger commentType;
+@property(nonatomic,strong) NSNumber *commentId;
 
 
 @end
@@ -59,52 +66,64 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
 }
 -(void)setBottomView{
     
-    UIView *bottomBgView = [[UIView alloc]init];
-    [self.view addSubview:bottomBgView];
-    [bottomBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrameNotify:) name:UIKeyboardWillChangeFrameNotification object:nil];
+    //监听键盘，键盘出现
+    [[NSNotificationCenter defaultCenter]addObserver:self
+                                            selector:@selector(keyboardWillShow:)
+                                                name:UIKeyboardWillShowNotification object:nil];
+    //监听键盘隐藏
+    [[NSNotificationCenter defaultCenter]addObserver:self
+                                            selector:@selector(keybaordWillHide:)
+                                                name:UIKeyboardWillHideNotification object:nil];
+    
+    self.bottomBgView = [[UIView alloc]init];
+    [self.view addSubview:self.bottomBgView];
+    [self.bottomBgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.mas_equalTo(0);
         make.bottom.mas_equalTo(0);
         make.height.mas_equalTo(48);
     }];
     
-    UIView *searchBgView = [[UIView alloc]init];
-    [self.view addSubview:searchBgView];
-    [searchBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.searchBgView = [[UIView alloc]init];
+    [self.view addSubview:self.searchBgView];
+    [self.searchBgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(10);
-        make.right.mas_equalTo(bottomBgView.mas_left).offset(-5);
+        make.right.mas_equalTo(self.bottomBgView.mas_left).offset(-5);
         make.bottom.mas_equalTo(-7);
         make.height.mas_equalTo(34);
     }];
-    searchBgView.layer.masksToBounds = YES;
-    searchBgView.layer.cornerRadius = 17;
-    searchBgView.backgroundColor = [UIColor colorWithHexString:@"#F2F2F2"];
+    self.searchBgView.layer.masksToBounds = YES;
+    self.searchBgView.layer.cornerRadius = 17;
+    self.searchBgView.backgroundColor = [UIColor colorWithHexString:@"#F2F2F2"];
     
     UIImageView *writeImg = [[UIImageView alloc]init];
-    [searchBgView addSubview:writeImg];
+    [self.searchBgView addSubview:writeImg];
     [writeImg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(5);
-        make.centerY.equalTo(searchBgView);
+        make.centerY.equalTo(self.searchBgView);
         make.size.mas_equalTo(CGSizeMake(15, 14));
     }];
     writeImg.image = [UIImage imageNamed:@"comment_write"];
     
     self.commentTextField = [[UITextField alloc]init];
-    [searchBgView addSubview:self.commentTextField];
+    [self.searchBgView addSubview:self.commentTextField];
     [self.commentTextField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(writeImg.mas_right).offset(5);
         make.right.mas_equalTo(5);
-        make.height.mas_equalTo(searchBgView.mas_height);
-        make.centerY.equalTo(searchBgView);
+        make.height.mas_equalTo(self.searchBgView.mas_height);
+        make.centerY.equalTo(self.searchBgView);
     }];
     self.commentTextField.delegate = self;
     self.commentTextField.tintColor = [UIColor baseColor];
     self.commentTextField.placeholder = @"Biu一下";
-    
+    self.commentTextField.returnKeyType = UIReturnKeySend;
+    self.commentTextField.enablesReturnKeyAutomatically =YES;
+    [self.commentTextField addTarget:self action:@selector(textFieldChanged:) forControlEvents:UIControlEventEditingChanged];
     
     NSArray *imgArray = @[@"collection_normal",@"praise_normal",@"share_btn",];
     for (int i =0; i<imgArray.count; i++) {
         UIButton *button = [[UIButton alloc]init];
-        [bottomBgView addSubview:button];
+        [self.bottomBgView addSubview:button];
         [button setImage:[UIImage imageNamed:imgArray[i]] forState:UIControlStateNormal];
         if (i == 0) {
             [button setImage:[UIImage imageNamed:@"collection_selected"] forState:UIControlStateSelected];
@@ -122,6 +141,80 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
         make.bottom.mas_equalTo(-5);
         make.size.mas_equalTo(CGSizeMake(21, 20));
     }];
+    
+    self.sendButton = [[UIButton alloc]init];
+    [self.bottomBgView addSubview:self.sendButton];
+    [self.sendButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.commentTextField.mas_right).offset(15);
+        make.right.mas_equalTo(-15);
+        make.height.mas_equalTo(26);
+        make.centerY.equalTo(self.bottomBgView);
+    }];
+    self.sendButton.layer.masksToBounds = YES;
+    self.sendButton.layer.cornerRadius = 13;
+    [self.sendButton setTitle:@"发送" forState:UIControlStateNormal];
+    [self.sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.sendButton.hidden = YES;
+    self.sendButton.enabled = NO;
+    self.sendButton.backgroundColor = [UIColor lightGrayColor];
+    [self.sendButton addTarget:self action:@selector(touchSendButton:) forControlEvents:UIControlEventTouchUpInside];
+}
+/**
+ *  当键盘改变了frame(位置和尺寸)的时候调用
+ */
+-(void)keyboardWillChangeFrameNotify:(NSNotification*)notify {
+    // 0.取出键盘动画的时间
+    CGFloat duration = [notify.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    // 1.取得键盘最后的frame
+    CGRect keyboardFrame = [notify.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    // 2.计算控制器的view需要平移的距离
+    CGFloat transformY = keyboardFrame.origin.y - SCREEN_HEIGHT;
+    
+    // 3.执行动画
+    [UIView animateWithDuration:duration animations:^{
+        [self.searchBgView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(10);
+            make.bottom.mas_equalTo(-7);
+            make.height.mas_equalTo(34);
+            if (transformY < 0) {
+                make.right.mas_equalTo(-10);
+            }else{
+                make.right.mas_equalTo(self.bottomBgView.mas_left).offset(-5);
+            }
+            
+        }];
+        [self.searchBgView.superview layoutIfNeeded];
+        
+        [self.bottomBgView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.bottom.mas_equalTo(0);
+            make.height.mas_equalTo(48);
+            make.left.equalTo(self.searchBgView.mas_right).mas_offset(-5);
+            if (transformY == 0) {
+                make.right.mas_equalTo(0);
+            }
+        }];
+        [self.bottomBgView.superview layoutIfNeeded];
+
+//        [self.bottomBgView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//            make.left.mas_equalTo(0);
+//            make.right.mas_equalTo(0);
+//            make.bottom.mas_equalTo(transformY);
+//            make.height.mas_equalTo(49);
+//        }];
+//        [self.bottomBgView.superview layoutIfNeeded];
+    }];
+}
+-(void)keyboardWillShow:(NSNotification *)sender{
+//    for (UIButton *button in self.bottomButtonArray) {
+//        button.hidden = YES;
+//    }
+//    self.sendButton.hidden = NO;
+}
+-(void)keybaordWillHide:(NSNotification *)sender{
+//    for (UIButton *button in self.bottomButtonArray) {
+//        button.hidden = NO;
+//    }
+//    self.sendButton.hidden = YES;
 }
 - (void)preventFlicker:(UIButton *)button {
     button.highlighted = NO;
@@ -148,6 +241,8 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     }else{
         self.bottomButtonArray[0].selected = NO;
     }
+    self.commentType = 1;
+    self.commentId = self.essaylistDataModel.id;
     [self.tableview reloadSections:[[NSIndexSet alloc]initWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
 //    [self.tableview reloadData];
 }
@@ -161,6 +256,9 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
             self.page += 1;
             [self.commentListArray addObjectsFromArray:commentListModel.data];
             [self.tableview reloadSections:[[NSIndexSet alloc]initWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
+//            if (self.isComment) {
+//                [self.tableview scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+//            }
         }else{
             [self.tableview.mj_footer endRefreshingWithNoMoreData];
         }
@@ -170,14 +268,36 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     }
 }
 
+#pragma mark - target
+-(void)touchSendButton:(UIButton *)button{
+    if (self.commentTextField.text.length > 0) {
+        [self requestCommentAddcomment];
+    }
+}
+
 #pragma mark - textfield
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     return [LoginUtils validationLogin:self];
 }
-
+-(BOOL)textFieldShouldReturn:(UITextField *)textField{
+    [self requestCommentAddcomment];
+    return YES;
+}
+-(void)textFieldChanged:(UITextField *)textField{
+    if (textField.text.length > 0) {
+        self.sendButton.enabled = YES;
+        self.sendButton.backgroundColor = [UIColor baseColor];
+    }else{
+        self.sendButton.enabled = NO;
+        self.sendButton.backgroundColor = [UIColor lightGrayColor];
+    }
+}
 #pragma mark - LPEssayDetailCommentCellDelegate
--(void)touchReplyButton{
+-(void)touchReplyButton:(LPCommentListDataModel *)model{
     NSLog(@"回复");
+    self.commentId = model.id;
+    self.commentType = 3;
+    [self.commentTextField becomeFirstResponder];
 }
 
 #pragma mark - TableViewDelegate & Datasource
@@ -310,6 +430,32 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     }];
 }
 
+-(void)requestCommentAddcomment{
+    
+//    LPUserMaterialModel *user = [LPUserDefaults getObjectByFileName:USERINFO];
+    NSDictionary *dic = @{
+                          @"commentDetails": self.commentTextField.text,
+                          @"commentType": @(self.commentType),
+                          @"commentId": self.commentId,
+                          @"userName": @"业务员1",
+                          @"userId": kUserDefaultsValue(LOGINID),
+                          @"userUrl": @""
+                          };
+    [NetApiManager requestCommentAddcommentWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            self.commentTextField.text = nil;
+            [self.commentTextField resignFirstResponder];
+            self.commentId = self.essaylistDataModel.id;
+            self.commentType = 1;
+            self.page = 1;
+            self.isComment = YES;
+            [self requestCommentList];
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
 #pragma mark lazy
 - (UITableView *)tableview{
     if (!_tableview) {
@@ -332,6 +478,7 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
 //            [self requestEssaylist];
 //        }];
         _tableview.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+            self.isComment = NO;
             [self requestCommentList];
         }];
     }
