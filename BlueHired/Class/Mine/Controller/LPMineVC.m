@@ -79,7 +79,7 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
 
 -(void)setUserMaterialModel:(LPUserMaterialModel *)userMaterialModel{
     _userMaterialModel = userMaterialModel;
-//    [LPUserDefaults  saveObject:userMaterialModel byFileName:USERINFO];
+    [LPUserDefaults  saveObject:userMaterialModel byFileName:USERINFO];
     [self.tableview reloadData];
 }
 -(void)setSignin:(BOOL)signin{

@@ -11,7 +11,7 @@
 
 static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
 
-@interface LPCommentDetailVC ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
+@interface LPCommentDetailVC ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,LPEssayDetailCommentCellDelegate>
 @property (nonatomic, strong)UITableView *tableview;
 
 @property(nonatomic,assign) NSInteger page;
@@ -20,7 +20,10 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
 @property(nonatomic,strong) NSMutableArray <LPCommentListDataModel *>*commentListArray;
 
 @property(nonatomic,strong) UITextField *commentTextField;
+@property(nonatomic,strong) UIButton *sendButton;
 
+@property(nonatomic,assign) NSInteger commentType;
+@property(nonatomic,strong) NSNumber *commentId;
 @end
 
 @implementation LPCommentDetailVC
@@ -30,6 +33,9 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = @"评论详情";
+    
+    self.commentType = 3;
+    self.commentId = self.commentListDatamodel.id;
     
     self.page = 1;
     self.commentListArray = [NSMutableArray array];
@@ -59,7 +65,8 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     [self.view addSubview:searchBgView];
     [searchBgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(10);
-        make.right.mas_equalTo(-88);
+//        make.right.mas_equalTo(-88);
+        make.right.mas_equalTo(-5);
         make.bottom.mas_equalTo(-7);
         make.height.mas_equalTo(34);
     }];
@@ -87,22 +94,25 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     self.commentTextField.delegate = self;
     self.commentTextField.tintColor = [UIColor baseColor];
     self.commentTextField.placeholder = @"Biu一下";
+    self.commentTextField.returnKeyType = UIReturnKeySend;
+    self.commentTextField.enablesReturnKeyAutomatically =YES;
+    [self.commentTextField addTarget:self action:@selector(textFieldChanged:) forControlEvents:UIControlEventEditingChanged];
     
-    UIButton *sendButton = [[UIButton alloc]init];
-    [self.view addSubview:sendButton];
-    [sendButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(searchBgView.mas_right).offset(10);
-        make.right.mas_equalTo(-10);
-        make.size.mas_equalTo(CGSizeMake(68, 34));
-        make.centerY.equalTo(searchBgView);
-    }];
-    [sendButton setTitle:@"发送" forState:UIControlStateNormal];
-    [sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    sendButton.backgroundColor = [UIColor baseColor];
-    sendButton.titleLabel.font = [UIFont systemFontOfSize:14];
-    sendButton.layer.masksToBounds = YES;
-    sendButton.layer.cornerRadius = 17;
-    [sendButton addTarget:self action:@selector(touchSendButton) forControlEvents:UIControlEventTouchUpInside];
+//    self.sendButton = [[UIButton alloc]init];
+//    [self.view addSubview:self.sendButton];
+//    [self.sendButton mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.equalTo(searchBgView.mas_right).offset(10);
+//        make.right.mas_equalTo(-10);
+//        make.size.mas_equalTo(CGSizeMake(68, 34));
+//        make.centerY.equalTo(searchBgView);
+//    }];
+//    [self.sendButton setTitle:@"发送" forState:UIControlStateNormal];
+//    [self.sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//    self.sendButton.backgroundColor = [UIColor baseColor];
+//    self.sendButton.titleLabel.font = [UIFont systemFontOfSize:14];
+//    self.sendButton.layer.masksToBounds = YES;
+//    self.sendButton.layer.cornerRadius = 17;
+//    [self.sendButton addTarget:self action:@selector(touchSendButton) forControlEvents:UIControlEventTouchUpInside];
     
 }
 -(void)setCommentListModel:(LPCommentListModel *)commentListModel{
@@ -128,7 +138,19 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     return [LoginUtils validationLogin:self];
 }
-
+-(BOOL)textFieldShouldReturn:(UITextField *)textField{
+    [self requestCommentAddcomment];
+    return YES;
+}
+-(void)textFieldChanged:(UITextField *)textField{
+    if (textField.text.length > 0) {
+        self.sendButton.enabled = YES;
+        self.sendButton.backgroundColor = [UIColor baseColor];
+    }else{
+        self.sendButton.enabled = NO;
+        self.sendButton.backgroundColor = [UIColor lightGrayColor];
+    }
+}
 -(void)touchSendButton{
     if ([LoginUtils validationLogin:self]) {
         
@@ -170,8 +192,9 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     if (indexPath.section == 0) {
         cell.model = self.commentListDatamodel;
         cell.replyBgView.hidden = YES;
+        cell.replyButton.hidden = NO;
         cell.replyBgView_constraint_height.constant = 0;
-
+        cell.delegate = self;
     }else{
         cell.model = self.commentListArray[indexPath.row];
         cell.replyButton.hidden = YES;
@@ -180,6 +203,14 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+#pragma mark - LPEssayDetailCommentCellDelegate
+-(void)touchReplyButton:(LPCommentListDataModel *)model{
+    NSLog(@"回复");
+    self.commentId = model.id;
+    self.commentType = 3;
+    [self.commentTextField becomeFirstResponder];
 }
 
 #pragma mark - request
@@ -195,6 +226,28 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
             self.commentListModel = [LPCommentListModel mj_objectWithKeyValues:responseObject];
         }else{
             [self.view showLoadingMeg:@"网络错误" time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+-(void)requestCommentAddcomment{
+    LPUserMaterialModel *user = [LPUserDefaults getObjectByFileName:USERINFO];
+    NSDictionary *dic = @{
+                          @"commentDetails": self.commentTextField.text,
+                          @"commentType": @(self.commentType),
+                          @"commentId": self.commentId,
+                          @"userName": user.data.user_name,
+                          @"userId": kUserDefaultsValue(LOGINID),
+                          @"userUrl": user.data.user_url
+                          };
+    [NetApiManager requestCommentAddcommentWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            self.commentTextField.text = nil;
+            [self.commentTextField resignFirstResponder];
+            self.page = 1;
+            [self requestCommentList];
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
     }];
 }

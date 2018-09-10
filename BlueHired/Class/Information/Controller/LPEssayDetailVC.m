@@ -31,7 +31,6 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
 @property(nonatomic,strong) UITextField *commentTextField;
 @property(nonatomic,strong) UIButton *sendButton;
 
-@property(nonatomic,assign) BOOL isComment;
 @property(nonatomic,assign) NSInteger commentType;
 @property(nonatomic,strong) NSNumber *commentId;
 
@@ -431,15 +430,14 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
 }
 
 -(void)requestCommentAddcomment{
-    
-//    LPUserMaterialModel *user = [LPUserDefaults getObjectByFileName:USERINFO];
+    LPUserMaterialModel *user = [LPUserDefaults getObjectByFileName:USERINFO];
     NSDictionary *dic = @{
                           @"commentDetails": self.commentTextField.text,
                           @"commentType": @(self.commentType),
                           @"commentId": self.commentId,
-                          @"userName": @"业务员1",
+                          @"userName": user.data.user_name,
                           @"userId": kUserDefaultsValue(LOGINID),
-                          @"userUrl": @""
+                          @"userUrl": user.data.user_url
                           };
     [NetApiManager requestCommentAddcommentWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
@@ -449,7 +447,6 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
             self.commentId = self.essaylistDataModel.id;
             self.commentType = 1;
             self.page = 1;
-            self.isComment = YES;
             [self requestCommentList];
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
@@ -478,7 +475,6 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
 //            [self requestEssaylist];
 //        }];
         _tableview.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
-            self.isComment = NO;
             [self requestCommentList];
         }];
     }

@@ -9,9 +9,10 @@
 #import "LPUserMaterialModel.h"
 
 @implementation LPUserMaterialModel
+MJCodingImplementation
 
 @end
 
 @implementation LPUserMaterialDataModel
-
+MJCodingImplementation
 @end

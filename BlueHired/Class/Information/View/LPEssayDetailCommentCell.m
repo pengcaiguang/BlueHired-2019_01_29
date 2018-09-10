@@ -145,6 +145,7 @@ static NSString *LPEssayDetailCommentReplyCellID = @"LPEssayDetailCommentReplyCe
         _tableview.tableFooterView = [[UIView alloc]init];
         _tableview.rowHeight = UITableViewAutomaticDimension;
         _tableview.estimatedRowHeight = 100;
+        _tableview.scrollEnabled = NO;
         _tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableview.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
         [_tableview registerNib:[UINib nibWithNibName:LPEssayDetailCommentReplyCellID bundle:nil] forCellReuseIdentifier:LPEssayDetailCommentReplyCellID];
