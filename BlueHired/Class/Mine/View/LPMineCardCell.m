@@ -8,6 +8,7 @@
 
 #import "LPMineCardCell.h"
 #import "LPBusinessReviewVC.h"
+#import "LPWorkHourVC.h"
 
 @implementation LPMineCardCell
 
@@ -55,7 +56,11 @@
         [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
     }else{
         if ([LoginUtils validationLogin:[UIWindow visibleViewController]]) {
-            
+            if (index == 0) {
+                LPWorkHourVC *vc = [[LPWorkHourVC alloc]init];
+                vc.hidesBottomBarWhenPushed = YES;
+                [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+            }
         }
     }
 }

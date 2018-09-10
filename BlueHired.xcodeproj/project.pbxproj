@@ -66,6 +66,9 @@
 		DC5C389E213682F500B3CF6E /* LPCircleListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC5C389C213682F500B3CF6E /* LPCircleListCell.xib */; };
 		DC5C38A1213690C000B3CF6E /* LPMoodListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC5C38A0213690C000B3CF6E /* LPMoodListModel.m */; };
 		DC5C38A421369B9B00B3CF6E /* NSString+String.m in Sources */ = {isa = PBXBuildFile; fileRef = DC5C38A321369B9B00B3CF6E /* NSString+String.m */; };
+		DC61FAC221461AC40003AA61 /* LPWorkHourVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC61FAC121461AC40003AA61 /* LPWorkHourVC.m */; };
+		DC61FAC5214646B30003AA61 /* LPFullTimeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC61FAC4214646B30003AA61 /* LPFullTimeVC.m */; };
+		DC61FAC921466E900003AA61 /* LPDurationView.m in Sources */ = {isa = PBXBuildFile; fileRef = DC61FAC821466E900003AA61 /* LPDurationView.m */; };
 		DC7383252133E33E0055DC10 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7383242133E33E0055DC10 /* AppDelegate.m */; };
 		DC7383282133E33E0055DC10 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7383272133E33E0055DC10 /* ViewController.m */; };
 		DC73832B2133E33E0055DC10 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DC7383292133E33E0055DC10 /* Main.storyboard */; };
@@ -239,6 +242,12 @@
 		DC5C38A0213690C000B3CF6E /* LPMoodListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPMoodListModel.m; sourceTree = "<group>"; };
 		DC5C38A221369B9B00B3CF6E /* NSString+String.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+String.h"; sourceTree = "<group>"; };
 		DC5C38A321369B9B00B3CF6E /* NSString+String.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+String.m"; sourceTree = "<group>"; };
+		DC61FAC021461AC40003AA61 /* LPWorkHourVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPWorkHourVC.h; sourceTree = "<group>"; };
+		DC61FAC121461AC40003AA61 /* LPWorkHourVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPWorkHourVC.m; sourceTree = "<group>"; };
+		DC61FAC3214646B30003AA61 /* LPFullTimeVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPFullTimeVC.h; sourceTree = "<group>"; };
+		DC61FAC4214646B30003AA61 /* LPFullTimeVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPFullTimeVC.m; sourceTree = "<group>"; };
+		DC61FAC721466E900003AA61 /* LPDurationView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPDurationView.h; sourceTree = "<group>"; };
+		DC61FAC821466E900003AA61 /* LPDurationView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPDurationView.m; sourceTree = "<group>"; };
 		DC7383202133E33E0055DC10 /* BlueHired.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlueHired.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC7383232133E33E0055DC10 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		DC7383242133E33E0055DC10 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -506,6 +515,35 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		DC61FABE21461A950003AA61 /* WorkHour */ = {
+			isa = PBXGroup;
+			children = (
+				DC61FAC621466E490003AA61 /* View */,
+				DC61FABF21461A950003AA61 /* Controller */,
+			);
+			path = WorkHour;
+			sourceTree = "<group>";
+		};
+		DC61FABF21461A950003AA61 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				DC61FAC021461AC40003AA61 /* LPWorkHourVC.h */,
+				DC61FAC121461AC40003AA61 /* LPWorkHourVC.m */,
+				DC61FAC3214646B30003AA61 /* LPFullTimeVC.h */,
+				DC61FAC4214646B30003AA61 /* LPFullTimeVC.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		DC61FAC621466E490003AA61 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DC61FAC721466E900003AA61 /* LPDurationView.h */,
+				DC61FAC821466E900003AA61 /* LPDurationView.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		DC7383172133E33E0055DC10 = {
 			isa = PBXGroup;
 			children = (
@@ -577,6 +615,7 @@
 				DC7383722133EC630055DC10 /* MacroPch */,
 				DC7383572133EAAF0055DC10 /* Main */,
 				DC7383662133EBEB0055DC10 /* Mine */,
+				DC61FABE21461A950003AA61 /* WorkHour */,
 			);
 			path = Class;
 			sourceTree = "<group>";
@@ -1148,6 +1187,7 @@
 				DC7A32CF21379BCA00E09C6C /* LPMineCardCell.m in Sources */,
 				DC30E1A521393BB0000C7A91 /* LPWorkDetailHeadCell.m in Sources */,
 				DC73838221341EBD0055DC10 /* LPSearchBar.m in Sources */,
+				DC61FAC5214646B30003AA61 /* LPFullTimeVC.m in Sources */,
 				DC30E1A121393255000C7A91 /* LPWorkDetailModel.m in Sources */,
 				DC7383792133EE800055DC10 /* LPTabBarViewController.m in Sources */,
 				DC7A32D52137C2EC00E09C6C /* LPLoginVC.m in Sources */,
@@ -1191,6 +1231,7 @@
 				DC5C38942136682200B3CF6E /* LPCircleCollectionViewCell.m in Sources */,
 				DC7383A22134EF300055DC10 /* UIView+MBProgressHUD.m in Sources */,
 				DC30E18F2138D9CB000C7A91 /* LPScreenAlertView.m in Sources */,
+				DC61FAC921466E900003AA61 /* LPDurationView.m in Sources */,
 				DC30E19821391303000C7A91 /* LPMainSearchResultVC.m in Sources */,
 				DCF5D9C0213FA395009F5DCE /* LPMechanismcommentMechanismlistModel.m in Sources */,
 				DCF5D9BC213F892D009F5DCE /* LPBusinessReviewVC.m in Sources */,
@@ -1199,6 +1240,7 @@
 				DC44DBA021353D5800D00FAC /* LPLabelListModel.m in Sources */,
 				DC7383332133E3670055DC10 /* main.m in Sources */,
 				DC7383252133E33E0055DC10 /* AppDelegate.m in Sources */,
+				DC61FAC221461AC40003AA61 /* LPWorkHourVC.m in Sources */,
 				DC290F38213D0AA300EC3FCC /* LPCommentDetailVC.m in Sources */,
 				DC73836A2133EC040055DC10 /* LPCircleVC.m in Sources */,
 				DC73835A2133EAD30055DC10 /* LPBaseViewController.m in Sources */,
