@@ -82,9 +82,7 @@
     cell.textLabel.font = [UIFont systemFontOfSize:16];
     cell.textLabel.textColor = [UIColor colorWithHexString:@"#1B1B1B"];
     cell.detailTextLabel.font = [UIFont systemFontOfSize:16];
-
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     if (indexPath.row == 1 || indexPath.row == 2) {
         for (UIView *view in cell.contentView.subviews) {
@@ -101,7 +99,8 @@
         }
         [cell.contentView addSubview:view];
         
-        
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
     }
     
     if (indexPath.section == 0) {
@@ -139,7 +138,14 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
     if (indexPath.section == 0) {
-        if (indexPath.row == 2) {
+        if (indexPath.row == 1) {
+            self.durationView.type = 1;
+            self.durationView.hidden = NO;
+            self.durationView.block = ^(NSString *string) {
+                cell.detailTextLabel.text = string;
+            };
+        }else if (indexPath.row == 2) {
+            self.durationView.type = 2;
             self.durationView.hidden = NO;
             self.durationView.block = ^(NSString *string) {
                 cell.detailTextLabel.text = string;
@@ -147,6 +153,7 @@
         }
     }else if (indexPath.section == 1) {
         if (indexPath.row == 2) {
+            self.durationView.type = 2;
             self.durationView.hidden = NO;
             self.durationView.block = ^(NSString *string) {
                 cell.detailTextLabel.text = string;
@@ -154,6 +161,7 @@
         }
     }else if (indexPath.section == 2) {
         if (indexPath.row == 2) {
+            self.durationView.type = 2;
             self.durationView.hidden = NO;
             self.durationView.block = ^(NSString *string) {
                 cell.detailTextLabel.text = string;

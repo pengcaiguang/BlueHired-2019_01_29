@@ -12,5 +12,7 @@ typedef void(^LPDurationViewBlock)(NSString *string);
 
 @interface LPDurationView : UIView
 
+@property(nonatomic,assign) NSInteger type; //
+
 @property (nonatomic,copy) LPDurationViewBlock block;
 @end

@@ -11,6 +11,9 @@
 @interface LPDurationView ()
 @property(nonatomic,strong) UIView *bgView;
 @property(nonatomic,strong) UIView *selectView;
+
+@property(nonatomic,strong) UILabel *titleLabel;
+
 @property(nonatomic,strong) NSArray *timeArray;
 @property(nonatomic,strong) NSMutableArray *buttonArray;
 
@@ -31,6 +34,45 @@
 
     }
     return self;
+}
+
+-(void)setType:(NSInteger)type{
+    _type = type;
+    if (type == 2) {
+        self.titleLabel.text = @"正常上班时长";
+        for (int i = 0; i < self.timeArray.count; i++) {
+            UIView *view = [[UIView alloc]init];
+            view.frame = CGRectMake(i%6 * SCREEN_WIDTH/6, floor(i/6)*51+50, SCREEN_WIDTH/6, 51);
+            view.backgroundColor = [UIColor whiteColor];
+            [_selectView addSubview:view];
+            
+            UIButton *button = [[UIButton alloc]init];
+            [view addSubview:button];
+            button.frame = CGRectMake((SCREEN_WIDTH/6-41)/2, 5, 41, 41);
+            button.backgroundColor = [UIColor colorWithHexString:@"#EEEEEE"];
+            [button setTitle:self.timeArray[i] forState:UIControlStateNormal];
+            [button setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
+            [button setTitleColor:[UIColor colorWithHexString:@"#939393"] forState:UIControlStateNormal];
+            button.titleLabel.font = [UIFont systemFontOfSize:16];
+            button.layer.masksToBounds = YES;
+            button.layer.cornerRadius = 20.5;
+            button.tag = i;
+            [self.buttonArray addObject:button];
+            [button addTarget:self action:@selector(touchTimeButton:) forControlEvents:UIControlEventTouchUpInside];
+        }
+    }else{
+        self.titleLabel.text = @"上班类型";
+        NSArray *array = @[@"早班",@"中班",@"晚班"];
+        for (int i = 0; i<3; i++) {
+            UIButton *button = [[UIButton alloc]init];
+            button.frame = CGRectMake(0, 50 + 41*i, SCREEN_WIDTH, 41);
+            [button setTitle:array[i] forState:UIControlStateNormal];
+            [button setTitleColor:[UIColor colorWithHexString:@"#878787"] forState:UIControlStateNormal];
+            [button setTitleColor:[UIColor colorWithHexString:@"#1D1D1D"] forState:UIControlStateSelected];
+            [_selectView addSubview:button];
+        }
+        
+    }
 }
 
 -(void)setHidden:(BOOL)hidden{
@@ -75,6 +117,11 @@
     }
     [self hidden];
 }
+
+-(void)addTimeSubView{
+    
+}
+
 #pragma mark - lazy
 -(UIView *)bgView{
     if (!_bgView) {
@@ -89,42 +136,42 @@
 }
 -(UIView *)selectView{
     if (!_selectView) {
-        _selectView = [[UIView alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT-253, SCREEN_WIDTH, 253)];
+        _selectView = [[UIView alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, 253)];
          _selectView.backgroundColor = [UIColor whiteColor];
         
-        UILabel *titleLabel = [[UILabel alloc]init];
-        [_selectView addSubview:titleLabel];
-        [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        self.titleLabel = [[UILabel alloc]init];
+        [_selectView addSubview:self.titleLabel];
+        [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.mas_equalTo(0);
             make.right.mas_equalTo(0);
             make.top.mas_equalTo(0);
             make.height.mas_equalTo(50);
         }];
-        titleLabel.text = @"正常上班时长";
-        titleLabel.textAlignment = NSTextAlignmentCenter;
-        
-        
-        
-        for (int i = 0; i < self.timeArray.count; i++) {
-            UIView *view = [[UIView alloc]init];
-            view.frame = CGRectMake(i%6 * SCREEN_WIDTH/6, floor(i/6)*51+50, SCREEN_WIDTH/6, 51);
-            view.backgroundColor = [UIColor whiteColor];
-            [_selectView addSubview:view];
-            
-            UIButton *button = [[UIButton alloc]init];
-            [view addSubview:button];
-            button.frame = CGRectMake((SCREEN_WIDTH/6-41)/2, 5, 41, 41);
-            button.backgroundColor = [UIColor colorWithHexString:@"#EEEEEE"];
-            [button setTitle:self.timeArray[i] forState:UIControlStateNormal];
-            [button setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
-            [button setTitleColor:[UIColor colorWithHexString:@"#939393"] forState:UIControlStateNormal];
-            button.titleLabel.font = [UIFont systemFontOfSize:16];
-            button.layer.masksToBounds = YES;
-            button.layer.cornerRadius = 20.5;
-            button.tag = i;
-            [self.buttonArray addObject:button];
-            [button addTarget:self action:@selector(touchTimeButton:) forControlEvents:UIControlEventTouchUpInside];
-        }
+        self.titleLabel.text = @"正常上班时长";
+        self.titleLabel.textAlignment = NSTextAlignmentCenter;
+//
+//
+//
+//        for (int i = 0; i < self.timeArray.count; i++) {
+//            UIView *view = [[UIView alloc]init];
+//            view.frame = CGRectMake(i%6 * SCREEN_WIDTH/6, floor(i/6)*51+50, SCREEN_WIDTH/6, 51);
+//            view.backgroundColor = [UIColor whiteColor];
+//            [_selectView addSubview:view];
+//
+//            UIButton *button = [[UIButton alloc]init];
+//            [view addSubview:button];
+//            button.frame = CGRectMake((SCREEN_WIDTH/6-41)/2, 5, 41, 41);
+//            button.backgroundColor = [UIColor colorWithHexString:@"#EEEEEE"];
+//            [button setTitle:self.timeArray[i] forState:UIControlStateNormal];
+//            [button setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
+//            [button setTitleColor:[UIColor colorWithHexString:@"#939393"] forState:UIControlStateNormal];
+//            button.titleLabel.font = [UIFont systemFontOfSize:16];
+//            button.layer.masksToBounds = YES;
+//            button.layer.cornerRadius = 20.5;
+//            button.tag = i;
+//            [self.buttonArray addObject:button];
+//            [button addTarget:self action:@selector(touchTimeButton:) forControlEvents:UIControlEventTouchUpInside];
+//        }
         
         UIButton *cancelButton = [[UIButton alloc]init];
         cancelButton.frame = CGRectMake(0, 253-47, SCREEN_WIDTH/2, 47);
