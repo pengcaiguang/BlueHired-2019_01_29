@@ -113,6 +113,11 @@
 		DCCC8A6F2147A29A0062A0F5 /* LPHourlyWorkDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCCC8A6E2147A29A0062A0F5 /* LPHourlyWorkDetailVC.m */; };
 		DCCC8A732147AD3C0062A0F5 /* LPWorkHourDetailPieChartCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCCC8A712147AD3C0062A0F5 /* LPWorkHourDetailPieChartCell.m */; };
 		DCCC8A742147AD3C0062A0F5 /* LPWorkHourDetailPieChartCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DCCC8A722147AD3C0062A0F5 /* LPWorkHourDetailPieChartCell.xib */; };
+		DCCC8A802147AED60062A0F5 /* WSChart.m in Sources */ = {isa = PBXBuildFile; fileRef = DCCC8A772147AED60062A0F5 /* WSChart.m */; };
+		DCCC8A812147AED60062A0F5 /* WSPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = DCCC8A792147AED60062A0F5 /* WSPieChart.m */; };
+		DCCC8A822147AED60062A0F5 /* WSPieForeBGView.m in Sources */ = {isa = PBXBuildFile; fileRef = DCCC8A7B2147AED60062A0F5 /* WSPieForeBGView.m */; };
+		DCCC8A832147AED60062A0F5 /* WSPieItemsView.m in Sources */ = {isa = PBXBuildFile; fileRef = DCCC8A7D2147AED60062A0F5 /* WSPieItemsView.m */; };
+		DCCC8A842147AED60062A0F5 /* WSShowInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = DCCC8A7F2147AED60062A0F5 /* WSShowInfoView.m */; };
 		DCE1FD2421420AAB009C38BF /* LPWorkorderListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DCE1FD2321420AAB009C38BF /* LPWorkorderListModel.m */; };
 		DCF5D9BC213F892D009F5DCE /* LPBusinessReviewVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF5D9BB213F892D009F5DCE /* LPBusinessReviewVC.m */; };
 		DCF5D9C0213FA395009F5DCE /* LPMechanismcommentMechanismlistModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF5D9BF213FA395009F5DCE /* LPMechanismcommentMechanismlistModel.m */; };
@@ -343,6 +348,16 @@
 		DCCC8A702147AD3C0062A0F5 /* LPWorkHourDetailPieChartCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPWorkHourDetailPieChartCell.h; sourceTree = "<group>"; };
 		DCCC8A712147AD3C0062A0F5 /* LPWorkHourDetailPieChartCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPWorkHourDetailPieChartCell.m; sourceTree = "<group>"; };
 		DCCC8A722147AD3C0062A0F5 /* LPWorkHourDetailPieChartCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPWorkHourDetailPieChartCell.xib; sourceTree = "<group>"; };
+		DCCC8A762147AED60062A0F5 /* WSChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSChart.h; sourceTree = "<group>"; };
+		DCCC8A772147AED60062A0F5 /* WSChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSChart.m; sourceTree = "<group>"; };
+		DCCC8A782147AED60062A0F5 /* WSPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSPieChart.h; sourceTree = "<group>"; };
+		DCCC8A792147AED60062A0F5 /* WSPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSPieChart.m; sourceTree = "<group>"; };
+		DCCC8A7A2147AED60062A0F5 /* WSPieForeBGView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSPieForeBGView.h; sourceTree = "<group>"; };
+		DCCC8A7B2147AED60062A0F5 /* WSPieForeBGView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSPieForeBGView.m; sourceTree = "<group>"; };
+		DCCC8A7C2147AED60062A0F5 /* WSPieItemsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSPieItemsView.h; sourceTree = "<group>"; };
+		DCCC8A7D2147AED60062A0F5 /* WSPieItemsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSPieItemsView.m; sourceTree = "<group>"; };
+		DCCC8A7E2147AED60062A0F5 /* WSShowInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSShowInfoView.h; sourceTree = "<group>"; };
+		DCCC8A7F2147AED60062A0F5 /* WSShowInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSShowInfoView.m; sourceTree = "<group>"; };
 		DCE1FD2221420AAB009C38BF /* LPWorkorderListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPWorkorderListModel.h; sourceTree = "<group>"; };
 		DCE1FD2321420AAB009C38BF /* LPWorkorderListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPWorkorderListModel.m; sourceTree = "<group>"; };
 		DCF5D9BA213F892D009F5DCE /* LPBusinessReviewVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPBusinessReviewVC.h; sourceTree = "<group>"; };
@@ -535,6 +550,7 @@
 		DC61FABE21461A950003AA61 /* WorkHour */ = {
 			isa = PBXGroup;
 			children = (
+				DCCC8A752147AED60062A0F5 /* WSPieChart */,
 				DC61FAC621466E490003AA61 /* View */,
 				DC61FABF21461A950003AA61 /* Controller */,
 			);
@@ -915,6 +931,23 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
+		DCCC8A752147AED60062A0F5 /* WSPieChart */ = {
+			isa = PBXGroup;
+			children = (
+				DCCC8A762147AED60062A0F5 /* WSChart.h */,
+				DCCC8A772147AED60062A0F5 /* WSChart.m */,
+				DCCC8A782147AED60062A0F5 /* WSPieChart.h */,
+				DCCC8A792147AED60062A0F5 /* WSPieChart.m */,
+				DCCC8A7A2147AED60062A0F5 /* WSPieForeBGView.h */,
+				DCCC8A7B2147AED60062A0F5 /* WSPieForeBGView.m */,
+				DCCC8A7C2147AED60062A0F5 /* WSPieItemsView.h */,
+				DCCC8A7D2147AED60062A0F5 /* WSPieItemsView.m */,
+				DCCC8A7E2147AED60062A0F5 /* WSShowInfoView.h */,
+				DCCC8A7F2147AED60062A0F5 /* WSShowInfoView.m */,
+			);
+			path = WSPieChart;
+			sourceTree = "<group>";
+		};
 		DCF5D9B8213F8905009F5DCE /* BusinessReview */ = {
 			isa = PBXGroup;
 			children = (
@@ -1221,11 +1254,13 @@
 				DC61FAC5214646B30003AA61 /* LPFullTimeVC.m in Sources */,
 				DC30E1A121393255000C7A91 /* LPWorkDetailModel.m in Sources */,
 				DC7383792133EE800055DC10 /* LPTabBarViewController.m in Sources */,
+				DCCC8A832147AED60062A0F5 /* WSPieItemsView.m in Sources */,
 				DC7A32D52137C2EC00E09C6C /* LPLoginVC.m in Sources */,
 				DC30E1922138E622000C7A91 /* LPMainSearchVC.m in Sources */,
 				DC13BB4D213E1C3B00800955 /* LPCityModel.m in Sources */,
 				DC5C38A421369B9B00B3CF6E /* NSString+String.m in Sources */,
 				DC49D86F213A7751009BFCB0 /* LPEssayDetailModel.m in Sources */,
+				DCCC8A842147AED60062A0F5 /* WSShowInfoView.m in Sources */,
 				DC13BB50213E1FD100800955 /* LPCityDataManager.m in Sources */,
 				DC44DB9C21352B8000D00FAC /* LPNoDataView.m in Sources */,
 				DC30E19B21391DAD000C7A91 /* LPInformationSearchResultVC.m in Sources */,
@@ -1236,6 +1271,7 @@
 				DC13BB5A213E5B6A00800955 /* LPCityCell.m in Sources */,
 				DC73836D2133EC1B0055DC10 /* LPInformationVC.m in Sources */,
 				DC7383982134E95E0055DC10 /* NetApiManager.m in Sources */,
+				DCCC8A812147AED60062A0F5 /* WSPieChart.m in Sources */,
 				DC7383872134DC200055DC10 /* LPMineCell.m in Sources */,
 				DC290F2F213CC55000EC3FCC /* LPEssayDetailCommentCell.m in Sources */,
 				DC5C389921366D1A00B3CF6E /* LPMoodTypeModel.m in Sources */,
@@ -1246,6 +1282,8 @@
 				DC49D86B213A74B3009BFCB0 /* LPEssayDetailHeadCell.m in Sources */,
 				DCF5D9CF213FB7D9009F5DCE /* LPBusinessReviewDetailVC.m in Sources */,
 				DC7383282133E33E0055DC10 /* ViewController.m in Sources */,
+				DCCC8A802147AED60062A0F5 /* WSChart.m in Sources */,
+				DCCC8A822147AED60062A0F5 /* WSPieForeBGView.m in Sources */,
 				DC44DB9621351F6D00D00FAC /* NullSafe.m in Sources */,
 				DC13BB5E213EA10200800955 /* LPMechanismlistModel.m in Sources */,
 				DC7383A72134F6580055DC10 /* LPMainCell.m in Sources */,

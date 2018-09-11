@@ -13,14 +13,32 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="121" id="KGk-i7-Jjw" customClass="LPWorkHourDetailPieChartCell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="121"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="120"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="120.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="119.5"/>
                 <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oZA-PW-b9d">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="120"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="120" id="UwA-wk-fik"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="oZA-PW-b9d" secondAttribute="bottom" id="A37-fW-Fav"/>
+                    <constraint firstItem="oZA-PW-b9d" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="mh2-Wq-87F"/>
+                    <constraint firstAttribute="trailing" secondItem="oZA-PW-b9d" secondAttribute="trailing" id="pCs-GE-828"/>
+                    <constraint firstItem="oZA-PW-b9d" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="wAc-dv-V5l"/>
+                </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
-            <point key="canvasLocation" x="-126" y="106"/>
+            <connections>
+                <outlet property="view_constrait_height" destination="UwA-wk-fik" id="0CK-UY-c9L"/>
+            </connections>
+            <point key="canvasLocation" x="-126" y="105.5"/>
         </tableViewCell>
     </objects>
 </document>
