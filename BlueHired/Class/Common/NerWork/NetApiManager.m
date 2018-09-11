@@ -376,4 +376,68 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
+#pragma mark - 工时记录
+/************************************************************/
+//*  工时记录
+/************************************************************/
+//记录/修改工时
++ (void)requestSaveorupdateWorkhourWithParam:(id)paramer
+                                  withHandle:(response)responseHandle{
+    NSString * appendURLString = @"workhour/saveorupdate_workhour";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
+//查询工时记录详情
++ (void)requestSelectWorkhourWithParam:(id)paramer
+                            withHandle:(response)responseHandle{
+    NSString * appendURLString = @"workhour/select_workhour";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
+//查询当天工时记录
++ (void)requestQueryCurrecordWithParam:(id)paramer
+                            withHandle:(response)responseHandle{
+    NSString * appendURLString = @"workhour/query_currecord";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
+//查询已记录工时
++ (void)requestQueryNormalrecordWithParam:(id)paramer
+                               withHandle:(response)responseHandle{
+    NSString * appendURLString = @"workhour/query_normalrecord";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
+//删除加班记录
++ (void)requestDeleteAddtimeWithParam:(id)paramer
+                           withHandle:(response)responseHandle{
+    NSString * appendURLString = @"workhour/delete_addtime";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
+//记录补贴扣款
++ (void)requestAddWorkrecordWithParam:(id)paramer
+                           withHandle:(response)responseHandle{
+    NSString * appendURLString = @"workhour/add_workrecord";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
 @end

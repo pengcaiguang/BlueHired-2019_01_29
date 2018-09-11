@@ -108,6 +108,11 @@
 		DC7A32E42138074900E09C6C /* LPSetVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7A32E32138074900E09C6C /* LPSetVC.m */; };
 		DC7A32E7213812E200E09C6C /* LPSortAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7A32E6213812E200E09C6C /* LPSortAlertView.m */; };
 		DCCC8A60214754D30062A0F5 /* LPDateSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = DCCC8A5F214754D30062A0F5 /* LPDateSelectView.m */; };
+		DCCC8A6321476C830062A0F5 /* LPHourlyWorkVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCCC8A6221476C830062A0F5 /* LPHourlyWorkVC.m */; };
+		DCCC8A6C2147941F0062A0F5 /* LPFullTimeDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCCC8A6B2147941F0062A0F5 /* LPFullTimeDetailVC.m */; };
+		DCCC8A6F2147A29A0062A0F5 /* LPHourlyWorkDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCCC8A6E2147A29A0062A0F5 /* LPHourlyWorkDetailVC.m */; };
+		DCCC8A732147AD3C0062A0F5 /* LPWorkHourDetailPieChartCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCCC8A712147AD3C0062A0F5 /* LPWorkHourDetailPieChartCell.m */; };
+		DCCC8A742147AD3C0062A0F5 /* LPWorkHourDetailPieChartCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DCCC8A722147AD3C0062A0F5 /* LPWorkHourDetailPieChartCell.xib */; };
 		DCE1FD2421420AAB009C38BF /* LPWorkorderListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DCE1FD2321420AAB009C38BF /* LPWorkorderListModel.m */; };
 		DCF5D9BC213F892D009F5DCE /* LPBusinessReviewVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF5D9BB213F892D009F5DCE /* LPBusinessReviewVC.m */; };
 		DCF5D9C0213FA395009F5DCE /* LPMechanismcommentMechanismlistModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF5D9BF213FA395009F5DCE /* LPMechanismcommentMechanismlistModel.m */; };
@@ -329,6 +334,15 @@
 		DCB5A5321875E124A6C52C8B /* libPods-BlueHired.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BlueHired.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCCC8A5E214754D30062A0F5 /* LPDateSelectView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPDateSelectView.h; sourceTree = "<group>"; };
 		DCCC8A5F214754D30062A0F5 /* LPDateSelectView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPDateSelectView.m; sourceTree = "<group>"; };
+		DCCC8A6121476C830062A0F5 /* LPHourlyWorkVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPHourlyWorkVC.h; sourceTree = "<group>"; };
+		DCCC8A6221476C830062A0F5 /* LPHourlyWorkVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPHourlyWorkVC.m; sourceTree = "<group>"; };
+		DCCC8A6A2147941F0062A0F5 /* LPFullTimeDetailVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPFullTimeDetailVC.h; sourceTree = "<group>"; };
+		DCCC8A6B2147941F0062A0F5 /* LPFullTimeDetailVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPFullTimeDetailVC.m; sourceTree = "<group>"; };
+		DCCC8A6D2147A29A0062A0F5 /* LPHourlyWorkDetailVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPHourlyWorkDetailVC.h; sourceTree = "<group>"; };
+		DCCC8A6E2147A29A0062A0F5 /* LPHourlyWorkDetailVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPHourlyWorkDetailVC.m; sourceTree = "<group>"; };
+		DCCC8A702147AD3C0062A0F5 /* LPWorkHourDetailPieChartCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPWorkHourDetailPieChartCell.h; sourceTree = "<group>"; };
+		DCCC8A712147AD3C0062A0F5 /* LPWorkHourDetailPieChartCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPWorkHourDetailPieChartCell.m; sourceTree = "<group>"; };
+		DCCC8A722147AD3C0062A0F5 /* LPWorkHourDetailPieChartCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPWorkHourDetailPieChartCell.xib; sourceTree = "<group>"; };
 		DCE1FD2221420AAB009C38BF /* LPWorkorderListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPWorkorderListModel.h; sourceTree = "<group>"; };
 		DCE1FD2321420AAB009C38BF /* LPWorkorderListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPWorkorderListModel.m; sourceTree = "<group>"; };
 		DCF5D9BA213F892D009F5DCE /* LPBusinessReviewVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPBusinessReviewVC.h; sourceTree = "<group>"; };
@@ -534,6 +548,12 @@
 				DC61FAC121461AC40003AA61 /* LPWorkHourVC.m */,
 				DC61FAC3214646B30003AA61 /* LPFullTimeVC.h */,
 				DC61FAC4214646B30003AA61 /* LPFullTimeVC.m */,
+				DCCC8A6A2147941F0062A0F5 /* LPFullTimeDetailVC.h */,
+				DCCC8A6B2147941F0062A0F5 /* LPFullTimeDetailVC.m */,
+				DCCC8A6121476C830062A0F5 /* LPHourlyWorkVC.h */,
+				DCCC8A6221476C830062A0F5 /* LPHourlyWorkVC.m */,
+				DCCC8A6D2147A29A0062A0F5 /* LPHourlyWorkDetailVC.h */,
+				DCCC8A6E2147A29A0062A0F5 /* LPHourlyWorkDetailVC.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -545,6 +565,9 @@
 				DC61FAC821466E900003AA61 /* LPDurationView.m */,
 				DCCC8A5E214754D30062A0F5 /* LPDateSelectView.h */,
 				DCCC8A5F214754D30062A0F5 /* LPDateSelectView.m */,
+				DCCC8A702147AD3C0062A0F5 /* LPWorkHourDetailPieChartCell.h */,
+				DCCC8A712147AD3C0062A0F5 /* LPWorkHourDetailPieChartCell.m */,
+				DCCC8A722147AD3C0062A0F5 /* LPWorkHourDetailPieChartCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1060,6 +1083,7 @@
 				DC73832B2133E33E0055DC10 /* Main.storyboard in Resources */,
 				DC13BB52213E205A00800955 /* china_cities_v2.db in Resources */,
 				DC49D86C213A74B3009BFCB0 /* LPEssayDetailHeadCell.xib in Resources */,
+				DCCC8A742147AD3C0062A0F5 /* LPWorkHourDetailPieChartCell.xib in Resources */,
 				DC7383A82134F6580055DC10 /* LPMainCell.xib in Resources */,
 				DC5C389E213682F500B3CF6E /* LPCircleListCell.xib in Resources */,
 				DCF5D9C6213FA5BD009F5DCE /* LPBusinessReviewCell.xib in Resources */,
@@ -1169,6 +1193,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				DC290F3B213D31D400EC3FCC /* GJAlert2.m in Sources */,
+				DCCC8A732147AD3C0062A0F5 /* LPWorkHourDetailPieChartCell.m in Sources */,
+				DCCC8A6C2147941F0062A0F5 /* LPFullTimeDetailVC.m in Sources */,
 				DC2295852141143F0002A095 /* GJAlertText.m in Sources */,
 				DC5C38842136372F00B3CF6E /* LPInformationSingleCell.m in Sources */,
 				DC7383962134E95E0055DC10 /* MoninNet.m in Sources */,
@@ -1228,6 +1254,7 @@
 				DC7383972134E95E0055DC10 /* NetRequestManager.m in Sources */,
 				DC5C3889213640A300B3CF6E /* LPInformationMoreCell.m in Sources */,
 				DC7383952134E95E0055DC10 /* NetInstance.m in Sources */,
+				DCCC8A6F2147A29A0062A0F5 /* LPHourlyWorkDetailVC.m in Sources */,
 				DC7383AC2134F7B50055DC10 /* LPWorklistModel.m in Sources */,
 				DC5C389D213682F500B3CF6E /* LPCircleListCell.m in Sources */,
 				DCCC8A60214754D30062A0F5 /* LPDateSelectView.m in Sources */,
@@ -1248,6 +1275,7 @@
 				DC7383252133E33E0055DC10 /* AppDelegate.m in Sources */,
 				DC61FAC221461AC40003AA61 /* LPWorkHourVC.m in Sources */,
 				DC290F38213D0AA300EC3FCC /* LPCommentDetailVC.m in Sources */,
+				DCCC8A6321476C830062A0F5 /* LPHourlyWorkVC.m in Sources */,
 				DC73836A2133EC040055DC10 /* LPCircleVC.m in Sources */,
 				DC73835A2133EAD30055DC10 /* LPBaseViewController.m in Sources */,
 				DC73839B2134EAEF0055DC10 /* UIWindow+Window.m in Sources */,

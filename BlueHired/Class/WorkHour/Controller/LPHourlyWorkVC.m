@@ -1,17 +1,17 @@
 //
-//  LPFullTimeVC.m
+//  LPHourlyWorkVC.m
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/9/10.
+//  Created by 邢晓亮 on 2018/9/11.
 //  Copyright © 2018年 lanpin. All rights reserved.
 //
 
-#import "LPFullTimeVC.h"
+#import "LPHourlyWorkVC.h"
 #import "LPDurationView.h"
 #import "LPDateSelectView.h"
-#import "LPFullTimeDetailVC.h"
+#import "LPHourlyWorkDetailVC.h"
 
-@interface LPFullTimeVC ()<UITableViewDelegate,UITableViewDataSource>
+@interface LPHourlyWorkVC ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong)UITableView *tableview;
 @property(nonatomic,strong) UIView *tableFooterView;
 
@@ -22,14 +22,14 @@
 
 @end
 
-@implementation LPFullTimeVC
+@implementation LPHourlyWorkVC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];
-    self.navigationItem.title = @"正式工";
-    
+    self.navigationItem.title = @"小时工";
+
     NSDate *currentDate = [NSDate date];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"YYYY-MM-dd"];
@@ -65,7 +65,7 @@
     [timeButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.equalTo(bgView);
     }];
-    [timeButton setTitle:self.currentDateString forState:UIControlStateNormal];
+    [timeButton setTitle:@"1089-09-09" forState:UIControlStateNormal];
     [timeButton addTarget:self action:@selector(selectCalenderButton:) forControlEvents:UIControlEventTouchUpInside];
     
     UIImageView *leftImgView = [[UIImageView alloc]init];
@@ -105,7 +105,6 @@
         make.top.mas_equalTo(48);
     }];
 }
-
 #pragma mark - tagter
 -(void)selectCalenderButton:(UIButton *)button{
     self.dateSelectView.hidden = NO;
@@ -113,7 +112,7 @@
 
 #pragma mark - TableViewDelegate & Datasource
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 3;
+    return 1;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return 3;
@@ -153,36 +152,15 @@
         [cell.contentView addSubview:view];
         
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-
+        
     }
-    
-    if (indexPath.section == 0) {
-        if (indexPath.row == 0) {
-            cell.textLabel.text = @"正常上班";
-            cell.imageView.image = [UIImage imageNamed:@"zhengchangshangban"];
-        }else if (indexPath.row == 1){
-            cell.textLabel.text = @"类型";
-        }else {
-            cell.textLabel.text = @"时长";
-        }
-    }else if (indexPath.section == 1) {
-        if (indexPath.row == 0) {
-            cell.textLabel.text = @"加班记录";
-            cell.imageView.image = [UIImage imageNamed:@"jiabanjilu"];
-        }else if (indexPath.row == 1){
-            cell.textLabel.text = @"类型";
-        }else {
-            cell.textLabel.text = @"时长";
-        }
+    if (indexPath.row == 0) {
+        cell.textLabel.text = @"正常上班";
+        cell.imageView.image = [UIImage imageNamed:@"zhengchangshangban"];
+    }else if (indexPath.row == 1){
+        cell.textLabel.text = @"工时";
     }else {
-        if (indexPath.row == 0) {
-            cell.textLabel.text = @"请假记录";
-            cell.imageView.image = [UIImage imageNamed:@"qingjiajilu"];
-        }else if (indexPath.row == 1){
-            cell.textLabel.text = @"类型";
-        }else {
-            cell.textLabel.text = @"时长";
-        }
+        cell.textLabel.text = @"工价";
     }
     
     return cell;
@@ -198,17 +176,16 @@
         };
     }
 }
-
 #pragma mark - target
 -(void)touchDetailButton{
-    LPFullTimeDetailVC *vc = [[LPFullTimeDetailVC alloc]init];
+    LPHourlyWorkDetailVC *vc = [[LPHourlyWorkDetailVC alloc]init];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - request
 -(void)requestQueryCurrecord{
     NSDictionary *dic = @{
-                          @"type":@(0),
+                          @"type":@(1),
                           @"day":self.currentDateString
                           };
     [NetApiManager requestQueryCurrecordWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
@@ -220,7 +197,6 @@
         }
     }];
 }
-
 #pragma mark lazy
 - (UITableView *)tableview{
     if (!_tableview) {
@@ -280,6 +256,7 @@
     }
     return _dateSelectView;
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -8,6 +8,7 @@
 
 #import "LPWorkHourVC.h"
 #import "LPFullTimeVC.h"
+#import "LPHourlyWorkVC.h"
 
 @interface LPWorkHourVC ()
 
@@ -72,11 +73,17 @@
     hourlyButton.backgroundColor = [UIColor whiteColor];
     [hourlyButton setTitle:@"小时工" forState:UIControlStateNormal];
     [hourlyButton setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
+    [hourlyButton addTarget:self action:@selector(touchHourlyButtonButton) forControlEvents:UIControlEventTouchUpInside];
     
 }
 
 -(void)touchFullTimeButton{
     LPFullTimeVC *vc = [[LPFullTimeVC alloc]init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+-(void)touchHourlyButtonButton{
+    LPHourlyWorkVC *vc = [[LPHourlyWorkVC alloc]init];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

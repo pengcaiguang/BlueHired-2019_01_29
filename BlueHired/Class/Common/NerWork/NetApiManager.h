@@ -139,6 +139,28 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //企业点评详情
 + (void)requestMechanismcommentDeatilWithParam:(id)paramer
                                     withHandle:(response)responseHandle;
+#pragma mark - 工时记录
+/************************************************************/
+//*  工时记录
+/************************************************************/
+//记录/修改工时
++ (void)requestSaveorupdateWorkhourWithParam:(id)paramer
+                                  withHandle:(response)responseHandle;
+//查询工时记录详情
++ (void)requestSelectWorkhourWithParam:(id)paramer
+                            withHandle:(response)responseHandle;
+//查询当天工时记录
++ (void)requestQueryCurrecordWithParam:(id)paramer
+                            withHandle:(response)responseHandle;
+//查询已记录工时
++ (void)requestQueryNormalrecordWithParam:(id)paramer
+                               withHandle:(response)responseHandle;
+//删除加班记录
++ (void)requestDeleteAddtimeWithParam:(id)paramer
+                           withHandle:(response)responseHandle;
+//记录补贴扣款
++ (void)requestAddWorkrecordWithParam:(id)paramer
+                           withHandle:(response)responseHandle;
 @end
 
 
