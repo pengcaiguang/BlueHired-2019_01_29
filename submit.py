@@ -39,7 +39,7 @@ def commit():
         pull()
 #拉取
 def pull():
-    archiveCmd = 'git pull'
+    archiveCmd = 'git pull origin master'
     process = subprocess.Popen(archiveCmd,shell=True)
     process.wait()
     archiveReturnCode = process.returncode
@@ -50,7 +50,7 @@ def pull():
         push()
 #推送
 def push():
-    archiveCmd = 'git push'
+    archiveCmd = 'git push origin master'
     process = subprocess.Popen(archiveCmd,shell=True)
     process.wait()
     archiveReturnCode = process.returncode
