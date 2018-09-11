@@ -45,6 +45,7 @@ def pull():
     archiveReturnCode = process.returncode
     if archiveReturnCode != 0:
         print "拉取远程代码失败"
+        push()
     else:
         push()
 #推送
