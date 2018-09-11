@@ -1,35 +1,32 @@
 //
-//  LPFullTimeDetailVC.m
+//  LPSalaryBreakdownVC.m
 //  BlueHired
 //
 //  Created by 邢晓亮 on 2018/9/11.
 //  Copyright © 2018年 lanpin. All rights reserved.
 //
 
-#import "LPFullTimeDetailVC.h"
-#import "LPWorkHourDetailPieChartCell.h"
+#import "LPSalaryBreakdownVC.h"
 
-static NSString *LPWorkHourDetailPieChartCellID = @"LPWorkHourDetailPieChartCell";
-
-@interface LPFullTimeDetailVC ()<UITableViewDelegate,UITableViewDataSource>
+@interface LPSalaryBreakdownVC ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong)UITableView *tableview;
 @property(nonatomic,strong) UIButton *timeButton;
 @property(nonatomic,strong) UIView *monthView;
 @property(nonatomic,strong) UIView *monthBackView;
 @property(nonatomic,strong) NSMutableArray <UIButton *>*monthButtonArray;
-
 @property(nonatomic,strong) NSString *currentDateString;
 @property(nonatomic,assign) NSInteger month;
 
 @end
 
-@implementation LPFullTimeDetailVC
+@implementation LPSalaryBreakdownVC
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];
-    self.navigationItem.title = @"工时详情";
+    self.navigationItem.title = @"工资明细";
+    
     NSDate *currentDate = [NSDate date];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"YYYY-MM"];
@@ -38,9 +35,7 @@ static NSString *LPWorkHourDetailPieChartCellID = @"LPWorkHourDetailPieChartCell
     [dateFormatter setDateFormat:@"MM"];
     self.month = [dateFormatter stringFromDate:currentDate].integerValue;
     
-    
     [self setupUI];
-    [self requestSelectWorkhour];
     
 }
 
@@ -71,7 +66,7 @@ static NSString *LPWorkHourDetailPieChartCellID = @"LPWorkHourDetailPieChartCell
     }];
     [self.timeButton setTitle:self.currentDateString forState:UIControlStateNormal];
     [self.timeButton addTarget:self action:@selector(chooseMonth) forControlEvents:UIControlEventTouchUpInside];
-    
+
     UIImageView *leftImgView = [[UIImageView alloc]init];
     [bgView addSubview:leftImgView];
     [leftImgView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -89,15 +84,6 @@ static NSString *LPWorkHourDetailPieChartCellID = @"LPWorkHourDetailPieChartCell
         make.left.equalTo(self.timeButton.mas_right).offset(10);
     }];
     rightImgView.image = [UIImage imageNamed:@"right_arrow"];
-    
-    UIButton *deleteButton = [[UIButton alloc]init];
-    [bgView addSubview:deleteButton];
-    [deleteButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.mas_equalTo(-14);
-        make.centerY.equalTo(bgView);
-        make.size.mas_equalTo(CGSizeMake(15, 19));
-    }];
-    [deleteButton setImage:[UIImage imageNamed:@"delete_white"] forState:UIControlStateNormal];
     
     
     [self.view addSubview:self.tableview];
@@ -131,14 +117,20 @@ static NSString *LPWorkHourDetailPieChartCellID = @"LPWorkHourDetailPieChartCell
         [self monthViewHidden];
     });
 }
-
 #pragma mark - TableViewDelegate & Datasource
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return 3;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    LPWorkHourDetailPieChartCell *cell = [tableView dequeueReusableCellWithIdentifier:LPWorkHourDetailPieChartCellID];
+    
+    static NSString *rid=@"cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:rid];
+    if(cell == nil){
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rid];
+    }
+    cell.textLabel.text = [NSString stringWithFormat:@"%ld",indexPath.row];
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -160,8 +152,6 @@ static NSString *LPWorkHourDetailPieChartCellID = @"LPWorkHourDetailPieChartCell
         }
     }];
 }
-
-
 #pragma mark lazy
 - (UITableView *)tableview{
     if (!_tableview) {
@@ -173,8 +163,8 @@ static NSString *LPWorkHourDetailPieChartCellID = @"LPWorkHourDetailPieChartCell
         _tableview.estimatedRowHeight = 44;
         _tableview.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         _tableview.separatorColor = [UIColor colorWithHexString:@"#F1F1F1"];
-        [_tableview registerNib:[UINib nibWithNibName:LPWorkHourDetailPieChartCellID bundle:nil] forCellReuseIdentifier:LPWorkHourDetailPieChartCellID];
-        
+//        [_tableview registerNib:[UINib nibWithNibName:LPWorkHourDetailPieChartCellID bundle:nil] forCellReuseIdentifier:LPWorkHourDetailPieChartCellID];
+
     }
     return _tableview;
 }
@@ -231,7 +221,6 @@ static NSString *LPWorkHourDetailPieChartCellID = @"LPWorkHourDetailPieChartCell
         }
         self.monthButtonArray[self.month-1].selected = YES;
         self.monthButtonArray[self.month-1].backgroundColor = [UIColor baseColor];
-
     }
     return _monthView;
     

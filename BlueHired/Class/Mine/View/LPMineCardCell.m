@@ -9,6 +9,7 @@
 #import "LPMineCardCell.h"
 #import "LPBusinessReviewVC.h"
 #import "LPWorkHourVC.h"
+#import "LPSalaryBreakdownVC.h"
 
 @implementation LPMineCardCell
 
@@ -58,6 +59,10 @@
         if ([LoginUtils validationLogin:[UIWindow visibleViewController]]) {
             if (index == 0) {
                 LPWorkHourVC *vc = [[LPWorkHourVC alloc]init];
+                vc.hidesBottomBarWhenPushed = YES;
+                [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+            }else if (index == 1){
+                LPSalaryBreakdownVC *vc = [[LPSalaryBreakdownVC alloc]init];
                 vc.hidesBottomBarWhenPushed = YES;
                 [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
             }

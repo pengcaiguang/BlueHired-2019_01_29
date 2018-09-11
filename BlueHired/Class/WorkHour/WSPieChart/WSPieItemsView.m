@@ -46,11 +46,11 @@
     _shapeLayer.borderColor = [UIColor clearColor].CGColor;
     [self.layer addSublayer:_shapeLayer];
     
-    CABasicAnimation *basic = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
-    basic.duration = 1.1;
-    basic.fromValue = @(0.1f);
-    basic.toValue = @(1.0f);
-    [_shapeLayer addAnimation:basic forKey:@"basic"];
+//    CABasicAnimation *basic = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
+//    basic.duration = 1.1;
+//    basic.fromValue = @(0.1f);
+//    basic.toValue = @(1.0f);
+//    [_shapeLayer addAnimation:basic forKey:@"basic"];
     
     
 }

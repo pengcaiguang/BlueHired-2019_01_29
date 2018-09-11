@@ -118,6 +118,7 @@
 		DCCC8A822147AED60062A0F5 /* WSPieForeBGView.m in Sources */ = {isa = PBXBuildFile; fileRef = DCCC8A7B2147AED60062A0F5 /* WSPieForeBGView.m */; };
 		DCCC8A832147AED60062A0F5 /* WSPieItemsView.m in Sources */ = {isa = PBXBuildFile; fileRef = DCCC8A7D2147AED60062A0F5 /* WSPieItemsView.m */; };
 		DCCC8A842147AED60062A0F5 /* WSShowInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = DCCC8A7F2147AED60062A0F5 /* WSShowInfoView.m */; };
+		DCCC8A892147E4D00062A0F5 /* LPSalaryBreakdownVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCCC8A882147E4D00062A0F5 /* LPSalaryBreakdownVC.m */; };
 		DCE1FD2421420AAB009C38BF /* LPWorkorderListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DCE1FD2321420AAB009C38BF /* LPWorkorderListModel.m */; };
 		DCF5D9BC213F892D009F5DCE /* LPBusinessReviewVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF5D9BB213F892D009F5DCE /* LPBusinessReviewVC.m */; };
 		DCF5D9C0213FA395009F5DCE /* LPMechanismcommentMechanismlistModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF5D9BF213FA395009F5DCE /* LPMechanismcommentMechanismlistModel.m */; };
@@ -358,6 +359,8 @@
 		DCCC8A7D2147AED60062A0F5 /* WSPieItemsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSPieItemsView.m; sourceTree = "<group>"; };
 		DCCC8A7E2147AED60062A0F5 /* WSShowInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WSShowInfoView.h; sourceTree = "<group>"; };
 		DCCC8A7F2147AED60062A0F5 /* WSShowInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSShowInfoView.m; sourceTree = "<group>"; };
+		DCCC8A872147E4D00062A0F5 /* LPSalaryBreakdownVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPSalaryBreakdownVC.h; sourceTree = "<group>"; };
+		DCCC8A882147E4D00062A0F5 /* LPSalaryBreakdownVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPSalaryBreakdownVC.m; sourceTree = "<group>"; };
 		DCE1FD2221420AAB009C38BF /* LPWorkorderListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPWorkorderListModel.h; sourceTree = "<group>"; };
 		DCE1FD2321420AAB009C38BF /* LPWorkorderListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPWorkorderListModel.m; sourceTree = "<group>"; };
 		DCF5D9BA213F892D009F5DCE /* LPBusinessReviewVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPBusinessReviewVC.h; sourceTree = "<group>"; };
@@ -659,6 +662,7 @@
 				DC7383722133EC630055DC10 /* MacroPch */,
 				DC7383572133EAAF0055DC10 /* Main */,
 				DC7383662133EBEB0055DC10 /* Mine */,
+				DCCC8A852147E4700062A0F5 /* Salary */,
 				DC61FABE21461A950003AA61 /* WorkHour */,
 			);
 			path = Class;
@@ -946,6 +950,23 @@
 				DCCC8A7F2147AED60062A0F5 /* WSShowInfoView.m */,
 			);
 			path = WSPieChart;
+			sourceTree = "<group>";
+		};
+		DCCC8A852147E4700062A0F5 /* Salary */ = {
+			isa = PBXGroup;
+			children = (
+				DCCC8A862147E4700062A0F5 /* Controller */,
+			);
+			path = Salary;
+			sourceTree = "<group>";
+		};
+		DCCC8A862147E4700062A0F5 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				DCCC8A872147E4D00062A0F5 /* LPSalaryBreakdownVC.h */,
+				DCCC8A882147E4D00062A0F5 /* LPSalaryBreakdownVC.m */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 		DCF5D9B8213F8905009F5DCE /* BusinessReview */ = {
@@ -1254,6 +1275,7 @@
 				DC61FAC5214646B30003AA61 /* LPFullTimeVC.m in Sources */,
 				DC30E1A121393255000C7A91 /* LPWorkDetailModel.m in Sources */,
 				DC7383792133EE800055DC10 /* LPTabBarViewController.m in Sources */,
+				DCCC8A892147E4D00062A0F5 /* LPSalaryBreakdownVC.m in Sources */,
 				DCCC8A832147AED60062A0F5 /* WSPieItemsView.m in Sources */,
 				DC7A32D52137C2EC00E09C6C /* LPLoginVC.m in Sources */,
 				DC30E1922138E622000C7A91 /* LPMainSearchVC.m in Sources */,
