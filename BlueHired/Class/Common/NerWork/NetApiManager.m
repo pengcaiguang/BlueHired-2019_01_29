@@ -440,4 +440,18 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
+#pragma mark - 工资明细
+/************************************************************/
+//*  工资明细
+/************************************************************/
+//查询工资明细
++ (void)requestQuerySalarylistWithParam:(id)paramer
+                             withHandle:(response)responseHandle{
+    NSString * appendURLString = @"billrecord/query_salarylist";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
 @end

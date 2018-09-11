@@ -7,6 +7,7 @@
 //
 
 #import "LPSalaryBreakdownVC.h"
+#import "LPQuerySalarylistModel.h"
 
 @interface LPSalaryBreakdownVC ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong)UITableView *tableview;
@@ -16,6 +17,8 @@
 @property(nonatomic,strong) NSMutableArray <UIButton *>*monthButtonArray;
 @property(nonatomic,strong) NSString *currentDateString;
 @property(nonatomic,assign) NSInteger month;
+
+@property(nonatomic,strong) LPQuerySalarylistModel *model;
 
 @end
 
@@ -36,7 +39,7 @@
     self.month = [dateFormatter stringFromDate:currentDate].integerValue;
     
     [self setupUI];
-    
+    [self requestQuerySalarylist];
 }
 
 -(void)setupUI{
@@ -107,6 +110,7 @@
 -(void)touchMonthButton:(UIButton *)button{
     NSString *year = [self.currentDateString substringToIndex:4];
     [self.timeButton setTitle:[NSString stringWithFormat:@"%@-%02ld",year,button.tag+1] forState:UIControlStateNormal];
+    self.currentDateString = self.timeButton.titleLabel.text;
     for (UIButton *button in self.monthButtonArray) {
         button.selected = NO;
         button.backgroundColor = [UIColor colorWithHexString:@"#EEEEEE"];
@@ -116,11 +120,18 @@
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self monthViewHidden];
     });
+    [self requestQuerySalarylist];
 }
-#pragma mark - TableViewDelegate & Datasource
 
+#pragma mark - setter
+-(void)setModel:(LPQuerySalarylistModel *)model{
+    _model = model;
+    [self.tableview reloadData];
+}
+
+#pragma mark - TableViewDelegate & Datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 3;
+    return self.model.data.count;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -138,15 +149,14 @@
 }
 
 #pragma mark - request
--(void)requestSelectWorkhour{
+-(void)requestQuerySalarylist{
     NSDictionary *dic = @{
-                          @"type":@(0),
-                          @"day":self.currentDateString
+                          @"month":self.currentDateString
                           };
-    [NetApiManager requestSelectWorkhourWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+    [NetApiManager requestQuerySalarylistWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            
+            self.model = [LPQuerySalarylistModel mj_objectWithKeyValues:responseObject];
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

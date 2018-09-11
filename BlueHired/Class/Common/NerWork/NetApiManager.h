@@ -161,6 +161,13 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //记录补贴扣款
 + (void)requestAddWorkrecordWithParam:(id)paramer
                            withHandle:(response)responseHandle;
+#pragma mark - 工资明细
+/************************************************************/
+//*  工资明细
+/************************************************************/
+//查询工资明细
++ (void)requestQuerySalarylistWithParam:(id)paramer
+                             withHandle:(response)responseHandle;
 @end
 
 
