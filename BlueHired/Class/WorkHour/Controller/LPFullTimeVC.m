@@ -8,11 +8,13 @@
 
 #import "LPFullTimeVC.h"
 #import "LPDurationView.h"
+#import "LPDateSelectView.h"
 
 @interface LPFullTimeVC ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong)UITableView *tableview;
 @property(nonatomic,strong) UIView *tableFooterView;
 
+@property(nonatomic,strong) LPDateSelectView *dateSelectView;
 @property(nonatomic,strong) LPDurationView *durationView;
 
 @end
@@ -26,15 +28,6 @@
     self.navigationItem.title = @"正式工";
     
     [self setupUI];
-//    FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 64, self.view.frame.size.width, 300)];
-////    calendar.dataSource = self;
-////    calendar.delegate = self;
-//    calendar.backgroundColor = [UIColor whiteColor];
-//    [self.view addSubview:calendar];
-//    calendar.locale = [NSLocale localeWithLocaleIdentifier:@"zh-CN"];
-////    self.calendar = calendar;
-
-    
     
 }
 
@@ -49,6 +42,51 @@
     }];
     bgView.backgroundColor = [UIColor baseColor];
     
+    UIImageView *imgView = [[UIImageView alloc]init];
+    [bgView addSubview:imgView];
+    [imgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(14);
+        make.centerY.equalTo(bgView);
+        make.size.mas_equalTo(CGSizeMake(19, 20));
+    }];
+    imgView.image = [UIImage imageNamed:@"calendar"];
+    
+    UIButton *timeButton = [[UIButton alloc]init];
+    [bgView addSubview:timeButton];
+    [timeButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(bgView);
+    }];
+    [timeButton setTitle:@"1089-09-09" forState:UIControlStateNormal];
+    [timeButton addTarget:self action:@selector(selectCalenderButton:) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIImageView *leftImgView = [[UIImageView alloc]init];
+    [bgView addSubview:leftImgView];
+    [leftImgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(7, 12));
+        make.centerY.equalTo(timeButton);
+        make.right.equalTo(timeButton.mas_left).offset(-10);
+    }];
+    leftImgView.image = [UIImage imageNamed:@"left_arrow"];
+    
+    UIImageView *rightImgView = [[UIImageView alloc]init];
+    [bgView addSubview:rightImgView];
+    [rightImgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(7, 12));
+        make.centerY.equalTo(timeButton);
+        make.left.equalTo(timeButton.mas_right).offset(10);
+    }];
+    rightImgView.image = [UIImage imageNamed:@"right_arrow"];
+    
+    UIButton *deleteButton = [[UIButton alloc]init];
+    [bgView addSubview:deleteButton];
+    [deleteButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.mas_equalTo(-14);
+        make.centerY.equalTo(bgView);
+        make.size.mas_equalTo(CGSizeMake(15, 19));
+    }];
+    [deleteButton setImage:[UIImage imageNamed:@"delete_white"] forState:UIControlStateNormal];
+    
+    
     [self.view addSubview:self.tableview];
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
         //        make.edges.equalTo(self.view);
@@ -58,6 +96,12 @@
         make.top.mas_equalTo(48);
     }];
 }
+
+#pragma mark - tagter
+-(void)selectCalenderButton:(UIButton *)button{
+    self.dateSelectView.hidden = NO;
+}
+
 #pragma mark - TableViewDelegate & Datasource
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 3;
@@ -137,36 +181,12 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    if (indexPath.section == 0) {
-        if (indexPath.row == 1) {
-            self.durationView.type = 1;
-            self.durationView.hidden = NO;
-            self.durationView.block = ^(NSString *string) {
-                cell.detailTextLabel.text = string;
-            };
-        }else if (indexPath.row == 2) {
-            self.durationView.type = 2;
-            self.durationView.hidden = NO;
-            self.durationView.block = ^(NSString *string) {
-                cell.detailTextLabel.text = string;
-            };
-        }
-    }else if (indexPath.section == 1) {
-        if (indexPath.row == 2) {
-            self.durationView.type = 2;
-            self.durationView.hidden = NO;
-            self.durationView.block = ^(NSString *string) {
-                cell.detailTextLabel.text = string;
-            };
-        }
-    }else if (indexPath.section == 2) {
-        if (indexPath.row == 2) {
-            self.durationView.type = 2;
-            self.durationView.hidden = NO;
-            self.durationView.block = ^(NSString *string) {
-                cell.detailTextLabel.text = string;
-            };
-        }
+    if (indexPath.row == 1 || indexPath.row == 2) {
+        self.durationView.hidden = NO;
+        self.durationView.type = indexPath.row;
+        self.durationView.block = ^(NSString *string) {
+            cell.detailTextLabel.text = string;
+        };
     }
 }
 
@@ -220,6 +240,13 @@
         _durationView = [[LPDurationView alloc]init];
     }
     return _durationView;
+}
+
+-(LPDateSelectView *)dateSelectView{
+    if (!_dateSelectView) {
+        _dateSelectView = [[LPDateSelectView alloc]init];
+    }
+    return _dateSelectView;
 }
 
 - (void)didReceiveMemoryWarning {

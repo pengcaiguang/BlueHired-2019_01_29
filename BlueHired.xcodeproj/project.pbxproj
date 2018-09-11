@@ -107,6 +107,7 @@
 		DC7A32E12137E99300E09C6C /* LoginUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7A32E02137E99300E09C6C /* LoginUtils.m */; };
 		DC7A32E42138074900E09C6C /* LPSetVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7A32E32138074900E09C6C /* LPSetVC.m */; };
 		DC7A32E7213812E200E09C6C /* LPSortAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7A32E6213812E200E09C6C /* LPSortAlertView.m */; };
+		DCCC8A60214754D30062A0F5 /* LPDateSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = DCCC8A5F214754D30062A0F5 /* LPDateSelectView.m */; };
 		DCE1FD2421420AAB009C38BF /* LPWorkorderListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DCE1FD2321420AAB009C38BF /* LPWorkorderListModel.m */; };
 		DCF5D9BC213F892D009F5DCE /* LPBusinessReviewVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF5D9BB213F892D009F5DCE /* LPBusinessReviewVC.m */; };
 		DCF5D9C0213FA395009F5DCE /* LPMechanismcommentMechanismlistModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF5D9BF213FA395009F5DCE /* LPMechanismcommentMechanismlistModel.m */; };
@@ -326,6 +327,8 @@
 		DC7A32E5213812E200E09C6C /* LPSortAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPSortAlertView.h; sourceTree = "<group>"; };
 		DC7A32E6213812E200E09C6C /* LPSortAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPSortAlertView.m; sourceTree = "<group>"; };
 		DCB5A5321875E124A6C52C8B /* libPods-BlueHired.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BlueHired.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCCC8A5E214754D30062A0F5 /* LPDateSelectView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPDateSelectView.h; sourceTree = "<group>"; };
+		DCCC8A5F214754D30062A0F5 /* LPDateSelectView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPDateSelectView.m; sourceTree = "<group>"; };
 		DCE1FD2221420AAB009C38BF /* LPWorkorderListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPWorkorderListModel.h; sourceTree = "<group>"; };
 		DCE1FD2321420AAB009C38BF /* LPWorkorderListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPWorkorderListModel.m; sourceTree = "<group>"; };
 		DCF5D9BA213F892D009F5DCE /* LPBusinessReviewVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPBusinessReviewVC.h; sourceTree = "<group>"; };
@@ -540,6 +543,8 @@
 			children = (
 				DC61FAC721466E900003AA61 /* LPDurationView.h */,
 				DC61FAC821466E900003AA61 /* LPDurationView.m */,
+				DCCC8A5E214754D30062A0F5 /* LPDateSelectView.h */,
+				DCCC8A5F214754D30062A0F5 /* LPDateSelectView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1225,6 +1230,7 @@
 				DC7383952134E95E0055DC10 /* NetInstance.m in Sources */,
 				DC7383AC2134F7B50055DC10 /* LPWorklistModel.m in Sources */,
 				DC5C389D213682F500B3CF6E /* LPCircleListCell.m in Sources */,
+				DCCC8A60214754D30062A0F5 /* LPDateSelectView.m in Sources */,
 				DC7383712133EC320055DC10 /* LPMineVC.m in Sources */,
 				DCF5D9C5213FA5BD009F5DCE /* LPBusinessReviewCell.m in Sources */,
 				DC13BB55213E23CF00800955 /* LPSelectCityVC.m in Sources */,
