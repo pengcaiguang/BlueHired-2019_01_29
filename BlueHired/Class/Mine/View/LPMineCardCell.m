@@ -10,6 +10,7 @@
 #import "LPBusinessReviewVC.h"
 #import "LPWorkHourVC.h"
 #import "LPSalaryBreakdownVC.h"
+#import "LPLendVC.h"
 
 @implementation LPMineCardCell
 
@@ -63,6 +64,10 @@
                 [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
             }else if (index == 1){
                 LPSalaryBreakdownVC *vc = [[LPSalaryBreakdownVC alloc]init];
+                vc.hidesBottomBarWhenPushed = YES;
+                [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+            }else if (index == 2){
+                LPLendVC *vc = [[LPLendVC alloc]init];
                 vc.hidesBottomBarWhenPushed = YES;
                 [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
             }

@@ -65,7 +65,7 @@
     [timeButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.equalTo(bgView);
     }];
-    [timeButton setTitle:@"1089-09-09" forState:UIControlStateNormal];
+    [timeButton setTitle:self.currentDateString forState:UIControlStateNormal];
     [timeButton addTarget:self action:@selector(selectCalenderButton:) forControlEvents:UIControlEventTouchUpInside];
     
     UIImageView *leftImgView = [[UIImageView alloc]init];

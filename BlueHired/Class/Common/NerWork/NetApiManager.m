@@ -454,4 +454,14 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
+//查询工资明细详情
++ (void)requestQuerySalarydetailWithParam:(id)paramer
+                               withHandle:(response)responseHandle{
+    NSString * appendURLString = @"billrecord/query_salarydetail";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
 @end

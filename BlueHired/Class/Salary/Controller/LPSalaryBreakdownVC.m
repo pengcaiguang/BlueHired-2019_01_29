@@ -8,6 +8,7 @@
 
 #import "LPSalaryBreakdownVC.h"
 #import "LPQuerySalarylistModel.h"
+#import "LPSalaryDetailVC.h"
 
 @interface LPSalaryBreakdownVC ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong)UITableView *tableview;
@@ -28,7 +29,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];
-    self.navigationItem.title = @"工资明细";
+    self.navigationItem.title = @"工资列表";
     
     NSDate *currentDate = [NSDate date];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -172,6 +173,8 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    LPSalaryDetailVC *vc = [[LPSalaryDetailVC alloc]init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - request

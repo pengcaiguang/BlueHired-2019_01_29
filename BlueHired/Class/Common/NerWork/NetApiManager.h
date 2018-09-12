@@ -168,6 +168,9 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //查询工资明细
 + (void)requestQuerySalarylistWithParam:(id)paramer
                              withHandle:(response)responseHandle;
+//查询工资明细详情
++ (void)requestQuerySalarydetailWithParam:(id)paramer
+                               withHandle:(response)responseHandle;
 @end
 
 
