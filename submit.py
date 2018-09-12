@@ -33,7 +33,6 @@ def commit():
     archiveReturnCode = process.returncode
     if archiveReturnCode != 0:
         print "提交失败"
-        pull()
     else:
         print "提交成功",inputNote
         pull()
@@ -45,7 +44,6 @@ def pull():
     archiveReturnCode = process.returncode
     if archiveReturnCode != 0:
         print "拉取远程代码失败"
-        push()
     else:
         push()
 #推送

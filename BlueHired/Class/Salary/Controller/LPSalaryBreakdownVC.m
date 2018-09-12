@@ -126,9 +126,35 @@
 #pragma mark - setter
 -(void)setModel:(LPQuerySalarylistModel *)model{
     _model = model;
+    if (model.data.count == 0) {
+        [self addNodataViewHidden:NO];
+    }else{
+        [self addNodataViewHidden:YES];
+    }
     [self.tableview reloadData];
 }
-
+-(void)addNodataViewHidden:(BOOL)hidden{
+    BOOL has = NO;
+    for (UIView *view in self.view.subviews) {
+        if ([view isKindOfClass:[LPNoDataView class]]) {
+            view.hidden = hidden;
+            has = YES;
+        }
+    }
+    if (!has) {
+        LPNoDataView *noDataView = [[LPNoDataView alloc]initWithFrame:CGRectZero];
+        [self.view addSubview:noDataView];
+        [noDataView image:nil text:@"抱歉！没有相关记录！"];
+        [noDataView mas_makeConstraints:^(MASConstraintMaker *make) {
+            //            make.edges.equalTo(self.view);
+            make.left.mas_equalTo(0);
+            make.right.mas_equalTo(0);
+            make.top.mas_equalTo(49);
+            make.bottom.mas_equalTo(0);
+        }];
+        noDataView.hidden = hidden;
+    }
+}
 #pragma mark - TableViewDelegate & Datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return self.model.data.count;

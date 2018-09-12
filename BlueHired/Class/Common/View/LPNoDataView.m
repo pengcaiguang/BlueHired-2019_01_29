@@ -41,8 +41,12 @@
     return self;
 }
 -(void)image:(UIImage *)image text:(NSString *)text{
-    self.imageView.image = image;
-    self.label.text = text;
+    if (image) {
+        self.imageView.image = image;
+    }
+    if (text) {
+        self.label.text = text;
+    }
 }
 
 -(void)updateUI{
