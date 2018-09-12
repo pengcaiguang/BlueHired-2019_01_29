@@ -14,11 +14,13 @@
 @interface LPFullTimeVC ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong)UITableView *tableview;
 @property(nonatomic,strong) UIView *tableFooterView;
+@property(nonatomic,strong) UIButton *timeButton;
 
 @property(nonatomic,strong) LPDateSelectView *dateSelectView;
 @property(nonatomic,strong) LPDurationView *durationView;
 
 @property(nonatomic,strong) NSString *currentDateString;
+@property(nonatomic,assign) NSInteger month;
 
 @end
 
@@ -35,8 +37,12 @@
     [dateFormatter setDateFormat:@"YYYY-MM-dd"];
     self.currentDateString = [dateFormatter stringFromDate:currentDate];
     
+    [dateFormatter setDateFormat:@"MM"];
+    self.month = [dateFormatter stringFromDate:currentDate].integerValue;
+    
     [self setupUI];
     [self requestQueryCurrecord];
+    [self requestQueryNormalrecord];
     
 }
 
@@ -60,20 +66,20 @@
     }];
     imgView.image = [UIImage imageNamed:@"calendar"];
     
-    UIButton *timeButton = [[UIButton alloc]init];
-    [bgView addSubview:timeButton];
-    [timeButton mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.timeButton = [[UIButton alloc]init];
+    [bgView addSubview:self.timeButton];
+    [self.timeButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.equalTo(bgView);
     }];
-    [timeButton setTitle:self.currentDateString forState:UIControlStateNormal];
-    [timeButton addTarget:self action:@selector(selectCalenderButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self.timeButton setTitle:self.currentDateString forState:UIControlStateNormal];
+    [self.timeButton addTarget:self action:@selector(selectCalenderButton:) forControlEvents:UIControlEventTouchUpInside];
     
     UIImageView *leftImgView = [[UIImageView alloc]init];
     [bgView addSubview:leftImgView];
     [leftImgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(7, 12));
-        make.centerY.equalTo(timeButton);
-        make.right.equalTo(timeButton.mas_left).offset(-10);
+        make.centerY.equalTo(self.timeButton);
+        make.right.equalTo(self.timeButton.mas_left).offset(-10);
     }];
     leftImgView.image = [UIImage imageNamed:@"left_arrow"];
     
@@ -81,8 +87,8 @@
     [bgView addSubview:rightImgView];
     [rightImgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(7, 12));
-        make.centerY.equalTo(timeButton);
-        make.left.equalTo(timeButton.mas_right).offset(10);
+        make.centerY.equalTo(self.timeButton);
+        make.left.equalTo(self.timeButton.mas_right).offset(10);
     }];
     rightImgView.image = [UIImage imageNamed:@"right_arrow"];
     
@@ -109,6 +115,12 @@
 #pragma mark - tagter
 -(void)selectCalenderButton:(UIButton *)button{
     self.dateSelectView.hidden = NO;
+    WEAK_SELF()
+    self.dateSelectView.block = ^(NSString *string) {
+        weakSelf.currentDateString = string;
+        [weakSelf.timeButton setTitle:string forState:UIControlStateNormal];
+        [weakSelf requestQueryCurrecord];
+    };
 }
 
 #pragma mark - TableViewDelegate & Datasource
@@ -212,6 +224,19 @@
                           @"day":self.currentDateString
                           };
     [NetApiManager requestQueryCurrecordWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+-(void)requestQueryNormalrecord{
+    NSDictionary *dic = @{
+                          @"month":@(self.month)
+                          };
+    [NetApiManager requestQueryNormalrecordWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
             

@@ -7,10 +7,12 @@
 //
 
 #import "LPDateSelectView.h"
+#import "LPCalendarCell.h"
 
-@interface LPDateSelectView()
+@interface LPDateSelectView()<FSCalendarDataSource,FSCalendarDelegate,FSCalendarDelegateAppearance>
 @property(nonatomic,strong) UIView *bgView;
 @property(nonatomic,strong) UIView *selectView;
+@property (weak, nonatomic) FSCalendar *calendar;
 
 @end
 
@@ -48,6 +50,79 @@
     self.hidden = YES;
 }
 
+#pragma mark - FSCalendarDelegate
+
+- (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat = @"yyyy-MM-dd";
+    NSString *string = [dateFormatter stringFromDate:date];
+    NSLog(@"did select %@",string);
+    if (self.block) {
+        self.block(string);
+    }
+    [self hidden];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [calendar deselectDate:date];
+    });
+}
+
+//- (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance fillDefaultColorForDate:(NSDate *)date
+//{
+//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//    dateFormatter.dateFormat = @"yyyy/MM/dd";
+//    NSString *key = [dateFormatter stringFromDate:date];
+//
+//    NSDictionary  *fillSelectionColors = @{
+//                                           @"2018/09/06":[UIColor redColor],
+//                                           @"2018/09/27":[UIColor grayColor],
+//                                           @"2018/09/08":[UIColor greenColor],
+//                                           @"2018/09/17":[UIColor grayColor],
+//                                           @"2018/09/21":[UIColor cyanColor]};
+//
+//    if ([fillSelectionColors.allKeys containsObject:key]) {
+////        return fillSelectionColors[key];
+//        return [UIColor baseColor];
+//    }
+//    return nil;
+//}
+- (FSCalendarCell *)calendar:(FSCalendar *)calendar cellForDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition
+{
+    LPCalendarCell *cell = [calendar dequeueReusableCellWithIdentifier:@"cell" forDate:date atMonthPosition:monthPosition];
+    return cell;
+}
+
+- (void)calendar:(FSCalendar *)calendar willDisplayCell:(FSCalendarCell *)cell forDate:(NSDate *)date atMonthPosition: (FSCalendarMonthPosition)monthPosition
+{
+    [self configureCell:cell forDate:date atMonthPosition:monthPosition];
+}
+
+#pragma mark - Private methods
+
+- (void)configureCell:(__kindof FSCalendarCell *)cell forDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)position
+{
+    LPCalendarCell *rangeCell = cell;
+    if (position != FSCalendarMonthPositionCurrent) {
+        rangeCell.label.hidden = YES;
+        return;
+    }
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat = @"yyyy/MM/dd";
+    NSString *key = [dateFormatter stringFromDate:date];
+    
+    NSDictionary  *fillSelectionColors = @{
+                                           @"2018/09/06":[UIColor redColor],
+                                           @"2018/09/27":[UIColor grayColor],
+                                           @"2018/09/08":[UIColor greenColor],
+                                           @"2018/09/17":[UIColor grayColor],
+                                           @"2018/09/21":[UIColor cyanColor]};
+    
+    if ([fillSelectionColors.allKeys containsObject:key]) {
+        rangeCell.label.hidden = NO;
+    }else{
+        rangeCell.label.hidden = YES;
+    }
+}
+
 #pragma mark - lazy
 -(UIView *)bgView{
     if (!_bgView) {
@@ -66,12 +141,29 @@
         _selectView.backgroundColor = [UIColor whiteColor];
         
         FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 253)];
+        calendar.dataSource = self;
+        calendar.delegate = self;
+        calendar.scrollDirection = FSCalendarScrollDirectionVertical;
+        calendar.backgroundColor = [UIColor whiteColor];
+        calendar.scrollEnabled = NO;
+        calendar.locale = [NSLocale localeWithLocaleIdentifier:@"zh-CN"];
+        calendar.appearance.selectionColor = [UIColor baseColor];
+        calendar.appearance.weekdayTextColor = [UIColor baseColor];
+        calendar.appearance.headerTitleColor = [UIColor baseColor];
+        calendar.appearance.todayColor = [UIColor baseColor];
+        calendar.appearance.headerDateFormat = @"yyyy年MM月";
+        calendar.placeholderType = FSCalendarPlaceholderTypeNone;
+        [calendar registerClass:[LPCalendarCell class] forCellReuseIdentifier:@"cell"];
+        [_selectView addSubview:calendar];
+        self.calendar = calendar;
+        
+//        FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 253)];
 //        calendar.dataSource = self;
 //        calendar.delegate = self;
-        calendar.backgroundColor = [UIColor whiteColor];
-        [_selectView addSubview:calendar];
-        calendar.locale = [NSLocale localeWithLocaleIdentifier:@"zh-CN"];
-//        self.calendar = calendar;
+//        calendar.appearance.headerMinimumDissolvedAlpha = 0;
+//        calendar.backgroundColor = [UIColor whiteColor];
+//        [_selectView addSubview:calendar];
+//        calendar.locale = [NSLocale localeWithLocaleIdentifier:@"zh-CN"];
         
     }
     return _selectView;

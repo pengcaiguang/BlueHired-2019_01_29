@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^LPDateSelectViewBlock)(NSString *string);
+
 @interface LPDateSelectView : UIView
+@property (nonatomic,copy) LPDateSelectViewBlock block;
 
 @end

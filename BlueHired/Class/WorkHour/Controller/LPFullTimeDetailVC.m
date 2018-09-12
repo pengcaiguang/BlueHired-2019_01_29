@@ -120,7 +120,8 @@ static NSString *LPWorkHourDetailPieChartCellID = @"LPWorkHourDetailPieChartCell
 
 -(void)touchMonthButton:(UIButton *)button{
     NSString *year = [self.currentDateString substringToIndex:4];
-    [self.timeButton setTitle:[NSString stringWithFormat:@"%@-%02ld",year,button.tag+1] forState:UIControlStateNormal];
+    self.currentDateString = [NSString stringWithFormat:@"%@-%02ld",year,button.tag+1];
+    [self.timeButton setTitle:self.currentDateString forState:UIControlStateNormal];
     for (UIButton *button in self.monthButtonArray) {
         button.selected = NO;
         button.backgroundColor = [UIColor colorWithHexString:@"#EEEEEE"];
@@ -130,6 +131,8 @@ static NSString *LPWorkHourDetailPieChartCellID = @"LPWorkHourDetailPieChartCell
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self monthViewHidden];
     });
+    [self requestSelectWorkhour];
+    
 }
 
 #pragma mark - TableViewDelegate & Datasource
