@@ -8,6 +8,7 @@
 
 #import "LPFullTimeDetailVC.h"
 #import "LPWorkHourDetailPieChartCell.h"
+#import "LPSelectWorkhourModel.h"
 
 static NSString *LPWorkHourDetailPieChartCellID = @"LPWorkHourDetailPieChartCell";
 
@@ -20,6 +21,8 @@ static NSString *LPWorkHourDetailPieChartCellID = @"LPWorkHourDetailPieChartCell
 
 @property(nonatomic,strong) NSString *currentDateString;
 @property(nonatomic,assign) NSInteger month;
+
+@property(nonatomic,strong) LPSelectWorkhourModel *model;
 
 @end
 
@@ -134,6 +137,11 @@ static NSString *LPWorkHourDetailPieChartCellID = @"LPWorkHourDetailPieChartCell
     [self requestSelectWorkhour];
     
 }
+#pragma mark - setter
+-(void)setModel:(LPSelectWorkhourModel *)model{
+    _model = model;
+    [self.tableview reloadData];
+}
 
 #pragma mark - TableViewDelegate & Datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -142,8 +150,11 @@ static NSString *LPWorkHourDetailPieChartCellID = @"LPWorkHourDetailPieChartCell
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     LPWorkHourDetailPieChartCell *cell = [tableView dequeueReusableCellWithIdentifier:LPWorkHourDetailPieChartCellID];
+    cell.index = indexPath.row;
+    cell.model = self.model;
     return cell;
 }
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
@@ -157,7 +168,7 @@ static NSString *LPWorkHourDetailPieChartCellID = @"LPWorkHourDetailPieChartCell
     [NetApiManager requestSelectWorkhourWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            
+            self.model = [LPSelectWorkhourModel mj_objectWithKeyValues:responseObject];
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

@@ -13,22 +13,45 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="121" id="KGk-i7-Jjw" customClass="LPWorkHourDetailPieChartCell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="120"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="170"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="119.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="169.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oZA-PW-b9d">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="120"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="170"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pB8-4o-KI5">
+                                <rect key="frame" x="12" y="18" width="2" height="15"/>
+                                <color key="backgroundColor" red="1" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="2" id="Ac8-Ef-hWv"/>
+                                    <constraint firstAttribute="height" constant="15" id="SR2-fb-Ahs"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="正常上班/月" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jfT-Dl-1MP">
+                                <rect key="frame" x="24" y="18" width="87" height="17"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="17" id="OhG-XV-GRR"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" red="0.10588235294117647" green="0.10588235294117647" blue="0.10588235294117647" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="120" id="UwA-wk-fik"/>
+                            <constraint firstAttribute="height" constant="170" id="UwA-wk-fik"/>
+                            <constraint firstItem="jfT-Dl-1MP" firstAttribute="top" secondItem="oZA-PW-b9d" secondAttribute="top" constant="18" id="WMH-Ho-7kH"/>
+                            <constraint firstItem="pB8-4o-KI5" firstAttribute="leading" secondItem="oZA-PW-b9d" secondAttribute="leading" constant="12" id="YPT-zh-M86"/>
+                            <constraint firstItem="jfT-Dl-1MP" firstAttribute="leading" secondItem="pB8-4o-KI5" secondAttribute="trailing" constant="10" id="any-md-CpA"/>
+                            <constraint firstItem="pB8-4o-KI5" firstAttribute="top" secondItem="oZA-PW-b9d" secondAttribute="top" constant="18" id="tjt-Uw-Y3R"/>
                         </constraints>
                     </view>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="oZA-PW-b9d" secondAttribute="bottom" id="A37-fW-Fav"/>
+                    <constraint firstAttribute="bottom" secondItem="oZA-PW-b9d" secondAttribute="bottom" id="IhE-JD-oU8"/>
                     <constraint firstItem="oZA-PW-b9d" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="mh2-Wq-87F"/>
                     <constraint firstAttribute="trailing" secondItem="oZA-PW-b9d" secondAttribute="trailing" id="pCs-GE-828"/>
                     <constraint firstItem="oZA-PW-b9d" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="wAc-dv-V5l"/>
@@ -36,9 +59,11 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
             <connections>
+                <outlet property="colorView" destination="pB8-4o-KI5" id="uwW-9R-49z"/>
+                <outlet property="typeTitleLabel" destination="jfT-Dl-1MP" id="AfW-qj-fLf"/>
                 <outlet property="view_constrait_height" destination="UwA-wk-fik" id="0CK-UY-c9L"/>
             </connections>
-            <point key="canvasLocation" x="-126" y="105.5"/>
+            <point key="canvasLocation" x="-126" y="105"/>
         </tableViewCell>
     </objects>
 </document>

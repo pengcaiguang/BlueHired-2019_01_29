@@ -81,20 +81,26 @@
             return;
         }
         
+        CGFloat x = (self.frame.size.height - 24*_descArr.count)/2;
+        if (x < 15) {
+            x = 15;
+        }
+        
         for (NSInteger i = 0; i<_descArr.count; i++) {
             
 //            [self drawQuartWithColor:colors[i%colors.count] andBeginPoint:P_M(15+self.frame.size.width/2*(i%2), 20*(i/2  )+25+_chartArcLength*2) andContext:contex];
 //            CGFloat present = [_valueArr[i] floatValue]/_allValueCount*100;
 //            [self drawText:[NSString stringWithFormat:@"%@ 销售额:%ld万 占比:%.1f%c",_descArr[i],[_valueArr[i] integerValue],present,'%'] andContext:contex atPoint:P_M(30+self.frame.size.width/2*(i%2), 20*(i/2  )+25+_chartArcLength*2) WithColor:[UIColor blackColor] andTextFontSize:8];
             
-            [self drawQuartWithColor:colors[i%colors.count] andBeginPoint:P_M(123, 24*(i)+15) andContext:contex];
+            
+            [self drawQuartWithColor:colors[i%colors.count] andBeginPoint:P_M(123, 24*(i)+x) andContext:contex];
 //            CGFloat present = [_valueArr[i] floatValue]/_allValueCount*100;
             
-            [self drawText:[NSString stringWithFormat:@"%@",_descArr[i]] andContext:contex atPoint:P_M(143, 24*(i)+12) WithColor:[UIColor colorWithHexString:@"#666666"] andTextFontSize:12];
+            [self drawText:[NSString stringWithFormat:@"%@",_descArr[i]] andContext:contex atPoint:P_M(143, 24*(i)+x-3) WithColor:[UIColor colorWithHexString:@"#666666"] andTextFontSize:12];
             
-            NSString *str = [NSString stringWithFormat:@"%ld小时",[_valueArr[i] integerValue]];
+            NSString *str = [NSString stringWithFormat:@"%@小时",_valueArr[i]];
             CGRect rect = [str getStringSize:CGSizeMake(MAXFLOAT, MAXFLOAT) font:[UIFont systemFontOfSize:14]];
-            [self drawText:str andContext:contex atPoint:P_M(self.frame.size.width-13-rect.size.width, 24*(i)+12) WithColor:[UIColor colorWithHexString:@"#8E8E8E"] andTextFontSize:14];
+            [self drawText:str andContext:contex atPoint:P_M(self.frame.size.width-13-rect.size.width, 24*(i)+x-3) WithColor:[UIColor colorWithHexString:@"#8E8E8E"] andTextFontSize:14];
         }
         
     }

@@ -78,9 +78,10 @@ static NSString *LPMainCellID = @"LPMainCell";
 }
 -(void)setLeftButton{
     UIView *leftBarButtonView = [[UIView alloc]init];
+//    leftBarButtonView.backgroundColor = [UIColor redColor];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:leftBarButtonView];
     [leftBarButtonView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.mas_equalTo(44);
+        make.height.mas_equalTo(self.navigationController.navigationBar.frame.size.height+[[UIApplication sharedApplication] statusBarFrame].size.height);
     }];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(touchSelectCityButton)];
     leftBarButtonView.userInteractionEnabled = YES;
@@ -91,7 +92,7 @@ static NSString *LPMainCellID = @"LPMainCell";
     [leftBarButtonView addSubview:pimageView];
     [pimageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(0);
-        make.centerY.equalTo(leftBarButtonView);
+        make.bottom.mas_equalTo(-15);
         make.size.mas_equalTo(CGSizeMake(11, 12));
     }];
     pimageView.image = [UIImage imageNamed:@"positioning"];
@@ -100,7 +101,7 @@ static NSString *LPMainCellID = @"LPMainCell";
     [leftBarButtonView addSubview:self.cityLabel];
     [self.cityLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(pimageView.mas_right).offset(3);
-        make.centerY.mas_equalTo(leftBarButtonView);
+        make.centerY.mas_equalTo(pimageView);
     }];
     self.cityLabel.text = @"全国";
     self.cityLabel.font = [UIFont systemFontOfSize:15];
@@ -110,7 +111,7 @@ static NSString *LPMainCellID = @"LPMainCell";
     [leftBarButtonView addSubview:dimageView];
     [dimageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.cityLabel.mas_right).offset(3);
-        make.centerY.equalTo(leftBarButtonView);
+        make.centerY.equalTo(pimageView);
         make.size.mas_equalTo(CGSizeMake(11, 6));
         make.right.equalTo(leftBarButtonView.mas_right).offset(0);
     }];
@@ -123,6 +124,8 @@ static NSString *LPMainCellID = @"LPMainCell";
     wrapView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 28);
     wrapView.layer.cornerRadius = 14;
     wrapView.layer.masksToBounds = YES;
+//    wrapView.clipsToBounds = YES;
+    wrapView.backgroundColor = [UIColor whiteColor];
     self.navigationItem.titleView = wrapView;
 
     [wrapView addSubview:searchBar];
