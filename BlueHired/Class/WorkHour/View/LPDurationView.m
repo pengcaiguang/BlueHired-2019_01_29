@@ -14,8 +14,7 @@
 
 @property(nonatomic,strong) UILabel *titleLabel;
 
-@property(nonatomic,strong) NSArray *timeArray;
-@property(nonatomic,strong) NSArray *typeArray;
+
 @property(nonatomic,strong) NSMutableArray *buttonArray;
 @property(nonatomic,strong) NSMutableArray *typeButtonArray;
 
@@ -23,7 +22,7 @@
 @property(nonatomic,strong) UIView *timebgView;
 
 
-@property(nonatomic,strong) NSString *selectString;
+@property(nonatomic,assign) NSInteger selectIndex;
 
 @end
 
@@ -33,8 +32,6 @@
 -(instancetype)init{
     self = [super init];
     if (self) {
-        self.timeArray = @[@"0.5",@"1",@"1.5",@"2",@"2.5",@"3",@"3.5",@"4",@"4.5",@"5",@"5.5",@"6",@"7",@"8",@"9",@"10",@"11",@"12"];
-        self.typeArray = @[@"早班",@"中班",@"晚班"];
         self.buttonArray = [NSMutableArray array];
         self.typeButtonArray = [NSMutableArray array];
         [[UIApplication sharedApplication].keyWindow addSubview:self.bgView];
@@ -59,7 +56,7 @@
     if (hidden) {
         [UIView animateWithDuration:0.3 animations:^{
             self.bgView.alpha = 0;
-            self.selectView.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, 253);
+            self.selectView.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, CGRectGetHeight(self.selectView.frame));
         } completion:^(BOOL finished) {
             self.bgView.hidden = YES;
             self.selectView.hidden = YES;
@@ -71,7 +68,7 @@
         self.selectView.hidden = NO;
         [UIView animateWithDuration:0.3 animations:^{
             self.bgView.alpha = 0.1;
-            self.selectView.frame = CGRectMake(0, SCREEN_HEIGHT-253, SCREEN_WIDTH, 253);
+            self.selectView.frame = CGRectMake(0, SCREEN_HEIGHT-CGRectGetHeight(self.selectView.frame), SCREEN_WIDTH, CGRectGetHeight(self.selectView.frame));
         }];
     }
 }
@@ -84,13 +81,13 @@
     [self clear];
     button.selected = YES;
     button.backgroundColor = [UIColor baseColor];
-    self.selectString = self.timeArray[index];
+    self.selectIndex = index;
 }
 -(void)touchTypeButton:(UIButton *)button{
     NSInteger index = button.tag;
     [self clearType];
     button.selected = YES;
-    self.selectString = self.typeArray[index];
+    self.selectIndex = index;
 }
 -(void)clearType{
     for (UIButton *button in self.typeButtonArray) {
@@ -105,7 +102,7 @@
 }
 -(void)save{
     if (self.block) {
-        self.block(self.selectString);
+        self.block(self.selectIndex);
     }
     [self hidden];
 }
@@ -114,8 +111,17 @@
     self.timebgView = [[UIView alloc]init];
     self.timebgView.frame = CGRectMake(0, 50, SCREEN_WIDTH, 253-98);
     [self.selectView addSubview:self.timebgView];
-    
     self.titleLabel.text = @"正常上班时长";
+}
+-(void)setTimeArray:(NSArray *)timeArray{
+    _timeArray = timeArray;
+    for (UIView *view in self.timebgView.subviews) {
+        [view removeFromSuperview];
+    }
+    self.buttonArray = [NSMutableArray array];
+
+    self.selectView.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, 253);
+
     for (int i = 0; i < self.timeArray.count; i++) {
         UIView *view = [[UIView alloc]init];
         view.frame = CGRectMake(i%6 * SCREEN_WIDTH/6, floor(i/6)*51, SCREEN_WIDTH/6, 51);
@@ -136,7 +142,6 @@
         [self.buttonArray addObject:button];
         [button addTarget:self action:@selector(touchTimeButton:) forControlEvents:UIControlEventTouchUpInside];
     }
-        
 }
 
 -(void)addTypeSubView{
@@ -144,6 +149,23 @@
     self.typebgView.frame = CGRectMake(0, 50, SCREEN_WIDTH, 253-98);
     [self.selectView addSubview:self.typebgView];
     self.titleLabel.text = @"上班类型";
+}
+-(void)setTitleString:(NSString *)titleString{
+    _titleString = titleString;
+    self.titleLabel.text = titleString;
+}
+
+-(void)setTypeArray:(NSArray *)typeArray{
+    _typeArray = typeArray;
+    for (UIView *view in self.typebgView.subviews) {
+        [view removeFromSuperview];
+    }
+    self.typeButtonArray = [NSMutableArray array];
+    
+    self.typebgView.frame = CGRectMake(0, 50, SCREEN_WIDTH, typeArray.count * 52);
+    self.selectView.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, typeArray.count * 52 + 97);
+
+    
     for (int i = 0; i<self.typeArray.count; i++) {
         UIButton *button = [[UIButton alloc]init];
         button.frame = CGRectMake(0, 20 + 41*i, SCREEN_WIDTH, 41);
@@ -189,22 +211,34 @@
         [self addTypeSubView];
         
         UIButton *cancelButton = [[UIButton alloc]init];
-        cancelButton.frame = CGRectMake(0, 253-47, SCREEN_WIDTH/2, 47);
+        [_selectView addSubview:cancelButton];
+//        cancelButton.frame = CGRectMake(0, 253-47, SCREEN_WIDTH/2, 47);
+        [cancelButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(0);
+            make.bottom.mas_equalTo(0);
+            make.height.mas_equalTo(47);
+            make.width.mas_equalTo(SCREEN_WIDTH/2);
+        }];
         cancelButton.backgroundColor = [UIColor whiteColor];
         [cancelButton setTitle:@"取消" forState:UIControlStateNormal];
         cancelButton.titleLabel.font = [UIFont systemFontOfSize:16];
         [cancelButton setTitleColor:[UIColor colorWithHexString:@"#666666"] forState:UIControlStateNormal];
         [cancelButton addTarget:self action:@selector(hidden) forControlEvents:UIControlEventTouchUpInside];
-        [_selectView addSubview:cancelButton];
         
         UIButton *saveButton = [[UIButton alloc]init];
-        saveButton.frame = CGRectMake(SCREEN_WIDTH/2, 253-47, SCREEN_WIDTH/2, 47);
+        [_selectView addSubview:saveButton];
+//        saveButton.frame = CGRectMake(SCREEN_WIDTH/2, 253-47, SCREEN_WIDTH/2, 47);
+        [saveButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.mas_equalTo(0);
+            make.bottom.mas_equalTo(0);
+            make.height.mas_equalTo(47);
+            make.width.mas_equalTo(SCREEN_WIDTH/2);
+        }];
         saveButton.backgroundColor = [UIColor whiteColor];
         [saveButton setTitle:@"保存" forState:UIControlStateNormal];
         saveButton.titleLabel.font = [UIFont systemFontOfSize:16];
         [saveButton setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
         [saveButton addTarget:self action:@selector(save) forControlEvents:UIControlEventTouchUpInside];
-        [_selectView addSubview:saveButton];
     }
     return _selectView;
 }

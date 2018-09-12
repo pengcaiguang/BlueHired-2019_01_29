@@ -10,6 +10,7 @@
 #import "LPDurationView.h"
 #import "LPDateSelectView.h"
 #import "LPFullTimeDetailVC.h"
+#import "LPQueryCurrecordModel.h"
 
 @interface LPFullTimeVC ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong)UITableView *tableview;
@@ -21,6 +22,18 @@
 
 @property(nonatomic,strong) NSString *currentDateString;
 @property(nonatomic,assign) NSInteger month;
+
+@property(nonatomic,strong) LPQueryCurrecordModel *model;
+
+@property(nonatomic,assign) NSInteger addType;
+@property(nonatomic,assign) CGFloat addWorkHour;
+@property(nonatomic,assign) CGFloat leaveHour;
+@property(nonatomic,assign) NSInteger leaveType;
+@property(nonatomic,strong) NSString *time;
+@property(nonatomic,assign) NSInteger optType;
+@property(nonatomic,assign) NSInteger type;
+@property(nonatomic,strong) NSNumber *workType;
+@property(nonatomic,assign) CGFloat workTypeHour;
 
 @end
 
@@ -202,19 +215,86 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    WEAK_SELF()
     if (indexPath.row == 1 || indexPath.row == 2) {
+        if (indexPath.section == 0) {
+            if (indexPath.row == 1) {
+                self.durationView.titleString = @"上班类型";
+                NSArray *array = @[@"早班",@"中班",@"晚班"];
+                self.durationView.typeArray = array;
+                self.durationView.block = ^(NSInteger index) {
+                    weakSelf.workType = [NSNumber numberWithInteger:index];
+                    cell.detailTextLabel.text = array[index];
+                };
+            }else{
+                NSArray *array = @[@"0.5",@"1",@"1.5",@"2",@"2.5",@"3",@"3.5",@"4",@"4.5",@"5",@"5.5",@"6",@"7",@"8",@"9",@"10",@"11",@"12"];
+                self.durationView.timeArray = array;
+                self.durationView.titleString = @"正常上班时长";
+                self.durationView.block = ^(NSInteger index) {
+                    weakSelf.workTypeHour = [array[index] floatValue];
+                    cell.detailTextLabel.text = array[index];
+                };
+            }
+            
+        }else if (indexPath.section == 1) {
+            if (indexPath.row == 1) {
+                self.durationView.titleString = @"加班类型";
+                NSArray *array = @[@"普通加班",@"周末加班",@"节假日加班"];
+                self.durationView.typeArray = array;
+                self.durationView.block = ^(NSInteger index) {
+                    weakSelf.addType = index;
+                    cell.detailTextLabel.text = array[index];
+                };
+            }else{
+                NSArray *array = @[@"0.5",@"1",@"1.5",@"2",@"2.5",@"3",@"3.5",@"4",@"4.5",@"5",@"5.5",@"6",@"7",@"8",@"9",@"10",@"11",@"12"];
+                self.durationView.timeArray = array;
+                self.durationView.titleString = @"加班时长";
+                self.durationView.block = ^(NSInteger index) {
+                    weakSelf.addWorkHour = [array[index] floatValue];
+                    cell.detailTextLabel.text = array[index];
+                };
+            }
+        }else if (indexPath.section == 2) {
+            if (indexPath.row == 1) {
+                self.durationView.titleString = @"请假类型";
+                NSArray *array = @[@"带薪休假",@"调休",@"事假",@"病假",@"其它请假"];
+                self.durationView.typeArray = array;
+                self.durationView.block = ^(NSInteger index) {
+                    weakSelf.leaveType = index;
+                    cell.detailTextLabel.text = array[index];
+                };
+            }else{
+                NSArray *array = @[@"0.5",@"1",@"1.5",@"2",@"2.5",@"3",@"3.5",@"4",@"4.5",@"5",@"5.5",@"6",@"7",@"8",@"9",@"10",@"11",@"12"];
+                self.durationView.timeArray = array;
+                self.durationView.titleString = @"请假时长";
+                self.durationView.block = ^(NSInteger index) {
+                    weakSelf.leaveHour = [array[index] floatValue];
+                    cell.detailTextLabel.text = array[index];
+                };
+            }
+        }
         self.durationView.hidden = NO;
         self.durationView.type = indexPath.row;
-        self.durationView.block = ^(NSString *string) {
-            cell.detailTextLabel.text = string;
-        };
     }
 }
+#pragma mark - setter
+-(void)setModel:(LPQueryCurrecordModel *)model{
+    _model = model;
+    
+}
+
 
 #pragma mark - target
 -(void)touchDetailButton{
     LPFullTimeDetailVC *vc = [[LPFullTimeDetailVC alloc]init];
     [self.navigationController pushViewController:vc animated:YES];
+}
+-(void)touchRecordButton{
+    if (!self.workType || !self.workTypeHour) {
+        [self.view showLoadingMeg:@"请选择上班类型及时间" time:MESSAGE_SHOW_TIME];
+        return;
+    }
+    [self requestSaveorupdateWorkhour];
 }
 
 #pragma mark - request
@@ -226,7 +306,7 @@
     [NetApiManager requestQueryCurrecordWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            
+            self.model = [LPQueryCurrecordModel mj_objectWithKeyValues:responseObject];
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -237,6 +317,27 @@
                           @"month":@(self.month)
                           };
     [NetApiManager requestQueryNormalrecordWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+-(void)requestSaveorupdateWorkhour{
+    NSDictionary *dic = @{
+                          @"addType":self.addType ? @(self.addType) : @"",
+                          @"addWorkHour":self.addWorkHour ? @(self.addWorkHour) : @"",
+                          @"leaveHour":self.leaveHour ? @(self.leaveHour) : @"",
+                          @"leaveType":self.leaveType ? @(self.leaveType) : @"",
+                          @"time":self.currentDateString,
+                          @"optType":self.model.data ? @(2) : @(1),
+                          @"type":@(0),
+                          @"workType":self.workType,
+                          @"workTypeHour":@(self.workTypeHour),
+                          };
+    [NetApiManager requestSaveorupdateWorkhourWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
             
@@ -274,6 +375,7 @@
         [recordButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         recordButton.layer.masksToBounds = YES;
         recordButton.layer.cornerRadius = 24;
+        [recordButton addTarget:self action:@selector(touchRecordButton) forControlEvents:UIControlEventTouchUpInside];
         [_tableFooterView addSubview:recordButton];
         
         UIButton *detailButton = [[UIButton alloc]init];

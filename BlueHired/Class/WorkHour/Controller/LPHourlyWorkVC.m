@@ -171,8 +171,8 @@
     if (indexPath.row == 1 || indexPath.row == 2) {
         self.durationView.hidden = NO;
         self.durationView.type = indexPath.row;
-        self.durationView.block = ^(NSString *string) {
-            cell.detailTextLabel.text = string;
+        self.durationView.block = ^(NSInteger index) {
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"%ld",index];
         };
     }
 }

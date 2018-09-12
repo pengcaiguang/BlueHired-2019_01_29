@@ -48,7 +48,11 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
     _index = index;
     if (index == 0) {
         [self requestMoodType];
+        self.tableview.tableHeaderView = self.tableHeaderView;
+    }else{
+        self.tableview.tableHeaderView = [[UIView alloc]init];
     }
+    self.page = 1;
     [self requestMoodList];
 }
 
@@ -111,7 +115,11 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
             [self.moodListArray addObjectsFromArray:moodListModel.data];
             [self.tableview reloadData];
         }else{
-            [self.tableview.mj_footer endRefreshingWithNoMoreData];
+            if (self.page == 1) {
+                [self.tableview reloadData];
+            }else{
+                [self.tableview.mj_footer endRefreshingWithNoMoreData];
+            }
         }
     }else{
         [self.contentView showLoadingMeg:NETE_ERROR_MESSAGE time:MESSAGE_SHOW_TIME];

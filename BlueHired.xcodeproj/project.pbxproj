@@ -124,6 +124,7 @@
 		DCE2C2322148B52400BCB9F4 /* LPCalendarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCE2C2312148B52400BCB9F4 /* LPCalendarCell.m */; };
 		DCE2C2352148C35C00BCB9F4 /* LPSalaryDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCE2C2342148C35C00BCB9F4 /* LPSalaryDetailVC.m */; };
 		DCE2C23A2148DD9400BCB9F4 /* LPLendVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCE2C2392148DD9400BCB9F4 /* LPLendVC.m */; };
+		DCE2C23E2148EFBF00BCB9F4 /* LPQueryCurrecordModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DCE2C23D2148EFBF00BCB9F4 /* LPQueryCurrecordModel.m */; };
 		DCF5D9BC213F892D009F5DCE /* LPBusinessReviewVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF5D9BB213F892D009F5DCE /* LPBusinessReviewVC.m */; };
 		DCF5D9C0213FA395009F5DCE /* LPMechanismcommentMechanismlistModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF5D9BF213FA395009F5DCE /* LPMechanismcommentMechanismlistModel.m */; };
 		DCF5D9C5213FA5BD009F5DCE /* LPBusinessReviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF5D9C3213FA5BD009F5DCE /* LPBusinessReviewCell.m */; };
@@ -375,6 +376,8 @@
 		DCE2C2342148C35C00BCB9F4 /* LPSalaryDetailVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPSalaryDetailVC.m; sourceTree = "<group>"; };
 		DCE2C2382148DD9400BCB9F4 /* LPLendVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPLendVC.h; sourceTree = "<group>"; };
 		DCE2C2392148DD9400BCB9F4 /* LPLendVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPLendVC.m; sourceTree = "<group>"; };
+		DCE2C23C2148EFBF00BCB9F4 /* LPQueryCurrecordModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPQueryCurrecordModel.h; sourceTree = "<group>"; };
+		DCE2C23D2148EFBF00BCB9F4 /* LPQueryCurrecordModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPQueryCurrecordModel.m; sourceTree = "<group>"; };
 		DCF5D9BA213F892D009F5DCE /* LPBusinessReviewVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPBusinessReviewVC.h; sourceTree = "<group>"; };
 		DCF5D9BB213F892D009F5DCE /* LPBusinessReviewVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPBusinessReviewVC.m; sourceTree = "<group>"; };
 		DCF5D9BE213FA395009F5DCE /* LPMechanismcommentMechanismlistModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPMechanismcommentMechanismlistModel.h; sourceTree = "<group>"; };
@@ -565,6 +568,7 @@
 		DC61FABE21461A950003AA61 /* WorkHour */ = {
 			isa = PBXGroup;
 			children = (
+				DCE2C23B2148EF8300BCB9F4 /* Model */,
 				DCCC8A752147AED60062A0F5 /* WSPieChart */,
 				DC61FAC621466E490003AA61 /* View */,
 				DC61FABF21461A950003AA61 /* Controller */,
@@ -1013,6 +1017,15 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
+		DCE2C23B2148EF8300BCB9F4 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DCE2C23C2148EFBF00BCB9F4 /* LPQueryCurrecordModel.h */,
+				DCE2C23D2148EFBF00BCB9F4 /* LPQueryCurrecordModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		DCF5D9B8213F8905009F5DCE /* BusinessReview */ = {
 			isa = PBXGroup;
 			children = (
@@ -1360,6 +1373,7 @@
 				DC7383972134E95E0055DC10 /* NetRequestManager.m in Sources */,
 				DC5C3889213640A300B3CF6E /* LPInformationMoreCell.m in Sources */,
 				DC7383952134E95E0055DC10 /* NetInstance.m in Sources */,
+				DCE2C23E2148EFBF00BCB9F4 /* LPQueryCurrecordModel.m in Sources */,
 				DCCC8A6F2147A29A0062A0F5 /* LPHourlyWorkDetailVC.m in Sources */,
 				DC7383AC2134F7B50055DC10 /* LPWorklistModel.m in Sources */,
 				DC5C389D213682F500B3CF6E /* LPCircleListCell.m in Sources */,
