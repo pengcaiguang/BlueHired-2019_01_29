@@ -28,8 +28,8 @@
 @property(nonatomic,copy) NSString *time;
 @property(nonatomic,copy) NSString *type;
 @property(nonatomic,copy) NSString *userId;
-@property(nonatomic,copy) NSString *workNormalHour;
-@property(nonatomic,copy) NSString *workReHour;
+@property(nonatomic,copy) NSNumber *workNormalHour;
+@property(nonatomic,copy) NSNumber *workReHour;
 @property(nonatomic,copy) NSNumber *workType;
 
 @end

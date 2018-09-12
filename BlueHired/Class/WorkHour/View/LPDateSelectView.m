@@ -61,9 +61,6 @@
         self.block(string);
     }
     [self hidden];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [calendar deselectDate:date];
-    });
 }
 
 //- (UIColor *)calendar:(FSCalendar *)calendar appearance:(FSCalendarAppearance *)appearance fillDefaultColorForDate:(NSDate *)date
@@ -151,10 +148,13 @@
         calendar.appearance.weekdayTextColor = [UIColor baseColor];
         calendar.appearance.headerTitleColor = [UIColor baseColor];
         calendar.appearance.todayColor = [UIColor baseColor];
+        calendar.today = nil;
+        [calendar selectDate:[NSDate date]];
         calendar.appearance.headerDateFormat = @"yyyy年MM月";
         calendar.placeholderType = FSCalendarPlaceholderTypeNone;
         [calendar registerClass:[LPCalendarCell class] forCellReuseIdentifier:@"cell"];
         [_selectView addSubview:calendar];
+        
         self.calendar = calendar;
         
 //        FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 253)];

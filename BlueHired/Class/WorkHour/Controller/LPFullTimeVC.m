@@ -23,17 +23,22 @@
 @property(nonatomic,strong) NSString *currentDateString;
 @property(nonatomic,assign) NSInteger month;
 
+@property(nonatomic,strong) NSArray *workTypeArray;
+@property(nonatomic,strong) NSArray *addTypeTypeArray;
+@property(nonatomic,strong) NSArray *leaveTypeArray;
+@property(nonatomic,strong) NSArray *timeArray;
+
 @property(nonatomic,strong) LPQueryCurrecordModel *model;
 
-@property(nonatomic,assign) NSInteger addType;
+@property(nonatomic,strong) NSNumber *addType;
 @property(nonatomic,assign) CGFloat addWorkHour;
 @property(nonatomic,assign) CGFloat leaveHour;
-@property(nonatomic,assign) NSInteger leaveType;
+@property(nonatomic,strong) NSNumber *leaveType;
 @property(nonatomic,strong) NSString *time;
 @property(nonatomic,assign) NSInteger optType;
 @property(nonatomic,assign) NSInteger type;
 @property(nonatomic,strong) NSNumber *workType;
-@property(nonatomic,assign) CGFloat workTypeHour;
+@property(nonatomic,assign) CGFloat workNormalHour;
 
 @end
 
@@ -44,6 +49,11 @@
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = @"正式工";
+    
+    self.workTypeArray = @[@"早班",@"中班",@"晚班"];
+    self.addTypeTypeArray = @[@"普通加班",@"周末加班",@"节假日加班"];
+    self.leaveTypeArray = @[@"带薪休假",@"调休",@"事假",@"病假",@"其它请假"];
+    self.timeArray = @[@"0.5",@"1",@"1.5",@"2",@"2.5",@"3",@"3.5",@"4",@"4.5",@"5",@"5.5",@"6",@"7",@"8",@"9",@"10",@"11",@"12"];
     
     NSDate *currentDate = [NSDate date];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -187,8 +197,10 @@
             cell.imageView.image = [UIImage imageNamed:@"zhengchangshangban"];
         }else if (indexPath.row == 1){
             cell.textLabel.text = @"类型";
+            cell.detailTextLabel.text = self.model.data.workType ? self.workTypeArray[self.model.data.workType.integerValue] : @"";
         }else {
             cell.textLabel.text = @"时长";
+            cell.detailTextLabel.text = self.model.data.workNormalHour ? self.model.data.workNormalHour.stringValue : @"";
         }
     }else if (indexPath.section == 1) {
         if (indexPath.row == 0) {
@@ -196,8 +208,10 @@
             cell.imageView.image = [UIImage imageNamed:@"jiabanjilu"];
         }else if (indexPath.row == 1){
             cell.textLabel.text = @"类型";
+            cell.detailTextLabel.text = self.model.data.addType ? self.addTypeTypeArray[self.model.data.addType.integerValue] : @"";
         }else {
             cell.textLabel.text = @"时长";
+            cell.detailTextLabel.text = self.model.data.addWorkHour ? self.model.data.addWorkHour.stringValue : @"";
         }
     }else {
         if (indexPath.row == 0) {
@@ -205,8 +219,10 @@
             cell.imageView.image = [UIImage imageNamed:@"qingjiajilu"];
         }else if (indexPath.row == 1){
             cell.textLabel.text = @"类型";
+            cell.detailTextLabel.text = self.model.data.leaveType ? self.leaveTypeArray[self.model.data.leaveType.integerValue] : @"";
         }else {
             cell.textLabel.text = @"时长";
+            cell.detailTextLabel.text = self.model.data.leaveHour ? self.model.data.leaveHour.stringValue : @"";
         }
     }
     
@@ -220,56 +236,50 @@
         if (indexPath.section == 0) {
             if (indexPath.row == 1) {
                 self.durationView.titleString = @"上班类型";
-                NSArray *array = @[@"早班",@"中班",@"晚班"];
-                self.durationView.typeArray = array;
+                self.durationView.typeArray = self.workTypeArray;
                 self.durationView.block = ^(NSInteger index) {
                     weakSelf.workType = [NSNumber numberWithInteger:index];
-                    cell.detailTextLabel.text = array[index];
+                    cell.detailTextLabel.text = weakSelf.workTypeArray[index];
                 };
             }else{
-                NSArray *array = @[@"0.5",@"1",@"1.5",@"2",@"2.5",@"3",@"3.5",@"4",@"4.5",@"5",@"5.5",@"6",@"7",@"8",@"9",@"10",@"11",@"12"];
-                self.durationView.timeArray = array;
+                self.durationView.timeArray = self.timeArray;
                 self.durationView.titleString = @"正常上班时长";
                 self.durationView.block = ^(NSInteger index) {
-                    weakSelf.workTypeHour = [array[index] floatValue];
-                    cell.detailTextLabel.text = array[index];
+                    weakSelf.workNormalHour = [weakSelf.timeArray[index] floatValue];
+                    cell.detailTextLabel.text = weakSelf.timeArray[index];
                 };
             }
             
         }else if (indexPath.section == 1) {
             if (indexPath.row == 1) {
                 self.durationView.titleString = @"加班类型";
-                NSArray *array = @[@"普通加班",@"周末加班",@"节假日加班"];
-                self.durationView.typeArray = array;
+                self.durationView.typeArray = self.addTypeTypeArray;
                 self.durationView.block = ^(NSInteger index) {
-                    weakSelf.addType = index;
-                    cell.detailTextLabel.text = array[index];
+                    weakSelf.addType = [NSNumber numberWithInteger:index];;
+                    cell.detailTextLabel.text = weakSelf.addTypeTypeArray[index];
                 };
             }else{
-                NSArray *array = @[@"0.5",@"1",@"1.5",@"2",@"2.5",@"3",@"3.5",@"4",@"4.5",@"5",@"5.5",@"6",@"7",@"8",@"9",@"10",@"11",@"12"];
-                self.durationView.timeArray = array;
+                self.durationView.timeArray = self.timeArray;
                 self.durationView.titleString = @"加班时长";
                 self.durationView.block = ^(NSInteger index) {
-                    weakSelf.addWorkHour = [array[index] floatValue];
-                    cell.detailTextLabel.text = array[index];
+                    weakSelf.addWorkHour = [weakSelf.timeArray[index] floatValue];
+                    cell.detailTextLabel.text = weakSelf.timeArray[index];
                 };
             }
         }else if (indexPath.section == 2) {
             if (indexPath.row == 1) {
                 self.durationView.titleString = @"请假类型";
-                NSArray *array = @[@"带薪休假",@"调休",@"事假",@"病假",@"其它请假"];
-                self.durationView.typeArray = array;
+                self.durationView.typeArray = self.leaveTypeArray;
                 self.durationView.block = ^(NSInteger index) {
-                    weakSelf.leaveType = index;
-                    cell.detailTextLabel.text = array[index];
+                    weakSelf.leaveType = [NSNumber numberWithInteger:index];;
+                    cell.detailTextLabel.text = weakSelf.leaveTypeArray[index];
                 };
             }else{
-                NSArray *array = @[@"0.5",@"1",@"1.5",@"2",@"2.5",@"3",@"3.5",@"4",@"4.5",@"5",@"5.5",@"6",@"7",@"8",@"9",@"10",@"11",@"12"];
-                self.durationView.timeArray = array;
+                self.durationView.timeArray = self.timeArray;
                 self.durationView.titleString = @"请假时长";
                 self.durationView.block = ^(NSInteger index) {
-                    weakSelf.leaveHour = [array[index] floatValue];
-                    cell.detailTextLabel.text = array[index];
+                    weakSelf.leaveHour = [weakSelf.timeArray[index] floatValue];
+                    cell.detailTextLabel.text = weakSelf.timeArray[index];
                 };
             }
         }
@@ -280,7 +290,15 @@
 #pragma mark - setter
 -(void)setModel:(LPQueryCurrecordModel *)model{
     _model = model;
-    
+//    if (model.data) {
+        self.workType = model.data.workType;
+        self.workNormalHour = model.data.workNormalHour.floatValue;
+        self.addType = model.data.addType;
+        self.addWorkHour = model.data.addWorkHour.floatValue;
+        self.leaveType = model.data.leaveType;
+        self.leaveHour = model.data.leaveHour.floatValue;
+        [self.tableview reloadData];
+//    }
 }
 
 
@@ -290,7 +308,7 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 -(void)touchRecordButton{
-    if (!self.workType || !self.workTypeHour) {
+    if (!self.workType || !self.workNormalHour) {
         [self.view showLoadingMeg:@"请选择上班类型及时间" time:MESSAGE_SHOW_TIME];
         return;
     }
@@ -327,20 +345,24 @@
 }
 -(void)requestSaveorupdateWorkhour{
     NSDictionary *dic = @{
-                          @"addType":self.addType ? @(self.addType) : @"",
+                          @"addType":self.addType ? self.addType : @"",
                           @"addWorkHour":self.addWorkHour ? @(self.addWorkHour) : @"",
                           @"leaveHour":self.leaveHour ? @(self.leaveHour) : @"",
-                          @"leaveType":self.leaveType ? @(self.leaveType) : @"",
+                          @"leaveType":self.leaveType ? self.leaveType : @"",
                           @"time":self.currentDateString,
                           @"optType":self.model.data ? @(2) : @(1),
                           @"type":@(0),
                           @"workType":self.workType,
-                          @"workTypeHour":@(self.workTypeHour),
+                          @"workNormalHour":@(self.workNormalHour),
                           };
     [NetApiManager requestSaveorupdateWorkhourWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            
+            if (responseObject[@"data"]) {
+                if ([responseObject[@"data"] integerValue] == 1) {
+                    [self.view showLoadingMeg:@"记录成功" time:MESSAGE_SHOW_TIME];
+                }
+            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
