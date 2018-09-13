@@ -25,6 +25,7 @@
 @property(nonatomic,copy) NSNumber *leaveHour;
 @property(nonatomic,copy) NSNumber *leaveType;
 @property(nonatomic,copy) NSString *optType;
+@property(nonatomic,copy) NSString *set_time;
 @property(nonatomic,copy) NSString *time;
 @property(nonatomic,copy) NSString *type;
 @property(nonatomic,copy) NSString *userId;

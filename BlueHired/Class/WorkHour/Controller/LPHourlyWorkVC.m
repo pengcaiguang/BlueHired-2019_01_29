@@ -10,11 +10,12 @@
 #import "LPDurationView.h"
 #import "LPDateSelectView.h"
 #import "LPHourlyWorkDetailVC.h"
-#import "LPQueryCurrecordHourlyModel.h"
+#import "LPQueryCurrecordModel.h"
 
-@interface LPHourlyWorkVC ()<UITableViewDelegate,UITableViewDataSource>
+@interface LPHourlyWorkVC ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate>
 @property (nonatomic, strong)UITableView *tableview;
 @property(nonatomic,strong) UIView *tableFooterView;
+@property(nonatomic,strong) UIButton *timeButton;
 
 @property(nonatomic,strong) LPDateSelectView *dateSelectView;
 @property(nonatomic,strong) LPDurationView *durationView;
@@ -23,7 +24,7 @@
 
 @property(nonatomic,strong) NSString *currentDateString;
 
-@property(nonatomic,strong) LPQueryCurrecordHourlyModel *model;
+@property(nonatomic,strong) LPQueryCurrecordModel *model;
 
 @property(nonatomic,assign) CGFloat labourCost;
 @property(nonatomic,assign) CGFloat workReHour;
@@ -78,6 +79,7 @@
     }];
     [timeButton setTitle:self.currentDateString forState:UIControlStateNormal];
     [timeButton addTarget:self action:@selector(selectCalenderButton:) forControlEvents:UIControlEventTouchUpInside];
+    self.timeButton = timeButton;
     
     UIImageView *leftImgView = [[UIImageView alloc]init];
     [bgView addSubview:leftImgView];
@@ -118,20 +120,35 @@
 }
 
 #pragma mark - setter
--(void)setModel:(LPQueryCurrecordHourlyModel *)model{
+-(void)setModel:(LPQueryCurrecordModel *)model{
     _model = model;
     //    if (model.data) {
-    self.workReHour = model.data.workTypeHour.floatValue;
+    self.workReHour = model.data.workReHour.floatValue;
     self.labourCost = model.data.labourCost.floatValue;
     [self.tableview reloadData];
     //    }
 }
 
 #pragma mark - tagter
+-(void)textFieldChanged:(UITextField *)textField{
+    self.labourCost = [textField.text floatValue];
+}
 -(void)selectCalenderButton:(UIButton *)button{
     self.dateSelectView.hidden = NO;
+    WEAK_SELF()
+    self.dateSelectView.block = ^(NSString *string) {
+        weakSelf.currentDateString = string;
+        [weakSelf.timeButton setTitle:string forState:UIControlStateNormal];
+        [weakSelf requestQueryCurrecord];
+    };
 }
-
+-(void)touchRecordButton{
+    if (!self.labourCost || !self.workReHour) {
+        [self.view showLoadingMeg:@"请选择工时及工价" time:MESSAGE_SHOW_TIME];
+        return;
+    }
+    [self requestSaveorupdateWorkhour];
+}
 #pragma mark - TableViewDelegate & Datasource
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;
@@ -181,6 +198,8 @@
     }else if (indexPath.row == 1){
         cell.textLabel.text = @"工时";
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.detailTextLabel.text = self.model.data.workReHour ? [NSString stringWithFormat:@"%@",self.model.data.workReHour] : @"";
+        
 
     }else {
         cell.textLabel.text = @"工价";
@@ -195,7 +214,9 @@
         textField.placeholder = @"请输入工价(元/小时)";
         textField.textAlignment = NSTextAlignmentRight;
         textField.font = [UIFont systemFontOfSize:16];
-        
+        [textField addTarget:self action:@selector(textFieldChanged:) forControlEvents:UIControlEventEditingChanged];
+
+        textField.text = self.model.data.labourCost ? [NSString stringWithFormat:@"%@",self.model.data.labourCost] : @"";
     }
     
     return cell;
@@ -230,7 +251,28 @@
     [NetApiManager requestQueryCurrecordWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            self.model = [LPQueryCurrecordHourlyModel mj_objectWithKeyValues:responseObject];
+            self.model = [LPQueryCurrecordModel mj_objectWithKeyValues:responseObject];
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+-(void)requestSaveorupdateWorkhour{
+    NSDictionary *dic = @{
+                          @"labourCost":self.labourCost ? @(self.labourCost) : @"",
+                          @"workReHour":self.workReHour ? @(self.workReHour) : @"",
+                          @"time":self.currentDateString,
+                          @"optType":self.model.data ? @(2) : @(1),
+                          @"type":@(1),
+                          };
+    [NetApiManager requestSaveorupdateWorkhourWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if (responseObject[@"data"]) {
+                if ([responseObject[@"data"] integerValue] == 1) {
+                    [self.view showLoadingMeg:@"记录成功" time:MESSAGE_SHOW_TIME];
+                }
+            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -264,6 +306,7 @@
         [recordButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         recordButton.layer.masksToBounds = YES;
         recordButton.layer.cornerRadius = 24;
+        [recordButton addTarget:self action:@selector(touchRecordButton) forControlEvents:UIControlEventTouchUpInside];
         [_tableFooterView addSubview:recordButton];
         
         UIButton *detailButton = [[UIButton alloc]init];
