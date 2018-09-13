@@ -67,6 +67,10 @@ static NSString *LPSubsidyDeductionCellID = @"LPSubsidyDeductionCell";
 }
 -(void)touchBottomButton{
     NSLog(@"touchBottomButton");
+    GJAlertText *alert = [[GJAlertText alloc]initWithTitle:@"自定义补贴记录" message:@"请输入补贴类型" buttonTitles:@[@"取消",@"确定"] buttonsColor:@[[UIColor colorWithHexString:@"#666666"],[UIColor baseColor]] buttonClick:^(NSInteger buttonIndex, NSString *string) {
+        NSLog(@"-%@",string);
+    }];
+    [alert show];
 }
 #pragma mark - TableViewDelegate & Datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{

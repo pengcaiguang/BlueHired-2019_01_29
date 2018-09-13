@@ -98,14 +98,14 @@ static NSString *LPAddRecordCellID = @"LPAddRecordCell";
     }];
     rightImgView.image = [UIImage imageNamed:@"right_arrow"];
     
-    UIButton *deleteButton = [[UIButton alloc]init];
-    [bgView addSubview:deleteButton];
-    [deleteButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.mas_equalTo(-14);
-        make.centerY.equalTo(bgView);
-        make.size.mas_equalTo(CGSizeMake(15, 19));
-    }];
-    [deleteButton setImage:[UIImage imageNamed:@"delete_white"] forState:UIControlStateNormal];
+//    UIButton *deleteButton = [[UIButton alloc]init];
+//    [bgView addSubview:deleteButton];
+//    [deleteButton mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.right.mas_equalTo(-14);
+//        make.centerY.equalTo(bgView);
+//        make.size.mas_equalTo(CGSizeMake(15, 19));
+//    }];
+//    [deleteButton setImage:[UIImage imageNamed:@"delete_white"] forState:UIControlStateNormal];
     
     
     [self.view addSubview:self.tableview];

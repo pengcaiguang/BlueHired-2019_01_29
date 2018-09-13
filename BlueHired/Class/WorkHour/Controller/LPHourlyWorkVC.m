@@ -19,12 +19,14 @@
 @property(nonatomic,strong) LPDateSelectView *dateSelectView;
 @property(nonatomic,strong) LPDurationView *durationView;
 
+@property(nonatomic,strong) NSArray *timeArray;
+
 @property(nonatomic,strong) NSString *currentDateString;
 
 @property(nonatomic,strong) LPQueryCurrecordHourlyModel *model;
 
 @property(nonatomic,assign) CGFloat labourCost;
-@property(nonatomic,assign) CGFloat workTypeHour;
+@property(nonatomic,assign) CGFloat workReHour;
 
 @end
 
@@ -36,6 +38,9 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = @"小时工";
 
+    self.timeArray = @[@"0.5",@"1",@"1.5",@"2",@"2.5",@"3",@"3.5",@"4",@"4.5",@"5",@"5.5",@"6",@"6.5",@"7",@"7.5",@"8",@"8.5",@"9",@"9.5",@"10",@"10.5",@"11",@"11.5",@"12",@"12.5",@"13",@"13.5",@"14",@"14.5",@"15",@"15.5",@"16",@"16.5",@"17",@"17.5",@"18",@"18.5",@"19",@"19.5",@"20",@"20.5",@"21",@"21.5",@"22",@"22.5",@"23",@"23.5",@"24"];
+
+    
     NSDate *currentDate = [NSDate date];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"YYYY-MM-dd"];
@@ -116,7 +121,7 @@
 -(void)setModel:(LPQueryCurrecordHourlyModel *)model{
     _model = model;
     //    if (model.data) {
-    self.workTypeHour = model.data.workTypeHour.floatValue;
+    self.workReHour = model.data.workTypeHour.floatValue;
     self.labourCost = model.data.labourCost.floatValue;
     [self.tableview reloadData];
     //    }
@@ -168,7 +173,6 @@
         }
         [cell.contentView addSubview:view];
         
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         
     }
     if (indexPath.row == 0) {
@@ -176,8 +180,22 @@
         cell.imageView.image = [UIImage imageNamed:@"zhengchangshangban"];
     }else if (indexPath.row == 1){
         cell.textLabel.text = @"工时";
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
     }else {
         cell.textLabel.text = @"工价";
+
+        UITextField *textField = [[UITextField alloc]init];
+        [cell.contentView addSubview:textField];
+        [textField mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.mas_equalTo(-13);
+            make.centerY.equalTo(cell.contentView);
+            make.left.mas_equalTo(cell.textLabel.mas_right).offset(10);
+        }];
+        textField.placeholder = @"请输入工价(元/小时)";
+        textField.textAlignment = NSTextAlignmentRight;
+        textField.font = [UIFont systemFontOfSize:16];
+        
     }
     
     return cell;
@@ -185,11 +203,15 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    if (indexPath.row == 1 || indexPath.row == 2) {
+    if (indexPath.row == 1) {
+        self.durationView.timeArray = self.timeArray;
+        self.durationView.titleString = @"时长";
         self.durationView.hidden = NO;
-        self.durationView.type = indexPath.row;
+        self.durationView.type = 2;
+        WEAK_SELF()
         self.durationView.block = ^(NSInteger index) {
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"%ld",index];
+            weakSelf.workReHour = [weakSelf.timeArray[index] floatValue];
+            cell.detailTextLabel.text = weakSelf.timeArray[index];
         };
     }
 }
