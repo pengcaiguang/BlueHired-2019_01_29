@@ -122,11 +122,16 @@
 
     self.selectView.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, 253);
 
+    UIScrollView *scrollView = [[UIScrollView alloc]init];
+    scrollView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 253-98);
+    [self.timebgView addSubview:scrollView];
+    scrollView.contentSize = CGSizeMake(SCREEN_WIDTH, 51*ceil(self.timeArray.count/6.0));
+    
     for (int i = 0; i < self.timeArray.count; i++) {
         UIView *view = [[UIView alloc]init];
         view.frame = CGRectMake(i%6 * SCREEN_WIDTH/6, floor(i/6)*51, SCREEN_WIDTH/6, 51);
         view.backgroundColor = [UIColor whiteColor];
-        [self.timebgView addSubview:view];
+        [scrollView addSubview:view];
         
         UIButton *button = [[UIButton alloc]init];
         [view addSubview:button];
