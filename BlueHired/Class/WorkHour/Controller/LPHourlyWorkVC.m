@@ -10,6 +10,7 @@
 #import "LPDurationView.h"
 #import "LPDateSelectView.h"
 #import "LPHourlyWorkDetailVC.h"
+#import "LPQueryCurrecordHourlyModel.h"
 
 @interface LPHourlyWorkVC ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong)UITableView *tableview;
@@ -19,6 +20,11 @@
 @property(nonatomic,strong) LPDurationView *durationView;
 
 @property(nonatomic,strong) NSString *currentDateString;
+
+@property(nonatomic,strong) LPQueryCurrecordHourlyModel *model;
+
+@property(nonatomic,assign) CGFloat labourCost;
+@property(nonatomic,assign) CGFloat workTypeHour;
 
 @end
 
@@ -105,6 +111,17 @@
         make.top.mas_equalTo(48);
     }];
 }
+
+#pragma mark - setter
+-(void)setModel:(LPQueryCurrecordHourlyModel *)model{
+    _model = model;
+    //    if (model.data) {
+    self.workTypeHour = model.data.workTypeHour.floatValue;
+    self.labourCost = model.data.labourCost.floatValue;
+    [self.tableview reloadData];
+    //    }
+}
+
 #pragma mark - tagter
 -(void)selectCalenderButton:(UIButton *)button{
     self.dateSelectView.hidden = NO;
@@ -191,7 +208,7 @@
     [NetApiManager requestQueryCurrecordWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            
+            self.model = [LPQueryCurrecordHourlyModel mj_objectWithKeyValues:responseObject];
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

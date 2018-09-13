@@ -50,7 +50,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = @"正式工";
     
-    self.workTypeArray = @[@"早班",@"中班",@"晚班"];
+    self.workTypeArray = @[@"早班",@"中班",@"晚班",@"夜班"];
     self.addTypeTypeArray = @[@"普通加班",@"周末加班",@"节假日加班"];
     self.leaveTypeArray = @[@"带薪休假",@"调休",@"事假",@"病假",@"其它请假"];
     self.timeArray = @[@"0.5",@"1",@"1.5",@"2",@"2.5",@"3",@"3.5",@"4",@"4.5",@"5",@"5.5",@"6",@"7",@"8",@"9",@"10",@"11",@"12"];
