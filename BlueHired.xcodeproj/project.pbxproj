@@ -127,6 +127,11 @@
 		DCE2C23E2148EFBF00BCB9F4 /* LPQueryCurrecordModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DCE2C23D2148EFBF00BCB9F4 /* LPQueryCurrecordModel.m */; };
 		DCE2C2412149104400BCB9F4 /* LPSelectWorkhourModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DCE2C2402149104400BCB9F4 /* LPSelectWorkhourModel.m */; };
 		DCE3E1D5214A05C5003ADFC6 /* LPQueryCurrecordHourlyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DCE3E1D4214A05C5003ADFC6 /* LPQueryCurrecordHourlyModel.m */; };
+		DCE3E1D9214A16FB003ADFC6 /* LPAddRecordCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCE3E1D7214A16FB003ADFC6 /* LPAddRecordCell.m */; };
+		DCE3E1DA214A16FB003ADFC6 /* LPAddRecordCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DCE3E1D8214A16FB003ADFC6 /* LPAddRecordCell.xib */; };
+		DCE3E1DD214A43C3003ADFC6 /* LPSubsidyDeductionVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCE3E1DC214A43C3003ADFC6 /* LPSubsidyDeductionVC.m */; };
+		DCE3E1E1214A465A003ADFC6 /* LPSubsidyDeductionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCE3E1DF214A465A003ADFC6 /* LPSubsidyDeductionCell.m */; };
+		DCE3E1E2214A465A003ADFC6 /* LPSubsidyDeductionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DCE3E1E0214A465A003ADFC6 /* LPSubsidyDeductionCell.xib */; };
 		DCF5D9BC213F892D009F5DCE /* LPBusinessReviewVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF5D9BB213F892D009F5DCE /* LPBusinessReviewVC.m */; };
 		DCF5D9C0213FA395009F5DCE /* LPMechanismcommentMechanismlistModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF5D9BF213FA395009F5DCE /* LPMechanismcommentMechanismlistModel.m */; };
 		DCF5D9C5213FA5BD009F5DCE /* LPBusinessReviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF5D9C3213FA5BD009F5DCE /* LPBusinessReviewCell.m */; };
@@ -384,6 +389,14 @@
 		DCE2C2402149104400BCB9F4 /* LPSelectWorkhourModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPSelectWorkhourModel.m; sourceTree = "<group>"; };
 		DCE3E1D3214A05C5003ADFC6 /* LPQueryCurrecordHourlyModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPQueryCurrecordHourlyModel.h; sourceTree = "<group>"; };
 		DCE3E1D4214A05C5003ADFC6 /* LPQueryCurrecordHourlyModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPQueryCurrecordHourlyModel.m; sourceTree = "<group>"; };
+		DCE3E1D6214A16FB003ADFC6 /* LPAddRecordCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPAddRecordCell.h; sourceTree = "<group>"; };
+		DCE3E1D7214A16FB003ADFC6 /* LPAddRecordCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPAddRecordCell.m; sourceTree = "<group>"; };
+		DCE3E1D8214A16FB003ADFC6 /* LPAddRecordCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPAddRecordCell.xib; sourceTree = "<group>"; };
+		DCE3E1DB214A43C3003ADFC6 /* LPSubsidyDeductionVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPSubsidyDeductionVC.h; sourceTree = "<group>"; };
+		DCE3E1DC214A43C3003ADFC6 /* LPSubsidyDeductionVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPSubsidyDeductionVC.m; sourceTree = "<group>"; };
+		DCE3E1DE214A465A003ADFC6 /* LPSubsidyDeductionCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPSubsidyDeductionCell.h; sourceTree = "<group>"; };
+		DCE3E1DF214A465A003ADFC6 /* LPSubsidyDeductionCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPSubsidyDeductionCell.m; sourceTree = "<group>"; };
+		DCE3E1E0214A465A003ADFC6 /* LPSubsidyDeductionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPSubsidyDeductionCell.xib; sourceTree = "<group>"; };
 		DCF5D9BA213F892D009F5DCE /* LPBusinessReviewVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPBusinessReviewVC.h; sourceTree = "<group>"; };
 		DCF5D9BB213F892D009F5DCE /* LPBusinessReviewVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPBusinessReviewVC.m; sourceTree = "<group>"; };
 		DCF5D9BE213FA395009F5DCE /* LPMechanismcommentMechanismlistModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPMechanismcommentMechanismlistModel.h; sourceTree = "<group>"; };
@@ -595,6 +608,8 @@
 				DCCC8A6221476C830062A0F5 /* LPHourlyWorkVC.m */,
 				DCCC8A6D2147A29A0062A0F5 /* LPHourlyWorkDetailVC.h */,
 				DCCC8A6E2147A29A0062A0F5 /* LPHourlyWorkDetailVC.m */,
+				DCE3E1DB214A43C3003ADFC6 /* LPSubsidyDeductionVC.h */,
+				DCE3E1DC214A43C3003ADFC6 /* LPSubsidyDeductionVC.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -611,6 +626,12 @@
 				DCCC8A702147AD3C0062A0F5 /* LPWorkHourDetailPieChartCell.h */,
 				DCCC8A712147AD3C0062A0F5 /* LPWorkHourDetailPieChartCell.m */,
 				DCCC8A722147AD3C0062A0F5 /* LPWorkHourDetailPieChartCell.xib */,
+				DCE3E1D6214A16FB003ADFC6 /* LPAddRecordCell.h */,
+				DCE3E1D7214A16FB003ADFC6 /* LPAddRecordCell.m */,
+				DCE3E1D8214A16FB003ADFC6 /* LPAddRecordCell.xib */,
+				DCE3E1DE214A465A003ADFC6 /* LPSubsidyDeductionCell.h */,
+				DCE3E1DF214A465A003ADFC6 /* LPSubsidyDeductionCell.m */,
+				DCE3E1E0214A465A003ADFC6 /* LPSubsidyDeductionCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1199,6 +1220,7 @@
 				DC290F30213CC55000EC3FCC /* LPEssayDetailCommentCell.xib in Resources */,
 				DC229590214152370002A095 /* LPWorkorderListCell.xib in Resources */,
 				DC44DBA921354E8500D00FAC /* LPInformationCollectionViewCell.xib in Resources */,
+				DCE3E1E2214A465A003ADFC6 /* LPSubsidyDeductionCell.xib in Resources */,
 				DC30E1A621393BB0000C7A91 /* LPWorkDetailHeadCell.xib in Resources */,
 				DC5C38952136682200B3CF6E /* LPCircleCollectionViewCell.xib in Resources */,
 				DC73832B2133E33E0055DC10 /* Main.storyboard in Resources */,
@@ -1208,6 +1230,7 @@
 				DC7383A82134F6580055DC10 /* LPMainCell.xib in Resources */,
 				DC5C389E213682F500B3CF6E /* LPCircleListCell.xib in Resources */,
 				DCF5D9C6213FA5BD009F5DCE /* LPBusinessReviewCell.xib in Resources */,
+				DCE3E1DA214A16FB003ADFC6 /* LPAddRecordCell.xib in Resources */,
 				DC5C38852136372F00B3CF6E /* LPInformationSingleCell.xib in Resources */,
 				DC5C388F213645E000B3CF6E /* LPInformationMoreImageCollectionViewCell.xib in Resources */,
 				DC7A32D021379BCA00E09C6C /* LPMineCardCell.xib in Resources */,
@@ -1353,13 +1376,16 @@
 				DCCC8A842147AED60062A0F5 /* WSShowInfoView.m in Sources */,
 				DC13BB50213E1FD100800955 /* LPCityDataManager.m in Sources */,
 				DC44DB9C21352B8000D00FAC /* LPNoDataView.m in Sources */,
+				DCE3E1D9214A16FB003ADFC6 /* LPAddRecordCell.m in Sources */,
 				DC30E19B21391DAD000C7A91 /* LPInformationSearchResultVC.m in Sources */,
 				DC229582214106D10002A095 /* LPIsApplyOrIsCollectionModel.m in Sources */,
+				DCE3E1E1214A465A003ADFC6 /* LPSubsidyDeductionCell.m in Sources */,
 				DC7A32E7213812E200E09C6C /* LPSortAlertView.m in Sources */,
 				DC30E19E21392E23000C7A91 /* LPWorkDetailVC.m in Sources */,
 				DC7A32D82137D7E200E09C6C /* LPRegisteredVC.m in Sources */,
 				DC13BB5A213E5B6A00800955 /* LPCityCell.m in Sources */,
 				DC73836D2133EC1B0055DC10 /* LPInformationVC.m in Sources */,
+				DCE3E1DD214A43C3003ADFC6 /* LPSubsidyDeductionVC.m in Sources */,
 				DC7383982134E95E0055DC10 /* NetApiManager.m in Sources */,
 				DCCC8A812147AED60062A0F5 /* WSPieChart.m in Sources */,
 				DC7383872134DC200055DC10 /* LPMineCell.m in Sources */,
