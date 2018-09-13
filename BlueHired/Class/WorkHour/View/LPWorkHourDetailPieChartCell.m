@@ -34,7 +34,7 @@
     [pie showAnimation];
     self.pie = pie;
     
-    self.workTypeArray = @[@"早班",@"中班",@"晚班"];
+    self.workTypeArray = @[@"早班",@"中班",@"晚班",@"夜班"];
     self.addTypeTypeArray = @[@"普通加班",@"周末加班",@"节假日加班"];
     self.leaveTypeArray = @[@"带薪休假",@"调休",@"事假",@"病假",@"其它请假"];
     
@@ -53,19 +53,27 @@
         for (LPSelectWorkhourDataNormalHourListModel *m in model.data.normalHourList) {
             [hourArray addObject:m.totalWorkHour ? m.totalWorkHour : @(0)];
         }
+        if (hourArray.count < self.workTypeArray.count) {
+            for (int i=0; i<self.workTypeArray.count-model.data.normalHourList.count; i++) {
+                [hourArray addObject:@(0)];
+            }
+        }
         self.pie.valueArr = [hourArray copy];
         
-        NSMutableArray *typeArray = [NSMutableArray array];
-        for (LPSelectWorkhourDataNormalHourListModel *m in model.data.normalHourList) {
-            [typeArray addObject:self.workTypeArray[m.workType.integerValue]];
-        }
-        self.pie.descArr = [typeArray copy];
-        NSArray *colorArray = @[[UIColor colorWithHexString:@"#F0E7A8"],[UIColor colorWithHexString:@"#FFD8BE"],[UIColor colorWithHexString:@"#9FBEE2"],[UIColor colorWithHexString:@"#A7F4C4"]];
-        if (typeArray.count <= colorArray.count) {
-            self.pie.colorArr = [colorArray subarrayWithRange:NSMakeRange(0, typeArray.count)];
-        }
+//        NSMutableArray *typeArray = [NSMutableArray array];
+//        for (LPSelectWorkhourDataNormalHourListModel *m in model.data.normalHourList) {
+//            [typeArray addObject:self.workTypeArray[m.workType.integerValue]];
+//        }
+//        self.pie.descArr = [typeArray copy];
+        self.pie.descArr = self.workTypeArray;
 
-        CGFloat h = 24*model.data.normalHourList.count+30 + 50;
+        NSArray *colorArray = @[[UIColor colorWithHexString:@"#F0E7A8"],[UIColor colorWithHexString:@"#FFD8BE"],[UIColor colorWithHexString:@"#9FBEE2"],[UIColor colorWithHexString:@"#A7F4C4"]];
+        self.pie.colorArr = colorArray;
+//        if (typeArray.count <= colorArray.count) {
+//            self.pie.colorArr = [colorArray subarrayWithRange:NSMakeRange(0, typeArray.count)];
+//        }
+
+        CGFloat h = 24*self.workTypeArray.count+30 + 50;
         if (h < 170) {
             h = 170;
         }
@@ -80,18 +88,25 @@
         for (LPSelectWorkhourDataAddHourListModel *m in model.data.addHourList) {
             [hourArray addObject:m.totalAddHour];
         }
+        if (hourArray.count < self.addTypeTypeArray.count) {
+            for (int i=0; i<self.addTypeTypeArray.count-model.data.addHourList.count; i++) {
+                [hourArray addObject:@(0)];
+            }
+        }
         self.pie.valueArr = [hourArray copy];
         
-        NSMutableArray *typeArray = [NSMutableArray array];
-        for (LPSelectWorkhourDataAddHourListModel *m in model.data.addHourList) {
-            [typeArray addObject:self.workTypeArray[m.addType.integerValue]];
-        }
-        self.pie.descArr = [typeArray copy];
+//        NSMutableArray *typeArray = [NSMutableArray array];
+//        for (LPSelectWorkhourDataAddHourListModel *m in model.data.addHourList) {
+//            [typeArray addObject:self.addTypeTypeArray[m.addType.integerValue]];
+//        }
+//        self.pie.descArr = [typeArray copy];
+        self.pie.descArr = self.addTypeTypeArray;
         NSArray *colorArray = @[[UIColor colorWithHexString:@"#FFD8BE"],[UIColor colorWithHexString:@"#80BCFF"],[UIColor colorWithHexString:@"#F0E7A8"]];
-        if (typeArray.count <= colorArray.count) {
-            self.pie.colorArr = [colorArray subarrayWithRange:NSMakeRange(0, typeArray.count)];
-        }
-        CGFloat h = 24*model.data.addHourList.count+30 + 50;
+        self.pie.colorArr = colorArray;
+//        if (typeArray.count <= colorArray.count) {
+//            self.pie.colorArr = [colorArray subarrayWithRange:NSMakeRange(0, typeArray.count)];
+//        }
+        CGFloat h = 24*self.addTypeTypeArray.count+30 + 50;
         if (h < 170) {
             h = 170;
         }
@@ -106,19 +121,26 @@
         for (LPSelectWorkhourDataLeaveHourListModel *m in model.data.leaveHourList) {
             [hourArray addObject:m.totalLeaveHour];
         }
+        if (hourArray.count < self.leaveTypeArray.count) {
+            for (int i=0; i<self.leaveTypeArray.count-model.data.leaveHourList.count; i++) {
+                [hourArray addObject:@(0)];
+            }
+        }
         self.pie.valueArr = [hourArray copy];
         
-        NSMutableArray *typeArray = [NSMutableArray array];
-        for (LPSelectWorkhourDataLeaveHourListModel *m in model.data.leaveHourList) {
-            [typeArray addObject:self.workTypeArray[m.leaveType.integerValue]];
-        }
-        self.pie.descArr = [typeArray copy];
+//        NSMutableArray *typeArray = [NSMutableArray array];
+//        for (LPSelectWorkhourDataLeaveHourListModel *m in model.data.leaveHourList) {
+//            [typeArray addObject:self.leaveTypeArray[m.leaveType.integerValue]];
+//        }
+//        self.pie.descArr = [typeArray copy];
+        self.pie.descArr = self.leaveTypeArray;
         NSArray *colorArray = @[[UIColor colorWithHexString:@"#FFCC73"],[UIColor colorWithHexString:@"#FFD8BE"],[UIColor colorWithHexString:@"#F0E7A8"],[UIColor colorWithHexString:@"#9FBEE2"],[UIColor colorWithHexString:@"#A7F4C4"]];
-        if (typeArray.count <= colorArray.count) {
-            self.pie.colorArr = [colorArray subarrayWithRange:NSMakeRange(0, typeArray.count)];
-        }
+        self.pie.colorArr = colorArray;
+//        if (typeArray.count <= colorArray.count) {
+//            self.pie.colorArr = [colorArray subarrayWithRange:NSMakeRange(0, typeArray.count)];
+//        }
 
-        CGFloat h = 24*model.data.leaveHourList.count+30 + 50;
+        CGFloat h = 24*self.leaveTypeArray.count+30 + 50;
         if (h < 170) {
             h = 170;
         }
