@@ -131,6 +131,8 @@
 		DCE3E1DD214A43C3003ADFC6 /* LPSubsidyDeductionVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCE3E1DC214A43C3003ADFC6 /* LPSubsidyDeductionVC.m */; };
 		DCE3E1E1214A465A003ADFC6 /* LPSubsidyDeductionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCE3E1DF214A465A003ADFC6 /* LPSubsidyDeductionCell.m */; };
 		DCE3E1E2214A465A003ADFC6 /* LPSubsidyDeductionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DCE3E1E0214A465A003ADFC6 /* LPSubsidyDeductionCell.xib */; };
+		DCE3E1E6214BA172003ADFC6 /* LPSalaryStatisticsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCE3E1E4214BA172003ADFC6 /* LPSalaryStatisticsCell.m */; };
+		DCE3E1E7214BA172003ADFC6 /* LPSalaryStatisticsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DCE3E1E5214BA172003ADFC6 /* LPSalaryStatisticsCell.xib */; };
 		DCF5D9BC213F892D009F5DCE /* LPBusinessReviewVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF5D9BB213F892D009F5DCE /* LPBusinessReviewVC.m */; };
 		DCF5D9C0213FA395009F5DCE /* LPMechanismcommentMechanismlistModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF5D9BF213FA395009F5DCE /* LPMechanismcommentMechanismlistModel.m */; };
 		DCF5D9C5213FA5BD009F5DCE /* LPBusinessReviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF5D9C3213FA5BD009F5DCE /* LPBusinessReviewCell.m */; };
@@ -394,6 +396,9 @@
 		DCE3E1DE214A465A003ADFC6 /* LPSubsidyDeductionCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPSubsidyDeductionCell.h; sourceTree = "<group>"; };
 		DCE3E1DF214A465A003ADFC6 /* LPSubsidyDeductionCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPSubsidyDeductionCell.m; sourceTree = "<group>"; };
 		DCE3E1E0214A465A003ADFC6 /* LPSubsidyDeductionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPSubsidyDeductionCell.xib; sourceTree = "<group>"; };
+		DCE3E1E3214BA172003ADFC6 /* LPSalaryStatisticsCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPSalaryStatisticsCell.h; sourceTree = "<group>"; };
+		DCE3E1E4214BA172003ADFC6 /* LPSalaryStatisticsCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPSalaryStatisticsCell.m; sourceTree = "<group>"; };
+		DCE3E1E5214BA172003ADFC6 /* LPSalaryStatisticsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPSalaryStatisticsCell.xib; sourceTree = "<group>"; };
 		DCF5D9BA213F892D009F5DCE /* LPBusinessReviewVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPBusinessReviewVC.h; sourceTree = "<group>"; };
 		DCF5D9BB213F892D009F5DCE /* LPBusinessReviewVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPBusinessReviewVC.m; sourceTree = "<group>"; };
 		DCF5D9BE213FA395009F5DCE /* LPMechanismcommentMechanismlistModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPMechanismcommentMechanismlistModel.h; sourceTree = "<group>"; };
@@ -629,6 +634,9 @@
 				DCE3E1DE214A465A003ADFC6 /* LPSubsidyDeductionCell.h */,
 				DCE3E1DF214A465A003ADFC6 /* LPSubsidyDeductionCell.m */,
 				DCE3E1E0214A465A003ADFC6 /* LPSubsidyDeductionCell.xib */,
+				DCE3E1E3214BA172003ADFC6 /* LPSalaryStatisticsCell.h */,
+				DCE3E1E4214BA172003ADFC6 /* LPSalaryStatisticsCell.m */,
+				DCE3E1E5214BA172003ADFC6 /* LPSalaryStatisticsCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1213,6 +1221,7 @@
 				DC13BB5B213E5B6A00800955 /* LPCityCell.xib in Resources */,
 				DC73832D2133E3670055DC10 /* Assets.xcassets in Resources */,
 				DC290F30213CC55000EC3FCC /* LPEssayDetailCommentCell.xib in Resources */,
+				DCE3E1E7214BA172003ADFC6 /* LPSalaryStatisticsCell.xib in Resources */,
 				DC229590214152370002A095 /* LPWorkorderListCell.xib in Resources */,
 				DC44DBA921354E8500D00FAC /* LPInformationCollectionViewCell.xib in Resources */,
 				DCE3E1E2214A465A003ADFC6 /* LPSubsidyDeductionCell.xib in Resources */,
@@ -1334,6 +1343,7 @@
 				DC290F3B213D31D400EC3FCC /* GJAlert2.m in Sources */,
 				DCCC8A732147AD3C0062A0F5 /* LPWorkHourDetailPieChartCell.m in Sources */,
 				DCCC8A6C2147941F0062A0F5 /* LPFullTimeDetailVC.m in Sources */,
+				DCE3E1E6214BA172003ADFC6 /* LPSalaryStatisticsCell.m in Sources */,
 				DC2295852141143F0002A095 /* GJAlertText.m in Sources */,
 				DC5C38842136372F00B3CF6E /* LPInformationSingleCell.m in Sources */,
 				DC7383962134E95E0055DC10 /* MoninNet.m in Sources */,

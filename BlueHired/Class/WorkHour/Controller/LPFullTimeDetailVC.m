@@ -11,11 +11,11 @@
 #import "LPAddRecordCell.h"
 #import "LPSelectWorkhourModel.h"
 #import "LPSubsidyDeductionVC.h"
+#import "LPSalaryStatisticsCell.h"
 
 static NSString *LPWorkHourDetailPieChartCellID = @"LPWorkHourDetailPieChartCell";
-
-
 static NSString *LPAddRecordCellID = @"LPAddRecordCell";
+static NSString *LPSalaryStatisticsCellID = @"LPSalaryStatisticsCell";
 
 @interface LPFullTimeDetailVC ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong)UITableView *tableview;
@@ -188,7 +188,7 @@ static NSString *LPAddRecordCellID = @"LPAddRecordCell";
 
 #pragma mark - TableViewDelegate & Datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 5;
+    return 6;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -197,7 +197,7 @@ static NSString *LPAddRecordCellID = @"LPAddRecordCell";
         cell.index = indexPath.row;
         cell.model = self.model;
         return cell;
-    }else{
+    }else if (indexPath.row == 3 || indexPath.row == 4){
         LPAddRecordCell *cell = [tableView dequeueReusableCellWithIdentifier:LPAddRecordCellID];
         if (indexPath.row == 3) {
             NSArray *array = self.subsidiesArray;
@@ -257,6 +257,12 @@ static NSString *LPAddRecordCellID = @"LPAddRecordCell";
         cell.index = indexPath.row;
 
         return cell;
+    }else{
+        LPSalaryStatisticsCell *cell = [tableView dequeueReusableCellWithIdentifier:LPSalaryStatisticsCellID];
+        cell.block = ^(NSString *string) {
+            NSLog(@"--%@",string);
+        };
+        return cell;
     }
 }
 
@@ -294,6 +300,7 @@ static NSString *LPAddRecordCellID = @"LPAddRecordCell";
         _tableview.separatorColor = [UIColor colorWithHexString:@"#F1F1F1"];
         [_tableview registerNib:[UINib nibWithNibName:LPWorkHourDetailPieChartCellID bundle:nil] forCellReuseIdentifier:LPWorkHourDetailPieChartCellID];
         [_tableview registerNib:[UINib nibWithNibName:LPAddRecordCellID bundle:nil] forCellReuseIdentifier:LPAddRecordCellID];
+        [_tableview registerNib:[UINib nibWithNibName:LPSalaryStatisticsCellID bundle:nil] forCellReuseIdentifier:LPSalaryStatisticsCellID];
         
     }
     return _tableview;
