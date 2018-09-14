@@ -50,8 +50,8 @@ static NSString *LPAddRecordCellID = @"LPAddRecordCell";
     [dateFormatter setDateFormat:@"MM"];
     self.month = [dateFormatter stringFromDate:currentDate].integerValue;
     
-    self.subsidiesArray = @[@"全勤绩效：",@"车费补贴："];
-    self.deductionsArray = @[@"社保扣款：",@"请假扣款："];
+    self.subsidiesArray = @[@"全勤绩效",@"车费补贴"];
+    self.deductionsArray = @[@"社保扣款",@"请假扣款"];
     
     [self setupUI];
     [self requestSelectWorkhour];
@@ -200,10 +200,11 @@ static NSString *LPAddRecordCellID = @"LPAddRecordCell";
             cell.block = ^{
                 LPSubsidyDeductionVC *vc = [[LPSubsidyDeductionVC alloc]init];
                 vc.type = 1;
-                vc.block = ^(NSString *string) {
-                    NSMutableArray *muarray = [NSMutableArray arrayWithArray:array];
-                    [muarray addObject:string];
-                    weakSelf.subsidiesArray = [muarray copy];
+                vc.selectArray = weakSelf.subsidiesArray;
+                vc.block = ^(NSArray *array) {
+//                    NSMutableArray *muarray = [NSMutableArray arrayWithArray:array];
+//                    [muarray addObject:string];
+                    weakSelf.subsidiesArray = array;
                     [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
                 };
                 [self.navigationController pushViewController:vc animated:YES];
@@ -216,10 +217,11 @@ static NSString *LPAddRecordCellID = @"LPAddRecordCell";
             cell.block = ^{
                 LPSubsidyDeductionVC *vc = [[LPSubsidyDeductionVC alloc]init];
                 vc.type = 2;
-                vc.block = ^(NSString *string) {
-                    NSMutableArray *muarray = [NSMutableArray arrayWithArray:array];
-                    [muarray addObject:string];
-                    weakSelf.deductionsArray = [muarray copy];
+                vc.selectArray = weakSelf.deductionsArray;
+                vc.block = ^(NSArray *array) {
+//                    NSMutableArray *muarray = [NSMutableArray arrayWithArray:array];
+//                    [muarray addObject:string];
+                    weakSelf.deductionsArray = array;
                     [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
                 };
                 [self.navigationController pushViewController:vc animated:YES];

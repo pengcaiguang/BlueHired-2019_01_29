@@ -9,11 +9,12 @@
 #import <UIKit/UIKit.h>
 
 
-typedef void(^LPSubsidyDeductionVCBlock)(NSString *string);
+typedef void(^LPSubsidyDeductionVCBlock)(NSArray *array);
 
 @interface LPSubsidyDeductionVC : UIViewController
 
 @property(nonatomic,assign) NSInteger type;
+@property(nonatomic,strong) NSArray *selectArray;
 
 @property (nonatomic,copy) LPSubsidyDeductionVCBlock block;
 @end
