@@ -16,6 +16,8 @@
 @property(nonatomic,strong) NSMutableArray <UITextField *>*textFieldArray;
 @property(nonatomic,strong) UIButton *addButton;
 
+@property(nonatomic,strong) NSMutableArray *viewArray;
+
 @end
 
 @implementation LPAddRecordCell
@@ -26,8 +28,9 @@
     self.labelArray = [NSMutableArray array];
     self.textFieldArray = [NSMutableArray array];
 
-    [self addTextView:48 bottom:48*2];
-    [self addTextView:96 bottom:48];
+    self.viewArray = [NSMutableArray array];
+//    [self addTextView:48 bottom:48*2];
+//    [self addTextView:96 bottom:48];
     
     [self addBottomButton];
 }
@@ -41,7 +44,7 @@
         make.right.mas_equalTo(0);
         make.top.mas_equalTo(top);
         make.height.mas_equalTo(48);
-        make.bottom.mas_equalTo(-bottom);
+//        make.bottom.mas_equalTo(-bottom);
     }];
     
     UILabel *label = [[UILabel alloc]init];
@@ -70,8 +73,9 @@
     textField.layer.cornerRadius = 2.0;
     [self.textFieldArray addObject:textField];
 //    textField.backgroundColor = [UIColor redColor];
-    
     [label setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+    
+    [self.viewArray addObject:view];
 }
 
 -(void)addBottomButton{
@@ -94,32 +98,40 @@
         self.imgView.image = [UIImage imageNamed:@"add_subsidies_record"];
         self.addTextLabel.text = @"添加补贴记录";
         [self.addButton setTitle:@"添加补贴记录" forState:UIControlStateNormal];
-        
-        self.textArray = @[@"全勤绩效：",@"车费补贴："];
-        for (int i = 0; i<self.textArray.count; i++) {
-            self.labelArray[i].text = self.textArray[i];
-        }
     }else if (index == 4) {
         self.imgView.image = [UIImage imageNamed:@"add_deductions_record"];
         self.addTextLabel.text = @"添加扣款记录";
         [self.addButton setTitle:@"添加扣款记录" forState:UIControlStateNormal];
-
-        self.textArray = @[@"社保扣款：",@"请假扣款："];
-        for (int i = 0; i<self.textArray.count; i++) {
-            self.labelArray[i].text = self.textArray[i];
-        }
     }
+
 }
-
--(void)addItem{
-    NSLog(@"addItem");
-    LPSubsidyDeductionVC *vc = [[LPSubsidyDeductionVC alloc]init];
-    if (self.index == 3) {
-        vc.type = 1;
-    }else{
-        vc.type = 2;
+-(void)setTextArray:(NSArray *)textArray{
+    if ([self.textArray isEqualToArray:textArray]) {
+        return;
     }
-    [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+    _textArray = textArray;
+    self.view_constraint_height.constant = 48*(textArray.count+1);
+    
+    for (UIView *view in self.viewArray) {
+        [view removeFromSuperview];
+    }
+    self.labelArray = [NSMutableArray array];
+    self.viewArray = [NSMutableArray array];
+
+    for (int i = 1; i<=self.textArray.count; i++) {
+        [self addTextView:48*i bottom:48*self.textArray.count-i];
+    }
+    for (int i = 0; i<self.textArray.count; i++) {
+        self.labelArray[i].text = self.textArray[i];
+    }
+    
+    self.view_constraint_height.constant = 48*(self.textArray.count+1);
+
+}
+-(void)addItem{
+    if (self.block) {
+        self.block();
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

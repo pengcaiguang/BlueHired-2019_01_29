@@ -8,12 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void(^LPAddRecordCellBlock)(void);
+
 @interface LPAddRecordCell : UITableViewCell
+
+@property (nonatomic,copy) LPAddRecordCellBlock block;
 
 @property(nonatomic,assign) NSInteger index;
 
 @property (weak, nonatomic) IBOutlet UIImageView *imgView;
 @property (weak, nonatomic) IBOutlet UILabel *addTextLabel;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *view_constraint_height;
 
 @property(nonatomic,strong) NSArray *textArray;
 

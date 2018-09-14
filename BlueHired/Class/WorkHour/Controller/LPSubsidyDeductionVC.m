@@ -15,6 +15,8 @@ static NSString *LPSubsidyDeductionCellID = @"LPSubsidyDeductionCell";
 @property (nonatomic, strong)UITableView *tableview;
 
 @property(nonatomic,assign) NSInteger selectIndex;
+@property(nonatomic,strong) NSString *selectString;
+@property(nonatomic,strong) NSArray *titleArray;
 
 @end
 
@@ -26,9 +28,12 @@ static NSString *LPSubsidyDeductionCellID = @"LPSubsidyDeductionCell";
     self.view.backgroundColor = [UIColor whiteColor];
     if (self.type == 1) {
         self.navigationItem.title = @"添加补贴记录";
+        self.titleArray = @[@"全勤绩效",@"高温补贴",@"餐费补贴",@"外宿补贴",@"管理津贴",@"车费补贴",@"叉车补贴",@"夜班补贴",@"其他补贴"];
     }else{
         self.navigationItem.title = @"添加扣款记录";
+        self.titleArray = @[@"其他补贴：",@"水电费扣款",@"水电费扣款",@"体检费扣款",@"社保扣款",@"其他扣款"];
     }
+    self.selectString = self.titleArray[0];
     
     [self.view addSubview:self.tableview];
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -63,18 +68,34 @@ static NSString *LPSubsidyDeductionCellID = @"LPSubsidyDeductionCell";
     [self.navigationItem.rightBarButtonItem setTintColor:[UIColor colorWithHexString:@"#1B1B1B"]];
 }
 -(void)touchSave{
-    NSLog(@"touchSave");
+    if (kStringIsEmpty(self.selectString)) {
+        return;
+    }
+    if (self.block) {
+        self.block(self.selectString);
+    }
+    [self.navigationController popViewControllerAnimated:YES];
 }
 -(void)touchBottomButton{
-    NSLog(@"touchBottomButton");
     GJAlertText *alert = [[GJAlertText alloc]initWithTitle:@"自定义补贴记录" message:@"请输入补贴类型" buttonTitles:@[@"取消",@"确定"] buttonsColor:@[[UIColor colorWithHexString:@"#666666"],[UIColor baseColor]] buttonClick:^(NSInteger buttonIndex, NSString *string) {
-        NSLog(@"-%@",string);
+        NSMutableArray *array = [NSMutableArray arrayWithArray:self.titleArray];
+        if (string) {
+            if (![array containsObject:string]) {
+                [array addObject:string];
+                self.titleArray = [array copy];
+                self.selectString = string;
+                self.selectIndex = self.titleArray.count-1;
+                [self.tableview reloadData];
+            }else{
+                [self.view showLoadingMeg:[NSString stringWithFormat:@"列表中已包含-%@",string] time:MESSAGE_SHOW_TIME];
+            }
+        }
     }];
     [alert show];
 }
 #pragma mark - TableViewDelegate & Datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 5;
+    return self.titleArray.count;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -84,12 +105,14 @@ static NSString *LPSubsidyDeductionCellID = @"LPSubsidyDeductionCell";
     }else{
         cell.selectButton.selected = NO;
     }
+    cell.titleLabel.text = self.titleArray[indexPath.row];
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     self.selectIndex = indexPath.row;
+    self.selectString = self.titleArray[indexPath.row];
     [tableView reloadData];
     
 }

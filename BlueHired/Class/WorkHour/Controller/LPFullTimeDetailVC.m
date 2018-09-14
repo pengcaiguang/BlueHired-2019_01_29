@@ -10,6 +10,7 @@
 #import "LPWorkHourDetailPieChartCell.h"
 #import "LPAddRecordCell.h"
 #import "LPSelectWorkhourModel.h"
+#import "LPSubsidyDeductionVC.h"
 
 static NSString *LPWorkHourDetailPieChartCellID = @"LPWorkHourDetailPieChartCell";
 
@@ -29,6 +30,9 @@ static NSString *LPAddRecordCellID = @"LPAddRecordCell";
 
 @property(nonatomic,strong) LPSelectWorkhourModel *model;
 
+@property(nonatomic,strong) NSArray *subsidiesArray;
+
+@property(nonatomic,strong) NSArray *deductionsArray;
 @end
 
 @implementation LPFullTimeDetailVC
@@ -46,6 +50,8 @@ static NSString *LPAddRecordCellID = @"LPAddRecordCell";
     [dateFormatter setDateFormat:@"MM"];
     self.month = [dateFormatter stringFromDate:currentDate].integerValue;
     
+    self.subsidiesArray = @[@"全勤绩效：",@"车费补贴："];
+    self.deductionsArray = @[@"社保扣款：",@"请假扣款："];
     
     [self setupUI];
     [self requestSelectWorkhour];
@@ -187,7 +193,44 @@ static NSString *LPAddRecordCellID = @"LPAddRecordCell";
         return cell;
     }else{
         LPAddRecordCell *cell = [tableView dequeueReusableCellWithIdentifier:LPAddRecordCellID];
+        if (indexPath.row == 3) {
+            NSArray *array = self.subsidiesArray;
+            cell.textArray = array;
+            WEAK_SELF()
+            cell.block = ^{
+                LPSubsidyDeductionVC *vc = [[LPSubsidyDeductionVC alloc]init];
+                vc.type = 1;
+                vc.block = ^(NSString *string) {
+                    NSMutableArray *muarray = [NSMutableArray arrayWithArray:array];
+                    [muarray addObject:string];
+                    weakSelf.subsidiesArray = [muarray copy];
+                    [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                };
+                [self.navigationController pushViewController:vc animated:YES];
+            };
+            
+        }else{
+            NSArray *array = self.deductionsArray;
+            cell.textArray = array;
+            WEAK_SELF()
+            cell.block = ^{
+                LPSubsidyDeductionVC *vc = [[LPSubsidyDeductionVC alloc]init];
+                vc.type = 2;
+                vc.block = ^(NSString *string) {
+                    NSMutableArray *muarray = [NSMutableArray arrayWithArray:array];
+                    [muarray addObject:string];
+                    weakSelf.deductionsArray = [muarray copy];
+                    [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                };
+                [self.navigationController pushViewController:vc animated:YES];
+            };
+        }
+        
         cell.index = indexPath.row;
+
+//        cell.block = ^{
+//            [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+//        };
         return cell;
     }
 }

@@ -44,6 +44,9 @@
 }
 
 -(void)setModel:(LPSelectWorkhourModel *)model{
+    if ([self.model.mj_JSONString isEqualToString:model.mj_JSONString]) {
+        return;
+    }
     _model = model;
     if (self.index == 0) {
         self.colorView.backgroundColor = [UIColor baseColor];

@@ -8,8 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+
+typedef void(^LPSubsidyDeductionVCBlock)(NSString *string);
+
 @interface LPSubsidyDeductionVC : UIViewController
 
 @property(nonatomic,assign) NSInteger type;
 
+@property (nonatomic,copy) LPSubsidyDeductionVCBlock block;
 @end
