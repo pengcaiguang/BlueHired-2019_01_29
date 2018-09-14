@@ -36,6 +36,10 @@ static NSString *LPSalaryStatisticsCellID = @"LPSalaryStatisticsCell";
 @property(nonatomic,strong) NSArray *deductionsArray;
 @property(nonatomic,strong) NSDictionary *deductionsDic;
 
+@property(nonatomic,strong) NSString *subsidyTotal;
+@property(nonatomic,strong) NSString *deductionTotal;
+@property(nonatomic,strong) NSString *basicSalary;
+
 @end
 
 @implementation LPFullTimeDetailVC
@@ -225,6 +229,14 @@ static NSString *LPSalaryStatisticsCellID = @"LPSalaryStatisticsCell";
             cell.dic = self.subsidiesDic;
             cell.dicBlock = ^(NSDictionary *dic) {
                 weakSelf.subsidiesDic = dic;
+                
+                NSInteger total = 0;
+                NSArray *array = [dic allValues];
+                for (NSString *str in array) {
+                    total += [str integerValue];
+                }
+                weakSelf.subsidyTotal = [NSString stringWithFormat:@"%ld",total];
+                [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:5 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
             };
         }else{
             NSArray *array = self.deductionsArray;
@@ -252,6 +264,14 @@ static NSString *LPSalaryStatisticsCellID = @"LPSalaryStatisticsCell";
             cell.dic = self.deductionsDic;
             cell.dicBlock = ^(NSDictionary *dic) {
                 weakSelf.deductionsDic = dic;
+                
+                NSInteger total = 0;
+                NSArray *array = [dic allValues];
+                for (NSString *str in array) {
+                    total += [str integerValue];
+                }
+                weakSelf.deductionTotal = [NSString stringWithFormat:@"%ld",total];
+                [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:5 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
             };
         }
         cell.index = indexPath.row;
@@ -259,11 +279,38 @@ static NSString *LPSalaryStatisticsCellID = @"LPSalaryStatisticsCell";
         return cell;
     }else{
         LPSalaryStatisticsCell *cell = [tableView dequeueReusableCellWithIdentifier:LPSalaryStatisticsCellID];
+        cell.subsidyLabel.text = [NSString stringWithFormat:@"补贴总计：%@",self.subsidyTotal ? self.subsidyTotal : @""];
+        cell.deductionLabel.text = [NSString stringWithFormat:@"扣款总计：%@",self.deductionTotal ? self.deductionTotal : @""];
+        WEAK_SELF();
+        
+        __weak LPSalaryStatisticsCell *weakCell = cell;
         cell.block = ^(NSString *string) {
-            NSLog(@"--%@",string);
+            weakSelf.basicSalary = string;
+            CGFloat addTotal = [weakSelf Calculation];
+            weakCell.overtimeLabel.text = [NSString stringWithFormat:@"加班总计：%.2f",addTotal];
         };
         return cell;
     }
+}
+-(CGFloat)Calculation{
+    CGFloat h = [self.basicSalary floatValue]/21.75/8.0;
+//    self.addTypeTypeArray = @[@"普通加班",@"周末加班",@"节假日加班"];
+    CGFloat normalAdd = 0;
+    CGFloat weekendAdd = 0;
+    CGFloat holidayAdd = 0;
+    for (LPSelectWorkhourDataAddHourListModel *model in self.model.data.addHourList) {
+        if ([model.addType integerValue] == 0) {
+            normalAdd = [model.totalAddHour floatValue] * h * 1.5;
+        }
+        if ([model.addType integerValue] == 1) {
+            weekendAdd = [model.totalAddHour floatValue] * h * 2.0;
+        }
+        if ([model.addType integerValue] == 2) {
+            holidayAdd = [model.totalAddHour floatValue] * h * 3.0;
+        }
+    }
+    CGFloat total = normalAdd + weekendAdd + holidayAdd;
+    return total;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
