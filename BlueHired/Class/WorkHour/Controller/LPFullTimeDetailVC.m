@@ -31,8 +31,11 @@ static NSString *LPAddRecordCellID = @"LPAddRecordCell";
 @property(nonatomic,strong) LPSelectWorkhourModel *model;
 
 @property(nonatomic,strong) NSArray *subsidiesArray;
+@property(nonatomic,strong) NSDictionary *subsidiesDic;
 
 @property(nonatomic,strong) NSArray *deductionsArray;
+@property(nonatomic,strong) NSDictionary *deductionsDic;
+
 @end
 
 @implementation LPFullTimeDetailVC
@@ -138,7 +141,7 @@ static NSString *LPAddRecordCellID = @"LPAddRecordCell";
             button.backgroundColor = [UIColor whiteColor];
             [button setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
         }
-//        [button addTarget:self action:@selector(touchBottomButton:) forControlEvents:UIControlEventTouchUpInside];
+        [button addTarget:self action:@selector(touchBottomButton:) forControlEvents:UIControlEventTouchUpInside];
         [self.bottomButtonArray addObject:button];
     }
     [self.bottomButtonArray mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedSpacing:0 leadSpacing:0 tailSpacing:0];
@@ -174,6 +177,9 @@ static NSString *LPAddRecordCellID = @"LPAddRecordCell";
     [self requestSelectWorkhour];
     
 }
+-(void)touchBottomButton:(UIButton *)button{
+    NSLog(@"预估工资");
+}
 #pragma mark - setter
 -(void)setModel:(LPSelectWorkhourModel *)model{
     _model = model;
@@ -202,14 +208,24 @@ static NSString *LPAddRecordCellID = @"LPAddRecordCell";
                 vc.type = 1;
                 vc.selectArray = weakSelf.subsidiesArray;
                 vc.block = ^(NSArray *array) {
-//                    NSMutableArray *muarray = [NSMutableArray arrayWithArray:array];
-//                    [muarray addObject:string];
                     weakSelf.subsidiesArray = array;
                     [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
                 };
                 [self.navigationController pushViewController:vc animated:YES];
             };
+            NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+            dic = [self.subsidiesDic mutableCopy];
+            for (int i =0; i<[dic allKeys].count; i++) {
+                if (![self.subsidiesArray containsObject:[dic allKeys][i]]) {
+                    [dic removeObjectForKey:[dic allKeys][i]];
+                }
+            }
+            self.subsidiesDic = [dic copy];
             
+            cell.dic = self.subsidiesDic;
+            cell.dicBlock = ^(NSDictionary *dic) {
+                weakSelf.subsidiesDic = dic;
+            };
         }else{
             NSArray *array = self.deductionsArray;
             cell.textArray = array;
@@ -219,20 +235,27 @@ static NSString *LPAddRecordCellID = @"LPAddRecordCell";
                 vc.type = 2;
                 vc.selectArray = weakSelf.deductionsArray;
                 vc.block = ^(NSArray *array) {
-//                    NSMutableArray *muarray = [NSMutableArray arrayWithArray:array];
-//                    [muarray addObject:string];
                     weakSelf.deductionsArray = array;
                     [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
                 };
                 [self.navigationController pushViewController:vc animated:YES];
             };
+            NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+            dic = [self.deductionsDic mutableCopy];
+            for (int i =0; i<[dic allKeys].count; i++) {
+                if (![self.deductionsArray containsObject:[dic allKeys][i]]) {
+                    [dic removeObjectForKey:[dic allKeys][i]];
+                }
+            }
+            self.deductionsDic = [dic copy];
+            
+            cell.dic = self.deductionsDic;
+            cell.dicBlock = ^(NSDictionary *dic) {
+                weakSelf.deductionsDic = dic;
+            };
         }
-        
         cell.index = indexPath.row;
 
-//        cell.block = ^{
-//            [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-//        };
         return cell;
     }
 }

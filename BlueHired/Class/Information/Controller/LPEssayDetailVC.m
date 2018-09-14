@@ -254,7 +254,8 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
         if (commentListModel.data.count > 0) {
             self.page += 1;
             [self.commentListArray addObjectsFromArray:commentListModel.data];
-            [self.tableview reloadSections:[[NSIndexSet alloc]initWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self.tableview reloadData];
+//            [self.tableview reloadSections:[[NSIndexSet alloc]initWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
 //            if (self.isComment) {
 //                [self.tableview scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1] atScrollPosition:UITableViewScrollPositionTop animated:YES];
 //            }
@@ -380,6 +381,7 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
                           };
     [NetApiManager requestCommentListWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
+        [self.tableview.mj_footer endRefreshing];
         if (isSuccess) {
             self.commentListModel = [LPCommentListModel mj_objectWithKeyValues:responseObject];
         }else{

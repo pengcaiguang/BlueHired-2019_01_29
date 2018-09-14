@@ -10,9 +10,12 @@
 
 typedef void(^LPAddRecordCellBlock)(void);
 
+typedef void(^LPAddRecordCellDicBlock)(NSDictionary *dic);
+
 @interface LPAddRecordCell : UITableViewCell
 
 @property (nonatomic,copy) LPAddRecordCellBlock block;
+@property (nonatomic,copy) LPAddRecordCellDicBlock dicBlock;
 
 @property(nonatomic,assign) NSInteger index;
 
@@ -21,5 +24,7 @@ typedef void(^LPAddRecordCellBlock)(void);
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *view_constraint_height;
 
 @property(nonatomic,strong) NSArray *textArray;
+
+@property(nonatomic,strong) NSDictionary *dic;
 
 @end

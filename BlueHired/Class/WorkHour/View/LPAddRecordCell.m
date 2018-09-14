@@ -17,6 +17,7 @@
 @property(nonatomic,strong) UIButton *addButton;
 
 @property(nonatomic,strong) NSMutableArray *viewArray;
+@property(nonatomic,strong) NSMutableDictionary *muDic;
 
 @end
 
@@ -27,7 +28,9 @@
     // Initialization code
     self.labelArray = [NSMutableArray array];
     self.textFieldArray = [NSMutableArray array];
-
+    
+    self.muDic = [NSMutableDictionary dictionary];
+    
     self.viewArray = [NSMutableArray array];
 //    [self addTextView:48 bottom:48*2];
 //    [self addTextView:96 bottom:48];
@@ -36,7 +39,7 @@
 }
 
 
--(void)addTextView:(CGFloat)top bottom:(CGFloat)bottom{
+-(void)addTextView:(CGFloat)top tag:(NSInteger)tag{
     UIView *view = [[UIView alloc]init];
     [self.contentView addSubview:view];
     [view mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -71,13 +74,23 @@
     textField.layer.borderWidth = 0.5;
     textField.layer.masksToBounds = YES;
     textField.layer.cornerRadius = 2.0;
+    textField.keyboardType = UIKeyboardTypeDecimalPad;
+    textField.textAlignment = NSTextAlignmentCenter;
     [self.textFieldArray addObject:textField];
-//    textField.backgroundColor = [UIColor redColor];
+    textField.tag = tag;
+    [textField addTarget:self action:@selector(textFieldChanged:) forControlEvents:UIControlEventEditingChanged];
     [label setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     
     [self.viewArray addObject:view];
 }
-
+-(void)textFieldChanged:(UITextField *)textField{
+    NSLog(@"-%ld - %@",textField.tag ,textField.text);
+    [self.muDic setObject:textField.text forKey:self.textArray[textField.tag-1]];
+    NSLog(@"-%@",self.muDic);
+    if (self.dicBlock) {
+        self.dicBlock([self.muDic copy]);
+    }
+}
 -(void)addBottomButton{
     UIButton *button = [[UIButton alloc]init];
     [self.contentView addSubview:button];
@@ -116,10 +129,12 @@
         [view removeFromSuperview];
     }
     self.labelArray = [NSMutableArray array];
+    self.textFieldArray = [NSMutableArray array];
     self.viewArray = [NSMutableArray array];
-
+    
+    
     for (int i = 1; i<=self.textArray.count; i++) {
-        [self addTextView:48*i bottom:48*self.textArray.count-i];
+        [self addTextView:48*i tag:i];
     }
     for (int i = 0; i<self.textArray.count; i++) {
         self.labelArray[i].text = self.textArray[i];
@@ -128,6 +143,21 @@
     self.view_constraint_height.constant = 48*(self.textArray.count+1);
 
 }
+
+-(void)setDic:(NSDictionary *)dic{
+    _dic = dic;
+    if (dic) {
+        [self.muDic setDictionary:dic];
+        
+        for (int i = 0; i<self.labelArray.count; i++) {
+            NSString *str = self.labelArray[i].text;
+            
+            NSString *s = [dic objectForKey:str];
+            self.textFieldArray[i].text = s;
+        }
+    }
+}
+
 -(void)addItem{
     if (self.block) {
         self.block();
