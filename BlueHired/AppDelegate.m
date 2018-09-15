@@ -8,6 +8,9 @@
 
 #import "AppDelegate.h"
 #import "LPTabBarViewController.h"
+@import Firebase;
+#import <Fabric/Fabric.h>
+#import <Crashlytics/Crashlytics.h>
 
 @interface AppDelegate ()
 @property (nonatomic, strong) LPTabBarViewController *mainTabBarController;
@@ -19,6 +22,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    [FIRApp configure];
+    [Fabric with:@[[Crashlytics class]]];
+    [Fabric.sharedSDK setDebug:YES];
     
     IQKeyboardManager *manager = [IQKeyboardManager sharedManager];
     manager.enable = YES;

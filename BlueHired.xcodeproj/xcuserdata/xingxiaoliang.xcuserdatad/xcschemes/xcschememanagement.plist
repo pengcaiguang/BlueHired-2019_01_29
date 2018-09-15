@@ -7,7 +7,25 @@
 		<key>BlueHired.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
-			<integer>15</integer>
+			<integer>19</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>DC73831F2133E33E0055DC10</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DC7383372133E3680055DC10</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DC7383422133E3680055DC10</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>
