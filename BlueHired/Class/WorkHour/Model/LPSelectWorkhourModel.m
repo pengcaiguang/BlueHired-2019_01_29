@@ -34,3 +34,9 @@
 @implementation LPSelectWorkhourDataNormalHourListModel
 
 @end
+
+@implementation LPSelectWorkhourDataWorkRecordModel
+
+@end
+
+

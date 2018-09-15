@@ -19,7 +19,7 @@ static NSString *LPSalaryStatisticsCellID = @"LPSalaryStatisticsCell";
 
 @interface LPFullTimeDetailVC ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong)UITableView *tableview;
-@property(nonatomic,strong) NSMutableArray *bottomButtonArray;
+@property(nonatomic,strong) NSMutableArray <UIButton *>*bottomButtonArray;
 @property(nonatomic,strong) UIButton *timeButton;
 @property(nonatomic,strong) UIView *monthView;
 @property(nonatomic,strong) UIView *monthBackView;
@@ -38,6 +38,7 @@ static NSString *LPSalaryStatisticsCellID = @"LPSalaryStatisticsCell";
 
 @property(nonatomic,strong) NSString *subsidyTotal;
 @property(nonatomic,strong) NSString *deductionTotal;
+@property(nonatomic,strong) NSString *addTotal;
 @property(nonatomic,strong) NSString *basicSalary;
 
 @end
@@ -57,8 +58,8 @@ static NSString *LPSalaryStatisticsCellID = @"LPSalaryStatisticsCell";
     [dateFormatter setDateFormat:@"MM"];
     self.month = [dateFormatter stringFromDate:currentDate].integerValue;
     
-    self.subsidiesArray = @[@"全勤绩效",@"车费补贴"];
-    self.deductionsArray = @[@"社保扣款",@"请假扣款"];
+    self.subsidiesArray = @[];
+    self.deductionsArray = @[];
     
     [self setupUI];
     [self requestSelectWorkhour];
@@ -141,11 +142,11 @@ static NSString *LPSalaryStatisticsCellID = @"LPSalaryStatisticsCell";
         if (i == 0) {
             button.backgroundColor = [UIColor baseColor];
             [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [button addTarget:self action:@selector(touchBottomButton:) forControlEvents:UIControlEventTouchUpInside];
         }else{
             button.backgroundColor = [UIColor whiteColor];
             [button setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
         }
-        [button addTarget:self action:@selector(touchBottomButton:) forControlEvents:UIControlEventTouchUpInside];
         [self.bottomButtonArray addObject:button];
     }
     [self.bottomButtonArray mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedSpacing:0 leadSpacing:0 tailSpacing:0];
@@ -183,10 +184,28 @@ static NSString *LPSalaryStatisticsCellID = @"LPSalaryStatisticsCell";
 }
 -(void)touchBottomButton:(UIButton *)button{
     NSLog(@"预估工资");
+    if (kStringIsEmpty(self.basicSalary)) {
+        [self.view showLoadingMeg:@"请输入企业底薪" time:MESSAGE_SHOW_TIME];
+        return;
+    }
+    [self requestAddWorkrecord];
 }
 #pragma mark - setter
 -(void)setModel:(LPSelectWorkhourModel *)model{
     _model = model;
+    
+    
+    self.deductionsDic = [model.data.workRecord.normlDeductLabel mj_JSONObject];
+    self.subsidiesDic = [model.data.workRecord.normlSubsidyLabel mj_JSONObject];
+    self.deductionsArray = [self.deductionsDic allKeys];
+    self.subsidiesArray = [self.subsidiesDic allKeys];
+
+    self.deductionTotal = [NSString stringWithFormat:@"%.2f",model.data.workRecord.normlDeductMoney.floatValue];
+    self.subsidyTotal = [NSString stringWithFormat:@"%.2f",model.data.workRecord.normlSubsidyMoney.floatValue];
+    self.addTotal = [NSString stringWithFormat:@"%.2f",model.data.workRecord.addWorkSalary.floatValue];
+    self.basicSalary = [NSString stringWithFormat:@"%.2f",model.data.workRecord.basicSalary.floatValue];
+    [self.bottomButtonArray[1] setTitle:[NSString stringWithFormat:@"%.2f",model.data.workRecord.totalMoney.floatValue] forState:UIControlStateNormal];
+
     [self.tableview reloadData];
 }
 
@@ -230,13 +249,13 @@ static NSString *LPSalaryStatisticsCellID = @"LPSalaryStatisticsCell";
             cell.dicBlock = ^(NSDictionary *dic) {
                 weakSelf.subsidiesDic = dic;
                 
-                NSInteger total = 0;
-                NSArray *array = [dic allValues];
-                for (NSString *str in array) {
-                    total += [str integerValue];
-                }
-                weakSelf.subsidyTotal = [NSString stringWithFormat:@"%ld",total];
-                [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:5 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+//                NSInteger total = 0;
+//                NSArray *array = [dic allValues];
+//                for (NSString *str in array) {
+//                    total += [str integerValue];
+//                }
+//                weakSelf.subsidyTotal = [NSString stringWithFormat:@"%ld",total];
+//                [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:5 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
             };
         }else{
             NSArray *array = self.deductionsArray;
@@ -265,13 +284,13 @@ static NSString *LPSalaryStatisticsCellID = @"LPSalaryStatisticsCell";
             cell.dicBlock = ^(NSDictionary *dic) {
                 weakSelf.deductionsDic = dic;
                 
-                NSInteger total = 0;
-                NSArray *array = [dic allValues];
-                for (NSString *str in array) {
-                    total += [str integerValue];
-                }
-                weakSelf.deductionTotal = [NSString stringWithFormat:@"%ld",total];
-                [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:5 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+//                NSInteger total = 0;
+//                NSArray *array = [dic allValues];
+//                for (NSString *str in array) {
+//                    total += [str integerValue];
+//                }
+//                weakSelf.deductionTotal = [NSString stringWithFormat:@"%ld",total];
+//                [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:5 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
             };
         }
         cell.index = indexPath.row;
@@ -281,18 +300,20 @@ static NSString *LPSalaryStatisticsCellID = @"LPSalaryStatisticsCell";
         LPSalaryStatisticsCell *cell = [tableView dequeueReusableCellWithIdentifier:LPSalaryStatisticsCellID];
         cell.subsidyLabel.text = [NSString stringWithFormat:@"补贴总计：%@",self.subsidyTotal ? self.subsidyTotal : @""];
         cell.deductionLabel.text = [NSString stringWithFormat:@"扣款总计：%@",self.deductionTotal ? self.deductionTotal : @""];
+        cell.overtimeLabel.text = [NSString stringWithFormat:@"加班总计：%@",self.addTotal ? self.addTotal : @""];
+        cell.basicSalaryTextField.text = self.basicSalary;
         WEAK_SELF();
         
-        __weak LPSalaryStatisticsCell *weakCell = cell;
+//        __weak LPSalaryStatisticsCell *weakCell = cell;
         cell.block = ^(NSString *string) {
             weakSelf.basicSalary = string;
-            CGFloat addTotal = [weakSelf Calculation];
-            weakCell.overtimeLabel.text = [NSString stringWithFormat:@"加班总计：%.2f",addTotal];
+//            CGFloat addTotal = [weakSelf calculation];
+//            weakCell.overtimeLabel.text = [NSString stringWithFormat:@"加班总计：%.2f",addTotal];
         };
         return cell;
     }
 }
--(CGFloat)Calculation{
+-(void)calculation{
     CGFloat h = [self.basicSalary floatValue]/21.75/8.0;
 //    self.addTypeTypeArray = @[@"普通加班",@"周末加班",@"节假日加班"];
     CGFloat normalAdd = 0;
@@ -310,11 +331,19 @@ static NSString *LPSalaryStatisticsCellID = @"LPSalaryStatisticsCell";
         }
     }
     CGFloat total = normalAdd + weekendAdd + holidayAdd;
-    return total;
+    self.addTotal = [NSString stringWithFormat:@"%.2f",total];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+-(void)refresh:(CGFloat)dedTotal add:(CGFloat)subTotal{
+    self.deductionTotal = [NSString stringWithFormat:@"%.2f",dedTotal];
+    self.subsidyTotal = [NSString stringWithFormat:@"%.2f",subTotal];
+    CGFloat total = self.basicSalary.floatValue + self.addTotal.floatValue + subTotal - dedTotal;
+    [self.bottomButtonArray[1] setTitle:[NSString stringWithFormat:@"%.2f",total] forState:UIControlStateNormal];
+    [self.tableview reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:5 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 #pragma mark - request
@@ -332,7 +361,58 @@ static NSString *LPSalaryStatisticsCellID = @"LPSalaryStatisticsCell";
         }
     }];
 }
+-(void)requestAddWorkrecord{
 
+    [self calculation];
+    
+    NSString *dedstring = [self.deductionsDic mj_JSONString];
+    NSArray *dedArray = [self.deductionsDic allValues];
+    CGFloat dedMoney = 0;
+    for (NSString *str in dedArray) {
+        dedMoney += [str floatValue];
+    }
+    
+    NSString *substring = [self.subsidiesDic mj_JSONString];
+    NSArray *subArray = [self.subsidiesDic allValues];
+    CGFloat subMoney = 0;
+    for (NSString *str in subArray) {
+        subMoney += [str floatValue];
+    }
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    [dic setObject:self.addTotal forKey:@"addWorkSalary"];
+    [dic setObject:self.basicSalary forKey:@"basicSalary"];
+    [dic setObject:self.currentDateString forKey:@"time"];
+    [dic setObject:@(0) forKey:@"type"];
+
+    if (dedstring) {
+        [dic setObject:dedstring forKey:@"normlDeductLabel"];
+        [dic setObject:@(dedMoney) forKey:@"normlDeductMoney"];
+    }
+
+    if (substring) {
+        [dic setObject:substring forKey:@"normlSubsidyLabel"];
+        [dic setObject:@(subMoney) forKey:@"normlSubsidyMoney"];
+    }
+    
+//    NSDictionary *dic = @{
+//                          @"addWorkSalary":@(add),
+//                          @"basicSalary":self.basicSalary,
+//                          @"deductLabel":dedstring ? dedstring : @"",
+//                          @"deductMoney":@(dedMoney),
+//                          @"subsidyLabel":substring ? substring : @"",
+//                          @"subsidyMoney":@(subMoney)
+//                          };
+    [NetApiManager requestAddWorkrecordWithParam:[dic copy] withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if ([responseObject[@"data"] integerValue] == 1) {
+                [self refresh:dedMoney add:subMoney];
+            }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
 
 #pragma mark lazy
 - (UITableView *)tableview{
