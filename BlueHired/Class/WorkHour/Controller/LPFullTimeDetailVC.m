@@ -350,7 +350,7 @@ static NSString *LPSalaryStatisticsCellID = @"LPSalaryStatisticsCell";
 -(void)requestSelectWorkhour{
     NSDictionary *dic = @{
                           @"type":@(0),
-                          @"day":self.currentDateString
+                          @"month":self.currentDateString
                           };
     [NetApiManager requestSelectWorkhourWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
