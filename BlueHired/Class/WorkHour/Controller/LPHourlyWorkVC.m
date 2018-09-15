@@ -25,6 +25,7 @@
 @property(nonatomic,strong) NSString *currentDateString;
 
 @property(nonatomic,strong) LPQueryCurrecordModel *model;
+@property(nonatomic,strong) NSArray *normalRecordArray;
 
 @property(nonatomic,assign) CGFloat labourCost;
 @property(nonatomic,assign) CGFloat workReHour;
@@ -107,7 +108,8 @@
         make.size.mas_equalTo(CGSizeMake(15, 19));
     }];
     [deleteButton setImage:[UIImage imageNamed:@"delete_white"] forState:UIControlStateNormal];
-    
+    [deleteButton addTarget:self action:@selector(touchDeleteButton) forControlEvents:UIControlEventTouchUpInside];
+
     
     [self.view addSubview:self.tableview];
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -134,7 +136,15 @@
     self.labourCost = [textField.text floatValue];
 }
 -(void)selectCalenderButton:(UIButton *)button{
+    if (!self.normalRecordArray) {
+        [self requestQueryNormalrecordWithShowCalender:YES];
+    }else{
+        [self showCalender];
+    }
+}
+-(void)showCalender{
     self.dateSelectView.hidden = NO;
+    self.dateSelectView.selectArray = self.normalRecordArray;
     WEAK_SELF()
     self.dateSelectView.block = ^(NSString *string) {
         weakSelf.currentDateString = string;
@@ -142,6 +152,20 @@
         [weakSelf requestQueryCurrecord];
     };
 }
+-(void)touchDeleteButton{
+    if (!self.model.data) {
+        [self.view showLoadingMeg:@"该日期没有记录" time:MESSAGE_SHOW_TIME];
+        return;
+    }else{
+        GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"提示" message:@"是否删除当日工时记录" textAlignment:NSTextAlignmentCenter buttonTitles:@[@"取消",@"确定"] buttonsColor:@[[UIColor colorWithHexString:@"#666666"],[UIColor baseColor]] buttonsBackgroundColors:nil buttonClick:^(NSInteger buttonIndex) {
+            if (buttonIndex == 1) {
+                [self requestDeleteAddtime];
+            }
+        }];
+        [alert show];
+    }
+}
+
 -(void)touchRecordButton{
     if (!self.labourCost || !self.workReHour) {
         [self.view showLoadingMeg:@"请选择工时及工价" time:MESSAGE_SHOW_TIME];
@@ -198,7 +222,7 @@
     }else if (indexPath.row == 1){
         cell.textLabel.text = @"工时";
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.detailTextLabel.text = self.model.data.workReHour ? [NSString stringWithFormat:@"%@",self.model.data.workReHour] : @"";
+        cell.detailTextLabel.text = self.model.data.workReHour ? [NSString stringWithFormat:@"%.1f小时",self.model.data.workReHour.floatValue] : @"";
         
 
     }else {
@@ -214,9 +238,10 @@
         textField.placeholder = @"请输入工价(元/小时)";
         textField.textAlignment = NSTextAlignmentRight;
         textField.font = [UIFont systemFontOfSize:16];
+        textField.textColor = [UIColor colorWithHexString:@"#939393"];
         [textField addTarget:self action:@selector(textFieldChanged:) forControlEvents:UIControlEventEditingChanged];
 
-        textField.text = self.model.data.labourCost ? [NSString stringWithFormat:@"%@",self.model.data.labourCost] : @"";
+        textField.text = self.model.data.labourCost ? [NSString stringWithFormat:@"%.2f元/小时",self.model.data.labourCost.floatValue] : @"";
     }
     
     return cell;
@@ -257,6 +282,31 @@
         }
     }];
 }
+-(void)requestQueryNormalrecordWithShowCalender:(BOOL)show{
+    NSDate *currentDate = [NSDate date];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"YYYY-MM"];
+    NSString *string = [dateFormatter stringFromDate:currentDate];
+    
+    NSDictionary *dic = @{
+                          @"type":@(1),
+                          @"month":string
+                          };
+    [NetApiManager requestQueryNormalrecordWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                NSArray *array = responseObject[@"data"];
+                self.normalRecordArray = array;
+                if (show) {
+                    [self showCalender];
+                }
+            }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
 -(void)requestSaveorupdateWorkhour{
     NSDictionary *dic = @{
                           @"labourCost":self.labourCost ? @(self.labourCost) : @"",
@@ -271,7 +321,25 @@
             if (responseObject[@"data"]) {
                 if ([responseObject[@"data"] integerValue] == 1) {
                     [self.view showLoadingMeg:@"记录成功" time:MESSAGE_SHOW_TIME];
+                    [self requestQueryNormalrecordWithShowCalender:NO];
                 }
+            }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+-(void)requestDeleteAddtime{
+    NSDictionary *dic = @{
+                          @"type":@(1),
+                          @"month":self.currentDateString
+                          };
+    [NetApiManager requestDeleteAddtimeWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                [self requestQueryCurrecord];
+                [self requestQueryNormalrecordWithShowCalender:NO];
             }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
