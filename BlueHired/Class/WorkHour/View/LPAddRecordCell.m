@@ -14,7 +14,6 @@
 @property(nonatomic,strong) UIView *textView;
 @property(nonatomic,strong) NSMutableArray <UILabel *>*labelArray;
 @property(nonatomic,strong) NSMutableArray <UITextField *>*textFieldArray;
-@property(nonatomic,strong) UIButton *addButton;
 
 @property(nonatomic,strong) NSMutableArray *viewArray;
 @property(nonatomic,strong) NSMutableDictionary *muDic;
@@ -105,19 +104,7 @@
     [button addTarget:self action:@selector(addItem) forControlEvents:UIControlEventTouchUpInside];
     self.addButton = button;
 }
--(void)setIndex:(NSInteger)index{
-    _index = index;
-    if (index == 3) {
-        self.imgView.image = [UIImage imageNamed:@"add_subsidies_record"];
-        self.addTextLabel.text = @"添加补贴记录";
-        [self.addButton setTitle:@"添加补贴记录" forState:UIControlStateNormal];
-    }else if (index == 4) {
-        self.imgView.image = [UIImage imageNamed:@"add_deductions_record"];
-        self.addTextLabel.text = @"添加扣款记录";
-        [self.addButton setTitle:@"添加扣款记录" forState:UIControlStateNormal];
-    }
 
-}
 -(void)setTextArray:(NSArray *)textArray{
     if ([self.textArray isEqualToArray:textArray]) {
         return;

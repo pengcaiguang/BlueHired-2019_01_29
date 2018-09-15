@@ -17,11 +17,10 @@ typedef void(^LPAddRecordCellDicBlock)(NSDictionary *dic);
 @property (nonatomic,copy) LPAddRecordCellBlock block;
 @property (nonatomic,copy) LPAddRecordCellDicBlock dicBlock;
 
-@property(nonatomic,assign) NSInteger index;
-
 @property (weak, nonatomic) IBOutlet UIImageView *imgView;
 @property (weak, nonatomic) IBOutlet UILabel *addTextLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *view_constraint_height;
+@property(nonatomic,strong) UIButton *addButton;
 
 @property(nonatomic,strong) NSArray *textArray;
 

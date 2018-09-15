@@ -223,6 +223,10 @@ static NSString *LPSalaryStatisticsCellID = @"LPSalaryStatisticsCell";
     }else if (indexPath.row == 3 || indexPath.row == 4){
         LPAddRecordCell *cell = [tableView dequeueReusableCellWithIdentifier:LPAddRecordCellID];
         if (indexPath.row == 3) {
+            cell.imgView.image = [UIImage imageNamed:@"add_subsidies_record"];
+            cell.addTextLabel.text = @"添加补贴记录";
+            [cell.addButton setTitle:@"添加补贴记录" forState:UIControlStateNormal];
+            
             NSArray *array = self.subsidiesArray;
             cell.textArray = array;
             WEAK_SELF()
@@ -258,6 +262,10 @@ static NSString *LPSalaryStatisticsCellID = @"LPSalaryStatisticsCell";
 //                [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:5 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
             };
         }else{
+            cell.imgView.image = [UIImage imageNamed:@"add_deductions_record"];
+            cell.addTextLabel.text = @"添加扣款记录";
+            [cell.addButton setTitle:@"添加扣款记录" forState:UIControlStateNormal];
+            
             NSArray *array = self.deductionsArray;
             cell.textArray = array;
             WEAK_SELF()
@@ -293,7 +301,6 @@ static NSString *LPSalaryStatisticsCellID = @"LPSalaryStatisticsCell";
 //                [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:5 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
             };
         }
-        cell.index = indexPath.row;
 
         return cell;
     }else{

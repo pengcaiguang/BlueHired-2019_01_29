@@ -7,9 +7,17 @@
 //
 
 #import "LPHourlyWorkDetailVC.h"
+#import "LPSubsidyDeductionVC.h"
+#import "LPAddRecordCell.h"
 
-@interface LPHourlyWorkDetailVC ()<UITableViewDelegate,UITableViewDataSource>
+static NSString *LPAddRecordCellID = @"LPAddRecordCell";
+
+@interface LPHourlyWorkDetailVC ()<UITableViewDelegate,UITableViewDataSource,FSCalendarDataSource,FSCalendarDelegate,FSCalendarDelegateAppearance>
 @property (nonatomic, strong)UITableView *tableview;
+@property (nonatomic, strong)UIView *tableHeaderView;
+@property (weak, nonatomic) FSCalendar *calendar;
+@property(nonatomic,strong) NSMutableArray <UIButton *>*bottomButtonArray;
+
 @property(nonatomic,strong) UIButton *timeButton;
 @property(nonatomic,strong) UIView *monthView;
 @property(nonatomic,strong) UIView *monthBackView;
@@ -17,6 +25,14 @@
 
 @property(nonatomic,strong) NSString *currentDateString;
 @property(nonatomic,assign) NSInteger month;
+
+
+@property(nonatomic,strong) NSArray *subsidiesArray;
+@property(nonatomic,strong) NSDictionary *subsidiesDic;
+
+@property(nonatomic,strong) NSArray *deductionsArray;
+@property(nonatomic,strong) NSDictionary *deductionsDic;
+
 
 @end
 
@@ -87,23 +103,36 @@
     }];
     rightImgView.image = [UIImage imageNamed:@"right_arrow"];
     
-    UIButton *deleteButton = [[UIButton alloc]init];
-    [bgView addSubview:deleteButton];
-    [deleteButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.mas_equalTo(-14);
-        make.centerY.equalTo(bgView);
-        make.size.mas_equalTo(CGSizeMake(15, 19));
-    }];
-    [deleteButton setImage:[UIImage imageNamed:@"delete_white"] forState:UIControlStateNormal];
-    
-    
     [self.view addSubview:self.tableview];
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
         //        make.edges.equalTo(self.view);
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
-        make.bottom.mas_equalTo(0);
+        make.bottom.mas_equalTo(-48);
         make.top.mas_equalTo(48);
+    }];
+    self.bottomButtonArray = [NSMutableArray array];
+    NSArray *titleArray = @[@"预估工资",@"0.00元"];
+    for (int i =0; i<titleArray.count; i++) {
+        UIButton *button = [[UIButton alloc]init];
+        [self.view addSubview:button];
+        [button setTitle:titleArray[i] forState:UIControlStateNormal];
+        button.titleLabel.font = [UIFont systemFontOfSize:16];
+        button.tag = i;
+        if (i == 0) {
+            button.backgroundColor = [UIColor baseColor];
+            [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [button addTarget:self action:@selector(touchBottomButton:) forControlEvents:UIControlEventTouchUpInside];
+        }else{
+            button.backgroundColor = [UIColor whiteColor];
+            [button setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
+        }
+        [self.bottomButtonArray addObject:button];
+    }
+    [self.bottomButtonArray mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedSpacing:0 leadSpacing:0 tailSpacing:0];
+    [self.bottomButtonArray mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(48);
+        make.bottom.mas_equalTo(0);
     }];
 }
 -(void)chooseMonth{
@@ -128,23 +157,110 @@
         [self monthViewHidden];
     });
 }
+-(void)touchBottomButton:(UIButton *)button{
+    NSLog(@"预估工资");
+}
 
 #pragma mark - TableViewDelegate & Datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 20;
+    return 2;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    static NSString *rid=@"cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:rid];
-    if(cell == nil){
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rid];
+    LPAddRecordCell *cell = [tableView dequeueReusableCellWithIdentifier:LPAddRecordCellID];
+    if (indexPath.row == 0) {
+        cell.imgView.image = [UIImage imageNamed:@"add_subsidies_record"];
+        cell.addTextLabel.text = @"添加补贴记录";
+        [cell.addButton setTitle:@"添加补贴记录" forState:UIControlStateNormal];
+        
+        NSArray *array = self.subsidiesArray;
+        cell.textArray = array;
+        WEAK_SELF()
+        cell.block = ^{
+            LPSubsidyDeductionVC *vc = [[LPSubsidyDeductionVC alloc]init];
+            vc.type = 1;
+            vc.selectArray = weakSelf.subsidiesArray;
+            vc.block = ^(NSArray *array) {
+                weakSelf.subsidiesArray = array;
+                [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            };
+            [self.navigationController pushViewController:vc animated:YES];
+        };
+        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+        dic = [self.subsidiesDic mutableCopy];
+        for (int i =0; i<[dic allKeys].count; i++) {
+            if (![self.subsidiesArray containsObject:[dic allKeys][i]]) {
+                [dic removeObjectForKey:[dic allKeys][i]];
+            }
+        }
+        self.subsidiesDic = [dic copy];
+        
+        cell.dic = self.subsidiesDic;
+        cell.dicBlock = ^(NSDictionary *dic) {
+            weakSelf.subsidiesDic = dic;
+            
+            //                NSInteger total = 0;
+            //                NSArray *array = [dic allValues];
+            //                for (NSString *str in array) {
+            //                    total += [str integerValue];
+            //                }
+            //                weakSelf.subsidyTotal = [NSString stringWithFormat:@"%ld",total];
+            //                [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:5 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+        };
+    }else{
+        cell.imgView.image = [UIImage imageNamed:@"add_deductions_record"];
+        cell.addTextLabel.text = @"添加扣款记录";
+        [cell.addButton setTitle:@"添加扣款记录" forState:UIControlStateNormal];
+        
+        NSArray *array = self.deductionsArray;
+        cell.textArray = array;
+        WEAK_SELF()
+        cell.block = ^{
+            LPSubsidyDeductionVC *vc = [[LPSubsidyDeductionVC alloc]init];
+            vc.type = 2;
+            vc.selectArray = weakSelf.deductionsArray;
+            vc.block = ^(NSArray *array) {
+                weakSelf.deductionsArray = array;
+                [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            };
+            [self.navigationController pushViewController:vc animated:YES];
+        };
+        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+        dic = [self.deductionsDic mutableCopy];
+        for (int i =0; i<[dic allKeys].count; i++) {
+            if (![self.deductionsArray containsObject:[dic allKeys][i]]) {
+                [dic removeObjectForKey:[dic allKeys][i]];
+            }
+        }
+        self.deductionsDic = [dic copy];
+        
+        cell.dic = self.deductionsDic;
+        cell.dicBlock = ^(NSDictionary *dic) {
+            weakSelf.deductionsDic = dic;
+            
+            //                NSInteger total = 0;
+            //                NSArray *array = [dic allValues];
+            //                for (NSString *str in array) {
+            //                    total += [str integerValue];
+            //                }
+            //                weakSelf.deductionTotal = [NSString stringWithFormat:@"%ld",total];
+            //                [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:5 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+        };
     }
-    cell.textLabel.text = [NSString stringWithFormat:@"%ld",indexPath.row];
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+#pragma mark - FSCalendarDelegate
+
+- (void)calendar:(FSCalendar *)calendar didSelectDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat = @"yyyy-MM-dd";
+    NSString *string = [dateFormatter stringFromDate:date];
+    NSLog(@"did select %@",string);
+
 }
 
 #pragma mark - request
@@ -173,9 +289,10 @@
         _tableview.tableFooterView = [[UIView alloc]init];
         _tableview.rowHeight = UITableViewAutomaticDimension;
         _tableview.estimatedRowHeight = 44;
+        _tableview.tableHeaderView = self.tableHeaderView;
         _tableview.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         _tableview.separatorColor = [UIColor colorWithHexString:@"#F1F1F1"];
-        
+        [_tableview registerNib:[UINib nibWithNibName:LPAddRecordCellID bundle:nil] forCellReuseIdentifier:LPAddRecordCellID];
     }
     return _tableview;
 }
@@ -236,6 +353,50 @@
     }
     return _monthView;
     
+}
+-(UIView *)tableHeaderView{
+    if (!_tableHeaderView) {
+        _tableHeaderView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 288)];
+        _tableHeaderView.backgroundColor = [UIColor whiteColor];
+        
+        FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 253)];
+        calendar.dataSource = self;
+        calendar.delegate = self;
+        calendar.scrollDirection = FSCalendarScrollDirectionVertical;
+        calendar.backgroundColor = [UIColor whiteColor];
+        calendar.scrollEnabled = NO;
+        calendar.locale = [NSLocale localeWithLocaleIdentifier:@"zh-CN"];
+        calendar.appearance.selectionColor = [UIColor baseColor];
+        calendar.appearance.weekdayTextColor = [UIColor baseColor];
+        calendar.appearance.headerTitleColor = [UIColor baseColor];
+        calendar.appearance.todayColor = [UIColor baseColor];
+        calendar.today = nil;
+        [calendar selectDate:[NSDate date]];
+        calendar.appearance.headerDateFormat = @"yyyy年MM月";
+        calendar.headerHeight = 5.0;
+        calendar.calendarHeaderView.hidden = YES;
+        calendar.placeholderType = FSCalendarPlaceholderTypeNone;
+//        [calendar registerClass:[LPCalendarCell class] forCellReuseIdentifier:@"cell"];
+        [_tableHeaderView addSubview:calendar];
+        
+        UIButton *checkButton = [[UIButton alloc]init];
+        [_tableHeaderView addSubview:checkButton];
+        [checkButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(calendar);
+            make.bottom.mas_equalTo(-5);
+            make.height.mas_equalTo(30);
+        }];
+        checkButton.titleLabel.font = [UIFont systemFontOfSize:12];
+        [checkButton setTitle:@"点击日期可查看当日工资哦！" forState:UIControlStateNormal];
+        [checkButton setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
+        [checkButton addTarget:self action:@selector(touchCheckButton) forControlEvents:UIControlEventTouchUpInside];
+        
+        self.calendar = calendar;
+    }
+    return _tableHeaderView;
+}
+-(void)touchCheckButton{
+    NSLog(@"touchCheckButton");
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
