@@ -94,11 +94,6 @@
         make.bottom.mas_equalTo(-62);
     }];
     labelMessage.text = _message;
-    labelMessage.font = [UIFont systemFontOfSize:16];
-    labelMessage.textColor = [UIColor colorWithHexString:@"#1B1B1B"];
-    labelMessage.numberOfLines = 0;
-    labelMessage.textAlignment = _textAlignment;
-    
     if (labelMessage.text) {
         NSMutableAttributedString *noteStr = [[NSMutableAttributedString alloc] initWithString:labelMessage.text];
         NSRange range1 = NSMakeRange(0, labelMessage.text.length);
@@ -107,7 +102,10 @@
         [noteStr addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:range1];
         labelMessage.attributedText = noteStr;
     }
-    
+    labelMessage.textAlignment = _textAlignment;
+    labelMessage.font = [UIFont systemFontOfSize:16];
+    labelMessage.textColor = [UIColor colorWithHexString:@"#1B1B1B"];
+    labelMessage.numberOfLines = 0;
     
     
     UIView *line = [[UIView alloc]init];

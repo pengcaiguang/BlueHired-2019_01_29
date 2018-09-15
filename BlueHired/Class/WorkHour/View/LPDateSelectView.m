@@ -122,12 +122,13 @@
     dateFormatter.dateFormat = @"yyyy-MM-dd";
     NSString *key = [dateFormatter stringFromDate:date];
     
-    NSDictionary  *fillSelectionColors = @{
-                                           @"2018/09/06":[UIColor redColor],
-                                           @"2018/09/27":[UIColor grayColor],
-                                           @"2018/09/08":[UIColor greenColor],
-                                           @"2018/09/17":[UIColor grayColor],
-                                           @"2018/09/21":[UIColor cyanColor]};
+//    NSDictionary  *fillSelectionColors = @{
+//                                           @"2018-09-06":[UIColor redColor],
+//                                           @"2018-09-27":[UIColor grayColor],
+//                                           @"2018-09-08":[UIColor greenColor],
+//                                           @"2018-09-17":[UIColor grayColor],
+//                                           @"2018-09-21":[UIColor cyanColor]
+//                                           };
     
     if ([self.selectDateArray containsObject:key]) {
         rangeCell.label.hidden = NO;

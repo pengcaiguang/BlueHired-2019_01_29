@@ -139,14 +139,10 @@
 #pragma mark - tagter
 -(void)selectCalenderButton:(UIButton *)button{
     if (!self.normalRecordArray) {
-        [self requestQueryNormalrecord];
+        [self requestQueryNormalrecordWithShowCalender:YES];
     }else{
         [self showCalender];
     }
-}
--(void)setNormalRecordArray:(NSArray *)normalRecordArray{
-    _normalRecordArray = normalRecordArray;
-    [self showCalender];
 }
 -(void)showCalender{
     self.dateSelectView.hidden = NO;
@@ -162,6 +158,13 @@
     if (!self.model.data) {
         [self.view showLoadingMeg:@"该日期没有记录" time:MESSAGE_SHOW_TIME];
         return;
+    }else{
+        GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"提示" message:@"是否删除当日工时记录" textAlignment:NSTextAlignmentCenter buttonTitles:@[@"取消",@"确定"] buttonsColor:@[[UIColor colorWithHexString:@"#666666"],[UIColor baseColor]] buttonsBackgroundColors:nil buttonClick:^(NSInteger buttonIndex) {
+            if (buttonIndex == 1) {
+                [self requestDeleteAddtime];
+            }
+        }];
+        [alert show];
     }
 }
 
@@ -367,7 +370,7 @@
         }
     }];
 }
--(void)requestQueryNormalrecord{
+-(void)requestQueryNormalrecordWithShowCalender:(BOOL)show{
     NSDate *currentDate = [NSDate date];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"YYYY-MM"];
@@ -383,6 +386,9 @@
             if ([responseObject[@"code"] integerValue] == 0) {
                 NSArray *array = responseObject[@"data"];
                 self.normalRecordArray = array;
+                if (show) {
+                    [self showCalender];
+                }
             }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
@@ -407,7 +413,25 @@
             if (responseObject[@"data"]) {
                 if ([responseObject[@"data"] integerValue] == 1) {
                     [self.view showLoadingMeg:@"记录成功" time:MESSAGE_SHOW_TIME];
+                    [self requestQueryNormalrecordWithShowCalender:NO];
                 }
+            }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+-(void)requestDeleteAddtime{
+    NSDictionary *dic = @{
+                          @"type":@(0),
+                          @"month":self.currentDateString
+                          };
+    [NetApiManager requestDeleteAddtimeWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                [self requestQueryCurrecord];
+                [self requestQueryNormalrecordWithShowCalender:NO];
             }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
