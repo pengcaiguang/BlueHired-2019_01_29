@@ -11,6 +11,8 @@
 typedef void(^LPDateSelectViewBlock)(NSString *string);
 
 @interface LPDateSelectView : UIView
+
+@property(nonatomic,strong) NSArray *selectArray;
 @property (nonatomic,copy) LPDateSelectViewBlock block;
 
 @end

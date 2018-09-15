@@ -29,6 +29,7 @@
 @property(nonatomic,strong) NSArray *timeArray;
 
 @property(nonatomic,strong) LPQueryCurrecordModel *model;
+@property(nonatomic,strong) NSArray *normalRecordArray;
 
 @property(nonatomic,strong) NSNumber *addType;
 @property(nonatomic,assign) CGFloat addWorkHour;
@@ -65,7 +66,6 @@
     
     [self setupUI];
     [self requestQueryCurrecord];
-    [self requestQueryNormalrecord];
     
 }
 
@@ -123,7 +123,8 @@
         make.size.mas_equalTo(CGSizeMake(15, 19));
     }];
     [deleteButton setImage:[UIImage imageNamed:@"delete_white"] forState:UIControlStateNormal];
-    
+    [deleteButton addTarget:self action:@selector(touchDeleteButton) forControlEvents:UIControlEventTouchUpInside];
+
     
     [self.view addSubview:self.tableview];
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -137,13 +138,31 @@
 
 #pragma mark - tagter
 -(void)selectCalenderButton:(UIButton *)button{
+    if (!self.normalRecordArray) {
+        [self requestQueryNormalrecord];
+    }else{
+        [self showCalender];
+    }
+}
+-(void)setNormalRecordArray:(NSArray *)normalRecordArray{
+    _normalRecordArray = normalRecordArray;
+    [self showCalender];
+}
+-(void)showCalender{
     self.dateSelectView.hidden = NO;
+    self.dateSelectView.selectArray = self.normalRecordArray;
     WEAK_SELF()
     self.dateSelectView.block = ^(NSString *string) {
         weakSelf.currentDateString = string;
         [weakSelf.timeButton setTitle:string forState:UIControlStateNormal];
         [weakSelf requestQueryCurrecord];
     };
+}
+-(void)touchDeleteButton{
+    if (!self.model.data) {
+        [self.view showLoadingMeg:@"该日期没有记录" time:MESSAGE_SHOW_TIME];
+        return;
+    }
 }
 
 #pragma mark - TableViewDelegate & Datasource
@@ -308,9 +327,27 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 -(void)touchRecordButton{
-    if (!self.workType || !self.workNormalHour) {
-        [self.view showLoadingMeg:@"请选择上班类型及时间" time:MESSAGE_SHOW_TIME];
+    if (!self.workType && !self.addType && !self.leaveType) {
+        [self.view showLoadingMeg:@"请选择以上内容" time:MESSAGE_SHOW_TIME];
         return;
+    }
+    if (self.workType) {
+        if (!self.workNormalHour) {
+            [self.view showLoadingMeg:@"请选择上班时长" time:MESSAGE_SHOW_TIME];
+            return;
+        }
+    }
+    if (self.addType) {
+        if (!self.addWorkHour) {
+            [self.view showLoadingMeg:@"请选择加班时长" time:MESSAGE_SHOW_TIME];
+            return;
+        }
+    }
+    if (self.leaveType) {
+        if (!self.leaveHour) {
+            [self.view showLoadingMeg:@"请选择请假时长" time:MESSAGE_SHOW_TIME];
+            return;
+        }
     }
     [self requestSaveorupdateWorkhour];
 }
@@ -331,13 +368,22 @@
     }];
 }
 -(void)requestQueryNormalrecord{
+    NSDate *currentDate = [NSDate date];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"YYYY-MM"];
+    NSString *string = [dateFormatter stringFromDate:currentDate];
+    
     NSDictionary *dic = @{
-                          @"month":@(self.month)
+                          @"type":@(0),
+                          @"month":string
                           };
     [NetApiManager requestQueryNormalrecordWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            
+            if ([responseObject[@"code"] integerValue] == 0) {
+                NSArray *array = responseObject[@"data"];
+                self.normalRecordArray = array;
+            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

@@ -13,6 +13,7 @@
 @property(nonatomic,strong) UIView *bgView;
 @property(nonatomic,strong) UIView *selectView;
 @property (weak, nonatomic) FSCalendar *calendar;
+@property(nonatomic,strong) NSMutableArray *selectDateArray;
 
 @end
 
@@ -21,6 +22,7 @@
 -(instancetype)init{
     self = [super init];
     if (self) {
+        
         [[UIApplication sharedApplication].keyWindow addSubview:self.bgView];
         [[UIApplication sharedApplication].keyWindow addSubview:self.selectView];
         
@@ -48,6 +50,20 @@
 }
 -(void)hidden{
     self.hidden = YES;
+}
+
+-(void)setSelectArray:(NSArray *)selectArray{
+    _selectArray = selectArray;
+    NSDate *currentDate = [NSDate date];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"YYYY-MM"];
+    NSString *string = [dateFormatter stringFromDate:currentDate];
+    self.selectDateArray = [NSMutableArray array];
+    for (NSString *str in selectArray) {
+        NSString *dateString = [NSString stringWithFormat:@"%@-%@",string,str];
+        [self.selectDateArray addObject:dateString];
+    }
+    [self.calendar reloadData];
 }
 
 #pragma mark - FSCalendarDelegate
@@ -103,7 +119,7 @@
         return;
     }
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.dateFormat = @"yyyy/MM/dd";
+    dateFormatter.dateFormat = @"yyyy-MM-dd";
     NSString *key = [dateFormatter stringFromDate:date];
     
     NSDictionary  *fillSelectionColors = @{
@@ -113,7 +129,7 @@
                                            @"2018/09/17":[UIColor grayColor],
                                            @"2018/09/21":[UIColor cyanColor]};
     
-    if ([fillSelectionColors.allKeys containsObject:key]) {
+    if ([self.selectDateArray containsObject:key]) {
         rangeCell.label.hidden = NO;
     }else{
         rangeCell.label.hidden = YES;
