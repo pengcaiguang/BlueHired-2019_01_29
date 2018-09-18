@@ -76,11 +76,27 @@
                         <color key="textColor" red="0.1058823529" green="0.1058823529" blue="0.1058823529" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vOw-oQ-Q2Q">
+                        <rect key="frame" x="269" y="9.5" width="30" height="20"/>
+                        <color key="backgroundColor" red="0.23529411764705882" green="0.68627450980392157" blue="1" alpha="0.84999999999999998" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="P2D-s0-m9P"/>
+                            <constraint firstAttribute="width" constant="30" id="RRC-ZX-ERb"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <state key="normal" title="关注">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </state>
+                        <connections>
+                            <action selector="touchUserConcernButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="J5M-qq-PnE"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="HUq-T3-DEW" secondAttribute="trailing" constant="11" id="30N-t4-6oV"/>
                     <constraint firstItem="FIs-6e-qKS" firstAttribute="centerY" secondItem="UTC-zf-XQ2" secondAttribute="centerY" id="3E5-PM-7AZ"/>
                     <constraint firstAttribute="trailing" secondItem="q48-W1-Jv1" secondAttribute="trailing" constant="12" id="52Q-0k-qLw"/>
+                    <constraint firstAttribute="trailing" secondItem="vOw-oQ-Q2Q" secondAttribute="trailing" constant="21" id="6eX-PB-Dew"/>
                     <constraint firstItem="0wu-39-WD3" firstAttribute="leading" secondItem="4kM-SP-Da2" secondAttribute="trailing" constant="7" id="7uT-Nb-8iW"/>
                     <constraint firstItem="UTC-zf-XQ2" firstAttribute="leading" secondItem="FIs-6e-qKS" secondAttribute="trailing" constant="4" id="Ipw-o6-VN4"/>
                     <constraint firstItem="jnH-yi-z6X" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="13" id="JF1-QV-Zsq"/>
@@ -97,6 +113,7 @@
                     <constraint firstItem="r4F-IX-lCq" firstAttribute="leading" secondItem="jnH-yi-z6X" secondAttribute="trailing" constant="5" id="k3S-YV-8JH"/>
                     <constraint firstItem="q48-W1-Jv1" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="12" id="tb7-LA-fdT"/>
                     <constraint firstItem="UTC-zf-XQ2" firstAttribute="top" secondItem="HUq-T3-DEW" secondAttribute="bottom" constant="15" id="uqL-3p-3do"/>
+                    <constraint firstItem="vOw-oQ-Q2Q" firstAttribute="centerY" secondItem="r4F-IX-lCq" secondAttribute="centerY" id="x3T-t5-q87"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
@@ -106,6 +123,8 @@
                 <outlet property="imageBgView_constraint_height" destination="E6K-hq-QZ0" id="qUN-Jx-ATE"/>
                 <outlet property="moodDetailsLabel" destination="q48-W1-Jv1" id="1OI-fN-IdE"/>
                 <outlet property="timeLabel" destination="0wu-39-WD3" id="rtJ-Xf-eQS"/>
+                <outlet property="userConcernButton" destination="vOw-oQ-Q2Q" id="QXZ-dW-DCA"/>
+                <outlet property="userConcern_constraint_width" destination="RRC-ZX-ERb" id="nzu-d1-BsO"/>
                 <outlet property="userNameLabel" destination="jnH-yi-z6X" id="Iuh-24-V76"/>
                 <outlet property="userUrlImgView" destination="4kM-SP-Da2" id="QcO-p9-jcx"/>
                 <outlet property="viewLabel" destination="UTC-zf-XQ2" id="kCh-F6-jRY"/>

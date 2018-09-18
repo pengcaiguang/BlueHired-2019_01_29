@@ -334,6 +334,9 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     if (indexPath.section == 0) {
         LPMoodDetailHeaderCell *cell = [tableView dequeueReusableCellWithIdentifier:LPMoodDetailHeaderCellID];
         cell.model = self.model;
+        cell.userConcernBlock = ^{
+            [self requestSetUserConcern];
+        };
         return cell;
     }else{
         LPEssayDetailCommentCell *cell = [tableView dequeueReusableCellWithIdentifier:LPEssayDetailCommentCellID];
@@ -423,6 +426,27 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
             self.commentType = 2;
             self.page = 1;
             [self requestCommentList];
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+-(void)requestSetUserConcern{
+    NSDictionary *dic = @{
+                          @"concernUserId":self.model.data.userId,
+                          };
+    [NetApiManager requestSetUserConcernWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if (!ISNIL(responseObject[@"data"])) {
+                LPMoodDetailHeaderCell *cell = [self.tableview cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+                if ([responseObject[@"data"] integerValue] == 0) {
+                    cell.isUserConcern = YES;
+                }else if ([responseObject[@"data"] integerValue] == 1) {
+                    cell.isUserConcern = NO;
+                }
+            }
+            
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

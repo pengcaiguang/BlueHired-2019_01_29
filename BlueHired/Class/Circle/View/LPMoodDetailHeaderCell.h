@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "LPGetMoodModel.h"
 
+typedef void(^LPMoodDetailHeaderCellUserConcernBlock)(void);
+
 @interface LPMoodDetailHeaderCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *userUrlImgView;
 @property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
@@ -17,11 +19,17 @@
 @property (weak, nonatomic) IBOutlet UILabel *moodDetailsLabel;
 @property (weak, nonatomic) IBOutlet UILabel *viewLabel;
 @property (weak, nonatomic) IBOutlet UIView *imageBgView;
-
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *imageBgView_constraint_height;
+
+@property (weak, nonatomic) IBOutlet UIButton *userConcernButton;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *userConcern_constraint_width;
+
 
 @property(nonatomic,strong) LPGetMoodModel *model;
 
+@property (nonatomic,copy) LPMoodDetailHeaderCellUserConcernBlock userConcernBlock;
+
+@property(nonatomic,assign) BOOL isUserConcern;
 
 @end
 

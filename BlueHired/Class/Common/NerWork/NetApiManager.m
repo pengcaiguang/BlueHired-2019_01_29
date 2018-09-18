@@ -322,7 +322,16 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
-
+//人员关注
++ (void)requestSetUserConcernWithParam:(id)paramer
+                            withHandle:(response)responseHandle{
+    NSString * appendURLString = @"userConcern/set_user_concern";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
 #pragma mark - 登陆注册
 /************************************************************/
 //*  登陆注册
