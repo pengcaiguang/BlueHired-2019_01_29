@@ -107,6 +107,12 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //查看圈子列表
 + (void)requestMoodListWithParam:(id)paramer
                       withHandle:(response)responseHandle;
+//获取圈子详情
++ (void)requestGetMoodWithParam:(id)paramer
+                     withHandle:(response)responseHandle;
+//增加圈子浏览量
++ (void)requestSetMoodViewWithParam:(id)paramer
+                         withHandle:(response)responseHandle;
 
 #pragma mark - 登陆注册
 /************************************************************/

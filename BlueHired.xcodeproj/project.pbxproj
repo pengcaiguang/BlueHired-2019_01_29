@@ -111,6 +111,10 @@
 		DCB25E952150ADCB00ED2FC4 /* LPSelectWorkhourHourlyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB25E942150ADCB00ED2FC4 /* LPSelectWorkhourHourlyModel.m */; };
 		DCB25E992150C79700ED2FC4 /* LPSalaryHourlyStatisticsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB25E972150C79700ED2FC4 /* LPSalaryHourlyStatisticsCell.m */; };
 		DCB25E9A2150C79700ED2FC4 /* LPSalaryHourlyStatisticsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DCB25E982150C79700ED2FC4 /* LPSalaryHourlyStatisticsCell.xib */; };
+		DCB25E9D2150D91200ED2FC4 /* LPMoodDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB25E9C2150D91200ED2FC4 /* LPMoodDetailVC.m */; };
+		DCB25EA02150DDBF00ED2FC4 /* LPGetMoodModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB25E9F2150DDBF00ED2FC4 /* LPGetMoodModel.m */; };
+		DCB25EA42150F4A200ED2FC4 /* LPMoodDetailHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB25EA22150F4A200ED2FC4 /* LPMoodDetailHeaderCell.m */; };
+		DCB25EA52150F4A200ED2FC4 /* LPMoodDetailHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DCB25EA32150F4A200ED2FC4 /* LPMoodDetailHeaderCell.xib */; };
 		DCCC8A60214754D30062A0F5 /* LPDateSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = DCCC8A5F214754D30062A0F5 /* LPDateSelectView.m */; };
 		DCCC8A6321476C830062A0F5 /* LPHourlyWorkVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCCC8A6221476C830062A0F5 /* LPHourlyWorkVC.m */; };
 		DCCC8A6C2147941F0062A0F5 /* LPFullTimeDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCCC8A6B2147941F0062A0F5 /* LPFullTimeDetailVC.m */; };
@@ -360,6 +364,13 @@
 		DCB25E962150C79700ED2FC4 /* LPSalaryHourlyStatisticsCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPSalaryHourlyStatisticsCell.h; sourceTree = "<group>"; };
 		DCB25E972150C79700ED2FC4 /* LPSalaryHourlyStatisticsCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPSalaryHourlyStatisticsCell.m; sourceTree = "<group>"; };
 		DCB25E982150C79700ED2FC4 /* LPSalaryHourlyStatisticsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPSalaryHourlyStatisticsCell.xib; sourceTree = "<group>"; };
+		DCB25E9B2150D91200ED2FC4 /* LPMoodDetailVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPMoodDetailVC.h; sourceTree = "<group>"; };
+		DCB25E9C2150D91200ED2FC4 /* LPMoodDetailVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPMoodDetailVC.m; sourceTree = "<group>"; };
+		DCB25E9E2150DDBF00ED2FC4 /* LPGetMoodModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPGetMoodModel.h; sourceTree = "<group>"; };
+		DCB25E9F2150DDBF00ED2FC4 /* LPGetMoodModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPGetMoodModel.m; sourceTree = "<group>"; };
+		DCB25EA12150F4A200ED2FC4 /* LPMoodDetailHeaderCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPMoodDetailHeaderCell.h; sourceTree = "<group>"; };
+		DCB25EA22150F4A200ED2FC4 /* LPMoodDetailHeaderCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPMoodDetailHeaderCell.m; sourceTree = "<group>"; };
+		DCB25EA32150F4A200ED2FC4 /* LPMoodDetailHeaderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPMoodDetailHeaderCell.xib; sourceTree = "<group>"; };
 		DCB5A5321875E124A6C52C8B /* libPods-BlueHired.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BlueHired.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCCC8A5E214754D30062A0F5 /* LPDateSelectView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPDateSelectView.h; sourceTree = "<group>"; };
 		DCCC8A5F214754D30062A0F5 /* LPDateSelectView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPDateSelectView.m; sourceTree = "<group>"; };
@@ -581,6 +592,9 @@
 				DC5C389A213682F500B3CF6E /* LPCircleListCell.h */,
 				DC5C389B213682F500B3CF6E /* LPCircleListCell.m */,
 				DC5C389C213682F500B3CF6E /* LPCircleListCell.xib */,
+				DCB25EA12150F4A200ED2FC4 /* LPMoodDetailHeaderCell.h */,
+				DCB25EA22150F4A200ED2FC4 /* LPMoodDetailHeaderCell.m */,
+				DCB25EA32150F4A200ED2FC4 /* LPMoodDetailHeaderCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -592,6 +606,8 @@
 				DC5C389821366D1A00B3CF6E /* LPMoodTypeModel.m */,
 				DC5C389F213690C000B3CF6E /* LPMoodListModel.h */,
 				DC5C38A0213690C000B3CF6E /* LPMoodListModel.m */,
+				DCB25E9E2150DDBF00ED2FC4 /* LPGetMoodModel.h */,
+				DCB25E9F2150DDBF00ED2FC4 /* LPGetMoodModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -786,6 +802,8 @@
 			children = (
 				DC7383682133EC040055DC10 /* LPCircleVC.h */,
 				DC7383692133EC040055DC10 /* LPCircleVC.m */,
+				DCB25E9B2150D91200ED2FC4 /* LPMoodDetailVC.h */,
+				DCB25E9C2150D91200ED2FC4 /* LPMoodDetailVC.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1249,6 +1267,7 @@
 				DC13BB52213E205A00800955 /* china_cities_v2.db in Resources */,
 				DC49D86C213A74B3009BFCB0 /* LPEssayDetailHeadCell.xib in Resources */,
 				DCCC8A742147AD3C0062A0F5 /* LPWorkHourDetailPieChartCell.xib in Resources */,
+				DCB25EA52150F4A200ED2FC4 /* LPMoodDetailHeaderCell.xib in Resources */,
 				DC7383A82134F6580055DC10 /* LPMainCell.xib in Resources */,
 				DC5C389E213682F500B3CF6E /* LPCircleListCell.xib in Resources */,
 				DCF5D9C6213FA5BD009F5DCE /* LPBusinessReviewCell.xib in Resources */,
@@ -1410,6 +1429,7 @@
 				DC13BB4D213E1C3B00800955 /* LPCityModel.m in Sources */,
 				DCB25E952150ADCB00ED2FC4 /* LPSelectWorkhourHourlyModel.m in Sources */,
 				DC5C38A421369B9B00B3CF6E /* NSString+String.m in Sources */,
+				DCB25E9D2150D91200ED2FC4 /* LPMoodDetailVC.m in Sources */,
 				DC49D86F213A7751009BFCB0 /* LPEssayDetailModel.m in Sources */,
 				DCCC8A842147AED60062A0F5 /* WSShowInfoView.m in Sources */,
 				DC13BB50213E1FD100800955 /* LPCityDataManager.m in Sources */,
@@ -1460,6 +1480,7 @@
 				DC5C38942136682200B3CF6E /* LPCircleCollectionViewCell.m in Sources */,
 				DC7383A22134EF300055DC10 /* UIView+MBProgressHUD.m in Sources */,
 				DC30E18F2138D9CB000C7A91 /* LPScreenAlertView.m in Sources */,
+				DCB25EA02150DDBF00ED2FC4 /* LPGetMoodModel.m in Sources */,
 				DC61FAC921466E900003AA61 /* LPDurationView.m in Sources */,
 				DCE2C2322148B52400BCB9F4 /* LPCalendarCell.m in Sources */,
 				DC30E19821391303000C7A91 /* LPMainSearchResultVC.m in Sources */,
@@ -1476,6 +1497,7 @@
 				DCCC8A6321476C830062A0F5 /* LPHourlyWorkVC.m in Sources */,
 				DC73836A2133EC040055DC10 /* LPCircleVC.m in Sources */,
 				DC73835A2133EAD30055DC10 /* LPBaseViewController.m in Sources */,
+				DCB25EA42150F4A200ED2FC4 /* LPMoodDetailHeaderCell.m in Sources */,
 				DC73839B2134EAEF0055DC10 /* UIWindow+Window.m in Sources */,
 				DC5C388021362EB300B3CF6E /* LPEssaylistModel.m in Sources */,
 				DC22957F2140BBE70002A095 /* LPUserMaterialModel.m in Sources */,

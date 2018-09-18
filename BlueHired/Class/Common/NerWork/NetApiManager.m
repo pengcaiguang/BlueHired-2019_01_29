@@ -302,6 +302,26 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
+//获取圈子详情
++ (void)requestGetMoodWithParam:(id)paramer
+                     withHandle:(response)responseHandle{
+    NSString * appendURLString = @"mood/get_mood";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
+//增加圈子浏览量
++ (void)requestSetMoodViewWithParam:(id)paramer
+                         withHandle:(response)responseHandle{
+    NSString * appendURLString = @"mood/set_mood_view";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
 
 #pragma mark - 登陆注册
 /************************************************************/

@@ -10,6 +10,7 @@
 #import "LPMoodTypeModel.h"
 #import "LPMoodListModel.h"
 #import "LPCircleListCell.h"
+#import "LPMoodDetailVC.h"
 
 static NSString *LPCircleListCellID = @"LPCircleListCell";
 
@@ -162,6 +163,15 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    LPMoodDetailVC *vc = [[LPMoodDetailVC alloc]init];
+    vc.hidesBottomBarWhenPushed = YES;
+    vc.moodListDataModel = self.moodListArray[indexPath.row];
+    [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        LPCircleListCell *cell = (LPCircleListCell*)[tableView cellForRowAtIndexPath:indexPath];
+        cell.viewLabel.text = [NSString stringWithFormat:@"%ld",[cell.viewLabel.text integerValue] + 1];
+    });
 }
 #pragma mark - request
 -(void)requestMoodType{
