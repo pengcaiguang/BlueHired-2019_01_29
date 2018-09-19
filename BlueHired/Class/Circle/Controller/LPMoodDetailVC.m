@@ -249,8 +249,8 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
         if (commentListModel.data.count > 0) {
             self.page += 1;
             [self.commentListArray addObjectsFromArray:commentListModel.data];
-            [self.tableview reloadData];
-            //            [self.tableview reloadSections:[[NSIndexSet alloc]initWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
+//            [self.tableview reloadData];
+            [self.tableview reloadSections:[[NSIndexSet alloc]initWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
             //            if (self.isComment) {
             //                [self.tableview scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1] atScrollPosition:UITableViewScrollPositionTop animated:YES];
             //            }

@@ -116,6 +116,16 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //添加圈子
 + (void)requestAddMoodWithParam:(id)paramer
                      withHandle:(response)responseHandle;
+// 多张图片上传
++ (void)requestPublishArticle:(id)parameters
+                   imageArray:(NSArray*)imageArray
+               imageNameArray:(NSArray*)imageNameArray
+                     response:(response)response;
+// 单张图片上传
++ (void)avartarChangeWithParamDict:(id)paramer
+                       singleImage:(UIImage *)image
+                   singleImageName:(NSString *)imageName
+                        withHandle:(response)responseHandle;
 //人员关注
 + (void)requestSetUserConcernWithParam:(id)paramer
                             withHandle:(response)responseHandle;

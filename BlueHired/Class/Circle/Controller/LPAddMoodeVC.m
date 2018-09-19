@@ -8,11 +8,12 @@
 
 #import "LPAddMoodeVC.h"
 #import "HXPhotoPicker.h"
+#import "LPMoodTypeModel.h"
 
 static NSString *placeholder = @"请输入帖子内容";
 static const CGFloat kPhotoViewMargin = 13.0;
 
-@interface LPAddMoodeVC ()<HXPhotoViewDelegate,UITextViewDelegate,UITableViewDelegate,UITableViewDataSource>
+@interface LPAddMoodeVC ()<UIScrollViewDelegate,HXPhotoViewDelegate,UITextViewDelegate,UITableViewDelegate,UITableViewDataSource>
 @property (strong, nonatomic) HXPhotoManager *manager;
 @property (weak, nonatomic) HXPhotoView *photoView;
 @property (strong, nonatomic) UIScrollView *scrollView;
@@ -22,6 +23,9 @@ static const CGFloat kPhotoViewMargin = 13.0;
 @property(nonatomic,strong) UIButton *selectButton;
 @property(nonatomic,strong) UIView *selectView;
 @property(nonatomic,strong) UITableView *selectTableView;
+
+@property(nonatomic,strong) LPMoodTypeModel *moodTypeModel;
+
 
 @property(nonatomic,strong) NSString *moodDetails;
 
@@ -35,12 +39,14 @@ static const CGFloat kPhotoViewMargin = 13.0;
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = @"我的圈子";
     [self setupUI];
+    [self requestMoodType];
 }
 -(void)setupUI{
     self.automaticallyAdjustsScrollViewInsets = YES;
     
     UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
     scrollView.alwaysBounceVertical = YES;
+    scrollView.delegate = self;
     [self.view addSubview:scrollView];
     self.scrollView = scrollView;
     
@@ -88,6 +94,8 @@ static const CGFloat kPhotoViewMargin = 13.0;
         make.centerY.equalTo(label1);
         make.height.mas_equalTo(35);
     }];
+    [selectButton setTitleColor:[UIColor colorWithHexString:@"#AAAAAA"] forState:UIControlStateNormal];
+    selectButton.titleLabel.font = [UIFont systemFontOfSize:15];
     selectButton.layer.borderColor = [UIColor colorWithHexString:@"#AAAAAA"].CGColor;
     selectButton.layer.borderWidth = 0.5;
     [selectButton addTarget:self action:@selector(touchSelectButton:) forControlEvents:UIControlEventTouchUpInside];
@@ -150,11 +158,15 @@ static const CGFloat kPhotoViewMargin = 13.0;
     sendButton.backgroundColor = [UIColor baseColor];
     self.sendButton = sendButton;
 }
+#pragma mark - setter
+-(void)setMoodTypeModel:(LPMoodTypeModel *)moodTypeModel{
+    _moodTypeModel = moodTypeModel;
+}
 
 #pragma mark - HXPhotoViewDelegate
 - (void)photoView:(HXPhotoView *)photoView updateFrame:(CGRect)frame{
     NSSLog(@"%@",NSStringFromCGRect(frame));
-    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, CGRectGetMaxY(frame) + kPhotoViewMargin);
+    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, CGRectGetMaxY(frame) + kPhotoViewMargin + 92);
     [self.sendButton mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(13);
         make.right.mas_equalTo(-13);
@@ -164,7 +176,9 @@ static const CGFloat kPhotoViewMargin = 13.0;
 }
 -(void)photoView:(HXPhotoView *)photoView changeComplete:(NSArray<HXPhotoModel *> *)allList photos:(NSArray<HXPhotoModel *> *)photos videos:(NSArray<HXPhotoModel *> *)videos original:(BOOL)isOriginal{
     [self.toolManager getSelectedImageList:allList requestType:HXDatePhotoToolManagerRequestTypeOriginal success:^(NSArray<UIImage *> *imageList) {
-
+        if (imageList.count > 0) {
+            [self requestUploadImages:imageList];
+        }
     } failed:^{
 
     }];
@@ -172,25 +186,44 @@ static const CGFloat kPhotoViewMargin = 13.0;
 
 #pragma mark - target
 -(void)touchSelectButton:(UIButton *)button{
+    if (button.isSelected) {
+        [self hiddenSelect];
+        return;
+    }
+    
+    [self.view endEditing:YES];
     self.selectView.hidden = NO;
     self.selectTableView.hidden = NO;
+    button.selected = YES;
+    
+    CGRect rect = [self.view convertRect:self.selectButton.frame fromView:self.scrollView];
     [self.view addSubview:self.selectView];
     [self.selectView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
+//        make.left.mas_equalTo(0);
+//        make.right.mas_equalTo(0);
+//        make.top.mas_equalTo(rect.origin.y+35);
+//        make.bottom.mas_equalTo(0);
     }];
     
-    CGRect re = [self.selectButton.superview convertRect:self.selectButton.frame toView:self.view];
+    CGFloat h = 0;
+    if ((self.moodTypeModel.data.count-1) * 44 > self.view.frame.size.height - rect.origin.y-35) {
+        h = self.view.frame.size.height - rect.origin.y-35;
+    }else{
+        h = (self.moodTypeModel.data.count-1) * 44;
+    }
     [self.view addSubview:self.selectTableView];
-    [self.selectTableView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.selectTableView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
-        make.top.mas_equalTo(re.origin.y+35);
-        make.height.mas_equalTo(SCREEN_HEIGHT-re.origin.y-35);
+        make.top.mas_equalTo(rect.origin.y+35);
+        make.height.mas_equalTo(h);
     }];
 }
 -(void)hiddenSelect{
     self.selectView.hidden = YES;
     self.selectTableView.hidden = YES;
+    self.selectButton.selected = NO;
 }
 #pragma mark - textView
 -(BOOL)textViewShouldBeginEditing:(UITextView *)textView{
@@ -198,6 +231,7 @@ static const CGFloat kPhotoViewMargin = 13.0;
         textView.textColor = [UIColor blackColor];
         textView.text = @"";
     }
+    [self hiddenSelect];
     return YES;
 }
 -(void)textViewDidEndEditing:(UITextView *)textView{
@@ -212,7 +246,7 @@ static const CGFloat kPhotoViewMargin = 13.0;
 
 #pragma mark - TableViewDelegate & Datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 20;
+    return self.moodTypeModel.data.count-1;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -221,11 +255,23 @@ static const CGFloat kPhotoViewMargin = 13.0;
     if(cell == nil){
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rid];
     }
-    cell.textLabel.text = [NSString stringWithFormat:@"%ld",indexPath.row];
+    for (UIView *view in cell.contentView.subviews) {
+        [view removeFromSuperview];
+    }
+    UILabel *label = [[UILabel alloc]init];
+    label.frame = CGRectMake(0, 0, SCREEN_WIDTH, 44);
+    label.textColor = [UIColor colorWithHexString:@"#666666"];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.font = [UIFont systemFontOfSize:15];
+    label.text = [NSString stringWithFormat:@"%@",self.moodTypeModel.data[indexPath.row+1].labelName];
+    [cell.contentView addSubview:label];
+    
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    [self hiddenSelect];
+    [self.selectButton setTitle:self.moodTypeModel.data[indexPath.row+1].labelName forState:UIControlStateNormal];
 }
 
 #pragma mark - request
@@ -239,7 +285,67 @@ static const CGFloat kPhotoViewMargin = 13.0;
         }
     }];
 }
+-(void)requestMoodType{
+    [NetApiManager requestMoodTypeWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            self.moodTypeModel = [LPMoodTypeModel mj_objectWithKeyValues:responseObject];
+        }else{
+            [[UIWindow visibleViewController].view showLoadingMeg:@"网络错误" time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+-(void)requestUploadImages:(NSArray <UIImage *>*)imageArray{
+    for (UIImage *image in imageArray) {
+        NSData *data = UIImageJPEGRepresentation(image, 1.0);
+        NSLog(@"--%ld",data.length);
+    }
+    
+    NSMutableArray *mu = [NSMutableArray array];
+    for (int i = 0; i< imageArray.count; i++) {
+        [mu addObject:[self getNowTimeTimestamp3]];
+    }
+//    [NetApiManager avartarChangeWithParamDict:nil singleImage:imageArray[0] singleImageName:@"file" withHandle:^(BOOL isSuccess, id responseObject) {
+//        NSLog(@"%@",responseObject);
+//        if (isSuccess) {
+//
+//        }else{
+//            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+//        }
+//    }];
+    
+    [NetApiManager requestPublishArticle:nil imageArray:imageArray imageNameArray:[mu copy] response:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
 
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+
+ - (NSString *)getNowTimeTimestamp3{
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init] ;
+    
+    [formatter setDateStyle:NSDateFormatterMediumStyle];
+    
+    [formatter setTimeStyle:NSDateFormatterShortStyle];
+    
+    [formatter setDateFormat:@"YYYY-MM-dd HH:mm:ss SSS"]; // ----------设置你想要的格式,hh与HH的区别:分别表示12小时制,24小时制
+    
+    //设置时区,这个对于时间的处理有时很重要
+    
+    NSTimeZone* timeZone = [NSTimeZone timeZoneWithName:@"Asia/Shanghai"];
+    
+    [formatter setTimeZone:timeZone];
+    
+    NSDate *datenow = [NSDate date];//现在时间,你可以输出来看下是什么格式
+    
+    NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[datenow timeIntervalSince1970]*1000];
+    
+    return timeSp;
+}
 #pragma mark - lazy
 - (HXPhotoManager *)manager {
     if (!_manager) {
@@ -248,7 +354,7 @@ static const CGFloat kPhotoViewMargin = 13.0;
         _manager.configuration.saveSystemAblum = YES;
         _manager.configuration.photoMaxNum = 6; //
 //        _manager.configuration.videoMaxNum = 1;  //
-        _manager.configuration.maxNum = 6;
+//        _manager.configuration.maxNum = 6;
         _manager.configuration.reverseDate = YES;
         _manager.configuration.openCamera = YES;
         _manager.configuration.photoCanEdit = NO;
@@ -265,8 +371,7 @@ static const CGFloat kPhotoViewMargin = 13.0;
 -(UIView *)selectView{
     if (!_selectView) {
         _selectView = [[UIView alloc]init];
-        _selectView.backgroundColor = [UIColor blackColor];
-        _selectView.alpha = 0.5;
+        _selectView.backgroundColor = [UIColor clearColor];
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(hiddenSelect)];
         _selectView.userInteractionEnabled = YES;
         [_selectView addGestureRecognizer:tap];

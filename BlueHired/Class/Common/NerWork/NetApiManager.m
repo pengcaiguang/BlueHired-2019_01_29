@@ -332,6 +332,34 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
+// 多张图片上传
++ (void)requestPublishArticle:(id)parameters
+                   imageArray:(NSArray*)imageArray
+               imageNameArray:(NSArray*)imageNameArray
+                     response:(response)response{
+    NSString * appendURLString = @"platform/upload_image_list";
+    NetRequestEnty *enty = [self createEntyWithAppendURLString:appendURLString
+                                               withRequestEnty:RequestTypeUploadImagesArray
+                                                     withParam:parameters
+                                                    withHandle:response];
+    enty.imagesArray = imageArray;
+    enty.imageNamesArray = imageNameArray;
+    [NetRequestManager requestWithEnty:enty];
+}
+// 单张图片上传
++ (void)avartarChangeWithParamDict:(id)paramer
+                       singleImage:(UIImage *)image
+                   singleImageName:(NSString *)imageName
+                        withHandle:(response)responseHandle{
+    NSString * appendURLString = @"platform/upload_image";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeUploadSingleImage
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    enty.singleImage = image;
+    enty.singleImageName = imageName;
+    [NetRequestManager requestWithEnty:enty];
+}
 //人员关注
 + (void)requestSetUserConcernWithParam:(id)paramer
                             withHandle:(response)responseHandle{

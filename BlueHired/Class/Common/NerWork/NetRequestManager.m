@@ -34,6 +34,8 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
         }else{
             [manager.requestSerializer setValue:nil forHTTPHeaderField:@"Cookie"];
         }
+        afHttpSessionMgr.requestSerializer =[AFJSONRequestSerializer serializer];
+
         [manager GET:requestEnty.requestUrl
           parameters:requestEnty.params
             progress:^(NSProgress * _Nonnull downloadProgress) {
@@ -72,6 +74,8 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
         }else{
             [manager.requestSerializer setValue:nil forHTTPHeaderField:@"Cookie"];
         }
+        afHttpSessionMgr.requestSerializer =[AFJSONRequestSerializer serializer];
+
         [manager POST:requestEnty.requestUrl
            parameters:requestEnty.params
              progress:^(NSProgress * _Nonnull uploadProgress) {
@@ -107,31 +111,33 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
         }else{
             [manager.requestSerializer setValue:nil forHTTPHeaderField:@"Cookie"];
         }
+        afHttpSessionMgr.requestSerializer =[AFJSONRequestSerializer serializer];
+
         [manager POST:requestEnty.requestUrl
            parameters:requestEnty.params
 constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
     
-    if (requestEnty.singleImage) {
-        NSData *imageData = UIImageJPEGRepresentation(requestEnty.singleImage, 0.5);
-        [formData appendPartWithFileData:imageData
-                                    name:requestEnty.singleImageName
-                                fileName:@"image.jpeg"
-                                mimeType:@"image/jpeg"];
-    }
+        if (requestEnty.singleImage) {
+            NSData *imageData = UIImageJPEGRepresentation(requestEnty.singleImage, 0.5);
+            [formData appendPartWithFileData:imageData
+                                        name:requestEnty.singleImageName
+                                    fileName:@"image.jpeg"
+                                    mimeType:@"image/jpeg"];
+        }
     
-} progress:^(NSProgress * _Nonnull uploadProgress) {
-    
-} success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-    [self commonCheckErrorCode:responseObject];
-    requestEnty.responseHandle(YES,responseObject);
-    
-} failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-    NSString * errorStr = [self returnStringWithError:error];
-    //打开可统一提示错误信息(考虑有的场景可能不需要,由自己去选择是否显示错误信息),
-    //错误信息已经过处理为NSString,可直接用于展示
-    //            [kKeyWindow showLoadingMeg:errorStr time:MESSAGESHOWTIME];
-    requestEnty.responseHandle(NO,errorStr);
-}];
+        } progress:^(NSProgress * _Nonnull uploadProgress) {
+            
+        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            [self commonCheckErrorCode:responseObject];
+            requestEnty.responseHandle(YES,responseObject);
+            
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            NSString * errorStr = [self returnStringWithError:error];
+            //打开可统一提示错误信息(考虑有的场景可能不需要,由自己去选择是否显示错误信息),
+            //错误信息已经过处理为NSString,可直接用于展示
+            //            [kKeyWindow showLoadingMeg:errorStr time:MESSAGESHOWTIME];
+            requestEnty.responseHandle(NO,errorStr);
+        }];
     }else if (requestEnty.requestType == 3){//3:上传多张图片
         NSLog(@"\n\nPOST 多张图片上传requestEnty.params == %@",requestEnty.params);
         AFHTTPSessionManager *manager = [self initHttpManager];
@@ -141,55 +147,47 @@ constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         }else{
             [manager.requestSerializer setValue:nil forHTTPHeaderField:@"Cookie"];
         }
+        manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+//        manager.responseSerializer = [AFJSONResponseSerializer serializer];
+
+        
         [manager POST:requestEnty.requestUrl
            parameters:requestEnty.params
 constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
     
     for (int i = 0; i < requestEnty.imagesArray.count; i++) {
-        NSData *imageData = UIImageJPEGRepresentation(requestEnty.imagesArray[i], 0.5);
-        if (i == 0) {
-            NSString *imgName = @"imgthumb";
-            NSString *fileName = @"imgthumb.jpeg";
-            if (!kArrayIsEmpty(requestEnty.imageNamesArray)) {
-                imgName = requestEnty.imageNamesArray[i];
-                fileName = requestEnty.imageNamesArray[i];;
-            }
-            if (![fileName hasSuffix:@".jpeg"]) {
-                fileName = [NSString stringWithFormat:@"%@.jpeg",fileName];
-            }
-            [formData appendPartWithFileData:imageData
-                                        name:imgName
-                                    fileName:fileName
-                                    mimeType:@"image/jpeg"];
-        }else{
-            NSString *imgName = [NSString stringWithFormat:@"image%d",i];
-            NSString *fileName =  [NSString stringWithFormat:@"image%d.jpeg",i];
-            if (!kArrayIsEmpty(requestEnty.imageNamesArray)) {
-                imgName = requestEnty.imageNamesArray[i];
-                fileName = requestEnty.imageNamesArray[i];
-            }
-            if (![fileName hasSuffix:@".jpeg"]) {
-                fileName = [NSString stringWithFormat:@"%@.jpeg",fileName];
-            }
-            [formData appendPartWithFileData:imageData
-                                        name:imgName
-                                    fileName:fileName
-                                    mimeType:@"image/jpeg"];
-        }
+        UIImage *image = requestEnty.imagesArray[i];
+        NSData *imageData = UIImageJPEGRepresentation(image, 0.1);
+        // 在网络开发中，上传文件时，是文件不允许被覆盖，文件重名
+        // 要解决此问题，
+        // 可以在上传时使用当前的系统事件作为文件名
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        // 设置时间格式
+        [formatter setDateFormat:@"yyyyMMddHHmmss"];
+        NSString *dateString = [formatter stringFromDate:[NSDate date]];
+        NSString *fileName = [NSString  stringWithFormat:@"%d%@.jpg",i, dateString];
+        /*
+         *该方法的参数
+         1. appendPartWithFileData：要上传的照片[二进制流]
+         2. name：对应网站上[upload.php中]处理文件的字段（比如upload）
+         3. fileName：要保存在服务器上的文件名
+         4. mimeType：上传的文件的类型
+         */
+        [formData appendPartWithFileData:imageData name:@"fileList" fileName:fileName mimeType:@"image/jpg"]; //
     }
-} progress:^(NSProgress * _Nonnull uploadProgress) {
-    
-} success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-    [self commonCheckErrorCode:responseObject];
-    requestEnty.responseHandle(YES,responseObject);
-    
-} failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-    NSString * errorStr = [self returnStringWithError:error];
-    //打开可统一提示错误信息(考虑有的场景可能不需要,由自己去选择是否显示错误信息),
-    //错误信息已经过处理为NSString,可直接用于展示
-    //            [kKeyWindow showLoadingMeg:errorStr time:MESSAGESHOWTIME];
-    requestEnty.responseHandle(NO,errorStr);
-}];
+            } progress:^(NSProgress * _Nonnull uploadProgress) {
+                
+            } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                [self commonCheckErrorCode:responseObject];
+                requestEnty.responseHandle(YES,responseObject);
+                
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                NSString * errorStr = [self returnStringWithError:error];
+                //打开可统一提示错误信息(考虑有的场景可能不需要,由自己去选择是否显示错误信息),
+                //错误信息已经过处理为NSString,可直接用于展示
+                //            [kKeyWindow showLoadingMeg:errorStr time:MESSAGESHOWTIME];
+                requestEnty.responseHandle(NO,errorStr);
+            }];
     }
 }
 

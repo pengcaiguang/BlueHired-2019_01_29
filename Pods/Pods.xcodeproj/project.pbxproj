@@ -638,7 +638,6 @@
 		0AB57EBE5D3063AC45638EBFA38D2076 /* pb_decode.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = pb_decode.h; sourceTree = "<group>"; };
 		0BF3C494E71C9B268088EA0A66F76170 /* IQTitleBarButtonItem.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = IQTitleBarButtonItem.m; path = IQKeyboardManager/IQToolbar/IQTitleBarButtonItem.m; sourceTree = "<group>"; };
 		0BFA4037348B876DA7DD40B0086E9114 /* MJRefreshFooter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MJRefreshFooter.m; path = MJRefresh/Base/MJRefreshFooter.m; sourceTree = "<group>"; };
-		0C9D3897759BB2C5F2485202B867CDFF /* MeasurementNanoPB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MeasurementNanoPB.framework; path = Frameworks/MeasurementNanoPB.framework; sourceTree = "<group>"; };
 		0CB5F3E90F86528BAE52E086A219D317 /* MJRefreshNormalHeader.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MJRefreshNormalHeader.m; path = MJRefresh/Custom/Header/MJRefreshNormalHeader.m; sourceTree = "<group>"; };
 		0D073C9A876D03AB520DFB5724AF9820 /* pb_decode.c */ = {isa = PBXFileReference; includeInIndex = 1; path = pb_decode.c; sourceTree = "<group>"; };
 		0D0C0451F0B6FBB35D4F45CE8EFF593D /* SDCycleScrollView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDCycleScrollView.h; path = SDCycleScrollView/Lib/SDCycleScrollView/SDCycleScrollView.h; sourceTree = "<group>"; };
@@ -760,6 +759,7 @@
 		42AEF997A893AAC99350B794D28E2883 /* NSObject+MJProperty.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSObject+MJProperty.m"; path = "MJExtension/NSObject+MJProperty.m"; sourceTree = "<group>"; };
 		43287EF1F0ECCBA9EE62528453A39523 /* HXCustomPreviewView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = HXCustomPreviewView.m; path = "照片选择器/HXPhotoPicker/HXCustomPreviewView.m"; sourceTree = "<group>"; };
 		43AF251619B327CA67BBD6BA5CD575EF /* NSImage+WebCache.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSImage+WebCache.h"; path = "SDWebImage/NSImage+WebCache.h"; sourceTree = "<group>"; };
+		443574B70589ABB27C6EEC4E0FE23882 /* GoogleAppMeasurement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleAppMeasurement.framework; path = Frameworks/GoogleAppMeasurement.framework; sourceTree = "<group>"; };
 		4508F339A906B48B1E376DA8D6F326EA /* FIRApp.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FIRApp.h; path = Firebase/Core/Public/FIRApp.h; sourceTree = "<group>"; };
 		451F99E95B88F84E994F9DC268C1E421 /* GULAppEnvironmentUtil.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GULAppEnvironmentUtil.m; path = GoogleUtilities/Environment/third_party/GULAppEnvironmentUtil.m; sourceTree = "<group>"; };
 		45D513D0ACD5135C9DB19807529BD78B /* FMDatabasePool.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMDatabasePool.m; path = src/fmdb/FMDatabasePool.m; sourceTree = "<group>"; };
@@ -785,7 +785,6 @@
 		50FD3F8991FE2FA7E91414F35F939C35 /* GULSwizzler.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = GULSwizzler.m; path = GoogleUtilities/MethodSwizzler/GULSwizzler.m; sourceTree = "<group>"; };
 		51145833B36B6990920BA9C4F79934BF /* libSDCycleScrollView.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libSDCycleScrollView.a; path = libSDCycleScrollView.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		514C9726A56120EFDFF71A17772700CC /* SCIndexView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SCIndexView.m; path = SCIndexView/SCIndexView.m; sourceTree = "<group>"; };
-		518E46C58EBFF2E3EE38B23E686E2853 /* GoogleAppMeasurement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleAppMeasurement.framework; path = Frameworks/GoogleAppMeasurement.framework; sourceTree = "<group>"; };
 		51F30D95A294B1ED97FD61D78261EB33 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = iOS/Crashlytics.framework; sourceTree = "<group>"; };
 		52B78D9F09F58DC5FA64E47FD4B39AA4 /* UIImage+HXExtension.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIImage+HXExtension.h"; path = "照片选择器/HXPhotoPicker/UIImage+HXExtension.h"; sourceTree = "<group>"; };
 		5343A1490FEC2A01C70B9F1044955B98 /* NSArray+MASAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSArray+MASAdditions.h"; path = "Masonry/NSArray+MASAdditions.h"; sourceTree = "<group>"; };
@@ -1550,6 +1549,14 @@
 			name = decode;
 			sourceTree = "<group>";
 		};
+		3BE991AD2F4BFD8FA791E5B333FF9E4B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				443574B70589ABB27C6EEC4E0FE23882 /* GoogleAppMeasurement.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		3CB42579FCA58D919942B86186C60E97 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -1732,7 +1739,7 @@
 				B0AEEED6D4B58E305BCBF18A7E69C421 /* FirebaseInstanceID */,
 				FE25D39B5C61D6F2F5400A0733A942C6 /* FMDB */,
 				32A21BE271AEA03BFB3D1B6207F99989 /* FSCalendar */,
-				D7FD7D8AAEAA9A7AD4F5253AECAAD59F /* GoogleAppMeasurement */,
+				E5062D98FFC2782AA7EF44FBBE5E7DCB /* GoogleAppMeasurement */,
 				71E3635D47144D2193034043963A851A /* GoogleUtilities */,
 				EC31BAC85929CBB3D06F6F8A483C52F2 /* HXPhotoPicker */,
 				3CC52CF5AA181D50F23FCD03A0EA7A77 /* IQKeyboardManager */,
@@ -2279,15 +2286,6 @@
 			name = Logger;
 			sourceTree = "<group>";
 		};
-		D7FD7D8AAEAA9A7AD4F5253AECAAD59F /* GoogleAppMeasurement */ = {
-			isa = PBXGroup;
-			children = (
-				E33C16F2D385641365FB834E8A637FA2 /* Frameworks */,
-			);
-			name = GoogleAppMeasurement;
-			path = GoogleAppMeasurement;
-			sourceTree = "<group>";
-		};
 		D9D4D553EA19E5CF40969B358DD7F508 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -2296,13 +2294,13 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		E33C16F2D385641365FB834E8A637FA2 /* Frameworks */ = {
+		E5062D98FFC2782AA7EF44FBBE5E7DCB /* GoogleAppMeasurement */ = {
 			isa = PBXGroup;
 			children = (
-				518E46C58EBFF2E3EE38B23E686E2853 /* GoogleAppMeasurement.framework */,
-				0C9D3897759BB2C5F2485202B867CDFF /* MeasurementNanoPB.framework */,
+				3BE991AD2F4BFD8FA791E5B333FF9E4B /* Frameworks */,
 			);
-			name = Frameworks;
+			name = GoogleAppMeasurement;
+			path = GoogleAppMeasurement;
 			sourceTree = "<group>";
 		};
 		E76F7CADB976793828FBD4417889F1AA /* Support Files */ = {

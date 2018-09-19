@@ -31,6 +31,15 @@ typedef void(^LPMoodDetailHeaderCellUserConcernBlock)(void);
 
 @property(nonatomic,assign) BOOL isUserConcern;
 
+
+
+@property (nonatomic, strong)NSArray *imageArray;
+@property (nonatomic,strong) UIScrollView *scrollView;
+@property (nonatomic,strong) UIPageControl *pageControl;
+@property (nonatomic,strong) UIImageView *touchImage;
+@property (nonatomic,assign) CGRect imageRect;
+@property (nonatomic,strong) NSMutableArray <UIImageView *>*imageViewsRectArray;
+
 @end
 
 
