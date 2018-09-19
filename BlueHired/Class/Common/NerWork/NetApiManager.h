@@ -113,6 +113,9 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //增加圈子浏览量
 + (void)requestSetMoodViewWithParam:(id)paramer
                          withHandle:(response)responseHandle;
+//添加圈子
++ (void)requestAddMoodWithParam:(id)paramer
+                     withHandle:(response)responseHandle;
 //人员关注
 + (void)requestSetUserConcernWithParam:(id)paramer
                             withHandle:(response)responseHandle;

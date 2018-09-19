@@ -64,6 +64,8 @@ PODS:
   - "GoogleUtilities/NSData+zlib (5.2.2)"
   - GoogleUtilities/Reachability (5.2.2):
     - GoogleUtilities/Logger
+  - HXPhotoPicker (2.2.1):
+    - SDWebImage (~> 4.4.1)
   - IQKeyboardManager (6.1.1)
   - Masonry (1.1.0)
   - MBProgressHUD (1.1.0)
@@ -92,6 +94,7 @@ DEPENDENCIES:
   - Firebase/Core
   - FMDB
   - FSCalendar
+  - HXPhotoPicker (~> 2.2.1)
   - IQKeyboardManager
   - Masonry
   - MBProgressHUD
@@ -115,6 +118,7 @@ SPEC REPOS:
     - FSCalendar
     - GoogleAppMeasurement
     - GoogleUtilities
+    - HXPhotoPicker
     - IQKeyboardManager
     - Masonry
     - MBProgressHUD
@@ -138,6 +142,7 @@ SPEC CHECKSUMS:
   FSCalendar: a04b09f16f811bc92e82f3cf852a15225233b9d5
   GoogleAppMeasurement: f7507b39b70ad0bd80b3d81518b2f43868974307
   GoogleUtilities: 06b66f9567769a7958db20a92f0128b2843e49d5
+  HXPhotoPicker: 2db199617edcc6cae476fe5ccde241ab5089906e
   IQKeyboardManager: 79c57795f5c2408d259d37b9da2ed07efcbb5225
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
@@ -149,6 +154,6 @@ SPEC CHECKSUMS:
   SDCycleScrollView: 884b88f0266dd4708a0e1934975c69cb971707b1
   SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
 
-PODFILE CHECKSUM: c9ff19ac8fda5a951863967ced94d4a4974ef479
+PODFILE CHECKSUM: 1154605089b17ba7bf2462582a34a9f463a1903e
 
 COCOAPODS: 1.5.3

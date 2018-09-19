@@ -17,6 +17,7 @@
 		DC13BB5B213E5B6A00800955 /* LPCityCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC13BB59213E5B6A00800955 /* LPCityCell.xib */; };
 		DC13BB5E213EA10200800955 /* LPMechanismlistModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC13BB5D213EA10200800955 /* LPMechanismlistModel.m */; };
 		DC17FE2D213A9A9100635F05 /* LPCommentListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC17FE2C213A9A9100635F05 /* LPCommentListModel.m */; };
+		DC1CD4032151DFC100EA9970 /* LPAddMoodeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC1CD4022151DFC100EA9970 /* LPAddMoodeVC.m */; };
 		DC22957F2140BBE70002A095 /* LPUserMaterialModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC22957E2140BBE70002A095 /* LPUserMaterialModel.m */; };
 		DC229582214106D10002A095 /* LPIsApplyOrIsCollectionModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC229581214106D10002A095 /* LPIsApplyOrIsCollectionModel.m */; };
 		DC2295852141143F0002A095 /* GJAlertText.m in Sources */ = {isa = PBXBuildFile; fileRef = DC2295842141143F0002A095 /* GJAlertText.m */; };
@@ -190,6 +191,8 @@
 		DC13BB5D213EA10200800955 /* LPMechanismlistModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPMechanismlistModel.m; sourceTree = "<group>"; };
 		DC17FE2B213A9A9100635F05 /* LPCommentListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPCommentListModel.h; sourceTree = "<group>"; };
 		DC17FE2C213A9A9100635F05 /* LPCommentListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPCommentListModel.m; sourceTree = "<group>"; };
+		DC1CD4012151DFC100EA9970 /* LPAddMoodeVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPAddMoodeVC.h; sourceTree = "<group>"; };
+		DC1CD4022151DFC100EA9970 /* LPAddMoodeVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPAddMoodeVC.m; sourceTree = "<group>"; };
 		DC22957D2140BBE70002A095 /* LPUserMaterialModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPUserMaterialModel.h; sourceTree = "<group>"; };
 		DC22957E2140BBE70002A095 /* LPUserMaterialModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPUserMaterialModel.m; sourceTree = "<group>"; };
 		DC229580214106D10002A095 /* LPIsApplyOrIsCollectionModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPIsApplyOrIsCollectionModel.h; sourceTree = "<group>"; };
@@ -804,6 +807,8 @@
 				DC7383692133EC040055DC10 /* LPCircleVC.m */,
 				DCB25E9B2150D91200ED2FC4 /* LPMoodDetailVC.h */,
 				DCB25E9C2150D91200ED2FC4 /* LPMoodDetailVC.m */,
+				DC1CD4012151DFC100EA9970 /* LPAddMoodeVC.h */,
+				DC1CD4022151DFC100EA9970 /* LPAddMoodeVC.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1304,11 +1309,13 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-BlueHired/Pods-BlueHired-resources.sh",
+				"${PODS_ROOT}/HXPhotoPicker/照片选择器/HXPhotoPicker/HXPhotoPicker.bundle",
 				"${PODS_ROOT}/IQKeyboardManager/IQKeyboardManager/Resources/IQKeyboardManager.bundle",
 				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/HXPhotoPicker.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/IQKeyboardManager.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MJRefresh.bundle",
 			);
@@ -1445,6 +1452,7 @@
 				DC73836D2133EC1B0055DC10 /* LPInformationVC.m in Sources */,
 				DCE3E1DD214A43C3003ADFC6 /* LPSubsidyDeductionVC.m in Sources */,
 				DC7383982134E95E0055DC10 /* NetApiManager.m in Sources */,
+				DC1CD4032151DFC100EA9970 /* LPAddMoodeVC.m in Sources */,
 				DCCC8A812147AED60062A0F5 /* WSPieChart.m in Sources */,
 				DC7383872134DC200055DC10 /* LPMineCell.m in Sources */,
 				DC290F2F213CC55000EC3FCC /* LPEssayDetailCommentCell.m in Sources */,

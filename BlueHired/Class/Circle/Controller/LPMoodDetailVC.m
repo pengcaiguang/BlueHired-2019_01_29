@@ -335,7 +335,9 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
         LPMoodDetailHeaderCell *cell = [tableView dequeueReusableCellWithIdentifier:LPMoodDetailHeaderCellID];
         cell.model = self.model;
         cell.userConcernBlock = ^{
-            [self requestSetUserConcern];
+            if ([LoginUtils validationLogin:self]) {
+                [self requestSetUserConcern];
+            }
         };
         return cell;
     }else{

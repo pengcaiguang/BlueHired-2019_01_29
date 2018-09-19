@@ -50,12 +50,16 @@
         }
         self.imageBgView_constraint_height.constant = ceil(imageArray.count/3.0)*imgw + floor(imageArray.count/3)*5;
     }
-    
-    if ([model.data.isConcern integerValue] == 0) {
-        self.isUserConcern = YES;
+    if (model.data.isConcern) {
+        if ([model.data.isConcern integerValue] == 0) {
+            self.isUserConcern = YES;
+        }else{
+            self.isUserConcern = NO;
+        }
     }else{
         self.isUserConcern = NO;
     }
+    
 }
 
 -(void)setIsUserConcern:(BOOL)isUserConcern{

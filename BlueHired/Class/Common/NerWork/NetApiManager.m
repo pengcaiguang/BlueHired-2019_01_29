@@ -322,6 +322,16 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
+//添加圈子
++ (void)requestAddMoodWithParam:(id)paramer
+                     withHandle:(response)responseHandle{
+    NSString * appendURLString = @"mood/add_mood";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
 //人员关注
 + (void)requestSetUserConcernWithParam:(id)paramer
                             withHandle:(response)responseHandle{

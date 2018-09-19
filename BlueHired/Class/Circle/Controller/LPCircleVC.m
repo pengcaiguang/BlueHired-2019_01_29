@@ -10,6 +10,7 @@
 #import "LPSearchBar.h"
 #import "LPCircleCollectionViewCell.h"
 #import "LPLoginVC.h"
+#import "LPAddMoodeVC.h"
 
 static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
 
@@ -100,13 +101,11 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
 }
 -(void)touchSendButton{
     if ([LoginUtils validationLogin:self]) {
-        
+        LPAddMoodeVC *vc = [[LPAddMoodeVC alloc]init];
+        vc.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
--(void)validationLogin{
-    
-}
-
 
 -(void)touchTitleButton:(UIButton *)button{
     NSInteger index = [self.buttonArray indexOfObject:button];
