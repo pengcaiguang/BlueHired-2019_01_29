@@ -11,6 +11,7 @@
 #import "LPCircleCollectionViewCell.h"
 #import "LPLoginVC.h"
 #import "LPAddMoodeVC.h"
+#import "LPInfoVC.h"
 
 static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
 
@@ -86,7 +87,9 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
 }
 -(void)touchMessageButton{
     if ([LoginUtils validationLogin:self]) {
-        
+        LPInfoVC *vc = [[LPInfoVC alloc]init];
+        vc.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 -(void)addSendButton{

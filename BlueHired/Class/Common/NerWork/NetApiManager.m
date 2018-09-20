@@ -444,6 +444,22 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
+#pragma mark - 消息中心
+/************************************************************/
+//*  消息中心
+/************************************************************/
+//查询消息列表
++ (void)requestQueryInfolistWithParam:(id)paramer
+                           withHandle:(response)responseHandle{
+    NSString * appendURLString = @"info/query_infolist";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+
 #pragma mark - 我的
 /************************************************************/
 //*  我的

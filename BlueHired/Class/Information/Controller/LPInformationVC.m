@@ -11,6 +11,7 @@
 #import "LPLabelListModel.h"
 #import "LPInformationCollectionViewCell.h"
 #import "LPInformationSearchVC.h"
+#import "LPInfoVC.h"
 
 static NSString *LPInformationCollectionViewCellID = @"LPInformationCollectionViewCell";
 
@@ -77,7 +78,9 @@ static NSString *LPInformationCollectionViewCellID = @"LPInformationCollectionVi
 }
 -(void)touchMessageButton{
     if ([LoginUtils validationLogin:self]) {
-        
+        LPInfoVC *vc = [[LPInfoVC alloc]init];
+        vc.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 -(void)setSearchView{

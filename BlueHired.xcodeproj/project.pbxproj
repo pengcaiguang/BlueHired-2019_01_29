@@ -16,6 +16,7 @@
 		DC13BB5A213E5B6A00800955 /* LPCityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC13BB58213E5B6A00800955 /* LPCityCell.m */; };
 		DC13BB5B213E5B6A00800955 /* LPCityCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC13BB59213E5B6A00800955 /* LPCityCell.xib */; };
 		DC13BB5E213EA10200800955 /* LPMechanismlistModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC13BB5D213EA10200800955 /* LPMechanismlistModel.m */; };
+		DC1423D82153A0BF0042CCCB /* LPInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC1423D72153A0BF0042CCCB /* LPInfoVC.m */; };
 		DC17FE2D213A9A9100635F05 /* LPCommentListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC17FE2C213A9A9100635F05 /* LPCommentListModel.m */; };
 		DC1CD4032151DFC100EA9970 /* LPAddMoodeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC1CD4022151DFC100EA9970 /* LPAddMoodeVC.m */; };
 		DC22957F2140BBE70002A095 /* LPUserMaterialModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC22957E2140BBE70002A095 /* LPUserMaterialModel.m */; };
@@ -189,6 +190,8 @@
 		DC13BB59213E5B6A00800955 /* LPCityCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPCityCell.xib; sourceTree = "<group>"; };
 		DC13BB5C213EA10200800955 /* LPMechanismlistModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPMechanismlistModel.h; sourceTree = "<group>"; };
 		DC13BB5D213EA10200800955 /* LPMechanismlistModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPMechanismlistModel.m; sourceTree = "<group>"; };
+		DC1423D62153A0BF0042CCCB /* LPInfoVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPInfoVC.h; sourceTree = "<group>"; };
+		DC1423D72153A0BF0042CCCB /* LPInfoVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPInfoVC.m; sourceTree = "<group>"; };
 		DC17FE2B213A9A9100635F05 /* LPCommentListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPCommentListModel.h; sourceTree = "<group>"; };
 		DC17FE2C213A9A9100635F05 /* LPCommentListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPCommentListModel.m; sourceTree = "<group>"; };
 		DC1CD4012151DFC100EA9970 /* LPAddMoodeVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPAddMoodeVC.h; sourceTree = "<group>"; };
@@ -534,6 +537,23 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		DC1423D42153A08F0042CCCB /* Info */ = {
+			isa = PBXGroup;
+			children = (
+				DC1423D52153A08F0042CCCB /* Controller */,
+			);
+			path = Info;
+			sourceTree = "<group>";
+		};
+		DC1423D52153A08F0042CCCB /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				DC1423D62153A0BF0042CCCB /* LPInfoVC.h */,
+				DC1423D72153A0BF0042CCCB /* LPInfoVC.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
 		DC22957C2140BBD50002A095 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -740,6 +760,7 @@
 				DC13BB48213E1BF600800955 /* ChooseCity */,
 				DC7383622133EBEB0055DC10 /* Circle */,
 				DC73837E21341EA10055DC10 /* Common */,
+				DC1423D42153A08F0042CCCB /* Info */,
 				DC7383642133EBEB0055DC10 /* Information */,
 				DCE2C2362148DD6E00BCB9F4 /* Lend */,
 				DC7A32D12137C26100E09C6C /* Login */,
@@ -1468,6 +1489,7 @@
 				DCCC8A822147AED60062A0F5 /* WSPieForeBGView.m in Sources */,
 				DC44DB9621351F6D00D00FAC /* NullSafe.m in Sources */,
 				DC13BB5E213EA10200800955 /* LPMechanismlistModel.m in Sources */,
+				DC1423D82153A0BF0042CCCB /* LPInfoVC.m in Sources */,
 				DCCC8A8D2147EDF50062A0F5 /* LPQuerySalarylistModel.m in Sources */,
 				DCE2C2352148C35C00BCB9F4 /* LPSalaryDetailVC.m in Sources */,
 				DC7383A72134F6580055DC10 /* LPMainCell.m in Sources */,
