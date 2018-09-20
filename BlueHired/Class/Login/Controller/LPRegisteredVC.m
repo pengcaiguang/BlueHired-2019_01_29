@@ -15,6 +15,8 @@
 @property(nonatomic,strong) UIView *passwordLineView;
 @property(nonatomic,strong) UITextField *verificationCodeTextField;
 @property(nonatomic,strong) UIView *verificationCodeLineView;
+
+@property(nonatomic,strong) UIButton *getVerificationCodeButton;
 @end
 
 @implementation LPRegisteredVC
@@ -184,6 +186,7 @@
     [getVerificationCodeButton setTitle:@"获取验证码" forState:UIControlStateNormal];
     [getVerificationCodeButton setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
     [getVerificationCodeButton addTarget:self action:@selector(touchGetVerificationCodeButtonButton:) forControlEvents:UIControlEventTouchUpInside];
+    self.getVerificationCodeButton = getVerificationCodeButton;
     
     self.verificationCodeLineView = [[UIView alloc]init];
     [verificationCodeBgView addSubview:self.verificationCodeLineView];
@@ -237,6 +240,52 @@
 }
 -(void)touchGetVerificationCodeButtonButton:(UIButton *)button{
     NSLog(@"获取验证码");
+    if (self.phoneTextField.text.length <= 0 || ![NSString isMobilePhoneNumber:self.phoneTextField.text]) {
+        [self.view showLoadingMeg:@"请输入正确的手机号" time:MESSAGE_SHOW_TIME];
+        return;
+    }
+    if (self.passwordTextField.text.length < 6) {
+        [self.view showLoadingMeg:@"请输入6-16位密码" time:MESSAGE_SHOW_TIME];
+        return;
+    }
+    [self openCountdown];
+//    [self requestSendCode];
+}
+-(void)openCountdown{
+    __block NSInteger time = 59; //倒计时时间
+    
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_source_t _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
+    
+    dispatch_source_set_timer(_timer,dispatch_walltime(NULL, 0),1.0*NSEC_PER_SEC, 0); //每秒执行
+    
+    dispatch_source_set_event_handler(_timer, ^{
+        
+        if(time <= 0){ //倒计时结束，关闭
+            
+            dispatch_source_cancel(_timer);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                //设置按钮的样式
+                [self.getVerificationCodeButton setTitle:@"重新发送" forState:UIControlStateNormal];
+                [self.getVerificationCodeButton setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
+                self.getVerificationCodeButton.userInteractionEnabled = YES;
+            });
+            
+        }else{
+            
+            int seconds = time % 60;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                //设置按钮显示读秒效果
+                [self.getVerificationCodeButton setTitle:[NSString stringWithFormat:@"重新发送(%.2d)", seconds] forState:UIControlStateNormal];
+                [self.getVerificationCodeButton setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
+                self.getVerificationCodeButton.userInteractionEnabled = NO;
+            });
+            time--;
+        }
+    });
+    dispatch_resume(_timer);
 }
 -(void)touchUserAgreementButton:(UIButton *)button{
     NSLog(@"用户协议");
@@ -256,6 +305,7 @@
         [self.view showLoadingMeg:@"请输入验证码" time:MESSAGE_SHOW_TIME];
         return;
     }
+    [self requestAddUser];
 }
 
 #pragma mark - textfield
@@ -317,6 +367,40 @@
     self.verificationCodeLineView.backgroundColor = [UIColor lightGrayColor];
 }
 
+#pragma mark - request
+-(void)requestAddUser{
+    NSString *passwordmd5 = [self.passwordTextField.text md5];
+    NSString *newPasswordmd5 = [[NSString stringWithFormat:@"%@lanpin123.com",passwordmd5] md5];
+    NSDictionary *dic = @{
+                          @"type":@(1),
+                          @"phone":self.phoneTextField.text,
+                          @"password":newPasswordmd5
+                          };
+    [NetApiManager requestAddUserWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+-(void)requestSendCode{
+    NSDictionary *dic = @{
+                          @"i":@(0),
+                          @"phone":self.phoneTextField.text,
+                          };
+    [NetApiManager requestSendCodeWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                [self.view showLoadingMeg:@"验证码发送成功" time:MESSAGE_SHOW_TIME];
+            }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

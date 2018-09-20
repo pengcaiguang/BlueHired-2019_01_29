@@ -22,6 +22,7 @@
 @property(nonatomic,strong) UIView *verificationCodeBgView;
 @property(nonatomic,strong) UITextField *verificationCodeTextField;
 
+@property(nonatomic,strong) UIButton *getVerificationCodeButton;
 @end
 
 @implementation LPForgetPassWordVC
@@ -247,6 +248,7 @@
     [getVerificationCodeButton setTitle:@"获取验证码" forState:UIControlStateNormal];
     [getVerificationCodeButton setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
     [getVerificationCodeButton addTarget:self action:@selector(touchGetVerificationCodeButtonButton:) forControlEvents:UIControlEventTouchUpInside];
+    self.getVerificationCodeButton = getVerificationCodeButton;
     
     UIButton *confirmButton = [[UIButton alloc]init];
     [self.view addSubview:confirmButton];
@@ -276,6 +278,61 @@
 }
 -(void)touchGetVerificationCodeButtonButton:(UIButton *)button{
     NSLog(@"获取验证码");
+    if (self.phoneTextField.text.length <= 0 || ![NSString isMobilePhoneNumber:self.phoneTextField.text]) {
+        [self.view showLoadingMeg:@"请输入正确的手机号" time:MESSAGE_SHOW_TIME];
+        return;
+    }
+    if (self.passwordTextField.text.length < 6) {
+        [self.view showLoadingMeg:@"请输入6-16位密码" time:MESSAGE_SHOW_TIME];
+        return;
+    }
+    
+    if (self.repasswordTextField.text.length < 6) {
+        [self.view showLoadingMeg:@"请再次输入6-16位密码" time:MESSAGE_SHOW_TIME];
+        return;
+    }
+    if (![self.passwordTextField.text isEqualToString:self.repasswordTextField.text]) {
+        [self.view showLoadingMeg:@"两次输入的密码不一致" time:MESSAGE_SHOW_TIME];
+        return;
+    }
+    [self openCountdown];
+//    [self requestSendCode];
+}
+-(void)openCountdown{
+    __block NSInteger time = 59; //倒计时时间
+    
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_source_t _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
+    
+    dispatch_source_set_timer(_timer,dispatch_walltime(NULL, 0),1.0*NSEC_PER_SEC, 0); //每秒执行
+    
+    dispatch_source_set_event_handler(_timer, ^{
+        
+        if(time <= 0){ //倒计时结束，关闭
+            
+            dispatch_source_cancel(_timer);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                //设置按钮的样式
+                [self.getVerificationCodeButton setTitle:@"重新发送" forState:UIControlStateNormal];
+                [self.getVerificationCodeButton setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
+                self.getVerificationCodeButton.userInteractionEnabled = YES;
+            });
+            
+        }else{
+            
+            int seconds = time % 60;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                //设置按钮显示读秒效果
+                [self.getVerificationCodeButton setTitle:[NSString stringWithFormat:@"重新发送(%.2d)", seconds] forState:UIControlStateNormal];
+                [self.getVerificationCodeButton setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
+                self.getVerificationCodeButton.userInteractionEnabled = NO;
+            });
+            time--;
+        }
+    });
+    dispatch_resume(_timer);
 }
 -(void)touchConfirmButton:(UIButton *)button{
     NSLog(@"确认");
@@ -383,6 +440,23 @@
     self.verificationCodeBgView.layer.borderColor = [UIColor lightGrayColor].CGColor;
 }
 
+#pragma mark - request
+-(void)requestSendCode{
+    NSDictionary *dic = @{
+                          @"i":@(1),
+                          @"phone":self.phoneTextField.text,
+                          };
+    [NetApiManager requestSendCodeWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                [self.view showLoadingMeg:@"验证码发送成功" time:MESSAGE_SHOW_TIME];
+            }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

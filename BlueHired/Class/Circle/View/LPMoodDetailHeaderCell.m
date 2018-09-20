@@ -17,6 +17,8 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
+    self.userUrlImgView.layer.masksToBounds = YES;
+    self.userUrlImgView.layer.cornerRadius = 20.0;
     self.userConcernButton.layer.masksToBounds = YES;
     self.userConcernButton.layer.cornerRadius = 10.0;
     [self.userConcernButton setTitle:@"关注" forState:UIControlStateNormal];

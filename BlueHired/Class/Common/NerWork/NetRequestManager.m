@@ -165,7 +165,7 @@ constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         // 设置时间格式
         [formatter setDateFormat:@"yyyyMMddHHmmss"];
         NSString *dateString = [formatter stringFromDate:[NSDate date]];
-        NSString *fileName = [NSString  stringWithFormat:@"%d%@.jpg",i, dateString];
+        NSString *fileName = [NSString  stringWithFormat:@"%@%d.jpg", dateString,i];
         /*
          *该方法的参数
          1. appendPartWithFileData：要上传的照片[二进制流]

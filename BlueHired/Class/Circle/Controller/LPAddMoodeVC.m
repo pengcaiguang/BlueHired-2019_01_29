@@ -26,8 +26,12 @@ static const CGFloat kPhotoViewMargin = 13.0;
 
 @property(nonatomic,strong) LPMoodTypeModel *moodTypeModel;
 
+@property(nonatomic,strong) NSArray <UIImage *>*imageArray;
+
 
 @property(nonatomic,strong) NSString *moodDetails;
+@property(nonatomic,strong) NSString *moodTypeId;
+@property(nonatomic,strong) NSArray *imageUrlArray;
 
 @end
 
@@ -156,6 +160,7 @@ static const CGFloat kPhotoViewMargin = 13.0;
     sendButton.layer.masksToBounds = YES;
     sendButton.layer.cornerRadius = 24;
     sendButton.backgroundColor = [UIColor baseColor];
+    [sendButton addTarget:self action:@selector(touchSendButton:) forControlEvents:UIControlEventTouchUpInside];
     self.sendButton = sendButton;
 }
 #pragma mark - setter
@@ -177,7 +182,7 @@ static const CGFloat kPhotoViewMargin = 13.0;
 -(void)photoView:(HXPhotoView *)photoView changeComplete:(NSArray<HXPhotoModel *> *)allList photos:(NSArray<HXPhotoModel *> *)photos videos:(NSArray<HXPhotoModel *> *)videos original:(BOOL)isOriginal{
     [self.toolManager getSelectedImageList:allList requestType:HXDatePhotoToolManagerRequestTypeOriginal success:^(NSArray<UIImage *> *imageList) {
         if (imageList.count > 0) {
-            [self requestUploadImages:imageList];
+            self.imageArray = imageList;
         }
     } failed:^{
 
@@ -225,6 +230,21 @@ static const CGFloat kPhotoViewMargin = 13.0;
     self.selectTableView.hidden = YES;
     self.selectButton.selected = NO;
 }
+-(void)touchSendButton:(UIButton *)button{
+    if (self.moodDetails.length == 0) {
+        [self.view showLoadingMeg:@"请输入帖子内容" time:MESSAGE_SHOW_TIME];
+        return;
+    }
+    if (!self.moodTypeId) {
+        [self.view showLoadingMeg:@"请请选择板块" time:MESSAGE_SHOW_TIME];
+        return;
+    }
+    if (kArrayIsEmpty(self.imageArray)) {
+        [self requestAddMood];
+    }else{
+        [self requestUploadImages];
+    }
+}
 #pragma mark - textView
 -(BOOL)textViewShouldBeginEditing:(UITextView *)textView{
     if ([textView.textColor isEqual:[UIColor lightGrayColor]] && [textView.text isEqualToString:placeholder]) {
@@ -271,15 +291,28 @@ static const CGFloat kPhotoViewMargin = 13.0;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     [self hiddenSelect];
+    self.moodTypeId = self.moodTypeModel.data[indexPath.row+1].id.stringValue;
     [self.selectButton setTitle:self.moodTypeModel.data[indexPath.row+1].labelName forState:UIControlStateNormal];
 }
 
 #pragma mark - request
 -(void)requestAddMood{
-    [NetApiManager requestAddMoodWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
+    NSString *string = @"";
+    if (self.imageUrlArray) {
+        string = [self.imageUrlArray componentsJoinedByString:@","];
+    }
+    NSDictionary *dic = @{
+                          @"moodDetails":self.moodDetails,
+                          @"moodTypeId":self.moodTypeId ? self.moodTypeId : @"",
+                          @"moodUrl":string
+                          };
+    [NetApiManager requestAddMoodWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            
+            [self.view showLoadingMeg:@"发送成功" time:MESSAGE_SHOW_TIME];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self.navigationController popViewControllerAnimated:YES];
+            });
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -295,29 +328,14 @@ static const CGFloat kPhotoViewMargin = 13.0;
         }
     }];
 }
--(void)requestUploadImages:(NSArray <UIImage *>*)imageArray{
-    for (UIImage *image in imageArray) {
-        NSData *data = UIImageJPEGRepresentation(image, 1.0);
-        NSLog(@"--%ld",data.length);
-    }
-    
-    NSMutableArray *mu = [NSMutableArray array];
-    for (int i = 0; i< imageArray.count; i++) {
-        [mu addObject:[self getNowTimeTimestamp3]];
-    }
-//    [NetApiManager avartarChangeWithParamDict:nil singleImage:imageArray[0] singleImageName:@"file" withHandle:^(BOOL isSuccess, id responseObject) {
-//        NSLog(@"%@",responseObject);
-//        if (isSuccess) {
-//
-//        }else{
-//            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
-//        }
-//    }];
-    
-    [NetApiManager requestPublishArticle:nil imageArray:imageArray imageNameArray:[mu copy] response:^(BOOL isSuccess, id responseObject) {
+-(void)requestUploadImages{
+    [NetApiManager requestPublishArticle:nil imageArray:self.imageArray imageNameArray:nil response:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-
+            if (responseObject[@"data"]) {
+                self.imageUrlArray = responseObject[@"data"];
+                [self requestAddMood];
+            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

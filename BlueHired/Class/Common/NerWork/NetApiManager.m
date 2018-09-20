@@ -394,6 +394,56 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
+//注册接口
++ (void)requestAddUserWithParam:(id)paramer
+                     withHandle:(response)responseHandle{
+    NSString * appendURLString = @"login/add_user";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
+//找回密码
++ (void)requestSetPswWithParam:(id)paramer
+                    withHandle:(response)responseHandle{
+    NSString * appendURLString = @"login/set_psw";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
+//发送手机验证码
++ (void)requestSendCodeWithParam:(id)paramer
+                      withHandle:(response)responseHandle{
+    NSString * appendURLString = @"login/send_code";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
+//验证验证码及手机
++ (void)requestMateCodeWithParam:(id)paramer
+                      withHandle:(response)responseHandle{
+    NSString * appendURLString = @"login/mate_code";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
+//修改密码
++ (void)requestModifyPswWithParam:(id)paramer
+                       withHandle:(response)responseHandle{
+    NSString * appendURLString = @"login/modify_psw";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
 #pragma mark - 我的
 /************************************************************/
 //*  我的

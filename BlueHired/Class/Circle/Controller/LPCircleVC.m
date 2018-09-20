@@ -39,6 +39,10 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
     }];
     [self addSendButton];
 }
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self.collectionView reloadData];
+}
 - (UIStatusBarStyle)preferredStatusBarStyle{
     return UIStatusBarStyleLightContent;
 }

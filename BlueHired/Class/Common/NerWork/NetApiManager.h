@@ -140,6 +140,21 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //退出登陆
 + (void)requestSignoutWithParam:(id)paramer
                      withHandle:(response)responseHandle;
+//注册接口
++ (void)requestAddUserWithParam:(id)paramer
+                     withHandle:(response)responseHandle;
+//找回密码
++ (void)requestSetPswWithParam:(id)paramer
+                    withHandle:(response)responseHandle;
+//发送手机验证码
++ (void)requestSendCodeWithParam:(id)paramer
+                      withHandle:(response)responseHandle;
+//验证验证码及手机
++ (void)requestMateCodeWithParam:(id)paramer
+                      withHandle:(response)responseHandle;
+//修改密码
++ (void)requestModifyPswWithParam:(id)paramer
+                       withHandle:(response)responseHandle;
 #pragma mark - 我的
 /************************************************************/
 //*  我的
