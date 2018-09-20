@@ -17,6 +17,8 @@
 @property(nonatomic,strong) UIView *verificationCodeLineView;
 
 @property(nonatomic,strong) UIButton *getVerificationCodeButton;
+
+@property(nonatomic,strong) NSString *token;
 @end
 
 @implementation LPRegisteredVC
@@ -248,8 +250,7 @@
         [self.view showLoadingMeg:@"请输入6-16位密码" time:MESSAGE_SHOW_TIME];
         return;
     }
-    [self openCountdown];
-//    [self requestSendCode];
+    [self requestSendCode];
 }
 -(void)openCountdown{
     __block NSInteger time = 59; //倒计时时间
@@ -305,7 +306,11 @@
         [self.view showLoadingMeg:@"请输入验证码" time:MESSAGE_SHOW_TIME];
         return;
     }
-    [self requestAddUser];
+    if (!self.token) {
+        [self.view showLoadingMeg:@"请输入正确的验证码" time:MESSAGE_SHOW_TIME];
+        return;
+    }
+    [self requestMateCode];
 }
 
 #pragma mark - textfield
@@ -379,7 +384,14 @@
     [NetApiManager requestAddUserWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            
+            if ([responseObject[@"code"] integerValue] == 0) {
+                [self.view showLoadingMeg:@"注册成功" time:MESSAGE_SHOW_TIME];
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [self.navigationController popViewControllerAnimated:YES];
+                });
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] ? responseObject[@"msg"] : @"注册失败" time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -394,8 +406,28 @@
         NSLog(@"%@",responseObject);
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
+                if (responseObject[@"data"]) {
+                    self.token = responseObject[@"data"];
+                }
                 [self.view showLoadingMeg:@"验证码发送成功" time:MESSAGE_SHOW_TIME];
+                [self openCountdown];
             }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+-(void)requestMateCode{
+    NSDictionary *dic = @{
+                          @"i":@(0),
+                          @"phone":self.phoneTextField.text,
+                          @"code":self.verificationCodeTextField.text,
+                          @"token":self.token
+                          };
+    [NetApiManager requestMateCodeWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            [self requestAddUser];
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

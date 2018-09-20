@@ -226,6 +226,7 @@ static NSString *PASSWORDUSERSAVE = @"PASSWORDUSERSAVE";
     if (!kStringIsEmpty(password)) {
         self.passwordTextField.text = password;
         keepPassWord.selected = YES;
+        self.keepPassword = YES;
     }
 }
 

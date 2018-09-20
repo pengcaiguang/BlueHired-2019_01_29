@@ -23,6 +23,9 @@
 @property(nonatomic,strong) UITextField *verificationCodeTextField;
 
 @property(nonatomic,strong) UIButton *getVerificationCodeButton;
+
+@property(nonatomic,strong) NSString *token;
+
 @end
 
 @implementation LPForgetPassWordVC
@@ -295,8 +298,7 @@
         [self.view showLoadingMeg:@"两次输入的密码不一致" time:MESSAGE_SHOW_TIME];
         return;
     }
-    [self openCountdown];
-//    [self requestSendCode];
+    [self requestSendCode];
 }
 -(void)openCountdown{
     __block NSInteger time = 59; //倒计时时间
@@ -358,6 +360,11 @@
         [self.view showLoadingMeg:@"请输入验证码" time:MESSAGE_SHOW_TIME];
         return;
     }
+    if (!self.token) {
+        [self.view showLoadingMeg:@"请输入正确的验证码" time:MESSAGE_SHOW_TIME];
+        return;
+    }
+    [self requestMateCode];
 }
 
 
@@ -450,8 +457,50 @@
         NSLog(@"%@",responseObject);
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
+                if (responseObject[@"data"]) {
+                    self.token = responseObject[@"data"];
+                }
                 [self.view showLoadingMeg:@"验证码发送成功" time:MESSAGE_SHOW_TIME];
+                [self openCountdown];
             }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+-(void)requestSetPswWithParam{
+    NSString *passwordmd5 = [self.passwordTextField.text md5];
+    NSString *newPasswordmd5 = [[NSString stringWithFormat:@"%@lanpin123.com",passwordmd5] md5];
+    NSDictionary *dic = @{
+                          @"phone":self.phoneTextField.text,
+                          @"password":newPasswordmd5
+                          };
+    [NetApiManager requestSetPswWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                [self.view showLoadingMeg:@"密码重置成功" time:MESSAGE_SHOW_TIME];
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [self.navigationController popViewControllerAnimated:YES];
+                });
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] ? responseObject[@"msg"] : @"重置失败" time:MESSAGE_SHOW_TIME];
+            }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+-(void)requestMateCode{
+    NSDictionary *dic = @{
+                          @"i":@(1),
+                          @"phone":self.phoneTextField.text,
+                          @"code":self.verificationCodeTextField.text
+                          };
+    [NetApiManager requestMateCodeWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            [self requestSetPswWithParam];
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
