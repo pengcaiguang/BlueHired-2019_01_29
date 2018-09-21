@@ -12,12 +12,17 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface LPInfoCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UIButton *selectButton;
 @property (weak, nonatomic) IBOutlet UIImageView *statusImgView;
 @property (weak, nonatomic) IBOutlet UILabel *informationTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *informationDetailsLabel;
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *img_contraint_width;
 
 @property(nonatomic,strong) LPInfoListDataModel *model;
+
+@property(nonatomic,assign) BOOL selectStatus;
+
 @end
 
 NS_ASSUME_NONNULL_END

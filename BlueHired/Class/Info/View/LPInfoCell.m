@@ -13,6 +13,8 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
+    [self.selectButton setImage:[UIImage imageNamed:@"add_ record_normal"] forState:UIControlStateNormal];
+    [self.selectButton setImage:[UIImage imageNamed:@"add_ record_selected"] forState:UIControlStateSelected];
 }
 
 -(void)setModel:(LPInfoListDataModel *)model{
@@ -25,6 +27,18 @@
     self.informationTitleLabel.text = model.informationTitle;
     self.informationDetailsLabel .text = model.informationDetails;
     self.timeLabel.text = [NSString convertStringToTime:[model.time stringValue]];
+}
+
+- (IBAction)touchSelectButton:(UIButton *)sender {
+    sender.selected = !sender.isSelected;
+}
+
+-(void)setSelectStatus:(BOOL)selectStatus{
+    if (selectStatus) {
+        self.img_contraint_width.constant = 60;
+    }else{
+        self.img_contraint_width.constant = 13;
+    }
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];

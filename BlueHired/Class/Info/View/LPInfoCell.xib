@@ -19,6 +19,16 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="61.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KUa-l7-QE4">
+                        <rect key="frame" x="18" y="18.5" width="25" height="25"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="25" id="CQs-8N-nSd"/>
+                            <constraint firstAttribute="width" constant="25" id="yH7-uj-P0c"/>
+                        </constraints>
+                        <connections>
+                            <action selector="touchSelectButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="reC-cg-X6E"/>
+                        </connections>
+                    </button>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2Yn-En-kad">
                         <rect key="frame" x="13" y="12.5" width="37" height="37"/>
                         <constraints>
@@ -55,8 +65,10 @@
                     </label>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="KUa-l7-QE4" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="18" id="0a1-r4-8DG"/>
                     <constraint firstItem="2Yn-En-kad" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12.5" id="Ehi-9y-FKT"/>
                     <constraint firstItem="2Yn-En-kad" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="13" id="HRY-mu-5se"/>
+                    <constraint firstItem="KUa-l7-QE4" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="P56-Yo-gtI"/>
                     <constraint firstAttribute="bottom" secondItem="DQd-F9-zKU" secondAttribute="bottom" constant="12" id="TmY-US-A5p"/>
                     <constraint firstAttribute="trailing" secondItem="DQd-F9-zKU" secondAttribute="trailing" constant="13" id="Vw8-Tf-aZT"/>
                     <constraint firstItem="Mrs-Jp-odB" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="WzZ-sR-wVh"/>
@@ -69,8 +81,10 @@
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
             <connections>
+                <outlet property="img_contraint_width" destination="HRY-mu-5se" id="rhG-qF-Llj"/>
                 <outlet property="informationDetailsLabel" destination="DQd-F9-zKU" id="DU1-jA-UvK"/>
                 <outlet property="informationTitleLabel" destination="Mrs-Jp-odB" id="O2I-J7-nkW"/>
+                <outlet property="selectButton" destination="KUa-l7-QE4" id="ZCg-z1-24h"/>
                 <outlet property="statusImgView" destination="2Yn-En-kad" id="Kjc-gP-kik"/>
                 <outlet property="timeLabel" destination="GzP-Oi-FGO" id="FCz-DE-Rwr"/>
             </connections>

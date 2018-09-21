@@ -21,6 +21,8 @@ static NSString *LPInforCollectionViewCellID = @"LPInforCollectionViewCell";
 @property(nonatomic,strong) NSArray *titleArray;
 
 @property(nonatomic,assign) NSInteger selectType;
+@property(nonatomic,assign) BOOL isSelect;
+@property(nonatomic,assign) BOOL selectAll;
 
 @end
 
@@ -37,6 +39,7 @@ static NSString *LPInforCollectionViewCellID = @"LPInforCollectionViewCell";
 
     [self setNavigationButton];
     [self setTitleView];
+    [self setBottomView];
     
     [self.view addSubview:self.labelListView];
     [self.labelListView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -62,7 +65,28 @@ static NSString *LPInforCollectionViewCellID = @"LPInforCollectionViewCell";
     [self.navigationItem.rightBarButtonItem setTintColor:[UIColor colorWithHexString:@"#1B1B1B"]];
 }
 -(void)touchManagerButton{
-    
+    if (self.isSelect) {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"管理" style:UIBarButtonItemStyleDone target:self action:@selector(touchManagerButton)];
+        [self.navigationItem.rightBarButtonItem setTintColor:[UIColor colorWithHexString:@"#1B1B1B"]];
+        self.isSelect = NO;
+        [self.collectionView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_equalTo(50);
+            make.left.mas_equalTo(0);
+            make.right.mas_equalTo(0);
+            make.bottom.mas_equalTo(0);
+        }];
+    }else{
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"取消" style:UIBarButtonItemStyleDone target:self action:@selector(touchManagerButton)];
+        [self.navigationItem.rightBarButtonItem setTintColor:[UIColor colorWithHexString:@"#1B1B1B"]];
+        self.isSelect = YES;
+        [self.collectionView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_equalTo(50);
+            make.left.mas_equalTo(0);
+            make.right.mas_equalTo(0);
+            make.bottom.mas_equalTo(-49);
+        }];
+    }
+    [self.collectionView reloadData];
 }
 
 -(void)setTitleView{
@@ -102,7 +126,45 @@ static NSString *LPInforCollectionViewCellID = @"LPInforCollectionViewCell";
     [scrollView addSubview:self.lineView];
     self.labelArray[0].textColor = [UIColor blackColor];
 }
+-(void)setBottomView{
+    UIButton *selectButton = [[UIButton alloc]init];
+    [self.view addSubview:selectButton];
+    [selectButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(12);
+        make.bottom.mas_equalTo(-13);
+        make.width.mas_equalTo(70);
+    }];
+    [selectButton setTitle:@"全选" forState:UIControlStateNormal];
+    [selectButton setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
+    [selectButton setImage:[UIImage imageNamed:@"add_ record_normal"] forState:UIControlStateNormal];
+    [selectButton setImage:[UIImage imageNamed:@"add_ record_selected"] forState:UIControlStateSelected];
+    selectButton.titleLabel.font = [UIFont systemFontOfSize:16];
+    selectButton.titleEdgeInsets = UIEdgeInsetsMake(0, 20, 0, 0);
+    selectButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
+    [selectButton addTarget:self action:@selector(touchSelectButton:) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIButton *deleteButton = [[UIButton alloc]init];
+    [self.view addSubview:deleteButton];
+    [deleteButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.mas_equalTo(0);
+        make.bottom.mas_equalTo(0);
+        make.height.mas_equalTo(49);
+        make.width.mas_equalTo(180);
+    }];
+    deleteButton.backgroundColor = [UIColor colorWithHexString:@"#FF5353"];
+    [deleteButton setTitle:@"删除" forState:UIControlStateNormal];
+    [deleteButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    deleteButton.titleLabel.font = [UIFont systemFontOfSize:16];
+    [deleteButton addTarget:self action:@selector(touchDeleteButton:) forControlEvents:UIControlEventTouchUpInside];
 
+}
+-(void)touchSelectButton:(UIButton *)button{
+    button.selected = !button.isSelected;
+    self.selectAll = button.isSelected;
+}
+-(void)touchDeleteButton:(UIButton *)button{
+    
+}
 -(void)touchLabel:(UITapGestureRecognizer *)tap{
     NSInteger index = [tap view].tag;
     [self selectButtonAtIndex:index];
@@ -139,6 +201,8 @@ static NSString *LPInforCollectionViewCellID = @"LPInforCollectionViewCell";
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     LPInforCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:LPInforCollectionViewCellID forIndexPath:indexPath];
     cell.type = self.selectType;
+    cell.selectStatus = self.isSelect;
+    cell.selectAll = self.selectAll;
     return cell;
 }
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
@@ -147,9 +211,17 @@ static NSString *LPInforCollectionViewCellID = @"LPInforCollectionViewCell";
 #pragma mark -- UICollectionViewDelegateFlowLayout
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     if ([DeviceUtils deviceType] == IPhone_X) {
-        return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-88-50);
+        if (self.isSelect) {
+            return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-88-50-49);
+        }else{
+            return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-88-50);
+        }
     }else{
-        return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-64-50);
+        if (self.isSelect) {
+            return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-64-50-49);
+        }else{
+            return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-64-50);
+        }
     }
 }
 

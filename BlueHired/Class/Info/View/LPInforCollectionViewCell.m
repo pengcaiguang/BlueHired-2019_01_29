@@ -41,6 +41,10 @@ static NSString *LPInfoCellID = @"LPInfoCell";
     _type = type;
     [self requestQueryInfolist];
 }
+-(void)setSelectStatus:(BOOL)selectStatus{
+    _selectStatus = selectStatus;
+    [self.tableview reloadData];
+}
 -(void)setModel:(LPInfoListModel *)model{
     _model = model;
     if ([model.code integerValue] == 0) {
@@ -59,7 +63,6 @@ static NSString *LPInfoCellID = @"LPInfoCell";
                 [self.tableview.mj_footer endRefreshingWithNoMoreData];
             }
         }
-        
     }else{
         [self.contentView showLoadingMeg:NETE_ERROR_MESSAGE time:MESSAGE_SHOW_TIME];
     }
@@ -72,6 +75,12 @@ static NSString *LPInfoCellID = @"LPInfoCell";
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     LPInfoCell *cell = [tableView dequeueReusableCellWithIdentifier:LPInfoCellID];
     cell.model = self.listArray[indexPath.row];
+    cell.selectStatus = self.selectStatus;
+    if (self.selectStatus) {
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    }else{
+        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+    }
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

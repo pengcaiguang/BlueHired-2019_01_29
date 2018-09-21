@@ -14,6 +14,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property(nonatomic,assign) NSInteger type;
 
+@property(nonatomic,assign) BOOL selectStatus;
+@property(nonatomic,assign) BOOL selectAll;
+
 @end
 
 NS_ASSUME_NONNULL_END
