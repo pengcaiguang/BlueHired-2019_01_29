@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic,assign) BOOL selectStatus;
 @property(nonatomic,assign) BOOL selectAll;
 
+-(void)deleteInfo;
 @end
 
 NS_ASSUME_NONNULL_END

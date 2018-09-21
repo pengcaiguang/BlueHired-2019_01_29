@@ -11,6 +11,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void(^LPInfoCellSelectBlock)(LPInfoListDataModel *model);
+
 @interface LPInfoCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIButton *selectButton;
 @property (weak, nonatomic) IBOutlet UIImageView *statusImgView;
@@ -20,8 +22,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *img_contraint_width;
 
 @property(nonatomic,strong) LPInfoListDataModel *model;
-
+@property (nonatomic,copy) LPInfoCellSelectBlock selectBlock;
 @property(nonatomic,assign) BOOL selectStatus;
+@property(nonatomic,assign) BOOL selectAll;
 
 @end
 

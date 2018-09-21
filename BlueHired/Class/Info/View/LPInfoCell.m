@@ -31,6 +31,9 @@
 
 - (IBAction)touchSelectButton:(UIButton *)sender {
     sender.selected = !sender.isSelected;
+    if (self.selectBlock) {
+        self.selectBlock(self.model);
+    }
 }
 
 -(void)setSelectStatus:(BOOL)selectStatus{
@@ -39,6 +42,9 @@
     }else{
         self.img_contraint_width.constant = 13;
     }
+}
+-(void)setSelectAll:(BOOL)selectAll{
+    self.selectButton.selected = selectAll;
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];

@@ -162,6 +162,9 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //查询消息列表
 + (void)requestQueryInfolistWithParam:(id)paramer
                            withHandle:(response)responseHandle;
+//删除消息
++ (void)requestDelInfosWithParam:(id)paramer
+                      withHandle:(response)responseHandle;
 
 #pragma mark - 我的
 /************************************************************/

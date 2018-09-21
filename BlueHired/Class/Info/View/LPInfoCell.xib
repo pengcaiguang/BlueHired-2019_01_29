@@ -20,10 +20,10 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KUa-l7-QE4">
-                        <rect key="frame" x="18" y="18.5" width="25" height="25"/>
+                        <rect key="frame" x="13" y="12.5" width="37" height="37"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="25" id="CQs-8N-nSd"/>
-                            <constraint firstAttribute="width" constant="25" id="yH7-uj-P0c"/>
+                            <constraint firstAttribute="height" constant="37" id="CQs-8N-nSd"/>
+                            <constraint firstAttribute="width" constant="37" id="yH7-uj-P0c"/>
                         </constraints>
                         <connections>
                             <action selector="touchSelectButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="reC-cg-X6E"/>
@@ -65,7 +65,7 @@
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="KUa-l7-QE4" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="18" id="0a1-r4-8DG"/>
+                    <constraint firstItem="KUa-l7-QE4" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="13" id="0a1-r4-8DG"/>
                     <constraint firstItem="2Yn-En-kad" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12.5" id="Ehi-9y-FKT"/>
                     <constraint firstItem="2Yn-En-kad" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="13" id="HRY-mu-5se"/>
                     <constraint firstItem="KUa-l7-QE4" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="P56-Yo-gtI"/>

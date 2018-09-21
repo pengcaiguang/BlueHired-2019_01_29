@@ -458,8 +458,16 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
-
-
+//删除消息
++ (void)requestDelInfosWithParam:(id)paramer
+                      withHandle:(response)responseHandle{
+    NSString * appendURLString = @"info/del_infos";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
 #pragma mark - 我的
 /************************************************************/
 //*  我的

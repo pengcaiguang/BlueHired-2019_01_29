@@ -36,7 +36,8 @@ static NSString *LPInforCollectionViewCellID = @"LPInforCollectionViewCell";
     
     self.titleArray = @[@"系统通知",@"其他消息"];
     self.labelArray = [NSMutableArray array];
-
+    self.selectType = 1;
+    
     [self setNavigationButton];
     [self setTitleView];
     [self setBottomView];
@@ -160,10 +161,13 @@ static NSString *LPInforCollectionViewCellID = @"LPInforCollectionViewCell";
 }
 -(void)touchSelectButton:(UIButton *)button{
     button.selected = !button.isSelected;
-    self.selectAll = button.isSelected;
+    LPInforCollectionViewCell *cell = (LPInforCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:self.selectType-1 inSection:0]];
+    cell.selectAll = button.isSelected;
+    
 }
 -(void)touchDeleteButton:(UIButton *)button{
-    
+    LPInforCollectionViewCell *cell = (LPInforCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:self.selectType-1 inSection:0]];
+    [cell deleteInfo];
 }
 -(void)touchLabel:(UITapGestureRecognizer *)tap{
     NSInteger index = [tap view].tag;

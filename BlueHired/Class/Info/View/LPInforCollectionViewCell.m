@@ -21,6 +21,8 @@ static NSString *LPInfoCellID = @"LPInfoCell";
 
 @property(nonatomic,strong) NSMutableArray <LPInfoListDataModel *>*listArray;
 
+@property(nonatomic,strong) NSMutableArray <LPInfoListDataModel *>*selectArray;
+
 
 @end
 
@@ -31,6 +33,7 @@ static NSString *LPInfoCellID = @"LPInfoCell";
     // Initialization code
     self.page = 1;
     self.listArray = [NSMutableArray array];
+    self.selectArray = [NSMutableArray array];
     
     [self.contentView addSubview:self.tableview];
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -44,6 +47,22 @@ static NSString *LPInfoCellID = @"LPInfoCell";
 -(void)setSelectStatus:(BOOL)selectStatus{
     _selectStatus = selectStatus;
     [self.tableview reloadData];
+}
+-(void)setSelectAll:(BOOL)selectAll{
+    _selectAll = selectAll;
+    if (selectAll) {
+        self.selectArray = [self.listArray mutableCopy];
+    }else{
+        [self.selectArray removeAllObjects];
+    }
+    [self.tableview reloadData];
+}
+-(void)deleteInfo{
+    if (self.selectArray.count == 0) {
+        [[UIWindow visibleViewController].view showLoadingMeg:@"请选择需要删除的消息" time:MESSAGE_SHOW_TIME];
+    }else{
+        [self requestDelInfos];
+    }
 }
 -(void)setModel:(LPInfoListModel *)model{
     _model = model;
@@ -76,11 +95,20 @@ static NSString *LPInfoCellID = @"LPInfoCell";
     LPInfoCell *cell = [tableView dequeueReusableCellWithIdentifier:LPInfoCellID];
     cell.model = self.listArray[indexPath.row];
     cell.selectStatus = self.selectStatus;
+    cell.selectAll = self.selectAll;
     if (self.selectStatus) {
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }else{
         cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     }
+    cell.selectBlock = ^(LPInfoListDataModel * _Nonnull model) {
+        if ([self.selectArray containsObject:model]) {
+            [self.selectArray removeObject:model];
+        }else{
+            [self.selectArray addObject:model];
+        }
+    };
+    
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -99,6 +127,27 @@ static NSString *LPInfoCellID = @"LPInfoCell";
         [self.tableview.mj_footer endRefreshing];
         if (isSuccess) {
             self.model = [LPInfoListModel mj_objectWithKeyValues:responseObject];
+        }else{
+            [[UIWindow visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+-(void)requestDelInfos{
+    NSMutableArray *array = [NSMutableArray array];
+    for (LPInfoListDataModel *model in self.selectArray) {
+        [array addObject:model.id];
+    }
+    NSString *string = [array componentsJoinedByString:@","];
+    NSDictionary *dic = @{
+                          @"infoId":string
+                          };
+    [NetApiManager requestDelInfosWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            [self.selectArray removeAllObjects];
+            self.page = 1;
+            [self requestQueryInfolist];
+            [[UIWindow visibleViewController].view showLoadingMeg:@"删除成功" time:MESSAGE_SHOW_TIME];
         }else{
             [[UIWindow visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
