@@ -169,7 +169,7 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
         if (isSuccess) {
             self.model = [LPEssaylistModel mj_objectWithKeyValues:responseObject];
         }else{
-            [[UIWindow visibleViewController].view showLoadingMeg:@"网络错误" time:MESSAGE_SHOW_TIME];
+            [[UIWindow visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
     }];
 }
