@@ -12,6 +12,12 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LPRegisterVC">
             <connections>
+                <outlet property="BUserNumLabel" destination="mgb-qg-o8O" id="Ch9-tZ-OwB"/>
+                <outlet property="CUserNumLabel" destination="pJ6-qd-VX4" id="7EN-ci-avs"/>
+                <outlet property="fullMonthNumLabel" destination="fLZ-NH-D8Q" id="nxa-1z-58O"/>
+                <outlet property="sumAmountLabel" destination="8bM-Qd-37L" id="Cj4-uZ-WdM"/>
+                <outlet property="sumNumLabel" destination="V94-XD-u6M" id="9Wl-Tz-9DC"/>
+                <outlet property="unAmountLabel" destination="EtK-np-zJc" id="FbM-GZ-KYg"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

@@ -70,6 +70,7 @@
 		DC4AB9CD215A324F002DFD5C /* LPDimissionVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC4AB9CB215A324F002DFD5C /* LPDimissionVC.xib */; };
 		DC4AB9D3215A363C002DFD5C /* LPRegisterVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC4AB9D1215A363C002DFD5C /* LPRegisterVC.m */; };
 		DC4AB9D4215A363C002DFD5C /* LPRegisterVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC4AB9D2215A363C002DFD5C /* LPRegisterVC.xib */; };
+		DC4AB9D8215A5898002DFD5C /* LPRegisterModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC4AB9D7215A5898002DFD5C /* LPRegisterModel.m */; };
 		DC550341214C9E81000F4F2E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DC550340214C9E81000F4F2E /* GoogleService-Info.plist */; };
 		DC5C388021362EB300B3CF6E /* LPEssaylistModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC5C387F21362EB300B3CF6E /* LPEssaylistModel.m */; };
 		DC5C38842136372F00B3CF6E /* LPInformationSingleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC5C38822136372F00B3CF6E /* LPInformationSingleCell.m */; };
@@ -299,6 +300,8 @@
 		DC4AB9D0215A363C002DFD5C /* LPRegisterVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPRegisterVC.h; sourceTree = "<group>"; };
 		DC4AB9D1215A363C002DFD5C /* LPRegisterVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPRegisterVC.m; sourceTree = "<group>"; };
 		DC4AB9D2215A363C002DFD5C /* LPRegisterVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPRegisterVC.xib; sourceTree = "<group>"; };
+		DC4AB9D6215A5898002DFD5C /* LPRegisterModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPRegisterModel.h; sourceTree = "<group>"; };
+		DC4AB9D7215A5898002DFD5C /* LPRegisterModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPRegisterModel.m; sourceTree = "<group>"; };
 		DC550340214C9E81000F4F2E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DC5C387E21362EB300B3CF6E /* LPEssaylistModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPEssaylistModel.h; sourceTree = "<group>"; };
 		DC5C387F21362EB300B3CF6E /* LPEssaylistModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPEssaylistModel.m; sourceTree = "<group>"; };
@@ -710,6 +713,7 @@
 		DC4AB9CE215A35CE002DFD5C /* Register */ = {
 			isa = PBXGroup;
 			children = (
+				DC4AB9D5215A5877002DFD5C /* Model */,
 				DC4AB9CF215A35CE002DFD5C /* Controller */,
 			);
 			path = Register;
@@ -723,6 +727,15 @@
 				DC4AB9D2215A363C002DFD5C /* LPRegisterVC.xib */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		DC4AB9D5215A5877002DFD5C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DC4AB9D6215A5898002DFD5C /* LPRegisterModel.h */,
+				DC4AB9D7215A5898002DFD5C /* LPRegisterModel.m */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		DC5C38902136680C00B3CF6E /* View */ = {
@@ -1650,6 +1663,7 @@
 				DC4AB9D3215A363C002DFD5C /* LPRegisterVC.m in Sources */,
 				DCF5D9C5213FA5BD009F5DCE /* LPBusinessReviewCell.m in Sources */,
 				DC13BB55213E23CF00800955 /* LPSelectCityVC.m in Sources */,
+				DC4AB9D8215A5898002DFD5C /* LPRegisterModel.m in Sources */,
 				DC5C38942136682200B3CF6E /* LPCircleCollectionViewCell.m in Sources */,
 				DC7383A22134EF300055DC10 /* UIView+MBProgressHUD.m in Sources */,
 				DC30E18F2138D9CB000C7A91 /* LPScreenAlertView.m in Sources */,
