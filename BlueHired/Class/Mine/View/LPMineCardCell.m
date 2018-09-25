@@ -13,6 +13,7 @@
 #import "LPLendVC.h"
 #import "LPWorkorderListVC.h"
 #import "LPDimissionVC.h"
+#import "LPRegisterVC.h"
 
 @implementation LPMineCardCell
 
@@ -76,6 +77,10 @@
             [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
         }else if (index == 5){
             LPWorkorderListVC *vc = [[LPWorkorderListVC alloc]init];
+            vc.hidesBottomBarWhenPushed = YES;
+            [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+        }else if (index == 6){
+            LPRegisterVC *vc = [[LPRegisterVC alloc]init];
             vc.hidesBottomBarWhenPushed = YES;
             [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
         }
