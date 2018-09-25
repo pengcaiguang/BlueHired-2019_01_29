@@ -68,6 +68,8 @@
 		DC4AB9C6215A283F002DFD5C /* LPSalarycCardVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC4AB9C4215A283F002DFD5C /* LPSalarycCardVC.xib */; };
 		DC4AB9CC215A324F002DFD5C /* LPDimissionVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC4AB9CA215A324F002DFD5C /* LPDimissionVC.m */; };
 		DC4AB9CD215A324F002DFD5C /* LPDimissionVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC4AB9CB215A324F002DFD5C /* LPDimissionVC.xib */; };
+		DC4AB9D3215A363C002DFD5C /* LPRegisterVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC4AB9D1215A363C002DFD5C /* LPRegisterVC.m */; };
+		DC4AB9D4215A363C002DFD5C /* LPRegisterVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC4AB9D2215A363C002DFD5C /* LPRegisterVC.xib */; };
 		DC550341214C9E81000F4F2E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DC550340214C9E81000F4F2E /* GoogleService-Info.plist */; };
 		DC5C388021362EB300B3CF6E /* LPEssaylistModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC5C387F21362EB300B3CF6E /* LPEssaylistModel.m */; };
 		DC5C38842136372F00B3CF6E /* LPInformationSingleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC5C38822136372F00B3CF6E /* LPInformationSingleCell.m */; };
@@ -294,6 +296,9 @@
 		DC4AB9C9215A324F002DFD5C /* LPDimissionVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPDimissionVC.h; sourceTree = "<group>"; };
 		DC4AB9CA215A324F002DFD5C /* LPDimissionVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPDimissionVC.m; sourceTree = "<group>"; };
 		DC4AB9CB215A324F002DFD5C /* LPDimissionVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPDimissionVC.xib; sourceTree = "<group>"; };
+		DC4AB9D0215A363C002DFD5C /* LPRegisterVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPRegisterVC.h; sourceTree = "<group>"; };
+		DC4AB9D1215A363C002DFD5C /* LPRegisterVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPRegisterVC.m; sourceTree = "<group>"; };
+		DC4AB9D2215A363C002DFD5C /* LPRegisterVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPRegisterVC.xib; sourceTree = "<group>"; };
 		DC550340214C9E81000F4F2E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DC5C387E21362EB300B3CF6E /* LPEssaylistModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPEssaylistModel.h; sourceTree = "<group>"; };
 		DC5C387F21362EB300B3CF6E /* LPEssaylistModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPEssaylistModel.m; sourceTree = "<group>"; };
@@ -702,6 +707,24 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
+		DC4AB9CE215A35CE002DFD5C /* Register */ = {
+			isa = PBXGroup;
+			children = (
+				DC4AB9CF215A35CE002DFD5C /* Controller */,
+			);
+			path = Register;
+			sourceTree = "<group>";
+		};
+		DC4AB9CF215A35CE002DFD5C /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				DC4AB9D0215A363C002DFD5C /* LPRegisterVC.h */,
+				DC4AB9D1215A363C002DFD5C /* LPRegisterVC.m */,
+				DC4AB9D2215A363C002DFD5C /* LPRegisterVC.xib */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
 		DC5C38902136680C00B3CF6E /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -850,6 +873,7 @@
 		DC7383552133EAAF0055DC10 /* Class */ = {
 			isa = PBXGroup;
 			children = (
+				DC4AB9CE215A35CE002DFD5C /* Register */,
 				DC4AB9C7215A322D002DFD5C /* Dimission */,
 				DC7383562133EAAF0055DC10 /* Base */,
 				DCF5D9B8213F8905009F5DCE /* BusinessReview */,
@@ -1397,6 +1421,7 @@
 				DC73832B2133E33E0055DC10 /* Main.storyboard in Resources */,
 				DC13BB52213E205A00800955 /* china_cities_v2.db in Resources */,
 				DC49D86C213A74B3009BFCB0 /* LPEssayDetailHeadCell.xib in Resources */,
+				DC4AB9D4215A363C002DFD5C /* LPRegisterVC.xib in Resources */,
 				DCCC8A742147AD3C0062A0F5 /* LPWorkHourDetailPieChartCell.xib in Resources */,
 				DCB25EA52150F4A200ED2FC4 /* LPMoodDetailHeaderCell.xib in Resources */,
 				DC2C590B2154A14700741ED8 /* LPInfoCell.xib in Resources */,
@@ -1622,6 +1647,7 @@
 				DC5C389D213682F500B3CF6E /* LPCircleListCell.m in Sources */,
 				DCCC8A60214754D30062A0F5 /* LPDateSelectView.m in Sources */,
 				DC7383712133EC320055DC10 /* LPMineVC.m in Sources */,
+				DC4AB9D3215A363C002DFD5C /* LPRegisterVC.m in Sources */,
 				DCF5D9C5213FA5BD009F5DCE /* LPBusinessReviewCell.m in Sources */,
 				DC13BB55213E23CF00800955 /* LPSelectCityVC.m in Sources */,
 				DC5C38942136682200B3CF6E /* LPCircleCollectionViewCell.m in Sources */,
