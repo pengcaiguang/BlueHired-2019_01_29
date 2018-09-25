@@ -59,6 +59,7 @@
 		DC49D86B213A74B3009BFCB0 /* LPEssayDetailHeadCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC49D869213A74B3009BFCB0 /* LPEssayDetailHeadCell.m */; };
 		DC49D86C213A74B3009BFCB0 /* LPEssayDetailHeadCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC49D86A213A74B3009BFCB0 /* LPEssayDetailHeadCell.xib */; };
 		DC49D86F213A7751009BFCB0 /* LPEssayDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC49D86E213A7751009BFCB0 /* LPEssayDetailModel.m */; };
+		DC4AB9AE2159E52B002DFD5C /* LPInfoDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC4AB9AD2159E52B002DFD5C /* LPInfoDetailVC.m */; };
 		DC550341214C9E81000F4F2E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DC550340214C9E81000F4F2E /* GoogleService-Info.plist */; };
 		DC5C388021362EB300B3CF6E /* LPEssaylistModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC5C387F21362EB300B3CF6E /* LPEssaylistModel.m */; };
 		DC5C38842136372F00B3CF6E /* LPInformationSingleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC5C38822136372F00B3CF6E /* LPInformationSingleCell.m */; };
@@ -271,6 +272,8 @@
 		DC49D86A213A74B3009BFCB0 /* LPEssayDetailHeadCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPEssayDetailHeadCell.xib; sourceTree = "<group>"; };
 		DC49D86D213A7751009BFCB0 /* LPEssayDetailModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPEssayDetailModel.h; sourceTree = "<group>"; };
 		DC49D86E213A7751009BFCB0 /* LPEssayDetailModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPEssayDetailModel.m; sourceTree = "<group>"; };
+		DC4AB9AC2159E52B002DFD5C /* LPInfoDetailVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPInfoDetailVC.h; sourceTree = "<group>"; };
+		DC4AB9AD2159E52B002DFD5C /* LPInfoDetailVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPInfoDetailVC.m; sourceTree = "<group>"; };
 		DC550340214C9E81000F4F2E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DC5C387E21362EB300B3CF6E /* LPEssaylistModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPEssaylistModel.h; sourceTree = "<group>"; };
 		DC5C387F21362EB300B3CF6E /* LPEssaylistModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPEssaylistModel.m; sourceTree = "<group>"; };
@@ -565,6 +568,8 @@
 			children = (
 				DC1423D62153A0BF0042CCCB /* LPInfoVC.h */,
 				DC1423D72153A0BF0042CCCB /* LPInfoVC.m */,
+				DC4AB9AC2159E52B002DFD5C /* LPInfoDetailVC.h */,
+				DC4AB9AD2159E52B002DFD5C /* LPInfoDetailVC.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1465,6 +1470,7 @@
 				DC2295852141143F0002A095 /* GJAlertText.m in Sources */,
 				DC5C38842136372F00B3CF6E /* LPInformationSingleCell.m in Sources */,
 				DC7383962134E95E0055DC10 /* MoninNet.m in Sources */,
+				DC4AB9AE2159E52B002DFD5C /* LPInfoDetailVC.m in Sources */,
 				DC7383942134E95E0055DC10 /* NetRequestEnty.m in Sources */,
 				DC30E1952138F51B000C7A91 /* LPInformationSearchVC.m in Sources */,
 				DC44DBA321354D6A00D00FAC /* DeviceUtils.m in Sources */,

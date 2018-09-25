@@ -9,6 +9,7 @@
 #import "LPInforCollectionViewCell.h"
 #import "LPInfoListModel.h"
 #import "LPInfoCell.h"
+#import "LPInfoDetailVC.h"
 
 static NSString *LPInfoCellID = @"LPInfoCell";
 
@@ -113,7 +114,14 @@ static NSString *LPInfoCellID = @"LPInfoCell";
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    LPInfoDetailVC *vc = [[LPInfoDetailVC alloc]init];
+    vc.model = self.listArray[indexPath.row];
+    [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
     
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        LPInfoCell *cell = (LPInfoCell*)[tableView cellForRowAtIndexPath:indexPath];
+        cell.statusImgView.image = [UIImage imageNamed:@"info_read"];
+    });
 }
 #pragma mark - request
 -(void)requestQueryInfolist{

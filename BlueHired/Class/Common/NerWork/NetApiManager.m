@@ -468,6 +468,16 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
+//消息详情
++ (void)requestQueryInfodetailWithParam:(id)paramer
+                             withHandle:(response)responseHandle{
+    NSString * appendURLString = @"info/query_infodetail";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
 #pragma mark - 我的
 /************************************************************/
 //*  我的
