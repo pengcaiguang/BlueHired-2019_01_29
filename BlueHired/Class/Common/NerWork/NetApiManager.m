@@ -512,6 +512,16 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
+//查询是否允许借支
++ (void)requestQueryIsLendWithParam:(id)paramer
+                         withHandle:(response)responseHandle{
+    NSString * appendURLString = @"lendmoney/query_isLend";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
 #pragma mark - 企业点评
 /************************************************************/
 //*  企业点评

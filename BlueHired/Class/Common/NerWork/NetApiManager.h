@@ -181,7 +181,9 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //查询当天是否签到
 + (void)requestSelectCurIsSignWithParam:(id)paramer
                              withHandle:(response)responseHandle;
-
+//查询是否允许借支
++ (void)requestQueryIsLendWithParam:(id)paramer
+                         withHandle:(response)responseHandle;
 #pragma mark - 企业点评
 /************************************************************/
 //*  企业点评

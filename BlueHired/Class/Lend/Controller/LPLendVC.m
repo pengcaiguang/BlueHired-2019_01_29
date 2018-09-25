@@ -2,8 +2,8 @@
 //  LPLendVC.m
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/9/12.
-//  Copyright © 2018年 lanpin. All rights reserved.
+//  Created by 邢晓亮 on 2018/9/25.
+//  Copyright © 2018 lanpin. All rights reserved.
 //
 
 #import "LPLendVC.h"
@@ -16,15 +16,32 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    self.view.backgroundColor = [UIColor whiteColor];
+    // Do any additional setup after loading the view from its nib.
     self.navigationItem.title = @"借支";
+    [self requestQueryIsLend];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+#pragma mark - request
+-(void)requestQueryIsLend{
+    [NetApiManager requestQueryIsLendWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if (responseObject[@"data"]) {
+                if (responseObject[@"data"][@"res_code"]) {
+                    if ([responseObject[@"data"][@"res_code"] integerValue] == 20012) {
+                        GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:responseObject[@"data"][@"res_msg"] message:nil textAlignment:0 buttonTitles:@[@"确定"] buttonsColor:@[[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
+                            [self.navigationController popViewControllerAnimated:YES];
+                        }];
+                        [alert show];
+                    }
+                }
+            }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
 }
+
 
 /*
 #pragma mark - Navigation
