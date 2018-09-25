@@ -13,6 +13,7 @@
 #import "LPUserMaterialModel.h"
 #import "LPChangePhoneVC.h"
 #import "LPChangePasswordVC.h"
+#import "LPSalarycCardVC.h"
 
 static NSString *LPMineCellID = @"LPMineCell";
 static NSString *LPMineCardCellID = @"LPMineCardCell";
@@ -140,7 +141,7 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
         cell.textLabel.font = [UIFont systemFontOfSize:16];
         if (indexPath.row == 0) {
             cell.imageView.image = [UIImage imageNamed:@"salaryCard_img"];
-            cell.textLabel.text = @"工资管理";
+            cell.textLabel.text = @"工资卡管理";
         }else if (indexPath.row == 1) {
             cell.imageView.image = [UIImage imageNamed:@"changePhoneNumber_img"];
             cell.textLabel.text = @"手机号修改";
@@ -163,7 +164,11 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if ([LoginUtils validationLogin:self]) {
         if (indexPath.section == 2) {
-            if (indexPath.row == 1) {
+            if (indexPath.row == 0) {
+                LPSalarycCardVC *vc = [[LPSalarycCardVC alloc]init];
+                vc.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:vc animated:YES];
+            }else if (indexPath.row == 1) {
                 LPChangePhoneVC *vc = [[LPChangePhoneVC alloc]init];
                 vc.hidesBottomBarWhenPushed = YES;
                 [self.navigationController pushViewController:vc animated:YES];

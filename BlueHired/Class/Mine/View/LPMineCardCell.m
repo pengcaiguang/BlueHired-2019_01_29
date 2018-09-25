@@ -12,6 +12,7 @@
 #import "LPSalaryBreakdownVC.h"
 #import "LPLendVC.h"
 #import "LPWorkorderListVC.h"
+#import "LPDimissionVC.h"
 
 @implementation LPMineCardCell
 
@@ -52,30 +53,31 @@
 
 -(void)touchBgView:(UITapGestureRecognizer *)tap{
     NSInteger index = [tap view].tag;
-    if (index == 4) {
-        NSLog(@"企业点评");
-        LPBusinessReviewVC *vc = [[LPBusinessReviewVC alloc]init];
-        vc.hidesBottomBarWhenPushed = YES;
-        [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
-    }else{
-        if ([LoginUtils validationLogin:[UIWindow visibleViewController]]) {
-            if (index == 0) {
-                LPWorkHourVC *vc = [[LPWorkHourVC alloc]init];
-                vc.hidesBottomBarWhenPushed = YES;
-                [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
-            }else if (index == 1){
-                LPSalaryBreakdownVC *vc = [[LPSalaryBreakdownVC alloc]init];
-                vc.hidesBottomBarWhenPushed = YES;
-                [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
-            }else if (index == 2){
-                LPLendVC *vc = [[LPLendVC alloc]init];
-                vc.hidesBottomBarWhenPushed = YES;
-                [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
-            }else if (index == 5){
-                LPWorkorderListVC *vc = [[LPWorkorderListVC alloc]init];
-                vc.hidesBottomBarWhenPushed = YES;
-                [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
-            }
+    if ([LoginUtils validationLogin:[UIWindow visibleViewController]]) {
+        if (index == 0) {
+            LPWorkHourVC *vc = [[LPWorkHourVC alloc]init];
+            vc.hidesBottomBarWhenPushed = YES;
+            [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+        }else if (index == 1){
+            LPSalaryBreakdownVC *vc = [[LPSalaryBreakdownVC alloc]init];
+            vc.hidesBottomBarWhenPushed = YES;
+            [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+        }else if (index == 2){
+            LPLendVC *vc = [[LPLendVC alloc]init];
+            vc.hidesBottomBarWhenPushed = YES;
+            [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+        }else if (index == 3){
+            LPDimissionVC *vc = [[LPDimissionVC alloc]init];
+            vc.hidesBottomBarWhenPushed = YES;
+            [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+        }else if (index == 4){
+            LPBusinessReviewVC *vc = [[LPBusinessReviewVC alloc]init];
+            vc.hidesBottomBarWhenPushed = YES;
+            [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+        }else if (index == 5){
+            LPWorkorderListVC *vc = [[LPWorkorderListVC alloc]init];
+            vc.hidesBottomBarWhenPushed = YES;
+            [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
         }
     }
 }
