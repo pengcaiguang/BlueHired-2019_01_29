@@ -12,6 +12,7 @@
 #import "LPLoginVC.h"
 #import "LPUserMaterialModel.h"
 #import "LPChangePhoneVC.h"
+#import "LPChangePasswordVC.h"
 
 static NSString *LPMineCellID = @"LPMineCell";
 static NSString *LPMineCardCellID = @"LPMineCardCell";
@@ -164,6 +165,10 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
         if (indexPath.section == 2) {
             if (indexPath.row == 1) {
                 LPChangePhoneVC *vc = [[LPChangePhoneVC alloc]init];
+                vc.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:vc animated:YES];
+            }else if (indexPath.row == 2){
+                LPChangePasswordVC *vc = [[LPChangePasswordVC alloc]init];
                 vc.hidesBottomBarWhenPushed = YES;
                 [self.navigationController pushViewController:vc animated:YES];
             }

@@ -240,6 +240,35 @@
     [self requestMateCode];
     
 }
+#pragma mark - textfield
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    if (textField == self.phoneTextField) {
+        //这里的if时候为了获取删除操作,如果没有次if会造成当达到字数限制后删除键也不能使用的后果.
+        if (range.length == 1 && string.length == 0) {
+            return YES;
+        }
+        //so easy
+        else if (self.phoneTextField.text.length >= 11) {
+            self.phoneTextField.text = [textField.text substringToIndex:11];
+            return NO;
+        }
+    }
+    return YES;
+    
+}
+-(void)textFieldDidBeginEditing:(UITextField *)textField{
+    if ([textField isEqual:self.phoneTextField]) {
+        self.phoneLineView.backgroundColor = [UIColor baseColor];
+        self.verificationCodeLineView.backgroundColor = [UIColor lightGrayColor];
+    }else{
+        self.phoneLineView.backgroundColor = [UIColor lightGrayColor];
+        self.verificationCodeLineView.backgroundColor = [UIColor baseColor];
+    }
+}
+-(void)textFieldDidEndEditing:(UITextField *)textField{
+    self.phoneLineView.backgroundColor = [UIColor lightGrayColor];
+    self.verificationCodeLineView.backgroundColor = [UIColor lightGrayColor];
+}
 #pragma mark - reuqest
 -(void)requestUpdateUsertel{
     NSDictionary *dic = @{
