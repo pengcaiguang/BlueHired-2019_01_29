@@ -17,7 +17,7 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
 {
     NSLog(@"\n\nrequestEnty.requestUrl == %@\n",requestEnty.requestUrl);
     if(![NetApiManager getNetStaus]){ //无网统一提示
-        [[UIWindow visibleViewController].view showLoadingMeg:NETE_ERROR_MESSAGE time:MESSAGE_SHOW_TIME];
+//        [[UIWindow visibleViewController].view showLoadingMeg:NETE_ERROR_MESSAGE time:MESSAGE_SHOW_TIME];
         requestEnty.responseHandle(NO,nil);
         return;
     }
@@ -25,6 +25,9 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
 //        requestEnty.responseHandle(NO,nil);
 //        return;
 //    }
+    if ([self getWithURL:requestEnty.requestUrl]) {
+        requestEnty.responseHandle(YES, [self getWithURL:requestEnty.requestUrl]);
+    }
     if (requestEnty.requestType == 0) { //请求方式 0:get
         NSLog(@"\n\nGET requestEnty.params == %@",requestEnty.params);
         AFHTTPSessionManager *manager = [self initHttpManager];
@@ -57,13 +60,16 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
                 }
                 
                 requestEnty.responseHandle(YES,responseObject);
-                
+                [self saveWithURL:requestEnty.requestUrl response:responseObject];
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 NSString * errorStr = [self returnStringWithError:error];
                 //打开可统一提示错误信息(考虑有的场景可能不需要,由自己去选择是否显示错误信息),
                 //错误信息已经过处理为NSString,可直接用于展示
                 //            [kKeyWindow showLoadingMeg:errorStr time:MESSAGESHOWTIME];
                 requestEnty.responseHandle(NO,errorStr);
+                if ([self getWithURL:requestEnty.requestUrl]) {
+                    requestEnty.responseHandle(YES, [self getWithURL:requestEnty.requestUrl]);
+                }
             }];
     }else if (requestEnty.requestType == 1){//请求方式 1:post
         NSLog(@"\n\nPOST requestEnty.params == %@",requestEnty.params);
@@ -93,7 +99,8 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
                  
                  [self commonCheckErrorCode:responseObject];
                  requestEnty.responseHandle(YES,responseObject);
-                 
+                 [self saveWithURL:requestEnty.requestUrl response:responseObject];
+
              } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                  
                  NSString * errorStr = [self returnStringWithError:error];
@@ -101,6 +108,9 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
                  //错误信息已经过处理为NSString,可直接用于展示
                  //            [kKeyWindow showLoadingMeg:errorStr time:MESSAGESHOWTIME];
                  requestEnty.responseHandle(NO,errorStr);
+                 if ([self getWithURL:requestEnty.requestUrl]) {
+                     requestEnty.responseHandle(YES, [self getWithURL:requestEnty.requestUrl]);
+                 }
              }];
     }else if (requestEnty.requestType == 2){// 2:上传单张图片
         NSLog(@"\n\nPOST 单张图片上传requestEnty.params == %@",requestEnty.params);
@@ -360,5 +370,14 @@ constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         NSLog(@"//设置代理了");
         return YES;
     }
+}
+
++(void)saveWithURL:(NSString *)string response:(id)res{
+    NSArray *arr = [string componentsSeparatedByString:@"/"];
+    [LPUserDefaults saveObject:res byFileName:arr[arr.count-1]];
+}
++(id)getWithURL:(NSString *)string{
+    NSArray *arr = [string componentsSeparatedByString:@"/"];
+    return [LPUserDefaults getObjectByFileName:arr[arr.count-1]];
 }
 @end

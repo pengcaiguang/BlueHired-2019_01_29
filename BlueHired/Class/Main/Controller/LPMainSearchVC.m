@@ -99,8 +99,10 @@ static NSString *MainSearchHistory = @"MainSearchHistory";
     self.searchWord = searchBar.text;
 }
 -(void)touchSearchButton{
-    [self saveWords];
-    [self search:self.searchWord];
+    if (self.searchWord.length > 0) {
+        [self saveWords];
+        [self search:self.searchWord];
+    }
 }
 
 -(void)saveWords{
