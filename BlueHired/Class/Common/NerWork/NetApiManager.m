@@ -444,6 +444,16 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
+//修改手机号
++ (void)requestUpdateUsertelWithParam:(id)paramer
+                           withHandle:(response)responseHandle{
+    NSString * appendURLString = @"userMaterial/update_usertel";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
 #pragma mark - 消息中心
 /************************************************************/
 //*  消息中心

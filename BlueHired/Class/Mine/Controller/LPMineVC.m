@@ -11,6 +11,7 @@
 #import "LPMineCardCell.h"
 #import "LPLoginVC.h"
 #import "LPUserMaterialModel.h"
+#import "LPChangePhoneVC.h"
 
 static NSString *LPMineCellID = @"LPMineCell";
 static NSString *LPMineCardCellID = @"LPMineCardCell";
@@ -160,7 +161,13 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if ([LoginUtils validationLogin:self]) {
-        
+        if (indexPath.section == 2) {
+            if (indexPath.row == 1) {
+                LPChangePhoneVC *vc = [[LPChangePhoneVC alloc]init];
+                vc.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:vc animated:YES];
+            }
+        }
     }
 }
 

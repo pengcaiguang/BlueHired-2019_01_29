@@ -155,6 +155,9 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //修改密码
 + (void)requestModifyPswWithParam:(id)paramer
                        withHandle:(response)responseHandle;
+//修改手机号
++ (void)requestUpdateUsertelWithParam:(id)paramer
+                           withHandle:(response)responseHandle;
 #pragma mark - 消息中心
 /************************************************************/
 //*  消息中心

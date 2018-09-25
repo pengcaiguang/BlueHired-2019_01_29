@@ -60,6 +60,8 @@
 		DC49D86C213A74B3009BFCB0 /* LPEssayDetailHeadCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC49D86A213A74B3009BFCB0 /* LPEssayDetailHeadCell.xib */; };
 		DC49D86F213A7751009BFCB0 /* LPEssayDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC49D86E213A7751009BFCB0 /* LPEssayDetailModel.m */; };
 		DC4AB9AE2159E52B002DFD5C /* LPInfoDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC4AB9AD2159E52B002DFD5C /* LPInfoDetailVC.m */; };
+		DC4AB9B1215A0327002DFD5C /* LPChangePhoneVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC4AB9B0215A0327002DFD5C /* LPChangePhoneVC.m */; };
+		DC4AB9B4215A1299002DFD5C /* LPChangePasswordVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC4AB9B3215A1299002DFD5C /* LPChangePasswordVC.m */; };
 		DC550341214C9E81000F4F2E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DC550340214C9E81000F4F2E /* GoogleService-Info.plist */; };
 		DC5C388021362EB300B3CF6E /* LPEssaylistModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC5C387F21362EB300B3CF6E /* LPEssaylistModel.m */; };
 		DC5C38842136372F00B3CF6E /* LPInformationSingleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC5C38822136372F00B3CF6E /* LPInformationSingleCell.m */; };
@@ -274,6 +276,10 @@
 		DC49D86E213A7751009BFCB0 /* LPEssayDetailModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPEssayDetailModel.m; sourceTree = "<group>"; };
 		DC4AB9AC2159E52B002DFD5C /* LPInfoDetailVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPInfoDetailVC.h; sourceTree = "<group>"; };
 		DC4AB9AD2159E52B002DFD5C /* LPInfoDetailVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPInfoDetailVC.m; sourceTree = "<group>"; };
+		DC4AB9AF215A0327002DFD5C /* LPChangePhoneVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPChangePhoneVC.h; sourceTree = "<group>"; };
+		DC4AB9B0215A0327002DFD5C /* LPChangePhoneVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPChangePhoneVC.m; sourceTree = "<group>"; };
+		DC4AB9B2215A1299002DFD5C /* LPChangePasswordVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPChangePasswordVC.h; sourceTree = "<group>"; };
+		DC4AB9B3215A1299002DFD5C /* LPChangePasswordVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPChangePasswordVC.m; sourceTree = "<group>"; };
 		DC550340214C9E81000F4F2E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DC5C387E21362EB300B3CF6E /* LPEssaylistModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPEssaylistModel.h; sourceTree = "<group>"; };
 		DC5C387F21362EB300B3CF6E /* LPEssaylistModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPEssaylistModel.m; sourceTree = "<group>"; };
@@ -920,6 +926,10 @@
 				DC7383702133EC320055DC10 /* LPMineVC.m */,
 				DC7A32E22138074900E09C6C /* LPSetVC.h */,
 				DC7A32E32138074900E09C6C /* LPSetVC.m */,
+				DC4AB9AF215A0327002DFD5C /* LPChangePhoneVC.h */,
+				DC4AB9B0215A0327002DFD5C /* LPChangePhoneVC.m */,
+				DC4AB9B2215A1299002DFD5C /* LPChangePasswordVC.h */,
+				DC4AB9B3215A1299002DFD5C /* LPChangePasswordVC.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1512,9 +1522,11 @@
 				DC30E19B21391DAD000C7A91 /* LPInformationSearchResultVC.m in Sources */,
 				DC2C59062154A01600741ED8 /* LPInfoListModel.m in Sources */,
 				DC229582214106D10002A095 /* LPIsApplyOrIsCollectionModel.m in Sources */,
+				DC4AB9B4215A1299002DFD5C /* LPChangePasswordVC.m in Sources */,
 				DCE3E1E1214A465A003ADFC6 /* LPSubsidyDeductionCell.m in Sources */,
 				DC7A32E7213812E200E09C6C /* LPSortAlertView.m in Sources */,
 				DC30E19E21392E23000C7A91 /* LPWorkDetailVC.m in Sources */,
+				DC4AB9B1215A0327002DFD5C /* LPChangePhoneVC.m in Sources */,
 				DC7A32D82137D7E200E09C6C /* LPRegisteredVC.m in Sources */,
 				DC13BB5A213E5B6A00800955 /* LPCityCell.m in Sources */,
 				DC73836D2133EC1B0055DC10 /* LPInformationVC.m in Sources */,
