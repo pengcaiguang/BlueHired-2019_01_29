@@ -26,6 +26,11 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
 @property (weak, nonatomic) IBOutlet UIView *passwordBgView;
 @property (weak, nonatomic) IBOutlet UIButton *bingButton;
 
+@property (weak, nonatomic) IBOutlet UIButton *deleteCardButton;
+@property (weak, nonatomic) IBOutlet UIButton *deletePhoneButton;
+
+
+
 @property(nonatomic,strong) LPSelectBindbankcardModel *model;
 
 @property(nonatomic,strong) NSString *name;
@@ -33,6 +38,9 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
 @property(nonatomic,strong) NSString *card;
 @property(nonatomic,strong) NSString *phone;
 @property(nonatomic,strong) NSString *password;
+
+@property(nonatomic,strong) NSString *passwordString;
+@property(nonatomic,assign) BOOL isHuanBang;
 
 @end
 
@@ -43,12 +51,16 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
     // Do any additional setup after loading the view from its nib.
     self.navigationItem.title = @"工资卡绑定";
     
+    self.isHuanBang = NO;
+    
     self.nameTextField.delegate = self;
     self.idcardTextField.delegate = self;
     self.cardTextField.delegate = self;
     self.phoneTextField.delegate = self;
     self.passwordTextField.delegate = self;
     
+    self.deleteCardButton.hidden = YES;
+    self.deletePhoneButton.hidden = YES;
     
     [self requestSelectBindbankcard];
 }
@@ -96,14 +108,36 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
         }
         [self requestBindunbindBankcard];
     }else{
-        GJAlertPassword *alert = [[GJAlertPassword alloc]initWithTitle:@"请输入提现密码，完成身份验证" message:nil buttonTitles:@[@"通过短信验证码方式完成身份验证"] buttonsColor:@[[UIColor baseColor]] buttonClick:^(NSInteger buttonIndex, NSString *string) {
-            NSLog(@"%ld",buttonIndex);
-            if (string.length != 6) {
-                LPSalarycCardBindPhoneVC *vc = [[LPSalarycCardBindPhoneVC alloc]init];
-                [self.navigationController pushViewController:vc animated:YES];
+        if (self.isHuanBang) {
+            if (self.nameTextField.text.length <= 0) {
+                [self.view showLoadingMeg:@"请输入持卡人姓名" time:MESSAGE_SHOW_TIME];
+                return;
             }
-        }];
-        [alert show];
+            if (self.idcardTextField.text.length <= 0 || ![NSString isIdentityCard:self.idcardTextField.text]) {
+                [self.view showLoadingMeg:@"请输入正确的身份证号" time:MESSAGE_SHOW_TIME];
+                return;
+            }
+            if (self.cardTextField.text.length <= 0 || ![NSString isBankCard:self.cardTextField.text]) {
+                [self.view showLoadingMeg:@"请输入正确的银行卡号" time:MESSAGE_SHOW_TIME];
+                return;
+            }
+            if (self.phoneTextField.text.length <= 0 || ![NSString isMobilePhoneNumber:self.phoneTextField.text]) {
+                [self.view showLoadingMeg:@"请输入正确的银行卡预留手机号" time:MESSAGE_SHOW_TIME];
+                return;
+            }
+            
+        }else{
+            GJAlertPassword *alert = [[GJAlertPassword alloc]initWithTitle:@"请输入提现密码，完成身份验证" message:nil buttonTitles:@[@"通过短信验证码方式完成身份验证"] buttonsColor:@[[UIColor baseColor]] buttonClick:^(NSInteger buttonIndex, NSString *string) {
+                NSLog(@"%ld",buttonIndex);
+                self.passwordString = string;
+                [self requestUpdateDrawpwd];
+                if (string.length != 6) {
+                    LPSalarycCardBindPhoneVC *vc = [[LPSalarycCardBindPhoneVC alloc]init];
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+            }];
+            [alert show];
+        }
     }
 }
 
@@ -168,9 +202,12 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
     return YES;
     
 }
-
-
-
+- (IBAction)touchDeleteCardButton:(id)sender {
+    self.cardTextField.text = @"";
+}
+- (IBAction)touchDeletePhoneButton:(UIButton *)sender {
+    self.phoneTextField.text = @"";
+}
 
 #pragma mark - request
 -(void)requestSelectBindbankcard{
@@ -192,7 +229,7 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
                           @"identityNo":identityNoString,
                           @"bankNumber":bankNumberString,
                           @"bankUserTel":self.phoneTextField.text,
-                          @"moneyPassword":self.passwordTextField.text,
+                          @"moneyPassword":self.model.data ? @"" : self.passwordTextField.text,
                           @"type":self.model.data ? @"2" : @"1", //1绑定 2变更
                           };
     [NetApiManager requestBindunbindBankcardWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
@@ -201,6 +238,30 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
             if (responseObject[@"data"]) {
                 if (responseObject[@"data"][@"res_msg"]) {
                     [self.view showLoadingMeg:responseObject[@"data"][@"res_msg"] time:MESSAGE_SHOW_TIME];
+                }
+            }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+-(void)requestUpdateDrawpwd{
+    
+    NSString *passwordmd5 = [self.passwordString md5];
+    NSString *newpasswordmd5 = [[NSString stringWithFormat:@"%@lanpin123.com",passwordmd5] md5];
+    
+    NSDictionary *dic = @{
+                          @"type":@(1),
+                          @"oldPwd":newpasswordmd5,
+                          };
+    [NetApiManager requestUpdateDrawpwdWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if (responseObject[@"code"]) {
+                if ([responseObject[@"code"] integerValue] == 0) {
+                    self.deleteCardButton.hidden = NO;
+                    self.deletePhoneButton.hidden = NO;
+                    self.isHuanBang = YES;
                 }
             }
         }else{

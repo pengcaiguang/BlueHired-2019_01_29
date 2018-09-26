@@ -193,6 +193,9 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //绑定/变更银行卡
 + (void)requestBindunbindBankcardWithParam:(id)paramer
                                 withHandle:(response)responseHandle;
+//提现密码验证
++ (void)requestUpdateDrawpwdWithParam:(id)paramer
+                           withHandle:(response)responseHandle;
 #pragma mark - 企业点评
 /************************************************************/
 //*  企业点评

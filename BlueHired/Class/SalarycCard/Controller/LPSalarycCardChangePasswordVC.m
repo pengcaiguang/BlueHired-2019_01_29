@@ -12,6 +12,11 @@
 @interface LPSalarycCardChangePasswordVC ()<UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *textField;
 @property(nonatomic,strong) NSMutableArray <UILabel *>*labelArray;
+@property (weak, nonatomic) IBOutlet UIButton *phoneCodeButton;
+@property (weak, nonatomic) IBOutlet UILabel *msgLabel;
+@property (weak, nonatomic) IBOutlet UIButton *completeButton;
+
+@property(nonatomic,assign) NSInteger times;
 
 @end
 
@@ -20,7 +25,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    
+    self.navigationItem.title = @"修改提现密码";
+    self.times = 0;
+    self.completeButton.hidden = YES;
     self.textField.layer.borderWidth = 0.5;
     self.textField.layer.borderColor = [UIColor colorWithHexString:@"#AAAAAA"].CGColor;
     self.textField.font = [UIFont systemFontOfSize:16];
@@ -70,7 +77,9 @@
         self.labelArray[i].text = @"●";
     }
     if (textField.text.length == 6) {
-        
+        if (self.times != 2) {
+            [self requestUpdateDrawpwd];
+        }
     }
 }
 #pragma mark - textfield
@@ -91,6 +100,51 @@
 - (IBAction)touchPhone:(UIButton *)sender {
     LPSalarycCardBindPhoneVC *vc = [[LPSalarycCardBindPhoneVC alloc]init];
     [self.navigationController pushViewController:vc animated:YES];
+}
+- (IBAction)touchCompleteButton:(id)sender {
+    [self requestUpdateDrawpwd];
+}
+
+#pragma mark - request
+-(void)requestUpdateDrawpwd{
+    
+    NSString *passwordmd5 = [self.textField.text md5];
+    NSString *newpasswordmd5 = [[NSString stringWithFormat:@"%@lanpin123.com",passwordmd5] md5];
+    
+    NSDictionary *dic = @{
+                          @"type":@(1),
+                          @"oldPwd":newpasswordmd5,
+                          };
+    [NetApiManager requestUpdateDrawpwdWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if (responseObject[@"code"]) {
+                if ([responseObject[@"code"] integerValue] == 0) {
+                    if (self.times == 2) {
+                        [self.view showLoadingMeg:@"修改成功" time:MESSAGE_SHOW_TIME];
+                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                            [self.navigationController popViewControllerAnimated:YES];
+                        });
+                    }else{
+                        self.times += 1;
+                        self.phoneCodeButton.hidden = YES;
+                        for (UILabel *label in self.labelArray) {
+                            label.text = @"";
+                        }
+                        self.textField.text = @"";
+                        if (self.times == 1) {
+                            self.msgLabel.text = @"请输入新的提现密码";
+                        }else{
+                            self.msgLabel.text = @"请再次输入新的提现密码";
+                            self.completeButton.hidden = NO;
+                        }
+                    }
+                }
+            }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
 }
 
 /*

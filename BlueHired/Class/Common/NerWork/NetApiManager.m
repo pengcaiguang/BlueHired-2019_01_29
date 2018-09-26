@@ -552,6 +552,16 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
+//提现密码验证
++ (void)requestUpdateDrawpwdWithParam:(id)paramer
+                           withHandle:(response)responseHandle{
+    NSString * appendURLString = @"userbank/update_drawpwd";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
 #pragma mark - 企业点评
 /************************************************************/
 //*  企业点评

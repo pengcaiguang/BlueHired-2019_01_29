@@ -14,6 +14,8 @@
             <connections>
                 <outlet property="bingButton" destination="GEA-qq-6RZ" id="3jj-LH-7Eh"/>
                 <outlet property="cardTextField" destination="kyp-pP-eZc" id="q2D-WU-WLl"/>
+                <outlet property="deleteCardButton" destination="ukP-kY-Npo" id="4YI-vT-xw1"/>
+                <outlet property="deletePhoneButton" destination="ae6-XO-fDk" id="F0Y-Ux-hJz"/>
                 <outlet property="idcardTextField" destination="HPp-tG-b20" id="UUJ-52-lR4"/>
                 <outlet property="nameTextField" destination="9Mk-yu-Wdt" id="BtM-2d-wSc"/>
                 <outlet property="passwordBgView" destination="bgC-3g-LtC" id="Cws-9D-jy6"/>
@@ -75,7 +77,7 @@
                     </constraints>
                 </imageView>
                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入银行卡号" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kyp-pP-eZc">
-                    <rect key="frame" x="48" y="132" width="304" height="17"/>
+                    <rect key="frame" x="48" y="132" width="274" height="17"/>
                     <nil key="textColor"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
@@ -95,7 +97,7 @@
                     </constraints>
                 </imageView>
                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入银行预留手机号" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="cQv-2R-p75">
-                    <rect key="frame" x="48" y="180" width="304" height="17"/>
+                    <rect key="frame" x="48" y="180" width="274" height="17"/>
                     <nil key="textColor"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
@@ -164,6 +166,30 @@
                         <constraint firstAttribute="trailing" secondItem="LlW-M5-mCC" secondAttribute="trailing" constant="23" id="wrG-cp-R95"/>
                     </constraints>
                 </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ukP-kY-Npo">
+                    <rect key="frame" x="342" y="130.5" width="20" height="20"/>
+                    <color key="backgroundColor" red="1" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="20" id="VqB-NQ-A6t"/>
+                        <constraint firstAttribute="width" constant="20" id="eYO-yd-7Z0"/>
+                    </constraints>
+                    <state key="normal" title="Button"/>
+                    <connections>
+                        <action selector="touchDeleteCardButton:" destination="-1" eventType="touchUpInside" id="R4E-JO-olx"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ae6-XO-fDk">
+                    <rect key="frame" x="342" y="178.5" width="20" height="20"/>
+                    <color key="backgroundColor" red="1" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="20" id="2gj-Ae-Lbk"/>
+                        <constraint firstAttribute="height" constant="20" id="Zft-O4-WZI"/>
+                    </constraints>
+                    <state key="normal" title="Button"/>
+                    <connections>
+                        <action selector="touchDeletePhoneButton:" destination="-1" eventType="touchUpInside" id="OcA-Qj-0ay"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
@@ -171,14 +197,15 @@
                 <constraint firstItem="kyp-pP-eZc" firstAttribute="centerY" secondItem="Mfx-OD-9ic" secondAttribute="centerY" id="2DS-OL-paQ"/>
                 <constraint firstItem="5lY-Jr-hUo" firstAttribute="trailing" secondItem="FOH-uG-c6q" secondAttribute="trailing" id="5PP-mF-THt"/>
                 <constraint firstItem="5lY-Jr-hUo" firstAttribute="leading" secondItem="Tgd-JH-jcp" secondAttribute="leading" id="7Il-ep-m8t"/>
-                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="kyp-pP-eZc" secondAttribute="trailing" constant="23" id="B9C-Ti-8Hg"/>
                 <constraint firstItem="5lY-Jr-hUo" firstAttribute="top" secondItem="Mfx-OD-9ic" secondAttribute="bottom" constant="15" id="BwM-8C-LLe"/>
                 <constraint firstItem="bgC-3g-LtC" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="Cfg-Se-KEj"/>
                 <constraint firstItem="bgC-3g-LtC" firstAttribute="top" secondItem="Tgd-JH-jcp" secondAttribute="bottom" id="ChY-Se-bSY"/>
                 <constraint firstItem="FOH-uG-c6q" firstAttribute="top" secondItem="dJO-Qf-luU" secondAttribute="bottom" constant="15" id="D7P-8d-45g"/>
                 <constraint firstItem="5LK-no-fr1" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="23" id="EEy-Ci-pLK"/>
+                <constraint firstItem="ae6-XO-fDk" firstAttribute="centerY" secondItem="cQv-2R-p75" secondAttribute="centerY" id="EcB-ih-uc9"/>
                 <constraint firstItem="HPp-tG-b20" firstAttribute="centerY" secondItem="m6Y-bv-tAj" secondAttribute="centerY" id="G2P-0j-Lna"/>
                 <constraint firstItem="HPp-tG-b20" firstAttribute="leading" secondItem="m6Y-bv-tAj" secondAttribute="trailing" constant="10" id="Gjw-Dm-7tp"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="ukP-kY-Npo" secondAttribute="trailing" constant="13" id="Gnj-V3-M3K"/>
                 <constraint firstItem="Mfx-OD-9ic" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="23" id="IPC-Yi-fGo"/>
                 <constraint firstItem="dJO-Qf-luU" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="16" id="NXy-sL-nLV"/>
                 <constraint firstItem="bgC-3g-LtC" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="ON0-86-iPT"/>
@@ -195,15 +222,18 @@
                 <constraint firstItem="5lY-Jr-hUo" firstAttribute="trailing" secondItem="Tgd-JH-jcp" secondAttribute="trailing" id="bwC-m4-6M7"/>
                 <constraint firstItem="5lY-Jr-hUo" firstAttribute="leading" secondItem="FOH-uG-c6q" secondAttribute="leading" id="eEt-LM-1ah"/>
                 <constraint firstItem="dJO-Qf-luU" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="23" id="hVb-Xa-OBV"/>
-                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="cQv-2R-p75" secondAttribute="trailing" constant="23" id="iKq-MT-42l"/>
                 <constraint firstItem="Mfx-OD-9ic" firstAttribute="top" secondItem="j3c-DD-XMW" secondAttribute="bottom" constant="15" id="ikE-DW-CS8"/>
                 <constraint firstItem="5lY-Jr-hUo" firstAttribute="leading" secondItem="j3c-DD-XMW" secondAttribute="leading" id="jmI-ro-m98"/>
                 <constraint firstItem="kyp-pP-eZc" firstAttribute="leading" secondItem="Mfx-OD-9ic" secondAttribute="trailing" constant="10" id="kEf-eH-swq"/>
                 <constraint firstItem="5lY-Jr-hUo" firstAttribute="trailing" secondItem="j3c-DD-XMW" secondAttribute="trailing" id="kcS-Ap-H5C"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="ae6-XO-fDk" secondAttribute="trailing" constant="13" id="o8f-tL-uyV"/>
                 <constraint firstItem="cQv-2R-p75" firstAttribute="leading" secondItem="5LK-no-fr1" secondAttribute="trailing" constant="10" id="osd-5H-d6l"/>
                 <constraint firstItem="9Mk-yu-Wdt" firstAttribute="centerY" secondItem="dJO-Qf-luU" secondAttribute="centerY" id="rBJ-75-eAl"/>
+                <constraint firstItem="ukP-kY-Npo" firstAttribute="leading" secondItem="kyp-pP-eZc" secondAttribute="trailing" constant="20" id="reD-8I-Oib"/>
                 <constraint firstItem="cQv-2R-p75" firstAttribute="centerY" secondItem="5LK-no-fr1" secondAttribute="centerY" id="sVB-6K-BxS"/>
                 <constraint firstItem="GEA-qq-6RZ" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="13" id="w0F-4p-Z5n"/>
+                <constraint firstItem="ukP-kY-Npo" firstAttribute="centerY" secondItem="kyp-pP-eZc" secondAttribute="centerY" id="wtz-3j-wc2"/>
+                <constraint firstItem="ae6-XO-fDk" firstAttribute="leading" secondItem="cQv-2R-p75" secondAttribute="trailing" constant="20" id="xYH-4t-AXO"/>
                 <constraint firstItem="GEA-qq-6RZ" firstAttribute="top" secondItem="bgC-3g-LtC" secondAttribute="bottom" constant="60" id="zjB-wt-pcV"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>

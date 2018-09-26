@@ -44,7 +44,7 @@
     if (indexPath.row == 0) {
         cell.textLabel.text = @"工资卡绑定";
     }else{
-        cell.textLabel.text = @"修改体现密码";
+        cell.textLabel.text = @"修改提现密码";
     }
     return cell;
 }
