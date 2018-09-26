@@ -164,6 +164,11 @@
 		DCE72728215B545100FAB22B /* LPSelectBindbankcardModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DCE72727215B545100FAB22B /* LPSelectBindbankcardModel.m */; };
 		DCE7272E215B619300FAB22B /* RSAEncryptor.m in Sources */ = {isa = PBXBuildFile; fileRef = DCE7272B215B619300FAB22B /* RSAEncryptor.m */; };
 		DCE7272F215B619300FAB22B /* NSString+Encode.m in Sources */ = {isa = PBXBuildFile; fileRef = DCE7272D215B619300FAB22B /* NSString+Encode.m */; };
+		DCE72732215B689400FAB22B /* GJAlertPassword.m in Sources */ = {isa = PBXBuildFile; fileRef = DCE72731215B689400FAB22B /* GJAlertPassword.m */; };
+		DCE72736215B751700FAB22B /* LPSalarycCardBindPhoneVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCE72734215B751700FAB22B /* LPSalarycCardBindPhoneVC.m */; };
+		DCE72737215B751700FAB22B /* LPSalarycCardBindPhoneVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = DCE72735215B751700FAB22B /* LPSalarycCardBindPhoneVC.xib */; };
+		DCE7273B215B7F5600FAB22B /* LPSalarycCardChangePasswordVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCE72739215B7F5600FAB22B /* LPSalarycCardChangePasswordVC.m */; };
+		DCE7273C215B7F5600FAB22B /* LPSalarycCardChangePasswordVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = DCE7273A215B7F5600FAB22B /* LPSalarycCardChangePasswordVC.xib */; };
 		DCF5D9BC213F892D009F5DCE /* LPBusinessReviewVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF5D9BB213F892D009F5DCE /* LPBusinessReviewVC.m */; };
 		DCF5D9C0213FA395009F5DCE /* LPMechanismcommentMechanismlistModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF5D9BF213FA395009F5DCE /* LPMechanismcommentMechanismlistModel.m */; };
 		DCF5D9C5213FA5BD009F5DCE /* LPBusinessReviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCF5D9C3213FA5BD009F5DCE /* LPBusinessReviewCell.m */; };
@@ -482,6 +487,14 @@
 		DCE7272B215B619300FAB22B /* RSAEncryptor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSAEncryptor.m; sourceTree = "<group>"; };
 		DCE7272C215B619300FAB22B /* RSAEncryptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSAEncryptor.h; sourceTree = "<group>"; };
 		DCE7272D215B619300FAB22B /* NSString+Encode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Encode.m"; sourceTree = "<group>"; };
+		DCE72730215B689400FAB22B /* GJAlertPassword.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GJAlertPassword.h; sourceTree = "<group>"; };
+		DCE72731215B689400FAB22B /* GJAlertPassword.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GJAlertPassword.m; sourceTree = "<group>"; };
+		DCE72733215B751700FAB22B /* LPSalarycCardBindPhoneVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPSalarycCardBindPhoneVC.h; sourceTree = "<group>"; };
+		DCE72734215B751700FAB22B /* LPSalarycCardBindPhoneVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPSalarycCardBindPhoneVC.m; sourceTree = "<group>"; };
+		DCE72735215B751700FAB22B /* LPSalarycCardBindPhoneVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPSalarycCardBindPhoneVC.xib; sourceTree = "<group>"; };
+		DCE72738215B7F5600FAB22B /* LPSalarycCardChangePasswordVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPSalarycCardChangePasswordVC.h; sourceTree = "<group>"; };
+		DCE72739215B7F5600FAB22B /* LPSalarycCardChangePasswordVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPSalarycCardChangePasswordVC.m; sourceTree = "<group>"; };
+		DCE7273A215B7F5600FAB22B /* LPSalarycCardChangePasswordVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPSalarycCardChangePasswordVC.xib; sourceTree = "<group>"; };
 		DCF5D9BA213F892D009F5DCE /* LPBusinessReviewVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPBusinessReviewVC.h; sourceTree = "<group>"; };
 		DCF5D9BB213F892D009F5DCE /* LPBusinessReviewVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPBusinessReviewVC.m; sourceTree = "<group>"; };
 		DCF5D9BE213FA395009F5DCE /* LPMechanismcommentMechanismlistModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPMechanismcommentMechanismlistModel.h; sourceTree = "<group>"; };
@@ -706,6 +719,12 @@
 				DCE72720215B249D00FAB22B /* LPSalarycCardBindVC.h */,
 				DCE72721215B249D00FAB22B /* LPSalarycCardBindVC.m */,
 				DCE72722215B249D00FAB22B /* LPSalarycCardBindVC.xib */,
+				DCE72733215B751700FAB22B /* LPSalarycCardBindPhoneVC.h */,
+				DCE72734215B751700FAB22B /* LPSalarycCardBindPhoneVC.m */,
+				DCE72735215B751700FAB22B /* LPSalarycCardBindPhoneVC.xib */,
+				DCE72738215B7F5600FAB22B /* LPSalarycCardChangePasswordVC.h */,
+				DCE72739215B7F5600FAB22B /* LPSalarycCardChangePasswordVC.m */,
+				DCE7273A215B7F5600FAB22B /* LPSalarycCardChangePasswordVC.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1091,6 +1110,8 @@
 				DC290F39213D31D300EC3FCC /* GJAlert2.m */,
 				DC2295832141143F0002A095 /* GJAlertText.h */,
 				DC2295842141143F0002A095 /* GJAlertText.m */,
+				DCE72730215B689400FAB22B /* GJAlertPassword.h */,
+				DCE72731215B689400FAB22B /* GJAlertPassword.m */,
 				DC2295862141230A0002A095 /* GJAlertMessage.h */,
 				DC2295872141230A0002A095 /* GJAlertMessage.m */,
 			);
@@ -1466,6 +1487,7 @@
 				DCE3E1E7214BA172003ADFC6 /* LPSalaryStatisticsCell.xib in Resources */,
 				DC229590214152370002A095 /* LPWorkorderListCell.xib in Resources */,
 				DC4AB9CD215A324F002DFD5C /* LPDimissionVC.xib in Resources */,
+				DCE7273C215B7F5600FAB22B /* LPSalarycCardChangePasswordVC.xib in Resources */,
 				DC44DBA921354E8500D00FAC /* LPInformationCollectionViewCell.xib in Resources */,
 				DCE3E1E2214A465A003ADFC6 /* LPSubsidyDeductionCell.xib in Resources */,
 				DC30E1A621393BB0000C7A91 /* LPWorkDetailHeadCell.xib in Resources */,
@@ -1484,6 +1506,7 @@
 				DCE3E1DA214A16FB003ADFC6 /* LPAddRecordCell.xib in Resources */,
 				DC5C38852136372F00B3CF6E /* LPInformationSingleCell.xib in Resources */,
 				DC4AB9BC215A2131002DFD5C /* LPLendVC.xib in Resources */,
+				DCE72737215B751700FAB22B /* LPSalarycCardBindPhoneVC.xib in Resources */,
 				DC2C590221548EF000741ED8 /* LPInforCollectionViewCell.xib in Resources */,
 				DCB25E9A2150C79700ED2FC4 /* LPSalaryHourlyStatisticsCell.xib in Resources */,
 				DC5C388F213645E000B3CF6E /* LPInformationMoreImageCollectionViewCell.xib in Resources */,
@@ -1647,6 +1670,7 @@
 				DCB25E952150ADCB00ED2FC4 /* LPSelectWorkhourHourlyModel.m in Sources */,
 				DC5C38A421369B9B00B3CF6E /* NSString+String.m in Sources */,
 				DC2C590A2154A14700741ED8 /* LPInfoCell.m in Sources */,
+				DCE72736215B751700FAB22B /* LPSalarycCardBindPhoneVC.m in Sources */,
 				DCB25E9D2150D91200ED2FC4 /* LPMoodDetailVC.m in Sources */,
 				DC49D86F213A7751009BFCB0 /* LPEssayDetailModel.m in Sources */,
 				DCCC8A842147AED60062A0F5 /* WSShowInfoView.m in Sources */,
@@ -1662,6 +1686,7 @@
 				DC4AB9BB215A2131002DFD5C /* LPLendVC.m in Sources */,
 				DC7A32E7213812E200E09C6C /* LPSortAlertView.m in Sources */,
 				DC30E19E21392E23000C7A91 /* LPWorkDetailVC.m in Sources */,
+				DCE72732215B689400FAB22B /* GJAlertPassword.m in Sources */,
 				DC4AB9B1215A0327002DFD5C /* LPChangePhoneVC.m in Sources */,
 				DC7A32D82137D7E200E09C6C /* LPRegisteredVC.m in Sources */,
 				DC13BB5A213E5B6A00800955 /* LPCityCell.m in Sources */,
@@ -1681,6 +1706,7 @@
 				DC49D86B213A74B3009BFCB0 /* LPEssayDetailHeadCell.m in Sources */,
 				DC4AB9C5215A283F002DFD5C /* LPSalarycCardVC.m in Sources */,
 				DCF5D9CF213FB7D9009F5DCE /* LPBusinessReviewDetailVC.m in Sources */,
+				DCE7273B215B7F5600FAB22B /* LPSalarycCardChangePasswordVC.m in Sources */,
 				DC7383282133E33E0055DC10 /* ViewController.m in Sources */,
 				DCCC8A802147AED60062A0F5 /* WSChart.m in Sources */,
 				DCCC8A822147AED60062A0F5 /* WSPieForeBGView.m in Sources */,

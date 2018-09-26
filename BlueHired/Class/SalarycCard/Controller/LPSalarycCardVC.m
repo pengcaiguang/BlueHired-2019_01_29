@@ -8,6 +8,7 @@
 
 #import "LPSalarycCardVC.h"
 #import "LPSalarycCardBindVC.h"
+#import "LPSalarycCardChangePasswordVC.h"
 
 @interface LPSalarycCardVC ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong)UITableView *tableview;
@@ -51,6 +52,9 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.row == 0) {
         LPSalarycCardBindVC *vc = [[LPSalarycCardBindVC alloc]init];
+        [self.navigationController pushViewController:vc animated:YES];
+    }else{
+        LPSalarycCardChangePasswordVC *vc = [[LPSalarycCardChangePasswordVC alloc]init];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

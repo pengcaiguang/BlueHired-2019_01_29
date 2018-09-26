@@ -34,5 +34,6 @@
 #import "GJAlert2.h"
 #import "GJAlertText.h"
 #import "GJAlertMessage.h"
+#import "GJAlertPassword.h"
 
 #endif /* Heads_h */
