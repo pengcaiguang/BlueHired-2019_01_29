@@ -187,6 +187,9 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //邀请奖励
 + (void)requestGetRegisterWithParam:(id)paramer
                          withHandle:(response)responseHandle;
+//查询绑定银行卡
++ (void)requestSelectBindbankcardWithParam:(id)paramer
+                                withHandle:(response)responseHandle;
 #pragma mark - 企业点评
 /************************************************************/
 //*  企业点评

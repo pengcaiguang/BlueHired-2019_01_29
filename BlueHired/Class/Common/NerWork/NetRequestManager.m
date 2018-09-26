@@ -25,8 +25,8 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
 //        requestEnty.responseHandle(NO,nil);
 //        return;
 //    }
-    if ([self getWithURL:requestEnty.requestUrl]) {
-        requestEnty.responseHandle(YES, [self getWithURL:requestEnty.requestUrl]);
+    if ([self getWithURL:requestEnty]) {
+        requestEnty.responseHandle(YES, [self getWithURL:requestEnty]);
     }
     if (requestEnty.requestType == 0) { //请求方式 0:get
         NSLog(@"\n\nGET requestEnty.params == %@",requestEnty.params);
@@ -60,15 +60,15 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
                 }
                 
                 requestEnty.responseHandle(YES,responseObject);
-                [self saveWithURL:requestEnty.requestUrl response:responseObject];
+                [self saveWithURL:requestEnty response:responseObject];
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 NSString * errorStr = [self returnStringWithError:error];
                 //打开可统一提示错误信息(考虑有的场景可能不需要,由自己去选择是否显示错误信息),
                 //错误信息已经过处理为NSString,可直接用于展示
                 //            [kKeyWindow showLoadingMeg:errorStr time:MESSAGESHOWTIME];
                 requestEnty.responseHandle(NO,errorStr);
-                if ([self getWithURL:requestEnty.requestUrl]) {
-                    requestEnty.responseHandle(YES, [self getWithURL:requestEnty.requestUrl]);
+                if ([self getWithURL:requestEnty]) {
+                    requestEnty.responseHandle(YES, [self getWithURL:requestEnty]);
                 }
             }];
     }else if (requestEnty.requestType == 1){//请求方式 1:post
@@ -99,7 +99,7 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
                  
                  [self commonCheckErrorCode:responseObject];
                  requestEnty.responseHandle(YES,responseObject);
-                 [self saveWithURL:requestEnty.requestUrl response:responseObject];
+                 [self saveWithURL:requestEnty response:responseObject];
 
              } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                  
@@ -108,8 +108,8 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
                  //错误信息已经过处理为NSString,可直接用于展示
                  //            [kKeyWindow showLoadingMeg:errorStr time:MESSAGESHOWTIME];
                  requestEnty.responseHandle(NO,errorStr);
-                 if ([self getWithURL:requestEnty.requestUrl]) {
-                     requestEnty.responseHandle(YES, [self getWithURL:requestEnty.requestUrl]);
+                 if ([self getWithURL:requestEnty]) {
+                     requestEnty.responseHandle(YES, [self getWithURL:requestEnty]);
                  }
              }];
     }else if (requestEnty.requestType == 2){// 2:上传单张图片
@@ -372,12 +372,29 @@ constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
     }
 }
 
-+(void)saveWithURL:(NSString *)string response:(id)res{
-    NSArray *arr = [string componentsSeparatedByString:@"/"];
-    [LPUserDefaults saveObject:res byFileName:arr[arr.count-1]];
++(void)saveWithURL:(NetRequestEnty *)requestEnty response:(id)res{
+    if (requestEnty.params) {
+        if ([requestEnty.params objectForKey:@"page"]) {
+            NSArray *arr = [requestEnty.requestUrl componentsSeparatedByString:@"/"];
+            [LPUserDefaults saveObject:res byFileName:[NSString stringWithFormat:@"%@%@",arr[arr.count-1],[requestEnty.params objectForKey:@"page"]]];
+        }
+    }else{
+        NSArray *arr = [requestEnty.requestUrl componentsSeparatedByString:@"/"];
+        [LPUserDefaults saveObject:res byFileName:arr[arr.count-1]];
+    }
 }
-+(id)getWithURL:(NSString *)string{
-    NSArray *arr = [string componentsSeparatedByString:@"/"];
-    return [LPUserDefaults getObjectByFileName:arr[arr.count-1]];
++(id)getWithURL:(NetRequestEnty *)requestEnty{
+    if (requestEnty.params) {
+        if ([requestEnty.params objectForKey:@"page"]) {
+            NSArray *arr = [requestEnty.requestUrl componentsSeparatedByString:@"/"];
+            return [LPUserDefaults getObjectByFileName:[NSString stringWithFormat:@"%@%@",arr[arr.count-1],[requestEnty.params objectForKey:@"page"]]];
+        }else{
+            NSArray *arr = [requestEnty.requestUrl componentsSeparatedByString:@"/"];
+            return [LPUserDefaults getObjectByFileName:arr[arr.count-1]];
+        }
+    }else{
+        NSArray *arr = [requestEnty.requestUrl componentsSeparatedByString:@"/"];
+        return [LPUserDefaults getObjectByFileName:arr[arr.count-1]];
+    }
 }
 @end

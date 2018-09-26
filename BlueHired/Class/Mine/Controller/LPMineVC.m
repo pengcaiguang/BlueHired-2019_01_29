@@ -87,7 +87,8 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
 }
 -(void)setSignin:(BOOL)signin{
     _signin = signin;
-    [self.tableview reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [self.tableview reloadData];
+//    [self.tableview reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 #pragma mark - TableViewDelegate & Datasource

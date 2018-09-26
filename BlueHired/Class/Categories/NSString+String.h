@@ -16,6 +16,10 @@
 
 //验证手机号
 + (BOOL)isMobilePhoneNumber:(NSString *)mobileNum;
+//身份证
++ (BOOL)isIdentityCard:(NSString *)IDCardNumber;
+//银行卡
++ (BOOL)isBankCard:(NSString *)cardNumber;
 
 - (NSString *)md5;
 
