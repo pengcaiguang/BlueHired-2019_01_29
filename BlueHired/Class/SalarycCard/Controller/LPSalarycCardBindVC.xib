@@ -12,9 +12,11 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LPSalarycCardBindVC">
             <connections>
+                <outlet property="bingButton" destination="GEA-qq-6RZ" id="3jj-LH-7Eh"/>
                 <outlet property="cardTextField" destination="kyp-pP-eZc" id="q2D-WU-WLl"/>
                 <outlet property="idcardTextField" destination="HPp-tG-b20" id="UUJ-52-lR4"/>
                 <outlet property="nameTextField" destination="9Mk-yu-Wdt" id="BtM-2d-wSc"/>
+                <outlet property="passwordBgView" destination="bgC-3g-LtC" id="Cws-9D-jy6"/>
                 <outlet property="passwordTextField" destination="LlW-M5-mCC" id="8z4-rs-Omg"/>
                 <outlet property="phoneTextField" destination="cQv-2R-p75" id="4SL-NS-k1C"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>

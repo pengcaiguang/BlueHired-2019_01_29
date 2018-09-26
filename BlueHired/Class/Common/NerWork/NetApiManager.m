@@ -542,6 +542,16 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
+//绑定/变更银行卡
++ (void)requestBindunbindBankcardWithParam:(id)paramer
+                                withHandle:(response)responseHandle{
+    NSString * appendURLString = @"userbank/bindunbind_bankcard";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
 #pragma mark - 企业点评
 /************************************************************/
 //*  企业点评

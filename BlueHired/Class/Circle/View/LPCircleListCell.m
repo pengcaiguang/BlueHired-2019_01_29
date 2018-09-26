@@ -46,6 +46,8 @@
         for (int i = 0; i < imageArray.count; i++) {
             UIImageView *imageView = [[UIImageView alloc]init];
             imageView.frame = CGRectMake((imgw + 5)* (i%3), floor(i/3)*(imgw + 5), imgw, imgw);
+            imageView.contentMode = UIViewContentModeScaleAspectFill;
+            imageView.clipsToBounds = YES;
             [imageView sd_setImageWithURL:[NSURL URLWithString:imageArray[i]]];
             [self.imageBgView addSubview:imageView];
             

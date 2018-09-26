@@ -25,9 +25,9 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
 //        requestEnty.responseHandle(NO,nil);
 //        return;
 //    }
-    if ([self getWithURL:requestEnty]) {
-        requestEnty.responseHandle(YES, [self getWithURL:requestEnty]);
-    }
+//    if ([self getWithURL:requestEnty]) {
+//        requestEnty.responseHandle(YES, [self getWithURL:requestEnty]);
+//    }
     if (requestEnty.requestType == 0) { //请求方式 0:get
         NSLog(@"\n\nGET requestEnty.params == %@",requestEnty.params);
         AFHTTPSessionManager *manager = [self initHttpManager];

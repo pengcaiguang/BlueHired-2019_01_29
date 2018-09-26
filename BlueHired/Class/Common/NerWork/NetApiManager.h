@@ -190,6 +190,9 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //查询绑定银行卡
 + (void)requestSelectBindbankcardWithParam:(id)paramer
                                 withHandle:(response)responseHandle;
+//绑定/变更银行卡
++ (void)requestBindunbindBankcardWithParam:(id)paramer
+                                withHandle:(response)responseHandle;
 #pragma mark - 企业点评
 /************************************************************/
 //*  企业点评

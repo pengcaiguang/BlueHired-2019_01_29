@@ -7,6 +7,14 @@
 //
 
 #import "LPSalarycCardBindVC.h"
+#import "LPSelectBindbankcardModel.h"
+#import "RSAEncryptor.h"
+#import "NSString+Encode.h"
+
+
+static  NSString *RSAPublickKey = @"MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDvh1MAVToAiuEVOFq9mo3IOJxN5aekgto1kyOh07qQ+1Wc+Uxk1wX2t6+HCA31ojcgaR/dZz/kQ5aZvzlB8odYHJXRtIcOAVQe/FKx828XFTzC8gp1zGh7vTzBCW3Ieuq+WRiq9cSzEZlNw9RcU38st9q9iBT8PhK0AkXE2hLbKQIDAQAB";
+static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBAO+HUwBVOgCK4RU4Wr2ajcg4nE3lp6SC2jWTI6HTupD7VZz5TGTXBfa3r4cIDfWiNyBpH91nP+RDlpm/OUHyh1gcldG0hw4BVB78UrHzbxcVPMLyCnXMaHu9PMEJbch66r5ZGKr1xLMRmU3D1FxTfyy32r2IFPw+ErQCRcTaEtspAgMBAAECgYBSczN39t5LV4LZChf6Ehxh4lKzYa0OLNit/mMSjk43H7y9lvbb80QjQ+FQys37UoZFSspkLOlKSpWpgLBV6gT5/f5TXnmmIiouXXvgx4YEzlXgm52RvocSCvxL81WCAp4qTrp+whPfIjQ4RhfAT6N3t8ptP9rLgr0CNNHJ5EfGgQJBAP2Qkq7RjTxSssjTLaQCjj7FqEYq1f5l+huq6HYGepKU+BqYYLksycrSngp0y/9ufz0koKPgv1/phX73BmFWyhECQQDx1D3Gui7ODsX02rH4WlcEE5gSoLq7g74U1swbx2JVI0ybHVRozFNJ8C5DKSJT3QddNHMtt02iVu0a2V/uM6eZAkEAhvmce16k9gV3khuH4hRSL+v7hU5sFz2lg3DYyWrteHXAFDgk1K2YxVSUODCwHsptBNkogdOzS5T9MPbB+LLAYQJBAKOAknwIaZjcGC9ipa16txaEgO8nSNl7S0sfp0So2+0gPq0peWaZrz5wa3bxGsqEyHPWAIHKS20VRJ5AlkGhHxECQQDr18OZQkk0LDBZugahV6ejb+JIZdqA2cEQPZFzhA3csXgqkwOdNmdp4sPR1RBuvlVjjOE7tCiFLup/8TvRJDdr";
+
 
 @interface LPSalarycCardBindVC ()<UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *nameTextField;
@@ -14,7 +22,10 @@
 @property (weak, nonatomic) IBOutlet UITextField *cardTextField;
 @property (weak, nonatomic) IBOutlet UITextField *phoneTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
+@property (weak, nonatomic) IBOutlet UIView *passwordBgView;
+@property (weak, nonatomic) IBOutlet UIButton *bingButton;
 
+@property(nonatomic,strong) LPSelectBindbankcardModel *model;
 
 @property(nonatomic,strong) NSString *name;
 @property(nonatomic,strong) NSString *idcard;
@@ -40,26 +51,54 @@
     
     [self requestSelectBindbankcard];
 }
+-(void)setModel:(LPSelectBindbankcardModel *)model{
+    _model = model;
+    if (model.data) {
+        self.passwordBgView.hidden = YES;
+        self.nameTextField.text = model.data.userName;
+        NSString *identityNoString = [RSAEncryptor decryptString:model.data.identityNo privateKey:RSAPrivateKey];
+        self.idcardTextField.text = identityNoString;
+        NSString *bankNumberString = [RSAEncryptor decryptString:model.data.bankNumber privateKey:RSAPrivateKey];
+        self.cardTextField.text = bankNumberString;
+        self.phoneTextField.text = model.data.bankUserTel;
+        
+        self.nameTextField.enabled = NO;
+        self.idcardTextField.enabled = NO;
+        self.cardTextField.enabled = NO;
+        self.phoneTextField.enabled = NO;
+
+        [self.bingButton setTitle:@"换绑" forState:UIControlStateNormal];
+    }
+    
+}
 - (IBAction)touchButton:(UIButton *)sender {
-    if (self.nameTextField.text.length <= 0) {
-        [self.view showLoadingMeg:@"请输入持卡人姓名" time:MESSAGE_SHOW_TIME];
-        return;
-    }
-    if (self.idcardTextField.text.length <= 0 || ![NSString isIdentityCard:self.idcardTextField.text]) {
-        [self.view showLoadingMeg:@"请输入正确的身份证号" time:MESSAGE_SHOW_TIME];
-        return;
-    }
-    if (self.cardTextField.text.length <= 0 || ![NSString isBankCard:self.cardTextField.text]) {
-        [self.view showLoadingMeg:@"请输入正确的银行卡号" time:MESSAGE_SHOW_TIME];
-        return;
-    }
-    if (self.phoneTextField.text.length <= 0 || ![NSString isMobilePhoneNumber:self.phoneTextField.text]) {
-        [self.view showLoadingMeg:@"请输入正确的银行卡预留手机号" time:MESSAGE_SHOW_TIME];
-        return;
-    }
-    if (self.passwordTextField.text.length <= 0) {
-        [self.view showLoadingMeg:@"请输入6位体现密码" time:MESSAGE_SHOW_TIME];
-        return;
+    if (!self.model.data) {
+        if (self.nameTextField.text.length <= 0) {
+            [self.view showLoadingMeg:@"请输入持卡人姓名" time:MESSAGE_SHOW_TIME];
+            return;
+        }
+        if (self.idcardTextField.text.length <= 0 || ![NSString isIdentityCard:self.idcardTextField.text]) {
+            [self.view showLoadingMeg:@"请输入正确的身份证号" time:MESSAGE_SHOW_TIME];
+            return;
+        }
+        if (self.cardTextField.text.length <= 0 || ![NSString isBankCard:self.cardTextField.text]) {
+            [self.view showLoadingMeg:@"请输入正确的银行卡号" time:MESSAGE_SHOW_TIME];
+            return;
+        }
+        if (self.phoneTextField.text.length <= 0 || ![NSString isMobilePhoneNumber:self.phoneTextField.text]) {
+            [self.view showLoadingMeg:@"请输入正确的银行卡预留手机号" time:MESSAGE_SHOW_TIME];
+            return;
+        }
+        if (self.passwordTextField.text.length <= 0) {
+            [self.view showLoadingMeg:@"请输入6位提现密码" time:MESSAGE_SHOW_TIME];
+            return;
+        }
+        [self requestBindunbindBankcard];
+    }else{
+        GJAlertText *alert = [[GJAlertText alloc]initWithTitle:@"请输入提现密码，完成身份验证" message:nil buttonTitles:@[@"通过短信验证码方式完成身份验证"] buttonsColor:@[[UIColor baseColor]] buttonClick:^(NSInteger buttonIndex, NSString *string) {
+            NSLog(@"%ld",buttonIndex);
+        }];
+        [alert show];
     }
 }
 
@@ -133,7 +172,32 @@
     [NetApiManager requestSelectBindbankcardWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            
+            self.model = [LPSelectBindbankcardModel mj_objectWithKeyValues:responseObject];
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+-(void)requestBindunbindBankcard{
+    NSString *identityNoString = [RSAEncryptor encryptString:self.idcardTextField.text publicKey:RSAPublickKey];
+    NSString *bankNumberString = [RSAEncryptor encryptString:self.cardTextField.text publicKey:RSAPublickKey];;
+    
+    NSDictionary *dic = @{
+                          @"userName":self.nameTextField.text,
+                          @"identityNo":identityNoString,
+                          @"bankNumber":bankNumberString,
+                          @"bankUserTel":self.phoneTextField.text,
+                          @"moneyPassword":self.passwordTextField.text,
+                          @"type":self.model.data ? @"2" : @"1", //1绑定 2变更
+                          };
+    [NetApiManager requestBindunbindBankcardWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if (responseObject[@"data"]) {
+                if (responseObject[@"data"][@"res_msg"]) {
+                    [self.view showLoadingMeg:responseObject[@"data"][@"res_msg"] time:MESSAGE_SHOW_TIME];
+                }
+            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
