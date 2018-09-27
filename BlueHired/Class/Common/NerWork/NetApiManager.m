@@ -552,6 +552,26 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
+//离职通知
++ (void)requestGetNoticeWithParam:(id)paramer
+                       withHandle:(response)responseHandle{
+    NSString * appendURLString = @"dimission/get_notice";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
+//申请离职,发送离职通知
++ (void)requestAddDimissionWithParam:(id)paramer
+                          withHandle:(response)responseHandle{
+    NSString * appendURLString = @"dimission/add_dimission";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
 //邀请奖励
 + (void)requestGetRegisterWithParam:(id)paramer
                          withHandle:(response)responseHandle{

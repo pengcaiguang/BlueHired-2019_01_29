@@ -193,6 +193,13 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //借支
 + (void)requestAddLendmoneyWithParam:(id)paramer
                           withHandle:(response)responseHandle;
+//离职通知
++ (void)requestGetNoticeWithParam:(id)paramer
+                       withHandle:(response)responseHandle;
+//申请离职,发送离职通知
++ (void)requestAddDimissionWithParam:(id)paramer
+                          withHandle:(response)responseHandle;
+
 //邀请奖励
 + (void)requestGetRegisterWithParam:(id)paramer
                          withHandle:(response)responseHandle;
