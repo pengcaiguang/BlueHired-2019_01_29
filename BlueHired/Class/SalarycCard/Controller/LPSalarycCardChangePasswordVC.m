@@ -155,7 +155,7 @@ static NSString *ERRORTIMES = @"ERRORTIMES";
                     
                     if (kUserDefaultsValue(ERRORTIMES)) {
                         NSString *errorString = kUserDefaultsValue(ERRORTIMES);
-                        NSString *d = [errorString substringToIndex:16];
+//                        NSString *d = [errorString substringToIndex:16];
                         NSString *t = [errorString substringFromIndex:17];
                         self.errorTimes = [t integerValue];
                         if ([t integerValue] >= 3) {

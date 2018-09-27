@@ -134,6 +134,10 @@
 		DCB25EA02150DDBF00ED2FC4 /* LPGetMoodModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB25E9F2150DDBF00ED2FC4 /* LPGetMoodModel.m */; };
 		DCB25EA42150F4A200ED2FC4 /* LPMoodDetailHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB25EA22150F4A200ED2FC4 /* LPMoodDetailHeaderCell.m */; };
 		DCB25EA52150F4A200ED2FC4 /* LPMoodDetailHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DCB25EA32150F4A200ED2FC4 /* LPMoodDetailHeaderCell.xib */; };
+		DCB57F75215C88CA0043AA43 /* LPBusinessReviewDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB57F73215C88C90043AA43 /* LPBusinessReviewDetailCell.m */; };
+		DCB57F76215C88CA0043AA43 /* LPBusinessReviewDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DCB57F74215C88C90043AA43 /* LPBusinessReviewDetailCell.xib */; };
+		DCB57F7A215CA5EB0043AA43 /* LPBusinessReviewDetailSalaryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB57F78215CA5EB0043AA43 /* LPBusinessReviewDetailSalaryCell.m */; };
+		DCB57F7B215CA5EB0043AA43 /* LPBusinessReviewDetailSalaryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DCB57F79215CA5EB0043AA43 /* LPBusinessReviewDetailSalaryCell.xib */; };
 		DCCC8A60214754D30062A0F5 /* LPDateSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = DCCC8A5F214754D30062A0F5 /* LPDateSelectView.m */; };
 		DCCC8A6321476C830062A0F5 /* LPHourlyWorkVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCCC8A6221476C830062A0F5 /* LPHourlyWorkVC.m */; };
 		DCCC8A6C2147941F0062A0F5 /* LPFullTimeDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCCC8A6B2147941F0062A0F5 /* LPFullTimeDetailVC.m */; };
@@ -431,6 +435,12 @@
 		DCB25EA12150F4A200ED2FC4 /* LPMoodDetailHeaderCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPMoodDetailHeaderCell.h; sourceTree = "<group>"; };
 		DCB25EA22150F4A200ED2FC4 /* LPMoodDetailHeaderCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPMoodDetailHeaderCell.m; sourceTree = "<group>"; };
 		DCB25EA32150F4A200ED2FC4 /* LPMoodDetailHeaderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPMoodDetailHeaderCell.xib; sourceTree = "<group>"; };
+		DCB57F72215C88C90043AA43 /* LPBusinessReviewDetailCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPBusinessReviewDetailCell.h; sourceTree = "<group>"; };
+		DCB57F73215C88C90043AA43 /* LPBusinessReviewDetailCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPBusinessReviewDetailCell.m; sourceTree = "<group>"; };
+		DCB57F74215C88C90043AA43 /* LPBusinessReviewDetailCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPBusinessReviewDetailCell.xib; sourceTree = "<group>"; };
+		DCB57F77215CA5EB0043AA43 /* LPBusinessReviewDetailSalaryCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPBusinessReviewDetailSalaryCell.h; sourceTree = "<group>"; };
+		DCB57F78215CA5EB0043AA43 /* LPBusinessReviewDetailSalaryCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPBusinessReviewDetailSalaryCell.m; sourceTree = "<group>"; };
+		DCB57F79215CA5EB0043AA43 /* LPBusinessReviewDetailSalaryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPBusinessReviewDetailSalaryCell.xib; sourceTree = "<group>"; };
 		DCB5A5321875E124A6C52C8B /* libPods-BlueHired.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BlueHired.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCCC8A5E214754D30062A0F5 /* LPDateSelectView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPDateSelectView.h; sourceTree = "<group>"; };
 		DCCC8A5F214754D30062A0F5 /* LPDateSelectView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPDateSelectView.m; sourceTree = "<group>"; };
@@ -1362,6 +1372,12 @@
 				DCF5D9C2213FA5BD009F5DCE /* LPBusinessReviewCell.h */,
 				DCF5D9C3213FA5BD009F5DCE /* LPBusinessReviewCell.m */,
 				DCF5D9C4213FA5BD009F5DCE /* LPBusinessReviewCell.xib */,
+				DCB57F72215C88C90043AA43 /* LPBusinessReviewDetailCell.h */,
+				DCB57F73215C88C90043AA43 /* LPBusinessReviewDetailCell.m */,
+				DCB57F74215C88C90043AA43 /* LPBusinessReviewDetailCell.xib */,
+				DCB57F77215CA5EB0043AA43 /* LPBusinessReviewDetailSalaryCell.h */,
+				DCB57F78215CA5EB0043AA43 /* LPBusinessReviewDetailSalaryCell.m */,
+				DCB57F79215CA5EB0043AA43 /* LPBusinessReviewDetailSalaryCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1480,6 +1496,7 @@
 				DC4AB9C6215A283F002DFD5C /* LPSalarycCardVC.xib in Resources */,
 				DC7383302133E3670055DC10 /* LaunchScreen.storyboard in Resources */,
 				DC30E1B021394055000C7A91 /* LPWorkDetailTextCell.xib in Resources */,
+				DCB57F7B215CA5EB0043AA43 /* LPBusinessReviewDetailSalaryCell.xib in Resources */,
 				DC13BB5B213E5B6A00800955 /* LPCityCell.xib in Resources */,
 				DC73832D2133E3670055DC10 /* Assets.xcassets in Resources */,
 				DCE72724215B249D00FAB22B /* LPSalarycCardBindVC.xib in Resources */,
@@ -1509,6 +1526,7 @@
 				DCE72737215B751700FAB22B /* LPSalarycCardBindPhoneVC.xib in Resources */,
 				DC2C590221548EF000741ED8 /* LPInforCollectionViewCell.xib in Resources */,
 				DCB25E9A2150C79700ED2FC4 /* LPSalaryHourlyStatisticsCell.xib in Resources */,
+				DCB57F76215C88CA0043AA43 /* LPBusinessReviewDetailCell.xib in Resources */,
 				DC5C388F213645E000B3CF6E /* LPInformationMoreImageCollectionViewCell.xib in Resources */,
 				DC7A32D021379BCA00E09C6C /* LPMineCardCell.xib in Resources */,
 				DC5C388A213640A300B3CF6E /* LPInformationMoreCell.xib in Resources */,
@@ -1720,6 +1738,7 @@
 				DC7A32E12137E99300E09C6C /* LoginUtils.m in Sources */,
 				DCE2C2412149104400BCB9F4 /* LPSelectWorkhourModel.m in Sources */,
 				DC7383972134E95E0055DC10 /* NetRequestManager.m in Sources */,
+				DCB57F75215C88CA0043AA43 /* LPBusinessReviewDetailCell.m in Sources */,
 				DC5C3889213640A300B3CF6E /* LPInformationMoreCell.m in Sources */,
 				DC7383952134E95E0055DC10 /* NetInstance.m in Sources */,
 				DCE2C23E2148EFBF00BCB9F4 /* LPQueryCurrecordModel.m in Sources */,
@@ -1756,6 +1775,7 @@
 				DCB25EA42150F4A200ED2FC4 /* LPMoodDetailHeaderCell.m in Sources */,
 				DC73839B2134EAEF0055DC10 /* UIWindow+Window.m in Sources */,
 				DC5C388021362EB300B3CF6E /* LPEssaylistModel.m in Sources */,
+				DCB57F7A215CA5EB0043AA43 /* LPBusinessReviewDetailSalaryCell.m in Sources */,
 				DC22957F2140BBE70002A095 /* LPUserMaterialModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

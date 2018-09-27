@@ -85,8 +85,8 @@
     NSTimeInterval end = [endD timeIntervalSince1970]*1;
     NSTimeInterval value = end - start;
     int minute = (int)value /60%60;
-    int house = (int)value / (24 * 3600)%3600;
-    int sum = house * 60 + minute + 1;
+//    int house = (int)value / (24 * 3600)%3600;
+//    int sum = house * 60 + minute + 1;
     NSString *str = [NSString stringWithFormat:@"%d",minute];
     return str;
 }

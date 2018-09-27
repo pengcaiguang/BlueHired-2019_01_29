@@ -8,6 +8,11 @@
 
 #import "LPBusinessReviewDetailVC.h"
 #import "LPMechanismcommentDetailModel.h"
+#import "LPBusinessReviewDetailCell.h"
+#import "LPBusinessReviewDetailSalaryCell.h"
+
+static NSString *LPBusinessReviewDetailCellID = @"LPBusinessReviewDetailCell";
+static NSString *LPBusinessReviewDetailSalaryCellID = @"LPBusinessReviewDetailSalaryCell";
 
 @interface LPBusinessReviewDetailVC ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong)UITableView *tableview;
@@ -131,6 +136,7 @@
     }else if (index == 3){
         self.selectType = 2;
     }
+    self.page = 1;
     [self requestMechanismcommentDeatil];
 }
 -(void)touchBottomButton:(UIButton *)button{
@@ -185,17 +191,20 @@
 }
 #pragma mark - TableViewDelegate & Datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 20;
+    return self.listArray.count;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    static NSString *rid=@"cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:rid];
-    if(cell == nil){
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rid];
-    }
-    cell.textLabel.text = [NSString stringWithFormat:@"%ld",indexPath.row];
-    return cell;
+    LPMechanismcommentDetailDataModel *model = self.listArray[indexPath.row];
+    if (model.type.integerValue == 1) {
+        LPBusinessReviewDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:LPBusinessReviewDetailCellID];
+        cell.model = self.listArray[indexPath.row];
+        return cell;
+    }else{
+        LPBusinessReviewDetailSalaryCell *cell = [tableView dequeueReusableCellWithIdentifier:LPBusinessReviewDetailSalaryCellID];
+        cell.model = self.listArray[indexPath.row];
+        return cell;
+    }    
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -230,7 +239,12 @@
         _tableview.estimatedRowHeight = 100;
         _tableview.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         _tableview.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
-//        [_tableview registerNib:[UINib nibWithNibName:LPBusinessReviewCellID bundle:nil] forCellReuseIdentifier:LPBusinessReviewCellID];
+        [_tableview registerNib:[UINib nibWithNibName:LPBusinessReviewDetailCellID bundle:nil] forCellReuseIdentifier:LPBusinessReviewDetailCellID];
+        [_tableview registerNib:[UINib nibWithNibName:LPBusinessReviewDetailSalaryCellID bundle:nil] forCellReuseIdentifier:LPBusinessReviewDetailSalaryCellID];
+
+        
+        
+        
         _tableview.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
             self.page = 1;
             [self requestMechanismcommentDeatil];

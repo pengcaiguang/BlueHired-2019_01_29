@@ -16,5 +16,20 @@
 @end
 
 @interface LPMechanismcommentDetailDataModel : NSObject
-
+@property (nonatomic, copy) NSString *commentContent;
+@property (nonatomic, copy) NSString *commentUrl;
+@property (nonatomic, copy) NSNumber *delStatus;
+@property (nonatomic, copy) NSNumber *foodEnvironScore;
+@property (nonatomic, copy) NSNumber *id;
+@property (nonatomic, copy) NSNumber *manageEnvironScore;
+@property (nonatomic, copy) NSString *mechanismId;
+@property (nonatomic, copy) NSNumber *moneyEnvironScore;
+@property (nonatomic, copy) NSString *set_time;
+@property (nonatomic, copy) NSNumber *sleepEnvironScore;
+@property (nonatomic, copy) NSNumber *time;
+@property (nonatomic, copy) NSNumber *type;
+@property (nonatomic, copy) NSNumber *userId;
+@property (nonatomic, copy) NSString *userName;
+@property (nonatomic, copy) NSString *userUrl;
+@property (nonatomic, copy) NSNumber *workEnvironScore;
 @end
