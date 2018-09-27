@@ -22,6 +22,8 @@ static NSString *LPBusinessReviewDetailSalaryCellID = @"LPBusinessReviewDetailSa
 @property(nonatomic,assign) NSInteger selectType;
 @property(nonatomic,strong) LPMechanismcommentDetailModel *model;
 @property(nonatomic,strong) NSMutableArray <LPMechanismcommentDetailDataModel *>*listArray;
+@property(nonatomic,assign) NSInteger bottomSelectType;
+
 @end
 
 @implementation LPBusinessReviewDetailVC
@@ -141,7 +143,8 @@ static NSString *LPBusinessReviewDetailSalaryCellID = @"LPBusinessReviewDetailSa
 }
 -(void)touchBottomButton:(UIButton *)button{
     if ([LoginUtils validationLogin:self]) {
-        
+        self.bottomSelectType = button.tag +1;
+        [self requestCheckIsmechanism];
     }
 }
 
@@ -210,6 +213,7 @@ static NSString *LPBusinessReviewDetailSalaryCellID = @"LPBusinessReviewDetailSa
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
+#pragma mark - request
 -(void)requestMechanismcommentDeatil{
     NSDictionary *dic = @{
                           @"selectType":self.selectType ? @(self.selectType) : @"",
@@ -227,7 +231,25 @@ static NSString *LPBusinessReviewDetailSalaryCellID = @"LPBusinessReviewDetailSa
         }
     }];
 }
-
+-(void)requestCheckIsmechanism{
+    NSDictionary *dic = @{
+                          @"mechanismName":self.mechanismlistDataModel.mechanismName,
+                          @"mechanismId":self.mechanismlistDataModel.id,
+                          @"type":@(self.bottomSelectType)
+                          };
+    [NetApiManager requestCheckIsmechanismWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] ? responseObject[@"msg"] : @"连接错误" time:MESSAGE_SHOW_TIME];
+            }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
 #pragma mark lazy
 - (UITableView *)tableview{
     if (!_tableview) {

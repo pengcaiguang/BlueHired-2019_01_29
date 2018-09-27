@@ -203,6 +203,16 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
+//删除面试预约
++ (void)requestDelWorkorderWithParam:(id)paramer
+                          withHandle:(response)responseHandle{
+    NSString * appendURLString = @"work/del_workorder";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
 #pragma mark - 资讯
 /************************************************************/
 //*  资讯
@@ -581,6 +591,16 @@
 + (void)requestMechanismcommentDeatilWithParam:(id)paramer
                                     withHandle:(response)responseHandle{
     NSString * appendURLString = @"mechanismcomment/query_deatil";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
+//查询用户就过职、曾经就职的企业
++ (void)requestCheckIsmechanismWithParam:(id)paramer
+                              withHandle:(response)responseHandle{
+    NSString * appendURLString = @"mechanismcomment/check_ismechanism";
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer

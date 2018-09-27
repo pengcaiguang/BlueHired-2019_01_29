@@ -72,6 +72,9 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //查询面试预约列表
 + (void)requestWorkorderlistWithParam:(id)paramer
                            withHandle:(response)responseHandle;
+//删除面试预约
++ (void)requestDelWorkorderWithParam:(id)paramer
+                          withHandle:(response)responseHandle;
 #pragma mark - 资讯
 /************************************************************/
 //*  资讯
@@ -206,6 +209,9 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //企业点评详情
 + (void)requestMechanismcommentDeatilWithParam:(id)paramer
                                     withHandle:(response)responseHandle;
+//查询用户就过职、曾经就职的企业
++ (void)requestCheckIsmechanismWithParam:(id)paramer
+                              withHandle:(response)responseHandle;
 #pragma mark - 工时记录
 /************************************************************/
 //*  工时记录

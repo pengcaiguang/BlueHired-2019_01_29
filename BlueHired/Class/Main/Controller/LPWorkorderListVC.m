@@ -78,7 +78,7 @@ static NSString *LPWorkorderListCellID = @"LPWorkorderListCell";
 -(void)buttonClick:(NSInteger)buttonIndex workId:(NSInteger)workId{
     self.selectWorkId = workId;
     if (buttonIndex == 0) {
-        //删除
+        [self requestDelWorkorder];
     }else{
         GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"是否取消报名" message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"否",@"是"] buttonsColor:@[[UIColor colorWithHexString:@"#666666"],[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor],[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
             if (buttonIndex == 1) {
@@ -114,7 +114,23 @@ static NSString *LPWorkorderListCellID = @"LPWorkorderListCell";
         }
     }];
 }
-
+-(void)requestDelWorkorder{
+    NSDictionary *dic = @{
+                          @"workId":@(self.selectWorkId)
+                          };
+    [NetApiManager requestDelWorkorderWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if (!ISNIL(responseObject[@"code"])) {
+                if ([responseObject[@"code"] integerValue] == 0) {
+                    [self requestWorkorderlist];
+                }
+            }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
 #pragma mark lazy
 - (UITableView *)tableview{
     if (!_tableview) {
