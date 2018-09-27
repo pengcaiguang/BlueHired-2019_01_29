@@ -125,7 +125,7 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
                 [self.view showLoadingMeg:@"请输入正确的银行卡预留手机号" time:MESSAGE_SHOW_TIME];
                 return;
             }
-            
+            [self requestBindunbindBankcard];
         }else{
             GJAlertPassword *alert = [[GJAlertPassword alloc]initWithTitle:@"请输入提现密码，完成身份验证" message:nil buttonTitles:@[@"通过短信验证码方式完成身份验证"] buttonsColor:@[[UIColor baseColor]] buttonClick:^(NSInteger buttonIndex, NSString *string) {
                 NSLog(@"%ld",buttonIndex);
@@ -236,8 +236,21 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
         NSLog(@"%@",responseObject);
         if (isSuccess) {
             if (responseObject[@"data"]) {
+                if (responseObject[@"data"][@"res_code"]) {
+                    if ([responseObject[@"data"][@"res_code"] integerValue] == 0) {
+                        if (responseObject[@"data"][@"res_msg"]) {
+                            [self.view showLoadingMeg:responseObject[@"data"][@"res_msg"] time:MESSAGE_SHOW_TIME];
+                            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                                [self.navigationController popViewControllerAnimated:YES];
+                            });
+                        }
+                    }
+                }
                 if (responseObject[@"data"][@"res_msg"]) {
                     [self.view showLoadingMeg:responseObject[@"data"][@"res_msg"] time:MESSAGE_SHOW_TIME];
+                }
+                if (responseObject[@"data"][@"res_error_num"]) {
+                    [self.view showLoadingMeg:[NSString stringWithFormat:@"剩余%@次机会",responseObject[@"data"][@"res_error_num"]] time:MESSAGE_SHOW_TIME];
                 }
             }
         }else{
@@ -261,6 +274,8 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
                 if ([responseObject[@"code"] integerValue] == 0) {
                     self.deleteCardButton.hidden = NO;
                     self.deletePhoneButton.hidden = NO;
+                    self.cardTextField.enabled = YES;
+                    self.phoneTextField.enabled = YES;
                     self.isHuanBang = YES;
                 }
             }
