@@ -9,6 +9,8 @@
 #import "LPSalarycCardChangePasswordVC.h"
 #import "LPSalarycCardBindPhoneVC.h"
 
+static NSString *ERRORTIMES = @"ERRORTIMES";
+
 @interface LPSalarycCardChangePasswordVC ()<UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *textField;
 @property(nonatomic,strong) NSMutableArray <UILabel *>*labelArray;
@@ -17,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *completeButton;
 
 @property(nonatomic,assign) NSInteger times;
+@property(nonatomic,assign) NSInteger errorTimes;
 
 @end
 
@@ -27,6 +30,7 @@
     // Do any additional setup after loading the view from its nib.
     self.navigationItem.title = @"修改提现密码";
     self.times = 0;
+    self.errorTimes = 0;
     self.completeButton.hidden = YES;
     self.textField.layer.borderWidth = 0.5;
     self.textField.layer.borderColor = [UIColor colorWithHexString:@"#AAAAAA"].CGColor;
@@ -139,6 +143,39 @@
                             self.completeButton.hidden = NO;
                         }
                     }
+                }else{
+                    self.textField.text = @"";
+                    for (UILabel *label in self.labelArray) {
+                        label.text = @"";
+                    }
+                    
+                    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                    dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm";
+                    NSString *string = [dateFormatter stringFromDate:[NSDate date]];
+                    
+                    if (kUserDefaultsValue(ERRORTIMES)) {
+                        NSString *errorString = kUserDefaultsValue(ERRORTIMES);
+                        NSString *d = [errorString substringToIndex:16];
+                        NSString *t = [errorString substringFromIndex:17];
+                        self.errorTimes = [t integerValue];
+                        if ([t integerValue] >= 3) {
+                            GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"提现密码错误次数过多，请十分钟后再试" message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"确定"] buttonsColor:@[[UIColor whiteColor]] buttonsBackgroundColors:@[[UIColor baseColor]] buttonClick:^(NSInteger buttonIndex) {
+                                [self.navigationController popViewControllerAnimated:YES];
+                            }];
+                            [alert show];
+                        }else{
+                            [self.view showLoadingMeg:[NSString stringWithFormat:@"密码错误，剩余%ld次机会",3-self.errorTimes] time:MESSAGE_SHOW_TIME];
+                            self.errorTimes += 1;
+                            NSString *str = [NSString stringWithFormat:@"%@-%ld",string,self.errorTimes];
+                            kUserDefaultsSave(str, ERRORTIMES);
+                        }
+                    }else{
+                        [self.view showLoadingMeg:[NSString stringWithFormat:@"密码错误，剩余%ld次机会",3-self.errorTimes] time:MESSAGE_SHOW_TIME];
+                        self.errorTimes += 1;
+                        NSString *str = [NSString stringWithFormat:@"%@-%ld",string,self.errorTimes];
+                        kUserDefaultsSave(str, ERRORTIMES);
+                    }
+//                    kUserDefaultsRemove(ERRORTIMES);
                 }
             }
         }else{

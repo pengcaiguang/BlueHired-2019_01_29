@@ -54,10 +54,43 @@
         LPSalarycCardBindVC *vc = [[LPSalarycCardBindVC alloc]init];
         [self.navigationController pushViewController:vc animated:YES];
     }else{
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm";
+        NSString *string = [dateFormatter stringFromDate:[NSDate date]];
+        
+        if (kUserDefaultsValue(@"ERRORTIMES")) {
+            NSString *errorString = kUserDefaultsValue(@"ERRORTIMES");
+            NSString *d = [errorString substringToIndex:16];
+            NSString *str = [self dateTimeDifferenceWithStartTime:d endTime:string];
+            NSString *t = [errorString substringFromIndex:17];
+            if ([t integerValue] >= 3 && [str integerValue] < 10) {
+                GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"提现密码错误次数过多，请十分钟后再试" message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"确定"] buttonsColor:@[[UIColor whiteColor]] buttonsBackgroundColors:@[[UIColor baseColor]] buttonClick:^(NSInteger buttonIndex) {
+                }];
+                [alert show];
+                return;
+            }
+            kUserDefaultsRemove(@"ERRORTIMES");
+        }
         LPSalarycCardChangePasswordVC *vc = [[LPSalarycCardChangePasswordVC alloc]init];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
+- (NSString *)dateTimeDifferenceWithStartTime:(NSString *)startTime endTime:(NSString *)endTime{
+    
+    NSDateFormatter *date = [[NSDateFormatter alloc]init];
+    [date setDateFormat:@"yyyy-MM-dd HH:mm"];
+    NSDate *startD =[date dateFromString:startTime];
+    NSDate *endD = [date dateFromString:endTime];
+    NSTimeInterval start = [startD timeIntervalSince1970]*1;
+    NSTimeInterval end = [endD timeIntervalSince1970]*1;
+    NSTimeInterval value = end - start;
+    int minute = (int)value /60%60;
+    int house = (int)value / (24 * 3600)%3600;
+    int sum = house * 60 + minute + 1;
+    NSString *str = [NSString stringWithFormat:@"%d",minute];
+    return str;
+}
+
 #pragma mark lazy
 - (UITableView *)tableview{
     if (!_tableview) {
