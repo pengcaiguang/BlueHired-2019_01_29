@@ -9,8 +9,16 @@
 #import "LPLendVC.h"
 #import "LPQueryCheckrecordModel.h"
 
-@interface LPLendVC ()
+@interface LPLendVC ()<UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *lendMoneyLabel;
+
+@property (weak, nonatomic) IBOutlet UITextField *lendTextField;
+@property (weak, nonatomic) IBOutlet UIButton *lendButton;
+
+@property(nonatomic,strong) NSString *lendMoney;
+
+
+
 @property (weak, nonatomic) IBOutlet UIView *recordView;
 @property (weak, nonatomic) IBOutlet UIImageView *img1;
 @property (weak, nonatomic) IBOutlet UIImageView *img2;
@@ -75,6 +83,14 @@
         [self.bottomButton setTitle:@"重新申请" forState:UIControlStateNormal];
 
     }
+}
+
+- (IBAction)touchLendButton:(UIButton *)sender {
+    if (self.lendTextField.text.integerValue > self.lendMoney.integerValue) {
+        [self.view showLoadingMeg:@"输入的金额应不大于借支额度" time:MESSAGE_SHOW_TIME];
+        return;
+    }
+    [self requestAddLendmoney];
     
 }
 - (IBAction)touchBottomButton:(UIButton *)sender {
@@ -101,6 +117,7 @@
                     if ([responseObject[@"data"][@"res_code"] integerValue] == 0) {
                         if (responseObject[@"data"][@"lendMoney"]) {
                             self.lendMoneyLabel.text = [NSString stringWithFormat:@"借支额度：%@",responseObject[@"data"][@"lendMoney"]];
+                            self.lendMoney = responseObject[@"data"][@"lendMoney"];
                             [self requestQueryCheckrecord];
                         }
                     }
@@ -123,6 +140,24 @@
     }];
 }
 
+-(void)requestAddLendmoney{
+    NSDictionary *dic = @{
+                          @"lendMoney":self.lendTextField.text
+                          };
+    [NetApiManager requestAddLendmoneyWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if (responseObject[@"code"]) {
+                if ([responseObject[@"code"] integerValue] == 0){
+                    [self.view showLoadingMeg:@"申请成功" time:MESSAGE_SHOW_TIME];
+                    [self requestQueryCheckrecord];
+                }
+            }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
 
 /*
 #pragma mark - Navigation

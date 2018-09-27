@@ -16,7 +16,9 @@
                 <outlet property="img1" destination="bjg-rm-tUd" id="peM-cF-lmT"/>
                 <outlet property="img2" destination="RUi-BB-cZH" id="asE-Wh-kLA"/>
                 <outlet property="img3" destination="GXb-9I-Uvy" id="pdM-9Y-RVR"/>
+                <outlet property="lendButton" destination="m1W-pL-UM1" id="mJh-t1-rqi"/>
                 <outlet property="lendMoneyLabel" destination="Ugo-gk-N1P" id="I6E-Db-SKV"/>
+                <outlet property="lendTextField" destination="NjI-x3-Ozs" id="4cm-yJ-8m3"/>
                 <outlet property="recordView" destination="uUh-jO-ioP" id="ZF9-es-yqm"/>
                 <outlet property="text1" destination="der-L2-op5" id="L3Y-EJ-4f5"/>
                 <outlet property="text2" destination="5bW-Tb-prF" id="0NB-SL-vOc"/>
@@ -66,7 +68,7 @@
                             </constraints>
                             <nil key="textColor"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <textInputTraits key="textInputTraits"/>
+                            <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                         </textField>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m1W-pL-UM1">
                             <rect key="frame" x="14" y="159.5" width="347" height="48"/>
@@ -79,6 +81,9 @@
                             <state key="normal" title="确认">
                                 <color key="titleColor" red="0.23529411764705882" green="0.68627450980392157" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
+                            <connections>
+                                <action selector="touchLendButton:" destination="-1" eventType="touchUpInside" id="yqe-xp-ldJ"/>
+                            </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="温馨提示：每周的借支额度上限为200，借支的金额将在每月发工资时进行扣取。" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p4J-YP-49w">
                             <rect key="frame" x="14" y="230" width="347" height="26.5"/>

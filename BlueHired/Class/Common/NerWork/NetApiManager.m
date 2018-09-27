@@ -542,6 +542,16 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
+//借支
++ (void)requestAddLendmoneyWithParam:(id)paramer
+                              withHandle:(response)responseHandle{
+    NSString * appendURLString = @"lendmoney/add_lendmoney";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
 //邀请奖励
 + (void)requestGetRegisterWithParam:(id)paramer
                          withHandle:(response)responseHandle{
