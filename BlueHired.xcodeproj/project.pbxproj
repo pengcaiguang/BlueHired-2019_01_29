@@ -138,6 +138,7 @@
 		DCB57F76215C88CA0043AA43 /* LPBusinessReviewDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DCB57F74215C88C90043AA43 /* LPBusinessReviewDetailCell.xib */; };
 		DCB57F7A215CA5EB0043AA43 /* LPBusinessReviewDetailSalaryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB57F78215CA5EB0043AA43 /* LPBusinessReviewDetailSalaryCell.m */; };
 		DCB57F7B215CA5EB0043AA43 /* LPBusinessReviewDetailSalaryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DCB57F79215CA5EB0043AA43 /* LPBusinessReviewDetailSalaryCell.xib */; };
+		DCB57F7F215CBA680043AA43 /* LPQueryCheckrecordModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB57F7E215CBA680043AA43 /* LPQueryCheckrecordModel.m */; };
 		DCCC8A60214754D30062A0F5 /* LPDateSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = DCCC8A5F214754D30062A0F5 /* LPDateSelectView.m */; };
 		DCCC8A6321476C830062A0F5 /* LPHourlyWorkVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCCC8A6221476C830062A0F5 /* LPHourlyWorkVC.m */; };
 		DCCC8A6C2147941F0062A0F5 /* LPFullTimeDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCCC8A6B2147941F0062A0F5 /* LPFullTimeDetailVC.m */; };
@@ -441,6 +442,8 @@
 		DCB57F77215CA5EB0043AA43 /* LPBusinessReviewDetailSalaryCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPBusinessReviewDetailSalaryCell.h; sourceTree = "<group>"; };
 		DCB57F78215CA5EB0043AA43 /* LPBusinessReviewDetailSalaryCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPBusinessReviewDetailSalaryCell.m; sourceTree = "<group>"; };
 		DCB57F79215CA5EB0043AA43 /* LPBusinessReviewDetailSalaryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPBusinessReviewDetailSalaryCell.xib; sourceTree = "<group>"; };
+		DCB57F7D215CBA680043AA43 /* LPQueryCheckrecordModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPQueryCheckrecordModel.h; sourceTree = "<group>"; };
+		DCB57F7E215CBA680043AA43 /* LPQueryCheckrecordModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPQueryCheckrecordModel.m; sourceTree = "<group>"; };
 		DCB5A5321875E124A6C52C8B /* libPods-BlueHired.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BlueHired.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCCC8A5E214754D30062A0F5 /* LPDateSelectView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPDateSelectView.h; sourceTree = "<group>"; };
 		DCCC8A5F214754D30062A0F5 /* LPDateSelectView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPDateSelectView.m; sourceTree = "<group>"; };
@@ -1233,6 +1236,15 @@
 			path = Controller;
 			sourceTree = "<group>";
 		};
+		DCB57F7C215CBA4A0043AA43 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DCB57F7D215CBA680043AA43 /* LPQueryCheckrecordModel.h */,
+				DCB57F7E215CBA680043AA43 /* LPQueryCheckrecordModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		DCCC8A752147AED60062A0F5 /* WSPieChart */ = {
 			isa = PBXGroup;
 			children = (
@@ -1282,6 +1294,7 @@
 		DCE2C2362148DD6E00BCB9F4 /* Lend */ = {
 			isa = PBXGroup;
 			children = (
+				DCB57F7C215CBA4A0043AA43 /* Model */,
 				DCE2C2372148DD6E00BCB9F4 /* Controller */,
 			);
 			path = Lend;
@@ -1670,6 +1683,7 @@
 				DCF5D9D2213FC1CE009F5DCE /* LPMechanismcommentDetailModel.m in Sources */,
 				DC7383612133EB2A0055DC10 /* LPMainVC.m in Sources */,
 				DC73839F2134EBC10055DC10 /* LPUserDefaults.m in Sources */,
+				DCB57F7F215CBA680043AA43 /* LPQueryCheckrecordModel.m in Sources */,
 				DC7A32E42138074900E09C6C /* LPSetVC.m in Sources */,
 				DC2295882141230A0002A095 /* GJAlertMessage.m in Sources */,
 				DC7A32CF21379BCA00E09C6C /* LPMineCardCell.m in Sources */,

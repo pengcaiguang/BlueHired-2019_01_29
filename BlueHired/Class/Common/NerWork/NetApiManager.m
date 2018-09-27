@@ -532,6 +532,16 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
+//借支记录
++ (void)requestQueryCheckrecordWithParam:(id)paramer
+                              withHandle:(response)responseHandle{
+    NSString * appendURLString = @"lendmoney/query_checkrecord";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
 //邀请奖励
 + (void)requestGetRegisterWithParam:(id)paramer
                          withHandle:(response)responseHandle{

@@ -187,6 +187,9 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //查询是否允许借支
 + (void)requestQueryIsLendWithParam:(id)paramer
                          withHandle:(response)responseHandle;
+//借支记录
++ (void)requestQueryCheckrecordWithParam:(id)paramer
+                              withHandle:(response)responseHandle;
 //邀请奖励
 + (void)requestGetRegisterWithParam:(id)paramer
                          withHandle:(response)responseHandle;
