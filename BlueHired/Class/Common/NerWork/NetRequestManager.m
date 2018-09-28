@@ -45,14 +45,14 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
                 
             } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 
-                NSHTTPURLResponse* response = (NSHTTPURLResponse* )task.response;
-                NSDictionary *allHeaderFieldsDic = response.allHeaderFields;
-                NSString *setCookie = allHeaderFieldsDic[@"Set-Cookie"];
-                if (setCookie != nil) {
-                    NSString *cookie = [[setCookie componentsSeparatedByString:@";"] objectAtIndex:0];
-                    NSLog(@"cookie : %@", cookie); // 这里可对cookie进行存储
-                    kUserDefaultsSave(cookie, COOKIES);
-                }
+//                NSHTTPURLResponse* response = (NSHTTPURLResponse* )task.response;
+//                NSDictionary *allHeaderFieldsDic = response.allHeaderFields;
+//                NSString *setCookie = allHeaderFieldsDic[@"Set-Cookie"];
+//                if (setCookie != nil) {
+//                    NSString *cookie = [[setCookie componentsSeparatedByString:@";"] objectAtIndex:0];
+//                    NSLog(@"cookie : %@", cookie); // 这里可对cookie进行存储
+//                    kUserDefaultsSave(cookie, COOKIES);
+//                }
                 
                 [self commonCheckErrorCode:responseObject];
                 if ([requestEnty.requestUrl containsString:@"login/user_sign_out"]) {

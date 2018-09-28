@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LPInviteVC">
+            <connections>
+                <outlet property="headImageView" destination="pdT-Zb-Iyq" id="7Zf-I7-HfG"/>
+                <outlet property="imageView" destination="d8I-SN-kjJ" id="Sz3-EQ-5DW"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="invite_head" translatesAutoresizingMaskIntoConstraints="NO" id="Fme-Ku-TyJ">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="266.5"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="Fme-Ku-TyJ" secondAttribute="height" multiplier="360:256" id="TMQ-qI-Bcl"/>
+                    </constraints>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="invite_bottom" translatesAutoresizingMaskIntoConstraints="NO" id="DKP-sg-DIm">
+                    <rect key="frame" x="0.0" y="266.5" width="375" height="400.5"/>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="d8I-SN-kjJ">
+                    <rect key="frame" x="112.5" y="276.5" width="150" height="150"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="150" id="N2L-3d-vdW"/>
+                        <constraint firstAttribute="height" constant="150" id="jiS-Zc-W6L"/>
+                    </constraints>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pdT-Zb-Iyq">
+                    <rect key="frame" x="175" y="339" width="25" height="25"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="25" id="jI4-Df-hdw"/>
+                        <constraint firstAttribute="height" constant="25" id="wh4-Cw-KsA"/>
+                    </constraints>
+                </imageView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="pdT-Zb-Iyq" firstAttribute="centerX" secondItem="d8I-SN-kjJ" secondAttribute="centerX" id="4VQ-1R-O7a"/>
+                <constraint firstItem="DKP-sg-DIm" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="Fe3-zS-bCf"/>
+                <constraint firstItem="DKP-sg-DIm" firstAttribute="bottom" secondItem="Q5M-cg-NOt" secondAttribute="bottom" id="IHT-1V-Dvf"/>
+                <constraint firstItem="d8I-SN-kjJ" firstAttribute="top" secondItem="Fme-Ku-TyJ" secondAttribute="bottom" constant="10" id="Ivh-es-X0g"/>
+                <constraint firstItem="DKP-sg-DIm" firstAttribute="top" secondItem="Fme-Ku-TyJ" secondAttribute="bottom" id="Jpb-GS-LB4"/>
+                <constraint firstItem="Fme-Ku-TyJ" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="d4K-4X-NyX"/>
+                <constraint firstItem="Fme-Ku-TyJ" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="dPz-Yw-kS3"/>
+                <constraint firstItem="DKP-sg-DIm" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="hLC-L0-dy1"/>
+                <constraint firstItem="pdT-Zb-Iyq" firstAttribute="centerY" secondItem="d8I-SN-kjJ" secondAttribute="centerY" id="iOn-Eh-xgF"/>
+                <constraint firstItem="d8I-SN-kjJ" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="lnm-Aa-56B"/>
+                <constraint firstItem="Fme-Ku-TyJ" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="vuB-yB-dqs"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+            <point key="canvasLocation" x="138.40000000000001" y="154.27286356821591"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="invite_bottom" width="360" height="310"/>
+        <image name="invite_head" width="360" height="256"/>
+    </resources>
+</document>
