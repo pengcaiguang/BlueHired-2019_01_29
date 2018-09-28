@@ -182,6 +182,20 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
                 LPCustomerServiceVC *vc = [[LPCustomerServiceVC alloc]init];
                 vc.hidesBottomBarWhenPushed = YES;
                 [self.navigationController pushViewController:vc animated:YES];
+            }else{
+                NSString *class = @"LPCollectionVC";
+                const char *className = [class cStringUsingEncoding:NSASCIIStringEncoding];
+                Class newClass = objc_getClass(className);
+                if (!newClass) {        //创建一个类
+                    Class superClass = [NSObject class];
+                    newClass = objc_allocateClassPair(superClass, className, 0);        //注册你创建的这个类
+                    objc_registerClassPair(newClass);
+                    
+                }
+                // 创建对象(写到这里已经可以进行随机页面跳转了)
+                UIViewController *instance = [[newClass alloc] init];
+                instance.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:instance animated:YES];
             }
         }
     }
