@@ -9,6 +9,9 @@
 #import "LPSalaryBreakdownVC.h"
 #import "LPQuerySalarylistModel.h"
 #import "LPSalaryDetailVC.h"
+#import "LPSalaryBreakdownCell.h"
+
+static NSString *LPSalaryBreakdownCellID = @"LPSalaryBreakdownCell";
 
 @interface LPSalaryBreakdownVC ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong)UITableView *tableview;
@@ -162,18 +165,14 @@
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    static NSString *rid=@"cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:rid];
-    if(cell == nil){
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rid];
-    }
-    cell.textLabel.text = [NSString stringWithFormat:@"%ld",indexPath.row];
+    LPSalaryBreakdownCell *cell = [tableView dequeueReusableCellWithIdentifier:LPSalaryBreakdownCellID];
+    cell.companyNameLabel.text = self.model.data[indexPath.row].companyName;
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     LPSalaryDetailVC *vc = [[LPSalaryDetailVC alloc]init];
+    vc.model = self.model.data[indexPath.row];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -200,9 +199,9 @@
         _tableview.tableFooterView = [[UIView alloc]init];
         _tableview.rowHeight = UITableViewAutomaticDimension;
         _tableview.estimatedRowHeight = 44;
-        _tableview.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+        _tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableview.separatorColor = [UIColor colorWithHexString:@"#F1F1F1"];
-//        [_tableview registerNib:[UINib nibWithNibName:LPWorkHourDetailPieChartCellID bundle:nil] forCellReuseIdentifier:LPWorkHourDetailPieChartCellID];
+        [_tableview registerNib:[UINib nibWithNibName:LPSalaryBreakdownCellID bundle:nil] forCellReuseIdentifier:LPSalaryBreakdownCellID];
 
     }
     return _tableview;

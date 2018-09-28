@@ -8,8 +8,10 @@
 
 #import "LPSalaryDetailVC.h"
 
-@interface LPSalaryDetailVC ()
+@interface LPSalaryDetailVC ()<UITableViewDelegate,UITableViewDataSource>
+@property (nonatomic, strong)UITableView *tableview;
 
+@property(nonatomic,strong) NSArray *itemArray;
 @end
 
 @implementation LPSalaryDetailVC
@@ -20,7 +22,37 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = @"工资明细";
     
-    [self requestQuerySalarydetail];
+    [self.view addSubview:self.tableview];
+    [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view);
+    }];
+    NSMutableArray *mu = [NSMutableArray arrayWithArray:[self.model.salaryDetails componentsSeparatedByString:@";"]];
+    [mu removeObject:@""];
+    self.itemArray = [mu copy];
+}
+
+#pragma mark - TableViewDelegate & Datasource
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return self.itemArray.count;
+}
+
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString *rid=@"cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:rid];
+    if(cell == nil){
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:rid];
+    }
+    NSArray *array = [self.itemArray[indexPath.row] componentsSeparatedByString:@":"];
+    
+    cell.textLabel.text = [NSString stringWithFormat:@"%@：",array[0]];
+    cell.detailTextLabel.text = array[1];
+    cell.textLabel.font = [UIFont systemFontOfSize:14];
+    cell.textLabel.textColor = [UIColor baseColor];
+    cell.detailTextLabel.font = [UIFont systemFontOfSize:14];
+    return cell;
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - request
@@ -37,7 +69,22 @@
         }
     }];
 }
-
+#pragma mark lazy
+- (UITableView *)tableview{
+    if (!_tableview) {
+        _tableview = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStylePlain];
+        _tableview.delegate = self;
+        _tableview.dataSource = self;
+        _tableview.tableFooterView = [[UIView alloc]init];
+        _tableview.rowHeight = UITableViewAutomaticDimension;
+        _tableview.estimatedRowHeight = 44;
+        _tableview.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+        _tableview.separatorColor = [UIColor colorWithHexString:@"#F1F1F1"];
+//        [_tableview registerNib:[UINib nibWithNibName:LPSalaryBreakdownCellID bundle:nil] forCellReuseIdentifier:LPSalaryBreakdownCellID];
+        
+    }
+    return _tableview;
+}
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

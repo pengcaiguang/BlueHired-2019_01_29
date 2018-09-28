@@ -62,6 +62,8 @@
 		DC47E149215DD17B003CF466 /* LPRegisterDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC47E147215DD17B003CF466 /* LPRegisterDetailCell.m */; };
 		DC47E14A215DD17B003CF466 /* LPRegisterDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC47E148215DD17B003CF466 /* LPRegisterDetailCell.xib */; };
 		DC47E150215DD28A003CF466 /* LPRegisterDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC47E14F215DD28A003CF466 /* LPRegisterDetailModel.m */; };
+		DC47E155215E1281003CF466 /* LPSalaryBreakdownCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC47E153215E1281003CF466 /* LPSalaryBreakdownCell.m */; };
+		DC47E156215E1281003CF466 /* LPSalaryBreakdownCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC47E154215E1281003CF466 /* LPSalaryBreakdownCell.xib */; };
 		DC49D867213A6BB2009BFCB0 /* LPEssayDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC49D866213A6BB2009BFCB0 /* LPEssayDetailVC.m */; };
 		DC49D86B213A74B3009BFCB0 /* LPEssayDetailHeadCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC49D869213A74B3009BFCB0 /* LPEssayDetailHeadCell.m */; };
 		DC49D86C213A74B3009BFCB0 /* LPEssayDetailHeadCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC49D86A213A74B3009BFCB0 /* LPEssayDetailHeadCell.xib */; };
@@ -308,6 +310,9 @@
 		DC47E148215DD17B003CF466 /* LPRegisterDetailCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPRegisterDetailCell.xib; sourceTree = "<group>"; };
 		DC47E14E215DD28A003CF466 /* LPRegisterDetailModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPRegisterDetailModel.h; sourceTree = "<group>"; };
 		DC47E14F215DD28A003CF466 /* LPRegisterDetailModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPRegisterDetailModel.m; sourceTree = "<group>"; };
+		DC47E152215E1281003CF466 /* LPSalaryBreakdownCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPSalaryBreakdownCell.h; sourceTree = "<group>"; };
+		DC47E153215E1281003CF466 /* LPSalaryBreakdownCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPSalaryBreakdownCell.m; sourceTree = "<group>"; };
+		DC47E154215E1281003CF466 /* LPSalaryBreakdownCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPSalaryBreakdownCell.xib; sourceTree = "<group>"; };
 		DC49D865213A6BB2009BFCB0 /* LPEssayDetailVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPEssayDetailVC.h; sourceTree = "<group>"; };
 		DC49D866213A6BB2009BFCB0 /* LPEssayDetailVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPEssayDetailVC.m; sourceTree = "<group>"; };
 		DC49D868213A74B3009BFCB0 /* LPEssayDetailHeadCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPEssayDetailHeadCell.h; sourceTree = "<group>"; };
@@ -738,6 +743,16 @@
 				DC47E146215DD17B003CF466 /* LPRegisterDetailCell.h */,
 				DC47E147215DD17B003CF466 /* LPRegisterDetailCell.m */,
 				DC47E148215DD17B003CF466 /* LPRegisterDetailCell.xib */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		DC47E151215E126B003CF466 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DC47E152215E1281003CF466 /* LPSalaryBreakdownCell.h */,
+				DC47E153215E1281003CF466 /* LPSalaryBreakdownCell.m */,
+				DC47E154215E1281003CF466 /* LPSalaryBreakdownCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1302,6 +1317,7 @@
 		DCCC8A852147E4700062A0F5 /* Salary */ = {
 			isa = PBXGroup;
 			children = (
+				DC47E151215E126B003CF466 /* View */,
 				DCCC8A8A2147EDDD0062A0F5 /* Model */,
 				DCCC8A862147E4700062A0F5 /* Controller */,
 			);
@@ -1574,6 +1590,7 @@
 				DCF5D9C6213FA5BD009F5DCE /* LPBusinessReviewCell.xib in Resources */,
 				DCE3E1DA214A16FB003ADFC6 /* LPAddRecordCell.xib in Resources */,
 				DC5C38852136372F00B3CF6E /* LPInformationSingleCell.xib in Resources */,
+				DC47E156215E1281003CF466 /* LPSalaryBreakdownCell.xib in Resources */,
 				DC4AB9BC215A2131002DFD5C /* LPLendVC.xib in Resources */,
 				DCE72737215B751700FAB22B /* LPSalarycCardBindPhoneVC.xib in Resources */,
 				DC2C590221548EF000741ED8 /* LPInforCollectionViewCell.xib in Resources */,
@@ -1746,6 +1763,7 @@
 				DCB25E9D2150D91200ED2FC4 /* LPMoodDetailVC.m in Sources */,
 				DC49D86F213A7751009BFCB0 /* LPEssayDetailModel.m in Sources */,
 				DCCC8A842147AED60062A0F5 /* WSShowInfoView.m in Sources */,
+				DC47E155215E1281003CF466 /* LPSalaryBreakdownCell.m in Sources */,
 				DC13BB50213E1FD100800955 /* LPCityDataManager.m in Sources */,
 				DC44DB9C21352B8000D00FAC /* LPNoDataView.m in Sources */,
 				DCE3E1D9214A16FB003ADFC6 /* LPAddRecordCell.m in Sources */,

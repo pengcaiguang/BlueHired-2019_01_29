@@ -16,5 +16,11 @@
 @end
 
 @interface LPQuerySalarylistDataModel : NSObject
-
+@property (nonatomic, copy) NSString *companyName;
+@property (nonatomic, copy) NSNumber *delStatus;
+@property (nonatomic, copy) NSNumber *id;
+@property (nonatomic, copy) NSString *salaryDetails;
+@property (nonatomic, copy) NSString *set_time;
+@property (nonatomic, copy) NSString *time;
+@property (nonatomic, copy) NSNumber *userId;
 @end
