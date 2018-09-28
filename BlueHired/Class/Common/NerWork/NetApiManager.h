@@ -215,6 +215,12 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //提现密码验证
 + (void)requestUpdateDrawpwdWithParam:(id)paramer
                            withHandle:(response)responseHandle;
+//我的客服
++ (void)requestQueryProblemWithParam:(id)paramer
+                          withHandle:(response)responseHandle;
+//查询问题
++ (void)requestQueryProblemDetailWithParam:(id)paramer
+                                withHandle:(response)responseHandle;
 #pragma mark - 企业点评
 /************************************************************/
 //*  企业点评

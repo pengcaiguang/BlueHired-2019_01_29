@@ -64,6 +64,12 @@
 		DC47E150215DD28A003CF466 /* LPRegisterDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC47E14F215DD28A003CF466 /* LPRegisterDetailModel.m */; };
 		DC47E155215E1281003CF466 /* LPSalaryBreakdownCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC47E153215E1281003CF466 /* LPSalaryBreakdownCell.m */; };
 		DC47E156215E1281003CF466 /* LPSalaryBreakdownCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC47E154215E1281003CF466 /* LPSalaryBreakdownCell.xib */; };
+		DC47E15C215E20D1003CF466 /* LPCustomerServiceVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC47E15A215E20D1003CF466 /* LPCustomerServiceVC.m */; };
+		DC47E15D215E20D1003CF466 /* LPCustomerServiceVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC47E15B215E20D1003CF466 /* LPCustomerServiceVC.xib */; };
+		DC47E163215E2786003CF466 /* LLPCustomerServiceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC47E161215E2786003CF466 /* LLPCustomerServiceCell.m */; };
+		DC47E164215E2786003CF466 /* LLPCustomerServiceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC47E162215E2786003CF466 /* LLPCustomerServiceCell.xib */; };
+		DC47E167215E29A6003CF466 /* LPCustomerServiceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC47E166215E29A6003CF466 /* LPCustomerServiceModel.m */; };
+		DC47E16A215E472F003CF466 /* LPProblemDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC47E169215E472F003CF466 /* LPProblemDetailModel.m */; };
 		DC49D867213A6BB2009BFCB0 /* LPEssayDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC49D866213A6BB2009BFCB0 /* LPEssayDetailVC.m */; };
 		DC49D86B213A74B3009BFCB0 /* LPEssayDetailHeadCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC49D869213A74B3009BFCB0 /* LPEssayDetailHeadCell.m */; };
 		DC49D86C213A74B3009BFCB0 /* LPEssayDetailHeadCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC49D86A213A74B3009BFCB0 /* LPEssayDetailHeadCell.xib */; };
@@ -313,6 +319,16 @@
 		DC47E152215E1281003CF466 /* LPSalaryBreakdownCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPSalaryBreakdownCell.h; sourceTree = "<group>"; };
 		DC47E153215E1281003CF466 /* LPSalaryBreakdownCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPSalaryBreakdownCell.m; sourceTree = "<group>"; };
 		DC47E154215E1281003CF466 /* LPSalaryBreakdownCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPSalaryBreakdownCell.xib; sourceTree = "<group>"; };
+		DC47E159215E20D1003CF466 /* LPCustomerServiceVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPCustomerServiceVC.h; sourceTree = "<group>"; };
+		DC47E15A215E20D1003CF466 /* LPCustomerServiceVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPCustomerServiceVC.m; sourceTree = "<group>"; };
+		DC47E15B215E20D1003CF466 /* LPCustomerServiceVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPCustomerServiceVC.xib; sourceTree = "<group>"; };
+		DC47E160215E2786003CF466 /* LLPCustomerServiceCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LLPCustomerServiceCell.h; sourceTree = "<group>"; };
+		DC47E161215E2786003CF466 /* LLPCustomerServiceCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LLPCustomerServiceCell.m; sourceTree = "<group>"; };
+		DC47E162215E2786003CF466 /* LLPCustomerServiceCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LLPCustomerServiceCell.xib; sourceTree = "<group>"; };
+		DC47E165215E29A6003CF466 /* LPCustomerServiceModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPCustomerServiceModel.h; sourceTree = "<group>"; };
+		DC47E166215E29A6003CF466 /* LPCustomerServiceModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPCustomerServiceModel.m; sourceTree = "<group>"; };
+		DC47E168215E472F003CF466 /* LPProblemDetailModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPProblemDetailModel.h; sourceTree = "<group>"; };
+		DC47E169215E472F003CF466 /* LPProblemDetailModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPProblemDetailModel.m; sourceTree = "<group>"; };
 		DC49D865213A6BB2009BFCB0 /* LPEssayDetailVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPEssayDetailVC.h; sourceTree = "<group>"; };
 		DC49D866213A6BB2009BFCB0 /* LPEssayDetailVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPEssayDetailVC.m; sourceTree = "<group>"; };
 		DC49D868213A74B3009BFCB0 /* LPEssayDetailHeadCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPEssayDetailHeadCell.h; sourceTree = "<group>"; };
@@ -757,6 +773,47 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		DC47E157215E20A3003CF466 /* CustomerService */ = {
+			isa = PBXGroup;
+			children = (
+				DC47E15E215E26ED003CF466 /* Model */,
+				DC47E15F215E26EE003CF466 /* View */,
+				DC47E158215E20A3003CF466 /* Controller */,
+			);
+			path = CustomerService;
+			sourceTree = "<group>";
+		};
+		DC47E158215E20A3003CF466 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				DC47E159215E20D1003CF466 /* LPCustomerServiceVC.h */,
+				DC47E15A215E20D1003CF466 /* LPCustomerServiceVC.m */,
+				DC47E15B215E20D1003CF466 /* LPCustomerServiceVC.xib */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		DC47E15E215E26ED003CF466 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DC47E165215E29A6003CF466 /* LPCustomerServiceModel.h */,
+				DC47E166215E29A6003CF466 /* LPCustomerServiceModel.m */,
+				DC47E168215E472F003CF466 /* LPProblemDetailModel.h */,
+				DC47E169215E472F003CF466 /* LPProblemDetailModel.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DC47E15F215E26EE003CF466 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DC47E160215E2786003CF466 /* LLPCustomerServiceCell.h */,
+				DC47E161215E2786003CF466 /* LLPCustomerServiceCell.m */,
+				DC47E162215E2786003CF466 /* LLPCustomerServiceCell.xib */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		DC4AB9BD215A2743002DFD5C /* SalarycCard */ = {
 			isa = PBXGroup;
 			children = (
@@ -985,14 +1042,14 @@
 		DC7383552133EAAF0055DC10 /* Class */ = {
 			isa = PBXGroup;
 			children = (
-				DC4AB9CE215A35CE002DFD5C /* Register */,
-				DC4AB9C7215A322D002DFD5C /* Dimission */,
 				DC7383562133EAAF0055DC10 /* Base */,
 				DCF5D9B8213F8905009F5DCE /* BusinessReview */,
 				DC73837A2133F0F00055DC10 /* Categories */,
 				DC13BB48213E1BF600800955 /* ChooseCity */,
 				DC7383622133EBEB0055DC10 /* Circle */,
 				DC73837E21341EA10055DC10 /* Common */,
+				DC47E157215E20A3003CF466 /* CustomerService */,
+				DC4AB9C7215A322D002DFD5C /* Dimission */,
 				DC1423D42153A08F0042CCCB /* Info */,
 				DC7383642133EBEB0055DC10 /* Information */,
 				DCE2C2362148DD6E00BCB9F4 /* Lend */,
@@ -1000,6 +1057,7 @@
 				DC7383722133EC630055DC10 /* MacroPch */,
 				DC7383572133EAAF0055DC10 /* Main */,
 				DC7383662133EBEB0055DC10 /* Mine */,
+				DC4AB9CE215A35CE002DFD5C /* Register */,
 				DCCC8A852147E4700062A0F5 /* Salary */,
 				DC4AB9BD215A2743002DFD5C /* SalarycCard */,
 				DC61FABE21461A950003AA61 /* WorkHour */,
@@ -1557,6 +1615,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DC47E15D215E20D1003CF466 /* LPCustomerServiceVC.xib in Resources */,
 				DC290F35213CDDEB00EC3FCC /* LPEssayDetailCommentReplyCell.xib in Resources */,
 				DC7383882134DC200055DC10 /* LPMineCell.xib in Resources */,
 				DC4AB9C6215A283F002DFD5C /* LPSalarycCardVC.xib in Resources */,
@@ -1577,6 +1636,7 @@
 				DC30E1A621393BB0000C7A91 /* LPWorkDetailHeadCell.xib in Resources */,
 				DC5C38952136682200B3CF6E /* LPCircleCollectionViewCell.xib in Resources */,
 				DC47E14A215DD17B003CF466 /* LPRegisterDetailCell.xib in Resources */,
+				DC47E164215E2786003CF466 /* LLPCustomerServiceCell.xib in Resources */,
 				DC550341214C9E81000F4F2E /* GoogleService-Info.plist in Resources */,
 				DC73832B2133E33E0055DC10 /* Main.storyboard in Resources */,
 				DC13BB52213E205A00800955 /* china_cities_v2.db in Resources */,
@@ -1801,6 +1861,7 @@
 				DC7383282133E33E0055DC10 /* ViewController.m in Sources */,
 				DCCC8A802147AED60062A0F5 /* WSChart.m in Sources */,
 				DCCC8A822147AED60062A0F5 /* WSPieForeBGView.m in Sources */,
+				DC47E163215E2786003CF466 /* LLPCustomerServiceCell.m in Sources */,
 				DC44DB9621351F6D00D00FAC /* NullSafe.m in Sources */,
 				DC13BB5E213EA10200800955 /* LPMechanismlistModel.m in Sources */,
 				DC1423D82153A0BF0042CCCB /* LPInfoVC.m in Sources */,
@@ -1828,6 +1889,7 @@
 				DCE7272F215B619300FAB22B /* NSString+Encode.m in Sources */,
 				DC5C38942136682200B3CF6E /* LPCircleCollectionViewCell.m in Sources */,
 				DC7383A22134EF300055DC10 /* UIView+MBProgressHUD.m in Sources */,
+				DC47E16A215E472F003CF466 /* LPProblemDetailModel.m in Sources */,
 				DC30E18F2138D9CB000C7A91 /* LPScreenAlertView.m in Sources */,
 				DCE7272E215B619300FAB22B /* RSAEncryptor.m in Sources */,
 				DCB25EA02150DDBF00ED2FC4 /* LPGetMoodModel.m in Sources */,
@@ -1848,11 +1910,13 @@
 				DC73836A2133EC040055DC10 /* LPCircleVC.m in Sources */,
 				DC73835A2133EAD30055DC10 /* LPBaseViewController.m in Sources */,
 				DCB25EA42150F4A200ED2FC4 /* LPMoodDetailHeaderCell.m in Sources */,
+				DC47E15C215E20D1003CF466 /* LPCustomerServiceVC.m in Sources */,
 				DC73839B2134EAEF0055DC10 /* UIWindow+Window.m in Sources */,
 				DC5C388021362EB300B3CF6E /* LPEssaylistModel.m in Sources */,
 				DCB57F7A215CA5EB0043AA43 /* LPBusinessReviewDetailSalaryCell.m in Sources */,
 				DC47E149215DD17B003CF466 /* LPRegisterDetailCell.m in Sources */,
 				DC22957F2140BBE70002A095 /* LPUserMaterialModel.m in Sources */,
+				DC47E167215E29A6003CF466 /* LPCustomerServiceModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

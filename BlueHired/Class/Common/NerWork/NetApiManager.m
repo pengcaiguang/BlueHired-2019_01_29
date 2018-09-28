@@ -622,6 +622,26 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
+//我的客服
++ (void)requestQueryProblemWithParam:(id)paramer
+                          withHandle:(response)responseHandle{
+    NSString * appendURLString = @"customerser/query_problem";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
+//查询问题
++ (void)requestQueryProblemDetailWithParam:(id)paramer
+                                withHandle:(response)responseHandle{
+    NSString * appendURLString = @"customerser/query_problem_detail";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
 #pragma mark - 企业点评
 /************************************************************/
 //*  企业点评
