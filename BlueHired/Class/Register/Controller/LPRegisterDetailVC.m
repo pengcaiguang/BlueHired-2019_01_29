@@ -143,10 +143,10 @@ static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
         [self.view addSubview:button];
         [button setTitle:titleArray[i] forState:UIControlStateNormal];
         button.titleLabel.font = [UIFont systemFontOfSize:16];
+        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         button.tag = i;
         if (i == 0) {
             button.backgroundColor = [UIColor baseColor];
-            [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             [button mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.left.mas_equalTo(0);
                 make.right.mas_equalTo(0);
@@ -156,7 +156,6 @@ static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
 //            [button addTarget:self action:@selector(touchBottomButton:) forControlEvents:UIControlEventTouchUpInside];
         }else{
             button.backgroundColor = [UIColor colorWithHexString:@"#BBBBBB"];
-            [button setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
             [button mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.left.mas_equalTo(0);
                 make.right.mas_equalTo(0);
@@ -200,12 +199,8 @@ static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
 }
 -(void)setModel:(LPRegisterDetailModel *)model{
     _model = model;
-    if (model.data.totalMoney) {
-        [self.bottomButtonArray[0] setTitle:[NSString stringWithFormat:@"已到账邀请奖励%@元",model.data.totalMoney] forState:UIControlStateNormal];
-    }
-    if (model.data.remainderMoney) {
-        [self.bottomButtonArray[1] setTitle:[NSString stringWithFormat:@"未到账邀请奖励%@元",model.data.totalMoney] forState:UIControlStateNormal];
-    }
+    [self.bottomButtonArray[0] setTitle:[NSString stringWithFormat:@"已到账邀请奖励%@元",model.data.totalMoney ? model.data.totalMoney : @"0"] forState:UIControlStateNormal];
+    [self.bottomButtonArray[1] setTitle:[NSString stringWithFormat:@"未到账邀请奖励%@元",model.data.remainderMoney ? model.data.remainderMoney : @"0"] forState:UIControlStateNormal];
     
     if ([self.model.code integerValue] == 0) {
         
@@ -277,7 +272,6 @@ static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     LPRegisterDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:LPRegisterDetailCellID];
-    cell.textLabel.text = [NSString stringWithFormat:@"%ld",indexPath.row];
     cell.model = self.listArray[indexPath.row];
     return cell;
 }

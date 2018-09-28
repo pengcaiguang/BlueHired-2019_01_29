@@ -15,6 +15,17 @@
     // Initialization code
 }
 
+-(void)setModel:(LPRegisterDetailDataListModel *)model{
+    _model = model;
+    self.userNameLabel.text = model.userName;
+    if (model.type.integerValue == 0) {
+        self.typeLabel.text = @"直接邀请";
+    }else{
+        self.typeLabel.text = @"间接邀请";
+    }
+    self.relationMoneyLabel.text = [NSString stringWithFormat:@"%@元",model.relationMoney];
+}
+
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 

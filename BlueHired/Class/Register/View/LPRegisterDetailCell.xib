@@ -51,6 +51,11 @@
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <connections>
+                <outlet property="relationMoneyLabel" destination="PDY-dJ-ZMf" id="F16-bS-Ovj"/>
+                <outlet property="typeLabel" destination="Cpa-jc-ajf" id="gBC-WJ-Z6v"/>
+                <outlet property="userNameLabel" destination="XbR-xF-Vuv" id="WiP-7n-6ap"/>
+            </connections>
         </tableViewCell>
     </objects>
 </document>

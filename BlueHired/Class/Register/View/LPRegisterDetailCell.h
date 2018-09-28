@@ -11,6 +11,9 @@
 
 
 @interface LPRegisterDetailCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *typeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *relationMoneyLabel;
 
 
 @property(nonatomic,strong) LPRegisterDetailDataListModel *model;

@@ -26,5 +26,15 @@
 
 @interface LPRegisterDetailDataListModel : NSObject
 
+@property (nonatomic, copy) NSNumber *delStatus;
+@property (nonatomic, copy) NSNumber *id;
+@property (nonatomic, copy) NSNumber *relationMoney;
+@property (nonatomic, copy) NSString *relationMoneyTime;
+@property (nonatomic, copy) NSNumber *setTime;
+@property (nonatomic, copy) NSNumber *time;
+@property (nonatomic, copy) NSNumber *type;
+@property (nonatomic, copy) NSNumber *upUserId;
+@property (nonatomic, copy) NSNumber *userId;
+@property (nonatomic, copy) NSString *userName;
 
 @end
