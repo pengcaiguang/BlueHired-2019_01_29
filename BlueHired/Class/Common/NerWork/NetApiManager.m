@@ -582,6 +582,16 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
+//邀请奖励详情
++ (void)requestGetOnWorkWithParam:(id)paramer
+                       withHandle:(response)responseHandle{
+    NSString * appendURLString = @"invite/get_on_work";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
 //查询绑定银行卡
 + (void)requestSelectBindbankcardWithParam:(id)paramer
                                 withHandle:(response)responseHandle{

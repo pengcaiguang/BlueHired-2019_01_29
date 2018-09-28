@@ -57,6 +57,11 @@
 		DC44DBA321354D6A00D00FAC /* DeviceUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = DC44DBA121354D6A00D00FAC /* DeviceUtils.m */; };
 		DC44DBA821354E8500D00FAC /* LPInformationCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC44DBA621354E8500D00FAC /* LPInformationCollectionViewCell.m */; };
 		DC44DBA921354E8500D00FAC /* LPInformationCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC44DBA721354E8500D00FAC /* LPInformationCollectionViewCell.xib */; };
+		DC47E143215DC598003CF466 /* LPRegisterDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC47E141215DC598003CF466 /* LPRegisterDetailVC.m */; };
+		DC47E144215DC598003CF466 /* LPRegisterDetailVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC47E142215DC598003CF466 /* LPRegisterDetailVC.xib */; };
+		DC47E149215DD17B003CF466 /* LPRegisterDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC47E147215DD17B003CF466 /* LPRegisterDetailCell.m */; };
+		DC47E14A215DD17B003CF466 /* LPRegisterDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC47E148215DD17B003CF466 /* LPRegisterDetailCell.xib */; };
+		DC47E150215DD28A003CF466 /* LPRegisterDetailModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC47E14F215DD28A003CF466 /* LPRegisterDetailModel.m */; };
 		DC49D867213A6BB2009BFCB0 /* LPEssayDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC49D866213A6BB2009BFCB0 /* LPEssayDetailVC.m */; };
 		DC49D86B213A74B3009BFCB0 /* LPEssayDetailHeadCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC49D869213A74B3009BFCB0 /* LPEssayDetailHeadCell.m */; };
 		DC49D86C213A74B3009BFCB0 /* LPEssayDetailHeadCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC49D86A213A74B3009BFCB0 /* LPEssayDetailHeadCell.xib */; };
@@ -295,6 +300,14 @@
 		DC44DBA521354E8500D00FAC /* LPInformationCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPInformationCollectionViewCell.h; sourceTree = "<group>"; };
 		DC44DBA621354E8500D00FAC /* LPInformationCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPInformationCollectionViewCell.m; sourceTree = "<group>"; };
 		DC44DBA721354E8500D00FAC /* LPInformationCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPInformationCollectionViewCell.xib; sourceTree = "<group>"; };
+		DC47E140215DC598003CF466 /* LPRegisterDetailVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPRegisterDetailVC.h; sourceTree = "<group>"; };
+		DC47E141215DC598003CF466 /* LPRegisterDetailVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPRegisterDetailVC.m; sourceTree = "<group>"; };
+		DC47E142215DC598003CF466 /* LPRegisterDetailVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPRegisterDetailVC.xib; sourceTree = "<group>"; };
+		DC47E146215DD17B003CF466 /* LPRegisterDetailCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPRegisterDetailCell.h; sourceTree = "<group>"; };
+		DC47E147215DD17B003CF466 /* LPRegisterDetailCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPRegisterDetailCell.m; sourceTree = "<group>"; };
+		DC47E148215DD17B003CF466 /* LPRegisterDetailCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPRegisterDetailCell.xib; sourceTree = "<group>"; };
+		DC47E14E215DD28A003CF466 /* LPRegisterDetailModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPRegisterDetailModel.h; sourceTree = "<group>"; };
+		DC47E14F215DD28A003CF466 /* LPRegisterDetailModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPRegisterDetailModel.m; sourceTree = "<group>"; };
 		DC49D865213A6BB2009BFCB0 /* LPEssayDetailVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPEssayDetailVC.h; sourceTree = "<group>"; };
 		DC49D866213A6BB2009BFCB0 /* LPEssayDetailVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPEssayDetailVC.m; sourceTree = "<group>"; };
 		DC49D868213A74B3009BFCB0 /* LPEssayDetailHeadCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPEssayDetailHeadCell.h; sourceTree = "<group>"; };
@@ -719,6 +732,16 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		DC47E145215DD161003CF466 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DC47E146215DD17B003CF466 /* LPRegisterDetailCell.h */,
+				DC47E147215DD17B003CF466 /* LPRegisterDetailCell.m */,
+				DC47E148215DD17B003CF466 /* LPRegisterDetailCell.xib */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		DC4AB9BD215A2743002DFD5C /* SalarycCard */ = {
 			isa = PBXGroup;
 			children = (
@@ -768,6 +791,7 @@
 		DC4AB9CE215A35CE002DFD5C /* Register */ = {
 			isa = PBXGroup;
 			children = (
+				DC47E145215DD161003CF466 /* View */,
 				DC4AB9D5215A5877002DFD5C /* Model */,
 				DC4AB9CF215A35CE002DFD5C /* Controller */,
 			);
@@ -780,6 +804,9 @@
 				DC4AB9D0215A363C002DFD5C /* LPRegisterVC.h */,
 				DC4AB9D1215A363C002DFD5C /* LPRegisterVC.m */,
 				DC4AB9D2215A363C002DFD5C /* LPRegisterVC.xib */,
+				DC47E140215DC598003CF466 /* LPRegisterDetailVC.h */,
+				DC47E141215DC598003CF466 /* LPRegisterDetailVC.m */,
+				DC47E142215DC598003CF466 /* LPRegisterDetailVC.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -789,6 +816,8 @@
 			children = (
 				DC4AB9D6215A5898002DFD5C /* LPRegisterModel.h */,
 				DC4AB9D7215A5898002DFD5C /* LPRegisterModel.m */,
+				DC47E14E215DD28A003CF466 /* LPRegisterDetailModel.h */,
+				DC47E14F215DD28A003CF466 /* LPRegisterDetailModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1525,11 +1554,13 @@
 				DCE3E1E7214BA172003ADFC6 /* LPSalaryStatisticsCell.xib in Resources */,
 				DC229590214152370002A095 /* LPWorkorderListCell.xib in Resources */,
 				DC4AB9CD215A324F002DFD5C /* LPDimissionVC.xib in Resources */,
+				DC47E144215DC598003CF466 /* LPRegisterDetailVC.xib in Resources */,
 				DCE7273C215B7F5600FAB22B /* LPSalarycCardChangePasswordVC.xib in Resources */,
 				DC44DBA921354E8500D00FAC /* LPInformationCollectionViewCell.xib in Resources */,
 				DCE3E1E2214A465A003ADFC6 /* LPSubsidyDeductionCell.xib in Resources */,
 				DC30E1A621393BB0000C7A91 /* LPWorkDetailHeadCell.xib in Resources */,
 				DC5C38952136682200B3CF6E /* LPCircleCollectionViewCell.xib in Resources */,
+				DC47E14A215DD17B003CF466 /* LPRegisterDetailCell.xib in Resources */,
 				DC550341214C9E81000F4F2E /* GoogleService-Info.plist in Resources */,
 				DC73832B2133E33E0055DC10 /* Main.storyboard in Resources */,
 				DC13BB52213E205A00800955 /* china_cities_v2.db in Resources */,
@@ -1724,6 +1755,7 @@
 				DCE72723215B249D00FAB22B /* LPSalarycCardBindVC.m in Sources */,
 				DC4AB9B4215A1299002DFD5C /* LPChangePasswordVC.m in Sources */,
 				DCE3E1E1214A465A003ADFC6 /* LPSubsidyDeductionCell.m in Sources */,
+				DC47E143215DC598003CF466 /* LPRegisterDetailVC.m in Sources */,
 				DC4AB9BB215A2131002DFD5C /* LPLendVC.m in Sources */,
 				DC7A32E7213812E200E09C6C /* LPSortAlertView.m in Sources */,
 				DC30E19E21392E23000C7A91 /* LPWorkDetailVC.m in Sources */,
@@ -1786,6 +1818,7 @@
 				DC30E19821391303000C7A91 /* LPMainSearchResultVC.m in Sources */,
 				DCF5D9C0213FA395009F5DCE /* LPMechanismcommentMechanismlistModel.m in Sources */,
 				DCF5D9BC213F892D009F5DCE /* LPBusinessReviewVC.m in Sources */,
+				DC47E150215DD28A003CF466 /* LPRegisterDetailModel.m in Sources */,
 				DCF5D9CC213FB5CF009F5DCE /* LPBusinessReviewSearchResultVC.m in Sources */,
 				DC5C38A1213690C000B3CF6E /* LPMoodListModel.m in Sources */,
 				DC44DBA021353D5800D00FAC /* LPLabelListModel.m in Sources */,
@@ -1800,6 +1833,7 @@
 				DC73839B2134EAEF0055DC10 /* UIWindow+Window.m in Sources */,
 				DC5C388021362EB300B3CF6E /* LPEssaylistModel.m in Sources */,
 				DCB57F7A215CA5EB0043AA43 /* LPBusinessReviewDetailSalaryCell.m in Sources */,
+				DC47E149215DD17B003CF466 /* LPRegisterDetailCell.m in Sources */,
 				DC22957F2140BBE70002A095 /* LPUserMaterialModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

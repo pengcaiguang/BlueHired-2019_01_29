@@ -8,6 +8,7 @@
 
 #import "LPRegisterVC.h"
 #import "LPRegisterModel.h"
+#import "LPRegisterDetailVC.h"
 
 @interface LPRegisterVC ()
 
@@ -40,6 +41,10 @@
     self.sumAmountLabel.text = [NSString stringWithFormat:@"%ld元",model.data.sumNum.integerValue*20];
     self.unAmountLabel.text = [NSString stringWithFormat:@"%ld元",(model.data.sumNum.integerValue-model.data.fullMonthNum.integerValue) * 20];
 
+}
+- (IBAction)touchDetailButton:(UIButton *)sender {
+    LPRegisterDetailVC *vc = [[LPRegisterDetailVC alloc]init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - request

@@ -203,6 +203,9 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //邀请奖励
 + (void)requestGetRegisterWithParam:(id)paramer
                          withHandle:(response)responseHandle;
+//邀请奖励详情
++ (void)requestGetOnWorkWithParam:(id)paramer
+                       withHandle:(response)responseHandle;
 //查询绑定银行卡
 + (void)requestSelectBindbankcardWithParam:(id)paramer
                                 withHandle:(response)responseHandle;
