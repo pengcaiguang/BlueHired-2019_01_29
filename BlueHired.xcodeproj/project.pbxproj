@@ -135,6 +135,8 @@
 		DC7383A72134F6580055DC10 /* LPMainCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7383A52134F6580055DC10 /* LPMainCell.m */; };
 		DC7383A82134F6580055DC10 /* LPMainCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC7383A62134F6580055DC10 /* LPMainCell.xib */; };
 		DC7383AC2134F7B50055DC10 /* LPWorklistModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7383AB2134F7B50055DC10 /* LPWorklistModel.m */; };
+		DC799CB2215F813A003B94C7 /* LPUserInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC799CB0215F813A003B94C7 /* LPUserInfoVC.m */; };
+		DC799CB3215F813A003B94C7 /* LPUserInfoVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC799CB1215F813A003B94C7 /* LPUserInfoVC.xib */; };
 		DC7A32CF21379BCA00E09C6C /* LPMineCardCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7A32CD21379BCA00E09C6C /* LPMineCardCell.m */; };
 		DC7A32D021379BCA00E09C6C /* LPMineCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DC7A32CE21379BCA00E09C6C /* LPMineCardCell.xib */; };
 		DC7A32D52137C2EC00E09C6C /* LPLoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7A32D42137C2EC00E09C6C /* LPLoginVC.m */; };
@@ -465,6 +467,9 @@
 		DC7383A62134F6580055DC10 /* LPMainCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPMainCell.xib; sourceTree = "<group>"; };
 		DC7383AA2134F7B50055DC10 /* LPWorklistModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPWorklistModel.h; sourceTree = "<group>"; };
 		DC7383AB2134F7B50055DC10 /* LPWorklistModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPWorklistModel.m; sourceTree = "<group>"; };
+		DC799CAF215F813A003B94C7 /* LPUserInfoVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPUserInfoVC.h; sourceTree = "<group>"; };
+		DC799CB0215F813A003B94C7 /* LPUserInfoVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPUserInfoVC.m; sourceTree = "<group>"; };
+		DC799CB1215F813A003B94C7 /* LPUserInfoVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPUserInfoVC.xib; sourceTree = "<group>"; };
 		DC7A32CC21379BCA00E09C6C /* LPMineCardCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPMineCardCell.h; sourceTree = "<group>"; };
 		DC7A32CD21379BCA00E09C6C /* LPMineCardCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPMineCardCell.m; sourceTree = "<group>"; };
 		DC7A32CE21379BCA00E09C6C /* LPMineCardCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPMineCardCell.xib; sourceTree = "<group>"; };
@@ -1248,6 +1253,9 @@
 				DCDB29EF215F5EE1008444BA /* LPSignInfoVC.h */,
 				DCDB29F0215F5EE1008444BA /* LPSignInfoVC.m */,
 				DCDB29F1215F5EE1008444BA /* LPSignInfoVC.xib */,
+				DC799CAF215F813A003B94C7 /* LPUserInfoVC.h */,
+				DC799CB0215F813A003B94C7 /* LPUserInfoVC.m */,
+				DC799CB1215F813A003B94C7 /* LPUserInfoVC.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1720,6 +1728,7 @@
 				DC7383882134DC200055DC10 /* LPMineCell.xib in Resources */,
 				DC4AB9C6215A283F002DFD5C /* LPSalarycCardVC.xib in Resources */,
 				DCDB29D8215F0EDC008444BA /* LPCollectionCollectionViewCell.xib in Resources */,
+				DC799CB3215F813A003B94C7 /* LPUserInfoVC.xib in Resources */,
 				DC47E171215E5C19003CF466 /* LPCollectionVC.xib in Resources */,
 				DC7383302133E3670055DC10 /* LaunchScreen.storyboard in Resources */,
 				DCDB29E4215F151C008444BA /* LPCollectionEssayCell.xib in Resources */,
@@ -1891,6 +1900,7 @@
 				DC5C38842136372F00B3CF6E /* LPInformationSingleCell.m in Sources */,
 				DC7383962134E95E0055DC10 /* MoninNet.m in Sources */,
 				DC4AB9AE2159E52B002DFD5C /* LPInfoDetailVC.m in Sources */,
+				DC799CB2215F813A003B94C7 /* LPUserInfoVC.m in Sources */,
 				DC7383942134E95E0055DC10 /* NetRequestEnty.m in Sources */,
 				DC30E1952138F51B000C7A91 /* LPInformationSearchVC.m in Sources */,
 				DC44DBA321354D6A00D00FAC /* DeviceUtils.m in Sources */,

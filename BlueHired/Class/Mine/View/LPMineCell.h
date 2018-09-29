@@ -25,6 +25,7 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *signInButton;
 
+@property (weak, nonatomic) IBOutlet UIView *bgView;
 
 @property(nonatomic,strong) LPUserMaterialModel *userMaterialModel;
 @property(nonatomic,assign) BOOL signin;

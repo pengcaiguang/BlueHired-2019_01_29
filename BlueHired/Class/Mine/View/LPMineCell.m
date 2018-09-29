@@ -9,6 +9,7 @@
 #import "LPMineCell.h"
 #import "LPSetVC.h"
 #import "LPSignInfoVC.h"
+#import "LPUserInfoVC.h"
 
 @implementation LPMineCell
 
@@ -24,6 +25,9 @@
     self.signInButton.layer.borderColor = [UIColor whiteColor].CGColor;
     self.signInButton.layer.borderWidth = 0.5;
     self.signInButton.hidden = YES;
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(touchBgView)];
+    [self.bgView addGestureRecognizer:tap];
 }
 -(void)setUserMaterialModel:(LPUserMaterialModel *)userMaterialModel{
     _userMaterialModel = userMaterialModel;
@@ -97,6 +101,11 @@
 
 - (IBAction)touchSetButton:(id)sender {
     LPSetVC *vc = [[LPSetVC alloc]init];
+    vc.hidesBottomBarWhenPushed = YES;
+    [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+}
+-(void)touchBgView{
+    LPUserInfoVC *vc = [[LPUserInfoVC alloc]init];
     vc.hidesBottomBarWhenPushed = YES;
     [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
 }
