@@ -221,6 +221,15 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //查询问题
 + (void)requestQueryProblemDetailWithParam:(id)paramer
                                 withHandle:(response)responseHandle;
+//招聘收藏
++ (void)requestGetWorkCollectionWithParam:(id)paramer
+                               withHandle:(response)responseHandle;
+//资讯收藏
++ (void)requestGetEssayCollectionWithParam:(id)paramer
+                                withHandle:(response)responseHandle;
+//批量删除收藏信息
++ (void)requestDeleteCollectionWithParam:(id)paramer
+                              withHandle:(response)responseHandle;
 #pragma mark - 企业点评
 /************************************************************/
 //*  企业点评

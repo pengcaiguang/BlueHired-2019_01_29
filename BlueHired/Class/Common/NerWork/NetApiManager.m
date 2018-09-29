@@ -642,6 +642,36 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
+//招聘收藏
++ (void)requestGetWorkCollectionWithParam:(id)paramer
+                               withHandle:(response)responseHandle{
+    NSString * appendURLString = @"collection/get_work_collection";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
+//资讯收藏
++ (void)requestGetEssayCollectionWithParam:(id)paramer
+                                withHandle:(response)responseHandle{
+    NSString * appendURLString = @"collection/get_essay_collection";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
+//批量删除收藏信息
++ (void)requestDeleteCollectionWithParam:(id)paramer
+                              withHandle:(response)responseHandle{
+    NSString * appendURLString = @"collection/delete_collection";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
 #pragma mark - 企业点评
 /************************************************************/
 //*  企业点评
