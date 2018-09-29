@@ -229,8 +229,6 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
                     self.signin = YES;
                 }
             }
-            
-            
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
