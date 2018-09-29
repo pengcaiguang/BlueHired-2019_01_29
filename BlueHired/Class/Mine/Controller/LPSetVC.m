@@ -12,6 +12,8 @@
 @interface LPSetVC ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong)UITableView *tableview;
 
+@property(nonatomic,strong) UIView *alertBgView;
+@property(nonatomic,strong) UIView *alertView;
 @end
 
 @implementation LPSetVC
@@ -89,7 +91,33 @@
     if (indexPath.row == 0) {
         LPFeedBackVC *vc = [[LPFeedBackVC alloc]init];
         [self.navigationController pushViewController:vc animated:YES];
+    }else if (indexPath.row == 2){
+        [self showAlert];
     }
+}
+
+-(void)showAlert{
+    [[UIApplication sharedApplication].keyWindow addSubview:self.alertBgView];
+    [[UIApplication sharedApplication].keyWindow addSubview:self.alertView];
+    self.alertView.hidden = NO;
+    self.alertBgView.hidden = NO;
+    [UIView animateWithDuration:0.3 animations:^{
+        self.alertBgView.alpha = 0.5;
+        self.alertView.alpha = 1.0;
+    } completion:^(BOOL finished) {
+        
+    }];
+
+}
+-(void)hiddenAlert{
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        self.alertBgView.alpha = 0;
+        self.alertView.alpha = 0;
+    } completion:^(BOOL finished) {
+        self.alertView.hidden = YES;
+        self.alertBgView.hidden = YES;
+    }];
 }
 
 #pragma mark - request
@@ -117,9 +145,77 @@
         _tableview.estimatedRowHeight = 44;
         _tableview.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         _tableview.separatorColor = [UIColor colorWithHexString:@"#F1F1F1"];
-        
     }
     return _tableview;
+}
+-(UIView *)alertView{
+    if (!_alertView) {
+        _alertView = [[UIView alloc]init];
+        _alertView.frame = CGRectMake(13, SCREEN_HEIGHT/3, SCREEN_WIDTH-26, 300);
+        _alertView.backgroundColor = [UIColor whiteColor];
+        _alertView.alpha = 0;
+        _alertView.layer.masksToBounds = YES;
+        _alertView.layer.cornerRadius = 4.0;
+        
+        UIImageView *imgView = [[UIImageView alloc]init];
+        [_alertView addSubview:imgView];
+        [imgView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_equalTo(20);
+            make.size.mas_equalTo(CGSizeMake(40, 40));
+            make.centerX.equalTo(self.alertView);
+        }];
+        imgView.image = [UIImage imageNamed:@"logo_Information"];
+        
+        UILabel *titleLabel = [[UILabel alloc]init];
+        [_alertView addSubview:titleLabel];
+        [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(13);
+            make.right.mas_equalTo(-13);
+            make.top.equalTo(imgView.mas_bottom).offset(15);
+        }];
+        titleLabel.textAlignment = NSTextAlignmentCenter;
+        titleLabel.font = [UIFont systemFontOfSize:15];
+        titleLabel.text = @"广东蓝聘科技有限公司";
+        
+        UILabel *textLabel = [[UILabel alloc]init];
+        [_alertView addSubview:textLabel];
+        [textLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(13);
+            make.right.mas_equalTo(-13);
+            make.top.equalTo(titleLabel.mas_bottom).offset(15);
+        }];
+        textLabel.font = [UIFont systemFontOfSize:13];
+        textLabel.numberOfLines = 0;
+        textLabel.textColor = [UIColor grayColor];
+        textLabel.text = @"广东蓝聘科技有限公司是一家专为蓝领打造招聘信息相关的综合服务平台，为广大职工朋友提供海量真实、可靠、优质的岗位。并设计资讯查看、互动社区、工时记录、工资查看等功能方便职工朋友的使用。保障劳动者的利益，让劳动者工作无忧！";
+        
+        UILabel *bottomLabel = [[UILabel alloc]init];
+        [_alertView addSubview:bottomLabel];
+        [bottomLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(13);
+            make.right.mas_equalTo(-13);
+            make.bottom.mas_equalTo(-20);
+        }];
+        bottomLabel.font = [UIFont systemFontOfSize:13];
+        bottomLabel.numberOfLines = 0;
+        bottomLabel.textAlignment = NSTextAlignmentCenter;
+        bottomLabel.textColor = [UIColor grayColor];
+        bottomLabel.text = @"广东蓝聘科技有限公司\nCopyright©2018-2020lanpin123.com\nAll Rights Reserved.";
+        
+    }
+    return _alertView;
+}
+-(UIView *)alertBgView{
+    if (!_alertBgView) {
+        _alertBgView = [[UIView alloc]init];
+        _alertBgView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        _alertBgView.backgroundColor = [UIColor blackColor];
+        _alertBgView.alpha = 0;
+        _alertBgView.userInteractionEnabled = YES;
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(hiddenAlert)];
+        [_alertBgView addGestureRecognizer:tap];
+    }
+    return _alertBgView;
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
