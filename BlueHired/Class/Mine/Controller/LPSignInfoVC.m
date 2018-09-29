@@ -8,12 +8,19 @@
 
 #import "LPSignInfoVC.h"
 #import "LPCalendarSignCell.h"
+#import "LPSignInfoModel.h"
 
 @interface LPSignInfoVC ()<FSCalendarDataSource,FSCalendarDelegate,FSCalendarDelegateAppearance>
+@property (weak, nonatomic) IBOutlet UIButton *signButton;
 @property (weak, nonatomic) IBOutlet UIView *bgView;
-@property (weak, nonatomic) FSCalendar *calendar;
-@property(nonatomic,strong) NSMutableArray *selectDateArray;
+@property (weak, nonatomic) IBOutlet UILabel *signNumberLabel;
+@property (weak, nonatomic) IBOutlet UILabel *dayScoreLabel;
 
+@property (weak, nonatomic) FSCalendar *calendar;
+@property(nonatomic,strong) NSArray *selectDateArray;
+
+@property(nonatomic,strong) NSString *currentDateString;
+@property(nonatomic,strong) LPSignInfoModel *model;
 @end
 
 @implementation LPSignInfoVC
@@ -23,10 +30,18 @@
     // Do any additional setup after loading the view from its nib.
     self.navigationItem.title = @"签到";
     self.selectDateArray = [NSMutableArray array];
+    
+    self.signButton.titleLabel.numberOfLines = 0;
+    self.signButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    self.signButton.adjustsImageWhenHighlighted=NO;
     [self setupUI];
-    NSArray *a = @[@"2018-09-06",@"2018-09-10",@"2018-09-17",@"2018-09-22"];
-    [self.selectDateArray addObjectsFromArray:a];
-    [self.calendar reloadData];
+    [self requestSelectSignInfo];
+
+    NSDate *currentDate = [NSDate date];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"YYYY-MM-dd"];
+    self.currentDateString = [dateFormatter stringFromDate:currentDate];
+    
 }
 -(void)setupUI{
     FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(13, 20, SCREEN_WIDTH-26, 253)];
@@ -48,22 +63,34 @@
     calendar.calendarWeekdayView.backgroundColor = self.bgView.backgroundColor;
     [calendar registerClass:[LPCalendarSignCell class] forCellReuseIdentifier:@"cell"];
     [self.bgView addSubview:calendar];
-    
     self.calendar = calendar;
 }
-//-(void)setSelectArray:(NSArray *)selectArray{
-//    _selectArray = selectArray;
-//    NSDate *currentDate = [NSDate date];
-//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-//    [dateFormatter setDateFormat:@"YYYY-MM"];
-//    NSString *string = [dateFormatter stringFromDate:currentDate];
-//    self.selectDateArray = [NSMutableArray array];
-//    for (NSString *str in selectArray) {
-//        NSString *dateString = [NSString stringWithFormat:@"%@-%@",string,str];
-//        [self.selectDateArray addObject:dateString];
-//    }
-//    [self.calendar reloadData];
-//}
+- (IBAction)touchSignButton:(UIButton *)sender {
+    [NetApiManager requestUserSignAddWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            [self requestSelectSignInfo];
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+
+
+-(void)setModel:(LPSignInfoModel *)model{
+    _model = model;
+    self.signNumberLabel.text = [NSString stringWithFormat:@"本周已连续签到%@天",model.data.signNumber];
+    self.dayScoreLabel.text = [NSString stringWithFormat:@"今日签到%@积分",model.data.dayScore];
+    self.selectDateArray = model.data.signTimeList;
+    [self.calendar reloadData];
+    
+    if ([self.selectDateArray containsObject:self.currentDateString]) {
+        self.signButton.enabled = NO;
+        self.dayScoreLabel.hidden = YES;
+        [self.signButton setTitle:[NSString stringWithFormat:@"今日签到%@积分",model.data.dayScore] forState:UIControlStateNormal];
+    }
+}
+
 
 #pragma mark - FSCalendarDelegate
 - (FSCalendarCell *)calendar:(FSCalendar *)calendar cellForDate:(NSDate *)date atMonthPosition:(FSCalendarMonthPosition)monthPosition{
@@ -86,13 +113,22 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.dateFormat = @"yyyy-MM-dd";
     NSString *key = [dateFormatter stringFromDate:date];
-    if ([self.selectDateArray containsObject:key]) {
+    if ([self.selectDateArray containsObject:key] && ![self.selectDateArray containsObject:self.currentDateString]) {
         rangeCell.imgView.hidden = NO;
     }else{
         rangeCell.imgView.hidden = YES;
     }
 }
-
+-(void)requestSelectSignInfo{
+    [NetApiManager requestSelectSignInfoWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            self.model = [LPSignInfoModel mj_objectWithKeyValues:responseObject];
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
 /*
 #pragma mark - Navigation
 

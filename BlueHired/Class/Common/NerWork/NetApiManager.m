@@ -682,6 +682,26 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
+//查询签到
++ (void)requestSelectSignInfoWithParam:(id)paramer
+                            withHandle:(response)responseHandle{
+    NSString * appendURLString = @"userSign/selectSignInfo";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
+//签到
++ (void)requestUserSignAddWithParam:(id)paramer
+                         withHandle:(response)responseHandle{
+    NSString * appendURLString = @"userSign/add";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
 #pragma mark - 企业点评
 /************************************************************/
 //*  企业点评

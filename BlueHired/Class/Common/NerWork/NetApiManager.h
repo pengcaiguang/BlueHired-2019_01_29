@@ -233,6 +233,12 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //意见反馈
 + (void)requestProblemAddWithParam:(id)paramer
                         withHandle:(response)responseHandle;
+//查询签到
++ (void)requestSelectSignInfoWithParam:(id)paramer
+                            withHandle:(response)responseHandle;
+//签到
++ (void)requestUserSignAddWithParam:(id)paramer
+                         withHandle:(response)responseHandle;
 #pragma mark - 企业点评
 /************************************************************/
 //*  企业点评

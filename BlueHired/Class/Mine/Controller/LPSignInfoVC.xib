@@ -13,6 +13,9 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LPSignInfoVC">
             <connections>
                 <outlet property="bgView" destination="xPE-9p-tfa" id="mCc-KI-ptA"/>
+                <outlet property="dayScoreLabel" destination="bsy-Zf-l8C" id="JYc-xJ-gLL"/>
+                <outlet property="signButton" destination="buT-UC-kgU" id="i0e-Sb-iDZ"/>
+                <outlet property="signNumberLabel" destination="wDp-Lj-kYz" id="YK0-pe-tYh"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -33,14 +36,14 @@
                         <constraint firstAttribute="width" constant="81" id="Lkl-vY-oDb"/>
                         <constraint firstAttribute="height" constant="81" id="MM4-Fv-AeR"/>
                     </constraints>
-                    <state key="normal" image="sign_bgimg"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                    <state key="normal" title="点击签到" backgroundImage="sign_bgimg">
+                        <color key="titleColor" red="1" green="0.63529411759999999" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="touchSignButton:" destination="-1" eventType="touchUpInside" id="IS0-Pj-PHx"/>
+                    </connections>
                 </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="点击签到" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iYK-lD-JUV">
-                    <rect key="frame" x="157" y="104" width="61.5" height="18"/>
-                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
-                    <color key="textColor" red="1" green="0.63529411764705879" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sign_bottomimg" translatesAutoresizingMaskIntoConstraints="NO" id="ErR-d5-mhy">
                     <rect key="frame" x="0.0" y="226" width="375" height="26.5"/>
                     <constraints>
@@ -74,14 +77,12 @@
                 <constraint firstItem="xPE-9p-tfa" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="71h-Kv-T2W"/>
                 <constraint firstItem="buT-UC-kgU" firstAttribute="centerX" secondItem="J8x-p6-PEp" secondAttribute="centerX" id="C0r-Cy-H52"/>
                 <constraint firstItem="xPE-9p-tfa" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="D0A-SE-5P2"/>
-                <constraint firstItem="iYK-lD-JUV" firstAttribute="centerY" secondItem="buT-UC-kgU" secondAttribute="centerY" id="K8I-zx-K8x"/>
                 <constraint firstItem="f9U-HT-dbp" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="24" id="KZA-hm-Dx7"/>
                 <constraint firstItem="ErR-d5-mhy" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="MPW-Aa-a0u"/>
                 <constraint firstItem="J8x-p6-PEp" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="Mnz-nX-39Q"/>
                 <constraint firstItem="xPE-9p-tfa" firstAttribute="top" secondItem="ErR-d5-mhy" secondAttribute="bottom" id="Vde-hP-kWB"/>
                 <constraint firstItem="ErR-d5-mhy" firstAttribute="top" secondItem="J8x-p6-PEp" secondAttribute="bottom" id="aK6-mB-nul"/>
                 <constraint firstItem="f9U-HT-dbp" firstAttribute="top" secondItem="buT-UC-kgU" secondAttribute="bottom" constant="17" id="dvD-mM-2PB"/>
-                <constraint firstItem="iYK-lD-JUV" firstAttribute="centerX" secondItem="buT-UC-kgU" secondAttribute="centerX" id="fT4-fp-z42"/>
                 <constraint firstAttribute="bottom" secondItem="xPE-9p-tfa" secondAttribute="bottom" id="fhK-Nf-Emx"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="f9U-HT-dbp" secondAttribute="trailing" constant="24" id="h9j-ei-dAf"/>
                 <constraint firstItem="J8x-p6-PEp" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="hEO-Go-zTX"/>
