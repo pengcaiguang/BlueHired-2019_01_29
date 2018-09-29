@@ -177,6 +177,8 @@
 		DCDB29E4215F151C008444BA /* LPCollectionEssayCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DCDB29E2215F151C008444BA /* LPCollectionEssayCell.xib */; };
 		DCDB29E8215F1535008444BA /* LPCollectionWorkCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCDB29E6215F1535008444BA /* LPCollectionWorkCell.m */; };
 		DCDB29E9215F1535008444BA /* LPCollectionWorkCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DCDB29E7215F1535008444BA /* LPCollectionWorkCell.xib */; };
+		DCDB29ED215F4720008444BA /* LPFeedBackVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCDB29EB215F4720008444BA /* LPFeedBackVC.m */; };
+		DCDB29EE215F4720008444BA /* LPFeedBackVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = DCDB29EC215F4720008444BA /* LPFeedBackVC.xib */; };
 		DCE1FD2421420AAB009C38BF /* LPWorkorderListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DCE1FD2321420AAB009C38BF /* LPWorkorderListModel.m */; };
 		DCE2C2322148B52400BCB9F4 /* LPCalendarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCE2C2312148B52400BCB9F4 /* LPCalendarCell.m */; };
 		DCE2C2352148C35C00BCB9F4 /* LPSalaryDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCE2C2342148C35C00BCB9F4 /* LPSalaryDetailVC.m */; };
@@ -535,6 +537,9 @@
 		DCDB29E5215F1534008444BA /* LPCollectionWorkCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPCollectionWorkCell.h; sourceTree = "<group>"; };
 		DCDB29E6215F1535008444BA /* LPCollectionWorkCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPCollectionWorkCell.m; sourceTree = "<group>"; };
 		DCDB29E7215F1535008444BA /* LPCollectionWorkCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPCollectionWorkCell.xib; sourceTree = "<group>"; };
+		DCDB29EA215F471F008444BA /* LPFeedBackVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPFeedBackVC.h; sourceTree = "<group>"; };
+		DCDB29EB215F4720008444BA /* LPFeedBackVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPFeedBackVC.m; sourceTree = "<group>"; };
+		DCDB29EC215F4720008444BA /* LPFeedBackVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPFeedBackVC.xib; sourceTree = "<group>"; };
 		DCE1FD2221420AAB009C38BF /* LPWorkorderListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPWorkorderListModel.h; sourceTree = "<group>"; };
 		DCE1FD2321420AAB009C38BF /* LPWorkorderListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPWorkorderListModel.m; sourceTree = "<group>"; };
 		DCE2C2302148B52400BCB9F4 /* LPCalendarCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPCalendarCell.h; sourceTree = "<group>"; };
@@ -1224,6 +1229,9 @@
 				DC29B3D0215D001A00EB918F /* LPInviteVC.h */,
 				DC29B3D1215D001A00EB918F /* LPInviteVC.m */,
 				DC29B3D2215D001A00EB918F /* LPInviteVC.xib */,
+				DCDB29EA215F471F008444BA /* LPFeedBackVC.h */,
+				DCDB29EB215F4720008444BA /* LPFeedBackVC.m */,
+				DCDB29EC215F4720008444BA /* LPFeedBackVC.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1726,6 +1734,7 @@
 				DC7383A82134F6580055DC10 /* LPMainCell.xib in Resources */,
 				DC5C389E213682F500B3CF6E /* LPCircleListCell.xib in Resources */,
 				DCF5D9C6213FA5BD009F5DCE /* LPBusinessReviewCell.xib in Resources */,
+				DCDB29EE215F4720008444BA /* LPFeedBackVC.xib in Resources */,
 				DCE3E1DA214A16FB003ADFC6 /* LPAddRecordCell.xib in Resources */,
 				DC5C38852136372F00B3CF6E /* LPInformationSingleCell.xib in Resources */,
 				DC47E156215E1281003CF466 /* LPSalaryBreakdownCell.xib in Resources */,
@@ -1889,6 +1898,7 @@
 				DC61FAC5214646B30003AA61 /* LPFullTimeVC.m in Sources */,
 				DC4AB9CC215A324F002DFD5C /* LPDimissionVC.m in Sources */,
 				DCDB29DC215F1298008444BA /* LPEssayCollectionModel.m in Sources */,
+				DCDB29ED215F4720008444BA /* LPFeedBackVC.m in Sources */,
 				DC30E1A121393255000C7A91 /* LPWorkDetailModel.m in Sources */,
 				DC7383792133EE800055DC10 /* LPTabBarViewController.m in Sources */,
 				DCCC8A892147E4D00062A0F5 /* LPSalaryBreakdownVC.m in Sources */,

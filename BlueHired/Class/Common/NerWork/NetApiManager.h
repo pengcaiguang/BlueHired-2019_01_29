@@ -230,6 +230,9 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //批量删除收藏信息
 + (void)requestDeleteCollectionWithParam:(id)paramer
                               withHandle:(response)responseHandle;
+//意见反馈
++ (void)requestProblemAddWithParam:(id)paramer
+                        withHandle:(response)responseHandle;
 #pragma mark - 企业点评
 /************************************************************/
 //*  企业点评

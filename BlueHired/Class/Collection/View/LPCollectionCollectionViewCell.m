@@ -14,10 +14,6 @@
 #import "LPWorkDetailVC.h"
 #import "LPEssayDetailVC.h"
 
-#import "LPWorklistModel.h"
-#import "LPEssaylistModel.h"
-
-
 static NSString *LPCollectionEssayCellID = @"LPCollectionEssayCell";
 static NSString *LPCollectionWorkCellID = @"LPCollectionWorkCell";
 

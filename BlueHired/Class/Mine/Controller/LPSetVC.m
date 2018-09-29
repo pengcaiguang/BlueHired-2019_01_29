@@ -7,6 +7,7 @@
 //
 
 #import "LPSetVC.h"
+#import "LPFeedBackVC.h"
 
 @interface LPSetVC ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong)UITableView *tableview;
@@ -85,6 +86,10 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (indexPath.row == 0) {
+        LPFeedBackVC *vc = [[LPFeedBackVC alloc]init];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 #pragma mark - request

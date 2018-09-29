@@ -24,4 +24,6 @@
 - (NSString *)md5;
 
 -(CGRect)getStringSize:(CGSize )size font:(UIFont *)font;
+
++ (NSString *)getDeviceName;
 @end

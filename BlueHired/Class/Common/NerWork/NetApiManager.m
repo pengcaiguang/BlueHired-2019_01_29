@@ -672,6 +672,16 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
+//意见反馈
++ (void)requestProblemAddWithParam:(id)paramer
+                        withHandle:(response)responseHandle{
+    NSString * appendURLString = @"problem/add";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
 #pragma mark - 企业点评
 /************************************************************/
 //*  企业点评
