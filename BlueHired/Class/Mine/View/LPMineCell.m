@@ -8,6 +8,7 @@
 
 #import "LPMineCell.h"
 #import "LPSetVC.h"
+#import "LPSignInfoVC.h"
 
 @implementation LPMineCell
 
@@ -83,6 +84,9 @@
     }
 }
 - (IBAction)touchSignInButton:(UIButton *)sender {
+    LPSignInfoVC *vc = [[LPSignInfoVC alloc]init];
+    vc.hidesBottomBarWhenPushed = YES;
+    [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
 }
 - (IBAction)touchEditButton:(UIButton *)sender {
     if ([LoginUtils validationLogin:[UIWindow visibleViewController]]) {
