@@ -185,7 +185,7 @@
                                     <action selector="selectShowMoneyButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="882-qn-8Hi"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="提现" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yvc-DJ-EL4">
+                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="提现" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yvc-DJ-EL4">
                                 <rect key="frame" x="10" y="65.5" width="86" height="15"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -195,7 +195,7 @@
                                 <color key="textColor" red="0.20392156862745098" green="0.20392156862745098" blue="0.20392156862745098" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="账单" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A5L-Cn-mgJ">
+                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="账单" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A5L-Cn-mgJ">
                                 <rect key="frame" x="106" y="65.5" width="86" height="15"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -280,6 +280,7 @@
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
             <connections>
                 <outlet property="bgView" destination="gD8-1W-lSK" id="SFS-2d-uK9"/>
+                <outlet property="billRecordLabel" destination="A5L-Cn-mgJ" id="1xT-5S-bpf"/>
                 <outlet property="concernNumLabel" destination="H5c-nf-sb7" id="LbM-ZH-3LD"/>
                 <outlet property="gradingLabel" destination="RAJ-pe-EBk" id="srf-nq-Pqy"/>
                 <outlet property="moneyLabel" destination="T7P-nc-qQa" id="PIb-qa-oq5"/>
@@ -290,6 +291,7 @@
                 <outlet property="user_nameLabel" destination="yPv-qA-VvS" id="KRM-bh-U3J"/>
                 <outlet property="user_sexImgView" destination="cXc-6e-JCS" id="vgm-rx-szv"/>
                 <outlet property="user_urlImgView" destination="YzP-B1-eds" id="JwJ-ar-XeU"/>
+                <outlet property="withdrawalLabel" destination="Yvc-DJ-EL4" id="MW1-Xl-ttV"/>
                 <outlet property="workStatusLabel" destination="ZGi-c2-EEI" id="Zfk-ZZ-qpJ"/>
             </connections>
             <point key="canvasLocation" x="-232" y="-8.5457271364317844"/>

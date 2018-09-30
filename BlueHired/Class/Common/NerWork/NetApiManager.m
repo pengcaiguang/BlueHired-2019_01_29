@@ -712,7 +712,26 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
-
+//账单
++ (void)requestQueryBillrecordWithParam:(id)paramer
+                             withHandle:(response)responseHandle{
+    NSString * appendURLString = @"billrecord/query_billrecord";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
+//提现
++ (void)requestQueryBankcardwithDrawWithParam:(id)paramer
+                                   withHandle:(response)responseHandle{
+    NSString * appendURLString = @"billrecord/query_bankcardwithDraw";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
 #pragma mark - 企业点评
 /************************************************************/
 //*  企业点评

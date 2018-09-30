@@ -102,6 +102,7 @@
         UITextField *textField = [[UITextField alloc]init];
         textField.frame = CGRectMake(70, 5, SCREEN_WIDTH-140, 34);
         textField.text = self.userMaterialModel.data.user_name;
+        textField.textColor = [UIColor colorWithHexString:@"#434343"];
         [textField addTarget:self action:@selector(textFieldChanged:) forControlEvents:UIControlEventEditingChanged];
         self.userName = self.userMaterialModel.data.user_name;
         [cell.contentView addSubview:textField];

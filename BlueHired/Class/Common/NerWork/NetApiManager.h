@@ -243,6 +243,12 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 + (void)requestSaveOrUpdateWithParam:(NSString *)urlString
                            withParam:(id)paramer
                           withHandle:(response)responseHandle;
+//账单
++ (void)requestQueryBillrecordWithParam:(id)paramer
+                             withHandle:(response)responseHandle;
+//提现
++ (void)requestQueryBankcardwithDrawWithParam:(id)paramer
+                                   withHandle:(response)responseHandle;
 #pragma mark - 企业点评
 /************************************************************/
 //*  企业点评

@@ -158,6 +158,12 @@
 		DCB57F7A215CA5EB0043AA43 /* LPBusinessReviewDetailSalaryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB57F78215CA5EB0043AA43 /* LPBusinessReviewDetailSalaryCell.m */; };
 		DCB57F7B215CA5EB0043AA43 /* LPBusinessReviewDetailSalaryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DCB57F79215CA5EB0043AA43 /* LPBusinessReviewDetailSalaryCell.xib */; };
 		DCB57F7F215CBA680043AA43 /* LPQueryCheckrecordModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB57F7E215CBA680043AA43 /* LPQueryCheckrecordModel.m */; };
+		DCC969BA2160BAD300D9E99C /* LPBillRecordVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC969B82160BAD300D9E99C /* LPBillRecordVC.m */; };
+		DCC969BB2160BAD300D9E99C /* LPBillRecordVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = DCC969B92160BAD300D9E99C /* LPBillRecordVC.xib */; };
+		DCC969BF2160BF6300D9E99C /* LPWithDrawalVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC969BD2160BF6300D9E99C /* LPWithDrawalVC.m */; };
+		DCC969C02160BF6300D9E99C /* LPWithDrawalVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = DCC969BE2160BF6300D9E99C /* LPWithDrawalVC.xib */; };
+		DCC969C32160C2F600D9E99C /* LPBankcardwithDrawModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC969C22160C2F600D9E99C /* LPBankcardwithDrawModel.m */; };
+		DCC969C62160C38B00D9E99C /* LPBillrecordModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC969C52160C38B00D9E99C /* LPBillrecordModel.m */; };
 		DCCC8A60214754D30062A0F5 /* LPDateSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = DCCC8A5F214754D30062A0F5 /* LPDateSelectView.m */; };
 		DCCC8A6321476C830062A0F5 /* LPHourlyWorkVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCCC8A6221476C830062A0F5 /* LPHourlyWorkVC.m */; };
 		DCCC8A6C2147941F0062A0F5 /* LPFullTimeDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DCCC8A6B2147941F0062A0F5 /* LPFullTimeDetailVC.m */; };
@@ -508,6 +514,16 @@
 		DCB57F7D215CBA680043AA43 /* LPQueryCheckrecordModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPQueryCheckrecordModel.h; sourceTree = "<group>"; };
 		DCB57F7E215CBA680043AA43 /* LPQueryCheckrecordModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPQueryCheckrecordModel.m; sourceTree = "<group>"; };
 		DCB5A5321875E124A6C52C8B /* libPods-BlueHired.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BlueHired.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DCC969B72160BAD300D9E99C /* LPBillRecordVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPBillRecordVC.h; sourceTree = "<group>"; };
+		DCC969B82160BAD300D9E99C /* LPBillRecordVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPBillRecordVC.m; sourceTree = "<group>"; };
+		DCC969B92160BAD300D9E99C /* LPBillRecordVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPBillRecordVC.xib; sourceTree = "<group>"; };
+		DCC969BC2160BF6300D9E99C /* LPWithDrawalVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPWithDrawalVC.h; sourceTree = "<group>"; };
+		DCC969BD2160BF6300D9E99C /* LPWithDrawalVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPWithDrawalVC.m; sourceTree = "<group>"; };
+		DCC969BE2160BF6300D9E99C /* LPWithDrawalVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPWithDrawalVC.xib; sourceTree = "<group>"; };
+		DCC969C12160C2F600D9E99C /* LPBankcardwithDrawModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPBankcardwithDrawModel.h; sourceTree = "<group>"; };
+		DCC969C22160C2F600D9E99C /* LPBankcardwithDrawModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPBankcardwithDrawModel.m; sourceTree = "<group>"; };
+		DCC969C42160C38B00D9E99C /* LPBillrecordModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPBillrecordModel.h; sourceTree = "<group>"; };
+		DCC969C52160C38B00D9E99C /* LPBillrecordModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPBillrecordModel.m; sourceTree = "<group>"; };
 		DCCC8A5E214754D30062A0F5 /* LPDateSelectView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPDateSelectView.h; sourceTree = "<group>"; };
 		DCCC8A5F214754D30062A0F5 /* LPDateSelectView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPDateSelectView.m; sourceTree = "<group>"; };
 		DCCC8A6121476C830062A0F5 /* LPHourlyWorkVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPHourlyWorkVC.h; sourceTree = "<group>"; };
@@ -733,6 +749,10 @@
 				DC22957E2140BBE70002A095 /* LPUserMaterialModel.m */,
 				DCDB29F7215F7020008444BA /* LPSignInfoModel.h */,
 				DCDB29F8215F7020008444BA /* LPSignInfoModel.m */,
+				DCC969C12160C2F600D9E99C /* LPBankcardwithDrawModel.h */,
+				DCC969C22160C2F600D9E99C /* LPBankcardwithDrawModel.m */,
+				DCC969C42160C38B00D9E99C /* LPBillrecordModel.h */,
+				DCC969C52160C38B00D9E99C /* LPBillrecordModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1256,6 +1276,12 @@
 				DC799CAF215F813A003B94C7 /* LPUserInfoVC.h */,
 				DC799CB0215F813A003B94C7 /* LPUserInfoVC.m */,
 				DC799CB1215F813A003B94C7 /* LPUserInfoVC.xib */,
+				DCC969B72160BAD300D9E99C /* LPBillRecordVC.h */,
+				DCC969B82160BAD300D9E99C /* LPBillRecordVC.m */,
+				DCC969B92160BAD300D9E99C /* LPBillRecordVC.xib */,
+				DCC969BC2160BF6300D9E99C /* LPWithDrawalVC.h */,
+				DCC969BD2160BF6300D9E99C /* LPWithDrawalVC.m */,
+				DCC969BE2160BF6300D9E99C /* LPWithDrawalVC.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1736,6 +1762,7 @@
 				DCB57F7B215CA5EB0043AA43 /* LPBusinessReviewDetailSalaryCell.xib in Resources */,
 				DC13BB5B213E5B6A00800955 /* LPCityCell.xib in Resources */,
 				DC73832D2133E3670055DC10 /* Assets.xcassets in Resources */,
+				DCC969BB2160BAD300D9E99C /* LPBillRecordVC.xib in Resources */,
 				DCE72724215B249D00FAB22B /* LPSalarycCardBindVC.xib in Resources */,
 				DC290F30213CC55000EC3FCC /* LPEssayDetailCommentCell.xib in Resources */,
 				DCE3E1E7214BA172003ADFC6 /* LPSalaryStatisticsCell.xib in Resources */,
@@ -1775,6 +1802,7 @@
 				DC5C388F213645E000B3CF6E /* LPInformationMoreImageCollectionViewCell.xib in Resources */,
 				DC7A32D021379BCA00E09C6C /* LPMineCardCell.xib in Resources */,
 				DC5C388A213640A300B3CF6E /* LPInformationMoreCell.xib in Resources */,
+				DCC969C02160BF6300D9E99C /* LPWithDrawalVC.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1924,6 +1952,7 @@
 				DC2295882141230A0002A095 /* GJAlertMessage.m in Sources */,
 				DC7A32CF21379BCA00E09C6C /* LPMineCardCell.m in Sources */,
 				DC30E1A521393BB0000C7A91 /* LPWorkDetailHeadCell.m in Sources */,
+				DCC969BF2160BF6300D9E99C /* LPWithDrawalVC.m in Sources */,
 				DC73838221341EBD0055DC10 /* LPSearchBar.m in Sources */,
 				DC61FAC5214646B30003AA61 /* LPFullTimeVC.m in Sources */,
 				DC4AB9CC215A324F002DFD5C /* LPDimissionVC.m in Sources */,
@@ -1946,6 +1975,7 @@
 				DCCC8A842147AED60062A0F5 /* WSShowInfoView.m in Sources */,
 				DC47E155215E1281003CF466 /* LPSalaryBreakdownCell.m in Sources */,
 				DC13BB50213E1FD100800955 /* LPCityDataManager.m in Sources */,
+				DCC969C32160C2F600D9E99C /* LPBankcardwithDrawModel.m in Sources */,
 				DC44DB9C21352B8000D00FAC /* LPNoDataView.m in Sources */,
 				DCE3E1D9214A16FB003ADFC6 /* LPAddRecordCell.m in Sources */,
 				DCDB29DF215F12B2008444BA /* LPWorkCollectionModel.m in Sources */,
@@ -1966,6 +1996,7 @@
 				DC73836D2133EC1B0055DC10 /* LPInformationVC.m in Sources */,
 				DCE3E1DD214A43C3003ADFC6 /* LPSubsidyDeductionVC.m in Sources */,
 				DCDB29E8215F1535008444BA /* LPCollectionWorkCell.m in Sources */,
+				DCC969C62160C38B00D9E99C /* LPBillrecordModel.m in Sources */,
 				DC7383982134E95E0055DC10 /* NetApiManager.m in Sources */,
 				DC1CD4032151DFC100EA9970 /* LPAddMoodeVC.m in Sources */,
 				DCCC8A812147AED60062A0F5 /* WSPieChart.m in Sources */,
@@ -2042,6 +2073,7 @@
 				DCB57F7A215CA5EB0043AA43 /* LPBusinessReviewDetailSalaryCell.m in Sources */,
 				DC47E149215DD17B003CF466 /* LPRegisterDetailCell.m in Sources */,
 				DC22957F2140BBE70002A095 /* LPUserMaterialModel.m in Sources */,
+				DCC969BA2160BAD300D9E99C /* LPBillRecordVC.m in Sources */,
 				DC47E167215E29A6003CF466 /* LPCustomerServiceModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

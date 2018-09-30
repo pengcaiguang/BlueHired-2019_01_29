@@ -10,6 +10,8 @@
 #import "LPSetVC.h"
 #import "LPSignInfoVC.h"
 #import "LPUserInfoVC.h"
+#import "LPBillRecordVC.h"
+#import "LPWithDrawalVC.h"
 
 @implementation LPMineCell
 
@@ -28,6 +30,12 @@
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(touchBgView)];
     [self.bgView addGestureRecognizer:tap];
+    
+    UITapGestureRecognizer *tap1 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(touchbillRecordLabel)];
+    [self.billRecordLabel addGestureRecognizer:tap1];
+    UITapGestureRecognizer *tap2 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(touchwithdrawalLabel)];
+    [self.withdrawalLabel addGestureRecognizer:tap2];
+    
 }
 -(void)setUserMaterialModel:(LPUserMaterialModel *)userMaterialModel{
     _userMaterialModel = userMaterialModel;
@@ -94,7 +102,9 @@
 }
 - (IBAction)touchEditButton:(UIButton *)sender {
     if ([LoginUtils validationLogin:[UIWindow visibleViewController]]) {
-        
+        LPUserInfoVC *vc = [[LPUserInfoVC alloc]init];
+        vc.hidesBottomBarWhenPushed = YES;
+        [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
     }
 }
 
@@ -105,11 +115,26 @@
     [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
 }
 -(void)touchBgView{
-    LPUserInfoVC *vc = [[LPUserInfoVC alloc]init];
-    vc.hidesBottomBarWhenPushed = YES;
-    [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+    if ([LoginUtils validationLogin:[UIWindow visibleViewController]]) {
+        LPUserInfoVC *vc = [[LPUserInfoVC alloc]init];
+        vc.hidesBottomBarWhenPushed = YES;
+        [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+    }
 }
-
+-(void)touchbillRecordLabel{
+    if ([LoginUtils validationLogin:[UIWindow visibleViewController]]) {
+        LPBillRecordVC *vc = [[LPBillRecordVC alloc]init];
+        vc.hidesBottomBarWhenPushed = YES;
+        [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+    }
+}
+-(void)touchwithdrawalLabel{
+    if ([LoginUtils validationLogin:[UIWindow visibleViewController]]) {
+        LPWithDrawalVC *vc = [[LPWithDrawalVC alloc]init];
+        vc.hidesBottomBarWhenPushed = YES;
+        [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+    }
+}
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 

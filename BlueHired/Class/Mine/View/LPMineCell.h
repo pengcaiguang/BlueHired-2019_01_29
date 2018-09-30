@@ -27,6 +27,8 @@
 
 @property (weak, nonatomic) IBOutlet UIView *bgView;
 
+@property (weak, nonatomic) IBOutlet UILabel *billRecordLabel;
+@property (weak, nonatomic) IBOutlet UILabel *withdrawalLabel;
 @property(nonatomic,strong) LPUserMaterialModel *userMaterialModel;
 @property(nonatomic,assign) BOOL signin;
 
