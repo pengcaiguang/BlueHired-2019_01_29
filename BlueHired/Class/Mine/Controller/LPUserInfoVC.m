@@ -14,9 +14,12 @@
 @property (nonatomic, strong)UIView *tableHeaderView;
 @property(nonatomic,strong) LPUserMaterialModel *userMaterialModel;
 
+@property(nonatomic,strong) NSString *userName;
+@property(nonatomic,strong) NSString *userUrl;
 
 @property(nonatomic,strong) UIButton *maleButton;
 @property(nonatomic,strong) UIButton *femaleButton;
+@property(nonatomic,strong) NSNumber *userSex;
 
 @property(nonatomic,strong) NSString *birthdate;
 @property(nonatomic,strong) UILabel *birthLabel;
@@ -48,6 +51,8 @@
 @property(nonatomic,strong) NSArray *p2Array;
 @property(nonatomic,assign) NSInteger select1;
 
+@property(nonatomic,strong) LPUserMaterialModel *userDic;
+
 @end
 
 @implementation LPUserInfoVC
@@ -58,11 +63,20 @@
     self.navigationItem.title = @"个人资料";
     
     self.userMaterialModel = [LPUserDefaults getObjectByFileName:USERINFO];
+    NSDictionary *dic = [self.userMaterialModel mj_keyValues];
+    self.userDic = [LPUserMaterialModel mj_objectWithKeyValues:dic];
+    
     
     [self.view addSubview:self.tableview];
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
+}
+-(void)viewWillAppear:(BOOL)animated{
+    [self requestUserMaterial];
+}
+-(void)viewWillDisappear:(BOOL)animated{
+    [self requestSaveOrUpdate];
 }
 #pragma mark - TableViewDelegate & Datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -71,10 +85,10 @@
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     static NSString *rid=@"cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:rid];
-    if(cell == nil){
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rid];
-    }
+//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:rid];
+//    if(cell == nil){
+        UITableViewCell *cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rid];
+//    }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.textLabel.font = [UIFont systemFontOfSize:16];
     cell.textLabel.textColor = [UIColor colorWithHexString:@"#434343"];
@@ -84,6 +98,7 @@
         UITextField *textField = [[UITextField alloc]init];
         textField.frame = CGRectMake(70, 5, SCREEN_WIDTH-140, 34);
         textField.text = self.userMaterialModel.data.user_name;
+        self.userName = self.userMaterialModel.data.user_name;
         [cell.contentView addSubview:textField];
     }else if (indexPath.row == 1){
         cell.textLabel.text = @"性别";
@@ -93,6 +108,7 @@
         [btn1 setImage:[UIImage imageNamed:@"add_ record_selected"] forState:UIControlStateSelected];
         [btn1 setTitle:@"男" forState:UIControlStateNormal];
         [btn1 setTitleColor:[UIColor colorWithHexString:@"#434343"] forState:UIControlStateNormal];
+        btn1.titleLabel.font = [UIFont systemFontOfSize:16];
         btn1.titleEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
         [btn1 addTarget:self action:@selector(touchMaleButton:) forControlEvents:UIControlEventTouchUpInside];
         [cell.contentView addSubview:btn1];
@@ -104,9 +120,16 @@
         [btn2 setImage:[UIImage imageNamed:@"add_ record_selected"] forState:UIControlStateSelected];
         [btn2 setTitle:@"女" forState:UIControlStateNormal];
         [btn2 setTitleColor:[UIColor colorWithHexString:@"#434343"] forState:UIControlStateNormal];
+        btn2.titleLabel.font = [UIFont systemFontOfSize:16];
         btn2.titleEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
         [btn2 addTarget:self action:@selector(touchFemaleButton:) forControlEvents:UIControlEventTouchUpInside];
         [cell.contentView addSubview:btn2];
+        if (self.userMaterialModel.data.user_sex.integerValue == 1) {
+            btn1.selected = YES;
+        }else if (self.userMaterialModel.data.user_sex.integerValue == 2) {
+            btn2.selected = YES;
+        }
+        self.userSex = self.userMaterialModel.data.user_sex;
         self.femaleButton = btn2;
     }else if (indexPath.row == 2){
         cell.textLabel.text = @"生日：";
@@ -114,15 +137,29 @@
         UILabel *label = [[UILabel alloc]init];
         label.frame = CGRectMake(70, 5, SCREEN_WIDTH-140, 34);
         label.textColor = [UIColor colorWithHexString:@"#434343"];
+        label.font = [UIFont systemFontOfSize:16];
         [cell.contentView addSubview:label];
+        label.text = self.userMaterialModel.data.birthday;
         self.birthLabel = label;
+        
     }else if (indexPath.row == 3){
         cell.textLabel.text = @"情感状态：";
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         UILabel *label = [[UILabel alloc]init];
         label.frame = CGRectMake(100, 5, SCREEN_WIDTH-140, 34);
         label.textColor = [UIColor colorWithHexString:@"#434343"];
+        label.font = [UIFont systemFontOfSize:16];
         [cell.contentView addSubview:label];
+        
+        if (self.userMaterialModel.data.marry_status.integerValue == 0) {
+            label.text = @"保密";
+        }else if (self.userMaterialModel.data.marry_status.integerValue == 1){
+            label.text = @"未婚";
+        }else if (self.userMaterialModel.data.marry_status.integerValue == 2){
+            label.text = @"已婚";
+        }else if (self.userMaterialModel.data.marry_status.integerValue == 3){
+            label.text = @"单身";
+        }
         self.qingganLabel = label;
     }else if (indexPath.row == 4){
         cell.textLabel.text = @"曾任职工作：";
@@ -130,7 +167,9 @@
         UILabel *label = [[UILabel alloc]init];
         label.frame = CGRectMake(120, 5, SCREEN_WIDTH-140, 34);
         label.textColor = [UIColor colorWithHexString:@"#434343"];
+        label.font = [UIFont systemFontOfSize:16];
         [cell.contentView addSubview:label];
+        label.text = self.userMaterialModel.data.work_type;
         self.cengzaizhiLabel = label;
     }else if (indexPath.row == 5){
         cell.textLabel.text = @"工作年限：";
@@ -138,6 +177,8 @@
         UILabel *label = [[UILabel alloc]init];
         label.frame = CGRectMake(100, 5, SCREEN_WIDTH-140, 34);
         label.textColor = [UIColor colorWithHexString:@"#434343"];
+        label.font = [UIFont systemFontOfSize:16];
+        label.text = [NSString stringWithFormat:@"%@年",self.userMaterialModel.data.work_years.stringValue];
         [cell.contentView addSubview:label];
         self.nianxianLabel = label;
     }else if (indexPath.row == 6){
@@ -146,6 +187,8 @@
         UILabel *label = [[UILabel alloc]init];
         label.frame = CGRectMake(100, 5, SCREEN_WIDTH-140, 34);
         label.textColor = [UIColor colorWithHexString:@"#434343"];
+        label.font = [UIFont systemFontOfSize:16];
+        label.text = self.userMaterialModel.data.ideal_money;
         [cell.contentView addSubview:label];
         self.xinziLabel = label;
     }else if (indexPath.row == 7){
@@ -154,6 +197,8 @@
         UILabel *label = [[UILabel alloc]init];
         label.frame = CGRectMake(100, 5, SCREEN_WIDTH-140, 34);
         label.textColor = [UIColor colorWithHexString:@"#434343"];
+        label.font = [UIFont systemFontOfSize:16];
+        label.text = self.userMaterialModel.data.ideal_post;
         [cell.contentView addSubview:label];
         self.lixaingLabel = label;
     }
@@ -163,10 +208,12 @@
 -(void)touchMaleButton:(UIButton *)button{
     button.selected = YES;
     self.femaleButton.selected = NO;
+    self.userSex = @(1);
 }
 -(void)touchFemaleButton:(UIButton *)button{
     button.selected = YES;
     self.maleButton.selected = NO;
+    self.userSex = @(2);
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -371,16 +418,33 @@
 -(void)confirmBirthday{
     if (self.selectIndex == 2) {
         self.birthLabel.text = self.birthdate;
+        self.userDic.data.birthday = self.birthdate;
     }else if(self.selectIndex == 3){
         self.qingganLabel.text = self.qinggan;
+        //0保密1未婚 2已婚 3单身
+        NSNumber *qin;
+        if ([self.qinggan isEqualToString:@"保密"]) {
+            qin = [NSNumber numberWithInteger:0];
+        }else if ([self.qinggan isEqualToString:@"未婚"]){
+            qin = [NSNumber numberWithInteger:1];
+        }else if ([self.qinggan isEqualToString:@"已婚"]){
+            qin = [NSNumber numberWithInteger:2];
+        }else if ([self.qinggan isEqualToString:@"单身"]){
+            qin = [NSNumber numberWithInteger:3];
+        }
+        self.userDic.data.marry_status = qin;
     }else if(self.selectIndex == 4){
         self.cengzaizhiLabel.text = self.cengzaizhi;
+        self.userDic.data.work_type = self.cengzaizhi;
     }else if(self.selectIndex == 5){
         self.nianxianLabel.text = self.nianxian;
+        self.userDic.data.work_years = [NSNumber numberWithInteger:[self.nianxian substringToIndex:self.nianxian.length-1].integerValue];
     }else if(self.selectIndex == 6){
         self.xinziLabel.text = self.xinzi;
+        self.userDic.data.ideal_money = self.xinzi;
     }else if(self.selectIndex == 7){
         self.lixaingLabel.text = self.lixaing;
+        self.userDic.data.ideal_post = self.lixaing;
     }
     [self removeView];
 }
@@ -400,6 +464,36 @@
     [dateFormat setLocale:[[NSLocale alloc]initWithLocaleIdentifier:@"zh_Hans_CN"]];
     NSString *dateString = [dateFormat stringFromDate:datePicker.date];
     self.birthdate = dateString;
+}
+#pragma mark - request
+-(void)requestSaveOrUpdate{
+    NSDictionary *dic = [self.userDic.data mj_keyValues];
+    
+    NSString *string = [NSString stringWithFormat:@"userMaterial/saveOrUpdate?userSex=%@&userName=%@&userUrl=%@",self.userSex,self.userName,self.userUrl];
+    [NetApiManager requestSaveOrUpdateWithParam:string withParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+-(void)requestUserMaterial{
+    NSString *string = kUserDefaultsValue(LOGINID);
+    NSDictionary *dic = @{
+                          @"id":string
+                          };
+    [NetApiManager requestUserMaterialWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        [self.tableview.mj_header endRefreshing];
+        if (isSuccess) {
+            self.userMaterialModel = [LPUserMaterialModel mj_objectWithKeyValues:responseObject];
+            [self.tableview reloadData];
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
 }
 #pragma mark lazy
 - (UITableView *)tableview{
@@ -433,6 +527,7 @@
             make.size.mas_equalTo(CGSizeMake(72, 72));
         }];
         [headImgView sd_setImageWithURL:[NSURL URLWithString:self.userMaterialModel.data.user_url] placeholderImage:[UIImage imageNamed:@"mine_headimg_placeholder"]];
+        self.userUrl = self.userMaterialModel.data.user_url;
         headImgView.layer.masksToBounds = YES;
         headImgView.layer.cornerRadius = 36;
         headImgView.layer.borderColor = [UIColor whiteColor].CGColor;

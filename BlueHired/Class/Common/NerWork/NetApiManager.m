@@ -702,6 +702,17 @@
                                                      withHandle:responseHandle];
     [NetRequestManager requestWithEnty:enty];
 }
+//修改用户个人资料
++ (void)requestSaveOrUpdateWithParam:(NSString *)urlString
+                           withParam:(id)paramer
+                          withHandle:(response)responseHandle{
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:urlString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle];
+    [NetRequestManager requestWithEnty:enty];
+}
+
 #pragma mark - 企业点评
 /************************************************************/
 //*  企业点评

@@ -239,6 +239,10 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //签到
 + (void)requestUserSignAddWithParam:(id)paramer
                          withHandle:(response)responseHandle;
+//修改用户个人资料
++ (void)requestSaveOrUpdateWithParam:(NSString *)urlString
+                           withParam:(id)paramer
+                          withHandle:(response)responseHandle;
 #pragma mark - 企业点评
 /************************************************************/
 //*  企业点评
