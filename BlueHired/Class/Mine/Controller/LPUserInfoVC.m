@@ -9,10 +9,14 @@
 #import "LPUserInfoVC.h"
 #import "LPUserMaterialModel.h"
 
-@interface LPUserInfoVC ()<UITableViewDelegate,UITableViewDataSource,UIPickerViewDelegate,UIPickerViewDataSource>
+#import <AVFoundation/AVCaptureDevice.h>
+#import <AVFoundation/AVMediaFormat.h>
+
+@interface LPUserInfoVC ()<UITableViewDelegate,UITableViewDataSource,UIPickerViewDelegate,UIPickerViewDataSource,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 @property (nonatomic, strong)UITableView *tableview;
 @property (nonatomic, strong)UIView *tableHeaderView;
 @property(nonatomic,strong) LPUserMaterialModel *userMaterialModel;
+@property(nonatomic,strong) UIImageView *headImgView;
 
 @property(nonatomic,strong) NSString *userName;
 @property(nonatomic,strong) NSString *userUrl;
@@ -98,6 +102,7 @@
         UITextField *textField = [[UITextField alloc]init];
         textField.frame = CGRectMake(70, 5, SCREEN_WIDTH-140, 34);
         textField.text = self.userMaterialModel.data.user_name;
+        [textField addTarget:self action:@selector(textFieldChanged:) forControlEvents:UIControlEventEditingChanged];
         self.userName = self.userMaterialModel.data.user_name;
         [cell.contentView addSubview:textField];
     }else if (indexPath.row == 1){
@@ -204,7 +209,11 @@
     }
     return cell;
 }
-
+-(void)textFieldChanged:(UITextField *)textField{
+    if (textField.text.length > 0) {
+        self.userName = textField.text;
+    }
+}
 -(void)touchMaleButton:(UIButton *)button{
     button.selected = YES;
     self.femaleButton.selected = NO;
@@ -532,7 +541,10 @@
         headImgView.layer.cornerRadius = 36;
         headImgView.layer.borderColor = [UIColor whiteColor].CGColor;
         headImgView.layer.borderWidth = 2.0;
-        
+        headImgView.userInteractionEnabled = YES;
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tuchHeadImgView)];
+        [headImgView addGestureRecognizer:tap];
+        self.headImgView = headImgView;
         
         UILabel *label = [[UILabel alloc]init];
         [_tableHeaderView addSubview:label];
@@ -547,8 +559,135 @@
     }
     return _tableHeaderView;
 }
+-(void)tuchHeadImgView{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                             message:nil
+                                                                      preferredStyle:UIAlertControllerStyleActionSheet];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"拍照"
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction * _Nonnull action) {
+                                                          
+#if (TARGET_IPHONE_SIMULATOR)
+                                                          
+#else
+                                                          [self takePhoto];
+#endif
+                                                          
+                                                      }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"从相册中选择"
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction * _Nonnull action) {
+                                                          [self choosePhoto];
+                                                      }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"取消"
+                                                        style:UIAlertActionStyleCancel
+                                                      handler:^(UIAlertAction * _Nonnull action) {
 
+                                                      }]];
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+#pragma mark - UIImagePickerControllerDelegate
+-(void)takePhoto{
+    
+//#if (TARGET_IPHONE_SIMULATOR)
+//
+//#else
+//    [self startDevice];
+//#endif
+    
+    AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+    if (authStatus == AVAuthorizationStatusRestricted || authStatus ==AVAuthorizationStatusDenied){
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"请进入设置-隐私-相机-中打开相机权限"
+                                                                       message:nil
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            nil;
+        }];
+        UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"好" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+        }];
+        [alert addAction:action1];
+        [alert addAction:action2];
+        [self presentViewController:alert animated:YES completion:nil];
+        
+        
+        return;
+    }
+    
+    
+    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+    imagePicker.delegate = self;
+    imagePicker.allowsEditing = YES;
+    imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    [self presentViewController:imagePicker animated:YES completion:nil];
+}
+-(void)choosePhoto{
+    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+    imagePicker.delegate = self;
+    imagePicker.allowsEditing = YES;
+    imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    [self presentViewController:imagePicker animated:YES completion:nil];
+}
+#pragma mark - UIImagePickerControllerDelegate
 
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    if ([[info objectForKey:UIImagePickerControllerMediaType] isEqualToString:(__bridge NSString *)kUTTypeImage]) {
+        UIImage *img = [info objectForKey:UIImagePickerControllerEditedImage];
+        [self performSelector:@selector(saveImage:)  withObject:img afterDelay:0.5];
+    }
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    //    [picker dismissModalViewControllerAnimated:YES];
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)saveImage:(UIImage *)image {
+    //    NSLog(@"保存头像！");
+    //    [userPhotoButton setImage:image forState:UIControlStateNormal];
+    BOOL success;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSError *error;
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *imageFilePath = [documentsDirectory stringByAppendingPathComponent:@"headImage.jpg"];
+    NSLog(@"imageFile->>%@",imageFilePath);
+    success = [fileManager fileExistsAtPath:imageFilePath];
+    if(success) {
+        success = [fileManager removeItemAtPath:imageFilePath error:&error];
+    }
+    //    UIImage *smallImage=[self scaleFromImage:image toSize:CGSizeMake(80.0f, 80.0f)];//将图片尺寸改为80*80
+    [UIImageJPEGRepresentation(image, 1.0f) writeToFile:imageFilePath atomically:YES];//写入文件
+    UIImage *headImage = [UIImage imageWithContentsOfFile:imageFilePath];//读取图片文件
+    [self updateHeadImage:headImage];
+}
+// 改变图像的尺寸，方便上传服务器
+- (UIImage *) scaleFromImage: (UIImage *) image toSize: (CGSize) size
+{
+    UIGraphicsBeginImageContext(size);
+    [image drawInRect:CGRectMake(0, 0, size.width, size.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
+}
+#pragma mark - updateImage
+-(void)updateHeadImage:(UIImage *)image{
+    [NetApiManager avartarChangeWithParamDict:nil singleImage:image singleImageName:@"file" withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if (responseObject[@"data"]) {
+                self.userUrl = responseObject[@"data"];
+                [self.headImgView sd_setImageWithURL:[NSURL URLWithString:self.userUrl] placeholderImage:[UIImage imageNamed:@"mine_headimg_placeholder"]];
+            }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
 /*
 #pragma mark - Navigation
 
