@@ -9,7 +9,7 @@
 #import "LPUserInfoVC.h"
 #import "LPUserMaterialModel.h"
 
-@interface LPUserInfoVC ()<UITableViewDelegate,UITableViewDataSource>
+@interface LPUserInfoVC ()<UITableViewDelegate,UITableViewDataSource,UIPickerViewDelegate,UIPickerViewDataSource>
 @property (nonatomic, strong)UITableView *tableview;
 @property (nonatomic, strong)UIView *tableHeaderView;
 @property(nonatomic,strong) LPUserMaterialModel *userMaterialModel;
@@ -17,12 +17,36 @@
 
 @property(nonatomic,strong) UIButton *maleButton;
 @property(nonatomic,strong) UIButton *femaleButton;
+
+@property(nonatomic,strong) NSString *birthdate;
 @property(nonatomic,strong) UILabel *birthLabel;
+
+@property(nonatomic,strong) UILabel *qingganLabel;
+@property(nonatomic,strong) NSString *qinggan;
+
+@property(nonatomic,strong) UILabel *cengzaizhiLabel;
+@property(nonatomic,strong) NSString *cengzaizhi;
+
+@property(nonatomic,strong) UILabel *nianxianLabel;
+@property(nonatomic,strong) NSString *nianxian;
+
+@property(nonatomic,strong) UILabel *xinziLabel;
+@property(nonatomic,strong) NSString *xinzi;
+
+@property(nonatomic,strong) UILabel *lixaingLabel;
+@property(nonatomic,strong) NSString *lixaing;
+
+@property(nonatomic,assign) NSInteger selectIndex;
 
 @property(nonatomic,strong) UIView *popView;
 @property(nonatomic,strong) UIView *bgView;
+@property(nonatomic,strong) UIPickerView *pickerView;
 
-@property(nonatomic,strong) NSString *birthdate;
+@property(nonatomic,strong) NSArray *pickerArray;
+
+@property(nonatomic,strong) NSArray *p1Array;
+@property(nonatomic,strong) NSArray *p2Array;
+@property(nonatomic,assign) NSInteger select1;
 
 @end
 
@@ -95,18 +119,43 @@
     }else if (indexPath.row == 3){
         cell.textLabel.text = @"情感状态：";
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        UILabel *label = [[UILabel alloc]init];
+        label.frame = CGRectMake(100, 5, SCREEN_WIDTH-140, 34);
+        label.textColor = [UIColor colorWithHexString:@"#434343"];
+        [cell.contentView addSubview:label];
+        self.qingganLabel = label;
     }else if (indexPath.row == 4){
         cell.textLabel.text = @"曾任职工作：";
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        UILabel *label = [[UILabel alloc]init];
+        label.frame = CGRectMake(120, 5, SCREEN_WIDTH-140, 34);
+        label.textColor = [UIColor colorWithHexString:@"#434343"];
+        [cell.contentView addSubview:label];
+        self.cengzaizhiLabel = label;
     }else if (indexPath.row == 5){
         cell.textLabel.text = @"工作年限：";
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        UILabel *label = [[UILabel alloc]init];
+        label.frame = CGRectMake(100, 5, SCREEN_WIDTH-140, 34);
+        label.textColor = [UIColor colorWithHexString:@"#434343"];
+        [cell.contentView addSubview:label];
+        self.nianxianLabel = label;
     }else if (indexPath.row == 6){
         cell.textLabel.text = @"期望工资：";
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        UILabel *label = [[UILabel alloc]init];
+        label.frame = CGRectMake(100, 5, SCREEN_WIDTH-140, 34);
+        label.textColor = [UIColor colorWithHexString:@"#434343"];
+        [cell.contentView addSubview:label];
+        self.xinziLabel = label;
     }else if (indexPath.row == 7){
         cell.textLabel.text = @"理想岗位：";
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        UILabel *label = [[UILabel alloc]init];
+        label.frame = CGRectMake(100, 5, SCREEN_WIDTH-140, 34);
+        label.textColor = [UIColor colorWithHexString:@"#434343"];
+        [cell.contentView addSubview:label];
+        self.lixaingLabel = label;
     }
     return cell;
 }
@@ -122,60 +171,217 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (indexPath.row == 2) {
-        self.bgView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
-        self.bgView.backgroundColor = [UIColor lightGrayColor];
-        self.bgView.alpha = 0;
-        [[UIApplication sharedApplication].keyWindow addSubview:self.bgView];
-        
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(removeView)];
-        [self.bgView addGestureRecognizer:tap];
-        
-        self.popView = [[UIView alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT/3)];
-        self.popView.backgroundColor = [UIColor whiteColor];
-        [[UIApplication sharedApplication].keyWindow addSubview:self.popView];
-        
-        UIButton *cancelButton = [[UIButton alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT/3-30, SCREEN_WIDTH/2, 20)];
-        cancelButton.titleLabel.font = [UIFont systemFontOfSize:18];
-        [cancelButton setTitle:@"取消" forState:UIControlStateNormal];
-        [cancelButton setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
-        [cancelButton addTarget:self action:@selector(removeView) forControlEvents:UIControlEventTouchUpInside];
-        [self.popView addSubview:cancelButton];
-        
-        UIButton *confirmButton = [[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2, SCREEN_HEIGHT/3-30, SCREEN_WIDTH/2, 20)];
-        //        confirmButton.backgroundColor = [UIColor redColor];
-        confirmButton.titleLabel.font = [UIFont systemFontOfSize:18];
-        [confirmButton setTitle:@"确定" forState:UIControlStateNormal];
-        [confirmButton setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
-        [confirmButton addTarget:self action:@selector(confirmBirthday) forControlEvents:UIControlEventTouchUpInside];
-        [self.popView addSubview:confirmButton];
-        
-        UIDatePicker *datePicker = [[UIDatePicker alloc]initWithFrame:CGRectMake(0, 25, SCREEN_WIDTH, SCREEN_HEIGHT/3-60)];
+    if (indexPath.row == 2 || indexPath.row == 3 || indexPath.row == 4 || indexPath.row == 5  || indexPath.row == 6 || indexPath.row == 7) {
+        self.selectIndex = indexPath.row;
+        [self alertView:indexPath.row];
+    }
+}
+
+-(void)alertView:(NSInteger)index{
+    self.bgView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+    self.bgView.backgroundColor = [UIColor lightGrayColor];
+    self.bgView.alpha = 0;
+    [[UIApplication sharedApplication].keyWindow addSubview:self.bgView];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(removeView)];
+    [self.bgView addGestureRecognizer:tap];
+    
+    self.popView = [[UIView alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT/3)];
+    self.popView.backgroundColor = [UIColor whiteColor];
+    [[UIApplication sharedApplication].keyWindow addSubview:self.popView];
+    
+    UILabel *label = [[UILabel alloc]init];
+    label.frame = CGRectMake(0, 10, SCREEN_WIDTH, 20);
+    label.font = [UIFont systemFontOfSize:16];
+    label.textAlignment = NSTextAlignmentCenter;
+    [self.popView addSubview:label];
+    
+    UIButton *cancelButton = [[UIButton alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT/3-30, SCREEN_WIDTH/2, 20)];
+    cancelButton.titleLabel.font = [UIFont systemFontOfSize:18];
+    [cancelButton setTitle:@"取消" forState:UIControlStateNormal];
+    [cancelButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [cancelButton addTarget:self action:@selector(removeView) forControlEvents:UIControlEventTouchUpInside];
+    [self.popView addSubview:cancelButton];
+    
+    UIButton *confirmButton = [[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2, SCREEN_HEIGHT/3-30, SCREEN_WIDTH/2, 20)];
+    confirmButton.titleLabel.font = [UIFont systemFontOfSize:18];
+    [confirmButton setTitle:@"确定" forState:UIControlStateNormal];
+    [confirmButton setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
+    [confirmButton addTarget:self action:@selector(confirmBirthday) forControlEvents:UIControlEventTouchUpInside];
+    [self.popView addSubview:confirmButton];
+    
+    if (index == 2) {
+        label.text = @"生日(年/月/日)";
+        UIDatePicker *datePicker = [[UIDatePicker alloc]initWithFrame:CGRectMake(0, 30, SCREEN_WIDTH, SCREEN_HEIGHT/3-60)];
         datePicker.datePickerMode = UIDatePickerModeDate;
         [datePicker setLocale:[[NSLocale alloc]initWithLocaleIdentifier:@"zh_Hans_CN"]];
-        
         NSDateFormatter* dateFormat = [[NSDateFormatter alloc] init];
         [dateFormat setDateFormat:@"yyyy-MM-dd"];
         NSString *dateString=self.userMaterialModel.data.birthday;
         [dateFormat setLocale:[[NSLocale alloc]initWithLocaleIdentifier:@"zh_Hans_CN"]];
         NSDate *birthdaydate =[dateFormat dateFromString:dateString];
         self.birthdate = birthdaydate ? dateString : [dateFormat stringFromDate:[NSDate date]];
-        
         datePicker.date = birthdaydate ? birthdaydate : [NSDate date];
         datePicker.maximumDate = [NSDate date];
         [datePicker addTarget:self action:@selector(dateChange:) forControlEvents:UIControlEventValueChanged];
         [self.popView addSubview:datePicker];
+    }else if (index == 3 || index == 5 || index == 6){
+        UIPickerView *pickerView = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 30, SCREEN_WIDTH, SCREEN_HEIGHT/3-60)];
+        pickerView.backgroundColor = [UIColor whiteColor];
+        pickerView.delegate = self;
+        pickerView.dataSource = self;
+        [self.popView addSubview:pickerView];
+        self.pickerView = pickerView;
         
-        [UIView animateWithDuration:0.5 animations:^{
-            self.popView.frame = CGRectMake(0, SCREEN_HEIGHT - self.popView.frame.size.height, SCREEN_HEIGHT, SCREEN_HEIGHT/3);
-            self.bgView.alpha = 0.3;
-        } completion:^(BOOL finished) {
-            nil;
-        }];
+        if (index == 3) {
+            label.text = @"情感状态";
+            self.pickerArray = @[@"单身",@"已婚",@"未婚",@"保密"];
+            self.qinggan = self.pickerArray[0];
+        }else if (index == 5){
+            label.text = @"工作年限";
+            self.pickerArray = @[@"1年",@"2年",@"3年",@"4年",@"5年",@"6+年"];
+            self.nianxian = self.pickerArray[0];
+        }else if (index == 6){
+            label.text = @"期望薪资(月薪，单位：千元)";
+            self.pickerArray = @[@"3k~4k",@"4k~5k",@"5k~6k",@"6k~7k",@"7k~8k",@"8k~9k",@"9k~10k",@"10+k"];
+            self.xinzi = self.pickerArray[0];
+        }
+        [self.pickerView reloadAllComponents];
+    }else if (index == 4 || index == 7){
+        if (index == 4) {
+            label.text = @"曾在职工作";
+        }else{
+            label.text = @"理想岗位";
+        }
+        UIPickerView *pickerView = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 30, SCREEN_WIDTH, SCREEN_HEIGHT/3-60)];
+        pickerView.backgroundColor = [UIColor whiteColor];
+        pickerView.delegate = self;
+        pickerView.dataSource = self;
+        [self.popView addSubview:pickerView];
+        self.pickerView = pickerView;
+        self.p1Array = @[@{@"服装厂":@[@"普工",@"服装新手",@"服装大师"]},
+                         @{@"电子厂":@[@"普工",@"司机",@"叉车工",@"仓管员"]},
+                         @{@"纺织厂":@[@"普工",@"纺织新手",@"纺织大师"]},
+                         @{@"鞋厂":@[@"普工",@"运动鞋工",@"休闲鞋工",@"皮鞋工"]},
+                         @{@"挖掘厂":@[@"普工",@"挖掘大师"]},
+                         @{@"食品厂":@[@"普工",@"吃货",@"吃货大师"]}];
+        if (index == 4) {
+            self.cengzaizhi = [NSString stringWithFormat:@"%@-%@",[(NSDictionary *)self.p1Array[0] allKeys][0],[(NSDictionary *)self.p1Array[0] allValues][0][0]];
+        }else{
+            self.lixaing = [NSString stringWithFormat:@"%@-%@",[(NSDictionary *)self.p1Array[0] allKeys][0],[(NSDictionary *)self.p1Array[0] allValues][0][0]];
+        }
+        [self.pickerView reloadAllComponents];
+    }
+    
+    [UIView animateWithDuration:0.5 animations:^{
+        self.popView.frame = CGRectMake(0, SCREEN_HEIGHT - self.popView.frame.size.height, SCREEN_HEIGHT, SCREEN_HEIGHT/3);
+        self.bgView.alpha = 0.3;
+    } completion:^(BOOL finished) {
+        nil;
+    }];
+}
+-(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
+    if (self.selectIndex == 4 || self.selectIndex == 7) {
+        return 2;
+    }else{
+        return 1;
     }
 }
+-(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
+    if (self.selectIndex == 4 || self.selectIndex == 7) {
+        if (component == 0) {
+            return self.p1Array.count;
+        }else{
+            return ((NSArray *)((NSDictionary *)self.p1Array[self.select1]).allValues[0]).count;
+        }
+    }else{
+        return [self.pickerArray count];
+    }
+}
+- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view{
+    if (!view){
+        view = [[UIView alloc]init];
+    }
+    if (self.selectIndex == 4 || self.selectIndex == 7) {
+        UILabel *text = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width/2, 20)];
+        text.textAlignment = NSTextAlignmentCenter;
+        NSMutableArray *a = [NSMutableArray array];
+        for (NSDictionary *dic in self.p1Array) {
+            [a addObject:[dic allKeys][0]];
+        }
+        if (component == 0) {
+            text.text = a[row];
+        }else{
+            NSArray *arr = [(NSDictionary *)self.p1Array[self.select1] allValues][0];
+            text.text = arr[row];
+        }
+        [view addSubview:text];
+    }else{
+        UILabel *text = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 20)];
+        text.textAlignment = NSTextAlignmentCenter;
+        text.text = [self.pickerArray objectAtIndex:row];
+        [view addSubview:text];
+    }
+    //隐藏上下直线
+    [self.pickerView.subviews objectAtIndex:1].backgroundColor = [UIColor clearColor];
+    [self.pickerView.subviews objectAtIndex:2].backgroundColor = [UIColor clearColor];
+    return view;
+}
+//显示的标题
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component{
+    NSString *str = [self.pickerArray objectAtIndex:row];
+    return str;
+}
+//显示的标题字体、颜色等属性
+- (NSAttributedString *)pickerView:(UIPickerView *)pickerView attributedTitleForRow:(NSInteger)row forComponent:(NSInteger)component{
+    NSString *str = [self.pickerArray objectAtIndex:row];
+    NSMutableAttributedString *AttributedString = [[NSMutableAttributedString alloc]initWithString:str];
+    [AttributedString addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:18], NSForegroundColorAttributeName:[UIColor whiteColor]} range:NSMakeRange(0, [AttributedString  length])];
+    return AttributedString;
+}
+
+//被选择的行
+-(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
+    NSLog(@"HANG%@",[self.pickerArray objectAtIndex:row]);
+    if (self.selectIndex == 3) {
+        self.qinggan = self.pickerArray[row];
+    }else if (self.selectIndex == 4 || self.selectIndex == 7){
+        if (component == 0) {
+            self.select1 = [pickerView selectedRowInComponent:0];
+            [pickerView reloadComponent:1];
+        }
+        //获取选中的省会
+        NSString *s = [self.p1Array[self.select1] allKeys][0];
+        //获取选中的城市
+        NSInteger cityIndex = [pickerView selectedRowInComponent:1];
+        NSString *cityName = [self.p1Array[self.select1] allValues][0][cityIndex];
+        if (self.selectIndex == 4) {
+            self.cengzaizhi = [NSString stringWithFormat:@"%@-%@",s,cityName];
+        }else{
+            self.lixaing = [NSString stringWithFormat:@"%@-%@",s,cityName];
+        }
+        
+    }else if (self.selectIndex == 5){
+        self.nianxian = self.pickerArray[row];
+    }else if (self.selectIndex == 6){
+        self.xinzi = self.pickerArray[row];
+    }
+}
+
 -(void)confirmBirthday{
-    self.birthLabel.text = self.birthdate;
+    if (self.selectIndex == 2) {
+        self.birthLabel.text = self.birthdate;
+    }else if(self.selectIndex == 3){
+        self.qingganLabel.text = self.qinggan;
+    }else if(self.selectIndex == 4){
+        self.cengzaizhiLabel.text = self.cengzaizhi;
+    }else if(self.selectIndex == 5){
+        self.nianxianLabel.text = self.nianxian;
+    }else if(self.selectIndex == 6){
+        self.xinziLabel.text = self.xinzi;
+    }else if(self.selectIndex == 7){
+        self.lixaingLabel.text = self.lixaing;
+    }
     [self removeView];
 }
 -(void)removeView{
