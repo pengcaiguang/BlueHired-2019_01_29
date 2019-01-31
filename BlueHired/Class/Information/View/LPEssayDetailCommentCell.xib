@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -51,7 +51,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="28Y-9N-4fM">
-                        <rect key="frame" x="97" y="74" width="41" height="16"/>
+                        <rect key="frame" x="97" y="75" width="41" height="16"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="16" id="4vS-pl-5uI"/>
                             <constraint firstAttribute="width" constant="41" id="X6e-yy-dxB"/>
@@ -83,6 +83,13 @@
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" id="MyM-FW-FFI"/>
                         </constraints>
                     </view>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6i4-0t-EfZ">
+                        <rect key="frame" x="94.5" y="16.5" width="60" height="15"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="60" id="ASb-ta-ov8"/>
+                            <constraint firstAttribute="height" constant="15" id="CE1-3t-K1W"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="LY5-xO-e0o" firstAttribute="top" secondItem="P7e-z6-MM5" secondAttribute="bottom" constant="10" id="039-gQ-9zO"/>
@@ -93,6 +100,7 @@
                     <constraint firstItem="P7e-z6-MM5" firstAttribute="leading" secondItem="6og-bV-dLF" secondAttribute="leading" id="SNo-V6-MKu"/>
                     <constraint firstItem="ioZ-48-dQz" firstAttribute="top" secondItem="LY5-xO-e0o" secondAttribute="bottom" constant="10" id="UYH-SA-EgE"/>
                     <constraint firstAttribute="bottom" secondItem="ioZ-48-dQz" secondAttribute="bottom" constant="10" id="Vlc-ks-6H8"/>
+                    <constraint firstItem="6i4-0t-EfZ" firstAttribute="centerY" secondItem="6og-bV-dLF" secondAttribute="centerY" id="X2M-T8-t9J"/>
                     <constraint firstItem="28Y-9N-4fM" firstAttribute="centerY" secondItem="LY5-xO-e0o" secondAttribute="centerY" id="b24-64-H87"/>
                     <constraint firstItem="LY5-xO-e0o" firstAttribute="leading" secondItem="6og-bV-dLF" secondAttribute="leading" id="eZp-z3-ldE"/>
                     <constraint firstItem="ioZ-48-dQz" firstAttribute="leading" secondItem="LY5-xO-e0o" secondAttribute="leading" id="l2k-AG-dzx"/>
@@ -100,11 +108,13 @@
                     <constraint firstItem="P7e-z6-MM5" firstAttribute="top" secondItem="6og-bV-dLF" secondAttribute="bottom" constant="18" id="mT7-Vv-my1"/>
                     <constraint firstAttribute="trailing" secondItem="ioZ-48-dQz" secondAttribute="trailing" constant="11" id="opJ-0S-udq"/>
                     <constraint firstAttribute="trailing" secondItem="P7e-z6-MM5" secondAttribute="trailing" constant="11" id="rEc-0g-YfI"/>
+                    <constraint firstItem="6i4-0t-EfZ" firstAttribute="leading" secondItem="6og-bV-dLF" secondAttribute="trailing" constant="8" id="s4f-N1-C1l"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
             <connections>
                 <outlet property="commentDetailsLabel" destination="P7e-z6-MM5" id="Mdz-6C-CI8"/>
+                <outlet property="gradingiamge" destination="6i4-0t-EfZ" id="zcD-9C-QFh"/>
                 <outlet property="replyBgView" destination="ioZ-48-dQz" id="OMh-0c-Qm0"/>
                 <outlet property="replyBgView_constraint_height" destination="MyM-FW-FFI" id="WRD-29-S3o"/>
                 <outlet property="replyButton" destination="28Y-9N-4fM" id="WPc-Cq-KFD"/>
@@ -112,7 +122,7 @@
                 <outlet property="userNameLabel" destination="6og-bV-dLF" id="tH3-cP-AMO"/>
                 <outlet property="userUrlImgView" destination="pRG-Iv-2Bp" id="WOI-l2-fFt"/>
             </connections>
-            <point key="canvasLocation" x="-77" y="78"/>
+            <point key="canvasLocation" x="89.599999999999994" y="74.212893553223395"/>
         </tableViewCell>
     </objects>
 </document>

@@ -17,10 +17,11 @@
 #import "LPMainSearchVC.h"
 #import "LPWorkDetailVC.h"
 #import "LPSelectCityVC.h"
+#import "LPHongBaoVC.h"
 
 static NSString *LPMainCellID = @"LPMainCell";
 
-@interface LPMainVC ()<UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,SDCycleScrollViewDelegate,LPSortAlertViewDelegate,LPSelectCityVCDelegate,LPScreenAlertViewDelegate>
+@interface LPMainVC ()<UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,SDCycleScrollViewDelegate,LPSortAlertViewDelegate,LPSelectCityVCDelegate,LPScreenAlertViewDelegate,UITabBarDelegate>
 
 @property (nonatomic, strong)UITableView *tableview;
 @property(nonatomic,strong) UIView *tableHeaderView;
@@ -38,10 +39,10 @@ static NSString *LPMainCellID = @"LPMainCell";
 
 @property(nonatomic,strong) LPMechanismlistModel *mechanismlistModel;
 
-@property(nonatomic,assign) NSInteger orderType;
+@property(nonatomic,strong) NSString *orderType;
 @property(nonatomic,strong) NSString *mechanismAddress;
-@property(nonatomic,copy) NSString *mechanismTypeId;
-@property(nonatomic,copy) NSString *workType;
+
+@property(nonatomic,assign) BOOL isRequest;
 
 
 @end
@@ -65,14 +66,33 @@ static NSString *LPMainCellID = @"LPMainCell";
 //    self.listArray = [NSMutableArray array];
 //    [self request];
 //    [self requestMechanismlist];
+    
+    [self requestQueryDownload];
+    
+    
 }
+
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    
+    if (self.isRequest == YES) {
+        self.isRequest = NO;
+        return;
+    }
     self.page = 1;
-//    self.listArray = [NSMutableArray array];
-    [self request];
+ 
+     [self request];
     [self requestMechanismlist];
 }
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    if (!self.screenAlertView.hidden) {
+        self.screenAlertView.hidden = YES;
+    }
+}
+
 - (UIStatusBarStyle)preferredStatusBarStyle{
     return UIStatusBarStyleLightContent;
 }
@@ -86,7 +106,6 @@ static NSString *LPMainCellID = @"LPMainCell";
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(touchSelectCityButton)];
     leftBarButtonView.userInteractionEnabled = YES;
     [leftBarButtonView addGestureRecognizer:tap];
-    
     
     UIImageView *pimageView = [[UIImageView alloc]init];
     [leftBarButtonView addSubview:pimageView];
@@ -177,6 +196,9 @@ static NSString *LPMainCellID = @"LPMainCell";
         }
         self.cycleScrollView.imageURLStringsGroup = array;
 //        [self updataHeaderView];
+//        if (array.count>5) {
+//            self.cycleScrollView.pageControlStyle = SDCycleScrollViewPageContolStyleNone;
+//        }
         
         if (self.page == 1) {
             self.listArray = [NSMutableArray array];
@@ -213,6 +235,7 @@ static NSString *LPMainCellID = @"LPMainCell";
     }
     if (!has) {
         LPNoDataView *noDataView = [[LPNoDataView alloc]initWithFrame:CGRectMake(0, 240, SCREEN_WIDTH, SCREEN_HEIGHT-240-49-64)];
+        [noDataView image:nil text:@"抱歉！没有相关记录！"];
         [self.tableview addSubview:noDataView];
         noDataView.hidden = hidden;
     }
@@ -234,6 +257,7 @@ static NSString *LPMainCellID = @"LPMainCell";
     vc.hidesBottomBarWhenPushed = YES;
     vc.delegate = self;
     [self.navigationController pushViewController:vc animated:YES];
+    self.isRequest = YES;
 }
 
 #pragma mark - LPSelectCityVCDelegate
@@ -244,10 +268,11 @@ static NSString *LPMainCellID = @"LPMainCell";
         self.mechanismAddress = model.c_name;
     }
     self.cityLabel.text = model.c_name;
-    self.orderType = 0;
     self.page = 1;
-    [self request];
+//    [self request];
 }
+
+
 
 #pragma mark - TableViewDelegate & Datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -259,6 +284,11 @@ static NSString *LPMainCellID = @"LPMainCell";
         cell = [[LPMainCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:LPMainCellID];
     }
     cell.model = self.listArray[indexPath.row];
+//    WEAK_SELF()
+//    cell.block = ^(void) {
+//        weakSelf.page = 1;
+//        [weakSelf request];
+//    };
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -267,6 +297,10 @@ static NSString *LPMainCellID = @"LPMainCell";
     vc.hidesBottomBarWhenPushed = YES;
     vc.workListModel = self.listArray[indexPath.row];
     [self.navigationController pushViewController:vc animated:YES];
+    self.isRequest = YES;
+//    LPHongBaoVC *vc = [[LPHongBaoVC alloc] init];
+//    vc.hidesBottomBarWhenPushed = YES;
+//    [self.navigationController   pushViewController:vc animated:YES];
 }
 
 #pragma mark - search
@@ -274,6 +308,7 @@ static NSString *LPMainCellID = @"LPMainCell";
     LPMainSearchVC *vc = [[LPMainSearchVC alloc]init];
     vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
+    self.isRequest  = YES;
     return NO;
 }
 
@@ -284,39 +319,50 @@ static NSString *LPMainCellID = @"LPMainCell";
     vc.hidesBottomBarWhenPushed = YES;
     vc.workListModel = self.model.data.slideshowList[index];
     [self.navigationController pushViewController:vc animated:YES];
+    self.isRequest = YES;
 }
 
 #pragma mark - target
 -(void)touchSortButton:(UIButton *)button{
+    if (kUserDefaultsValue(USERDATA).integerValue == 1 ||
+        kUserDefaultsValue(USERDATA).integerValue == 2 ||
+        kUserDefaultsValue(USERDATA).integerValue == 6 ) {
+        self.sortAlertView.titleArray = @[@"综合工资最高",@"报名人数最多",@"企业评分最高",@"工价最高",@"可借支",@"平台合作价",@"管理费"];
+    }else{
+        self.sortAlertView.titleArray  = @[@"综合工资最高",@"报名人数最多",@"企业评分最高",@"工价最高",@"可借支"];
+    }
     button.selected = !button.isSelected;
     self.sortAlertView.hidden = !button.isSelected;
 }
 
 #pragma mark - LPSortAlertViewDelegate
 -(void)touchTableView:(NSInteger)index{
-    self.orderType = index;
+    self.orderType = [NSString stringWithFormat:@"%ld",(long)index];
     self.page = 1;
     [self request];
 }
 
 -(void)touchScreenButton:(UIButton *)button{
+
+    self.screenAlertView.SuperView = self;
     button.selected = !button.isSelected;
     self.screenAlertView.hidden = !button.isSelected;
+
 }
 #pragma mark - LPScreenAlertViewDelegate
 -(void)selectMechanismTypeId:(NSString *)typeId workType:(NSString *)workType{
     self.mechanismTypeId = typeId;
     self.workType = workType;
-    self.orderType = 0;
     self.page = 1;
     [self request];
 }
+
 #pragma mark - request
 -(void)request{
     NSDictionary *dic = @{
                           @"type":@(0),
                           @"page":@(self.page),
-                          @"orderType":self.orderType ? @(self.orderType) : @"",
+                          @"orderType":self.orderType ? self.orderType : @"",
                           @"mechanismAddress":self.mechanismAddress ? self.mechanismAddress : @"china",
                           @"mechanismTypeId":self.mechanismTypeId ? self.mechanismTypeId : @"",
                           @"workType":self.workType ? self.workType : @""
@@ -328,7 +374,7 @@ static NSString *LPMainCellID = @"LPMainCell";
         if (isSuccess) {
             self.model = [LPWorklistModel mj_objectWithKeyValues:responseObject];
         }else{
-            [self.view showLoadingMeg:@"网络错误" time:MESSAGE_SHOW_TIME];
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
     }];
 }
@@ -338,7 +384,27 @@ static NSString *LPMainCellID = @"LPMainCell";
         if (isSuccess) {
             self.mechanismlistModel = [LPMechanismlistModel mj_objectWithKeyValues:responseObject];
         }else{
-            [self.view showLoadingMeg:@"网络错误" time:MESSAGE_SHOW_TIME];
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+
+-(void)requestQueryDownload{
+    NSDictionary *dic = @{
+                          @"type":@"2"
+                          };
+    [NetApiManager requestQueryDownload:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if (responseObject[@"data"] != nil &&
+                [responseObject[@"data"][@"version"] length]>1) {
+                if (self.version.floatValue <  [responseObject[@"data"][@"version"] floatValue]  ) {
+                    NSString *updateStr = [NSString stringWithFormat:@"发现新版本V%@\n为保证软件的正常运行\n请及时更新到最新版本",responseObject[@"data"][@"version"]];
+                    [self creatAlterView:updateStr];
+                }
+            }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
     }];
 }
@@ -357,7 +423,7 @@ static NSString *LPMainCellID = @"LPMainCell";
         _tableview.separatorColor = [UIColor baseColor];
         _tableview.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
         [_tableview registerNib:[UINib nibWithNibName:LPMainCellID bundle:nil] forCellReuseIdentifier:LPMainCellID];
-        _tableview.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        _tableview.mj_header = [HZNormalHeader headerWithRefreshingBlock:^{
             self.page = 1;
             [self request];
         }];
@@ -422,6 +488,7 @@ static NSString *LPMainCellID = @"LPMainCell";
 -(LPScreenAlertView *)screenAlertView{
     if (!_screenAlertView) {
         _screenAlertView = [[LPScreenAlertView alloc]init];
+    
         _screenAlertView.touchButton = self.screenButton;
         _screenAlertView.delegate = self;
     }
@@ -431,7 +498,7 @@ static NSString *LPMainCellID = @"LPMainCell";
 -(SDCycleScrollView *)cycleScrollView{
     if (!_cycleScrollView) {
         _cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 200) delegate:self placeholderImage:nil];
-        _cycleScrollView.pageControlAliment = SDCycleScrollViewPageContolAlimentRight;
+        _cycleScrollView.pageControlAliment = SDCycleScrollViewPageContolAlimentCenter;
         _cycleScrollView.currentPageDotColor = [UIColor whiteColor]; // 自定义分页控件小圆标颜色
     }
     return _cycleScrollView;
@@ -451,5 +518,27 @@ static NSString *LPMainCellID = @"LPMainCell";
     // Pass the selected object to the new view controller.
 }
 */
+
+
+//3. 弹框提示
+-(void)creatAlterView:(NSString *)msg{
+    UIAlertController *alertText = [UIAlertController alertControllerWithTitle:@"更新提醒" message:msg preferredStyle:UIAlertControllerStyleAlert];
+    //增加按钮
+    [alertText addAction:[UIAlertAction actionWithTitle:@"我再想想" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+    }]];
+    [alertText addAction:[UIAlertAction actionWithTitle:@"立即更新" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        NSString *str = @"itms-apps://itunes.apple.com/cn/app/id1441365926?mt=8"; //更换id即可
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
+    }]];
+    [self presentViewController:alertText animated:YES completion:nil];
+}
+
+//版本
+-(NSString *)version
+{
+    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+    NSString *app_Version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+    return app_Version;
+}
 
 @end

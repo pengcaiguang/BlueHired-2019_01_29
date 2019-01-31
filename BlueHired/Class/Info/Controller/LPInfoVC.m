@@ -23,6 +23,9 @@ static NSString *LPInforCollectionViewCellID = @"LPInforCollectionViewCell";
 @property(nonatomic,assign) NSInteger selectType;
 @property(nonatomic,assign) BOOL isSelect;
 @property(nonatomic,assign) BOOL selectAll;
+@property(nonatomic,assign) BOOL selecttsetAll;
+@property(nonatomic,strong) UIButton *allButton;
+@property(nonatomic,strong) UIButton *deleteBt;
 
 @end
 
@@ -33,14 +36,19 @@ static NSString *LPInforCollectionViewCellID = @"LPInforCollectionViewCell";
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = @"消息中心";
+    if (kUserDefaultsValue(USERDATA).integerValue == 1 ||
+        kUserDefaultsValue(USERDATA).integerValue == 2 ||
+        kUserDefaultsValue(USERDATA).integerValue == 6) {
+        self.titleArray = @[@"系统通知",@"其他消息",@"门店消息"];
+    }else{
+        self.titleArray = @[@"系统通知",@"其他消息"];
+    }
     
-    self.titleArray = @[@"系统通知",@"其他消息"];
     self.labelArray = [NSMutableArray array];
     self.selectType = 1;
     
     [self setNavigationButton];
     [self setTitleView];
-    [self setBottomView];
     
     [self.view addSubview:self.labelListView];
     [self.labelListView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -56,6 +64,16 @@ static NSString *LPInforCollectionViewCellID = @"LPInforCollectionViewCell";
         make.right.mas_equalTo(0);
         make.bottom.mas_equalTo(0);
     }];
+    [self setBottomView];
+
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    if (_isReloadData) {
+        [self.collectionView reloadData];
+        _isReloadData = NO;
+    }
 }
 
 //- (UIStatusBarStyle)preferredStatusBarStyle{
@@ -76,6 +94,9 @@ static NSString *LPInforCollectionViewCellID = @"LPInforCollectionViewCell";
             make.right.mas_equalTo(0);
             make.bottom.mas_equalTo(0);
         }];
+        self.allButton.hidden = YES;
+        self.deleteBt.hidden = YES;
+        self.allButton.selected = NO;
     }else{
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"取消" style:UIBarButtonItemStyleDone target:self action:@selector(touchManagerButton)];
         [self.navigationItem.rightBarButtonItem setTintColor:[UIColor colorWithHexString:@"#1B1B1B"]];
@@ -84,10 +105,16 @@ static NSString *LPInforCollectionViewCellID = @"LPInforCollectionViewCell";
             make.top.mas_equalTo(50);
             make.left.mas_equalTo(0);
             make.right.mas_equalTo(0);
-            make.bottom.mas_equalTo(-49);
+            make.bottom.mas_equalTo(0);
         }];
+        self.allButton.hidden = NO;
+        self.deleteBt.hidden = NO;
     }
-    [self.collectionView reloadData];
+//    [self.collectionView reloadData];
+    LPInforCollectionViewCell *cell = (LPInforCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:self.selectType - 1 inSection:0]];
+    cell.selectStatus = self.isSelect;
+
+//    [self scrollToItenIndex:self.selectType-1];
 }
 
 -(void)setTitleView{
@@ -131,21 +158,26 @@ static NSString *LPInforCollectionViewCellID = @"LPInforCollectionViewCell";
     UIButton *selectButton = [[UIButton alloc]init];
     [self.view addSubview:selectButton];
     [selectButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(12);
-        make.bottom.mas_equalTo(-13);
-        make.width.mas_equalTo(70);
-    }];
+        make.left.mas_equalTo(0);
+        make.bottom.mas_equalTo(0);
+        make.width.mas_equalTo(SCREEN_WIDTH - 180);
+        make.height.mas_equalTo(49);
+     }];
     [selectButton setTitle:@"全选" forState:UIControlStateNormal];
+    selectButton.backgroundColor = [UIColor whiteColor];
+    self.allButton = selectButton;
     [selectButton setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
     [selectButton setImage:[UIImage imageNamed:@"add_ record_normal"] forState:UIControlStateNormal];
     [selectButton setImage:[UIImage imageNamed:@"add_ record_selected"] forState:UIControlStateSelected];
     selectButton.titleLabel.font = [UIFont systemFontOfSize:16];
-    selectButton.titleEdgeInsets = UIEdgeInsetsMake(0, 20, 0, 0);
-    selectButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
+    selectButton.titleEdgeInsets = UIEdgeInsetsMake(0, 30, 0, 0);
+    selectButton.imageEdgeInsets = UIEdgeInsetsMake(0, 20, 0, 0);
+    selectButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [selectButton addTarget:self action:@selector(touchSelectButton:) forControlEvents:UIControlEventTouchUpInside];
     
     UIButton *deleteButton = [[UIButton alloc]init];
     [self.view addSubview:deleteButton];
+    self.deleteBt = deleteButton;
     [deleteButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.mas_equalTo(0);
         make.bottom.mas_equalTo(0);
@@ -157,22 +189,26 @@ static NSString *LPInforCollectionViewCellID = @"LPInforCollectionViewCell";
     [deleteButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     deleteButton.titleLabel.font = [UIFont systemFontOfSize:16];
     [deleteButton addTarget:self action:@selector(touchDeleteButton:) forControlEvents:UIControlEventTouchUpInside];
-
+    self.allButton.hidden = YES;
+    self.deleteBt.hidden = YES;
+    self.allButton.selected = NO;
 }
 -(void)touchSelectButton:(UIButton *)button{
     button.selected = !button.isSelected;
-    LPInforCollectionViewCell *cell = (LPInforCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:self.selectType-1 inSection:0]];
+    LPInforCollectionViewCell *cell = (LPInforCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:self.selectType -1 inSection:0]];
     cell.selectAll = button.isSelected;
-    
+    self.selectAll = button.isSelected;
 }
 -(void)touchDeleteButton:(UIButton *)button{
-    LPInforCollectionViewCell *cell = (LPInforCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:self.selectType-1 inSection:0]];
+    LPInforCollectionViewCell *cell = (LPInforCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:self.selectType -1 inSection:0]];
     [cell deleteInfo];
 }
 -(void)touchLabel:(UITapGestureRecognizer *)tap{
     NSInteger index = [tap view].tag;
     [self selectButtonAtIndex:index];
     [self scrollToItenIndex:index];
+
+
 }
 -(void)selectButtonAtIndex:(NSInteger)index{
     CGFloat x = CGRectGetMinX(self.labelArray[index].frame);
@@ -186,9 +222,55 @@ static NSString *LPInforCollectionViewCellID = @"LPInforCollectionViewCell";
     }];
     
     self.selectType = index+1;
+    
+    for ( int i =0 ; i<self.titleArray.count; i++) {
+        LPInforCollectionViewCell *cell = (LPInforCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]];
+        cell.selectStatus = NO;
+        cell.selectAll = NO;
+        self.selectAll = NO;
+    }
+    
+    if (self.isSelect == YES)
+    {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"管理" style:UIBarButtonItemStyleDone target:self action:@selector(touchManagerButton)];
+        [self.navigationItem.rightBarButtonItem setTintColor:[UIColor colorWithHexString:@"#1B1B1B"]];
+        self.isSelect = NO;
+        [self.collectionView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_equalTo(50);
+            make.left.mas_equalTo(0);
+            make.right.mas_equalTo(0);
+            make.bottom.mas_equalTo(0);
+        }];
+        self.allButton.hidden = YES;
+        self.deleteBt.hidden = YES;
+        self.allButton.selected = NO;
+    }
+    
 }
 -(void)scrollToItenIndex:(NSInteger)index{
+    
+    LPInforCollectionViewCell *cell = (LPInforCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+//    cell.type = index+1;
+    
     [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:YES];
+
+    if (self.isSelect == YES)
+    {
+        cell.selectStatus = NO;
+
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"管理" style:UIBarButtonItemStyleDone target:self action:@selector(touchManagerButton)];
+        [self.navigationItem.rightBarButtonItem setTintColor:[UIColor colorWithHexString:@"#1B1B1B"]];
+        self.isSelect = NO;
+        [self.collectionView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_equalTo(50);
+            make.left.mas_equalTo(0);
+            make.right.mas_equalTo(0);
+            make.bottom.mas_equalTo(0);
+        }];
+        self.allButton.hidden = YES;
+        self.deleteBt.hidden = YES;
+        self.allButton.selected = NO;
+    }
 }
 
 #pragma mark -- UICollectionViewDelegate
@@ -196,17 +278,21 @@ static NSString *LPInforCollectionViewCellID = @"LPInforCollectionViewCell";
     CGFloat pageWidth = scrollView.frame.size.width;
     int page = floor((scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
     [self selectButtonAtIndex:page];
+//    [self scrollToItenIndex:page];
 }
 #pragma mark -- UICollectionViewDataSource
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return self.titleArray.count;
+//    return 1;
 }
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     LPInforCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:LPInforCollectionViewCellID forIndexPath:indexPath];
-    cell.type = self.selectType;
+    cell.type = indexPath.row+1;
     cell.selectStatus = self.isSelect;
     cell.selectAll = self.selectAll;
+    cell.allButton = self.allButton;
+    cell.page =1;
     return cell;
 }
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {

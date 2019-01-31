@@ -31,9 +31,11 @@ static NSString *LPSalaryStatisticsCellID = @"LPSalaryStatisticsCell";
 @property(nonatomic,strong) LPSelectWorkhourModel *model;
 
 @property(nonatomic,strong) NSArray *subsidiesArray;
+@property(nonatomic,strong) NSMutableArray *subsidiesValueArray;
 @property(nonatomic,strong) NSDictionary *subsidiesDic;
 
 @property(nonatomic,strong) NSArray *deductionsArray;
+@property(nonatomic,strong) NSMutableArray *deductionsValueArray;
 @property(nonatomic,strong) NSDictionary *deductionsDic;
 
 @property(nonatomic,strong) NSString *subsidyTotal;
@@ -60,6 +62,8 @@ static NSString *LPSalaryStatisticsCellID = @"LPSalaryStatisticsCell";
     
     self.subsidiesArray = @[];
     self.deductionsArray = @[];
+    self.subsidiesValueArray = [[NSMutableArray alloc] init];
+    self.deductionsValueArray = [[NSMutableArray alloc] init];
     
     [self setupUI];
     [self requestSelectWorkhour];
@@ -158,8 +162,16 @@ static NSString *LPSalaryStatisticsCellID = @"LPSalaryStatisticsCell";
     
 }
 -(void)chooseMonth{
-    self.monthView.hidden = !self.monthView.isHidden;
-    self.monthBackView.hidden = !self.monthBackView.isHidden;
+    QFDatePickerView *datePickerView = [[QFDatePickerView  alloc]initDatePackerWithResponse:^(NSString *str) {
+        NSLog(@"str = %@", str);
+        [self.timeButton setTitle:str forState:UIControlStateNormal];
+        self.currentDateString = self.timeButton.titleLabel.text;
+        [self requestSelectWorkhour];
+    }];
+    
+    [datePickerView show];
+//    self.monthView.hidden = !self.monthView.isHidden;
+//    self.monthBackView.hidden = !self.monthBackView.isHidden;
 }
 -(void)monthViewHidden{
     self.monthView.hidden = YES;
@@ -184,7 +196,7 @@ static NSString *LPSalaryStatisticsCellID = @"LPSalaryStatisticsCell";
 }
 -(void)touchBottomButton:(UIButton *)button{
     NSLog(@"预估工资");
-    if (kStringIsEmpty(self.basicSalary)) {
+    if ([self.basicSalary floatValue] == 0.0 ) {
         [self.view showLoadingMeg:@"请输入企业底薪" time:MESSAGE_SHOW_TIME];
         return;
     }
@@ -195,10 +207,48 @@ static NSString *LPSalaryStatisticsCellID = @"LPSalaryStatisticsCell";
     _model = model;
     
     
-    self.deductionsDic = [model.data.workRecord.normlDeductLabel mj_JSONObject];
-    self.subsidiesDic = [model.data.workRecord.normlSubsidyLabel mj_JSONObject];
-    self.deductionsArray = [self.deductionsDic allKeys];
-    self.subsidiesArray = [self.subsidiesDic allKeys];
+//    self.deductionsArray =[model.data.workRecord.normlDeductLabel componentsSeparatedByString:@","];
+//    self.subsidiesArray =[model.data.workRecord.normlSubsidyLabel componentsSeparatedByString:@","];
+    
+    NSMutableArray *Dearray = [[NSMutableArray alloc] init];
+    NSMutableArray *DearrayValue = [[NSMutableArray alloc] init];
+    NSMutableDictionary *dicDea = [[NSMutableDictionary alloc] init];
+
+    for (NSString *string in [model.data.workRecord.normlDeductLabel componentsSeparatedByString:@","])
+    {
+        NSArray *arr = [string componentsSeparatedByString:@"-"];
+        if (arr.count >=2) {
+            [Dearray addObject:arr[0]];
+            [DearrayValue addObject:arr[1]];
+            [dicDea setObject:arr[1] forKey:arr[0]];
+        }
+    }
+    self.deductionsArray = [Dearray mutableCopy];
+    self.deductionsValueArray = [DearrayValue mutableCopy];
+    self.deductionsDic = [dicDea mutableCopy];
+
+    NSMutableArray *Subarray = [[NSMutableArray alloc] init];
+    NSMutableArray *SubarrayValue = [[NSMutableArray alloc] init];
+    NSMutableDictionary *subDic = [[NSMutableDictionary alloc] init];
+
+    for (NSString *string in [model.data.workRecord.normlSubsidyLabel componentsSeparatedByString:@","])
+    {
+        NSArray *arr = [string componentsSeparatedByString:@"-"];
+        if (arr.count >=2) {
+            [Subarray addObject:arr[0]];
+            [SubarrayValue addObject:arr[1]];
+            [subDic setObject:arr[1] forKey:arr[0]];
+
+        }
+    }
+    self.subsidiesArray = [Subarray mutableCopy];
+    self.subsidiesValueArray = [SubarrayValue mutableCopy];
+    self.subsidiesDic = [subDic mutableCopy];
+
+//    self.deductionsDic = [model.data.workRecord.normlDeductLabel mj_JSONObject];
+//    self.subsidiesDic = [str mj_JSONObject];
+//    self.deductionsArray = [self.deductionsDic allKeys];
+//    self.subsidiesArray = [self.subsidiesDic allKeys];
 
     self.deductionTotal = [NSString stringWithFormat:@"%.2f",model.data.workRecord.normlDeductMoney.floatValue];
     self.subsidyTotal = [NSString stringWithFormat:@"%.2f",model.data.workRecord.normlSubsidyMoney.floatValue];
@@ -218,6 +268,7 @@ static NSString *LPSalaryStatisticsCellID = @"LPSalaryStatisticsCell";
     if (indexPath.row < 3) {
         LPWorkHourDetailPieChartCell *cell = [tableView dequeueReusableCellWithIdentifier:LPWorkHourDetailPieChartCellID];
         cell.index = indexPath.row;
+        NSLog(@"index = %ld",(long)indexPath.row);
         cell.model = self.model;
         return cell;
     }else if (indexPath.row == 3 || indexPath.row == 4){
@@ -229,6 +280,7 @@ static NSString *LPSalaryStatisticsCellID = @"LPSalaryStatisticsCell";
             
             NSArray *array = self.subsidiesArray;
             cell.textArray = array;
+            cell.valueArray = self.subsidiesValueArray;
             WEAK_SELF()
             cell.block = ^{
                 LPSubsidyDeductionVC *vc = [[LPSubsidyDeductionVC alloc]init];
@@ -240,6 +292,7 @@ static NSString *LPSalaryStatisticsCellID = @"LPSalaryStatisticsCell";
                 };
                 [self.navigationController pushViewController:vc animated:YES];
             };
+            
             NSMutableDictionary *dic = [NSMutableDictionary dictionary];
             dic = [self.subsidiesDic mutableCopy];
             for (int i =0; i<[dic allKeys].count; i++) {
@@ -267,6 +320,8 @@ static NSString *LPSalaryStatisticsCellID = @"LPSalaryStatisticsCell";
             [cell.addButton setTitle:@"添加扣款记录" forState:UIControlStateNormal];
             
             NSArray *array = self.deductionsArray;
+
+            cell.valueArray = self.deductionsValueArray;
             cell.textArray = array;
             WEAK_SELF()
             cell.block = ^{
@@ -308,7 +363,13 @@ static NSString *LPSalaryStatisticsCellID = @"LPSalaryStatisticsCell";
         cell.subsidyLabel.text = [NSString stringWithFormat:@"补贴总计：%@",self.subsidyTotal ? self.subsidyTotal : @""];
         cell.deductionLabel.text = [NSString stringWithFormat:@"扣款总计：%@",self.deductionTotal ? self.deductionTotal : @""];
         cell.overtimeLabel.text = [NSString stringWithFormat:@"加班总计：%@",self.addTotal ? self.addTotal : @""];
-        cell.basicSalaryTextField.text = self.basicSalary;
+        if ([self.basicSalary floatValue] == 0.0) {
+            cell.basicSalaryTextField.text = @"";
+        }
+        else
+        {
+            cell.basicSalaryTextField.text = self.basicSalary;
+        }
         WEAK_SELF();
         
 //        __weak LPSalaryStatisticsCell *weakCell = cell;
@@ -363,6 +424,8 @@ static NSString *LPSalaryStatisticsCellID = @"LPSalaryStatisticsCell";
         NSLog(@"%@",responseObject);
         if (isSuccess) {
             self.model = [LPSelectWorkhourModel mj_objectWithKeyValues:responseObject];
+                [self calculation];
+            [self refresh:[self.model.data.workRecord.normlDeductMoney floatValue] add:[self.model.data.workRecord.normlSubsidyMoney floatValue]];
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -372,31 +435,66 @@ static NSString *LPSalaryStatisticsCellID = @"LPSalaryStatisticsCell";
 
     [self calculation];
     
-    NSString *dedstring = [self.deductionsDic mj_JSONString];
-    NSArray *dedArray = [self.deductionsDic allValues];
+//    NSString *dedstring = [self.deductionsDic mj_JSONString];
+//    NSArray *dedArray = [self.deductionsDic allValues];
+//    CGFloat dedMoney = 0;
+//    for (NSString *str in dedArray) {
+//        dedMoney += [str floatValue];
+//    }
+//
+//    NSString *substring = [self.subsidiesDic mj_JSONString];
+//    NSArray *subArray = [self.subsidiesDic allValues];
+//    CGFloat subMoney = 0;
+//    for (NSString *str in subArray) {
+//        subMoney += [str floatValue];
+//    }
+    
     CGFloat dedMoney = 0;
-    for (NSString *str in dedArray) {
-        dedMoney += [str floatValue];
+    CGFloat subMoney = 0;
+    NSString *dedstring =@"";
+    for (int i =0 ; i < self.deductionsArray.count ; i++) {
+        NSString *key = self.deductionsArray[i];
+        if([[self.deductionsDic objectForKey:key] isEqual:[NSNull null]] ||
+           ![self.deductionsDic objectForKey:key]||
+           [[self.deductionsDic objectForKey:key] isEqualToString:@""]){
+            [self.view showLoadingMeg:[NSString stringWithFormat:@"请先输入“%@”的金额",key] time:MESSAGE_SHOW_TIME];
+            return;
+        }
+        
+        CGFloat mony  = [[self.deductionsDic objectForKey:key] floatValue];
+       NSString *str = [NSString stringWithFormat:@"%@-%.2f,",key,mony];
+       dedstring = [dedstring stringByAppendingString:str];
+        dedMoney += mony;
     }
     
-    NSString *substring = [self.subsidiesDic mj_JSONString];
-    NSArray *subArray = [self.subsidiesDic allValues];
-    CGFloat subMoney = 0;
-    for (NSString *str in subArray) {
-        subMoney += [str floatValue];
+    NSString *substring =@"";
+    for (int i =0 ; i < self.subsidiesArray.count ; i++) {
+        NSString *key = self.subsidiesArray[i];
+        if([[self.subsidiesDic objectForKey:key] isEqual:[NSNull null]] ||
+           ![self.subsidiesDic objectForKey:key] ||
+           [[self.subsidiesDic objectForKey:key] isEqualToString:@""]){
+            [self.view showLoadingMeg:[NSString stringWithFormat:@"请先输入“%@”的金额",key] time:MESSAGE_SHOW_TIME];
+            return;
+        }
+        CGFloat mony  = [[self.subsidiesDic objectForKey:key] floatValue];
+        NSString *str = [NSString stringWithFormat:@"%@-%.2f,",key,mony];
+        substring = [substring stringByAppendingString:str];
+        subMoney += mony;
     }
+    
+    
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     [dic setObject:self.addTotal forKey:@"addWorkSalary"];
     [dic setObject:self.basicSalary forKey:@"basicSalary"];
     [dic setObject:self.currentDateString forKey:@"time"];
     [dic setObject:@(0) forKey:@"type"];
 
-    if (dedstring) {
+    if (![dedstring isEqualToString:@""]) {
         [dic setObject:dedstring forKey:@"normlDeductLabel"];
         [dic setObject:@(dedMoney) forKey:@"normlDeductMoney"];
     }
 
-    if (substring) {
+    if (![substring isEqualToString:@""]) {
         [dic setObject:substring forKey:@"normlSubsidyLabel"];
         [dic setObject:@(subMoney) forKey:@"normlSubsidyMoney"];
     }
@@ -414,6 +512,7 @@ static NSString *LPSalaryStatisticsCellID = @"LPSalaryStatisticsCell";
         if (isSuccess) {
             if ([responseObject[@"data"] integerValue] == 1) {
                 [self refresh:dedMoney add:subMoney];
+                [self.view showLoadingMeg:@"保存成功" time:MESSAGE_SHOW_TIME];
             }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];

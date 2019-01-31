@@ -8,12 +8,25 @@
 
 #import <UIKit/UIKit.h>
 #import "MoninNet.h"
+#import "WXApi.h"
+#import <BaiduMapAPI_Base/BMKBaseComponent.h>
+#import <BMKLocationkit/BMKLocationComponent.h>
+#import <BMKLocationkit/BMKLocationAuth.h>
+#import "LPWXUserInfoModel.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+
+@protocol LPWxLoginHBDelegate <NSObject>
+
+- (void)LPWxLoginHBBack:(LPWXUserInfoModel *)wxUserInfo;
+
+@end
+
+@interface AppDelegate : UIResponder <UIApplicationDelegate,WXApiDelegate,TencentSessionDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
 @property (strong,nonatomic) MoninNet* moninNet;
+@property (nonatomic,assign)id <LPWxLoginHBDelegate>WXdelegate;
 
 //退出登录
 - (void)LoginOut;

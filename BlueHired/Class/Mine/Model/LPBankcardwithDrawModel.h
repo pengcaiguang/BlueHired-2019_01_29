@@ -19,6 +19,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LPBankcardwithDrawDataModel : NSObject
 @property(nonatomic,copy) NSNumber *type;
+@property(nonatomic,strong) NSString *bankName;
+@property(nonatomic,strong) NSString *bankNumber;
+@property(nonatomic,strong) NSString *cardType;
+@property(nonatomic,strong) NSString *phone;
 
 @end
 NS_ASSUME_NONNULL_END

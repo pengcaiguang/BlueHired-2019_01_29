@@ -33,7 +33,7 @@
 {
     NSString *path  = [self appendFilePath:fileName];
     
-    [NSKeyedArchiver archiveRootObject:object toFile:path];
+    BOOL flag = [NSKeyedArchiver archiveRootObject:object toFile:path];
     
 }
 /// 通过文件名从沙盒中找到归档的对象

@@ -25,6 +25,7 @@
 @property (nonatomic, copy) NSNumber *delStatus;
 @property (nonatomic, copy) NSString *grading;
 @property (nonatomic, copy) NSNumber *id;
+@property (nonatomic, copy) NSString *identity;
 @property (nonatomic, copy) NSNumber *isCollection;
 @property (nonatomic, copy) NSNumber *isConcern;
 @property (nonatomic, copy) NSNumber *isPraise;
@@ -41,5 +42,6 @@
 @property (nonatomic, copy) NSString *userName;
 @property (nonatomic, copy) NSString *userUrl;
 @property (nonatomic, copy) NSNumber *view;
+@property (nonatomic, copy) NSString *address;
 
 @end

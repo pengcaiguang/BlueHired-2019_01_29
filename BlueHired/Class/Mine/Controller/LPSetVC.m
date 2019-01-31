@@ -8,8 +8,12 @@
 
 #import "LPSetVC.h"
 #import "LPFeedBackVC.h"
+#import "LPBlackUserVC.h"
+#import "AppDelegate.h"
 
-@interface LPSetVC ()<UITableViewDelegate,UITableViewDataSource>
+static NSString *WXAPPID = @"wx566f19a70d573321";
+
+@interface LPSetVC ()<UITableViewDelegate,UITableViewDataSource,LPWxLoginHBDelegate>
 @property (nonatomic, strong)UITableView *tableview;
 
 @property(nonatomic,strong) UIView *alertBgView;
@@ -20,6 +24,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+     AppDelegate * appDelegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
+    appDelegate.WXdelegate = self;
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = @"设置中心";
@@ -31,10 +37,19 @@
         make.bottom.mas_equalTo(-120);
         make.top.mas_equalTo(0);
     }];
+
+}
+
+-(void)viewDidAppear:(BOOL)animated{
     if (AlreadyLogin) {
         [self setLogoutButton];
+        LPUserMaterialModel *user = [LPUserDefaults getObjectByFileName:USERINFO];
+        self.userMaterialModel.data.openid = [LPTools isNullToString:user.data.openid];
+        [self.tableview reloadData];
     }
+    
 }
+
 -(void)setLogoutButton{
     UIButton *button = [[UIButton alloc]init];
     [self.view addSubview:button];
@@ -44,7 +59,7 @@
         make.height.mas_equalTo(48);
         make.bottom.mas_equalTo(-60);
     }];
-    [button setTitle:@"退出登陆" forState:UIControlStateNormal];
+    [button setTitle:@"退出登录" forState:UIControlStateNormal];
     [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     button.backgroundColor = [UIColor baseColor];
     button.layer.masksToBounds = YES;
@@ -52,12 +67,12 @@
     [button addTarget:self action:@selector(touchLogoutButton) forControlEvents:UIControlEventTouchUpInside];
 }
 -(void)touchLogoutButton{
-    NSLog(@"退出登陆");
+    NSLog(@"退出登录");
     [self requestSignout];
 }
 #pragma mark - TableViewDelegate & Datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 4;
+    return AlreadyLogin?5:3;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -71,29 +86,125 @@
     cell.textLabel.font = [UIFont systemFontOfSize:16];
     cell.detailTextLabel.textColor = [UIColor colorWithHexString:@"#939393"];
     cell.detailTextLabel.font = [UIFont systemFontOfSize:14];
-    if (indexPath.row == 0) {
-        cell.textLabel.text = @"意见反馈";
-    }else if (indexPath.row == 1) {
-        cell.textLabel.text = @"关注微信公众号";
-    }else if (indexPath.row == 2) {
-        cell.textLabel.text = @"关于我们";
-    }else if (indexPath.row == 3) {
-        cell.textLabel.text = @"检查更新";
-        
-        NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
-        NSString *app_build = [infoDictionary objectForKey:@"CFBundleVersion"];
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"当前版本%@",app_build];
+    cell.detailTextLabel.text = @"";
+    if (AlreadyLogin) {
+        if (indexPath.row == 0) {
+            cell.textLabel.text = @"微信绑定";
+            if ([[LPTools isNullToString:self.userMaterialModel.data.openid] isEqualToString:@""]) {
+                cell.detailTextLabel.text = @"未绑定";
+            }else{
+                cell.detailTextLabel.text = @"已绑定";
+            }
+        }else if (indexPath.row == 1) {
+            cell.textLabel.text = @"意见反馈";
+        }else if (indexPath.row == 2) {
+            cell.textLabel.text = @"关注微信公众号";
+        }else if (indexPath.row == 3) {
+            cell.textLabel.text = AlreadyLogin?@"黑名单":@"关于我们";
+        }else if (indexPath.row == 4) {
+            cell.textLabel.text = @"关于我们";
+        }
+    }else{
+        if (indexPath.row == 0) {
+            cell.textLabel.text = @"意见反馈";
+        }else if (indexPath.row == 1) {
+            cell.textLabel.text = @"关注微信公众号";
+        }else if (indexPath.row == 2) {
+            cell.textLabel.text =  @"关于我们";
+        }
     }
+    
+//    else if (indexPath.row == 3) {
+//        cell.textLabel.text = @"检查更新";
+//
+//        NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+//        NSString *app_build = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+//        cell.detailTextLabel.text = [NSString stringWithFormat:@"当前版本%@",app_build];
+//    }
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (indexPath.row == 0) {
-        LPFeedBackVC *vc = [[LPFeedBackVC alloc]init];
-        [self.navigationController pushViewController:vc animated:YES];
-    }else if (indexPath.row == 2){
-        [self showAlert];
+    if (AlreadyLogin) {
+        if (indexPath.row == 0) {
+            if ([WXApi isWXAppInstalled]==NO) {
+                [self.view showLoadingMeg:@"请安装微信" time:MESSAGE_SHOW_TIME];
+                return;
+            }
+            
+            if ([[LPTools isNullToString:self.userMaterialModel.data.openid] isEqualToString:@""]) {
+                GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"是否前去绑定微信号？" message:nil textAlignment:0 buttonTitles:@[@"取消",@"确定"] buttonsColor:@[[UIColor blackColor],[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
+                    if (buttonIndex) {
+                        [WXApiRequestHandler sendAuthRequestScope: @"snsapi_userinfo"
+                                                            State:@"123x"
+                                                           OpenID:WXAPPID
+                                                 InViewController:self];
+                    }
+                }];
+                [alert show];
+            }else{
+                GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"是否换绑微信号？" message:nil textAlignment:0 buttonTitles:@[@"取消",@"确定"] buttonsColor:@[[UIColor blackColor],[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
+                    if (buttonIndex) {
+                        [WXApiRequestHandler sendAuthRequestScope: @"snsapi_userinfo"
+                                                            State:@"123x"
+                                                           OpenID:WXAPPID
+                                                 InViewController:self];
+                    }
+                }];
+                [alert show];
+            }
+        }else if (indexPath.row == 1) {
+            LPFeedBackVC *vc = [[LPFeedBackVC alloc]init];
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+        else if (indexPath.row == 2)
+        {
+            NSString *urlsting =[[NSString stringWithFormat:@"weixin://"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:urlsting]]) {
+                UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+                pasteboard.string = @"蓝聘网络科技";
+                 [self.view showLoadingMeg:@"蓝聘：点击搜索按钮，粘贴文本进行搜索" time:2];
+                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlsting]];
+                });
+             }
+        }else if (indexPath.row == 3){
+            if ([kUserDefaultsValue(LOGINID) integerValue]) {
+                if ([LoginUtils validationLogin:[UIWindow visibleViewController]]){
+                    LPBlackUserVC *vc = [[LPBlackUserVC alloc] init];
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+            }else{
+                [self showAlert];
+            }
+         }else if (indexPath.row == 4){
+            [self showAlert];
+        }
+    
+    }else{
+        if (indexPath.row == 0) {
+            if ([LoginUtils validationLogin:[UIWindow visibleViewController]]){
+            LPFeedBackVC *vc = [[LPFeedBackVC alloc]init];
+            [self.navigationController pushViewController:vc animated:YES];
+            }
+        }
+        else if (indexPath.row == 1)
+        {
+            NSString *urlsting =[[NSString stringWithFormat:@"weixin://"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:urlsting]]) {
+                UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+                pasteboard.string = @"蓝聘网络科技";
+                [self.view showLoadingMeg:@"蓝聘：点击搜索按钮，粘贴文本进行搜索" time:2];
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlsting]];
+                });
+            }
+        }else if (indexPath.row == 2){
+                 [self showAlert];
+         }
     }
+    
+    
 }
 
 -(void)showAlert{
@@ -120,11 +231,48 @@
     }];
 }
 
+#pragma mark - LPWxLoginHBBack
+- (void)LPWxLoginHBBack:(LPWXUserInfoModel *)wxUserInfo{
+    if (![self.userMaterialModel.data.openid isEqualToString:wxUserInfo.unionid]) {
+        NSDictionary *dic = @{
+                              @"sgin":[LPTools isNullToString:wxUserInfo.unionid],
+                              @"phone":self.userMaterialModel.data.userTel,
+                              @"userUrl":[LPTools isNullToString:wxUserInfo.headimgurl],
+                              @"userName":@"0fc23ce3bc0e1ee5e5e"
+                              };
+        [NetApiManager requestQueryWXSetPhone:dic withHandle:^(BOOL isSuccess, id responseObject) {
+            NSLog(@"%@",responseObject);
+            if (isSuccess) {
+                if ([responseObject[@"data"] integerValue] > 0) {
+                    if ([[LPTools isNullToString:self.userMaterialModel.data.openid] isEqualToString:@""]) {
+                        [self.view showLoadingMeg:@"绑定成功" time:MESSAGE_SHOW_TIME];
+                     }else{
+                        [self.view showLoadingMeg:@"换绑成功，请之后用新微信号进行登录！" time:MESSAGE_SHOW_TIME];
+                    }
+                    self.userMaterialModel.data.openid = wxUserInfo.unionid;
+                    [self.tableview reloadData];
+                }else{
+                    [self.view showLoadingMeg:responseObject[@"msg"] ? responseObject[@"msg"] : @"注册失败" time:MESSAGE_SHOW_TIME];
+                }
+            }else{
+                [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+            }
+        }];
+        
+    }else{
+        [self.view showLoadingMeg:@"此次微信号与之前绑定的一致，请更换微信号重试！" time:MESSAGE_SHOW_TIME];
+    }
+    
+     
+}
+
+
 #pragma mark - request
 -(void)requestSignout{
     [NetApiManager requestSignoutWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
+            kUserDefaultsSave(kUserDefaultsValue(LOGINID), OLDLOGINID);
             kUserDefaultsRemove(LOGINID);
             kUserDefaultsRemove(kLoginStatus);
             [self.navigationController popViewControllerAnimated:YES];

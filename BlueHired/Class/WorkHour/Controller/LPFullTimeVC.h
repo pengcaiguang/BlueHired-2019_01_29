@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LPFullTimeVC : UIViewController
+@interface LPFullTimeVC : LPBaseViewController
 
 @end

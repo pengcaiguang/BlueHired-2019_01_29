@@ -32,4 +32,6 @@
 @property (nonatomic, copy) NSString *userName;
 @property (nonatomic, copy) NSString *userUrl;
 @property (nonatomic, copy) NSNumber *workEnvironScore;
+
+@property (nonatomic,assign) BOOL IsAllShow;
 @end

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="LPInfoMationVideoCell">
+            <rect key="frame" x="0.0" y="0.0" width="310" height="230"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="310" height="230"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Sra-Ka-8tV">
+                        <rect key="frame" x="0.0" y="0.0" width="310" height="230"/>
+                    </imageView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3tB-S3-IoO">
+                        <rect key="frame" x="0.0" y="204" width="310" height="26"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="26" id="lAw-2d-Qcf"/>
+                        </constraints>
+                    </view>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Head_image" translatesAutoresizingMaskIntoConstraints="NO" id="qRk-yN-B1P">
+                        <rect key="frame" x="7" y="206" width="19" height="19"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="19" id="0wA-UK-hJu"/>
+                            <constraint firstAttribute="height" constant="19" id="DaH-mK-ydn"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2132321" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qRT-ab-GK8">
+                        <rect key="frame" x="34" y="208.5" width="228" height="14.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="VideoNumImage" translatesAutoresizingMaskIntoConstraints="NO" id="12G-hO-s2E">
+                        <rect key="frame" x="266" y="211" width="9" height="9"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="9" id="0a0-5X-CnB"/>
+                            <constraint firstAttribute="height" constant="9" id="W93-4j-Z9V"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FmM-6n-ago">
+                        <rect key="frame" x="279" y="210" width="31" height="11"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="31" id="Hfj-JL-LtB"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="9"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstItem="12G-hO-s2E" firstAttribute="centerY" secondItem="qRk-yN-B1P" secondAttribute="centerY" id="4O7-ga-XnD"/>
+                <constraint firstItem="qRk-yN-B1P" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="7" id="6BS-p0-BUC"/>
+                <constraint firstItem="FmM-6n-ago" firstAttribute="leading" secondItem="12G-hO-s2E" secondAttribute="trailing" constant="4" id="7Vm-zJ-UmT"/>
+                <constraint firstItem="3tB-S3-IoO" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="BGq-8c-wLN"/>
+                <constraint firstItem="Sra-Ka-8tV" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="Eb8-IH-dlZ"/>
+                <constraint firstItem="qRT-ab-GK8" firstAttribute="centerY" secondItem="qRk-yN-B1P" secondAttribute="centerY" id="GBt-OG-r5n"/>
+                <constraint firstItem="12G-hO-s2E" firstAttribute="leading" secondItem="qRT-ab-GK8" secondAttribute="trailing" constant="4" id="Jrj-yK-pvx"/>
+                <constraint firstItem="qRT-ab-GK8" firstAttribute="leading" secondItem="qRk-yN-B1P" secondAttribute="trailing" constant="8" id="LsA-pZ-Ddx"/>
+                <constraint firstAttribute="bottom" secondItem="Sra-Ka-8tV" secondAttribute="bottom" id="PAQ-03-uOo"/>
+                <constraint firstAttribute="trailing" secondItem="Sra-Ka-8tV" secondAttribute="trailing" id="hOT-vr-ewo"/>
+                <constraint firstItem="FmM-6n-ago" firstAttribute="centerY" secondItem="qRk-yN-B1P" secondAttribute="centerY" id="hlB-lg-U0p"/>
+                <constraint firstAttribute="trailing" secondItem="3tB-S3-IoO" secondAttribute="trailing" id="oBE-vU-xuD"/>
+                <constraint firstItem="Sra-Ka-8tV" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="wac-42-qed"/>
+                <constraint firstAttribute="bottom" secondItem="qRk-yN-B1P" secondAttribute="bottom" constant="5" id="wrA-k3-8OJ"/>
+                <constraint firstAttribute="bottom" secondItem="3tB-S3-IoO" secondAttribute="bottom" id="yVK-ZC-qoE"/>
+                <constraint firstAttribute="trailing" secondItem="FmM-6n-ago" secondAttribute="trailing" id="zLK-cC-Dzg"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="SEy-5g-ep8"/>
+            <size key="customSize" width="345" height="225"/>
+            <connections>
+                <outlet property="TitleBackView" destination="3tB-S3-IoO" id="uR0-1d-xXO"/>
+                <outlet property="Videotittle" destination="qRT-ab-GK8" id="pIv-g5-02e"/>
+                <outlet property="commentTotal" destination="FmM-6n-ago" id="xrH-Dg-qSb"/>
+                <outlet property="userImage" destination="qRk-yN-B1P" id="9tv-z2-gh4"/>
+                <outlet property="videoImage" destination="Sra-Ka-8tV" id="56h-es-d5q"/>
+            </connections>
+            <point key="canvasLocation" x="165" y="98"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="Head_image" width="48" height="47"/>
+        <image name="VideoNumImage" width="9.5" height="9.5"/>
+    </resources>
+</document>

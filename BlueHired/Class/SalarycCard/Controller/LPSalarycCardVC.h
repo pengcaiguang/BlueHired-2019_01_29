@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LPSalarycCardVC : UIViewController
+@interface LPSalarycCardVC : LPBaseViewController
 
 @end
 

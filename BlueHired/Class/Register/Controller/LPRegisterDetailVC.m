@@ -125,6 +125,7 @@ static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
     [arr mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedSpacing:10 leadSpacing:13 tailSpacing:13];
     [arr mas_makeConstraints:^(MASConstraintMaker *make) {
         make.height.mas_equalTo(30);
+        make.top.mas_equalTo(0);
     }];
     
     
@@ -194,6 +195,7 @@ static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self monthViewHidden];
     });
+    self.page = 1;
     [self requestGetOnWork];
     
 }
@@ -201,7 +203,7 @@ static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
     _model = model;
     [self.bottomButtonArray[0] setTitle:[NSString stringWithFormat:@"已到账邀请奖励%@元",model.data.totalMoney ? model.data.totalMoney : @"0"] forState:UIControlStateNormal];
     [self.bottomButtonArray[1] setTitle:[NSString stringWithFormat:@"未到账邀请奖励%@元",model.data.remainderMoney ? model.data.remainderMoney : @"0"] forState:UIControlStateNormal];
-    
+
     if ([self.model.code integerValue] == 0) {
         
         if (self.page == 1) {
@@ -309,7 +311,7 @@ static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
         _tableview.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         _tableview.separatorColor = [UIColor colorWithHexString:@"#F1F1F1"];
         [_tableview registerNib:[UINib nibWithNibName:LPRegisterDetailCellID bundle:nil] forCellReuseIdentifier:LPRegisterDetailCellID];
-        _tableview.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        _tableview.mj_header = [HZNormalHeader headerWithRefreshingBlock:^{
             self.page = 1;
             [self requestGetOnWork];
         }];

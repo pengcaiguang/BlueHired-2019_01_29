@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LPBusinessReviewSearchVC : UIViewController
+@interface LPBusinessReviewSearchVC : LPBaseViewController
 
 @end

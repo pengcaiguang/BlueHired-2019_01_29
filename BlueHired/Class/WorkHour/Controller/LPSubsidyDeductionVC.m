@@ -83,8 +83,24 @@ static NSString *LPSubsidyDeductionCellID = @"LPSubsidyDeductionCell";
     [self.navigationController popViewControllerAnimated:YES];
 }
 -(void)touchBottomButton{
-    GJAlertText *alert = [[GJAlertText alloc]initWithTitle:@"自定义补贴记录" message:@"请输入补贴类型" buttonTitles:@[@"取消",@"确定"] buttonsColor:@[[UIColor colorWithHexString:@"#666666"],[UIColor baseColor]] buttonClick:^(NSInteger buttonIndex, NSString *string) {
+        
+    GJAlertText *alert = [[GJAlertText alloc]initWithTitle:self.type==1?@"自定义补贴记录":@"自定义扣款记录"
+                                                   message:self.type==1?@"请输入补贴类型":@"请输入扣款类型"
+                                              buttonTitles:@[@"取消",@"确定"]
+                                              buttonsColor:@[[UIColor colorWithHexString:@"#666666"],[UIColor baseColor]]
+                                                 MaxLength:8
+                                               buttonClick:^(NSInteger buttonIndex, NSString *string) {
         NSMutableArray *array = [NSMutableArray arrayWithArray:self.titleArray];
+        string = [string stringByReplacingOccurrencesOfString:@"-" withString:@""];
+        string = [string stringByReplacingOccurrencesOfString:@"," withString:@""];
+        string = [string stringByReplacingOccurrencesOfString:@":" withString:@""];
+        
+        if (string.length >8)
+        {
+            [self.view showLoadingMeg:@"字数不能大于8，请重新输入" time:MESSAGE_SHOW_TIME];
+            return ;
+        }
+
         if (string) {
             if (![array containsObject:string]) {
                 [array addObject:string];

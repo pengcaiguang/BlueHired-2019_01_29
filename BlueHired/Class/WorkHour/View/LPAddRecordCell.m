@@ -9,7 +9,7 @@
 #import "LPAddRecordCell.h"
 #import "LPSubsidyDeductionVC.h"
 
-@interface LPAddRecordCell ()
+@interface LPAddRecordCell ()<UITextFieldDelegate>
 
 @property(nonatomic,strong) UIView *textView;
 @property(nonatomic,strong) NSMutableArray <UILabel *>*labelArray;
@@ -53,10 +53,13 @@
     [view addSubview:label];
     [label mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(13);
+        make.width.mas_equalTo(90);
         make.centerY.equalTo(view);
     }];
     label.textColor = [UIColor colorWithHexString:@"#666666"];
-    label.font = [UIFont systemFontOfSize:14];
+    label.textAlignment = NSTextAlignmentLeft;
+    label.font = [UIFont systemFontOfSize:13];
+    label.numberOfLines = 2;
     label.text = @"社保扣款";
     [self.labelArray addObject:label];
 //    label.backgroundColor = [UIColor greenColor];
@@ -74,16 +77,30 @@
     textField.layer.masksToBounds = YES;
     textField.layer.cornerRadius = 2.0;
     textField.keyboardType = UIKeyboardTypeDecimalPad;
-    textField.textAlignment = NSTextAlignmentCenter;
+    textField.textAlignment = NSTextAlignmentLeft;
     [self.textFieldArray addObject:textField];
     textField.tag = tag;
+    textField.delegate =self;
     [textField addTarget:self action:@selector(textFieldChanged:) forControlEvents:UIControlEventEditingChanged];
     [label setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
     
     [self.viewArray addObject:view];
 }
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    NSString * str = [NSString stringWithFormat:@"%@%@",textField.text,string];
+    //匹配以0开头的数字
+    NSPredicate * predicate0 = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",@"^[0][0-9]+$"];
+    //匹配两位小数、整数
+    NSPredicate * predicate1 = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",@"^(([1-9]{1}[0-9]*|[0])\.?[0-9]{0,2})$"];
+    return ![predicate0 evaluateWithObject:str] && [predicate1 evaluateWithObject:str] && str.length <=7 ? YES : NO;
+}
+
+
 -(void)textFieldChanged:(UITextField *)textField{
     NSLog(@"-%ld - %@",textField.tag ,textField.text);
+//    _valueArray[textField.tag-1] = textField.text;
     [self.muDic setObject:textField.text forKey:self.textArray[textField.tag-1]];
     NSLog(@"-%@",self.muDic);
     if (self.dicBlock) {
@@ -124,11 +141,23 @@
         [self addTextView:48*i tag:i];
     }
     for (int i = 0; i<self.textArray.count; i++) {
-        self.labelArray[i].text = self.textArray[i];
+        self.labelArray[i].text = [NSString stringWithFormat:@"%@:", self.textArray[i]];
     }
     
     self.view_constraint_height.constant = 48*(self.textArray.count+1);
 
+}
+
+-(void)setValueArray:(NSMutableArray *)valueArray
+{
+    _valueArray = valueArray;
+//    if (valueArray.count && valueArray.count == _labelArray.count)
+//    {
+//        for (int i = 0; i<self.labelArray.count; i++) {
+//            NSString *s = [_valueArray objectAtIndex:i];
+//            self.textFieldArray[i].text = s;
+//        }
+//    }
 }
 
 -(void)setDic:(NSDictionary *)dic{
@@ -137,8 +166,9 @@
         [self.muDic setDictionary:dic];
         
         for (int i = 0; i<self.labelArray.count; i++) {
-            NSString *str = self.labelArray[i].text;
+            NSString *str = [self.labelArray[i].text stringByReplacingOccurrencesOfString:@":" withString:@""];
             
+            NSLog(@"%@",[dic objectForKey:str]);
             NSString *s = [dic objectForKey:str];
             self.textFieldArray[i].text = s;
         }

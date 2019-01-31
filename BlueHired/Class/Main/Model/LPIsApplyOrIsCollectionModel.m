@@ -15,3 +15,7 @@
 @implementation LPIsApplyOrIsCollectionDataModel
 
 @end
+
+@implementation teacher
+
+@end

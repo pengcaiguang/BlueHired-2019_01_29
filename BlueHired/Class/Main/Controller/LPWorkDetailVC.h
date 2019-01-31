@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "LPWorklistModel.h"
 
-@interface LPWorkDetailVC : UIViewController
+@interface LPWorkDetailVC : LPBaseViewController
 
 @property(nonatomic,strong) LPWorklistDataWorkListModel *workListModel;
 

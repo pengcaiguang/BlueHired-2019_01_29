@@ -34,8 +34,8 @@
     [pie showAnimation];
     self.pie = pie;
     
-    self.workTypeArray = @[@"早班",@"中班",@"晚班",@"夜班"];
-    self.addTypeTypeArray = @[@"普通加班",@"周末加班",@"节假日加班"];
+    self.workTypeArray = @[@"早班时长",@"中班时长",@"晚班时长",@"夜班时长"];
+    self.addTypeTypeArray = @[@"普通加班时长",@"周六,日加班时长",@"节假日加班时长"];
     self.leaveTypeArray = @[@"带薪休假",@"调休",@"事假",@"病假",@"其它请假"];
     
 }
@@ -44,37 +44,44 @@
 }
 
 -(void)setModel:(LPSelectWorkhourModel *)model{
-    if ([self.model.mj_JSONString isEqualToString:model.mj_JSONString]) {
-        return;
-    }
+//    if ([self.model.mj_JSONString isEqualToString:model.mj_JSONString]) {
+//        return;
+//    }
+
     _model = model;
     if (self.index == 0) {
         self.colorView.backgroundColor = [UIColor baseColor];
         self.typeTitleLabel.text = @"正常上班/月";
         
         NSMutableArray *hourArray = [NSMutableArray array];
+        NSMutableArray *ColorArray = [NSMutableArray array];
+
+        NSArray *colorArr = @[[UIColor colorWithHexString:@"#F0E7A8"],
+                                [UIColor colorWithHexString:@"#FFD8BE"],
+                                [UIColor colorWithHexString:@"#9FBEE2"],
+                                [UIColor colorWithHexString:@"#A7F4C4"]];
+        // 排序key, 某个对象的属性名称，是否升序, YES-升序, NO-降序
+//        NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"workType" ascending:YES];
+//        // 排序结果
+//        NSArray *sortArray= [model.data.normalHourList sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+
+        
         for (LPSelectWorkhourDataNormalHourListModel *m in model.data.normalHourList) {
             [hourArray addObject:m.totalWorkHour ? m.totalWorkHour : @(0)];
+            [ColorArray addObject:colorArr[m.workType.integerValue]];
         }
+        
         if (hourArray.count < self.workTypeArray.count) {
             for (int i=0; i<self.workTypeArray.count-model.data.normalHourList.count; i++) {
                 [hourArray addObject:@(0)];
             }
         }
-        self.pie.valueArr = [hourArray copy];
-        
-//        NSMutableArray *typeArray = [NSMutableArray array];
-//        for (LPSelectWorkhourDataNormalHourListModel *m in model.data.normalHourList) {
-//            [typeArray addObject:self.workTypeArray[m.workType.integerValue]];
-//        }
-//        self.pie.descArr = [typeArray copy];
-        self.pie.descArr = self.workTypeArray;
 
-        NSArray *colorArray = @[[UIColor colorWithHexString:@"#F0E7A8"],[UIColor colorWithHexString:@"#FFD8BE"],[UIColor colorWithHexString:@"#9FBEE2"],[UIColor colorWithHexString:@"#A7F4C4"]];
-        self.pie.colorArr = colorArray;
-//        if (typeArray.count <= colorArray.count) {
-//            self.pie.colorArr = [colorArray subarrayWithRange:NSMakeRange(0, typeArray.count)];
-//        }
+        self.pie.valueArr = [hourArray copy];
+        self.pie.descArr = self.workTypeArray;
+    
+        self.pie.colorArr = [ColorArray copy];
+
 
         CGFloat h = 24*self.workTypeArray.count+30 + 50;
         if (h < 170) {
@@ -82,33 +89,38 @@
         }
         self.view_constrait_height.constant = h;
         self.pie.frame = CGRectMake(0, 50, SCREEN_WIDTH, h-50);
+//        self.pie.backgroundColor = [UIColor colorWithRed:187/255.0 green:187/255.0 blue:187/255.0 alpha:1];
 
     }else if (self.index == 1) {
         self.colorView.backgroundColor = [UIColor colorWithHexString:@"#45F4FF"];
         self.typeTitleLabel.text = @"加班记录/月";
         
         NSMutableArray *hourArray = [NSMutableArray array];
+        NSMutableArray *ColorArray = [NSMutableArray array];
+
+        NSArray *colorArr = @[[UIColor colorWithHexString:@"#FFD8BE"],
+                                [UIColor colorWithHexString:@"#80BCFF"],
+                                [UIColor colorWithHexString:@"#F0E7A8"]];
+        // 排序key, 某个对象的属性名称，是否升序, YES-升序, NO-降序
+//        NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"addType" ascending:YES];
+//        // 排序结果
+//        NSArray *sortArray= [model.data.addHourList sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+        
         for (LPSelectWorkhourDataAddHourListModel *m in model.data.addHourList) {
             [hourArray addObject:m.totalAddHour];
+            [ColorArray addObject:colorArr[m.addType.integerValue]];
         }
         if (hourArray.count < self.addTypeTypeArray.count) {
             for (int i=0; i<self.addTypeTypeArray.count-model.data.addHourList.count; i++) {
                 [hourArray addObject:@(0)];
             }
         }
+
+    
         self.pie.valueArr = [hourArray copy];
-        
-//        NSMutableArray *typeArray = [NSMutableArray array];
-//        for (LPSelectWorkhourDataAddHourListModel *m in model.data.addHourList) {
-//            [typeArray addObject:self.addTypeTypeArray[m.addType.integerValue]];
-//        }
-//        self.pie.descArr = [typeArray copy];
         self.pie.descArr = self.addTypeTypeArray;
-        NSArray *colorArray = @[[UIColor colorWithHexString:@"#FFD8BE"],[UIColor colorWithHexString:@"#80BCFF"],[UIColor colorWithHexString:@"#F0E7A8"]];
-        self.pie.colorArr = colorArray;
-//        if (typeArray.count <= colorArray.count) {
-//            self.pie.colorArr = [colorArray subarrayWithRange:NSMakeRange(0, typeArray.count)];
-//        }
+        self.pie.colorArr = [colorArr copy];
+
         CGFloat h = 24*self.addTypeTypeArray.count+30 + 50;
         if (h < 170) {
             h = 170;
@@ -121,8 +133,22 @@
         self.typeTitleLabel.text = @"请假记录/月";
         
         NSMutableArray *hourArray = [NSMutableArray array];
+        NSMutableArray *ColorArray = [NSMutableArray array];
+
+        // 排序key, 某个对象的属性名称，是否升序, YES-升序, NO-降序
+//        NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"leaveType" ascending:YES];
+//        // 排序结果
+//        NSArray *sortArray= [model.data.leaveHourList sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
+        NSArray *colorArr = @[[UIColor colorWithHexString:@"#FFCC73"],
+                                [UIColor colorWithHexString:@"#9FBEE2"],
+                                [UIColor colorWithHexString:@"#FFD8BE"],
+                                [UIColor colorWithHexString:@"#F0E7A8"],
+                                [UIColor colorWithHexString:@"#A7F4C4"]];
+        
         for (LPSelectWorkhourDataLeaveHourListModel *m in model.data.leaveHourList) {
             [hourArray addObject:m.totalLeaveHour];
+            [ColorArray addObject:colorArr[m.leaveType.integerValue]];
+
         }
         if (hourArray.count < self.leaveTypeArray.count) {
             for (int i=0; i<self.leaveTypeArray.count-model.data.leaveHourList.count; i++) {
@@ -131,17 +157,11 @@
         }
         self.pie.valueArr = [hourArray copy];
         
-//        NSMutableArray *typeArray = [NSMutableArray array];
-//        for (LPSelectWorkhourDataLeaveHourListModel *m in model.data.leaveHourList) {
-//            [typeArray addObject:self.leaveTypeArray[m.leaveType.integerValue]];
-//        }
-//        self.pie.descArr = [typeArray copy];
+
         self.pie.descArr = self.leaveTypeArray;
-        NSArray *colorArray = @[[UIColor colorWithHexString:@"#FFCC73"],[UIColor colorWithHexString:@"#FFD8BE"],[UIColor colorWithHexString:@"#F0E7A8"],[UIColor colorWithHexString:@"#9FBEE2"],[UIColor colorWithHexString:@"#A7F4C4"]];
-        self.pie.colorArr = colorArray;
-//        if (typeArray.count <= colorArray.count) {
-//            self.pie.colorArr = [colorArray subarrayWithRange:NSMakeRange(0, typeArray.count)];
-//        }
+
+        self.pie.colorArr = [ColorArray copy];
+
 
         CGFloat h = 24*self.leaveTypeArray.count+30 + 50;
         if (h < 170) {
@@ -150,16 +170,7 @@
         self.view_constrait_height.constant = h;
         self.pie.frame = CGRectMake(0, 50, SCREEN_WIDTH, h-50);
     }
-    
-//    self.pie.valueArr = @[@10,@2,@3,@8,@4.5];
-//    self.pie.descArr = @[@"早班时长",@"中班时长",@"晚班时长",@"夜班时长",@"中班"];
-//
-//    CGFloat h = 24*self.pie.descArr.count+30 + 50;
-//    if (h < 120) {
-//        h = 120;
-//    }
-//    self.view_constrait_height.constant = h;
-//    self.pie.frame = CGRectMake(0, 50, SCREEN_WIDTH, h-50);
+
     
     [self.pie showAnimation];
 }

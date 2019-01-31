@@ -51,6 +51,18 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     }];
     [self requestCommentList];
 }
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+//     [IQKeyboardManager sharedManager].enable = NO;
+    
+}
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+//    [IQKeyboardManager sharedManager].enable = YES;
+    
+}
+
 -(void)setBottomView{
     
 //    UIView *bottomBgView = [[UIView alloc]init];
@@ -124,7 +136,8 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
         if (commentListModel.data.count > 0) {
             self.page += 1;
             [self.commentListArray addObjectsFromArray:commentListModel.data];
-            [self.tableview reloadSections:[[NSIndexSet alloc]initWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
+//            [self.tableview reloadSections:[[NSIndexSet alloc]initWithIndex:1] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self.tableview reloadData];
         }else{
             [self.tableview.mj_footer endRefreshingWithNoMoreData];
         }
@@ -225,11 +238,29 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
         if (isSuccess) {
             self.commentListModel = [LPCommentListModel mj_objectWithKeyValues:responseObject];
         }else{
-            [self.view showLoadingMeg:@"网络错误" time:MESSAGE_SHOW_TIME];
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
     }];
 }
 -(void)requestCommentAddcomment{
+    
+//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//    dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm";
+//    NSString *string = [dateFormatter stringFromDate:[NSDate date]];
+//
+//    if (kUserDefaultsValue(@"ERRORINFORMATION")) {
+//        NSString *errorString = kUserDefaultsValue(@"ERRORINFORMATION");
+//        NSString *str = [LPTools dateTimeDifferenceWithStartTime:errorString endTime:string];
+//        if ([str integerValue] < 1) {
+//            GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"请勿频繁操作" message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"确定"] buttonsColor:@[[UIColor whiteColor]] buttonsBackgroundColors:@[[UIColor baseColor]] buttonClick:^(NSInteger buttonIndex) {
+//            }];
+//            [alert show];
+//            return;
+//        }
+//    }
+//    kUserDefaultsSave(string, @"ERRORINFORMATION");
+    [self.commentTextField resignFirstResponder];
+
     LPUserMaterialModel *user = [LPUserDefaults getObjectByFileName:USERINFO];
     NSDictionary *dic = @{
                           @"commentDetails": self.commentTextField.text,
@@ -237,15 +268,55 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
                           @"commentId": self.commentId,
                           @"userName": user.data.user_name,
                           @"userId": kUserDefaultsValue(LOGINID),
-                          @"userUrl": user.data.user_url
+                          @"userUrl": user.data.user_url,
+                          @"versionType":@"2.1"
                           };
     [NetApiManager requestCommentAddcommentWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            self.commentTextField.text = nil;
-            [self.commentTextField resignFirstResponder];
-            self.page = 1;
-            [self requestCommentList];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                NSString *StrData = [LPTools isNullToString:responseObject[@"data"]];
+                NSArray *DataList = [StrData componentsSeparatedByString:@"-"];
+                
+                LPCommentListDataModel *m = [LPCommentListDataModel mj_objectWithKeyValues:dic];
+                if (DataList.count>=2) {
+                    if ([DataList[0] integerValue] ==1) {
+                        [LPTools AlertTopCommentView:@""];
+                    }else{
+//                        [LPTools AlertCommentView:@""];
+                    }
+                    m.id = @([[LPTools isNullToString:DataList[1]] integerValue]);
+                }
+                
+                m.time = @([NSString getNowTimestamp]);
+                m.commentId = nil;
+                m.commentType = nil;
+                m.grading = user.data.grading;
+                if (self.commentType == 3){
+                    [self.commentListArray insertObject:m atIndex:0];
+                 }
+                 [self.tableview reloadData];
+                
+                if (self.commentListDatamodel.commentList.count<=3) {
+                    NSMutableArray *array = [[NSMutableArray alloc] initWithArray:self.commentListDatamodel.commentList];
+                    [array addObject:m];
+                    self.commentListDatamodel.commentList = [array copy];
+                    [self.superTabelView reloadData];
+                }
+                
+                
+                self.commentTextField.text = nil;
+                [self.commentTextField resignFirstResponder];
+//                self.page = 1;
+//                [self requestCommentList];
+            }else{
+                if ([responseObject[@"code"] integerValue] == 10045) {
+                    [LPTools AlertMessageView:responseObject[@"msg"]];
+                }else{
+                    [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+                }
+            }
+
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

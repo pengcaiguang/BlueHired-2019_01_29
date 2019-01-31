@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LPRegisterVC : UIViewController
+@interface LPRegisterVC : LPBaseViewController
 
 @end
 

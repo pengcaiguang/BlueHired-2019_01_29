@@ -17,7 +17,7 @@
 @property (nonatomic,strong) WSPieForeBGView * pieForeView;
 
 
-@property (assign , nonatomic) NSInteger  allValueCount ;
+@property (assign , nonatomic) CGFloat  allValueCount ;
 
 
 @property (nonatomic,strong) NSMutableArray * angleArr;
@@ -34,6 +34,8 @@
 @property (assign , nonatomic) CGFloat  chartArcLength ;
 
 @property (nonatomic,strong) WSShowInfoView * showInfoView;
+
+@property (nonatomic,strong) WSPieItemsView *itemsBackView;
 @end
 
 
@@ -118,22 +120,20 @@
     
 }
 - (void)countAllValue{
-    _allValueCount = 0;
+    _allValueCount = 0.0;
     for (NSString *obj in _valueArr) {
-        
-        _allValueCount += obj.integerValue;
-        
+        _allValueCount += obj.floatValue;
     }
+    
 }
 
 
 - (void)countAllAngleDataArr{
     
     _angleArr = [NSMutableArray array];
+    
     for (NSString *obj in _valueArr) {
-        
-        [_angleArr addObject:[NSNumber numberWithDouble:obj.floatValue*M_PI * 2/_allValueCount]];
-        
+        [_angleArr addObject:[NSString stringWithFormat:@"%f",obj.floatValue*M_PI * 2/_allValueCount]];
     }
     
     _countPreAngeleArr = [NSMutableArray array];
@@ -141,7 +141,7 @@
     for (NSInteger i = 0; i<_angleArr.count; i++) {
         
         if (i==0) {
-            [_countPreAngeleArr addObject:[NSNumber numberWithFloat:0]];
+            [_countPreAngeleArr addObject:@"0"];
         }
         CGFloat angle = 0.0;
         for (NSInteger j = 0; j<=i; j++) {
@@ -150,7 +150,7 @@
             
         }
         
-        [_countPreAngeleArr addObject:[NSNumber numberWithFloat:angle]];
+        [_countPreAngeleArr addObject:[NSString stringWithFormat:@"%f",angle]];
         
         
     }
@@ -162,7 +162,8 @@
 -(void)showAnimation{
     
     
-    
+    [self.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+
     if (_valueArr.count>0) {
         
         [self countAllValue];
@@ -171,7 +172,7 @@
         
         _layersArr = [NSMutableArray array];
         
-        CGFloat wid = 66;
+        CGFloat wid = 66.0/320*SCREEN_WIDTH;
         self.chartOrigin = P_M(10 + wid / 2, 15 + wid / 2);
 //        if (_descArr.count>0) {
 //
@@ -196,19 +197,34 @@
         }
         
         
-        for (NSInteger i = 0; i<_countPreAngeleArr.count-1; i++) {
+//        if (_itemsBackView) {
+//            [_itemsBackView removeFromSuperview];
+//            _itemsBackView = nil;
+//        }
+        
+        
+        if (_allValueCount == 0) {
+            _itemsBackView = [[WSPieItemsView alloc] initWithFrame:CGRectMake(10, 10, wid/2.0, wid/2.0) andBeginAngle:0.0 andEndAngle:2.0 * M_PI  andFillColor:[UIColor colorWithRed:187/255.0 green:187/255.0 blue:187/255.0 alpha:1]];
+            _itemsBackView.center = CGPointMake(13+wid/2, self.frame.size.height/2);
             
-            WSPieItemsView *itemsView = [[WSPieItemsView alloc] initWithFrame:CGRectMake(10, 10, wid/2, wid/2) andBeginAngle:[_countPreAngeleArr[i] floatValue] andEndAngle:[_countPreAngeleArr[i+1] floatValue] andFillColor:colors[i%colors.count]];
-            
-            itemsView.center = CGPointMake(13+wid/2, self.frame.size.height/2);
-            
-            itemsView.tag = i;
-            
-            [_layersArr addObject:itemsView];
-            
-            [self addSubview:itemsView];
-            
+            _itemsBackView.tag = 0;
+            //            itemsView.backgroundColor = [UIColor redColor];
+            [_layersArr addObject:_itemsBackView];
+            [self addSubview:_itemsBackView];
         }
+        else
+        {
+            for (NSInteger i = 0; i<_countPreAngeleArr.count-1; i++) {
+                WSPieItemsView *itemsView = [[WSPieItemsView alloc] initWithFrame:CGRectMake(10, 10, wid/2.0, wid/2.0) andBeginAngle:[_countPreAngeleArr[i] floatValue] andEndAngle:[_countPreAngeleArr[i+1] floatValue] andFillColor:colors[i%colors.count]];
+                itemsView.center = CGPointMake(13+wid/2, self.frame.size.height/2);
+                
+                itemsView.tag = i;
+                //            itemsView.backgroundColor = [UIColor redColor];
+                [_layersArr addObject:itemsView];
+                [self addSubview:itemsView];
+            }
+        }
+        
         
         _pieForeView = [[WSPieForeBGView alloc] initWithFrame:CGRectMake(10, 10, wid,  wid)];
         
@@ -218,7 +234,7 @@
         if (_showInfoView==nil) {
             _showInfoView = [[WSShowInfoView alloc] init];
             _showInfoView.hidden = YES;
-            [_pieForeView addSubview:_showInfoView];
+//            [_pieForeView addSubview:_showInfoView];
         }
 //        __weak typeof(self) weakSelf = self;
 //        _pieForeView.select = ^(CGFloat angle,CGPoint p){
@@ -227,7 +243,8 @@
             
 //        };
         
-        [self addSubview:_pieForeView];
+        
+//        [self addSubview:_pieForeView];
         
     }
     

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "LPMechanismcommentMechanismlistModel.h"
 
-@interface LPBusinessReviewDetailVC : UIViewController
+@interface LPBusinessReviewDetailVC : LPBaseViewController
 
 @property(nonatomic,strong) LPMechanismcommentMechanismlistDataModel *mechanismlistDataModel;
 

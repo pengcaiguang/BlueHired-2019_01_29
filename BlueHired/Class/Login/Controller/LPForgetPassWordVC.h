@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LPForgetPassWordVC : UIViewController
+@interface LPForgetPassWordVC : LPBaseViewController
 
 @end

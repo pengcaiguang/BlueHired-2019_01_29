@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LPRegisteredVC : UIViewController
+@interface LPRegisteredVC : LPBaseViewController
 
 @end

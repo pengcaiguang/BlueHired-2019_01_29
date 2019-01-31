@@ -11,10 +11,11 @@
 
 typedef void(^LPSubsidyDeductionVCBlock)(NSArray *array);
 
-@interface LPSubsidyDeductionVC : UIViewController
+@interface LPSubsidyDeductionVC : LPBaseViewController
 
 @property(nonatomic,assign) NSInteger type;
 @property(nonatomic,strong) NSArray *selectArray;
+
 
 @property (nonatomic,copy) LPSubsidyDeductionVCBlock block;
 @end

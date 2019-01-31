@@ -7,8 +7,9 @@
 //
 
 #import "LPTabBarViewController.h"
+#import "LPCircleVC.h"
 
-@interface LPTabBarViewController ()
+@interface LPTabBarViewController ()<UITabBarDelegate>
 
 @end
 
@@ -19,8 +20,12 @@
     // Do any additional setup after loading the view.
     
     [self createTabControllers];
-
+    [[UITabBar appearance] setTranslucent:NO];
     [[UINavigationBar appearance] setBackgroundImage:[UIImage imageWithColor:[UIColor whiteColor]] forBarMetrics:UIBarMetricsDefault];
+//    for(UIViewController *viewController in  self.viewControllers){
+//        [viewController loadViewIfNeeded]; //ios9
+//        //      __unused  UIView *view =  viewController.view;
+//    }
 }
 
 -(void)createTabControllers{
@@ -31,8 +36,10 @@
     NSMutableArray *normalImages = [NSMutableArray array];
     NSMutableArray *selectedImages = [NSMutableArray array];
     
-    controllers = [NSMutableArray arrayWithArray:@[@"LPMainVC",@"LPInformationVC",@"LPCircleVC",@"LPMineVC"]];
-    titleArrays = [NSMutableArray arrayWithArray:@[@"首页",@"资讯",@"圈子",@"我的"]];
+//    controllers = [NSMutableArray arrayWithArray:@[@"LPMainVC",@"LPInformationVC",@"LPCircleVC",@"LPMineVC"]];
+//    titleArrays = [NSMutableArray arrayWithArray:@[@"招工",@"资讯",@"圈子",@"我的"]];
+    controllers = [NSMutableArray arrayWithArray:@[@"LPWorkHourVC",@"LPInformationVC",@"LPCircleVC",@"LPMineVC"]];
+    titleArrays = [NSMutableArray arrayWithArray:@[@"工时",@"看看",@"圈子",@"我的"]];
     
     for (int index = 0; index<controllers.count; index++) {
         [normalImages addObject:[[UIImage imageNamed:[NSString stringWithFormat:@"ic_tab_normal0%d.png",index]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
@@ -68,19 +75,27 @@
     [self setViewControllers:viewControllers];
     
 }
+
+- (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
+{
+    NSLog(@"item name = %@", item.title);
+    if ([item.title isEqualToString:@"圈子"]) {
+        NSLog(@"%@",[self.viewControllers[2] rt_topViewController].class);
+             LPCircleVC *vc = (LPCircleVC *)[self.viewControllers[2] rt_topViewController];
+            vc.isSenderBack = 1;
+ 
+    }
+    
+   
+}
+
+
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

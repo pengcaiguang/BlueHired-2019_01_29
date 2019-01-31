@@ -22,11 +22,15 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
 @property(nonatomic,assign) NSInteger page;
 
 @property(nonatomic,strong) LPEssaylistModel *model;
+@property(nonatomic,strong) LPEssaylistModel *Choicemodel;
 @property(nonatomic,strong) NSMutableArray <LPEssaylistDataModel *>*listArray;
 @property(nonatomic,strong) SDCycleScrollView *cycleScrollView;
 @property(nonatomic,strong) NSMutableArray <LPEssaylistDataModel *>*choiceListArray;
 
 @property(nonatomic,assign) NSInteger selectRow;
+
+@property(nonatomic,strong) UILabel *PageDotColorLabel;
+
 
 @end
 
@@ -48,14 +52,15 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
 
 -(void)setLabelListDataModel:(LPLabelListDataModel *)labelListDataModel{
     _labelListDataModel = labelListDataModel;
-    self.labelListModelId = labelListDataModel.id;
+     self.labelListModelId = labelListDataModel.id;
     self.page = 1;
     [self requestEssaylist];
-
+    [self requestEssayChoicelist];
 }
 -(void)setModel:(LPEssaylistModel *)model{
     _model = model;
     if ([model.code integerValue] == 0) {
+ 
         if (self.page == 1) {
             self.listArray = [NSMutableArray array];
             self.choiceListArray = [NSMutableArray array];
@@ -78,6 +83,8 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
             }
             self.cycleScrollView.imageURLStringsGroup = imgArray;
             self.cycleScrollView.titlesGroup = titleArray;
+            self.PageDotColorLabel.text = [NSString stringWithFormat:@"1/%lu",(unsigned long)_cycleScrollView.imageURLStringsGroup.count];
+
         }else{
             self.tableview.tableHeaderView = [[UIView alloc]init];
         }
@@ -94,8 +101,67 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
             }
         }
 
+        if (self.listArray.count == 0) {
+            self.tableview.mj_footer.alpha = 0;
+            [self addNodataViewHidden:NO];
+        }else{
+            self.tableview.mj_footer.alpha = 1;
+            [self addNodataViewHidden:YES];
+        }
+        
     }else{
         [self.contentView showLoadingMeg:NETE_ERROR_MESSAGE time:MESSAGE_SHOW_TIME];
+    }
+}
+
+-(void)setChoicemodel:(LPEssaylistModel *)Choicemodel{
+    _Choicemodel = Choicemodel;
+    if ([Choicemodel.code integerValue] == 0) {
+        
+        if (self.page == 1) {
+             self.choiceListArray = [NSMutableArray array];
+        }
+        for (LPEssaylistDataModel *model in self.Choicemodel.data) {
+            if ([model.choiceStatus integerValue] == 1) {
+                [self.choiceListArray addObject:model];
+            }
+        }
+        if (self.choiceListArray.count > 0) {
+            self.tableview.tableHeaderView = self.cycleScrollView;
+            NSMutableArray *imgArray = [NSMutableArray array];
+            NSMutableArray *titleArray = [NSMutableArray array];
+            
+            for (LPEssaylistDataModel *model in self.choiceListArray) {
+                [imgArray addObject:model.essayUrl];
+                [titleArray addObject:model.essayName];
+            }
+            self.cycleScrollView.imageURLStringsGroup = imgArray;
+            self.cycleScrollView.titlesGroup = titleArray;
+            self.PageDotColorLabel.text = [NSString stringWithFormat:@"1/%lu",(unsigned long)_cycleScrollView.imageURLStringsGroup.count];
+           
+        }else{
+            self.tableview.tableHeaderView = [[UIView alloc]init];
+        }
+         [self.tableview reloadData];
+    }else{
+        [self.contentView showLoadingMeg:NETE_ERROR_MESSAGE time:MESSAGE_SHOW_TIME];
+    }
+}
+
+
+-(void)addNodataViewHidden:(BOOL)hidden{
+    BOOL has = NO;
+    for (UIView *view in self.tableview.subviews) {
+        if ([view isKindOfClass:[LPNoDataView class]]) {
+            view.hidden = hidden;
+            has = YES;
+        }
+    }
+    if (!has) {
+        LPNoDataView *noDataView = [[LPNoDataView alloc]initWithFrame:CGRectMake(0, 50, SCREEN_WIDTH, SCREEN_HEIGHT)];
+        [noDataView image:nil text:@"抱歉！没有相关记录！"];
+        [self.tableview addSubview:noDataView];
+        noDataView.hidden = hidden;
     }
 }
 
@@ -134,6 +200,7 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
     LPEssayDetailVC *vc = [[LPEssayDetailVC alloc]init];
     vc.hidesBottomBarWhenPushed = YES;
     vc.essaylistDataModel = self.listArray[indexPath.row];
+    vc.Supertableview = self.tableview;
     [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -156,11 +223,18 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
     vc.essaylistDataModel = self.choiceListArray[index];
     [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
 }
+
+/** 图片滚动回调 */
+- (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didScrollToIndex:(NSInteger)index{
+//    NSLog(@"---当前第%ld张图片", (long)index);
+    self.PageDotColorLabel.text = [NSString stringWithFormat:@"%ld/%lu",index+1,(unsigned long)_cycleScrollView.imageURLStringsGroup.count];
+}
 #pragma mark - request
 -(void)requestEssaylist{
     NSDictionary *dic = @{
                           @"labelId":self.labelListModelId,
-                          @"page":@(self.page)
+                          @"page":@(self.page),
+                          @"choiceStatus":@"0"
                           };
     [NetApiManager requestEssaylistWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
@@ -168,6 +242,26 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
         [self.tableview.mj_footer endRefreshing];
         if (isSuccess) {
             self.model = [LPEssaylistModel mj_objectWithKeyValues:responseObject];
+            
+        }else{
+            [[UIWindow visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+
+-(void)requestEssayChoicelist{
+    NSDictionary *dic = @{
+                          @"labelId":self.labelListModelId,
+                          @"page":@(1),
+                          @"choiceStatus":@"1"
+                          };
+    [NetApiManager requestEssaylistWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        [self.tableview.mj_header endRefreshing];
+        [self.tableview.mj_footer endRefreshing];
+        if (isSuccess) {
+            self.model = [LPEssaylistModel mj_objectWithKeyValues:responseObject];
+            
         }else{
             [[UIWindow visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -188,9 +282,10 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
         [_tableview registerNib:[UINib nibWithNibName:LPInformationSingleCellID bundle:nil] forCellReuseIdentifier:LPInformationSingleCellID];
         [_tableview registerNib:[UINib nibWithNibName:LPInformationMoreCellID bundle:nil] forCellReuseIdentifier:LPInformationMoreCellID];
         
-        _tableview.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        _tableview.mj_header = [HZNormalHeader headerWithRefreshingBlock:^{
             self.page = 1;
             [self requestEssaylist];
+            [self requestEssayChoicelist];
         }];
         _tableview.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
             [self requestEssaylist];
@@ -202,7 +297,19 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
     if (!_cycleScrollView) {
         _cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 200) delegate:self placeholderImage:nil];
         _cycleScrollView.pageControlAliment = SDCycleScrollViewPageContolAlimentRight;
-        _cycleScrollView.currentPageDotColor = [UIColor whiteColor]; // 自定义分页控件小圆标颜色
+        _cycleScrollView.pageControlStyle = SDCycleScrollViewPageContolStyleNone;
+//        _cycleScrollView.currentPageDotColor = [UIColor clearColor]; // 自定义分页控件小圆标颜色
+//        _cycleScrollView.pageDotColor = [UIColor clearColor]; // 自定义分页控件小圆标颜色
+
+        _cycleScrollView.showPageControl = YES;
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(SCREEN_WIDTH-50, 170, 50, 30)];
+        self.PageDotColorLabel = label;
+        label.text = @"";
+        label.font = [UIFont systemFontOfSize:14];
+        label.textColor = [UIColor whiteColor];
+        label.textAlignment = NSTextAlignmentCenter;
+        [_cycleScrollView addSubview:label];
+        
     }
     return _cycleScrollView;
 }

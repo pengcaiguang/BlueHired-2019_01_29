@@ -26,6 +26,7 @@
 @property(nonatomic,strong)NSArray *buttonTitles;
 @property(nonatomic,strong)NSArray *buttonColors;
 @property(nonatomic,strong) NSArray *buttonsBackgroundColors;
+@property(nonatomic,assign) BOOL isbackDismiss;
 
 @property(nonatomic,strong)id<GJAlertViewMessageDelegate>delegate;
 
@@ -39,7 +40,6 @@
     [self addSubview:self.coverView];
 }
 - (void)setupContentView{
-    
     self.alertView = [[UIView alloc]init];
     [self addSubview:_alertView];
     [_alertView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -214,6 +214,9 @@
     }];
 }
 - (void)tapDismiss:(UITapGestureRecognizer *)recognizer{
+    if (self.isbackDismiss == NO) {
+        return;
+    }
     if ([_delegate respondsToSelector:@selector(contentViewClick)]) {
         [_delegate contentViewClick];
     }
@@ -247,9 +250,23 @@
         self.gjAlertView = [[GJAlertViewMessage alloc] initWithTitle:title message:message textAlignment:textAlignment buttonTitles:buttonTitles buttonsColor:buttonColors buttonsBackgroundColors:buttonsBackgroundColors];
         self.gjAlertView.delegate = self;
         self.AlertMessageBlock = block;
+        self.gjAlertView.isbackDismiss = YES;
     }
     return self;
 }
+
+- (id)initWithTitle:(NSString *)title message:(NSString *)message backDismiss:(BOOL) Dis textAlignment:(NSTextAlignment)textAlignment buttonTitles:(NSArray *)buttonTitles buttonsColor:(NSArray *)buttonColors buttonsBackgroundColors:(NSArray *)buttonsBackgroundColors buttonClick:(void(^)(NSInteger buttonIndex))block{
+    self = [super init];
+    if (self) {
+        self.gjAlertView = [[GJAlertViewMessage alloc] initWithTitle:title message:message textAlignment:textAlignment buttonTitles:buttonTitles buttonsColor:buttonColors buttonsBackgroundColors:buttonsBackgroundColors];
+        self.gjAlertView.delegate = self;
+        self.AlertMessageBlock = block;
+        self.gjAlertView.isbackDismiss = NO;
+    }
+    return self;
+    
+}
+
 - (void)showAlertHandle{
     UIWindow *keywindow = [UIApplication sharedApplication].keyWindow;
     [keywindow makeKeyAndVisible];

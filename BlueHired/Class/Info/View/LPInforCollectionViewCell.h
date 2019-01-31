@@ -16,6 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property(nonatomic,assign) BOOL selectStatus;
 @property(nonatomic,assign) BOOL selectAll;
+@property(nonatomic,assign) NSInteger page;
+@property(nonatomic,assign) UIButton *allButton;
 
 -(void)deleteInfo;
 @end

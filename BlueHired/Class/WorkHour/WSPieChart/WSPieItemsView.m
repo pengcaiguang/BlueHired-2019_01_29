@@ -36,7 +36,7 @@
     
     UIBezierPath *path = [UIBezierPath bezierPath];
     
-    [path addArcWithCenter:CGPointMake(self.frame.size.width/2, self.frame.size.height/2) radius:self.frame.size.width/2 startAngle:_beginAngle endAngle:_endAngle clockwise:YES];
+    [path addArcWithCenter:CGPointMake(self.frame.size.width/2.0, self.frame.size.height/2.0) radius:self.frame.size.width/2.0 startAngle:_beginAngle endAngle:_endAngle clockwise:YES];
     
     _shapeLayer.path = path.CGPath;
     _shapeLayer.lineWidth = self.frame.size.width;

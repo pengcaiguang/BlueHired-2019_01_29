@@ -67,6 +67,7 @@ static NSString *LPMainCellID = @"LPMainCell";
 }
 -(void)addNodataView{
     LPNoDataView *noDataView = [[LPNoDataView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+    [noDataView image:nil text:@"搜索尚无结果\n更多企业正在洽谈中,敬请期待!"];
     [self.view addSubview:noDataView];
     [noDataView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
@@ -105,7 +106,7 @@ static NSString *LPMainCellID = @"LPMainCell";
         if (isSuccess) {
             self.model = [LPWorklistModel mj_objectWithKeyValues:responseObject];
         }else{
-            [self.view showLoadingMeg:@"网络错误" time:MESSAGE_SHOW_TIME];
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
     }];
 }
@@ -123,7 +124,7 @@ static NSString *LPMainCellID = @"LPMainCell";
         _tableview.separatorColor = [UIColor baseColor];
         _tableview.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
         [_tableview registerNib:[UINib nibWithNibName:LPMainCellID bundle:nil] forCellReuseIdentifier:LPMainCellID];
-        _tableview.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        _tableview.mj_header = [HZNormalHeader headerWithRefreshingBlock:^{
             self.page = 1;
             [self request];
         }];

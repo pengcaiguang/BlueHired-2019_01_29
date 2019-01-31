@@ -13,6 +13,7 @@
 #import "LPBillRecordVC.h"
 #import "LPWithDrawalVC.h"
 
+
 @implementation LPMineCell
 
 - (void)awakeFromNib {
@@ -39,15 +40,54 @@
 }
 -(void)setUserMaterialModel:(LPUserMaterialModel *)userMaterialModel{
     _userMaterialModel = userMaterialModel;
-    [self.user_urlImgView sd_setImageWithURL:[NSURL URLWithString:userMaterialModel.data.user_url] placeholderImage:[UIImage imageNamed:@"mine_headimg_placeholder"]];
-    self.user_nameLabel.text = userMaterialModel.data.user_name ? userMaterialModel.data.user_name : @"登陆/注册";
-    self.gradingLabel.text = userMaterialModel.data.grading ? userMaterialModel.data.grading : @"登陆后可享受更多特权";
+    [self.user_urlImgView sd_setImageWithURL:[NSURL URLWithString:userMaterialModel.data.user_url] placeholderImage:[UIImage imageNamed:@"UserImage"]];
+    self.user_nameLabel.text = userMaterialModel.data.user_name ? userMaterialModel.data.user_name : @"登录/注册";
+    self.gradingLabel.text = userMaterialModel.data.grading ? userMaterialModel.data.grading : @"登录后可享受更多特权";
     self.moodNumLabel.text = [NSString stringWithFormat:@"帖子：%@",userMaterialModel.data.moodNum ? userMaterialModel.data.moodNum : @"--"];
     self.concernNumLabel.text = [NSString stringWithFormat:@"粉丝：%@",userMaterialModel.data.concernNum ? userMaterialModel.data.concernNum : @"--"];
     if (userMaterialModel.data.money) {
-        self.moneyLabel.text = [NSString stringWithFormat:@"账户余额：%.1f",userMaterialModel.data.money.floatValue];
+        self.moneyLabel.text = [NSString stringWithFormat:@"账户余额：%.2f",userMaterialModel.data.money.floatValue];
     }else{
         self.moneyLabel.text = @"账户余额：--";
+    }
+    self.user_sexImgView.hidden = NO;
+    
+    if (userMaterialModel.data.grading) {
+        self.gradingLabel.hidden = YES;
+        self.gradingiamge.hidden = NO;
+        self.gradingiamge.image = [UIImage imageNamed:userMaterialModel.data.grading];
+//
+//        if (userMaterialModel.data.score.integerValue >=0 && userMaterialModel.data.score.integerValue <3000) {
+//            self.gradingiamge.image = [UIImage imageNamed:@"见习职工"];
+//
+//        }else if (userMaterialModel.data.score.integerValue >= 3000 && userMaterialModel.data.score.integerValue < 6000){
+//            self.gradingiamge.image = [UIImage imageNamed:@"初级职工"];
+//
+//        }else if (userMaterialModel.data.score.integerValue >= 6000 && userMaterialModel.data.score.integerValue < 12000){
+//            self.gradingiamge.image = [UIImage imageNamed:@"中级职工"];
+//
+//        }else if (userMaterialModel.data.score.integerValue >= 12000 && userMaterialModel.data.score.integerValue < 18000){
+//            self.gradingiamge.image = [UIImage imageNamed:@"高级职工"];
+//
+//        }else if (userMaterialModel.data.score.integerValue >= 18000 && userMaterialModel.data.score.integerValue < 24000){
+//            self.gradingiamge.image = [UIImage imageNamed:@"部门精英"];
+//
+//        }else if (userMaterialModel.data.score.integerValue >= 24000 && userMaterialModel.data.score.integerValue < 30000){
+//            self.gradingiamge.image = [UIImage imageNamed:@"部门经理"];
+//
+//        }else if (userMaterialModel.data.score.integerValue >= 30000 && userMaterialModel.data.score.integerValue < 36000){
+//            self.gradingiamge.image = [UIImage imageNamed:@"区域经理"];
+//
+//        }else if (userMaterialModel.data.score.integerValue >= 36000 && userMaterialModel.data.score.integerValue < 45000){
+//            self.gradingiamge.image = [UIImage imageNamed:@"总经理"];
+//
+//        }else{
+//            self.gradingiamge.image = [UIImage imageNamed:@"董事长"];
+//
+//        }
+    }else{
+        self.gradingLabel.hidden = NO;
+        self.gradingiamge.hidden = YES;
     }
 
     if ([userMaterialModel.data.user_sex integerValue] == 0) {//0未知1男2女
@@ -55,7 +95,7 @@
     }else if ([userMaterialModel.data.user_sex integerValue] == 1) {
         self.user_sexImgView.image = [UIImage imageNamed:@"male"];
     }else if ([userMaterialModel.data.user_sex integerValue] == 2) {
-        self.user_sexImgView.hidden = [UIImage imageNamed:@"female"];
+        self.user_sexImgView.image = [UIImage imageNamed:@"female"];
     }
     if (userMaterialModel.data.workStatus) {
         if ([userMaterialModel.data.workStatus integerValue] == 0) { //0待业1在职2入职中
@@ -95,11 +135,13 @@
         self.moneyLabel.text = @"账户余额：--";
     }
 }
+
 - (IBAction)touchSignInButton:(UIButton *)sender {
     LPSignInfoVC *vc = [[LPSignInfoVC alloc]init];
     vc.hidesBottomBarWhenPushed = YES;
     [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
 }
+
 - (IBAction)touchEditButton:(UIButton *)sender {
     if ([LoginUtils validationLogin:[UIWindow visibleViewController]]) {
         LPUserInfoVC *vc = [[LPUserInfoVC alloc]init];
@@ -111,6 +153,7 @@
 
 - (IBAction)touchSetButton:(id)sender {
     LPSetVC *vc = [[LPSetVC alloc]init];
+    vc.userMaterialModel = self.userMaterialModel;
     vc.hidesBottomBarWhenPushed = YES;
     [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
 }
@@ -132,6 +175,7 @@
     if ([LoginUtils validationLogin:[UIWindow visibleViewController]]) {
         LPWithDrawalVC *vc = [[LPWithDrawalVC alloc]init];
         vc.hidesBottomBarWhenPushed = YES;
+        vc.balance = self.userMaterialModel.data.money;
         [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
     }
 }

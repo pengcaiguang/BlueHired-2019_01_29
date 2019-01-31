@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LPMainSearchVC : UIViewController
+@interface LPMainSearchVC : LPBaseViewController
 
 @end

@@ -15,7 +15,7 @@
 
 @end
 
-@interface LPSelectCityVC : UIViewController
+@interface LPSelectCityVC : LPBaseViewController
 
 @property (nonatomic,assign)id <LPSelectCityVCDelegate>delegate;
 

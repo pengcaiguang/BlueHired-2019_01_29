@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LPSalaryBreakdownVC : UIViewController
+@interface LPSalaryBreakdownVC : LPBaseViewController
 
 @end

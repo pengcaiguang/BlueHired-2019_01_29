@@ -99,4 +99,6 @@
 @property (nonatomic, copy) NSString *workTypeName;
 @property (nonatomic, copy) NSString *workUrl;
 @property (nonatomic, copy) NSString *workWatchStatus;
+@property (nonatomic, copy) NSString *reStatus;
+
 @end

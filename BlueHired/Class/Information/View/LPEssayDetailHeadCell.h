@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <WebKit/WebKit.h>
 #import "LPEssayDetailModel.h"
+typedef void(^LPAddRecordCellDicBlock)(CGFloat height);
 
 @interface LPEssayDetailHeadCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *essayNameLabel;
@@ -19,6 +20,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *viewLabel;
 @property (weak, nonatomic) IBOutlet UILabel *commentTotalLabel;
 @property (weak, nonatomic) IBOutlet UILabel *praiseTotalLabel;
+@property (nonatomic,copy) LPAddRecordCellDicBlock Block;
 
 @property(nonatomic,strong) LPEssayDetailModel *model;
 @end

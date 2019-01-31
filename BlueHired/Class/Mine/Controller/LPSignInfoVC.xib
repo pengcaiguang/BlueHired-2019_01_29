@@ -30,7 +30,7 @@
                         <constraint firstAttribute="width" secondItem="J8x-p6-PEp" secondAttribute="height" multiplier="360:217" id="s1n-0l-flS"/>
                     </constraints>
                 </imageView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="buT-UC-kgU">
+                <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="buT-UC-kgU">
                     <rect key="frame" x="147" y="72.5" width="81" height="81"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="81" id="Lkl-vY-oDb"/>
@@ -40,6 +40,7 @@
                     <state key="normal" title="点击签到" backgroundImage="sign_bgimg">
                         <color key="titleColor" red="1" green="0.63529411759999999" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
+                    <state key="disabled" backgroundImage="sign_bgimg"/>
                     <connections>
                         <action selector="touchSignButton:" destination="-1" eventType="touchUpInside" id="IS0-Pj-PHx"/>
                     </connections>

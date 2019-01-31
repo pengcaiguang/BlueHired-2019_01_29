@@ -24,6 +24,9 @@ static NSString *TEXT = @"请输入遇到的问题或建议...";
     self.textView.textColor = [UIColor lightGrayColor];
     self.textView.text = TEXT;
     self.textView.delegate = self;
+//    self.textView.layer.borderColor = [UIColor blackColor].CGColor;
+//    self.textView.layer.borderWidth = 0.5;
+//    self.textView.layer.cornerRadius = 10;
     
 }
 -(BOOL)textViewShouldBeginEditing:(UITextView *)textView{
@@ -47,7 +50,7 @@ static NSString *TEXT = @"请输入遇到的问题或建议...";
         return;
     }
     NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
-    NSString *app_build = [infoDictionary objectForKey:@"CFBundleVersion"];
+    NSString *app_build = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
     
     CGRect rect_screen = [[UIScreen mainScreen]bounds];
     CGSize size_screen = rect_screen.size;

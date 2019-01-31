@@ -8,8 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LPInformationSearchResultVC : UIViewController
+@interface LPInformationSearchResultVC : LPBaseViewController
 
 @property(nonatomic,strong) NSString *string;
+// 1= 资讯。2=视频
+@property(nonatomic,assign) NSInteger Type;
+
+@property (nonatomic,strong) UICollectionView *videocollectionView;
 
 @end

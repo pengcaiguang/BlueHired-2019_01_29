@@ -9,6 +9,7 @@
 #ifndef Heads_h
 #define Heads_h
 
+#import "LPBaseViewController.h"
 #import "RTRootNavigationController.h"
 #import "IQKeyboardManager.h"
 #import "Masonry.h"
@@ -35,5 +36,29 @@
 #import "GJAlertText.h"
 #import "GJAlertMessage.h"
 #import "GJAlertPassword.h"
+#import "GJAlertWithDrawPassword.h"
+#import "LPTools.h"
+#import "WXApi.h"
+#import "WXApiRequestHandler.h"
+#import "WXApiManager.h"
+
+#import <TencentOpenAPI/TencentOAuth.h>
+#import <TencentOpenAPI/QQApiInterface.h>
+#import <TencentOpenAPI/QQApiInterfaceObject.h>
+#import "CustomIOSAlertView.h"
+#import "NSString+HTML.h"
+#import "HZNormalHeader.h"
+#import "YYLabel.h"
+#import "YYWebImage.h"
+#import "QFDatePickerView.h"
+#import "DSBaActivityView.h"
+#import "LZImageBrowserManger.h"
+#import "LZImageBrowserHeader.h"
+
+#import <AMapFoundationKit/AMapFoundationKit.h>
+#import <AMapSearchKit/AMapSearchKit.h>
+#import <AMapLocationKit/AMapLocationKit.h>
+#import <Photos/PHPhotoLibrary.h>
+#import <AipOcrSdk/AipOcrSdk.h>
 
 #endif /* Heads_h */

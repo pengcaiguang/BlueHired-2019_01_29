@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "LPInfoListModel.h"
 
-@interface LPInfoDetailVC : UIViewController
+@interface LPInfoDetailVC : LPBaseViewController
 @property(nonatomic,strong) LPInfoListDataModel *model;
 
 @end

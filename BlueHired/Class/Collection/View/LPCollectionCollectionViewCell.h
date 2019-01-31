@@ -15,8 +15,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property(nonatomic,assign) BOOL selectStatus;
 @property(nonatomic,assign) BOOL selectAll;
+@property(nonatomic,strong) UIButton *AllButton;
+@property (nonatomic, strong)UITableView *tableview;
 -(void)deleteInfo;
-
+-(void)TableViewReload;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -18,6 +18,14 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface LPBillrecordDataModel : NSObject
+@property (nonatomic, strong) NSString *billType;
+@property (nonatomic, strong) NSString *delStatus;
+@property (nonatomic, strong) NSString *id;
+@property (nonatomic, strong) NSString *money;
+@property (nonatomic, strong) NSNumber *set_time;
+@property (nonatomic, strong) NSNumber *time;
+@property (nonatomic, strong) NSString *type;
+@property (nonatomic, strong) NSString *userId;
 
 @end
 

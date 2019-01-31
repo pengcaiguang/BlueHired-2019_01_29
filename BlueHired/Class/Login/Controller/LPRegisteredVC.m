@@ -7,6 +7,7 @@
 //
 
 #import "LPRegisteredVC.h"
+#import "LPRegisteredContentVC.h"
 
 @interface LPRegisteredVC ()<UITextFieldDelegate>
 @property(nonatomic,strong) UITextField *phoneTextField;
@@ -19,6 +20,9 @@
 @property(nonatomic,strong) UIButton *getVerificationCodeButton;
 
 @property(nonatomic,strong) NSString *token;
+@property(nonatomic,strong) NSString *phone;
+
+@property(nonatomic,assign) BOOL isRegistered;
 @end
 
 @implementation LPRegisteredVC
@@ -37,10 +41,11 @@
     [self.view addSubview:logoImg];
     [logoImg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(70, 70));
-        make.top.mas_equalTo(104);
+        make.top.mas_equalTo(27);
         make.centerX.equalTo(self.view);
     }];
-    logoImg.backgroundColor = [UIColor baseColor];
+    //    logoImg.backgroundColor = [UIColor baseColor];
+    logoImg.image = [UIImage imageNamed:@"logo_Information"];
     
     UILabel *textLabel = [[UILabel alloc]init];
     [self.view addSubview:textLabel];
@@ -49,18 +54,28 @@
         make.centerX.equalTo(logoImg);
         make.height.mas_equalTo(18);
     }];
-    textLabel.text = @"为企业寻求人才";
+    textLabel.text = @"蓝聘,专注于服务蓝领人士";
     textLabel.font = [UIFont systemFontOfSize:19];
     textLabel.textColor = [UIColor baseColor];
     
     UIView *phoneBgView = [[UIView alloc]init];
     [self.view addSubview:phoneBgView];
-    [phoneBgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(50);
-        make.right.mas_equalTo(-50);
-        make.top.equalTo(textLabel.mas_bottom).offset(50);
-        make.height.mas_equalTo(40);
-    }];
+    if (SCREEN_WIDTH == 320) {
+        [phoneBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(30);
+            make.right.mas_equalTo(-30);
+            make.top.equalTo(textLabel.mas_bottom).offset(30);
+            make.height.mas_equalTo(40);
+        }];
+    }else{
+        [phoneBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(50);
+            make.right.mas_equalTo(-50);
+            make.top.equalTo(textLabel.mas_bottom).offset(50);
+            make.height.mas_equalTo(40);
+        }];
+    }
+    
     UIImageView *phoneImg = [[UIImageView alloc]init];
     [phoneBgView addSubview:phoneImg];
     [phoneImg mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -93,17 +108,27 @@
         make.bottom.mas_equalTo(0);
         make.height.mas_equalTo(1);
     }];
-    self.phoneLineView.backgroundColor = [UIColor lightGrayColor];
+    self.phoneLineView.backgroundColor = [UIColor colorWithHexString:@"#FFE6E6E6"];
     
     
     UIView *passwordBgView = [[UIView alloc]init];
     [self.view addSubview:passwordBgView];
-    [passwordBgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(50);
-        make.right.mas_equalTo(-50);
-        make.top.equalTo(phoneBgView.mas_bottom).offset(40);
-        make.height.mas_equalTo(40);
-    }];
+    if (SCREEN_WIDTH == 320) {
+        [passwordBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(30);
+            make.right.mas_equalTo(-30);
+            make.top.equalTo(phoneBgView.mas_bottom).offset(30);
+            make.height.mas_equalTo(40);
+        }];
+    }else{
+        [passwordBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(50);
+            make.right.mas_equalTo(-50);
+            make.top.equalTo(phoneBgView.mas_bottom).offset(40);
+            make.height.mas_equalTo(40);
+        }];
+    }
+
     UIImageView *passwordImg = [[UIImageView alloc]init];
     [passwordBgView addSubview:passwordImg];
     [passwordImg mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -145,17 +170,27 @@
         make.bottom.mas_equalTo(0);
         make.height.mas_equalTo(1);
     }];
-    self.passwordLineView.backgroundColor = [UIColor lightGrayColor];
+    self.passwordLineView.backgroundColor = [UIColor colorWithHexString:@"#FFE6E6E6"];
     
     
     UIView *verificationCodeBgView = [[UIView alloc]init];
     [self.view addSubview:verificationCodeBgView];
-    [verificationCodeBgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(50);
-        make.right.mas_equalTo(-50);
-        make.top.equalTo(passwordBgView.mas_bottom).offset(40);
-        make.height.mas_equalTo(40);
-    }];
+    if (SCREEN_WIDTH == 320) {
+        [verificationCodeBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(30);
+            make.right.mas_equalTo(-30);
+            make.top.equalTo(passwordBgView.mas_bottom).offset(30);
+            make.height.mas_equalTo(40);
+        }];
+    }else{
+        [verificationCodeBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(50);
+            make.right.mas_equalTo(-50);
+            make.top.equalTo(passwordBgView.mas_bottom).offset(40);
+            make.height.mas_equalTo(40);
+        }];
+    }
+    
     UIImageView *verificationCodeImg = [[UIImageView alloc]init];
     [verificationCodeBgView addSubview:verificationCodeImg];
     [verificationCodeImg mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -176,7 +211,8 @@
     self.verificationCodeTextField.delegate = self;
     self.verificationCodeTextField.placeholder = @"请输入验证码";
     self.verificationCodeTextField.tintColor = [UIColor baseColor];
-    
+    self.verificationCodeTextField.keyboardType = UIKeyboardTypeNumberPad;
+
     UIButton *getVerificationCodeButton = [[UIButton alloc]init];
     [verificationCodeBgView addSubview:getVerificationCodeButton];
     [getVerificationCodeButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -198,24 +234,54 @@
         make.bottom.mas_equalTo(0);
         make.height.mas_equalTo(1);
     }];
-    self.verificationCodeLineView.backgroundColor = [UIColor lightGrayColor];
+    self.verificationCodeLineView.backgroundColor = [UIColor colorWithHexString:@"#FFE6E6E6"];
     
     
     UIButton *userAgreementButton = [[UIButton alloc]init];
     [self.view addSubview:userAgreementButton];
-    [userAgreementButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(50);
-        make.right.mas_equalTo(-50);
-        make.top.equalTo(verificationCodeBgView.mas_bottom).offset(20);
-    }];
-    [userAgreementButton setTitle:@"我已阅读，并同意《用户注册协议》" forState:UIControlStateNormal];
-    [userAgreementButton setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
-    [userAgreementButton setImage:[UIImage imageNamed:@""] forState:UIControlStateSelected];
+    
+    UIButton *userAgreementButton2 = [[UIButton alloc]init];
+    [self.view addSubview:userAgreementButton2];
+    if (SCREEN_WIDTH == 320) {
+        [userAgreementButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo((SCREEN_WIDTH-208)/2);
+            //        make.right.mas_equalTo(-50);
+            make.top.equalTo(verificationCodeBgView.mas_bottom).offset(20);
+            make.height.mas_equalTo(20);
+        }];
+    }else{
+        [userAgreementButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo((SCREEN_WIDTH-208)/2);
+            //        make.right.mas_equalTo(-50);
+            make.top.equalTo(verificationCodeBgView.mas_bottom).offset(20);
+            make.height.mas_equalTo(20);
+        }];
+    }
+    
+    [userAgreementButton setTitle:@"我已阅读，并同意" forState:UIControlStateNormal];
+    [userAgreementButton setImage:[UIImage imageNamed:@"button_noselected"] forState:UIControlStateNormal];
+    [userAgreementButton setImage:[UIImage imageNamed:@"button_selected"] forState:UIControlStateSelected];
     userAgreementButton.titleLabel.font = [UIFont systemFontOfSize:12];
     [userAgreementButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
     [userAgreementButton addTarget:self action:@selector(touchUserAgreementButton:) forControlEvents:UIControlEventTouchUpInside];
+//    userAgreementButton.backgroundColor = [UIColor redColor];
     
-    
+
+    [userAgreementButton2 mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.mas_equalTo(50);
+        make.left.equalTo(userAgreementButton.mas_right).offset(0);
+//        make.right.mas_equalTo(-50);
+        make.height.mas_equalTo(20);
+        make.top.equalTo(verificationCodeBgView.mas_bottom).offset(20);
+    }];
+    [userAgreementButton2 setTitle:@"《用户注册协议》" forState:UIControlStateNormal];
+    [userAgreementButton2 setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+    [userAgreementButton2 setImage:[UIImage imageNamed:@""] forState:UIControlStateSelected];
+    userAgreementButton2.titleLabel.font = [UIFont systemFontOfSize:12];
+    [userAgreementButton2 setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
+    [userAgreementButton2 addTarget:self action:@selector(touchUserAgreementContentButton:) forControlEvents:UIControlEventTouchUpInside];
+//    userAgreementButton2.backgroundColor = [UIColor blueColor];
+
     UIButton *registeredButton = [[UIButton alloc]init];
     [self.view addSubview:registeredButton];
     [registeredButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -231,7 +297,7 @@
     registeredButton.layer.masksToBounds = YES;
     registeredButton.layer.cornerRadius = 20;
     [registeredButton addTarget:self action:@selector(touchRegisteredButton:) forControlEvents:UIControlEventTouchUpInside];
-    
+
 }
 
 
@@ -252,6 +318,7 @@
     }
     [self requestSendCode];
 }
+
 -(void)openCountdown{
     __block NSInteger time = 59; //倒计时时间
     
@@ -290,8 +357,14 @@
 }
 -(void)touchUserAgreementButton:(UIButton *)button{
     NSLog(@"用户协议");
+    button.selected = !button.selected;
+    self.isRegistered = button.selected;
 }
-
+-(void)touchUserAgreementContentButton:(UIButton *)button{
+    NSLog(@"用户协议内容");
+    LPRegisteredContentVC *vc = [[LPRegisteredContentVC alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
 -(void)touchRegisteredButton:(UIButton *)button{
     NSLog(@"确认");
     if (self.phoneTextField.text.length <= 0 || ![NSString isMobilePhoneNumber:self.phoneTextField.text]) {
@@ -306,10 +379,18 @@
         [self.view showLoadingMeg:@"请输入验证码" time:MESSAGE_SHOW_TIME];
         return;
     }
-    if (!self.token) {
-        [self.view showLoadingMeg:@"请输入正确的验证码" time:MESSAGE_SHOW_TIME];
+    
+    if (!self.isRegistered) {
+        [self.view showLoadingMeg:@"请同意《用户注册协议》" time:MESSAGE_SHOW_TIME];
         return;
     }
+    
+    if (![self.phoneTextField.text isEqualToString:self.phone]) {
+        [self.view showLoadingMeg:@"手机号错误" time:MESSAGE_SHOW_TIME];
+        return;
+    }
+    
+
     [self requestMateCode];
 }
 
@@ -354,22 +435,22 @@
 -(void)textFieldDidBeginEditing:(UITextField *)textField{
     if ([textField isEqual:self.phoneTextField]) {
         self.phoneLineView.backgroundColor = [UIColor baseColor];
-        self.passwordLineView.backgroundColor = [UIColor lightGrayColor];
-        self.verificationCodeLineView.backgroundColor = [UIColor lightGrayColor];
+        self.passwordLineView.backgroundColor = [UIColor colorWithHexString:@"#FFE6E6E6"];
+        self.verificationCodeLineView.backgroundColor = [UIColor colorWithHexString:@"#FFE6E6E6"];
     }else if ([textField isEqual:self.passwordTextField]) {
-        self.phoneLineView.backgroundColor = [UIColor lightGrayColor];
+        self.phoneLineView.backgroundColor = [UIColor colorWithHexString:@"#FFE6E6E6"];
         self.passwordLineView.backgroundColor = [UIColor baseColor];
-        self.verificationCodeLineView.backgroundColor = [UIColor lightGrayColor];
+        self.verificationCodeLineView.backgroundColor = [UIColor colorWithHexString:@"#FFE6E6E6"];
     }else{
-        self.phoneLineView.backgroundColor = [UIColor lightGrayColor];
-        self.passwordLineView.backgroundColor = [UIColor lightGrayColor];
+        self.phoneLineView.backgroundColor = [UIColor colorWithHexString:@"#FFE6E6E6"];
+        self.passwordLineView.backgroundColor = [UIColor colorWithHexString:@"#FFE6E6E6"];
         self.verificationCodeLineView.backgroundColor = [UIColor baseColor];
     }
 }
 -(void)textFieldDidEndEditing:(UITextField *)textField{
-    self.phoneLineView.backgroundColor = [UIColor lightGrayColor];
-    self.passwordLineView.backgroundColor = [UIColor lightGrayColor];
-    self.verificationCodeLineView.backgroundColor = [UIColor lightGrayColor];
+    self.phoneLineView.backgroundColor = [UIColor colorWithHexString:@"#FFE6E6E6"];
+    self.passwordLineView.backgroundColor = [UIColor colorWithHexString:@"#FFE6E6E6"];
+    self.verificationCodeLineView.backgroundColor = [UIColor colorWithHexString:@"#FFE6E6E6"];
 }
 
 #pragma mark - request
@@ -408,9 +489,12 @@
             if ([responseObject[@"code"] integerValue] == 0) {
                 if (responseObject[@"data"]) {
                     self.token = responseObject[@"data"];
+                    self.phone = self.phoneTextField.text;
                 }
                 [self.view showLoadingMeg:@"验证码发送成功" time:MESSAGE_SHOW_TIME];
                 [self openCountdown];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
@@ -427,7 +511,11 @@
     [NetApiManager requestMateCodeWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            [self requestAddUser];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                [self requestAddUser];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

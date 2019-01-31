@@ -10,7 +10,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LPSalarycCardBindPhoneVC : UIViewController
+@interface LPSalarycCardBindPhoneVC : LPBaseViewController
+
+@property (nonatomic,assign) int type;
 
 @end
 

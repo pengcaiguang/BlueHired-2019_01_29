@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LPMineVC : UIViewController
+@interface LPMineVC : LPBaseViewController
 
 @end

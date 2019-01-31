@@ -10,7 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LPSalarycCardBindVC : UIViewController
+@interface LPSalarycCardBindVC : LPBaseViewController
+@property(nonatomic,assign) BOOL ispass;
 
 @end
 

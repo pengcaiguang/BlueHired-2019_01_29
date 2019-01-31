@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LPUserInfoVC : UIViewController
+@interface LPUserInfoVC : LPBaseViewController
 
 @end
 

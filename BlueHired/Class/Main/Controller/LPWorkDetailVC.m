@@ -17,6 +17,7 @@ static NSString *LPWorkDetailHeadCellID = @"LPWorkDetailHeadCell";
 static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
 
 @interface LPWorkDetailVC ()<UITableViewDelegate,UITableViewDataSource>
+
 @property (nonatomic, strong)UITableView *tableview;
 
 @property(nonatomic,strong) LPWorkDetailModel *model;
@@ -31,6 +32,8 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
 
 @property(nonatomic,strong) NSString *userName;
 
+@property(nonatomic,strong)CustomIOSAlertView *CustomAlert;
+
 @end
 
 @implementation LPWorkDetailVC
@@ -40,7 +43,7 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
     // Do any additional setup after loading the view.
     
     self.view.backgroundColor = [UIColor whiteColor];
-    self.navigationItem.title = @"企业详情";
+    self.navigationItem.title = @"招聘详情";
     self.buttonArray = [NSMutableArray array];
     self.bottomButtonArray = [NSMutableArray array];
     self.textArray = @[@"入职要求",@"薪资福利",@"住宿餐饮",@"工作时间",@"面试材料",@"其他说明"];
@@ -54,6 +57,8 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
         make.bottom.mas_equalTo(-48);
     }];
     [self setBottomView];
+    
+ 
 //    [self requestWorkDetail];
 //    if (AlreadyLogin) {
 //        [self requestIsApplyOrIsCollection];
@@ -61,9 +66,9 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
 }
 -(void)viewWillAppear:(BOOL)animated{
     [self requestWorkDetail];
-    if (AlreadyLogin) {
+//    if (AlreadyLogin) {
         [self requestIsApplyOrIsCollection];
-    }
+//    }
 }
 
 -(void)setBottomView{
@@ -92,7 +97,12 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
     self.signUpButton.titleLabel.font = [UIFont systemFontOfSize:17];
     [self.signUpButton addTarget:self action:@selector(touchSiginUpButton) forControlEvents:UIControlEventTouchUpInside];
     [self.signUpButton addTarget:self action:@selector(preventFlicker:) forControlEvents:UIControlEventAllTouchEvents];
-
+    if (kUserDefaultsValue(USERDATA).integerValue == 4 ||
+        kUserDefaultsValue(USERDATA).integerValue >=8) {
+        [self.signUpButton setTitle:@"禁止报名" forState:UIControlStateNormal];
+        self.signUpButton.backgroundColor = [UIColor colorWithHexString:@"#939393"];
+        self.signUpButton.enabled = NO;
+    }
     
     NSArray *imgArray = @[@"collection_normal",@"share_btn",@"customersService"];
     NSArray *titleArray = @[@"收藏",@"分享",@"咨询"];
@@ -137,7 +147,7 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
             return;
         }
         if (kStringIsEmpty(self.isApplyOrIsCollectionModel.data.userName)) {
-            GJAlertText *alert = [[GJAlertText alloc]initWithTitle:@"企业入职报名，请填写您的真实姓名！" message:@"请填写真实姓名" buttonTitles:@[@"取消",@"确定"] buttonsColor:@[[UIColor colorWithHexString:@"#666666"],[UIColor baseColor]] buttonClick:^(NSInteger buttonIndex , NSString * string) {
+            GJAlertText *alert = [[GJAlertText alloc]initWithTitle:@"企业入职报名，请填写您的真实姓名！" message:@"请填写真实姓名" buttonTitles:@[@"取消",@"确定"] buttonsColor:@[[UIColor colorWithHexString:@"#666666"],[UIColor baseColor]] MaxLength:5 buttonClick:^(NSInteger buttonIndex , NSString * string) {
                 if (buttonIndex == 0) {
                 }else{
                     self.userName = string;
@@ -153,9 +163,11 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
 -(void)touchBottomButton:(UIButton *)button{
     if (button.tag == 2) {
         NSLog(@"咨询");
-        NSString *number = @"18888888888";
-        NSString *string = [NSString stringWithFormat:@"姓名：老王 \n联系方式：%@ \n微信搜索客服号码添加即可添加客服微信",number];
-        GJAlert2 *alert = [[GJAlert2 alloc]initWithTitle:@"客服联系方式" message:string buttonTitles:@[@"复制号码",@"立即拨打"] buttonsColor:@[[UIColor colorWithHexString:@"#666666"],[UIColor colorWithHexString:@"#434343"]] buttonClick:^(NSInteger buttonIndex) {
+        NSString *name = self.isApplyOrIsCollectionModel.data.teacher.teacherName;
+        NSString *number = self.isApplyOrIsCollectionModel.data.teacher.teacherTel;
+
+        NSString *string = [NSString stringWithFormat:@"姓名：%@ \n联系方式：%@ \n微信搜索驻厂号码即可添加驻厂微信",name,number];
+        GJAlert2 *alert = [[GJAlert2 alloc]initWithTitle:@"驻厂联系方式" message:string buttonTitles:@[@"复制号码",@"立即拨打"] buttonsColor:@[[UIColor colorWithHexString:@"#666666"],[UIColor colorWithHexString:@"#434343"]] buttonClick:^(NSInteger buttonIndex) {
             if (buttonIndex == 0) {
                 UIPasteboard*pasteboard = [UIPasteboard generalPasteboard];
                 pasteboard.string = number;
@@ -170,6 +182,17 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
         [alert show];
         return;
     }
+    else if (button.tag == 1)
+    {
+//        [self WeiXinOrQQAlertView ];
+        NSString *url = [NSString stringWithFormat:@"%@bluehired/recruitmentlist_detail.html?id=%@",BaseRequestWeiXiURL,self.workListModel.id];
+        
+        NSString *encodedUrl = [NSString stringWithString:[url stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        [LPTools ClickShare:encodedUrl Title:_model.data.mechanismName];
+        return;
+
+    }
+    
     if ([LoginUtils validationLogin:self]) {
         NSInteger index = button.tag;
         if (index == 0) {
@@ -181,7 +204,10 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
     button.highlighted = NO;
 }
 -(void)applySuccessAlert{
-    NSString *string = [NSString stringWithFormat:@"姓名：%@\n报名企业：%@",self.isApplyOrIsCollectionModel.data.userName,self.model.data.mechanismName];
+    
+    NSString *useername = [[LPTools isNullToString:self.isApplyOrIsCollectionModel.data.userName] isEqualToString:@""] ? self.userName: self.isApplyOrIsCollectionModel.data.userName ;
+    
+    NSString *string = [NSString stringWithFormat:@"姓名：%@\n报名企业：%@",useername,self.model.data.mechanismName];
     GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"报名成功" message:string textAlignment:NSTextAlignmentLeft buttonTitles:@[@"查看详情"] buttonsColor:@[[UIColor whiteColor]] buttonsBackgroundColors:@[[UIColor baseColor]] buttonClick:^(NSInteger buttonIndex) {
         if (buttonIndex == 0) {
             LPWorkorderListVC *vc = [[LPWorkorderListVC alloc]init];
@@ -194,11 +220,22 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
 #pragma mark - setdata
 -(void)setModel:(LPWorkDetailModel *)model{
     _model = model;
+    
+    if (kUserDefaultsValue(USERDATA).integerValue == 4 ||
+        kUserDefaultsValue(USERDATA).integerValue >= 8) {
+        [self.signUpButton setTitle:@"禁止报名" forState:UIControlStateNormal];
+        self.signUpButton.backgroundColor = [UIColor colorWithHexString:@"#939393"];
+        self.signUpButton.enabled = NO;
+    }
+    
     if ([model.data.status integerValue] == 1) {// "status": 1,//0正在招工1已经招满
         [self.signUpButton setTitle:@"停止报名" forState:UIControlStateNormal];
         self.signUpButton.backgroundColor = [UIColor colorWithHexString:@"#939393"];
         self.signUpButton.enabled = NO;
     }
+    
+
+    
     [self.tableview reloadData];
 }
 -(void)setIsApplyOrIsCollectionModel:(LPIsApplyOrIsCollectionModel *)isApplyOrIsCollectionModel{
@@ -210,17 +247,27 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
             self.bottomButtonArray[0].selected = NO;
         }
         if (self.model) {
+            
+            if (kUserDefaultsValue(USERDATA).integerValue == 4 ||
+                kUserDefaultsValue(USERDATA).integerValue >= 8) {
+                [self.signUpButton setTitle:@"禁止报名" forState:UIControlStateNormal];
+                self.signUpButton.backgroundColor = [UIColor colorWithHexString:@"#939393"];
+                self.signUpButton.enabled = NO;
+            }
+            
             if ([self.model.data.status integerValue] == 1) {// "status": 1,//0正在招工1已经招满
                 [self.signUpButton setTitle:@"停止报名" forState:UIControlStateNormal];
                 self.signUpButton.backgroundColor = [UIColor colorWithHexString:@"#939393"];
                 self.signUpButton.enabled = NO;
             }else{
-                if ([isApplyOrIsCollectionModel.data.isApply integerValue] == 0) {
+                if ([isApplyOrIsCollectionModel.data.isApply integerValue] == 0  && AlreadyLogin) {
                     self.signUpButton.selected = YES;
                 }else{
                     self.signUpButton.selected = NO;
                 }
             }
+            
+
         }
     }
 }
@@ -320,28 +367,23 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
         LPWorkDetailTextCell *cell = [tableView dequeueReusableCellWithIdentifier:LPWorkDetailTextCellID];
         cell.detailTitleLabel.text = self.textArray[indexPath.row];
         if (indexPath.row == 0) {
-            NSString *string=[self.model.data.workDemand stringByReplacingOccurrencesOfString:@"<p>"withString:@" "];
-            string = [string stringByReplacingOccurrencesOfString:@"</p>"withString:@"\n"];
+            NSString *string=[self removeHTML2:[self.model.data.workDemand stringByDecodingHTMLEntities]];
             cell.detailLabel.text = string;
+//            cell.detailLabel.text = [self.model.data.workDemand htmlUnescapedString];
         }else if (indexPath.row == 1){
-            NSString *string=[self.model.data.workSalary stringByReplacingOccurrencesOfString:@"<p>"withString:@" "];
-            string = [string stringByReplacingOccurrencesOfString:@"</p>"withString:@"\n"];
+            NSString *string=[self removeHTML2:[self.model.data.workSalary stringByDecodingHTMLEntities]];
             cell.detailLabel.text = string;
         }else if (indexPath.row == 2){
-            NSString *string=[self.model.data.eatSleep stringByReplacingOccurrencesOfString:@"<p>"withString:@" "];
-            string = [string stringByReplacingOccurrencesOfString:@"</p>"withString:@"\n"];
+            NSString *string=[self removeHTML2:[self.model.data.eatSleep stringByDecodingHTMLEntities]];
             cell.detailLabel.text = string;
         }else if (indexPath.row == 3){
-            NSString *string=[self.model.data.workTime stringByReplacingOccurrencesOfString:@"<p>"withString:@" "];
-            string = [string stringByReplacingOccurrencesOfString:@"</p>"withString:@"\n"];
+            NSString *string=[self removeHTML2:[self.model.data.workTime stringByDecodingHTMLEntities]];
             cell.detailLabel.text = string;
         }else if (indexPath.row == 4){
-            NSString *string=[self.model.data.workKnow stringByReplacingOccurrencesOfString:@"<p>"withString:@" "];
-            string = [string stringByReplacingOccurrencesOfString:@"</p>"withString:@"\n"];
+            NSString *string=[self removeHTML2:[self.model.data.workKnow stringByDecodingHTMLEntities]];
             cell.detailLabel.text = string;
         }else if (indexPath.row == 5){
-            NSString *string=[self.model.data.remarks stringByReplacingOccurrencesOfString:@"<p>"withString:@" "];
-            string = [string stringByReplacingOccurrencesOfString:@"</p>"withString:@"\n"];
+            NSString *string=[self removeHTML2:[self.model.data.remarks stringByDecodingHTMLEntities]];
             cell.detailLabel.text = string;
         }
         
@@ -350,7 +392,7 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
         if (indexPath.row == 0) {
             LPWorkDetailTextCell *cell = [tableView dequeueReusableCellWithIdentifier:LPWorkDetailTextCellID];
             cell.detailTitleLabel.text = @"企业简介";
-            cell.detailLabel.text = self.model.data.mechanismDetails;
+            cell.detailLabel.text = [self removeHTML2:[self.model.data.mechanismDetails stringByDecodingHTMLEntities]];
             return cell;
         }else{
             UITableViewCell *cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
@@ -378,7 +420,7 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
         if (isSuccess) {
             self.model = [LPWorkDetailModel mj_objectWithKeyValues:responseObject];
         }else{
-            [self.view showLoadingMeg:@"网络错误" time:MESSAGE_SHOW_TIME];
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
     }];
 }
@@ -393,6 +435,7 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
             if (!ISNIL(responseObject[@"data"])) {
                 if ([responseObject[@"data"] integerValue] == 0) {
                     self.bottomButtonArray[0].selected = YES;
+                    [LPTools AlertCollectView:@""];
                 }else if ([responseObject[@"data"] integerValue] == 1) {
                     self.bottomButtonArray[0].selected = NO;
                 }
@@ -400,7 +443,7 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
-    }];
+    } IsShowActivity:YES];
 }
 -(void)requestIsApplyOrIsCollection{
     NSDictionary *dic = @{
@@ -423,7 +466,7 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
                           @"reMoney":self.model.data.reMoney,
                           @"reTime":self.model.data.reTime,
                           @"recruitAddress":self.model.data.recruitAddress,
-                          @"userName":self.isApplyOrIsCollectionModel.data.userName ? self.isApplyOrIsCollectionModel.data.userName : self.userName,
+                          @"userName":[[LPTools isNullToString:self.isApplyOrIsCollectionModel.data.userName] isEqualToString:@""] ? self.userName: self.isApplyOrIsCollectionModel.data.userName ,
                           @"workId":self.workListModel.id,
                           @"workName":self.model.data.workTypeName,
                           };
@@ -479,19 +522,108 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
     }
     return _tableview;
 }
+
+-(void)WeiXinOrQQAlertView
+{
+    _CustomAlert = [[CustomIOSAlertView alloc] init];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 300, 130)];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, 300, 21)];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.text = @"请选择分享平台";
+    
+    UIButton *weixinBt = [[UIButton alloc] initWithFrame:CGRectMake(180, 40, 60, 60)];
+    [weixinBt setBackgroundImage:[UIImage imageNamed:@"weixin"] forState:(UIControlStateNormal)];
+    [weixinBt addTarget:self action:@selector(weixinOrQQtouch:) forControlEvents:UIControlEventTouchUpInside];
+    weixinBt.tag = 1;
+    UILabel *wxlabel = [[UILabel alloc] initWithFrame:CGRectMake(180, 105, 60, 20)];
+    wxlabel.text = @"微信";
+    wxlabel.textAlignment = NSTextAlignmentCenter;
+    
+    
+    UIButton *QQBt = [[UIButton alloc] initWithFrame:CGRectMake(60, 40, 60, 60)];
+    [QQBt setBackgroundImage:[UIImage imageNamed:@"QQ"] forState:(UIControlStateNormal)];
+    [QQBt addTarget:self action:@selector(weixinOrQQtouch:) forControlEvents:UIControlEventTouchUpInside];
+    QQBt.tag = 2;
+    UILabel *qqlabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 105, 60, 20)];
+    qqlabel.text = @"qq";
+    qqlabel.textAlignment = NSTextAlignmentCenter;
+    [view addSubview:label];
+    [view addSubview:weixinBt];
+    [view addSubview:wxlabel];
+    [view addSubview:QQBt];
+    [view addSubview:qqlabel];
+    
+    [_CustomAlert setContainerView:view];
+    [_CustomAlert setButtonTitles:@[@"取消"]];
+    [_CustomAlert show];
+}
+
+-(void)weixinOrQQtouch:(UIButton *)sender
+{
+    NSString *url = [NSString stringWithFormat:@"%@bluehired/recruitmentlist_detail.html?id=%@",BaseRequestWeiXiURL,self.workListModel.id];
+    
+    NSString *encodedUrl = [NSString stringWithString:[url stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    
+    if (sender.tag == 1)
+    {
+        if ([WXApi isWXAppInstalled]==NO) {
+            [self.view showLoadingMeg:@"请安装微信" time:MESSAGE_SHOW_TIME];
+            [_CustomAlert close];
+            return;
+        }
+        
+        SendMessageToWXReq *req = [[SendMessageToWXReq alloc] init];
+        req.scene = WXSceneSession;
+        WXMediaMessage *message = [WXMediaMessage message];
+        message.title = @"蓝聘";
+        message.description= _model.data.mechanismName;
+        message.thumbData = UIImagePNGRepresentation([UIImage imageNamed:@"logo_Information"]);
+        WXWebpageObject *ext = [WXWebpageObject object];
+
+        ext.webpageUrl = encodedUrl;
+        message.mediaObject = ext;
+        req.message = message;
+        [WXApi sendReq:req];
+    }
+    else if (sender.tag == 2)
+    {
+        if (![QQApiInterface isSupportShareToQQ])
+        {
+            [self.view showLoadingMeg:@"请安装QQ" time:MESSAGE_SHOW_TIME];
+            [_CustomAlert close];
+            return;
+        }
+        NSString *title = @"蓝聘";
+        QQApiNewsObject *newsObj = [QQApiNewsObject
+                                    objectWithURL:[NSURL URLWithString:encodedUrl]
+                                    title:title
+                                    description:nil
+                                    previewImageURL:nil];
+        SendMessageToQQReq *req = [SendMessageToQQReq reqWithContent:newsObj];
+        //将内容分享到qq
+        QQApiSendResultCode sent = [QQApiInterface sendReq:req];
+        //将内容分享到qzone
+        //        QQApiSendResultCode sent = [QQApiInterface SendReqToQZone:req];
+
+    }
+    [_CustomAlert close];
+}
+
+
+- (NSString *)removeHTML2:(NSString *)html{
+    NSArray *components = [html componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+    NSMutableArray *componentsToKeep = [NSMutableArray array];
+    for (int i = 0; i < [components count]; i = i + 2) {
+        [componentsToKeep addObject:[components objectAtIndex:i]];
+    }
+    NSString *plainText = [componentsToKeep componentsJoinedByString:@"\n"];
+    return plainText;
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

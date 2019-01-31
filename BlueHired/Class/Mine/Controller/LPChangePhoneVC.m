@@ -30,38 +30,49 @@
 }
 -(void)setupUI{
     self.navigationItem.title = @"手机号修改";
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor colorWithHexString:@"#FFFBFBFB"];
     //    [self.navigationController setNavigationBarHidden:YES animated:YES];
     
     
     UIView *phoneBgView = [[UIView alloc]init];
     [self.view addSubview:phoneBgView];
     [phoneBgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(50);
-        make.right.mas_equalTo(-50);
-        make.top.mas_equalTo(100);
-        make.height.mas_equalTo(40);
+        make.left.mas_equalTo(14);
+        make.right.mas_equalTo(-14);
+        make.top.mas_equalTo(14);
+        make.height.mas_equalTo(48);
     }];
+    phoneBgView.backgroundColor = [UIColor whiteColor];
     UIImageView *phoneImg = [[UIImageView alloc]init];
     [phoneBgView addSubview:phoneImg];
     [phoneImg mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(0);
+        make.left.mas_equalTo(10);
         make.centerY.equalTo(phoneBgView);
         make.size.mas_equalTo(CGSizeMake(13, 21));
     }];
     phoneImg.image = [UIImage imageNamed:@"phone_img"];
     
+    UIView *PhoneImgLine = [[UIView alloc] init];
+    [phoneBgView addSubview:PhoneImgLine];
+    [PhoneImgLine mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(phoneImg.mas_right).offset(8);
+        make.width.mas_equalTo(1);
+        make.height.mas_equalTo(22);
+        make.centerY.equalTo(phoneBgView);
+    }];
+    PhoneImgLine.backgroundColor = [UIColor colorWithHexString:@"#FF939393"];
+    
     self.phoneTextField = [[UITextField alloc]init];
     [phoneBgView addSubview:self.phoneTextField];
     [self.phoneTextField mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(30);
+        make.left.mas_equalTo(PhoneImgLine.mas_right).offset(8);
         make.right.mas_equalTo(0);
         make.height.mas_equalTo(30);
         make.centerY.equalTo(phoneBgView);
         
     }];
     self.phoneTextField.delegate = self;
-    self.phoneTextField.placeholder = @"请输入手机号码";
+    self.phoneTextField.placeholder = @"请输入新手机号";
     self.phoneTextField.tintColor = [UIColor baseColor];
     self.phoneTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     self.phoneTextField.keyboardType = UIKeyboardTypeNumberPad;
@@ -75,29 +86,41 @@
         make.bottom.mas_equalTo(0);
         make.height.mas_equalTo(1);
     }];
-    self.phoneLineView.backgroundColor = [UIColor lightGrayColor];
+    self.phoneLineView.backgroundColor = [UIColor clearColor];
     
     UIView *verificationCodeBgView = [[UIView alloc]init];
     [self.view addSubview:verificationCodeBgView];
     [verificationCodeBgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(50);
-        make.right.mas_equalTo(-50);
-        make.top.equalTo(phoneBgView.mas_bottom).offset(40);
-        make.height.mas_equalTo(40);
+        make.left.mas_equalTo(14);
+        make.right.mas_equalTo(-14);
+        make.top.equalTo(phoneBgView.mas_bottom).offset(15);
+        make.height.mas_equalTo(48);
     }];
+    verificationCodeBgView.backgroundColor = [UIColor whiteColor];
+
     UIImageView *verificationCodeImg = [[UIImageView alloc]init];
     [verificationCodeBgView addSubview:verificationCodeImg];
     [verificationCodeImg mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(0);
+        make.left.mas_equalTo(10);
         make.centerY.equalTo(verificationCodeBgView);
         make.size.mas_equalTo(CGSizeMake(15, 18));
     }];
     verificationCodeImg.image = [UIImage imageNamed:@"verificationCode"];
     
+    UIView *PverificationCodeImgLine = [[UIView alloc] init];
+    [verificationCodeBgView addSubview:PverificationCodeImgLine];
+    [PverificationCodeImgLine mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(verificationCodeImg.mas_right).offset(8);
+        make.width.mas_equalTo(1);
+        make.height.mas_equalTo(22);
+        make.centerY.equalTo(verificationCodeBgView);
+    }];
+    PverificationCodeImgLine.backgroundColor = [UIColor colorWithHexString:@"#FF939393"];
+    
     self.verificationCodeTextField = [[UITextField alloc]init];
     [verificationCodeBgView addSubview:self.verificationCodeTextField];
     [self.verificationCodeTextField mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(30);
+        make.left.mas_equalTo(PverificationCodeImgLine.mas_right).offset(8);
         make.right.mas_equalTo(-100);
         make.height.mas_equalTo(30);
         make.centerY.equalTo(verificationCodeBgView);
@@ -105,7 +128,8 @@
     self.verificationCodeTextField.delegate = self;
     self.verificationCodeTextField.placeholder = @"请输入验证码";
     self.verificationCodeTextField.tintColor = [UIColor baseColor];
-    
+    self.verificationCodeTextField.keyboardType = UIKeyboardTypeNumberPad;
+
     UIButton *getVerificationCodeButton = [[UIButton alloc]init];
     [verificationCodeBgView addSubview:getVerificationCodeButton];
     [getVerificationCodeButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -127,7 +151,7 @@
         make.bottom.mas_equalTo(0);
         make.height.mas_equalTo(1);
     }];
-    self.verificationCodeLineView.backgroundColor = [UIColor lightGrayColor];
+    self.verificationCodeLineView.backgroundColor = [UIColor clearColor];
     
    
     UIButton *loginButton = [[UIButton alloc]init];
@@ -135,15 +159,15 @@
     [loginButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(50);
         make.right.mas_equalTo(-50);
-        make.top.equalTo(verificationCodeBgView.mas_bottom).offset(80);
-        make.height.mas_equalTo(40);
+        make.top.equalTo(verificationCodeBgView.mas_bottom).offset(121);
+        make.height.mas_equalTo(48);
     }];
     [loginButton setTitle:@"确定" forState:UIControlStateNormal];
     [loginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     loginButton.titleLabel.font = [UIFont systemFontOfSize:17];
     loginButton.backgroundColor = [UIColor baseColor];
     loginButton.layer.masksToBounds = YES;
-    loginButton.layer.cornerRadius = 20;
+    loginButton.layer.cornerRadius = 4;
     [loginButton addTarget:self action:@selector(touchLoginButton:) forControlEvents:UIControlEventTouchUpInside];
     
     UIButton *registeredButton = [[UIButton alloc]init];
@@ -151,15 +175,15 @@
     [registeredButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(50);
         make.right.mas_equalTo(-50);
-        make.top.equalTo(loginButton.mas_bottom).offset(20);
-        make.height.mas_equalTo(40);
+        make.top.equalTo(loginButton.mas_bottom).offset(27);
+        make.height.mas_equalTo(48);
     }];
     [registeredButton setTitle:@"取消" forState:UIControlStateNormal];
     [registeredButton setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
     registeredButton.titleLabel.font = [UIFont systemFontOfSize:17];
     registeredButton.backgroundColor = [UIColor whiteColor];
     registeredButton.layer.masksToBounds = YES;
-    registeredButton.layer.cornerRadius = 20;
+    registeredButton.layer.cornerRadius = 4;
     registeredButton.layer.borderColor = [UIColor baseColor].CGColor;
     registeredButton.layer.borderWidth = 0.5;
     [registeredButton addTarget:self action:@selector(touchRegisteredButton:) forControlEvents:UIControlEventTouchUpInside];
@@ -174,7 +198,7 @@
     label.numberOfLines = 0;
     label.text = @"温馨提示：更换手机后，之前的手机号将被注销，请谨慎修改！";
     label.textColor = [UIColor grayColor];
-    label.font = [UIFont systemFontOfSize:14];
+    label.font = [UIFont systemFontOfSize:13];
     label.textAlignment = NSTextAlignmentCenter;
     
 }
@@ -257,25 +281,25 @@
     
 }
 -(void)textFieldDidBeginEditing:(UITextField *)textField{
-    if ([textField isEqual:self.phoneTextField]) {
-        self.phoneLineView.backgroundColor = [UIColor baseColor];
-        self.verificationCodeLineView.backgroundColor = [UIColor lightGrayColor];
-    }else{
-        self.phoneLineView.backgroundColor = [UIColor lightGrayColor];
-        self.verificationCodeLineView.backgroundColor = [UIColor baseColor];
-    }
+//    if ([textField isEqual:self.phoneTextField]) {
+//        self.phoneLineView.backgroundColor = [UIColor baseColor];
+//        self.verificationCodeLineView.backgroundColor = [UIColor lightGrayColor];
+//    }else{
+//        self.phoneLineView.backgroundColor = [UIColor lightGrayColor];
+//        self.verificationCodeLineView.backgroundColor = [UIColor baseColor];
+//    }
 }
 -(void)textFieldDidEndEditing:(UITextField *)textField{
-    self.phoneLineView.backgroundColor = [UIColor lightGrayColor];
-    self.verificationCodeLineView.backgroundColor = [UIColor lightGrayColor];
+//    self.phoneLineView.backgroundColor = [UIColor lightGrayColor];
+//    self.verificationCodeLineView.backgroundColor = [UIColor lightGrayColor];
 }
 #pragma mark - reuqest
 -(void)requestUpdateUsertel{
-    NSDictionary *dic = @{
-                          @"newUserTel":self.phoneTextField.text,
-                          };
+
+    NSString * url =[NSString stringWithFormat:@"userMaterial/update_usertel?newUserTel=%@",self.phoneTextField.text];
+
     
-    [NetApiManager requestUpdateUsertelWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+    [NetApiManager requestUpdateUsertelWithParam:url  WithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
@@ -305,6 +329,8 @@
                 }
                 [self.view showLoadingMeg:@"验证码发送成功" time:MESSAGE_SHOW_TIME];
                 [self openCountdown];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
@@ -321,7 +347,15 @@
     [NetApiManager requestMateCodeWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            [self requestUpdateUsertel];
+            if ([responseObject[@"code"] integerValue] == 0)
+            {
+                [self requestUpdateUsertel];
+            }
+            else
+            {
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
+
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

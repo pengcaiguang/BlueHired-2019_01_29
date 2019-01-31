@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LPMainSearchResultVC : UIViewController
+@interface LPMainSearchResultVC : LPBaseViewController
 
 @property(nonatomic,strong) NSString *string;
 

@@ -35,7 +35,10 @@ static NetInstance * singleInstance = nil;
                    withAppendUrlString:(NSString *)appendURLString
 {
     NetRequestEnty * enty = [[NetRequestEnty alloc] init];
-    enty.requestUrl = kStringIsEmpty(appendURLString) ? self.baseUrl : [NSString stringWithFormat:@"%@%@",self.baseUrl,appendURLString];
+    //    enty.requestUrl = kStringIsEmpty(appendURLString) ? self.baseUrl : [NSString stringWithFormat:@"%@%@",self.baseUrl,appendURLString];
+    NSString *url = kStringIsEmpty(appendURLString) ? self.baseUrl : [NSString stringWithFormat:@"%@%@",self.baseUrl,appendURLString];
+    enty.requestUrl =  [url stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    
     switch (requestType) {
         case RequestTypeGet:   //GET请求
             enty.requestType = 0;

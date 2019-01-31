@@ -8,6 +8,8 @@
 
 #import "LPSalarycCardBindPhoneVC.h"
 #import "LPUserMaterialModel.h"
+#import "LPSalarycCardChangePasswordVC.h"
+#import "LPSalarycCardBindVC.h"
 
 @interface LPSalarycCardBindPhoneVC ()<UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *phoneLabel;
@@ -100,6 +102,8 @@
                 }
                 [self.view showLoadingMeg:@"验证码发送成功" time:MESSAGE_SHOW_TIME];
                 [self openCountdown];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
@@ -111,12 +115,38 @@
                           @"i":@(5),
                           @"phone":kUserDefaultsValue(@"PHONEUSERSAVE"),
                           @"code":self.textField.text,
+                          @"token":self.token?self.token:@""
                           };
     [NetApiManager requestMateCodeWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
+                if (self.type == 1)
+                {
+//                    LPSalarycCardChangePasswordVC  *vc = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
+                    LPSalarycCardChangePasswordVC *vc = [[LPSalarycCardChangePasswordVC alloc] init];
+                    vc.times = 1;
+//                    [self.navigationController pushViewController:vc animated:NO ];
+                    NSMutableArray *naviVCsArr = [[NSMutableArray alloc]initWithArray:self.navigationController.viewControllers];
+                    for (UIViewController *vc in naviVCsArr) {
+                        if ([vc isKindOfClass:[self class]]) {
+                            [naviVCsArr removeObject:vc];
+                            break;
+                        }
+                    }
+                    [naviVCsArr addObject:vc];
+//                    self.navigationController.viewControllers = naviVCsArr;
+                    [self.navigationController  setViewControllers:naviVCsArr animated:YES];
+                    
 
+                }
+                else if (self.type == 2)
+                {
+                    LPSalarycCardChangePasswordVC *vc = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
+//                    vc.ispass = YES;
+                    vc.times = 1;
+                    [self.navigationController popToViewController:vc animated:YES];
+                }
             }else{
                 [self.view showLoadingMeg:responseObject[@"msg"] ? responseObject[@"msg"] : @"验证失败" time:MESSAGE_SHOW_TIME];
             }

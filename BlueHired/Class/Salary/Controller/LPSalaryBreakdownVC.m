@@ -103,8 +103,17 @@ static NSString *LPSalaryBreakdownCellID = @"LPSalaryBreakdownCell";
     }];
 }
 -(void)chooseMonth{
-    self.monthView.hidden = !self.monthView.isHidden;
-    self.monthBackView.hidden = !self.monthBackView.isHidden;
+    
+    QFDatePickerView *datePickerView = [[QFDatePickerView  alloc]initDatePackerWithResponse:^(NSString *str) {
+         NSLog(@"str = %@", str);
+        [self.timeButton setTitle:str forState:UIControlStateNormal];
+        self.currentDateString = self.timeButton.titleLabel.text;
+         [self requestQuerySalarylist];
+     }];
+    
+    [datePickerView show];
+//    self.monthView.hidden = !self.monthView.isHidden;
+//    self.monthBackView.hidden = !self.monthBackView.isHidden;
 }
 -(void)monthViewHidden{
     self.monthView.hidden = YES;
@@ -261,6 +270,9 @@ static NSString *LPSalaryBreakdownCellID = @"LPSalaryBreakdownCell";
         self.monthButtonArray[self.month-1].backgroundColor = [UIColor baseColor];
     }
     return _monthView;
+    
+    
+  
     
 }
 

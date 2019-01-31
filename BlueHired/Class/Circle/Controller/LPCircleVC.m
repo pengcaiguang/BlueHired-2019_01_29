@@ -12,7 +12,9 @@
 #import "LPLoginVC.h"
 #import "LPAddMoodeVC.h"
 #import "LPInfoVC.h"
+#import "UIBarButtonItem+Badge.h"
 
+ 
 static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
 
 @interface LPCircleVC ()<UISearchBarDelegate,UICollectionViewDelegate,UICollectionViewDataSource>
@@ -20,6 +22,8 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
 
 @property (nonatomic,strong) NSMutableArray <UIButton *>*buttonArray;
 @property (nonatomic,strong) UIView *lineView;
+@property (nonatomic,assign) NSInteger TypeIndex;
+@property (nonatomic,assign) NSInteger isTopbar;
 
 @end
 
@@ -38,11 +42,44 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
     [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
+    [self.collectionView reloadData];
+    self.TypeIndex = 0;
+    _isTopbar = YES;
     [self addSendButton];
+    
+    [self selectButtonAtIndex:0];
+    [self scrollToItenIndex:0];
+ 
+    
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    [self.collectionView reloadData];
+    if (self.isSenderBack == 1 && !_isTopbar ) {
+        if (self.TypeIndex != 0) {
+            [self selectButtonAtIndex:0];
+            [self scrollToItenIndex:0];
+        }
+        self.isSenderBack   = 0;
+    }else if (self.isSenderBack == 3){
+        LPCircleCollectionViewCell *cell = (LPCircleCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:self.TypeIndex inSection:0]];
+         [cell touchMoodTypeDeleteBack];
+        self.isSenderBack   = 0;
+    }else if (self.isSenderBack == 4){
+        self.isSenderBack   = 0;
+        self.TypeIndex = 0;
+        [self selectButtonAtIndex:0];
+        [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+        [self.collectionView layoutIfNeeded];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            LPCircleCollectionViewCell *cell = (LPCircleCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+            [cell touchMoodTypeSenderBack:0];
+        });
+    }
+    if (AlreadyLogin) {
+        [self requestQueryInfounreadNum];
+    }
+    _isTopbar = NO;
+//    [self.collectionView reloadData];
 }
 - (UIStatusBarStyle)preferredStatusBarStyle{
     return UIStatusBarStyleLightContent;
@@ -50,7 +87,22 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
 -(void)setNavigationButton{
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"logo_Information" WithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStyleDone target:self action:nil];
     self.navigationItem.leftBarButtonItem.enabled = NO;
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"message" WithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStyleDone target:self action:@selector(touchMessageButton)];
+    
+    
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    [button setImage:[UIImage imageNamed:@"message"] forState:UIControlStateNormal];
+    button.frame = CGRectMake(0,100,button.currentImage.size.width, button.currentImage.size.height);
+    [button addTarget:self action:@selector(touchMessageButton) forControlEvents:UIControlEventTouchDown];
+    
+    // 添加角标
+    UIBarButtonItem *navLeftButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+    self.navigationItem.rightBarButtonItem = navLeftButton;
+    self.navigationItem.rightBarButtonItem.badgeValue = @"";
+    self.navigationItem.rightBarButtonItem.badgeBGColor = [UIColor redColor];
+
+
+    
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"message" WithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStyleDone target:self action:@selector(touchMessageButton)];
 }
 -(void)setupTitleView{
     UIView *navigationView = [[UIView alloc]init];
@@ -98,7 +150,7 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
     [button mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(50, 50));
         make.right.mas_equalTo(-20);
-        make.bottom.mas_equalTo(-89);
+        make.bottom.mas_equalTo(-34);
     }];
     [button setImage:[UIImage imageNamed:@"sendDynamic_img"] forState:UIControlStateNormal];
     button.backgroundColor = [UIColor colorWithHexString:@"#FB5454"];
@@ -136,26 +188,37 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
     
 }
 -(void)scrollToItenIndex:(NSInteger)index{
-    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:YES];
-}
+    self.TypeIndex = index;
+     [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0] atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+    [self.collectionView layoutIfNeeded];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        LPCircleCollectionViewCell *cell = (LPCircleCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:self.TypeIndex inSection:0]];
+        [cell setIndex:self.TypeIndex];
+    });
+
+ }
 #pragma mark -- UICollectionViewDelegate
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     CGFloat pageWidth = scrollView.frame.size.width;
     int page = floor((scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
+    self.TypeIndex =page;
     [self selectButtonAtIndex:page];
-}
+    [self scrollToItenIndex:page];
+ }
 #pragma mark -- UICollectionViewDataSource
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return 3;
 }
+
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     LPCircleCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:LPCircleCollectionViewCellID forIndexPath:indexPath];
+   
 //    cell.labelListDataModel = self.labelListModel.data[indexPath.row];
     cell.contentView.backgroundColor = randomColor;
-    cell.index = indexPath.row;
+//    cell.index = indexPath.row;
     return cell;
-    
 }
+
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     return 1;
 }
@@ -203,17 +266,41 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+ 
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+-(void)requestQueryInfounreadNum{
+    NSDictionary *dic = @{
+                          };
+    [NetApiManager requestQueryUnreadNumWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                NSInteger num = [responseObject[@"data"] integerValue];
+                if (num == 0) {
+                    self.navigationItem.rightBarButtonItem.badgeValue = @"";
+                }
+                else if (num>9)
+                {
+                    self.navigationItem.rightBarButtonItem.badgeValue = @"9+";
+                }
+                else
+                {
+                    self.navigationItem.rightBarButtonItem.badgeValue = [NSString stringWithFormat:@"%ld",(long)num];
+                }
+            }else{
+                if ([responseObject[@"code"] integerValue] == 10002) {
+                    [LPTools UserDefaulatsRemove];
+                }
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
+            
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
 }
-*/
+
 
 @end

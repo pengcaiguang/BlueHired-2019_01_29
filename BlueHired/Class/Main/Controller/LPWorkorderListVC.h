@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LPWorkorderListVC : UIViewController
+@interface LPWorkorderListVC : LPBaseViewController
 
 @end

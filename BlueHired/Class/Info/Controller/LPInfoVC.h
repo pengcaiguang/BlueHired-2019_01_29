@@ -10,7 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LPInfoVC : UIViewController
+@interface LPInfoVC : LPBaseViewController
+@property(nonatomic,assign) BOOL isReloadData;
 
 @end
 

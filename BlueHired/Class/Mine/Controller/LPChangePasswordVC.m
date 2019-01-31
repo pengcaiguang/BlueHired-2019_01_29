@@ -7,6 +7,7 @@
 //
 
 #import "LPChangePasswordVC.h"
+#import "LPLoginVC.h"
 
 @interface LPChangePasswordVC ()<UITextFieldDelegate>
 
@@ -27,32 +28,44 @@
 }
 -(void)setupUI{
     self.navigationItem.title = @"密码修改";
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor colorWithHexString:@"#FFFBFBFB"];
     //    [self.navigationController setNavigationBarHidden:YES animated:YES];
     
     
     
     UIView *phoneBgView = [[UIView alloc]init];
     [self.view addSubview:phoneBgView];
+    phoneBgView.backgroundColor = [UIColor whiteColor];
     [phoneBgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(50);
-        make.right.mas_equalTo(-50);
-        make.top.mas_equalTo(100);
-        make.height.mas_equalTo(40);
+        make.left.mas_equalTo(0);
+        make.right.mas_equalTo(0);
+        make.top.mas_equalTo(15);
+        make.height.mas_equalTo(48);
     }];
     UIImageView *phoneImg = [[UIImageView alloc]init];
     [phoneBgView addSubview:phoneImg];
     [phoneImg mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(0);
+        make.left.mas_equalTo(12);
         make.centerY.equalTo(phoneBgView);
-        make.size.mas_equalTo(CGSizeMake(13, 21));
+        make.size.mas_equalTo(CGSizeMake(15, 18));
     }];
-    phoneImg.image = [UIImage imageNamed:@"phone_img"];
+    phoneImg.image = [UIImage imageNamed:@"password_img"];
+    
+    UIView *PhoneImgLine = [[UIView alloc] init];
+    [phoneBgView addSubview:PhoneImgLine];
+    [PhoneImgLine mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(phoneImg.mas_right).offset(8);
+        make.width.mas_equalTo(1);
+        make.height.mas_equalTo(22);
+        make.centerY.equalTo(phoneBgView);
+    }];
+    PhoneImgLine.backgroundColor = [UIColor colorWithHexString:@"#FF939393"];
+    
     
     self.phoneTextField = [[UITextField alloc]init];
     [phoneBgView addSubview:self.phoneTextField];
     [self.phoneTextField mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(30);
+        make.left.mas_equalTo(PhoneImgLine.mas_right).offset(8);
         make.right.mas_equalTo(0);
         make.height.mas_equalTo(30);
         make.centerY.equalTo(phoneBgView);
@@ -62,41 +75,54 @@
     self.phoneTextField.placeholder = @"请输入旧密码";
     self.phoneTextField.tintColor = [UIColor baseColor];
     self.phoneTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    self.phoneTextField.keyboardType = UIKeyboardTypeNumberPad;
-    
+//    self.phoneTextField.keyboardType = UIKeyboardTypeNumberPad;
+    self.phoneTextField.secureTextEntry = YES;
+
     
     self.phoneLineView = [[UIView alloc]init];
-    [phoneBgView addSubview:self.phoneLineView];
-    [self.phoneLineView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(0);
-        make.right.mas_equalTo(0);
-        make.bottom.mas_equalTo(0);
-        make.height.mas_equalTo(1);
-    }];
+//    [phoneBgView addSubview:self.phoneLineView];
+//    [self.phoneLineView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.mas_equalTo(0);
+//        make.right.mas_equalTo(0);
+//        make.bottom.mas_equalTo(0);
+//        make.height.mas_equalTo(1);
+//    }];
     self.phoneLineView.backgroundColor = [UIColor lightGrayColor];
     
     
     UIView *passwordBgView = [[UIView alloc]init];
+    passwordBgView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:passwordBgView];
     [passwordBgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(50);
-        make.right.mas_equalTo(-50);
-        make.top.equalTo(phoneBgView.mas_bottom).offset(40);
-        make.height.mas_equalTo(40);
+        make.left.mas_equalTo(0);
+        make.right.mas_equalTo(0);
+        make.top.equalTo(phoneBgView.mas_bottom).offset(10);
+        make.height.mas_equalTo(48);
     }];
     UIImageView *passwordImg = [[UIImageView alloc]init];
     [passwordBgView addSubview:passwordImg];
     [passwordImg mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(0);
+        make.left.mas_equalTo(12);
         make.centerY.equalTo(passwordBgView);
         make.size.mas_equalTo(CGSizeMake(15, 18));
     }];
     passwordImg.image = [UIImage imageNamed:@"password_img"];
     
+    
+    UIView *passwordImgLine = [[UIView alloc] init];
+    [passwordBgView addSubview:passwordImgLine];
+    [passwordImgLine mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(passwordImg.mas_right).offset(8);
+        make.width.mas_equalTo(1);
+        make.height.mas_equalTo(22);
+        make.centerY.equalTo(passwordBgView);
+    }];
+    passwordImgLine.backgroundColor = [UIColor colorWithHexString:@"#FF939393"];
+    
     self.passwordTextField = [[UITextField alloc]init];
     [passwordBgView addSubview:self.passwordTextField];
     [self.passwordTextField mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(30);
+        make.left.mas_equalTo(passwordImgLine.mas_right).offset(8);
         make.right.mas_equalTo(-30);
         make.height.mas_equalTo(30);
         make.centerY.equalTo(passwordBgView);
@@ -110,46 +136,58 @@
     UIButton *showPasswordButton = [[UIButton alloc]init];
     [passwordBgView addSubview:showPasswordButton];
     [showPasswordButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.mas_equalTo(0);
+        make.right.mas_equalTo(-15);
         make.size.mas_equalTo(CGSizeMake(22, 16));
         make.centerY.equalTo(passwordBgView);
     }];
     [showPasswordButton setImage:[UIImage imageNamed:@"show_eye_img"] forState:UIControlStateNormal];
-    [showPasswordButton setImage:[UIImage imageNamed:@"hide_eye_img"] forState:UIControlStateSelected];
+    [showPasswordButton setImage:[UIImage imageNamed:@"Passhide_eye_img"] forState:UIControlStateSelected];
     [showPasswordButton addTarget:self action:@selector(touchShowPasswordButton:) forControlEvents:UIControlEventTouchUpInside];
     
     
     self.passwordLineView = [[UIView alloc]init];
-    [passwordBgView addSubview:self.passwordLineView];
-    [self.passwordLineView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(0);
-        make.right.mas_equalTo(0);
-        make.bottom.mas_equalTo(0);
-        make.height.mas_equalTo(1);
-    }];
+//    [passwordBgView addSubview:self.passwordLineView];
+//    [self.passwordLineView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.mas_equalTo(0);
+//        make.right.mas_equalTo(0);
+//        make.bottom.mas_equalTo(0);
+//        make.height.mas_equalTo(1);
+//    }];
     self.passwordLineView.backgroundColor = [UIColor lightGrayColor];
     
     UIView *repasswordBgView = [[UIView alloc]init];
+    repasswordBgView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:repasswordBgView];
     [repasswordBgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(50);
-        make.right.mas_equalTo(-50);
-        make.top.equalTo(passwordBgView.mas_bottom).offset(40);
-        make.height.mas_equalTo(40);
+        make.left.mas_equalTo(0);
+        make.right.mas_equalTo(0);
+        make.top.equalTo(passwordBgView.mas_bottom).offset(10);
+        make.height.mas_equalTo(48);
     }];
     UIImageView *repasswordImg = [[UIImageView alloc]init];
     [repasswordBgView addSubview:repasswordImg];
     [repasswordImg mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(0);
+        make.left.mas_equalTo(12);
         make.centerY.equalTo(repasswordBgView);
         make.size.mas_equalTo(CGSizeMake(15, 18));
     }];
     repasswordImg.image = [UIImage imageNamed:@"password_img"];
     
+    UIView *repasswordImgLine = [[UIView alloc] init];
+    [repasswordBgView addSubview:repasswordImgLine];
+    [repasswordImgLine mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(phoneImg.mas_right).offset(8);
+        make.width.mas_equalTo(1);
+        make.height.mas_equalTo(22);
+        make.centerY.equalTo(repasswordBgView);
+    }];
+    repasswordImgLine.backgroundColor = [UIColor colorWithHexString:@"#FF939393"];
+    
+    
     self.repasswordTextField = [[UITextField alloc]init];
     [repasswordBgView addSubview:self.repasswordTextField];
     [self.repasswordTextField mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(30);
+        make.left.mas_equalTo(repasswordImgLine.mas_right).offset(8);
         make.right.mas_equalTo(-30);
         make.height.mas_equalTo(30);
         make.centerY.equalTo(repasswordBgView);
@@ -163,23 +201,23 @@
     UIButton *showrePasswordButton = [[UIButton alloc]init];
     [repasswordBgView addSubview:showrePasswordButton];
     [showrePasswordButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.mas_equalTo(0);
+        make.right.mas_equalTo(-15);
         make.size.mas_equalTo(CGSizeMake(22, 16));
         make.centerY.equalTo(repasswordBgView);
     }];
     [showrePasswordButton setImage:[UIImage imageNamed:@"show_eye_img"] forState:UIControlStateNormal];
-    [showrePasswordButton setImage:[UIImage imageNamed:@"hide_eye_img"] forState:UIControlStateSelected];
+    [showrePasswordButton setImage:[UIImage imageNamed:@"Passhide_eye_img"] forState:UIControlStateSelected];
     [showrePasswordButton addTarget:self action:@selector(touchShowrePasswordButton:) forControlEvents:UIControlEventTouchUpInside];
     
     
     self.repasswordLineView = [[UIView alloc]init];
-    [repasswordBgView addSubview:self.repasswordLineView];
-    [self.repasswordLineView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(0);
-        make.right.mas_equalTo(0);
-        make.bottom.mas_equalTo(0);
-        make.height.mas_equalTo(1);
-    }];
+//    [repasswordBgView addSubview:self.repasswordLineView];
+//    [self.repasswordLineView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.mas_equalTo(0);
+//        make.right.mas_equalTo(0);
+//        make.bottom.mas_equalTo(0);
+//        make.height.mas_equalTo(1);
+//    }];
     self.repasswordLineView.backgroundColor = [UIColor lightGrayColor];
     
     
@@ -298,17 +336,38 @@
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
                 [self.view showLoadingMeg:@"密码修改成功" time:MESSAGE_SHOW_TIME];
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [LPTools UserDefaulatsRemove];
+                [self requestSignout];
+
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     [self.navigationController popViewControllerAnimated:YES];
+
+                    LPLoginVC *vc = [[LPLoginVC alloc]init];
+                    vc.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:vc animated:YES];
                 });
             }else{
-                [self.view showLoadingMeg:responseObject[@"msg"] ? responseObject[@"msg"] : @"注册失败" time:MESSAGE_SHOW_TIME];
+                [self.view showLoadingMeg:responseObject[@"msg"] ? responseObject[@"msg"] : @"修改失败" time:MESSAGE_SHOW_TIME];
             }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
     }];
 }
+
+-(void)requestSignout{
+    [NetApiManager requestSignoutWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+//            kUserDefaultsRemove(LOGINID);
+//            kUserDefaultsRemove(kLoginStatus);
+//            [self.navigationController popViewControllerAnimated:YES];
+        }else{
+//            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+
 /*
 #pragma mark - Navigation
 

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "LPMechanismlistModel.h"
+#import "LPMainVC.h"
 
 @protocol LPScreenAlertViewDelegate<NSObject>
 
@@ -24,4 +25,7 @@
 
 @property (nonatomic,assign)id <LPScreenAlertViewDelegate>delegate;
 
+@property(nonatomic,strong) NSString *typeId;
+@property(nonatomic,strong) NSString *workType;
+@property(nonatomic,strong) LPMainVC *SuperView;
 @end

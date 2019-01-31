@@ -13,15 +13,25 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
+//    self.essayUrlImageView.layer.cornerRadius = 6;
 }
 -(void)setModel:(LPEssaylistDataModel *)model{
     _model = model;
     self.essayNameLabel.text = model.essayName;
     NSArray *imageArray = [model.essayUrl componentsSeparatedByString:@";"];
-    [self.essayUrlImageView sd_setImageWithURL:[NSURL URLWithString:imageArray[0]]];
+    if (imageArray.count) {
+        [self.essayUrlImageView sd_setImageWithURL:[NSURL URLWithString:imageArray[0]] placeholderImage:[UIImage imageNamed:@"NoImage"]];
+    }
+    
+    
     self.essayAuthorLabel.text = model.essayAuthor;
     
-    self.viewLabel.text = model.view ? [model.view stringValue] : @"0";
+    if (model.view.integerValue>10000) {
+        self.viewLabel.text = [NSString stringWithFormat:@"%.1fw", model.view.integerValue/10000.0] ;
+     }else{
+        self.viewLabel.text = model.view ? [model.view stringValue] : @"0";
+     }
+    
     self.commentTotalLabel.text = model.commentTotal ? [model.commentTotal stringValue] : @"0";
     self.praiseTotalLabel.text = model.praiseTotal ? [model.praiseTotal stringValue] : @"0";
     

@@ -14,6 +14,11 @@ PODS:
   - AFNetworking/Serialization (3.2.1)
   - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
+  - AMapFoundation (1.5.5)
+  - AMapLocation (2.6.1):
+    - AMapFoundation (~> 1.4)
+  - BaiduMapKit (4.2.0)
+  - BMKLocationKit (1.3.0.2)
   - Crashlytics (3.10.7):
     - Fabric (~> 1.7.11)
   - Fabric (1.7.11)
@@ -64,9 +69,11 @@ PODS:
   - "GoogleUtilities/NSData+zlib (5.2.3)"
   - GoogleUtilities/Reachability (5.2.3):
     - GoogleUtilities/Logger
+  - HappyDNS (0.3.14)
   - HXPhotoPicker (2.2.1):
     - SDWebImage (~> 4.4.1)
   - IQKeyboardManager (6.1.1)
+  - JWNetAutoCache (0.0.2)
   - Masonry (1.1.0)
   - MBProgressHUD (1.1.0)
   - MJExtension (3.0.15.1)
@@ -76,18 +83,28 @@ PODS:
     - nanopb/encode (= 0.3.8)
   - nanopb/decode (0.3.8)
   - nanopb/encode (0.3.8)
+  - Qiniu (7.2.5):
+    - HappyDNS (~> 0.3)
   - RTRootNavigationController (0.6.7):
     - RTRootNavigationController/Core (= 0.6.7)
   - RTRootNavigationController/Core (0.6.7)
   - SCIndexView (2.1.1)
+  - SDAutoLayout (2.2.1)
   - SDCycleScrollView (1.75):
     - SDWebImage (>= 4.0.0)
-  - SDWebImage (4.4.2):
-    - SDWebImage/Core (= 4.4.2)
-  - SDWebImage/Core (4.4.2)
+  - SDWebImage (4.4.3):
+    - SDWebImage/Core (= 4.4.3)
+  - SDWebImage/Core (4.4.3)
+  - TXLiteAVSDK_Player (5.3.6004)
+  - WechatOpenSDK (1.8.3)
+  - YBAttributeTextTapAction (2.0.6)
+  - YYText (1.0.7)
 
 DEPENDENCIES:
   - AFNetworking
+  - AMapLocation
+  - BaiduMapKit
+  - BMKLocationKit
   - Crashlytics (~> 3.10.7)
   - Fabric (~> 1.7.11)
   - Firebase
@@ -96,18 +113,29 @@ DEPENDENCIES:
   - FSCalendar
   - HXPhotoPicker (~> 2.2.1)
   - IQKeyboardManager
+  - JWNetAutoCache
   - Masonry
   - MBProgressHUD
   - MJExtension
   - MJRefresh
+  - Qiniu (~> 7.1)
   - RTRootNavigationController
   - SCIndexView
+  - SDAutoLayout
   - SDCycleScrollView (~> 1.75)
   - SDWebImage
+  - TXLiteAVSDK_Player
+  - WechatOpenSDK
+  - YBAttributeTextTapAction
+  - YYText
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - AFNetworking
+    - AMapFoundation
+    - AMapLocation
+    - BaiduMapKit
+    - BMKLocationKit
     - Crashlytics
     - Fabric
     - Firebase
@@ -118,20 +146,32 @@ SPEC REPOS:
     - FSCalendar
     - GoogleAppMeasurement
     - GoogleUtilities
+    - HappyDNS
     - HXPhotoPicker
     - IQKeyboardManager
+    - JWNetAutoCache
     - Masonry
     - MBProgressHUD
     - MJExtension
     - MJRefresh
     - nanopb
+    - Qiniu
     - RTRootNavigationController
     - SCIndexView
+    - SDAutoLayout
     - SDCycleScrollView
     - SDWebImage
+    - TXLiteAVSDK_Player
+    - WechatOpenSDK
+    - YBAttributeTextTapAction
+    - YYText
 
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
+  AMapFoundation: 652bd70ba579f48a98bdf0c74d6e62a89a06ca58
+  AMapLocation: cf024b53dc03663efb4ea4bcce27d4cce58bb97a
+  BaiduMapKit: b6a8f31b3d2e4e5cad4084512a0d9a3878638272
+  BMKLocationKit: 6c47273f985609be0a0785f2f6f12bb7c1b7e8b6
   Crashlytics: ccaac42660eb9351b9960c0d66106b0bcf99f4fa
   Fabric: f233c9492b3bbc1f04e3882986740f7988a58edb
   Firebase: 25812f43e7a53b11ae2f0a5f4c6d12faeb1f7cd7
@@ -142,18 +182,26 @@ SPEC CHECKSUMS:
   FSCalendar: a04b09f16f811bc92e82f3cf852a15225233b9d5
   GoogleAppMeasurement: fc4a4c3fe0144db9313cbf443ffe62e6b1d6268c
   GoogleUtilities: 6f681e27050c5e130325e89fa0316dfca826f954
+  HappyDNS: dc6a164ee81979093123c241c6353bcf0218add6
   HXPhotoPicker: 2db199617edcc6cae476fe5ccde241ab5089906e
   IQKeyboardManager: 79c57795f5c2408d259d37b9da2ed07efcbb5225
+  JWNetAutoCache: 434f10855da06d29a381359552ae9d27ef35cad7
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   MJExtension: 19bc33ce2eee2d319760f5622562cf581a6ff756
   MJRefresh: 697f8ec75ebdbe9207767bb682cf0f51b0d8a41f
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
+  Qiniu: 909b408ee489ea54827e9717be90b94bc9dfbc48
   RTRootNavigationController: d6aa6cbb78a3eaecea4f6e4df63f15dd887836b8
   SCIndexView: b68cded2054ddf3000cdaa56f17627dfb1041c78
+  SDAutoLayout: 8bf6b3bbc8b01f775d4defbb4fda2ace805461be
   SDCycleScrollView: 884b88f0266dd4708a0e1934975c69cb971707b1
-  SDWebImage: 624d6e296c69b244bcede364c72ae0430ac14681
+  SDWebImage: c5594f1a19c48d526d321e548902b56b479cd508
+  TXLiteAVSDK_Player: 0ae5dbfa79619f53265d88cc990b1baf7abe1d97
+  WechatOpenSDK: 3117412f8aafde4758cac1e8d20b93c67cafcfef
+  YBAttributeTextTapAction: 650ff36251479f8cfc7b5dd8fb62587c538ce502
+  YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
 
-PODFILE CHECKSUM: 1154605089b17ba7bf2462582a34a9f463a1903e
+PODFILE CHECKSUM: ac7c5c85613dbe3150742efb144750d90c8d5668
 
 COCOAPODS: 1.5.3

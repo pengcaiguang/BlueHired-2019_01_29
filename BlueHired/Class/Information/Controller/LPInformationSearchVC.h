@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LPInformationSearchVC : UIViewController
+@interface LPInformationSearchVC : LPBaseViewController
+
+// 1 = 资讯。2= 视频。
+@property (nonatomic,assign) NSInteger Type;
 
 @end

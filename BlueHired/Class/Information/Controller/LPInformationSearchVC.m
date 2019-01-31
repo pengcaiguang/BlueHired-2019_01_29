@@ -11,6 +11,7 @@
 #import "LPInformationSearchResultVC.h"
 
 static NSString *InformationSearchHistory = @"InformationSearchHistory";
+static NSString *VideoSearchHistory = @"VideoSearchHistory";
 
 
 @interface LPInformationSearchVC ()<UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource>
@@ -36,12 +37,16 @@ static NSString *InformationSearchHistory = @"InformationSearchHistory";
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    self.textArray = (NSArray *)kUserDefaultsValue(InformationSearchHistory);
+    if (self.Type == 1) {
+        self.textArray = (NSArray *)kUserDefaultsValue(InformationSearchHistory);
+    }else if (self.Type == 2){
+        self.textArray = (NSArray *)kUserDefaultsValue(VideoSearchHistory);
+    }
     [self.tableview reloadData];
 }
 
 -(void)setSearchView{
-    LPSearchBar *searchBar = [self addSearchBarWithFrame:CGRectMake(0, 0, SCREEN_WIDTH - 2 * 44 - 2 * 15, 44)];
+    LPSearchBar *searchBar = [self addSearchBarWithFrame:CGRectMake(0, 0, SCREEN_WIDTH - 2 * 44 - 2 * 15 - 44, 44)];
     [searchBar becomeFirstResponder];
     UIView *wrapView = [[UIView alloc] initWithFrame:searchBar.frame];
     [wrapView addSubview:searchBar];
@@ -81,48 +86,67 @@ static NSString *InformationSearchHistory = @"InformationSearchHistory";
     button.titleLabel.font = [UIFont systemFontOfSize:14];
     button.layer.masksToBounds = YES;
     button.layer.cornerRadius = 14;
+    [button addTarget:self action:@selector(touchSearchButton) forControlEvents:UIControlEventTouchUpInside];
+
     [button setBackgroundImage:[UIImage imageNamed:@"search_btn_bgView"] forState:UIControlStateNormal];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:button];
 }
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
-    self.searchWord = searchBar.text;
-    [self saveWords];
-    [self search:self.searchWord];
+    self.searchWord = [searchBar.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    [self touchSearchButton];
 }
 
 
 -(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
     NSLog(@"-%@",searchBar.text);
-    self.searchWord = searchBar.text;
+    self.searchWord = [searchBar.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 }
 -(void)touchSearchButton{
-    [self saveWords];
-    [self search:self.searchWord];
+    if (self.searchWord.length > 0) {
+        [self saveWords];
+        [self search:self.searchWord];
+    }
+    else
+    {
+        [self.view showLoadingMeg:@"请输入搜索关键字" time:MESSAGE_SHOW_TIME];
+    }
 }
 
 -(void)saveWords{
     NSMutableArray *array = [NSMutableArray arrayWithArray:self.textArray];
     if (![array containsObject:self.searchWord]) {
         [array insertObject:self.searchWord atIndex:0];
-        kUserDefaultsSave([array copy], InformationSearchHistory);
-    }
+        if (self.Type == 1) {
+            kUserDefaultsSave([array copy], InformationSearchHistory);
+        }else if (self.Type == 2){
+            kUserDefaultsSave([array copy], VideoSearchHistory);
+        }
+     }
 }
 
 -(void)search:(NSString *)string{
     LPInformationSearchResultVC *vc = [[LPInformationSearchResultVC alloc]init];
+    vc.Type = self.Type;
     vc.string = string;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 -(void)clearHistory{
-    kUserDefaultsRemove(InformationSearchHistory);
-    self.textArray = nil;
+    if (self.Type == 1) {
+        kUserDefaultsRemove(InformationSearchHistory);
+    }else if (self.Type == 2){
+        kUserDefaultsRemove(VideoSearchHistory);
+    }
+     self.textArray = nil;
     [self.tableview reloadData];
 }
 
 #pragma mark - TableViewDelegate & Datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    if (self.textArray.count>5) {
+        return 5;
+    }
     return self.textArray.count;
 }
 

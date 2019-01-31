@@ -7,7 +7,6 @@
 //
 
 #import "LPCustomerServiceVC.h"
-#import "LPCustomerServiceModel.h"
 #import "LLPCustomerServiceCell.h"
 #import "LPProblemDetailModel.h"
 
@@ -16,14 +15,14 @@ static NSString *LLPCustomerServiceCellID = @"LLPCustomerServiceCell";
 @interface LPCustomerServiceVC ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong)UITableView *tableview;
 @property(nonatomic,strong) UIButton *button;
-@property(nonatomic,strong) LPCustomerServiceModel *model;
 
 @property(nonatomic,strong) LPProblemDetailModel *detailModel;
 
 @property(nonatomic,strong) UIView *alertView;
 @property(nonatomic,strong) UIView *bgView;
 @property(nonatomic,strong) UILabel *titleLabel;
-@property(nonatomic,strong) UILabel *answerLabel;
+@property(nonatomic,strong) UITextView *answerLabel;
+@property(nonatomic,strong) UIView *answerview;
 
 @property(nonatomic,strong) NSString *touchText;
 
@@ -34,45 +33,55 @@ static NSString *LLPCustomerServiceCellID = @"LLPCustomerServiceCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.navigationItem.title = @"我的客服";
+    self.navigationItem.title = @"常见问题";
     [self setupUI];
     [self requestQueryProblem];
 }
 - (void)setupUI{
-    UILabel *label = [[UILabel alloc]init];
-    [self.view addSubview:label];
-    [label mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(13);
-        make.top.mas_equalTo(0);
-        make.height.mas_equalTo(50);
-    }];
-    label.text = @"常见问题";
-    label.font = [UIFont systemFontOfSize:16];
+  
+    UIFont *font = [UIFont fontWithName:@"Arial-ItalicMT" size:19];
+    NSDictionary *dic = @{NSFontAttributeName:font,
+                              NSForegroundColorAttributeName: [UIColor whiteColor]};
+    self.navigationController.navigationBar.titleTextAttributes =dic;
+ 
     
-    UIButton *button = [[UIButton alloc]init];
-    [self.view addSubview:button];
-    [button mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(13);
-        make.right.mas_equalTo(-13);
-        make.bottom.mas_equalTo(-30);
-        make.height.mas_equalTo(48);
-    }];
-    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    button.backgroundColor = [UIColor baseColor];
-    [button addTarget:self action:@selector(touchButton) forControlEvents:UIControlEventTouchUpInside];
-    self.button = button;
+    self.navigationController.navigationBar.barTintColor = [UIColor baseColor];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:[UIColor baseColor]] forBarMetrics:UIBarMetricsDefault];
+    
+    
+    UIButton*rightButton = [[UIButton alloc]initWithFrame:CGRectMake(0,0,30,30)];
+    [rightButton setImage:[UIImage imageNamed:@"Phone_Image"] forState:UIControlStateNormal];
+    [rightButton addTarget:self action:@selector(touchButton:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem*rightItem = [[UIBarButtonItem alloc]initWithCustomView:rightButton];
+    self.navigationItem.rightBarButtonItem= rightItem;
+    
     
     [self.view addSubview:self.tableview];
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(50);
+        make.top.mas_equalTo(0);
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
-        make.bottom.mas_equalTo(-90);
+        make.bottom.mas_equalTo(0);
     }];
 }
--(void)touchButton{
+
+- (UIBarButtonItem *)rt_customBackItemWithTarget:(id)target action:(SEL)action {
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btn setImage:[UIImage imageNamed:@"ic_back_white"] forState:UIControlStateNormal];
+    [btn setTitle:@" 返回" forState:UIControlStateNormal];
+    [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [btn sizeToFit];
+    [btn addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+    return [[UIBarButtonItem alloc] initWithCustomView:btn];
+}
+
+-(void)touchButton:(UIButton *)sender{
+    sender.enabled = NO;
     NSMutableString * string = [[NSMutableString alloc] initWithFormat:@"telprompt:%@",self.model.data.telephone];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:string]];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        sender.enabled = YES;
+ });
 }
 
 -(void)setModel:(LPCustomerServiceModel *)model{
@@ -84,8 +93,36 @@ static NSString *LLPCustomerServiceCellID = @"LLPCustomerServiceCell";
     _detailModel = detailModel;
     [self showAlert];
     self.titleLabel.text = detailModel.data.problemTitle;
-    self.answerLabel.text = detailModel.data.answer;
+    self.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+
+    CGSize size = [self.titleLabel sizeThatFits:CGSizeMake(SCREEN_WIDTH-60, MAXFLOAT)];//根据文字的长度返回一个最佳宽度和高度
+    if (size.height<20) {
+        size.height = 20;
+    }
+
+    self.titleLabel.frame = CGRectMake(30, 15, SCREEN_WIDTH-100, size.height);
+    self.answerview.frame = CGRectMake(0, self.titleLabel.frame.size.height+self.titleLabel.frame.origin.y +15, SCREEN_WIDTH, 1);
+
+    
+    [self.alertView layoutSubviews];
+
+    self.answerLabel.text =  [self removeHTML2: [detailModel.data.answer stringByDecodingHTMLEntities] ];
+    
 }
+
+
+- (NSString *)removeHTML2:(NSString *)html{
+    NSArray *components = [html componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+    NSMutableArray *componentsToKeep = [NSMutableArray array];
+    for (int i = 0; i < [components count]; i = i + 2) {
+        [componentsToKeep addObject:[components objectAtIndex:i]];
+    }
+    NSString *plainText = [componentsToKeep componentsJoinedByString:@"\n"];
+    return plainText;
+}
+
+
+
 #pragma mark - TableViewDelegate & Datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return self.model.data.list.count;
@@ -93,7 +130,6 @@ static NSString *LLPCustomerServiceCellID = @"LLPCustomerServiceCell";
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     LLPCustomerServiceCell *cell = [tableView dequeueReusableCellWithIdentifier:LLPCustomerServiceCellID];
-    cell.model = self.model.data.list[indexPath.row];
     cell.block = ^{
         [tableView reloadData];
     };
@@ -101,6 +137,8 @@ static NSString *LLPCustomerServiceCellID = @"LLPCustomerServiceCell";
         self.touchText = string;
         [self requestQueryProblemDetail];
     };
+    cell.model = self.model.data.list[indexPath.row];
+
     return cell;
 }
 -(void)showAlert{
@@ -151,8 +189,9 @@ static NSString *LLPCustomerServiceCellID = @"LLPCustomerServiceCell";
         _tableview.dataSource = self;
         _tableview.tableFooterView = [[UIView alloc]init];
         _tableview.rowHeight = UITableViewAutomaticDimension;
+        _tableview.backgroundColor = [UIColor colorWithHexString:@"#FFF2F2F2"];
         _tableview.estimatedRowHeight = 44;
-        _tableview.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+        _tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableview.separatorColor = [UIColor colorWithHexString:@"#F1F1F1"];
         [_tableview registerNib:[UINib nibWithNibName:LLPCustomerServiceCellID bundle:nil] forCellReuseIdentifier:LLPCustomerServiceCellID];
         
@@ -172,22 +211,29 @@ static NSString *LLPCustomerServiceCellID = @"LLPCustomerServiceCell";
         titleLabel.font = [UIFont systemFontOfSize:16];
         titleLabel.textColor = [UIColor blackColor];
         titleLabel.textAlignment = NSTextAlignmentCenter;
+        titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        titleLabel.numberOfLines = 0;
+
         self.titleLabel = titleLabel;
         
         UIView *view = [[UIView alloc]init];
-        view.frame = CGRectMake(0, 50, SCREEN_WIDTH, 1);
+        self.answerview = view;
+        view.frame = CGRectMake(0, titleLabel.frame.size.height+titleLabel.frame.origin.y +15, SCREEN_WIDTH, 1);
         view.backgroundColor = [UIColor colorWithHexString:@"#EEEEEE"];
         [_alertView addSubview:view];
         
-        UILabel *answerLabel = [[UILabel alloc]init];
+        UITextView *answerLabel = [[UITextView alloc]init];
         [_alertView addSubview:answerLabel];
         [answerLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.mas_equalTo(20);
             make.right.mas_equalTo(-20);
-            make.top.mas_equalTo(60);
+            make.top.mas_equalTo(view.mas_bottom).offset(10);
+            make.bottom.mas_equalTo(0);
         }];
+        answerLabel.editable = NO;
+        answerLabel.showsVerticalScrollIndicator = NO;
         answerLabel.font = [UIFont systemFontOfSize:14];
-        answerLabel.numberOfLines = 0;
+//        answerLabel.numberOfLines = 0;
         answerLabel.textColor = [UIColor blackColor];
         self.answerLabel = answerLabel;
         
@@ -212,6 +258,26 @@ static NSString *LLPCustomerServiceCellID = @"LLPCustomerServiceCell";
     }
     return _bgView;
 }
+
+
+-(NSString *)flattenHTML:(NSString *)html trimWhiteSpace:(BOOL)trim
+{
+    NSScanner *theScanner = [NSScanner scannerWithString:html];
+    NSString *text = nil;
+    while ([theScanner isAtEnd] == NO) {
+        // find start of tag
+        [theScanner scanUpToString:@"<" intoString:NULL] ;
+        // find end of tag
+        [theScanner scanUpToString:@">" intoString:&text] ;
+        // replace the found tag with a space
+        //(you can filter multi-spaces out later if you wish)
+        html = [html stringByReplacingOccurrencesOfString:
+        [ NSString stringWithFormat:@"%@>", text] withString:@""];
+        
+    }
+    return trim ? [html stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] : html;
+}
+
 
 /*
 #pragma mark - Navigation

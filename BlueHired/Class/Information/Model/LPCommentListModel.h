@@ -22,10 +22,14 @@
 @property (nonatomic, copy) NSNumber *commentType;
 @property (nonatomic, copy) NSString *grading;
 @property (nonatomic, copy) NSNumber *id;
+@property (nonatomic, copy) NSString *identity;
 @property (nonatomic, copy) NSNumber *time;
 @property (nonatomic, copy) NSString *userId;
 @property (nonatomic, copy) NSString *userName;
 @property (nonatomic, copy) NSString *userUrl;
+@property (nonatomic, copy) NSString *toUserId;
+@property (nonatomic, copy) NSString *toUserIdentity;
+@property (nonatomic, copy) NSString *toUserName;
 @property (nonatomic, copy) NSArray  <LPCommentListDataModel *>*commentList;
 
 

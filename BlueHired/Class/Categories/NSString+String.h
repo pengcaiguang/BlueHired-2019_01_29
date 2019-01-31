@@ -11,6 +11,11 @@
 @interface NSString (String)
 //毫秒时间戳转时间
 + (NSString *)convertStringToTime:(NSString *)timeString;
+//获取当前系统时间的时间戳
++(NSInteger)getNowTimestamp;
+//毫秒时间戳转时间
++ (NSString *)convertStringToYYYMMDD:(NSString *)timeString;
++ (NSString *)convertStringToYYYNMMYDDR:(NSString *)timeString;
 //毫秒时间戳转几天前
 + (NSString *) compareCurrentTime:(NSString *)str;
 
@@ -26,4 +31,6 @@
 -(CGRect)getStringSize:(CGSize )size font:(UIFont *)font;
 
 + (NSString *)getDeviceName;
+
+- (NSString *)changeEndTimeByKind:(NSInteger)changeKind withNum:(int)changeNum;
 @end

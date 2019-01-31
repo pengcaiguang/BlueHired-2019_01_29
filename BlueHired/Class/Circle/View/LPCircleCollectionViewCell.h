@@ -11,5 +11,6 @@
 @interface LPCircleCollectionViewCell : UICollectionViewCell
 
 @property(nonatomic,assign) NSInteger index;
-
+-(void)touchMoodTypeSenderBack:(NSInteger )tap;
+-(void)touchMoodTypeDeleteBack;
 @end

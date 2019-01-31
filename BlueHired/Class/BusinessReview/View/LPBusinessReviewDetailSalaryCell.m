@@ -8,6 +8,7 @@
 
 #import "LPBusinessReviewDetailSalaryCell.h"
 @interface LPBusinessReviewDetailSalaryCell ()<UIScrollViewDelegate>
+@property(nonatomic,strong)LZImageBrowserManger *imageBrowserManger;
 
 @end
 @implementation LPBusinessReviewDetailSalaryCell
@@ -18,27 +19,43 @@
     self.userUrlImgView.layer.masksToBounds = YES;
     self.userUrlImgView.layer.cornerRadius = 20;
     self.imageViewsRectArray = [NSMutableArray array];
+    self.lineView.layer.borderColor = [UIColor blackColor].CGColor;
+    self.lineView.layer.borderWidth = 1.0;
+    
+    for (UIView *view in self.contentView.subviews) {
+        if (view.tag == 100) {
+            view.layer.borderWidth= 0.5;
+            view.layer.borderColor = [UIColor lightGrayColor].CGColor;
+        }
+    }
+    
 }
 -(void)setModel:(LPMechanismcommentDetailDataModel *)model{
     _model = model;
-    [self.userUrlImgView sd_setImageWithURL:[NSURL URLWithString:model.userUrl] placeholderImage:[UIImage imageNamed:@"cricle_headimg_placeholder"]];
+    [self.userUrlImgView sd_setImageWithURL:[NSURL URLWithString:model.userUrl] placeholderImage:[UIImage imageNamed:@"Head_image"]];
     self.userNameLabel.text = model.userName;
-    self.commentContentLabel.text = model.commentContent;
     
+    self.commentContentLabel.text = model.commentContent;
     self.workEnvironScoreLabel.text = [NSString stringWithFormat:@"%@",model.workEnvironScore];
     self.foodEnvironScoreLabel.text = [NSString stringWithFormat:@"%@",model.foodEnvironScore];
     self.moneyEnvironScoreLabel.text = [NSString stringWithFormat:@"%@",model.moneyEnvironScore];
     
     
-    [self.commentUrlImg sd_setImageWithURL:[NSURL URLWithString:model.commentUrl] placeholderImage:nil];
+    [self.commentUrlImg sd_setImageWithURL:[NSURL URLWithString:model.commentUrl] placeholderImage:[UIImage imageNamed:@"NoImage"]];
     
-    NSArray *imageArray = [model.commentUrl componentsSeparatedByString:@","];
+    NSArray *imageArray = [model.commentUrl componentsSeparatedByString:@";"];
     self.imageArray = imageArray;
 
     [self.imageViewsRectArray addObject:self.commentUrlImg];
 
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(selectImage:)];
     [self.commentUrlImg addGestureRecognizer:tap];
+    
+    
+    LZImageBrowserManger *imageBrowserManger = [LZImageBrowserManger imageBrowserMangerWithUrlStr:self.imageArray originImageViews:self.imageViewsRectArray originController:[UIWindow visibleViewController] forceTouch:NO forceTouchActionTitles:@[] forceTouchActionComplete:^(NSInteger selectIndex, NSString *title) {
+        NSLog(@"当前选中%ld--标题%@",(long)selectIndex, title);
+    }];
+    _imageBrowserManger = imageBrowserManger;
     
 //    if (kStringIsEmpty(model.commentUrl)) {
 //        self.imageBgView.hidden = YES;
@@ -73,80 +90,82 @@
     
     UITapGestureRecognizer *singleTap = (UITapGestureRecognizer *)sender;
     NSLog(@"menues = %ld",[singleTap view].tag);
-    
-    if (self.viewController) {
-        if ([self.viewController isKindOfClass:[UIViewController class]]) {
-            UITableView* tableView = self.tableView;
-            UIWindow* window = [UIApplication sharedApplication].keyWindow;
-            
-            CGRect rectInbg = [self.contentView convertRect:[singleTap view].frame toView:self];
-            
-            // convert rect to self(cell)
-            CGRect rectInCell = [self.contentView convertRect:rectInbg toView:self];
-            
-            // convert rect to tableview
-            CGRect rectInTableView = [self convertRect:rectInCell toView:tableView];//self.superview
-            
-            // convert rect to window
-            self.imageRect  = [tableView convertRect:rectInTableView toView:window];
-        }
-    }
-    self.scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
-    self.scrollView.backgroundColor = [UIColor blackColor];
-    self.scrollView.alpha = 0;
-    [[UIApplication sharedApplication].keyWindow addSubview:self.scrollView];
-    
-    self.touchImage = [UIImageView new];
-    self.touchImage.frame = self.imageRect;
-    self.touchImage.contentMode = UIViewContentModeScaleAspectFit;
-    NSString *imageStr = self.imageArray[[singleTap view].tag];
-    NSURL *imageUrl = [NSURL URLWithString:imageStr];
-    [self.touchImage sd_setImageWithURL:imageUrl placeholderImage:nil];
-    
-    [[UIApplication sharedApplication].keyWindow addSubview:self.touchImage];
-    
-    [UIView animateWithDuration:0.5 animations:^{
-        self.touchImage.contentMode = UIViewContentModeScaleAspectFit;
-        self.touchImage.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-        self.scrollView.alpha = 1;
-    } completion:^(BOOL finished){
-        self.touchImage.hidden = YES;
-        
-        self.scrollView.delegate                       = self;
-        self.scrollView.bounces                        = YES;
-        self.scrollView.pagingEnabled                  = YES;
-        self.scrollView.showsHorizontalScrollIndicator = FALSE;
-        self.scrollView.contentSize                    = CGSizeMake(SCREEN_WIDTH * self.imageArray.count, 0);
-        for (int i = 0; i < self.imageArray.count; ++i) {
-            UIImageView *imageView= [[UIImageView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH * i, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
-            UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-            //            activityIndicator.frame = CGRectMake(0, 0, 100, 100);
-            activityIndicator.center = imageView.center;
-            [imageView addSubview:activityIndicator];
-            
-            NSString *imageStr = self.imageArray[i];
-            NSURL *imageUrl = [NSURL URLWithString:imageStr];
-            [imageView sd_setImageWithURL:imageUrl];
-            imageView.tag = i;
-            imageView.contentMode = UIViewContentModeScaleAspectFit;
-            imageView.userInteractionEnabled = YES;
-            [self.scrollView addSubview:imageView];
-            NSLog(@"%.f  %.f",imageView.frame.size.width,imageView.frame.size.height);
-            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeImageScroll)];
-            [imageView addGestureRecognizer:tap];
-        }
-        [self.scrollView setContentOffset:CGPointMake(SCREEN_WIDTH * [singleTap view].tag , 0)];
-        
-        if (self.imageArray.count > 1) {
-            self.pageControl = [[UIPageControl alloc]initWithFrame:CGRectMake(0, 0, 0, 40)];
-            self.pageControl.center = CGPointMake(SCREEN_WIDTH/2, SCREEN_HEIGHT - 50);
-            self.pageControl.numberOfPages = self.imageArray.count;
-            self.pageControl.currentPage = [singleTap view].tag;
-            self.pageControl.tintColor = [UIColor lightGrayColor];
-            self.pageControl.currentPageIndicatorTintColor = [UIColor whiteColor];
-            [[UIApplication sharedApplication].keyWindow addSubview:self.pageControl];
-        }
-    }];
+    _imageBrowserManger.selectPage = singleTap.view.tag;
+    [_imageBrowserManger showImageBrowser];
+
+//    if (self.viewController) {
+//        if ([self.viewController isKindOfClass:[UIViewController class]]) {
+//            UITableView* tableView = self.tableView;
+//            UIWindow* window = [UIApplication sharedApplication].keyWindow;
+//
+//            CGRect rectInbg = [self.contentView convertRect:[singleTap view].frame toView:self];
+//
+//            // convert rect to self(cell)
+//            CGRect rectInCell = [self.contentView convertRect:rectInbg toView:self];
+//
+//            // convert rect to tableview
+//            CGRect rectInTableView = [self convertRect:rectInCell toView:tableView];//self.superview
+//
+//            // convert rect to window
+//            self.imageRect  = [tableView convertRect:rectInTableView toView:window];
+//        }
+//    }
+//    self.scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+//    self.scrollView.backgroundColor = [UIColor blackColor];
+//    self.scrollView.alpha = 0;
+//    [[UIApplication sharedApplication].keyWindow addSubview:self.scrollView];
+//
+//    self.touchImage = [UIImageView new];
+//    self.touchImage.frame = self.imageRect;
+//    self.touchImage.contentMode = UIViewContentModeScaleAspectFit;
+//    NSString *imageStr = self.imageArray[[singleTap view].tag];
+//    NSURL *imageUrl = [NSURL URLWithString:imageStr];
+//    [self.touchImage sd_setImageWithURL:imageUrl placeholderImage:nil];
+//
+//    [[UIApplication sharedApplication].keyWindow addSubview:self.touchImage];
+//
+//    [UIView animateWithDuration:0.5 animations:^{
+//        self.touchImage.contentMode = UIViewContentModeScaleAspectFit;
+//        self.touchImage.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+//        self.scrollView.alpha = 1;
+//    } completion:^(BOOL finished){
+//        self.touchImage.hidden = YES;
+//
+//        self.scrollView.delegate                       = self;
+//        self.scrollView.bounces                        = YES;
+//        self.scrollView.pagingEnabled                  = YES;
+//        self.scrollView.showsHorizontalScrollIndicator = FALSE;
+//        self.scrollView.contentSize                    = CGSizeMake(SCREEN_WIDTH * self.imageArray.count, 0);
+//        for (int i = 0; i < self.imageArray.count; ++i) {
+//            UIImageView *imageView= [[UIImageView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH * i, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+//            UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+//            //            activityIndicator.frame = CGRectMake(0, 0, 100, 100);
+//            activityIndicator.center = imageView.center;
+//            [imageView addSubview:activityIndicator];
+//
+//            NSString *imageStr = self.imageArray[i];
+//            NSURL *imageUrl = [NSURL URLWithString:imageStr];
+//            [imageView sd_setImageWithURL:imageUrl];
+//            imageView.tag = i;
+//            imageView.contentMode = UIViewContentModeScaleAspectFit;
+//            imageView.userInteractionEnabled = YES;
+//            [self.scrollView addSubview:imageView];
+//            NSLog(@"%.f  %.f",imageView.frame.size.width,imageView.frame.size.height);
+//            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeImageScroll)];
+//            [imageView addGestureRecognizer:tap];
+//        }
+//        [self.scrollView setContentOffset:CGPointMake(SCREEN_WIDTH * [singleTap view].tag , 0)];
+//
+//        if (self.imageArray.count > 1) {
+//            self.pageControl = [[UIPageControl alloc]initWithFrame:CGRectMake(0, 0, 0, 40)];
+//            self.pageControl.center = CGPointMake(SCREEN_WIDTH/2, SCREEN_HEIGHT - 50);
+//            self.pageControl.numberOfPages = self.imageArray.count;
+//            self.pageControl.currentPage = [singleTap view].tag;
+//            self.pageControl.tintColor = [UIColor lightGrayColor];
+//            self.pageControl.currentPageIndicatorTintColor = [UIColor whiteColor];
+//            [[UIApplication sharedApplication].keyWindow addSubview:self.pageControl];
+//        }
+//    }];
     
 }
 - (UIViewController *)viewController
@@ -165,7 +184,7 @@
     int index = fabs(scrollView.contentOffset.x) / scrollView.frame.size.width;
     NSString *imageStr = self.imageArray[index];
     NSURL *imageUrl = [NSURL URLWithString:imageStr];
-    [self.touchImage sd_setImageWithURL:imageUrl placeholderImage:[UIImage imageNamed:@"headPlaceholder"]];
+    [self.touchImage sd_setImageWithURL:imageUrl placeholderImage:[UIImage imageNamed:@"NoImage"]];
     self.pageControl.currentPage = index;
     
     if (self.viewController) {

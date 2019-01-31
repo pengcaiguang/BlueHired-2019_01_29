@@ -36,6 +36,8 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = @"企业点评";
+    
+
     self.page = 1;
     [self setTitleView];
     [self.view addSubview:self.tableview];
@@ -176,8 +178,7 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
 }
 #pragma mark - setter
 -(void)setModel:(LPMechanismcommentMechanismlistModel *)model{
-    _model = model;
-    _model = model;
+     _model = model;
     if ([self.model.code integerValue] == 0) {
         
         if (self.page == 1) {
@@ -215,6 +216,7 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
     }
     if (!has) {
         LPNoDataView *noDataView = [[LPNoDataView alloc]initWithFrame:CGRectZero];
+        [noDataView image:nil text:@"抱歉！没有相关记录！"];
         [self.view addSubview:noDataView];
         [noDataView mas_makeConstraints:^(MASConstraintMaker *make) {
 //            make.edges.equalTo(self.view);
@@ -226,6 +228,7 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
         noDataView.hidden = hidden;
     }
 }
+
 #pragma mark - request
 -(void)requestMechanismcommentMechanismlist{
     NSDictionary *dic = @{
@@ -271,7 +274,7 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
         _tableview.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         _tableview.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
         [_tableview registerNib:[UINib nibWithNibName:LPBusinessReviewCellID bundle:nil] forCellReuseIdentifier:LPBusinessReviewCellID];
-        _tableview.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        _tableview.mj_header = [HZNormalHeader headerWithRefreshingBlock:^{
             self.page = 1;
             [self requestMechanismcommentMechanismlist];
         }];

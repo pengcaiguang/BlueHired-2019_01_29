@@ -10,5 +10,8 @@
 
 @interface LPMineCardCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIView *cellBgView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *cellBghigh;
+
+@property (nonatomic,strong) NSIndexPath *indexPath;
 
 @end

@@ -8,14 +8,36 @@
 
 #import "LPSalaryStatisticsCell.h"
 
+@interface LPSalaryStatisticsCell()<UITextFieldDelegate>
+
+@end
+
 @implementation LPSalaryStatisticsCell
 
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
     [self.basicSalaryTextField addTarget:self action:@selector(textFieldChanged:) forControlEvents:UIControlEventEditingChanged];
+    self.basicSalaryTextField.delegate = self;
 }
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+
+{
+    NSString * str = [NSString stringWithFormat:@"%@%@",textField.text,string];
+    //匹配以0开头的数字
+    NSPredicate * predicate0 = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",@"^[0][0-9]+$"];
+    //匹配两位小数、整数
+    NSPredicate * predicate1 = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",@"^(([1-9]{1}[0-9]*|[0])\.?[0-9]{0,2})$"];
+    return ![predicate0 evaluateWithObject:str] && [predicate1 evaluateWithObject:str] ? YES : NO;
+}
+
+
 -(void)textFieldChanged:(UITextField *)textField{
+    
+    if (textField.text.length > 7) {
+        textField.text = [textField.text substringToIndex:7];
+        return;
+    }
     if (textField.text > 0) {
         if (self.block) {
             self.block(textField.text);

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -36,9 +36,9 @@
                             </constraints>
                         </imageView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qDy-I5-9p2">
-                            <rect key="frame" x="0.0" y="127" width="375" height="546"/>
+                            <rect key="frame" x="0.0" y="127" width="375" height="350.5"/>
                             <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5PO-xs-ALg">
+                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5PO-xs-ALg">
                                     <rect key="frame" x="14" y="14" width="2" height="15"/>
                                     <color key="backgroundColor" red="0.28627450980392155" green="0.70588235294117641" blue="0.99607843137254903" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
@@ -47,16 +47,16 @@
                                     </constraints>
                                 </view>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="邀请入职奖励" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7UD-aE-rsf">
-                                    <rect key="frame" x="20" y="14" width="98" height="15"/>
+                                    <rect key="frame" x="20" y="21.5" width="98" height="0.0"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="15" id="0Ex-M8-q0B"/>
+                                        <constraint firstAttribute="height" id="0Ex-M8-q0B"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                     <color key="textColor" red="0.10588235294117647" green="0.10588235294117647" blue="0.10588235294117647" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nUm-jf-jfz">
-                                    <rect key="frame" x="14" y="134" width="2" height="15"/>
+                                    <rect key="frame" x="14" y="31.5" width="2" height="15"/>
                                     <color key="backgroundColor" red="1" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="15" id="XCR-Rl-wHP"/>
@@ -64,7 +64,7 @@
                                     </constraints>
                                 </view>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="邀请注册奖励" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="On0-wO-w7Q">
-                                    <rect key="frame" x="20" y="134" width="98" height="15"/>
+                                    <rect key="frame" x="20" y="31.5" width="98" height="15"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="15" id="p0C-Ah-q90"/>
                                     </constraints>
@@ -72,7 +72,7 @@
                                     <color key="textColor" red="0.1058823529" green="0.1058823529" blue="0.1058823529" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oBO-76-d9C">
+                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oBO-76-d9C">
                                     <rect key="frame" x="301" y="11.5" width="61" height="20"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="20" id="k5c-dc-QUH"/>
@@ -86,10 +86,10 @@
                                     </connections>
                                 </button>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4vS-JH-364">
-                                    <rect key="frame" x="14" y="39" width="347" height="74"/>
+                                    <rect key="frame" x="14" y="31.5" width="347" height="0.0"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gMk-62-8dk">
-                                            <rect key="frame" x="173" y="12" width="1" height="50"/>
+                                            <rect key="frame" x="173" y="-25" width="1" height="50"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="50" id="IyA-X9-boI"/>
@@ -97,7 +97,7 @@
                                             </constraints>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mpl-hv-0Fc">
-                                            <rect key="frame" x="8" y="0.0" width="157" height="74"/>
+                                            <rect key="frame" x="8" y="0.0" width="157" height="0.0"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0人" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mgb-qg-o8O">
                                                     <rect key="frame" x="0.0" y="18" width="157" height="15"/>
@@ -109,7 +109,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="直接邀请人" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O7q-5Z-7bE">
-                                                    <rect key="frame" x="0.0" y="41" width="157" height="13"/>
+                                                    <rect key="frame" x="0.0" y="-33" width="157" height="13"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="13" id="NH3-nz-n0Z"/>
                                                     </constraints>
@@ -129,7 +129,7 @@
                                             </constraints>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7uB-bz-0zt">
-                                            <rect key="frame" x="182" y="0.0" width="157" height="74"/>
+                                            <rect key="frame" x="182" y="0.0" width="157" height="0.0"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="100人" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pJ6-qd-VX4">
                                                     <rect key="frame" x="0.0" y="18" width="157" height="15"/>
@@ -141,7 +141,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="间接邀请人" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PUu-d6-OdY">
-                                                    <rect key="frame" x="0.0" y="41" width="157" height="13"/>
+                                                    <rect key="frame" x="0.0" y="-33" width="157" height="13"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="13" id="M7l-wv-Inp"/>
                                                     </constraints>
@@ -170,14 +170,14 @@
                                         <constraint firstItem="gMk-62-8dk" firstAttribute="centerY" secondItem="4vS-JH-364" secondAttribute="centerY" id="Slz-t6-BLV"/>
                                         <constraint firstAttribute="trailing" secondItem="7uB-bz-0zt" secondAttribute="trailing" constant="8" id="WQT-Yp-fgC"/>
                                         <constraint firstAttribute="bottom" secondItem="Mpl-hv-0Fc" secondAttribute="bottom" id="c0S-6K-flL"/>
-                                        <constraint firstAttribute="height" constant="74" id="gg3-Cq-9wl"/>
+                                        <constraint firstAttribute="height" id="gg3-Cq-9wl"/>
                                         <constraint firstItem="gMk-62-8dk" firstAttribute="leading" secondItem="Mpl-hv-0Fc" secondAttribute="trailing" constant="8" id="kut-wA-FbY"/>
                                         <constraint firstItem="7uB-bz-0zt" firstAttribute="top" secondItem="4vS-JH-364" secondAttribute="top" id="o81-bm-Usv"/>
                                         <constraint firstItem="7uB-bz-0zt" firstAttribute="leading" secondItem="gMk-62-8dk" secondAttribute="trailing" constant="8" id="vi2-Ri-y0o"/>
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bnm-do-f7n">
-                                    <rect key="frame" x="0.0" y="159" width="375" height="151"/>
+                                    <rect key="frame" x="0.0" y="56.5" width="375" height="151"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l5N-0S-xZk">
                                             <rect key="frame" x="14" y="0.0" width="172" height="74"/>
@@ -332,14 +332,12 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p2a-dc-5zr">
-                                    <rect key="frame" x="14" y="356" width="347" height="170"/>
+                                    <rect key="frame" x="14" y="253.5" width="347" height="77"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uRg-2m-tUe">
-                                            <rect key="frame" x="12" y="15" width="323" height="140"/>
-                                            <string key="text">1.用户每邀请一个员工注册，当被邀请人通过本平台成功入职满一个月后,邀请人便能获取20元奖励。
-2.用户每邀请一个员工通过本平台成功入职,工作每满一个月,用户便能获取80元奖励金,奖励期限由入职企业决定。
-3.用户的被邀请人每邀请一个员工通过本平台成功入职，工作每满一个月,用户便能获取50元奖励金，奖励期限由入职企业决定。
-4.本活动最终解释权归蓝聘平台所有!</string>
+                                            <rect key="frame" x="12" y="15" width="323" height="47"/>
+                                            <string key="text">1.蓝聘用户每邀请一个员工注册，当被邀请人通过本平台成功入职满一个月后，邀请人便能获取20元奖励。
+2.本活动最终解释权归蓝聘平台所有！</string>
                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
@@ -354,7 +352,7 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vW8-ak-C5b">
-                                    <rect key="frame" x="14" y="331" width="2" height="15"/>
+                                    <rect key="frame" x="14" y="228.5" width="2" height="15"/>
                                     <color key="backgroundColor" red="1" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="15" id="B4v-JE-d1P"/>
@@ -362,7 +360,7 @@
                                     </constraints>
                                 </view>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="奖励规则:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="223-fI-rQb">
-                                    <rect key="frame" x="20" y="331" width="70" height="15"/>
+                                    <rect key="frame" x="20" y="228.5" width="70" height="15"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="15" id="oiG-Nt-u3Z"/>
                                     </constraints>
@@ -392,7 +390,7 @@
                                 <constraint firstAttribute="bottom" secondItem="p2a-dc-5zr" secondAttribute="bottom" constant="20" id="fta-Mf-0CZ"/>
                                 <constraint firstAttribute="trailing" secondItem="bnm-do-f7n" secondAttribute="trailing" id="g9k-Fj-RVg"/>
                                 <constraint firstItem="vW8-ak-C5b" firstAttribute="top" secondItem="bnm-do-f7n" secondAttribute="bottom" constant="21" id="gXZ-Qx-vOF"/>
-                                <constraint firstItem="nUm-jf-jfz" firstAttribute="top" secondItem="Mpl-hv-0Fc" secondAttribute="bottom" constant="21" id="glD-vh-dsq"/>
+                                <constraint firstItem="nUm-jf-jfz" firstAttribute="top" secondItem="Mpl-hv-0Fc" secondAttribute="bottom" id="glD-vh-dsq"/>
                                 <constraint firstAttribute="trailing" secondItem="4vS-JH-364" secondAttribute="trailing" constant="14" id="mn4-Le-XAR"/>
                                 <constraint firstItem="p2a-dc-5zr" firstAttribute="leading" secondItem="qDy-I5-9p2" secondAttribute="leading" constant="14" id="vAm-IZ-TlY"/>
                                 <constraint firstItem="7UD-aE-rsf" firstAttribute="leading" secondItem="5PO-xs-ALg" secondAttribute="trailing" constant="4" id="wB2-eo-u9z"/>

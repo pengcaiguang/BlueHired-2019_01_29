@@ -16,4 +16,10 @@
 //取消所有的网络请求
 + (void)cancelAllRequest;
 
+//解编码
++ (NSString *)decodeFromPercentEscapeString: (NSString *) input;
+
++ (NSDictionary *)dictionaryWithJsonString:(NSString *)jsonString;
+
+
 @end

@@ -10,8 +10,35 @@
 #import "AppDelegate.h"
 #import "NetRequestManager.h"
 #import "NetInstance.h"
+#import "QiniuSDK.h"
+#import "DSBaActivityView.h"
+
+
+static QNUploadManager *upManager = NULL;
+
+@interface NetApiManager()
+
+
+@end;
 
 @implementation NetApiManager
+
+
+
++(QNUploadManager *)initupManager{
+    if (upManager == NULL) {
+        QNConfiguration *config = [QNConfiguration build:^(QNConfigurationBuilder *builder) {
+//            NSArray *ips = [QNZone zone0].up.ips;
+//            QNServiceAddress *s1 = [[QNServiceAddress alloc] init:@"http://up-z2.qiniup.com" ips:ips];
+//            QNServiceAddress *s2 = [[QNServiceAddress alloc] init:@"http://up-z2.qiniup.com" ips:ips];
+//            builder.zone = [[QNZone alloc] initWithUp:s1 upBackup:s2];
+            builder.zone = [QNFixedZone zone2];
+        }];
+        upManager = [[QNUploadManager alloc] initWithConfiguration:config];
+    }
+    return upManager;
+}
+
 #pragma mark - 获取网络状态
 //获取网络状态
 + (BOOL) getNetStaus
@@ -28,7 +55,19 @@
                                  withRequestEnty:(RequestType)requestType
                                        withParam:(id)paramer
                                       withHandle:(response)responseHandle
+                                  IsShowActiviTy:(BOOL) show
 {
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        // something
+        // 主线程执行：
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (show) {
+                //                [DSBeiAnimationLoading showInView:[UIApplication sharedApplication].keyWindow];
+                [DSBaActivityView showActiviTy];
+            }
+        });
+    });
+    
     NetRequestEnty * enty = [[NetInstance shareInstance] commonRequestEnty:requestType withAppendUrlString:appendURLString];  //通用请求配置
     NSMutableDictionary *params = [[[NetInstance shareInstance] basicParameter] mutableCopy];                          //公共请求参数
     if(!ISNIL(paramer)){
@@ -116,6 +155,57 @@
  
  ***********************************************************/
 
+/**
+ *  上传图片---七牛云
+ *
+ *  @param imgArr 上传的图片
+ *  @param BlockInfo  返回的是否成功和失败 和图片的Url
+ */
++(void)getUploadTempImages:(NSArray*)imgArr andBlock:(UploadImageTempBlock)BlockInfo{
+    
+    [NetApiManager requestQueryGetQiniuParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            NSMutableArray *imgAdd = [[NSMutableArray alloc] init];
+            
+            for (int i =0 ; i<imgArr.count; i++) {
+
+            NSString *fileName = [NSString stringWithFormat:@"%.f_%d_",[[NSDate date] timeIntervalSince1970],i];
+            fileName = [fileName stringByAppendingString:CurrentDeviceSn];
+            fileName = [fileName stringByAppendingString:@"_ios.jpg"];
+            NSData *data = UIImageJPEGRepresentation(imgArr[i],0.000001);
+            NSString *token = responseObject[@"data"];
+                QNUploadOption *opt;
+                if (opt == nil) {
+                    opt = [[QNUploadOption alloc] initWithMime:@"image/jpeg" progressHandler:nil params:nil checkCrc:YES cancellationSignal:nil];
+                }
+      
+                upManager = [self initupManager];
+             [upManager putData:data key:fileName token:token
+                      complete: ^(QNResponseInfo *info, NSString *key, NSDictionary *resp) {
+                          NSLog(@"%@", info);
+                          NSLog(@"%@", resp);
+//                          BlockInfo(YES,[QiNiuBaseUrl stringByAppendingString:key]);
+                          [imgAdd addObject:[QiNiuBaseUrl stringByAppendingString:key]];
+                          if (imgArr.count == imgAdd.count)
+                          {
+                              NSLog(@"图片上传完成");
+                                BlockInfo(YES,imgAdd);
+                          }
+                          
+                      } option:opt];
+            }
+        }else{
+//            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+    
+    
+    
+    
+}
+
+
 #pragma mark - 首页
 /************************************************************/
 //*  首页
@@ -127,7 +217,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 //查询所有行业/工种
@@ -137,7 +228,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 
@@ -148,18 +240,20 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle                                                  IsShowActiviTy:YES];
     [NetRequestManager requestWithEnty:enty];
 }
 
 //收藏接口
 + (void)requestSetCollectionWithParam:(id)paramer
-                           withHandle:(response)responseHandle{
+                           withHandle:(response)responseHandle
+                       IsShowActivity:(BOOL) IsShow{
     NSString * appendURLString = @"social/set_collection";
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:IsShow];
     [NetRequestManager requestWithEnty:enty];
 }
 
@@ -170,7 +264,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 //入职报名
@@ -180,7 +275,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:urlString
                                                 withRequestEnty:RequestTypePost
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
     [NetRequestManager requestWithEnty:enty];
 }
 //取消报名
@@ -190,7 +286,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:urlString
                                                 withRequestEnty:RequestTypePost
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
     [NetRequestManager requestWithEnty:enty];
 }
 //查询面试预约列表
@@ -200,7 +297,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
     [NetRequestManager requestWithEnty:enty];
 }
 //删除面试预约
@@ -210,7 +308,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
     [NetRequestManager requestWithEnty:enty];
 }
 #pragma mark - 资讯
@@ -224,7 +323,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 //资讯列表
@@ -234,7 +334,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 //资讯详情
@@ -244,7 +345,19 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+//新闻推荐列表
++ (void)requestEssay_LabelWithParam:(id)paramer
+                   withHandle:(response)responseHandle{
+    NSString * appendURLString = @"essay/get_essay_label";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 //增加新闻浏览量
@@ -254,7 +367,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 //获取评论列表
@@ -264,17 +378,20 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 //点赞（取消）
 + (void)requestSocialSetlikeWithParam:(id)paramer
-                           withHandle:(response)responseHandle{
+                           withHandle:(response)responseHandle
+                       IsShowActiviTy:(BOOL) IsShow{
     NSString * appendURLString = @"social/set_like";
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:IsShow];
     [NetRequestManager requestWithEnty:enty];
 }
 //添加评论
@@ -284,7 +401,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypePost
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
     [NetRequestManager requestWithEnty:enty];
 }
 
@@ -299,7 +417,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 //查看圈子列表
@@ -309,7 +428,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 //获取圈子详情
@@ -319,7 +439,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
     [NetRequestManager requestWithEnty:enty];
 }
 //增加圈子浏览量
@@ -329,7 +450,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 //添加圈子
@@ -339,36 +461,68 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypePost
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
     [NetRequestManager requestWithEnty:enty];
 }
+
+//删除圈子
++ (void)requestDeleteMoodWithParam:(id)paramer
+                     withHandle:(response)responseHandle{
+    NSString * appendURLString = @"mood/del_mood_by_ids";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+
 // 多张图片上传
 + (void)requestPublishArticle:(id)parameters
                    imageArray:(NSArray*)imageArray
                imageNameArray:(NSArray*)imageNameArray
                      response:(response)response{
-    NSString * appendURLString = @"platform/upload_image_list";
-    NetRequestEnty *enty = [self createEntyWithAppendURLString:appendURLString
-                                               withRequestEnty:RequestTypeUploadImagesArray
-                                                     withParam:parameters
-                                                    withHandle:response];
-    enty.imagesArray = imageArray;
-    enty.imageNamesArray = imageNameArray;
-    [NetRequestManager requestWithEnty:enty];
+//    NSString * appendURLString = @"platform/upload_image_list";
+//    NetRequestEnty *enty = [self createEntyWithAppendURLString:appendURLString
+//                                               withRequestEnty:RequestTypeUploadImagesArray
+//                                                     withParam:parameters
+//                                                    withHandle:response];
+//    enty.imagesArray = imageArray;
+//    enty.imageNamesArray = imageNameArray;
+//    [NetRequestManager requestWithEnty:enty];
+  
+    [NetApiManager getUploadTempImages:imageArray andBlock:^(BOOL sussess,NSMutableArray *array)  {
+    
+        
+        NSDictionary *dic = @{@"data":array
+                              };
+        response(sussess,dic);
+    }];
 }
 // 单张图片上传
 + (void)avartarChangeWithParamDict:(id)paramer
                        singleImage:(UIImage *)image
                    singleImageName:(NSString *)imageName
                         withHandle:(response)responseHandle{
-    NSString * appendURLString = @"platform/upload_image";
-    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
-                                                withRequestEnty:RequestTypeUploadSingleImage
-                                                      withParam:paramer
-                                                     withHandle:responseHandle];
-    enty.singleImage = image;
-    enty.singleImageName = imageName;
-    [NetRequestManager requestWithEnty:enty];
+    
+    NSArray *array =@[image];
+    
+    [NetApiManager getUploadTempImages:array andBlock:^(BOOL sussess,NSMutableArray *array)  {
+        NSDictionary *dic = @{@"data":array.count?array[0]:@""
+                              };
+        responseHandle(sussess,dic);
+    }];
+    
+    
+//    NSString * appendURLString = @"platform/upload_image";
+//    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+//                                                withRequestEnty:RequestTypeUploadSingleImage
+//                                                      withParam:paramer
+//                                                     withHandle:responseHandle];
+//    enty.singleImage = image;
+//    enty.singleImageName = imageName;
+//    [NetRequestManager requestWithEnty:enty];
 }
 //人员关注
 + (void)requestSetUserConcernWithParam:(id)paramer
@@ -377,7 +531,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
     [NetRequestManager requestWithEnty:enty];
 }
 #pragma mark - 登陆注册
@@ -391,7 +546,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypePost
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
     [NetRequestManager requestWithEnty:enty];
 }
 //退出登陆
@@ -401,7 +557,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
     [NetRequestManager requestWithEnty:enty];
 }
 //注册接口
@@ -411,7 +568,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypePost
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
     [NetRequestManager requestWithEnty:enty];
 }
 //找回密码
@@ -421,7 +579,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypePost
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
     [NetRequestManager requestWithEnty:enty];
 }
 //发送手机验证码
@@ -431,7 +590,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 //验证验证码及手机
@@ -441,7 +601,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 //修改密码
@@ -451,23 +612,39 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
     [NetRequestManager requestWithEnty:enty];
 }
 //修改手机号
-+ (void)requestUpdateUsertelWithParam:(id)paramer
++ (void)requestUpdateUsertelWithParam:(NSString *)appendURLString
+                            WithParam:(id)paramer
                            withHandle:(response)responseHandle{
-    NSString * appendURLString = @"userMaterial/update_usertel";
+//    NSString * appendURLString = @"userMaterial/update_usertel";
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypePost
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
     [NetRequestManager requestWithEnty:enty];
 }
 #pragma mark - 消息中心
 /************************************************************/
 //*  消息中心
 /************************************************************/
+//查询未读消息数
++ (void)requestQueryUnreadNumWithParam:(id)paramer
+                           withHandle:(response)responseHandle{
+    NSString * appendURLString = @"info/query_unreadNum";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+
 //查询消息列表
 + (void)requestQueryInfolistWithParam:(id)paramer
                            withHandle:(response)responseHandle{
@@ -475,17 +652,19 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 //删除消息
-+ (void)requestDelInfosWithParam:(id)paramer
++ (void) requestDelInfosWithParam:(id)paramer
                       withHandle:(response)responseHandle{
     NSString * appendURLString = @"info/del_infos";
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
     [NetRequestManager requestWithEnty:enty];
 }
 //消息详情
@@ -495,9 +674,23 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
     [NetRequestManager requestWithEnty:enty];
 }
+
+//接受或者拒绝店主邀请A
++ (void)requestQueryAccept_invite:(id)paramer
+                             withHandle:(response)responseHandle{
+    NSString * appendURLString = @"assistant/accept_invite";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+
 #pragma mark - 我的
 /************************************************************/
 //*  我的
@@ -509,7 +702,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 //查询当天是否签到
@@ -519,7 +713,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 //查询是否允许借支
@@ -529,7 +724,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 //借支记录
@@ -539,7 +735,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 //借支
@@ -549,7 +746,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypePost
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
     [NetRequestManager requestWithEnty:enty];
 }
 //离职通知
@@ -559,7 +757,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 //申请离职,发送离职通知
@@ -569,7 +768,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
     [NetRequestManager requestWithEnty:enty];
 }
 //邀请奖励
@@ -579,7 +779,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 //邀请奖励详情
@@ -589,7 +790,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 //查询绑定银行卡
@@ -599,7 +801,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 //绑定/变更银行卡
@@ -609,9 +812,22 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypePost
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
     [NetRequestManager requestWithEnty:enty];
 }
+// 查询身份证号是否被占用
++ (void)requestCardNOoccupy:(id)paramer
+                                withHandle:(response)responseHandle{
+    NSString * appendURLString = @"userbank/query_cardnoaccupy";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+
 //提现密码验证
 + (void)requestUpdateDrawpwdWithParam:(id)paramer
                            withHandle:(response)responseHandle{
@@ -619,7 +835,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
     [NetRequestManager requestWithEnty:enty];
 }
 //我的客服
@@ -629,7 +846,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 //查询问题
@@ -639,9 +857,23 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
+
+//问题关键字搜索
++ (void)requestQueryProblemDetailWithParamKey:(id)paramer
+                                withHandle:(response)responseHandle{
+    NSString * appendURLString = @"customerser/query_problem_key";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
 //招聘收藏
 + (void)requestGetWorkCollectionWithParam:(id)paramer
                                withHandle:(response)responseHandle{
@@ -649,7 +881,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 //资讯收藏
@@ -659,7 +892,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 //批量删除收藏信息
@@ -669,7 +903,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
     [NetRequestManager requestWithEnty:enty];
 }
 //意见反馈
@@ -679,7 +914,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypePost
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
     [NetRequestManager requestWithEnty:enty];
 }
 //查询签到
@@ -689,7 +925,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 //签到
@@ -699,7 +936,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
     [NetRequestManager requestWithEnty:enty];
 }
 //修改用户个人资料
@@ -709,7 +947,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:urlString
                                                 withRequestEnty:RequestTypePost
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 //账单
@@ -719,7 +958,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 //提现
@@ -729,9 +969,33 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
+//提现余额
++ (void)requestQueryBankcardwithDrawDepositWithParam:(NSString *)appendURLString
+                                    WithParam:(id)paramer
+                                   withHandle:(response)responseHandle{
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+//查询账单详情及提现进度
++ (void)requestQueryBankcardwithWithdrawreCordWithParam:(NSString *)appendURLString
+                                           WithParam:(id)paramer
+                                          withHandle:(response)responseHandle{
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+
 #pragma mark - 企业点评
 /************************************************************/
 //*  企业点评
@@ -743,7 +1007,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 
@@ -754,7 +1019,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 //查询用户就过职、曾经就职的企业
@@ -764,7 +1030,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 #pragma mark - 工时记录
@@ -778,7 +1045,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypePost
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
     [NetRequestManager requestWithEnty:enty];
 }
 //查询工时记录详情
@@ -788,7 +1056,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 //查询当天工时记录
@@ -798,7 +1067,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 //查询已记录工时
@@ -808,7 +1078,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 //删除加班记录
@@ -818,7 +1089,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 //记录补贴扣款
@@ -828,7 +1100,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypePost
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 #pragma mark - 工资明细
@@ -842,7 +1115,8 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
     [NetRequestManager requestWithEnty:enty];
 }
 //查询工资明细详情
@@ -852,7 +1126,565 @@
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
-                                                     withHandle:responseHandle];
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
     [NetRequestManager requestWithEnty:enty];
 }
+//晒工资
++ (void)requestQueryBusinessWageParam:(id)paramer
+                               withHandle:(response)responseHandle{
+    NSString * appendURLString = @"mechanismcomment/add_salary";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//获取七牛云token
++ (void)requestQueryGetQiniuParam:(id)paramer
+                           withHandle:(response)responseHandle{
+    NSString * appendURLString = @"platform/get_token";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+//查询招聘列表及详情
++ (void)requestQueryWorkList:(id)paramer
+                           withHandle:(response)responseHandle{
+    NSString * appendURLString = @"resident/query_work_list";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//更新招聘信息
++ (void)requestQueryUpdateWorkList:(id)paramer
+                        withHandle:(response)responseHandle{
+    
+    NSString * appendURLString = @"resident/update_work_details";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//查询借支列表
++ (void)requestQueryLandMoneyList:(id)paramer
+                  withHandle:(response)responseHandle{
+    NSString * appendURLString = @"resident/query_lend_money_list";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+//审核借支状态
++ (void)requestQueryUpdateLandMoneyList:(id)paramer
+                       withHandle:(response)responseHandle{
+    NSString * appendURLString = @"resident/update_lend_money_status";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//借支详情
++ (void)requestQueryUpdateLandMoneyDetail:(id)paramer
+                             withHandle:(response)responseHandle{
+    NSString * appendURLString = @"resident/query_lendmoney_detail";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+//入职员工信息列表
++ (void)requestQueryWorkOrderList:(id)paramer
+                               withHandle:(response)responseHandle{
+    NSString * appendURLString = @"resident/query_work_order";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+//修改面试预约状态
++ (void)requestQueryUodateWorkOrderList:(id)paramer
+                       withHandle:(response)responseHandle{
+    NSString * appendURLString = @"resident/update_work_order_status";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+//面试通过
++ (void)requestQueryupdate_interview:(id)paramer
+                             withHandle:(response)responseHandle{
+    NSString * appendURLString = @"resident/update_interview";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//设置入职时间
++ (void)requestQueryUodateWorkDate:(id)paramer
+                             withHandle:(response)responseHandle{
+    NSString * appendURLString = @"resident/set_entry_date";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+//查询企业员工管理列表
++ (void)requestQueryCompanyStaff:(id)paramer
+                       withHandle:(response)responseHandle{
+    NSString * appendURLString = @"resident/query_company_staff";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//查询企业员工管理详细列表
++ (void)requestQueryUserRegistration:(id)paramer
+                      withHandle:(response)responseHandle{
+    NSString * appendURLString = @"resident/query_user_registration";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//更新查询企业员工管理详细列表
++ (void)requestQueryUpdateUserRegistration:(id)paramer
+                          withHandle:(response)responseHandle{
+    NSString * appendURLString = @"resident/insert_user_work_record";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//查询店主下劳务工信息
++ (void)requestQuerylabourlist:(id)paramer
+                                withHandle:(response)responseHandle{
+    NSString * appendURLString = @"shopkeeper/query_labourlist";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//查询店员下劳务工信息
++ (void)requestQueryassistantlabourlist:(id)paramer
+                    withHandle:(response)responseHandle{
+    NSString * appendURLString = @"assistant/query_labourlist";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//查询门店信息  店主
++ (void)requestQueryshopkeeperinfo:(id)paramer
+                    withHandle:(response)responseHandle{
+    NSString * appendURLString = @"shopkeeper/query_shopkeeperinfo";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//查询门店信息  店员
++ (void)requestQueryassistantshopkeeperinfo:(id)paramer
+                        withHandle:(response)responseHandle{
+    NSString * appendURLString = @"assistant/query_shopassistantinfo";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//查询门店收支明细
+
++ (void)requestQueryshopincome:(id)paramer
+                      withHandle:(response)responseHandle{
+    NSString * appendURLString = @"shopkeeper/query_shopincome";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//查询门店下员工信息
++ (void)requestQueryshopuserlist:(id)paramer
+                        withHandle:(response)responseHandle{
+    NSString * appendURLString = @"shopkeeper/query_shopuserlist";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//辞退店员
++ (void)requestQueryshopdismiss:(id)paramer
+                     withHandle:(response)responseHandle{
+    NSString * appendURLString = @"shopkeeper/dismiss_shopUser";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+//邀请店员
++ (void)requestQueryinviteshopUser:(id)paramer
+                     withHandle:(response)responseHandle{
+    NSString * appendURLString = @"shopkeeper/invite_shopUser";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//查询门店业绩详情
++ (void)requestQueryBonusDetail:(id)paramer
+                    withHandle:(response)responseHandle{
+    NSString * appendURLString = @"shopkeeper/query_bonusdetail";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+
+//设置返费
++ (void)requestQueryadd_overseer:(id)paramer
+                     withHandle:(response)responseHandle{
+    NSString * appendURLString = @"shopkeeper/add_overseer";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+//设置上架/下架
++ (void)requestQueryset_workwatchstatus:(id)paramer
+                      withHandle:(response)responseHandle{
+    NSString * appendURLString = @"shopkeeper/set_workwatchstatus";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//提醒店主设置返费
++ (void)requestQueryremind_shopkeeper:(id)paramer
+                             withHandle:(response)responseHandle{
+    NSString * appendURLString = @"assistant/remind_shopkeeper";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+
+//查询用户个人资料
++ (void)requestQueryUserMaterialSelect:(id)paramer
+                           withHandle:(response)responseHandle{
+    NSString * appendURLString = @"userMaterial/select";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+
+//信息举报接口
++ (void)requestQueryReportAdd:(id)paramer
+                            withHandle:(response)responseHandle{
+    NSString * appendURLString = @"report/add";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//屏蔽用户  传参identity,type(1屏蔽2取消屏蔽)
++ (void)requestQueryDefriendPullBlack:(id)paramer
+                   withHandle:(response)responseHandle{
+    NSString * appendURLString = @"defriend/pull_black_user";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//获取屏蔽用户列表
++ (void)requestQueryDefriendPullBlackUserList:(id)paramer
+                   withHandle:(response)responseHandle{
+    NSString * appendURLString = @"defriend/get_pull_black_user_list";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+
+//获取系统版本号
++ (void)requestQueryDownload:(id)paramer
+                                   withHandle:(response)responseHandle{
+    NSString * appendURLString = @"platform/get_download";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//获取视频列表, 
++ (void)requestQueryGetVideoList:(id)paramer
+                  withHandle:(response)responseHandle{
+    NSString * appendURLString = @"video/get_video_list";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//获取视频浏览量
++ (void)requestQuerySetVideoView:(id)paramer
+                      withHandle:(response)responseHandle{
+    NSString * appendURLString = @"video/set_video_view";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+//获取视频
++ (void)requestQueryGetVideo:(id)paramer
+                      withHandle:(response)responseHandle{
+    NSString * appendURLString = @"video/get_video";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//获取视频分类
++ (void)requestQueryGetVideoType:(id)paramer
+                  withHandle:(response)responseHandle{
+    NSString * appendURLString = @"video/get_video_type";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+//视频收藏列表
++ (void)requestQueryGetVideoCollection:(id)paramer
+                      withHandle:(response)responseHandle{
+    NSString * appendURLString = @"collection/get_video_collection";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//获取红包
++ (void)requestQueryGetRedPacket:(id)paramer
+                  withHandle:(response)responseHandle{
+    NSString * appendURLString = @"redPacket/get_red_packet";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//获取时间
++ (void)requestQueryGetRedPacketStatus:(id)paramer
+                   withHandle:(response)responseHandle{
+    NSString * appendURLString = @"redPacket/get_red_status";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//查询是否第一次微信登入
++ (void)requestQueryWXUserStatus:(id)paramer
+                            withHandle:(response)responseHandle{
+    NSString * appendURLString = @"wx_user/get_status";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//微信手机绑定
++ (void)requestQueryWXSetPhone:(id)paramer
+                      withHandle:(response)responseHandle{
+    NSString * appendURLString = @"wx_user/set_phone";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//查询公司列表（h5）
++ (void)requestQueryLendMoneyMechanism:(id)paramer
+                    withHandle:(response)responseHandle{
+    NSString * appendURLString = @"lendmoney/query_mechanism";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+//查询是否允许借支（h5）
++ (void)requestQueryLendApi:(id)paramer
+                            withHandle:(response)responseHandle{
+    NSString * appendURLString = @"lendmoney/query_isLend_api";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//添加借支（h5）
++ (void)requestQueryAddLendApi:(NSString *)urlString
+                     withParam:(id)paramer
+                    withHandle:(response)responseHandle{
+     NetRequestEnty * enty = [self createEntyWithAppendURLString:urlString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//获取点赞列表
++ (void)requestQueryPraiseList:(id)paramer
+                 withHandle:(response)responseHandle{
+    NSString * appendURLString = @"mood/query_praise_list";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//查询驻厂管理的厂列表
++ (void)requestQueryTeacherMechanism:(id)paramer
+                    withHandle:(response)responseHandle{
+    NSString * appendURLString = @"resident/query_teacher_mechanism";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+//获取活动列表
++ (void)requestQueryActivityList:(id)paramer
+                          withHandle:(response)responseHandle{
+    NSString * appendURLString = @"activity/get_activity_list";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+//获取广告弹框
++ (void)requestQueryActivityadvert:(id)paramer
+                      withHandle:(response)responseHandle{
+    NSString * appendURLString = @"activity/get_activity_advert";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
 @end

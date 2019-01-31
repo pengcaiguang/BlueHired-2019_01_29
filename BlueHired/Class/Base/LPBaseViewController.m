@@ -16,8 +16,26 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+   
+    self.navigationItem.hidesBackButton = YES;
+    
+//    self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
+//    UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0,-20, SCREEN_WIDTH, 20)];
+//    [self.navigationController.navigationBar addSubview:backView];
+//    backView.backgroundColor = [UIColor baseColor];
+ 
 }
+- (UIBarButtonItem *)rt_customBackItemWithTarget:(id)target action:(SEL)action {
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btn setImage:[UIImage imageNamed:@"BackBttonImage"] forState:UIControlStateNormal];
+    [btn setTitle:@" 返回" forState:UIControlStateNormal];
+    [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [btn sizeToFit];
+    [btn addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+    return [[UIBarButtonItem alloc] initWithCustomView:btn];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

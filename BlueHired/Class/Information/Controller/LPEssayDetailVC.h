@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "LPEssaylistModel.h"
 
-@interface LPEssayDetailVC : UIViewController
+@interface LPEssayDetailVC : LPBaseViewController
 @property(nonatomic,strong) LPEssaylistDataModel *essaylistDataModel;
+
+@property (nonatomic, strong) UITableView *Supertableview;
+ 
 @end

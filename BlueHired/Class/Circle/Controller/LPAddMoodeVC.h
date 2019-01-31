@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LPAddMoodeVC : UIViewController
+@interface LPAddMoodeVC : LPBaseViewController
 
 @end
 

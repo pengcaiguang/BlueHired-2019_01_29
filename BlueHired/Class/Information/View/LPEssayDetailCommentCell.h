@@ -17,6 +17,7 @@
 
 @interface LPEssayDetailCommentCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *userUrlImgView;
+@property (weak, nonatomic) IBOutlet UIImageView *gradingiamge;
 @property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *commentDetailsLabel;
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;

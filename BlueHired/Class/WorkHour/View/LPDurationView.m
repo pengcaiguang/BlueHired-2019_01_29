@@ -109,12 +109,13 @@
 
 -(void)addTimeSubView{
     self.timebgView = [[UIView alloc]init];
-    self.timebgView.frame = CGRectMake(0, 50, SCREEN_WIDTH, 253-98);
+    self.timebgView.frame = CGRectMake(0, 50, SCREEN_WIDTH, 253-50);
     [self.selectView addSubview:self.timebgView];
     self.titleLabel.text = @"正常上班时长";
 }
 -(void)setTimeArray:(NSArray *)timeArray{
     _timeArray = timeArray;
+    self.selectIndex = 0;
     for (UIView *view in self.timebgView.subviews) {
         [view removeFromSuperview];
     }
@@ -123,7 +124,7 @@
     self.selectView.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, 253);
 
     UIScrollView *scrollView = [[UIScrollView alloc]init];
-    scrollView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 253-98);
+    scrollView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 253-50);
     [self.timebgView addSubview:scrollView];
     scrollView.contentSize = CGSizeMake(SCREEN_WIDTH, 51*ceil(self.timeArray.count/6.0));
     
@@ -151,7 +152,7 @@
 
 -(void)addTypeSubView{
     self.typebgView = [[UIView alloc]init];
-    self.typebgView.frame = CGRectMake(0, 50, SCREEN_WIDTH, 253-98);
+    self.typebgView.frame = CGRectMake(0, 50, SCREEN_WIDTH, 253-50);
     [self.selectView addSubview:self.typebgView];
     self.titleLabel.text = @"上班类型";
 }
@@ -162,13 +163,14 @@
 
 -(void)setTypeArray:(NSArray *)typeArray{
     _typeArray = typeArray;
+    self.selectIndex = 0;
     for (UIView *view in self.typebgView.subviews) {
         [view removeFromSuperview];
     }
     self.typeButtonArray = [NSMutableArray array];
     
     self.typebgView.frame = CGRectMake(0, 50, SCREEN_WIDTH, typeArray.count * 52);
-    self.selectView.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, typeArray.count * 52 + 97);
+    self.selectView.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, typeArray.count * 52 + 50);
 
     
     for (int i = 0; i<self.typeArray.count; i++) {
@@ -202,13 +204,13 @@
          _selectView.backgroundColor = [UIColor whiteColor];
         
         self.titleLabel = [[UILabel alloc]init];
-        [_selectView addSubview:self.titleLabel];
-        [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.mas_equalTo(0);
-            make.right.mas_equalTo(0);
-            make.top.mas_equalTo(0);
-            make.height.mas_equalTo(50);
-        }];
+//        [_selectView addSubview:self.titleLabel];
+//        [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.left.mas_equalTo(0);
+//            make.right.mas_equalTo(0);
+//            make.top.mas_equalTo(0);
+//            make.height.mas_equalTo(50);
+//        }];
         self.titleLabel.text = @"正常上班时长";
         self.titleLabel.textAlignment = NSTextAlignmentCenter;
 
@@ -220,7 +222,7 @@
 //        cancelButton.frame = CGRectMake(0, 253-47, SCREEN_WIDTH/2, 47);
         [cancelButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.mas_equalTo(0);
-            make.bottom.mas_equalTo(0);
+            make.top.mas_equalTo(0);
             make.height.mas_equalTo(47);
             make.width.mas_equalTo(SCREEN_WIDTH/2);
         }];
@@ -229,13 +231,15 @@
         cancelButton.titleLabel.font = [UIFont systemFontOfSize:16];
         [cancelButton setTitleColor:[UIColor colorWithHexString:@"#666666"] forState:UIControlStateNormal];
         [cancelButton addTarget:self action:@selector(hidden) forControlEvents:UIControlEventTouchUpInside];
+        cancelButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        cancelButton.titleEdgeInsets = UIEdgeInsetsMake(0, 20, 0, 0);
         
         UIButton *saveButton = [[UIButton alloc]init];
         [_selectView addSubview:saveButton];
 //        saveButton.frame = CGRectMake(SCREEN_WIDTH/2, 253-47, SCREEN_WIDTH/2, 47);
         [saveButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.mas_equalTo(0);
-            make.bottom.mas_equalTo(0);
+            make.top.mas_equalTo(0);
             make.height.mas_equalTo(47);
             make.width.mas_equalTo(SCREEN_WIDTH/2);
         }];
@@ -244,6 +248,8 @@
         saveButton.titleLabel.font = [UIFont systemFontOfSize:16];
         [saveButton setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
         [saveButton addTarget:self action:@selector(save) forControlEvents:UIControlEventTouchUpInside];
+        saveButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+        saveButton.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 20);
     }
     return _selectView;
 }

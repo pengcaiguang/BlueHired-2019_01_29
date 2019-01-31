@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="233" id="KGk-i7-Jjw" customClass="LPCollectionVideoCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="233"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="232.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NCE-or-Jk5">
+                        <rect key="frame" x="2" y="0.0" width="316" height="229.5"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="229.5" id="xpd-eN-61q"/>
+                        </constraints>
+                    </imageView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9X8-Cc-406">
+                        <rect key="frame" x="16" y="97.5" width="37" height="37"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="37" id="UL9-0g-K6o"/>
+                            <constraint firstAttribute="width" constant="37" id="ozO-oL-R0L"/>
+                        </constraints>
+                        <connections>
+                            <action selector="touchSelectButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="0AK-p0-fkt"/>
+                        </connections>
+                    </button>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tdw-Df-OdM">
+                        <rect key="frame" x="2" y="203.5" width="316" height="26"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="26" id="8hX-UC-YFf"/>
+                        </constraints>
+                    </view>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Q9Z-uC-iM8">
+                        <rect key="frame" x="9" y="207.5" width="19" height="19"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="19" id="kbg-1E-Hpe"/>
+                            <constraint firstAttribute="height" constant="19" id="wOt-Mb-6AP"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zE3-EX-dDM">
+                        <rect key="frame" x="34" y="209.5" width="232" height="15"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U4E-gb-k7L">
+                        <rect key="frame" x="289" y="211.5" width="31" height="11"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="31" id="NEZ-ha-FvE"/>
+                            <constraint firstAttribute="height" constant="11" id="ur0-mb-5O9"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="9"/>
+                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="VideoNumImage" translatesAutoresizingMaskIntoConstraints="NO" id="ePY-Uv-W6g">
+                        <rect key="frame" x="272" y="212.5" width="9" height="9"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="9" id="ApA-oT-TOT"/>
+                            <constraint firstAttribute="height" constant="9" id="H1E-Qk-pth"/>
+                        </constraints>
+                    </imageView>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="NCE-or-Jk5" secondAttribute="trailing" constant="2" id="1Ac-O5-dqX"/>
+                    <constraint firstItem="tdw-Df-OdM" firstAttribute="leading" secondItem="NCE-or-Jk5" secondAttribute="leading" id="1PK-5r-JcX"/>
+                    <constraint firstAttribute="bottom" secondItem="tdw-Df-OdM" secondAttribute="bottom" constant="2" id="2XV-Ou-lFb"/>
+                    <constraint firstItem="U4E-gb-k7L" firstAttribute="centerY" secondItem="ePY-Uv-W6g" secondAttribute="centerY" id="5ot-Su-4SR"/>
+                    <constraint firstItem="tdw-Df-OdM" firstAttribute="trailing" secondItem="NCE-or-Jk5" secondAttribute="trailing" id="9R5-f2-4VT"/>
+                    <constraint firstAttribute="trailing" secondItem="U4E-gb-k7L" secondAttribute="trailing" id="9oO-au-Ume"/>
+                    <constraint firstItem="zE3-EX-dDM" firstAttribute="leading" secondItem="Q9Z-uC-iM8" secondAttribute="trailing" constant="6" id="GJf-Ue-8h7"/>
+                    <constraint firstItem="9X8-Cc-406" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="Njc-ZH-3cq"/>
+                    <constraint firstItem="9X8-Cc-406" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="SVJ-f4-EKK"/>
+                    <constraint firstItem="zE3-EX-dDM" firstAttribute="centerY" secondItem="ePY-Uv-W6g" secondAttribute="centerY" id="TrD-wJ-cHE"/>
+                    <constraint firstItem="U4E-gb-k7L" firstAttribute="leading" secondItem="ePY-Uv-W6g" secondAttribute="trailing" constant="8" symbolic="YES" id="XZP-Gs-MDq"/>
+                    <constraint firstItem="ePY-Uv-W6g" firstAttribute="leading" secondItem="zE3-EX-dDM" secondAttribute="trailing" constant="6" id="a1u-Gt-ZxF"/>
+                    <constraint firstItem="Q9Z-uC-iM8" firstAttribute="leading" secondItem="NCE-or-Jk5" secondAttribute="leading" constant="7" id="bx7-QO-WVy"/>
+                    <constraint firstItem="tdw-Df-OdM" firstAttribute="bottom" secondItem="NCE-or-Jk5" secondAttribute="bottom" id="jW6-4f-NFV"/>
+                    <constraint firstAttribute="bottom" secondItem="NCE-or-Jk5" secondAttribute="bottom" constant="2" id="k1K-Nj-sFw"/>
+                    <constraint firstItem="NCE-or-Jk5" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="mSj-RW-xQP"/>
+                    <constraint firstItem="NCE-or-Jk5" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="2" id="ng8-Fs-J6k"/>
+                    <constraint firstItem="Q9Z-uC-iM8" firstAttribute="centerY" secondItem="ePY-Uv-W6g" secondAttribute="centerY" id="rVj-ju-2iD"/>
+                    <constraint firstAttribute="bottom" secondItem="Q9Z-uC-iM8" secondAttribute="bottom" constant="5" id="xey-3m-hrP"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <connections>
+                <outlet property="TitleBackView" destination="tdw-Df-OdM" id="Smw-lB-KJd"/>
+                <outlet property="Videotittle" destination="zE3-EX-dDM" id="eYP-xv-Axm"/>
+                <outlet property="commentTotal" destination="U4E-gb-k7L" id="QLy-XG-BRm"/>
+                <outlet property="label_contraint_width" destination="ng8-Fs-J6k" id="OXJ-6a-bjR"/>
+                <outlet property="selectButton" destination="9X8-Cc-406" id="mCS-Mi-RDh"/>
+                <outlet property="userImage" destination="Q9Z-uC-iM8" id="asR-NM-TVs"/>
+                <outlet property="videoImage" destination="NCE-or-Jk5" id="eTr-If-i4i"/>
+            </connections>
+            <point key="canvasLocation" x="428.80000000000001" y="-138.0809595202399"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="VideoNumImage" width="9.5" height="9.5"/>
+    </resources>
+</document>

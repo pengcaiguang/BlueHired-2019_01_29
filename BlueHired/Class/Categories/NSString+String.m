@@ -21,6 +21,43 @@
     NSString*timeStr=[formatter stringFromDate:d];
     return timeStr;
 }
+//获取当前系统时间的时间戳
++(NSInteger)getNowTimestamp{
+
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateStyle:NSDateFormatterMediumStyle];
+    [formatter setTimeStyle:NSDateFormatterShortStyle];
+    [formatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"]; // ----------设置你想要的格式,hh与HH的区别:分别表示12小时制,24小时制
+    //设置时区,这个对于时间的处理有时很重要
+    NSTimeZone* timeZone = [NSTimeZone timeZoneWithName:@"Asia/Beijing"];
+    [formatter setTimeZone:timeZone];
+    
+    NSDate *datenow = [NSDate date];//现在时间
+    //时间转时间戳的方法:
+    NSInteger timeSp = [[NSNumber numberWithDouble:[datenow timeIntervalSince1970]] integerValue]*1000;
+    return timeSp;
+    
+}
+
+//毫秒时间戳转时间
++ (NSString *)convertStringToYYYMMDD:(NSString *)timeString{
+    long long time=[timeString longLongValue];
+    NSDate *d = [[NSDate alloc]initWithTimeIntervalSince1970:time/1000.0];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+    [formatter setDateFormat:@"yyyy-MM-dd"];
+    NSString*timeStr=[formatter stringFromDate:d];
+    return timeStr;
+}
+//毫秒时间戳转时间
++ (NSString *)convertStringToYYYNMMYDDR:(NSString *)timeString{
+    long long time=[timeString longLongValue];
+    NSDate *d = [[NSDate alloc]initWithTimeIntervalSince1970:time/1000.0];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+    [formatter setDateFormat:@"yyyy年MM月dd日"];
+    NSString*timeStr=[formatter stringFromDate:d];
+    return timeStr;
+}
+
 //毫秒时间戳转几天前
 + (NSString *) compareCurrentTime:(NSString *)str{
     long long time=[str longLongValue];
@@ -56,7 +93,7 @@
     if (mobileNum.length != 11) {
         return NO;
     }
-    NSString *MOBILE = @"^1(3[0-9]|4[57]|5[0-35-9]|6[6]|8[0-9]|9[89]|7[0678])\\d{8}$";
+    NSString *MOBILE = @"^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(16[6])|(17[0,1,3,5-8])|(18[0-9])|(19[8,9]))\\d{8}$";
     NSPredicate *regextestmobile = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", MOBILE];
     return [regextestmobile evaluateWithObject:mobileNum];
 }
@@ -65,15 +102,19 @@
     if (IDCardNumber.length <= 0) {
         return NO;
     }
-    NSString *regex2 = @"^(\\d{14}|\\d{17})(\\d|[xX])$";
+    NSString *regex2 = @"^[1-9]\\d{5}[1-9]\\d{3}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}([0-9Xx])$";
     NSPredicate *identityCardPredicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",regex2];
     return [identityCardPredicate evaluateWithObject:IDCardNumber];
 }
 //银行卡
 + (BOOL)isBankCard:(NSString *)cardNumber{
-    if(cardNumber.length==0)
+    
+     //
+    if(cardNumber.length==0  ||cardNumber.length<16 )
     {
         return NO;
+    }else{
+        return YES;
     }
     NSString *digitsOnly = @"";
     char c;
@@ -212,5 +253,38 @@
     if ([deviceString isEqualToString:@"x86_64"])       return @"Simulator";
     
     return deviceString;
+}
+
+- (NSString *)changeEndTimeByKind:(NSInteger)changeKind withNum:(int)changeNum {
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+      formatter.dateFormat = @"yyyy-MM-dd HH:mm";
+      NSDate *nowDate = [formatter dateFromString:self];
+        NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSDateComponents *addComps = [[NSDateComponents alloc] init];
+        switch (changeKind) {
+               case 0:
+               [addComps setDay:changeNum];
+                  [addComps setMonth:0];
+                    [addComps setYear:0];
+                 break;
+               case 1:
+                    
+            [addComps setDay:0];
+                    [addComps setMonth:changeNum];
+                   [addComps setYear:0];
+                 break;
+                case 2:
+            [addComps setDay:0];
+                    [addComps setMonth:0];
+                     [addComps setYear:changeNum];
+                   break;
+                       default:
+                     break;
+            
+          }
+    NSDate *finallDate = [calendar dateByAddingComponents:addComps toDate:nowDate options:0];
+       NSString *endTime = [formatter stringFromDate:finallDate];
+        return endTime;
+    
 }
 @end

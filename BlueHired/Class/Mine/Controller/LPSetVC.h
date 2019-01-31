@@ -7,7 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LPUserMaterialModel.h"
 
-@interface LPSetVC : UIViewController
+@interface LPSetVC : LPBaseViewController
+@property(nonatomic,strong) LPUserMaterialModel *userMaterialModel;
 
 @end

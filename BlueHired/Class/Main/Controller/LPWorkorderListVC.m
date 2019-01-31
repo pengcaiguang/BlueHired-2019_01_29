@@ -41,7 +41,6 @@ static NSString *LPWorkorderListCellID = @"LPWorkorderListCell";
     if ([self.model.code integerValue] == 0) {
         
         self.listArray = [NSMutableArray array];
-        
         if (self.model.data.count > 0) {
             [self.listArray addObjectsFromArray:self.model.data];
             [self.tableview reloadData];
@@ -54,6 +53,7 @@ static NSString *LPWorkorderListCellID = @"LPWorkorderListCell";
 }
 -(void)addNodataView{
     LPNoDataView *noDataView = [[LPNoDataView alloc]initWithFrame:CGRectZero];
+    [noDataView image:nil text:@"抱歉！没有相关记录！"];
     [self.view addSubview:noDataView];
     [noDataView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
@@ -116,7 +116,7 @@ static NSString *LPWorkorderListCellID = @"LPWorkorderListCell";
 }
 -(void)requestDelWorkorder{
     NSDictionary *dic = @{
-                          @"workId":@(self.selectWorkId)
+                          @"workOrderId":@(self.selectWorkId)
                           };
     [NetApiManager requestDelWorkorderWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);

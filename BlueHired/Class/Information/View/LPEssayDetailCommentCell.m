@@ -36,10 +36,13 @@ static NSString *LPEssayDetailCommentReplyCellID = @"LPEssayDetailCommentReplyCe
     }
 }
 
+
+
 -(void)setModel:(LPCommentListDataModel *)model{
     _model = model;
-    [self.userUrlImgView sd_setImageWithURL:[NSURL URLWithString:model.userUrl] placeholderImage:[UIImage imageNamed:@"cricle_headimg_placeholder"]];
-    self.userNameLabel.text = model.userName;
+    [self.userUrlImgView sd_setImageWithURL:[NSURL URLWithString:model.userUrl] placeholderImage:[UIImage imageNamed:@"Head_image"]];
+    self.gradingiamge.image = [UIImage imageNamed:model.grading];
+     self.userNameLabel.text = model.userName;
     self.commentDetailsLabel.text = model.commentDetails;
     self.timeLabel.text = [NSString compareCurrentTime:[model.time stringValue]];
     
@@ -55,8 +58,15 @@ static NSString *LPEssayDetailCommentReplyCellID = @"LPEssayDetailCommentReplyCe
             make.right.mas_equalTo(0);
             make.bottom.mas_equalTo(0);
         }];
-        self.replyBgView_constraint_height.constant = 27 * (model.commentList.count > 3 ? 3 : model.commentList.count);
+//        self.replyBgView_constraint_height.constant = 27 * (model.commentList.count > 3 ? 3 : model.commentList.count);
         
+        //计算tableviewheight
+        CGFloat RowHeight = 0;
+        for (int i = 0 ;i < model.commentList.count;i++) {
+            RowHeight +=[self calculateRowHeight:[NSString stringWithFormat:@"%@:  %@",model.commentList[i].userName,model.commentList[i].commentDetails]
+                                        fontSize:13 Width:SCREEN_WIDTH-78]+11;
+        }
+        self.replyBgView_constraint_height.constant = RowHeight;
         [self.tableview reloadData];
     }else{
         self.replyBgView_constraint_height.constant = 0;
@@ -66,28 +76,43 @@ static NSString *LPEssayDetailCommentReplyCellID = @"LPEssayDetailCommentReplyCe
 
 #pragma mark - TableViewDelegate & Datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return self.model.commentList.count > 3 ? 3 : self.model.commentList.count;
+//    return self.model.commentList.count > 3 ? 3 : self.model.commentList.count;
+    return self.model.commentList.count;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     LPEssayDetailCommentReplyCell *cell = [tableView dequeueReusableCellWithIdentifier:LPEssayDetailCommentReplyCellID];
-    if (indexPath.row <= 1) {
-        cell.nameLabel.text = [NSString stringWithFormat:@"%@:",self.model.commentList[0].userName];
-        cell.contentLabel.text = self.model.commentList[indexPath.row].commentDetails;
-    }else{
-        cell.nameLabel.text = @"";
-        cell.contentLabel.text = [NSString stringWithFormat:@"查看全部%ld条回复➡️",self.model.commentList.count];
-    }
+//    if (indexPath.row <= 1) {
+//        cell.nameLabel.text = [NSString stringWithFormat:@"%@:",self.model.commentList[0].userName];
+    cell.nameLabel.text = @"";
+    NSString *str = [NSString stringWithFormat:@"%@: %@ ",self.model.commentList[indexPath.row].userName,self.model.commentList[indexPath.row].commentDetails];
+    NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:str];
+    NSMutableParagraphStyle *paraStyle01 = [[NSMutableParagraphStyle alloc] init];
+    paraStyle01.lineBreakMode = NSLineBreakByCharWrapping;
+    [string addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16.0 weight:UIFontWeightSemibold],
+                            NSParagraphStyleAttributeName:paraStyle01,
+                            NSForegroundColorAttributeName:[UIColor baseColor]}
+                    range:NSMakeRange(0, self.model.commentList[indexPath.row].userName.length+1)];
+//    [string addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:16.0 weight:UIFontWeightSemibold] range:NSMakeRange(0, self.model.commentList[indexPath.row].userName.length+1)];//设置Text这四个字母的字体为粗体
+
+    cell.contentLabel.attributedText = string;//切记使用富文本，颜色可以自由发挥了
+    cell.contentLabel.numberOfLines = 0;
+    cell.contentLabel.font = [UIFont systemFontOfSize:13];//这个很重要,必须写在富文本下面
+//    }else{
+//        cell.nameLabel.text = @"";
+//        cell.contentLabel.text = [NSString stringWithFormat:@"查看全部%ld条回复➡️",self.model.commentList.count];
+//    }
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (indexPath.row == 2) {
+//    if (indexPath.row == 2) {
         NSLog(@"查看全部");
-        LPCommentDetailVC *vc = [[LPCommentDetailVC alloc]init];
-        vc.commentListDatamodel = self.model;
-        [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
-    }
+//        LPCommentDetailVC *vc = [[LPCommentDetailVC alloc]init];
+//        vc.commentListDatamodel = self.model;
+//        vc.superTabelView = self.tableview;
+//        [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+//    }
 }
 
 //-(void)addReply{
@@ -154,6 +179,17 @@ static NSString *LPEssayDetailCommentReplyCellID = @"LPEssayDetailCommentReplyCe
     return _tableview;
 }
 
+- (CGFloat)calculateRowHeight:(NSString *)string fontSize:(NSInteger)fontSize Width:(CGFloat) W
+{
+    NSMutableParagraphStyle *paraStyle01 = [[NSMutableParagraphStyle alloc] init];
+    paraStyle01.lineBreakMode = NSLineBreakByCharWrapping;
+    NSDictionary *dic = @{NSFontAttributeName:[UIFont systemFontOfSize:fontSize],NSParagraphStyleAttributeName:paraStyle01};
+    /*计算高度要先指定宽度*/
+    CGRect rect = [string boundingRectWithSize:CGSizeMake(W, 0) options:NSStringDrawingUsesLineFragmentOrigin |
+                   NSStringDrawingUsesFontLeading attributes:dic context:nil];
+    return ceil(rect.size.height);
+    
+}
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "LPCommentListModel.h"
 
-@interface LPCommentDetailVC : UIViewController
+@interface LPCommentDetailVC : LPBaseViewController
 @property(nonatomic,strong) LPCommentListDataModel *commentListDatamodel;
-
+@property(nonatomic,strong) UITableView *superTabelView;
 @end

@@ -10,13 +10,13 @@
 #import "LPInfoListModel.h"
 #import "LPInfoCell.h"
 #import "LPInfoDetailVC.h"
+#import "LPMoodDetailVC.h"
 
 static NSString *LPInfoCellID = @"LPInfoCell";
 
 @interface LPInforCollectionViewCell ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong)UITableView *tableview;
 @property (nonatomic, assign) NSNumber *labelListModelId;
-@property(nonatomic,assign) NSInteger page;
 
 @property(nonatomic,strong) LPInfoListModel *model;
 
@@ -43,6 +43,7 @@ static NSString *LPInfoCellID = @"LPInfoCell";
 }
 -(void)setType:(NSInteger)type{
     _type = type;
+    self.page = 1;
     [self requestQueryInfolist];
 }
 -(void)setSelectStatus:(BOOL)selectStatus{
@@ -71,7 +72,6 @@ static NSString *LPInfoCellID = @"LPInfoCell";
         if (self.page == 1) {
             self.listArray = [NSMutableArray array];
         }
-        
         if (self.model.data.count > 0) {
             self.page += 1;
             [self.listArray addObjectsFromArray:self.model.data];
@@ -80,13 +80,47 @@ static NSString *LPInfoCellID = @"LPInfoCell";
             if (self.page == 1) {
                 [self.tableview reloadData];
             }else{
-                [self.tableview.mj_footer endRefreshingWithNoMoreData];
+                 [self.tableview.mj_footer endRefreshingWithNoMoreData];
             }
         }
+        
+        if (self.listArray.count == 0) {
+            self.tableview.mj_footer.alpha = 0;
+            [self addNodataViewHidden:NO];
+        }else{
+            self.tableview.mj_footer.alpha = 1;
+            [self addNodataViewHidden:YES];
+        }
+        
     }else{
         [self.contentView showLoadingMeg:NETE_ERROR_MESSAGE time:MESSAGE_SHOW_TIME];
     }
 }
+
+-(void)addNodataViewHidden:(BOOL)hidden{
+    BOOL has = NO;
+    for (UIView *view in self.contentView.subviews) {
+        if ([view isKindOfClass:[LPNoDataView class]]) {
+            view.hidden = hidden;
+            has = YES;
+        }
+    }
+    if (!has) {
+        LPNoDataView *noDataView = [[LPNoDataView alloc]initWithFrame:CGRectZero];
+        [noDataView image:nil text:@"抱歉！没有新的消息！"];
+        [self.contentView addSubview:noDataView];
+        [noDataView mas_makeConstraints:^(MASConstraintMaker *make) {
+            //            make.edges.equalTo(self.view);
+            make.left.mas_equalTo(0);
+            make.right.mas_equalTo(0);
+            make.top.mas_equalTo(49);
+            make.bottom.mas_equalTo(-47);
+        }];
+        noDataView.hidden = hidden;
+    }
+}
+
+
 #pragma mark - TableViewDelegate & Datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return self.listArray.count;
@@ -96,17 +130,36 @@ static NSString *LPInfoCellID = @"LPInfoCell";
     LPInfoCell *cell = [tableView dequeueReusableCellWithIdentifier:LPInfoCellID];
     cell.model = self.listArray[indexPath.row];
     cell.selectStatus = self.selectStatus;
-    cell.selectAll = self.selectAll;
+//    cell.selectAll = self.selectAll;
     if (self.selectStatus) {
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }else{
         cell.selectionStyle = UITableViewCellSelectionStyleDefault;
     }
+    if ([self.selectArray containsObject:cell.model]) {
+        cell.selectButton.selected = YES;
+
+     }else{
+         cell.selectButton.selected = NO;
+
+     }
+    
     cell.selectBlock = ^(LPInfoListDataModel * _Nonnull model) {
         if ([self.selectArray containsObject:model]) {
             [self.selectArray removeObject:model];
         }else{
             [self.selectArray addObject:model];
+        }
+        
+        if (self.selectArray.count == self.listArray.count)
+        {
+            self.allButton.selected = YES;
+//            self.selectAll = YES;
+        }
+        else
+        {
+            self.allButton.selected = NO;
+//            self.selectAll = NO;
         }
     };
     
@@ -114,14 +167,40 @@ static NSString *LPInfoCellID = @"LPInfoCell";
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    LPInfoDetailVC *vc = [[LPInfoDetailVC alloc]init];
-    vc.model = self.listArray[indexPath.row];
-    [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        LPInfoCell *cell = (LPInfoCell*)[tableView cellForRowAtIndexPath:indexPath];
-        cell.statusImgView.image = [UIImage imageNamed:@"info_read"];
-    });
+    if (!self.selectStatus) {
+        
+        LPInfoListDataModel *modelData = self.listArray[indexPath.row];
+        if (modelData.moodId != nil) {
+            LPMoodDetailVC *vc = [[LPMoodDetailVC alloc]init];
+            vc.Type = 3;
+            vc.hidesBottomBarWhenPushed = YES;
+            LPMoodListDataModel *moodListDataModel = [[LPMoodListDataModel alloc] init];
+            moodListDataModel.id = modelData.moodId;
+            vc.moodListDataModel = moodListDataModel;
+            vc.InfoId = [NSString stringWithFormat:@"%@",modelData.id];
+            [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                LPInfoCell *cell = (LPInfoCell*)[tableView cellForRowAtIndexPath:indexPath];
+                LPInfoListDataModel *m = self.listArray[indexPath.row];
+                m.status =@(1);
+                
+                cell.statusImgView.image = [UIImage imageNamed:@"info_read"];
+            });
+            return;
+        }
+        LPInfoDetailVC *vc = [[LPInfoDetailVC alloc]init];
+        vc.model = modelData;
+        [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            LPInfoCell *cell = (LPInfoCell*)[tableView cellForRowAtIndexPath:indexPath];
+            LPInfoListDataModel *m = self.listArray[indexPath.row];
+            m.status =@(1);
+
+            cell.statusImgView.image = [UIImage imageNamed:@"info_read"];
+        });
+    }
+
 }
 #pragma mark - request
 -(void)requestQueryInfolist{
@@ -174,12 +253,21 @@ static NSString *LPInfoCellID = @"LPInfoCell";
         _tableview.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
         [_tableview registerNib:[UINib nibWithNibName:LPInfoCellID bundle:nil] forCellReuseIdentifier:LPInfoCellID];
         
-        _tableview.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-            self.page = 1;
-            [self requestQueryInfolist];
+        _tableview.mj_header = [HZNormalHeader headerWithRefreshingBlock:^{
+            if (!self.selectStatus) {
+                self.page = 1;
+                [self requestQueryInfolist];
+            }else{
+                [self.tableview.mj_header endRefreshing];
+            }
+
         }];
         _tableview.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
-            [self requestQueryInfolist];
+            if (!self.selectStatus) {
+                [self requestQueryInfolist];
+            }else{
+                [self.tableview.mj_footer endRefreshing];
+            }
         }];
     }
     return _tableview;

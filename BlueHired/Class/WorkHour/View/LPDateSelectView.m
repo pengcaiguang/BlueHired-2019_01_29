@@ -43,7 +43,7 @@
         self.bgView.hidden = NO;
         self.selectView.hidden = NO;
         [UIView animateWithDuration:0.3 animations:^{
-            self.bgView.alpha = 0.1;
+            self.bgView.alpha = 0.5;
             self.selectView.frame = CGRectMake(0, SCREEN_HEIGHT-253, SCREEN_WIDTH, 253);
         }];
     }
@@ -54,17 +54,19 @@
 
 -(void)setSelectArray:(NSArray *)selectArray{
     _selectArray = selectArray;
-    NSDate *currentDate = [NSDate date];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"YYYY-MM"];
-    NSString *string = [dateFormatter stringFromDate:currentDate];
+//    NSDate *currentDate = [NSDate date];
+//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//    [dateFormatter setDateFormat:@"YYYY-MM"];
+//    NSString *string = [dateFormatter stringFromDate:currentDate];
     self.selectDateArray = [NSMutableArray array];
     for (NSString *str in selectArray) {
-        NSString *dateString = [NSString stringWithFormat:@"%@-%@",string,str];
-        [self.selectDateArray addObject:dateString];
+//        NSString *dateString = [NSString stringWithFormat:@"%@-%@",string,str];
+//        [self.selectDateArray addObject:dateString];
+        [self.selectDateArray addObject:str];
     }
     [self.calendar reloadData];
 }
+
 
 #pragma mark - FSCalendarDelegate
 
@@ -107,6 +109,22 @@
 - (void)calendar:(FSCalendar *)calendar willDisplayCell:(FSCalendarCell *)cell forDate:(NSDate *)date atMonthPosition: (FSCalendarMonthPosition)monthPosition
 {
     [self configureCell:cell forDate:date atMonthPosition:monthPosition];
+}
+
+
+- (void)calendarCurrentPageDidChange:(FSCalendar *)calendar {
+    
+    NSLog(@"calendar.currentPage--  %@",calendar.currentPage);
+    //日历翻页时记录第一天
+//        NSDate *changeDate = [calendar tomorrowOfDate:calendar.currentPage];
+    NSDate *changeDate = calendar.currentPage;
+    [self.calendar setCurrentPage:changeDate animated:YES];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat = @"yyyy-MM";
+    NSString *string = [dateFormatter stringFromDate:calendar.currentPage];
+    if (self.pageblock) {
+        self.pageblock(string);
+    }
 }
 
 #pragma mark - Private methods
@@ -157,20 +175,37 @@
         FSCalendar *calendar = [[FSCalendar alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 253)];
         calendar.dataSource = self;
         calendar.delegate = self;
-        calendar.scrollDirection = FSCalendarScrollDirectionVertical;
+//        calendar.scrollDirection = FSCalendarScrollDirectionVertical;
         calendar.backgroundColor = [UIColor whiteColor];
-        calendar.scrollEnabled = NO;
+//        calendar.scrollEnabled = NO;
         calendar.locale = [NSLocale localeWithLocaleIdentifier:@"zh-CN"];
         calendar.appearance.selectionColor = [UIColor baseColor];
         calendar.appearance.weekdayTextColor = [UIColor baseColor];
         calendar.appearance.headerTitleColor = [UIColor baseColor];
         calendar.appearance.todayColor = [UIColor baseColor];
         calendar.today = nil;
+//        calendar.pagingEnabled = NO;
         [calendar selectDate:[NSDate date]];
         calendar.appearance.headerDateFormat = @"yyyy年MM月";
+//         _calendar.headerHeight = 0.0f
         calendar.placeholderType = FSCalendarPlaceholderTypeNone;
+        calendar.appearance.headerMinimumDissolvedAlpha = 0;
+        calendar.scope = FSCalendarScopeMonth;
         [calendar registerClass:[LPCalendarCell class] forCellReuseIdentifier:@"cell"];
         [_selectView addSubview:calendar];
+        calendar.scrollDirection = FSCalendarScrollDirectionHorizontal;
+
+        UIButton *TopBt = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 60, 40)];
+//        TopBt.backgroundColor = [UIColor redColor];
+        [TopBt setImage:[UIImage imageNamed:@"left_arrow"] forState:UIControlStateNormal];
+        [TopBt addTarget:self action:@selector(TopBtTouch) forControlEvents:UIControlEventTouchUpInside];
+        [_selectView addSubview:TopBt];
+        
+        UIButton *NextBt = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH-60, 0, 60, 40)];
+        [NextBt setImage:[UIImage imageNamed:@"right_arrow"] forState:UIControlStateNormal];
+        [NextBt addTarget:self action:@selector(NextBtTouch) forControlEvents:UIControlEventTouchUpInside];
+        [_selectView addSubview:NextBt];
+ 
         
         self.calendar = calendar;
         
@@ -185,4 +220,30 @@
     }
     return _selectView;
 }
+
+-(void)TopBtTouch{
+    
+     NSDate *changeDate = _calendar.currentPage;
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+     formatter.dateFormat = @"yyyy-MM-dd HH:mm";
+     NSString *nowDate = [formatter stringFromDate:changeDate];
+    
+    NSString *da = [nowDate changeEndTimeByKind:1 withNum:-1];
+    [self.calendar setCurrentPage:[formatter dateFromString:da] animated:YES];
+ }
+
+-(void)NextBtTouch{
+    NSDate *changeDate = _calendar.currentPage;
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+     formatter.dateFormat = @"yyyy-MM-dd HH:mm";
+     NSString *nowDate = [formatter stringFromDate:changeDate];
+    
+    NSString *da = [nowDate changeEndTimeByKind:1 withNum:1];
+    [self.calendar setCurrentPage:[formatter dateFromString:da] animated:YES];
+
+}
+
+
+
+
 @end

@@ -30,6 +30,8 @@
 @property(nonatomic,assign) CGFloat labourCost;
 @property(nonatomic,assign) CGFloat workReHour;
 
+@property(nonatomic,strong) UIButton *senBt;
+
 @end
 
 @implementation LPHourlyWorkVC
@@ -40,7 +42,14 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = @"小时工";
 
-    self.timeArray = @[@"0.5",@"1",@"1.5",@"2",@"2.5",@"3",@"3.5",@"4",@"4.5",@"5",@"5.5",@"6",@"6.5",@"7",@"7.5",@"8",@"8.5",@"9",@"9.5",@"10",@"10.5",@"11",@"11.5",@"12",@"12.5",@"13",@"13.5",@"14",@"14.5",@"15",@"15.5",@"16",@"16.5",@"17",@"17.5",@"18",@"18.5",@"19",@"19.5",@"20",@"20.5",@"21",@"21.5",@"22",@"22.5",@"23",@"23.5",@"24"];
+    self.timeArray = @[@"1",@"2",@"3",@"4",@"5",@"6",
+                       @"0.5",@"1.5",@"2.5",@"3.5",@"4.5",@"5.5",
+                       @"7",@"8",@"9",@"10",@"11",@"12",
+                       @"6.5",@"7.5",@"8.5",@"9.5",@"10.5",@"11.5",
+                       @"13",@"14",@"15",@"16",@"17",@"18",
+                       @"12.5",@"13.5",@"14.5",@"15.5",@"16.5",@"17.5",
+                       @"19",@"20",@"21",@"22",@"23",@"24",
+                       @"18.5",@"19.5",@"20.5",@"21.5",@"22.5",@"23.5"];
 
     
     NSDate *currentDate = [NSDate date];
@@ -49,8 +58,12 @@
     self.currentDateString = [dateFormatter stringFromDate:currentDate];
     
     [self setupUI];
-    [self requestQueryCurrecord];
     
+    
+}
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self requestQueryCurrecord];
 }
 
 -(void)setupUI{
@@ -127,13 +140,26 @@
     //    if (model.data) {
     self.workReHour = model.data.workReHour.floatValue;
     self.labourCost = model.data.labourCost.floatValue;
+    [self  istouchRecordButton];
     [self.tableview reloadData];
     //    }
 }
 
 #pragma mark - tagter
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    NSString * str = [NSString stringWithFormat:@"%@%@",textField.text,string];
+    //匹配以0开头的数字
+    NSPredicate * predicate0 = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",@"^[0][0-9]+$"];
+    //匹配两位小数、整数
+    NSPredicate * predicate1 = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",@"^(([1-9]{1}[0-9]*|[0])\.?[0-9]{0,2})$"];
+    return ![predicate0 evaluateWithObject:str] && [predicate1 evaluateWithObject:str] ? YES : NO;
+}
+
+
 -(void)textFieldChanged:(UITextField *)textField{
     self.labourCost = [textField.text floatValue];
+    [self istouchRecordButton];
 }
 -(void)selectCalenderButton:(UIButton *)button{
     if (!self.normalRecordArray) {
@@ -151,7 +177,11 @@
         [weakSelf.timeButton setTitle:string forState:UIControlStateNormal];
         [weakSelf requestQueryCurrecord];
     };
-}
+    
+    self.dateSelectView.pageblock = ^(NSString *string) {
+        [weakSelf requestQueryNormalrecordWithShowCalenderPage:string];
+    };
+ }
 -(void)touchDeleteButton{
     if (!self.model.data) {
         [self.view showLoadingMeg:@"该日期没有记录" time:MESSAGE_SHOW_TIME];
@@ -171,8 +201,28 @@
         [self.view showLoadingMeg:@"请选择工时及工价" time:MESSAGE_SHOW_TIME];
         return;
     }
+    
+    if (self.labourCost * self.workReHour >999) {
+        [self.view showLoadingMeg:@"你填写的工时信息不符合实际，无法记录" time:MESSAGE_SHOW_TIME];
+        return;
+    }
+    
     [self requestSaveorupdateWorkhour];
 }
+
+-(void)istouchRecordButton
+{
+    if (self.labourCost && self.workReHour) {
+            self.senBt.backgroundColor = [UIColor baseColor];
+            self.senBt.enabled = YES;
+    }
+    else
+    {
+        self.senBt.backgroundColor = [UIColor colorWithHexString:@"#e6e6e6"];
+        self.senBt.enabled = NO;
+    }
+}
+
 #pragma mark - TableViewDelegate & Datasource
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;
@@ -228,20 +278,38 @@
     }else {
         cell.textLabel.text = @"工价";
 
+        
+        
         UITextField *textField = [[UITextField alloc]init];
         [cell.contentView addSubview:textField];
         [textField mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.mas_equalTo(-13);
+            make.right.mas_equalTo(-83);
             make.centerY.equalTo(cell.contentView);
             make.left.mas_equalTo(cell.textLabel.mas_right).offset(10);
         }];
-        textField.placeholder = @"请输入工价(元/小时)";
+        textField.placeholder = @"请输入工价";
+        textField.keyboardType = UIKeyboardTypeDecimalPad;
         textField.textAlignment = NSTextAlignmentRight;
         textField.font = [UIFont systemFontOfSize:16];
         textField.textColor = [UIColor colorWithHexString:@"#939393"];
         [textField addTarget:self action:@selector(textFieldChanged:) forControlEvents:UIControlEventEditingChanged];
+        textField.delegate = self;
 
-        textField.text = self.model.data.labourCost ? [NSString stringWithFormat:@"%.2f元/小时",self.model.data.labourCost.floatValue] : @"";
+        textField.text = self.model.data.labourCost ? [NSString stringWithFormat:@"%.1f",self.model.data.labourCost.floatValue] : @"";
+        
+        UILabel *label = [[UILabel alloc] init];
+        [cell.contentView addSubview:label];
+        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.mas_equalTo(-13);
+            make.width.mas_equalTo(70);
+            make.centerY.equalTo(cell.contentView);
+            make.left.mas_equalTo(textField.mas_right).offset(5);
+        }];
+        label.text = @"元/小时";
+        label.textColor = [UIColor colorWithHexString:@"#939393"];
+        label.textAlignment = NSTextAlignmentLeft;
+
+        
     }
     
     return cell;
@@ -258,6 +326,7 @@
         self.durationView.block = ^(NSInteger index) {
             weakSelf.workReHour = [weakSelf.timeArray[index] floatValue];
             cell.detailTextLabel.text = weakSelf.timeArray[index];
+            [weakSelf  istouchRecordButton];
         };
     }
 }
@@ -283,9 +352,11 @@
     }];
 }
 -(void)requestQueryNormalrecordWithShowCalender:(BOOL)show{
-    NSDate *currentDate = [NSDate date];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"YYYY-MM-dd"];
+    NSDate *currentDate =[dateFormatter dateFromString:self.currentDateString];
     [dateFormatter setDateFormat:@"YYYY-MM"];
+
     NSString *string = [dateFormatter stringFromDate:currentDate];
     
     NSDictionary *dic = @{
@@ -297,7 +368,15 @@
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
                 NSArray *array = responseObject[@"data"];
-                self.normalRecordArray = array;
+                NSMutableArray *strList = [[NSMutableArray alloc] init];
+                for (NSString *str in array) {
+                    NSLog(@"str  %@",str);
+                    [strList addObject:[NSString stringWithFormat:@"%@-%@",string,str]];
+                }
+                self.normalRecordArray = [strList copy];
+//                self.normalRecordArray = array;
+                [self requestQueryCurrecord];
+
                 if (show) {
                     [self showCalender];
                 }
@@ -307,6 +386,32 @@
         }
     }];
 }
+
+
+-(void)requestQueryNormalrecordWithShowCalenderPage:(NSString *)string {
+    NSDictionary *dic = @{
+                          @"type":@(1),
+                          @"month":string
+                          };
+    [NetApiManager requestQueryNormalrecordWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                NSArray *array = responseObject[@"data"];
+                NSMutableArray *strList = [[NSMutableArray alloc] init];
+                for (NSString *str in array) {
+                    NSLog(@"str  %@",str);
+                    [strList addObject:[NSString stringWithFormat:@"%@-%@",string,str]];
+                }
+                self.normalRecordArray = [strList copy];
+                self.dateSelectView.selectArray = self.normalRecordArray;
+            }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+
 -(void)requestSaveorupdateWorkhour{
     NSDictionary *dic = @{
                           @"labourCost":self.labourCost ? @(self.labourCost) : @"",
@@ -314,15 +419,24 @@
                           @"time":self.currentDateString,
                           @"optType":self.model.data ? @(2) : @(1),
                           @"type":@(1),
+                          @"versionType":@"2.1"
                           };
     [NetApiManager requestSaveorupdateWorkhourWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            if (responseObject[@"data"]) {
-                if ([responseObject[@"data"] integerValue] == 1) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                
+                if ([responseObject[@"data"] integerValue] == 1 ||[responseObject[@"data"] integerValue] == 2) {
+                    if ([responseObject[@"data"] integerValue] == 2) {
+                        [LPTools AlertWorkHourView:@""];
+                    }
                     [self.view showLoadingMeg:@"记录成功" time:MESSAGE_SHOW_TIME];
                     [self requestQueryNormalrecordWithShowCalender:NO];
+                }else{
+                    [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
                 }
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
@@ -368,6 +482,7 @@
         _tableFooterView = [[UIView alloc]init];
         _tableFooterView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 150);
         UIButton *recordButton = [[UIButton alloc]init];
+        self.senBt = recordButton;
         recordButton.frame = CGRectMake(13, 21, SCREEN_WIDTH-26, 48);
         recordButton.backgroundColor = [UIColor baseColor];
         [recordButton setTitle:@"工时记录" forState:UIControlStateNormal];

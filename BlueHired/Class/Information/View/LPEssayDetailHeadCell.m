@@ -8,7 +8,7 @@
 
 #import "LPEssayDetailHeadCell.h"
 
-@interface LPEssayDetailHeadCell() <WKNavigationDelegate,WKUIDelegate>
+@interface LPEssayDetailHeadCell() <WKNavigationDelegate,WKUIDelegate,UIScrollViewDelegate>
 @property (nonatomic, strong) WKWebView *wkWebView;
 @property (nonatomic,assign) BOOL reloadTable;
 
@@ -31,18 +31,10 @@
         return;
     }
     _model = model;
-    
-    self.essayNameLabel.text = model.data.essayName;
-    self.essayAuthorLabel.text = model.data.essayAuthor;
-    self.timeLabel.text = [NSString convertStringToTime:[model.data.time stringValue]];
-    self.viewLabel.text = model.data.view ? [model.data.view stringValue] : @"0";
-    self.commentTotalLabel.text = model.data.commentTotal ? [model.data.commentTotal stringValue] : @"0";
-    self.praiseTotalLabel.text = model.data.praiseTotal ? [model.data.praiseTotal stringValue] : @"0";
-    
+
     if (!kStringIsEmpty(model.data.essayDetails)) {
 //        [self.wkWebView loadHTMLString:model.data.essayDetails baseURL:nil];
-        [self.wkWebView loadHTMLString:[NSString stringWithFormat:@"<html><head><meta content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0\" name=\"viewport\"><style type=\"text/css\">img{display: inline-block;max-width: 100%%}</style></head><body>\%@</body></html>",model.data.essayDetails] baseURL: nil];
-
+        [self.wkWebView loadHTMLString:[NSString stringWithFormat:@"<html><head><meta content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0\" name=\"viewport\"><style type=\"text/css\">img{display: inline-block;max-width: 100%%;width:auto; height:auto;}</style></head><body>\%@</body></html>",model.data.essayDetails] baseURL: nil];
     }
     
 }
@@ -50,14 +42,37 @@
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
     self.wkWebView.scrollView.scrollEnabled = NO;
+    NSString *js = [NSString stringWithFormat:@"function changeImgWH() { \
+                        var imgs = document.getElementsByTagName('img'); \
+                        var objs = document.getElementsByTagName('a'); \
+                        for (var i = 0; i < objs.length; ++i) {\
+                            objs[i].removeAttribute('style');\
+                            } \
+                        }   \
+                        changeImgWH(); "];
+    
+    [webView evaluateJavaScript:js completionHandler:^(id result, NSError *_Nullable error) {
+    }];
+    WEAK_SELF()
     [webView evaluateJavaScript:@"document.body.scrollHeight"
               completionHandler:^(id result, NSError *_Nullable error) {
                   CGFloat documentHeight = [result doubleValue];
                   NSLog(@"%f",documentHeight);
-                  self.webBgView_constraint_height.constant = documentHeight;
-                  [self.tableView beginUpdates];
-                  [self.tableView endUpdates];
-
+                  weakSelf.webBgView_constraint_height.constant = documentHeight;
+                  
+                  weakSelf.essayNameLabel.text = weakSelf.model.data.essayName;
+                  weakSelf.essayAuthorLabel.text = weakSelf.model.data.essayAuthor;
+                  weakSelf.timeLabel.text = [NSString convertStringToTime:[weakSelf.model.data.time stringValue]];
+                  weakSelf.viewLabel.text = weakSelf.model.data.view ? [weakSelf.model.data.view stringValue] : @"0";
+                  weakSelf.commentTotalLabel.text = weakSelf.model.data.commentTotal ? [weakSelf.model.data.commentTotal stringValue] : @"0";
+                  weakSelf.praiseTotalLabel.text = weakSelf.model.data.praiseTotal ? [weakSelf.model.data.praiseTotal stringValue] : @"0";
+ 
+                  
+                  
+                  if (weakSelf.Block) {
+                      weakSelf.Block(documentHeight);
+                  }
+                  
               }];
 }
 
@@ -79,10 +94,14 @@
         _wkWebView.opaque = NO;
         _wkWebView.userInteractionEnabled = NO;
         _wkWebView.scrollView.bounces = NO;
+        _wkWebView.scrollView.delegate = self;
         [_wkWebView sizeToFit];
     }
     return _wkWebView;
 }
+
+
+
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 

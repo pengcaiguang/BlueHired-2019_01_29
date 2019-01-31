@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LPInformationVC : UIViewController
+@interface LPInformationVC : LPBaseViewController
+@property (nonatomic,strong) UICollectionView *videocollectionView;
+@property (nonatomic,assign) BOOL IsBackVideo;
 
 @end

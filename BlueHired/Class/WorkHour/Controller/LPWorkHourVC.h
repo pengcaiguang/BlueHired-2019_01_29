@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LPWorkHourVC : UIViewController
-
+@interface LPWorkHourVC : LPBaseViewController
+@property(nonatomic,assign) BOOL isPush;
 @end

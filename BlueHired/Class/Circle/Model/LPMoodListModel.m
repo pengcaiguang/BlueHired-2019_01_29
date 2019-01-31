@@ -18,5 +18,19 @@
 
 
 @implementation LPMoodListDataModel
++ (NSDictionary *)objectClassInArray {
+    return @{
+             @"commentModelList": @"LPMoodCommentListDataModel",
+             @"praiseList": @"LPMoodPraiseListDataModel",
+             };
+}
+
+@end
+
+@implementation LPMoodCommentListDataModel
+
+@end
+
+@implementation LPMoodPraiseListDataModel
 
 @end

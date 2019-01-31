@@ -17,6 +17,7 @@
 @interface LPSortAlertView : UIView
 
 @property(nonatomic,strong) UIButton *touchButton;
+@property(nonatomic,strong) NSArray *titleArray;
 
 @property (nonatomic,assign)id <LPSortAlertViewDelegate>delegate;
 

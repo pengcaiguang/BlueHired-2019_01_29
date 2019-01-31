@@ -9,9 +9,12 @@
 #import "LPSalarycCardVC.h"
 #import "LPSalarycCardBindVC.h"
 #import "LPSalarycCardChangePasswordVC.h"
+#import "LPBankcardwithDrawModel.h"
+#import "LPSalarycCard2VC.h"
 
 @interface LPSalarycCardVC ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong)UITableView *tableview;
+@property(nonatomic,strong) LPBankcardwithDrawModel *model;
 
 @end
 
@@ -25,6 +28,8 @@
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
+    [self requestQueryBankcardwithDraw];
+
 }
 
 #pragma mark - TableViewDelegate & Datasource
@@ -51,9 +56,17 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.row == 0) {
-        LPSalarycCardBindVC *vc = [[LPSalarycCardBindVC alloc]init];
+//        LPSalarycCardBindVC *vc = [[LPSalarycCardBindVC alloc]init];
+        LPSalarycCard2VC *vc = [[LPSalarycCard2VC alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     }else{
+        if (_model.data.type.integerValue == 1) {
+            GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"请先进行工资卡绑定！" message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"确定"] buttonsColor:@[[UIColor whiteColor]] buttonsBackgroundColors:@[[UIColor baseColor]] buttonClick:^(NSInteger buttonIndex) {
+            }];
+            [alert show];
+            return;
+        }
+        
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm";
         NSString *string = [dateFormatter stringFromDate:[NSDate date]];
@@ -69,7 +82,10 @@
                 [alert show];
                 return;
             }
-            kUserDefaultsRemove(@"ERRORTIMES");
+            else
+            {
+                kUserDefaultsRemove(@"ERRORTIMES");
+            }
         }
         LPSalarycCardChangePasswordVC *vc = [[LPSalarycCardChangePasswordVC alloc]init];
         [self.navigationController pushViewController:vc animated:YES];
@@ -107,6 +123,19 @@
     }
     return _tableview;
 }
+
+
+-(void)requestQueryBankcardwithDraw{
+    [NetApiManager requestQueryBankcardwithDrawWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            self.model = [LPBankcardwithDrawModel mj_objectWithKeyValues:responseObject];
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+
 /*
 #pragma mark - Navigation
 

@@ -25,6 +25,7 @@
 @property(nonatomic,strong) UIButton *getVerificationCodeButton;
 
 @property(nonatomic,strong) NSString *token;
+@property(nonatomic,strong) NSString *phone;
 
 @end
 
@@ -44,10 +45,11 @@
     [self.view addSubview:logoImg];
     [logoImg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(70, 70));
-        make.top.mas_equalTo(104);
+        make.top.mas_equalTo(27);
         make.centerX.equalTo(self.view);
     }];
-    logoImg.backgroundColor = [UIColor baseColor];
+//    logoImg.backgroundColor = [UIColor baseColor];
+    logoImg.image = [UIImage imageNamed:@"logo_Information"];
     
     UILabel *textLabel = [[UILabel alloc]init];
     [self.view addSubview:textLabel];
@@ -56,18 +58,28 @@
         make.centerX.equalTo(logoImg);
         make.height.mas_equalTo(18);
     }];
-    textLabel.text = @"为企业寻求人才";
+    textLabel.text = @"蓝聘,专注于服务蓝领人士";
     textLabel.font = [UIFont systemFontOfSize:19];
     textLabel.textColor = [UIColor baseColor];
     
     self.phoneBgView = [[UIView alloc]init];
     [self.view addSubview:self.phoneBgView];
-    [self.phoneBgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(50);
-        make.right.mas_equalTo(-50);
-        make.top.equalTo(textLabel.mas_bottom).offset(50);
-        make.height.mas_equalTo(44);
-    }];
+    if (SCREEN_WIDTH == 320) {
+        [self.phoneBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(30);
+            make.right.mas_equalTo(-30);
+            make.top.equalTo(textLabel.mas_bottom).offset(30);
+            make.height.mas_equalTo(44);
+        }];
+    }else{
+        [self.phoneBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(50);
+            make.right.mas_equalTo(-50);
+            make.top.equalTo(textLabel.mas_bottom).offset(50);
+            make.height.mas_equalTo(44);
+        }];
+    }
+    
     self.phoneBgView.layer.masksToBounds = YES;
     self.phoneBgView.layer.cornerRadius = 6;
     self.phoneBgView.layer.borderColor = [UIColor lightGrayColor].CGColor;
@@ -99,12 +111,22 @@
     
     self.passwordBgView = [[UIView alloc]init];
     [self.view addSubview:self.passwordBgView];
-    [self.passwordBgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(50);
-        make.right.mas_equalTo(-50);
-        make.top.equalTo(self.phoneBgView.mas_bottom).offset(22);
-        make.height.mas_equalTo(44);
-    }];
+    if (SCREEN_WIDTH == 320) {
+        [self.passwordBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(30);
+            make.right.mas_equalTo(-30);
+            make.top.equalTo(self.phoneBgView.mas_bottom).offset(22);
+            make.height.mas_equalTo(44);
+        }];
+    }else{
+        [self.passwordBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(50);
+            make.right.mas_equalTo(-50);
+            make.top.equalTo(self.phoneBgView.mas_bottom).offset(22);
+            make.height.mas_equalTo(44);
+        }];
+    }
+    
     self.passwordBgView.layer.masksToBounds = YES;
     self.passwordBgView.layer.cornerRadius = 6;
     self.passwordBgView.layer.borderColor = [UIColor lightGrayColor].CGColor;
@@ -147,12 +169,22 @@
     
     self.repasswordBgView = [[UIView alloc]init];
     [self.view addSubview:self.repasswordBgView];
-    [self.repasswordBgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(50);
-        make.right.mas_equalTo(-50);
-        make.top.equalTo(self.passwordBgView.mas_bottom).offset(22);
-        make.height.mas_equalTo(44);
-    }];
+    if (SCREEN_WIDTH == 320) {
+        [self.repasswordBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(30);
+            make.right.mas_equalTo(-30);
+            make.top.equalTo(self.passwordBgView.mas_bottom).offset(22);
+            make.height.mas_equalTo(44);
+        }];
+    }else{
+        [self.repasswordBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(50);
+            make.right.mas_equalTo(-50);
+            make.top.equalTo(self.passwordBgView.mas_bottom).offset(22);
+            make.height.mas_equalTo(44);
+        }];
+    }
+    
     self.repasswordBgView.layer.masksToBounds = YES;
     self.repasswordBgView.layer.cornerRadius = 6;
     self.repasswordBgView.layer.borderColor = [UIColor lightGrayColor].CGColor;
@@ -196,16 +228,27 @@
     
     self.verificationCodeBgView = [[UIView alloc]init];
     [self.view addSubview:self.verificationCodeBgView];
-    [self.verificationCodeBgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(50);
-        make.right.mas_equalTo(-50);
-        make.top.equalTo(self.repasswordBgView.mas_bottom).offset(22);
-        make.height.mas_equalTo(44);
-    }];
+    if (SCREEN_WIDTH == 320) {
+        [self.verificationCodeBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(30);
+            make.right.mas_equalTo(-30);
+            make.top.equalTo(self.repasswordBgView.mas_bottom).offset(22);
+            make.height.mas_equalTo(44);
+        }];
+    }else{
+        [self.verificationCodeBgView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(50);
+            make.right.mas_equalTo(-50);
+            make.top.equalTo(self.repasswordBgView.mas_bottom).offset(22);
+            make.height.mas_equalTo(44);
+        }];
+    }
+    
     self.verificationCodeBgView.layer.masksToBounds = YES;
     self.verificationCodeBgView.layer.cornerRadius = 6;
     self.verificationCodeBgView.layer.borderColor = [UIColor lightGrayColor].CGColor;
     self.verificationCodeBgView.layer.borderWidth = 0.5;
+ 
     
     UIImageView *verificationCodeImg = [[UIImageView alloc]init];
     [self.verificationCodeBgView addSubview:verificationCodeImg];
@@ -228,7 +271,7 @@
     self.verificationCodeTextField.delegate = self;
     self.verificationCodeTextField.placeholder = @"请输入验证码";
     self.verificationCodeTextField.tintColor = [UIColor baseColor];
-    
+    self.verificationCodeTextField.keyboardType = UIKeyboardTypeNumberPad;
     
     UIView *lineView = [[UIView alloc]init];
     [self.verificationCodeBgView addSubview:lineView];
@@ -364,6 +407,12 @@
         [self.view showLoadingMeg:@"请输入正确的验证码" time:MESSAGE_SHOW_TIME];
         return;
     }
+    
+    if (![self.phoneTextField.text isEqualToString:self.phone]) {
+        [self.view showLoadingMeg:@"手机号错误" time:MESSAGE_SHOW_TIME];
+        return;
+    }
+    
     [self requestMateCode];
 }
 
@@ -459,9 +508,12 @@
             if ([responseObject[@"code"] integerValue] == 0) {
                 if (responseObject[@"data"]) {
                     self.token = responseObject[@"data"];
+                    self.phone = self.phoneTextField.text;
                 }
                 [self.view showLoadingMeg:@"验证码发送成功" time:MESSAGE_SHOW_TIME];
                 [self openCountdown];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
@@ -500,7 +552,11 @@
     [NetApiManager requestMateCodeWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            [self requestSetPswWithParam];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                [self requestSetPswWithParam];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

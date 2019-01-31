@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LPFIRMlizhiViewController">
+            <connections>
+                <outlet property="dateBt" destination="a56-Ig-Lyi" id="CR9-Fg-Keq"/>
+                <outlet property="statusBt1" destination="leu-XG-WT0" id="e8t-v8-Eiw"/>
+                <outlet property="statusBt2" destination="3mJ-y9-N5c" id="WSY-o1-Y07"/>
+                <outlet property="textView" destination="d5A-ju-OsH" id="sVk-bM-zK0"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="d5A-ju-OsH">
+                    <rect key="frame" x="19" y="91" width="337" height="129"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="129" id="5fR-T3-iQe"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3mJ-y9-N5c">
+                    <rect key="frame" x="177" y="52" width="60" height="20"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="60" id="VrW-xb-doL"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <state key="normal" title="辞职" image="add_ record_normal">
+                        <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <state key="selected" image="add_ record_selected"/>
+                    <connections>
+                        <action selector="TouchStatus:" destination="-1" eventType="touchUpInside" id="bga-Ka-gNk"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="离职日期:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sWT-az-QBf">
+                    <rect key="frame" x="16" y="17" width="61.5" height="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a56-Ig-Lyi">
+                    <rect key="frame" x="85.5" y="11" width="224" height="29"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="29" id="ceo-8c-AIR"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <state key="normal" title="请输入离职日期（如:2018-02-12）">
+                        <color key="titleColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="touchselectDateBt:" destination="-1" eventType="touchUpInside" id="ZYt-eX-6iR"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" selected="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="leu-XG-WT0">
+                    <rect key="frame" x="102" y="52" width="60" height="20"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="60" id="4Ku-PG-ZcE"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <state key="normal" title="自离" image="add_ record_normal">
+                        <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <state key="selected" image="add_ record_selected"/>
+                    <connections>
+                        <action selector="TouchStatus:" destination="-1" eventType="touchUpInside" id="Ivu-A3-yo6"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="离职日期:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cbE-cd-Mpn">
+                    <rect key="frame" x="16" y="54" width="61.5" height="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2JL-Hm-Oi1">
+                    <rect key="frame" x="0.0" y="619" width="375" height="48"/>
+                    <color key="backgroundColor" red="0.23529411759999999" green="0.68627450980000004" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="16U-aG-sto"/>
+                    </constraints>
+                    <state key="normal" title="确定">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="TouchUpdate:" destination="-1" eventType="touchUpInside" id="8Rr-AS-CHY"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="2JL-Hm-Oi1" firstAttribute="bottom" secondItem="Q5M-cg-NOt" secondAttribute="bottom" id="I7O-a4-w17"/>
+                <constraint firstItem="leu-XG-WT0" firstAttribute="leading" secondItem="cbE-cd-Mpn" secondAttribute="trailing" constant="24.5" id="Jd4-xe-tbW"/>
+                <constraint firstItem="d5A-ju-OsH" firstAttribute="top" secondItem="3mJ-y9-N5c" secondAttribute="bottom" constant="19" id="Om8-eD-Ymk"/>
+                <constraint firstItem="leu-XG-WT0" firstAttribute="top" secondItem="a56-Ig-Lyi" secondAttribute="bottom" constant="12" id="SZB-pB-lYe"/>
+                <constraint firstItem="a56-Ig-Lyi" firstAttribute="leading" secondItem="sWT-az-QBf" secondAttribute="trailing" constant="8" id="Yw5-Yu-KUY"/>
+                <constraint firstItem="2JL-Hm-Oi1" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="Zvw-cR-Wxb"/>
+                <constraint firstItem="d5A-ju-OsH" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="19" id="j52-XP-nN6"/>
+                <constraint firstItem="3mJ-y9-N5c" firstAttribute="top" secondItem="a56-Ig-Lyi" secondAttribute="bottom" constant="12" id="l0d-lY-SUa"/>
+                <constraint firstItem="2JL-Hm-Oi1" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="lGo-cS-aMG"/>
+                <constraint firstItem="sWT-az-QBf" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="17" id="lJV-I1-X1r"/>
+                <constraint firstItem="cbE-cd-Mpn" firstAttribute="top" secondItem="sWT-az-QBf" secondAttribute="bottom" constant="20" id="oKv-0I-EJo"/>
+                <constraint firstItem="cbE-cd-Mpn" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="16" id="s1l-ZD-uxZ"/>
+                <constraint firstItem="3mJ-y9-N5c" firstAttribute="leading" secondItem="leu-XG-WT0" secondAttribute="trailing" constant="15" id="sye-pm-w2Y"/>
+                <constraint firstItem="sWT-az-QBf" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="16" id="uFo-Z8-xd0"/>
+                <constraint firstItem="a56-Ig-Lyi" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="11" id="xdF-wE-s5V"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="d5A-ju-OsH" secondAttribute="trailing" constant="19" id="yXo-Hf-WMf"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+            <point key="canvasLocation" x="-295.19999999999999" y="-154.27286356821591"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="add_ record_normal" width="12" height="12"/>
+        <image name="add_ record_selected" width="12" height="12"/>
+    </resources>
+</document>

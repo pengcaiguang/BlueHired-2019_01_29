@@ -31,5 +31,6 @@
 @property (nonatomic, copy) NSNumber *type;
 @property (nonatomic, copy) NSNumber *userId;
 @property (nonatomic, copy) NSString *userName;
+
 @end
 

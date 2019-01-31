@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LPBillRecordVC : UIViewController
+@interface LPBillRecordVC : LPBaseViewController
 
 @end
 

@@ -97,14 +97,17 @@ static NSString *CityRecently = @"CityRecently";
 }
 -(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
     NSLog(@"-%@",searchBar.text);
-    if (searchText.length  == 0) {
+    
+    NSString *str = [searchBar.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    
+    if (str.length  == 0) {
         self.isSearch = NO;
         NSArray *cityArray = [self.manager getCity];
         [self addNodataViewHidden:YES];
         [self sortArray:cityArray];
     }else{
         self.isSearch = YES;
-        NSArray *array = [self.manager query:searchBar.text];
+        NSArray *array = [self.manager query:str];
         if (array.count > 0) {
             [self addNodataViewHidden:YES];
             [self sortArray:array];

@@ -13,7 +13,6 @@ target 'BlueHired' do
   # Pods for BlueHired
     pod 'AFNetworking'
     pod 'MJExtension'
-    pod 'SDWebImage'
     pod 'MJRefresh'
     pod 'RTRootNavigationController'
     pod 'Masonry'
@@ -24,12 +23,23 @@ target 'BlueHired' do
     pod 'FSCalendar'
     pod 'SCIndexView'
     pod 'HXPhotoPicker', '~> 2.2.1'
-    
-    
+ 
     pod 'Firebase'
     pod 'Firebase/Core'
     pod 'Fabric', '~> 1.7.11'
     pod 'Crashlytics', '~> 3.10.7'
+    pod 'TXLiteAVSDK_Player'  # 腾讯云播放器-独立播放器版
+    pod 'YYText'   
+    pod 'BaiduMapKit'
+    pod 'BMKLocationKit'
+    pod 'SDWebImage'
+    pod 'JWNetAutoCache'
+    pod 'Qiniu', '~> 7.1'
+#    pod 'QFDatePicker'
+    pod 'AMapLocation'
+    pod 'WechatOpenSDK'
+    pod 'YBAttributeTextTapAction'
+    pod 'SDAutoLayout'
     
     
   target 'BlueHiredTests' do

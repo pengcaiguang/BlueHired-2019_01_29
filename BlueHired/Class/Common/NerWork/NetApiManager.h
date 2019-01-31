@@ -7,11 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "QiniuSDK.h"
 
 typedef void(^response)(BOOL isSuccess,id responseObject);
-
+typedef void (^UploadImageTempBlock)(BOOL sussess,NSMutableArray *array);
 
 @interface NetApiManager : NSObject
+{
+ }
 #pragma mark - 获取网络状态
 //获取网络状态
 + (BOOL) getNetStaus;
@@ -42,6 +45,9 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
  ***********************************************************/
 
 
+
++(void)uploadImages:(NSArray *)images atIndex:(NSInteger)index token:(NSString *)token uploadManager:(QNUploadManager *)uploadManager keys:(NSMutableArray *)keys andBlock:(UploadImageTempBlock)BlockInfo;
+
 #pragma mark - 首页
 /************************************************************/
 //*  首页
@@ -57,7 +63,8 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
                         withHandle:(response)responseHandle;
 //收藏接口
 + (void)requestSetCollectionWithParam:(id)paramer
-                           withHandle:(response)responseHandle;
+                           withHandle:(response)responseHandle
+                       IsShowActivity:(BOOL) IsShow;
 //查询是否报名/收藏公司/实名认证
 + (void)requestIsApplyOrIsCollectionWithParam:(id)paramer
                                    withHandle:(response)responseHandle;
@@ -88,6 +95,9 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //资讯详情
 + (void)requestEssayWithParam:(id)paramer
                    withHandle:(response)responseHandle;
+//新闻推荐列表
++ (void)requestEssay_LabelWithParam:(id)paramer
+                         withHandle:(response)responseHandle;
 //增加新闻浏览量
 + (void)requestSetEssayViewWithParam:(id)paramer
                           withHandle:(response)responseHandle;
@@ -96,7 +106,8 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
                          withHandle:(response)responseHandle;
 //点赞（取消）
 + (void)requestSocialSetlikeWithParam:(id)paramer
-                           withHandle:(response)responseHandle;
+                           withHandle:(response)responseHandle
+                       IsShowActiviTy:(BOOL) IsShow;
 //添加评论
 + (void)requestCommentAddcommentWithParam:(id)paramer
                                withHandle:(response)responseHandle;
@@ -119,6 +130,9 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //添加圈子
 + (void)requestAddMoodWithParam:(id)paramer
                      withHandle:(response)responseHandle;
+//删除圈子
++ (void)requestDeleteMoodWithParam:(id)paramer
+                        withHandle:(response)responseHandle;
 // 多张图片上传
 + (void)requestPublishArticle:(id)parameters
                    imageArray:(NSArray*)imageArray
@@ -159,12 +173,16 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 + (void)requestModifyPswWithParam:(id)paramer
                        withHandle:(response)responseHandle;
 //修改手机号
-+ (void)requestUpdateUsertelWithParam:(id)paramer
+//修改手机号
++ (void)requestUpdateUsertelWithParam:(NSString *)appendURLString
+                            WithParam:(id)paramer
                            withHandle:(response)responseHandle;
 #pragma mark - 消息中心
 /************************************************************/
 //*  消息中心
 /************************************************************/
++ (void)requestQueryUnreadNumWithParam:(id)paramer
+                            withHandle:(response)responseHandle;
 //查询消息列表
 + (void)requestQueryInfolistWithParam:(id)paramer
                            withHandle:(response)responseHandle;
@@ -174,6 +192,11 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //消息详情
 + (void)requestQueryInfodetailWithParam:(id)paramer
                              withHandle:(response)responseHandle;
+
+//接受或者拒绝店主邀请A
++ (void)requestQueryAccept_invite:(id)paramer
+                       withHandle:(response)responseHandle;
+
 #pragma mark - 我的
 /************************************************************/
 //*  我的
@@ -215,12 +238,18 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //提现密码验证
 + (void)requestUpdateDrawpwdWithParam:(id)paramer
                            withHandle:(response)responseHandle;
+// 查询身份证号是否被占用
++ (void)requestCardNOoccupy:(id)paramer
+                 withHandle:(response)responseHandle;
 //我的客服
 + (void)requestQueryProblemWithParam:(id)paramer
                           withHandle:(response)responseHandle;
 //查询问题
 + (void)requestQueryProblemDetailWithParam:(id)paramer
                                 withHandle:(response)responseHandle;
+//问题关键字搜索
++ (void)requestQueryProblemDetailWithParamKey:(id)paramer
+                                   withHandle:(response)responseHandle;
 //招聘收藏
 + (void)requestGetWorkCollectionWithParam:(id)paramer
                                withHandle:(response)responseHandle;
@@ -249,6 +278,11 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //提现
 + (void)requestQueryBankcardwithDrawWithParam:(id)paramer
                                    withHandle:(response)responseHandle;
+
+//提现余额
++ (void)requestQueryBankcardwithDrawDepositWithParam:(NSString *)appendURLString
+                                           WithParam:(id)paramer
+                                          withHandle:(response)responseHandle;
 #pragma mark - 企业点评
 /************************************************************/
 //*  企业点评
@@ -294,6 +328,171 @@ typedef void(^response)(BOOL isSuccess,id responseObject);
 //查询工资明细详情
 + (void)requestQuerySalarydetailWithParam:(id)paramer
                                withHandle:(response)responseHandle;
+//晒工资
++ (void)requestQueryBusinessWageParam:(id)paramer
+                           withHandle:(response)responseHandle;
+//查询账单详情及提现进度
++ (void)requestQueryBankcardwithWithdrawreCordWithParam:(NSString *)appendURLString
+                                              WithParam:(id)paramer
+                                             withHandle:(response)responseHandle;
+//查询招聘列表及详情
++ (void)requestQueryWorkList:(id)paramer
+                  withHandle:(response)responseHandle;
+
+//更新招聘信息
++ (void)requestQueryUpdateWorkList:(id)paramer
+                        withHandle:(response)responseHandle;
+
+//查询借支列表
++ (void)requestQueryLandMoneyList:(id)paramer
+                       withHandle:(response)responseHandle;
+
+//审核借支状态
++ (void)requestQueryUpdateLandMoneyList:(id)paramer
+                             withHandle:(response)responseHandle;
+
+//借支详情
++ (void)requestQueryUpdateLandMoneyDetail:(id)paramer
+                               withHandle:(response)responseHandle;
+//入职员工信息列表
++ (void)requestQueryWorkOrderList:(id)paramer
+                       withHandle:(response)responseHandle;
+
+//修改面试预约状态
++ (void)requestQueryUodateWorkOrderList:(id)paramer
+                             withHandle:(response)responseHandle;
+
+//面试通过
++ (void)requestQueryupdate_interview:(id)paramer
+                          withHandle:(response)responseHandle;
+
+//设置入职时间
++ (void)requestQueryUodateWorkDate:(id)paramer
+                        withHandle:(response)responseHandle;
+
+//查询企业员工管理列表
++ (void)requestQueryCompanyStaff:(id)paramer
+                      withHandle:(response)responseHandle;
+//查询企业员工管理详细列表
++ (void)requestQueryUserRegistration:(id)paramer
+                          withHandle:(response)responseHandle;
+//更新查询企业员工管理详细列表
++ (void)requestQueryUpdateUserRegistration:(id)paramer
+                                withHandle:(response)responseHandle;
+
+//查询店主下劳务工信息
++ (void)requestQuerylabourlist:(id)paramer
+                    withHandle:(response)responseHandle;
+//查询店员下劳务工信息
++ (void)requestQueryassistantlabourlist:(id)paramer
+                             withHandle:(response)responseHandle;
+//查询门店信息
++ (void)requestQueryshopkeeperinfo:(id)paramer
+                        withHandle:(response)responseHandle;
+//查询门店信息  店员
++ (void)requestQueryassistantshopkeeperinfo:(id)paramer
+                                 withHandle:(response)responseHandle;
+
+//查询门店收支明细
++ (void)requestQueryshopincome:(id)paramer
+                    withHandle:(response)responseHandle;
+
+//查询门店下员工信息
++ (void)requestQueryshopuserlist:(id)paramer
+                    withHandle:(response)responseHandle;
+
+//辞退店员
++ (void)requestQueryshopdismiss:(id)paramer
+                     withHandle:(response)responseHandle;
+//邀请店员
++ (void)requestQueryinviteshopUser:(id)paramer
+                        withHandle:(response)responseHandle;
+
+//查询门店业绩详情
++ (void)requestQueryBonusDetail:(id)paramer
+                     withHandle:(response)responseHandle;
+
+//设置返费
++ (void)requestQueryadd_overseer:(id)paramer
+                      withHandle:(response)responseHandle;
+
+//设置上架/下架
++ (void)requestQueryset_workwatchstatus:(id)paramer
+                             withHandle:(response)responseHandle;
+
+//提醒店主设置返费
++ (void)requestQueryremind_shopkeeper:(id)paramer
+                           withHandle:(response)responseHandle;
+
+//查询用户个人资料
++ (void)requestQueryUserMaterialSelect:(id)paramer
+                            withHandle:(response)responseHandle;
+
+//信息举报接口
++ (void)requestQueryReportAdd:(id)paramer
+                   withHandle:(response)responseHandle;
+
+//屏蔽用户  传参identity,type(1屏蔽2取消屏蔽)
++ (void)requestQueryDefriendPullBlack:(id)paramer
+                           withHandle:(response)responseHandle;
+
+//获取屏蔽用户列表
++ (void)requestQueryDefriendPullBlackUserList:(id)paramer
+                                   withHandle:(response)responseHandle;
+//获取系统版本号
++ (void)requestQueryDownload:(id)paramer
+                  withHandle:(response)responseHandle;
+//获取视频列表,
++ (void)requestQueryGetVideoList:(id)paramer
+                      withHandle:(response)responseHandle;
+//获取视频浏览量
++ (void)requestQuerySetVideoView:(id)paramer
+                      withHandle:(response)responseHandle;
+//获取视频
++ (void)requestQueryGetVideo:(id)paramer
+                  withHandle:(response)responseHandle;
+//获取视频分类
++ (void)requestQueryGetVideoType:(id)paramer
+                      withHandle:(response)responseHandle;
+//视频收藏列表
++ (void)requestQueryGetVideoCollection:(id)paramer
+                            withHandle:(response)responseHandle;
+//获取红包
++ (void)requestQueryGetRedPacket:(id)paramer
+                      withHandle:(response)responseHandle;
+//获取时间
++ (void)requestQueryGetRedPacketStatus:(id)paramer
+                            withHandle:(response)responseHandle;
+//查询是否第一次微信登入
++ (void)requestQueryWXUserStatus:(id)paramer
+                      withHandle:(response)responseHandle;
+//微信手机绑定
++ (void)requestQueryWXSetPhone:(id)paramer
+                    withHandle:(response)responseHandle了;
+//查询公司列表（h5）
++ (void)requestQueryLendMoneyMechanism:(id)paramer
+                            withHandle:(response)responseHandle;
+//查询是否允许借支（h5）
++ (void)requestQueryLendApi:(id)paramer
+                 withHandle:(response)responseHandle;
+
+//添加借支（h5）
++ (void)requestQueryAddLendApi:(NSString *)urlString
+                     withParam:(id)paramer
+                    withHandle:(response)responseHandle;
+//获取点赞列表
++ (void)requestQueryPraiseList:(id)paramer
+                    withHandle:(response)responseHandle;
+//查询驻厂管理的厂列表
++ (void)requestQueryTeacherMechanism:(id)paramer
+                          withHandle:(response)responseHandle;
+//获取活动列表
++ (void)requestQueryActivityList:(id)paramer
+                      withHandle:(response)responseHandle;
+//获取广告弹框
++ (void)requestQueryActivityadvert:(id)paramer
+                        withHandle:(response)responseHandle;
+
 @end
 
 

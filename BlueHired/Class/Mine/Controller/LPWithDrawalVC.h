@@ -10,8 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LPWithDrawalVC : UIViewController
-
+@interface LPWithDrawalVC : LPBaseViewController
+@property(nonatomic,copy) NSNumber *balance;
 @end
 
 NS_ASSUME_NONNULL_END

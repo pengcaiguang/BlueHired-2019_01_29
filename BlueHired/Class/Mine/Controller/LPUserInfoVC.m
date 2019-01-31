@@ -12,11 +12,12 @@
 #import <AVFoundation/AVCaptureDevice.h>
 #import <AVFoundation/AVMediaFormat.h>
 
-@interface LPUserInfoVC ()<UITableViewDelegate,UITableViewDataSource,UIPickerViewDelegate,UIPickerViewDataSource,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
+@interface LPUserInfoVC ()<UITableViewDelegate,UITableViewDataSource,UIPickerViewDelegate,UIPickerViewDataSource,UIImagePickerControllerDelegate,UINavigationControllerDelegate,UITextFieldDelegate>
 @property (nonatomic, strong)UITableView *tableview;
 @property (nonatomic, strong)UIView *tableHeaderView;
 @property(nonatomic,strong) LPUserMaterialModel *userMaterialModel;
 @property(nonatomic,strong) UIImageView *headImgView;
+@property(nonatomic,strong) UILabel *headIName;
 
 @property(nonatomic,strong) NSString *userName;
 @property(nonatomic,strong) NSString *userUrl;
@@ -55,6 +56,8 @@
 @property(nonatomic,strong) NSArray *p2Array;
 @property(nonatomic,assign) NSInteger select1;
 
+@property(nonatomic,strong) UITextField *userNameTF;
+
 @property(nonatomic,strong) LPUserMaterialModel *userDic;
 
 @end
@@ -66,9 +69,9 @@
     // Do any additional setup after loading the view from its nib.
     self.navigationItem.title = @"个人资料";
     
-    self.userMaterialModel = [LPUserDefaults getObjectByFileName:USERINFO];
-    NSDictionary *dic = [self.userMaterialModel mj_keyValues];
-    self.userDic = [LPUserMaterialModel mj_objectWithKeyValues:dic];
+//    self.userMaterialModel = [LPUserDefaults getObjectByFileName:USERINFO];
+//    NSDictionary *dic = [self.userMaterialModel mj_keyValues];
+//    self.userDic = [LPUserMaterialModel mj_objectWithKeyValues:dic];
     
     
     [self.view addSubview:self.tableview];
@@ -77,9 +80,11 @@
     }];
 }
 -(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
     [self requestUserMaterial];
 }
 -(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
     [self requestSaveOrUpdate];
 }
 #pragma mark - TableViewDelegate & Datasource
@@ -103,7 +108,9 @@
         textField.frame = CGRectMake(70, 5, SCREEN_WIDTH-140, 34);
         textField.text = self.userMaterialModel.data.user_name;
         textField.textColor = [UIColor colorWithHexString:@"#434343"];
-        [textField addTarget:self action:@selector(textFieldChanged:) forControlEvents:UIControlEventEditingChanged];
+//        textField.delegate = self;
+        self.userNameTF = textField;
+        [textField addTarget:self action:@selector(fieldTextDidChange:) forControlEvents:UIControlEventEditingChanged];
         self.userName = self.userMaterialModel.data.user_name;
         [cell.contentView addSubview:textField];
     }else if (indexPath.row == 1){
@@ -210,11 +217,99 @@
     }
     return cell;
 }
+
+- (void)fieldTextDidChange:(UITextField *)textField
+
+{
+    
+    /**
+     
+     *  最大输入长度,中英文字符都按一个字符计算
+     
+     */
+    
+    static int kMaxLength = 11;
+    
+    
+    
+    NSString *toBeString = textField.text;
+    
+    // 获取键盘输入模式
+    
+    NSString *lang = [[UITextInputMode currentInputMode] primaryLanguage];
+    
+    // 中文输入的时候,可能有markedText(高亮选择的文字),需要判断这种状态
+    
+    // zh-Hans表示简体中文输入, 包括简体拼音，健体五笔，简体手写
+    
+    if ([lang isEqualToString:@"zh-Hans"]) {
+        
+        UITextRange *selectedRange = [textField markedTextRange];
+        
+        //获取高亮选择部分
+        
+        UITextPosition *position = [textField positionFromPosition:selectedRange.start offset:0];
+        
+        // 没有高亮选择的字，表明输入结束,则对已输入的文字进行字数统计和限制
+        
+        if (!position) {
+            
+            if (toBeString.length > kMaxLength) {
+                
+                // 截取子串
+                
+                textField.text = [toBeString substringToIndex:kMaxLength];
+                
+            }
+            
+        } else { // 有高亮选择的字符串，则暂不对文字进行统计和限制
+            
+        }
+        
+    } else {
+        
+        // 中文输入法以外的直接对其统计限制即可，不考虑其他语种情况
+        
+        if (toBeString.length > kMaxLength) {
+            
+            // 截取子串
+            
+            textField.text = [toBeString substringToIndex:kMaxLength];
+            
+        }
+        
+    }
+    
+    self.userName = textField.text;
+
+}
+
+
 -(void)textFieldChanged:(UITextField *)textField{
     if (textField.text.length > 0) {
+        if (textField.text.length >11) {
+            textField.text = [textField.text substringToIndex:11];
+        }
         self.userName = textField.text;
     }
 }
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    
+    if (textField == self.userNameTF) {
+        //这里的if时候为了获取删除操作,如果没有次if会造成当达到字数限制后删除键也不能使用的后果.
+        if (range.length == 1 && string.length == 0) {
+            return YES;
+        }
+        //so easy
+        else if (self.userNameTF.text.length >= 11) {
+            self.userNameTF.text = [textField.text substringToIndex:11];
+            return NO;
+        }
+    }
+    return YES;
+}
+
 -(void)touchMaleButton:(UIButton *)button{
     button.selected = YES;
     self.femaleButton.selected = NO;
@@ -251,25 +346,29 @@
     label.frame = CGRectMake(0, 10, SCREEN_WIDTH, 20);
     label.font = [UIFont systemFontOfSize:16];
     label.textAlignment = NSTextAlignmentCenter;
-    [self.popView addSubview:label];
+//    [self.popView addSubview:label];
     
-    UIButton *cancelButton = [[UIButton alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT/3-30, SCREEN_WIDTH/2, 20)];
+    UIButton *cancelButton = [[UIButton alloc]initWithFrame:CGRectMake(0,  10, SCREEN_WIDTH/2, 20)];
     cancelButton.titleLabel.font = [UIFont systemFontOfSize:18];
     [cancelButton setTitle:@"取消" forState:UIControlStateNormal];
     [cancelButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [cancelButton addTarget:self action:@selector(removeView) forControlEvents:UIControlEventTouchUpInside];
+    cancelButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    cancelButton.titleEdgeInsets = UIEdgeInsetsMake(0, 20, 0, 0);
     [self.popView addSubview:cancelButton];
     
-    UIButton *confirmButton = [[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2, SCREEN_HEIGHT/3-30, SCREEN_WIDTH/2, 20)];
+    UIButton *confirmButton = [[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/2,  10, SCREEN_WIDTH/2, 20)];
     confirmButton.titleLabel.font = [UIFont systemFontOfSize:18];
     [confirmButton setTitle:@"确定" forState:UIControlStateNormal];
     [confirmButton setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
     [confirmButton addTarget:self action:@selector(confirmBirthday) forControlEvents:UIControlEventTouchUpInside];
+    confirmButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+    confirmButton.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 20);
     [self.popView addSubview:confirmButton];
     
     if (index == 2) {
         label.text = @"生日(年/月/日)";
-        UIDatePicker *datePicker = [[UIDatePicker alloc]initWithFrame:CGRectMake(0, 30, SCREEN_WIDTH, SCREEN_HEIGHT/3-60)];
+        UIDatePicker *datePicker = [[UIDatePicker alloc]initWithFrame:CGRectMake(0, 30, SCREEN_WIDTH, SCREEN_HEIGHT/3-30)];
         datePicker.datePickerMode = UIDatePickerModeDate;
         [datePicker setLocale:[[NSLocale alloc]initWithLocaleIdentifier:@"zh_Hans_CN"]];
         NSDateFormatter* dateFormat = [[NSDateFormatter alloc] init];
@@ -283,7 +382,7 @@
         [datePicker addTarget:self action:@selector(dateChange:) forControlEvents:UIControlEventValueChanged];
         [self.popView addSubview:datePicker];
     }else if (index == 3 || index == 5 || index == 6){
-        UIPickerView *pickerView = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 30, SCREEN_WIDTH, SCREEN_HEIGHT/3-60)];
+        UIPickerView *pickerView = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 30, SCREEN_WIDTH, SCREEN_HEIGHT/3-30)];
         pickerView.backgroundColor = [UIColor whiteColor];
         pickerView.delegate = self;
         pickerView.dataSource = self;
@@ -310,7 +409,7 @@
         }else{
             label.text = @"理想岗位";
         }
-        UIPickerView *pickerView = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 30, SCREEN_WIDTH, SCREEN_HEIGHT/3-60)];
+        UIPickerView *pickerView = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 30, SCREEN_WIDTH, SCREEN_HEIGHT/3-30)];
         pickerView.backgroundColor = [UIColor whiteColor];
         pickerView.delegate = self;
         pickerView.dataSource = self;
@@ -399,8 +498,7 @@
 
 //被选择的行
 -(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
-    NSLog(@"HANG%@",[self.pickerArray objectAtIndex:row]);
-    if (self.selectIndex == 3) {
+     if (self.selectIndex == 3) {
         self.qinggan = self.pickerArray[row];
     }else if (self.selectIndex == 4 || self.selectIndex == 7){
         if (component == 0) {
@@ -499,6 +597,14 @@
         [self.tableview.mj_header endRefreshing];
         if (isSuccess) {
             self.userMaterialModel = [LPUserMaterialModel mj_objectWithKeyValues:responseObject];
+            NSDictionary *dic = [self.userMaterialModel mj_keyValues];
+            self.userDic = [LPUserMaterialModel mj_objectWithKeyValues:dic];
+            self.userUrl = self.userMaterialModel.data.user_url;
+            self.userSex = self.userMaterialModel.data.user_sex;
+            self.userName = self.userMaterialModel.data.user_name;
+            [self.headImgView sd_setImageWithURL:[NSURL URLWithString:self.userMaterialModel.data.user_url] placeholderImage:[UIImage imageNamed:@"mine_headimg_placeholder"]];
+            self.headIName.text = self.userMaterialModel.data.user_name;
+
             [self.tableview reloadData];
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
@@ -526,8 +632,14 @@
 -(UIView *)tableHeaderView{
     if (!_tableHeaderView) {
         _tableHeaderView = [[UIView alloc]init];
-        _tableHeaderView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 138.0/360.0*SCREEN_WIDTH);
-        _tableHeaderView.backgroundColor = [UIColor baseColor];
+        _tableHeaderView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 138.0);
+//        _tableHeaderView.backgroundColor = [UIColor baseColor];
+        
+        UIImageView *BgImage = [[UIImageView alloc] initWithFrame:_tableHeaderView.frame];
+        BgImage.image = [UIImage imageNamed:@"UserInfoBGImage"];
+
+        [_tableHeaderView addSubview:BgImage];
+
         
         UIImageView *headImgView = [[UIImageView alloc]init];
         [_tableHeaderView addSubview:headImgView];
@@ -537,7 +649,6 @@
             make.size.mas_equalTo(CGSizeMake(72, 72));
         }];
         [headImgView sd_setImageWithURL:[NSURL URLWithString:self.userMaterialModel.data.user_url] placeholderImage:[UIImage imageNamed:@"mine_headimg_placeholder"]];
-        self.userUrl = self.userMaterialModel.data.user_url;
         headImgView.layer.masksToBounds = YES;
         headImgView.layer.cornerRadius = 36;
         headImgView.layer.borderColor = [UIColor whiteColor].CGColor;
@@ -549,6 +660,7 @@
         
         UILabel *label = [[UILabel alloc]init];
         [_tableHeaderView addSubview:label];
+        self.headIName = label;
         [label mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(headImgView.mas_bottom).offset(10);
             make.centerX.equalTo(headImgView);
@@ -558,6 +670,7 @@
         label.font = [UIFont systemFontOfSize:15];
         
     }
+    
     return _tableHeaderView;
 }
 -(void)tuchHeadImgView{
@@ -646,6 +759,21 @@
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    if ([UIDevice currentDevice].systemVersion.floatValue < 11) {
+        return;
+    }
+    if ([viewController isKindOfClass:NSClassFromString(@"PUPhotoPickerHostViewController")]) {
+        [viewController.view.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if (obj.frame.size.width < 42) {
+                [viewController.view sendSubviewToBack:obj];
+                *stop = YES;
+            }
+        }];
+    }
+}
+
+
 - (void)saveImage:(UIImage *)image {
     //    NSLog(@"保存头像！");
     //    [userPhotoButton setImage:image forState:UIControlStateNormal];
@@ -683,6 +811,7 @@
             if (responseObject[@"data"]) {
                 self.userUrl = responseObject[@"data"];
                 [self.headImgView sd_setImageWithURL:[NSURL URLWithString:self.userUrl] placeholderImage:[UIImage imageNamed:@"mine_headimg_placeholder"]];
+                [self requestSaveOrUpdate];
             }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];

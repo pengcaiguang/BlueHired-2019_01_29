@@ -10,12 +10,13 @@
 #import "LPMechanismcommentDetailModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
+typedef void(^LPBusinessReviewDetailCellBlock)(void);
 
 @interface LPBusinessReviewDetailCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UIImageView *userUrlImgView;
 @property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *commentContentLabel;
+@property (weak, nonatomic) IBOutlet UITextView *commentContentLabel;
 @property (weak, nonatomic) IBOutlet UILabel *workEnvironScoreLabel;
 @property (weak, nonatomic) IBOutlet UILabel *sleepEnvironScoreLabel;
 @property (weak, nonatomic) IBOutlet UILabel *foodEnvironScoreLabel;
@@ -24,6 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UIView *imageBgView;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *imageBgView_constraint_height;
+@property (nonatomic,copy) LPBusinessReviewDetailCellBlock Block;
 
 
 @property(nonatomic,strong) LPMechanismcommentDetailDataModel *model;

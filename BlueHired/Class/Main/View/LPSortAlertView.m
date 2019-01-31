@@ -15,7 +15,7 @@ static NSInteger rowHeight = 44;
 @property (nonatomic, strong)UITableView *tableview;
 @property(nonatomic,strong) UIView *bgView;
 
-@property(nonatomic,strong) NSArray *titleArray;
+@property(nonatomic,copy) NSString *selectTitle;
 
 @end
 
@@ -24,7 +24,14 @@ static NSInteger rowHeight = 44;
 -(instancetype)init{
     self = [super init];
     if (self) {
-        self.titleArray = @[@"综合工资最高",@"报名人数最多",@"企业评分最高",@"工价最高",@"可借支"];
+//        if (kUserDefaultsValue(USERDATA).integerValue == 1 ||
+//            kUserDefaultsValue(USERDATA).integerValue == 2 ) {
+//            self.titleArray = @[@"综合工资最高",@"报名人数最多",@"企业评分最高",@"工价最高",@"可借支",@"平台合作价",@"管理费"];
+//        }else{
+//            self.titleArray = @[@"综合工资最高",@"报名人数最多",@"企业评分最高",@"工价最高",@"可借支"];
+//        }
+        self.selectTitle = @"";
+
         self.userInteractionEnabled = YES;
         [[UIApplication sharedApplication].keyWindow addSubview:self.bgView];
         [[UIApplication sharedApplication].keyWindow addSubview:self.tableview];
@@ -39,10 +46,11 @@ static NSInteger rowHeight = 44;
     self.bgView.hidden = hidden;
     self.tableview.hidden = hidden;
     
-    UIWindow * window=[[[UIApplication sharedApplication] delegate] window];
+    UIWindow *window=[[[UIApplication sharedApplication] delegate] window];
     CGRect rect=[self.touchButton convertRect: self.touchButton.bounds toView:window];
-    self.tableview.frame = CGRectMake(0, CGRectGetMaxY(rect)+10, SCREEN_WIDTH, rowHeight*self.titleArray.count);
-
+    self.tableview.frame = CGRectMake(0, CGRectGetMaxY(rect)+5, SCREEN_WIDTH, rowHeight*self.titleArray.count);
+    self.bgView.frame = CGRectMake(0, self.tableview.frame.size.height+self.tableview.frame.origin.y, SCREEN_WIDTH, SCREEN_HEIGHT);
+    [self.tableview reloadData];
 }
 
 -(void)hidden{
@@ -63,13 +71,32 @@ static NSInteger rowHeight = 44;
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:rid];
     if(cell == nil){
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rid];
+        UIImageView *imageViews = [[UIImageView alloc] initWithFrame:CGRectMake( SCREEN_WIDTH - 40, 15, 16, 13)];
+        imageViews.image = [UIImage imageNamed:@"select_slices"];
+        imageViews.contentMode = UIViewContentModeScaleAspectFit;
+        imageViews.tag = 100;
+        [cell.contentView addSubview:imageViews];
     }
+    UIImageView *imageViews = [cell.contentView viewWithTag:100];
+
     cell.textLabel.font = [UIFont systemFontOfSize:14];
     cell.textLabel.text = self.titleArray[indexPath.row];
+    
+    if ([cell.textLabel.text isEqualToString:_selectTitle]) {
+        cell.textLabel.textColor = [UIColor baseColor];
+        imageViews.hidden = NO;
+    }else{
+        cell.textLabel.textColor = [UIColor blackColor];
+        imageViews.hidden = YES;
+    }
+    
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    self.selectTitle = self.titleArray[indexPath.row];
+    [self.tableview reloadData];
+
     if ([self.delegate respondsToSelector:@selector(touchTableView:)]) {
         [self.delegate touchTableView:indexPath.row];
         [self hidden];
@@ -93,7 +120,7 @@ static NSInteger rowHeight = 44;
     if (!_bgView) {
         _bgView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
         _bgView.backgroundColor = [UIColor lightGrayColor];
-        _bgView.alpha = 0.1;
+        _bgView.alpha = 0.5;
         _bgView.userInteractionEnabled = YES;
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(hidden)];
         [_bgView addGestureRecognizer:tap];

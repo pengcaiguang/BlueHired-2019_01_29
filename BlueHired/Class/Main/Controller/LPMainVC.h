@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LPMainVC : UIViewController
+@interface LPMainVC : LPBaseViewController
+@property(nonatomic,strong) NSString *mechanismTypeId;
+@property(nonatomic,strong) NSString *workType;
 
 @end

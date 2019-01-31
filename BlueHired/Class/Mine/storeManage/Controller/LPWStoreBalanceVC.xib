@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LPWStoreBalanceVC">
+            <connections>
+                <outlet property="TitleView" destination="WNy-A4-7iG" id="etY-1g-P2l"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WNy-A4-7iG">
+                    <rect key="frame" x="0.0" y="120" width="375" height="40"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="姓名" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nOQ-Y3-hCn">
+                            <rect key="frame" x="16" y="11.5" width="29" height="17"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="招聘员工数" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t2U-wD-thr">
+                            <rect key="frame" x="151.5" y="11.5" width="72" height="17"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="提成金额" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IrU-Qx-GNT">
+                            <rect key="frame" x="301" y="11.5" width="58" height="17"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="nOQ-Y3-hCn" firstAttribute="centerY" secondItem="WNy-A4-7iG" secondAttribute="centerY" id="2OB-dw-CjM"/>
+                        <constraint firstItem="nOQ-Y3-hCn" firstAttribute="leading" secondItem="WNy-A4-7iG" secondAttribute="leading" constant="16" id="5Kf-eA-JCP"/>
+                        <constraint firstAttribute="height" constant="40" id="JwW-ba-89E"/>
+                        <constraint firstItem="t2U-wD-thr" firstAttribute="centerX" secondItem="WNy-A4-7iG" secondAttribute="centerX" id="cAD-wK-7l0"/>
+                        <constraint firstItem="t2U-wD-thr" firstAttribute="centerY" secondItem="WNy-A4-7iG" secondAttribute="centerY" id="oee-4E-VMe"/>
+                        <constraint firstAttribute="trailing" secondItem="IrU-Qx-GNT" secondAttribute="trailing" constant="16" id="os4-Ec-Q6Z"/>
+                        <constraint firstItem="IrU-Qx-GNT" firstAttribute="centerY" secondItem="WNy-A4-7iG" secondAttribute="centerY" id="qbf-Om-6Eg"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="WNy-A4-7iG" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="AI2-9m-lnF"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="WNy-A4-7iG" secondAttribute="trailing" id="Fim-xj-LgE"/>
+                <constraint firstItem="WNy-A4-7iG" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="100" id="I3d-xc-hy7"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+            <point key="canvasLocation" x="2" y="-44"/>
+        </view>
+    </objects>
+</document>

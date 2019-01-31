@@ -10,6 +10,8 @@
 #import "LPMechanismcommentDetailModel.h"
 #import "LPBusinessReviewDetailCell.h"
 #import "LPBusinessReviewDetailSalaryCell.h"
+#import "LPbusinessMyReviewViewController.h"
+#import "LPBusinessReviewWageVC.h"
 
 static NSString *LPBusinessReviewDetailCellID = @"LPBusinessReviewDetailCell";
 static NSString *LPBusinessReviewDetailSalaryCellID = @"LPBusinessReviewDetailSalaryCell";
@@ -181,6 +183,7 @@ static NSString *LPBusinessReviewDetailSalaryCellID = @"LPBusinessReviewDetailSa
     }
     if (!has) {
         LPNoDataView *noDataView = [[LPNoDataView alloc]initWithFrame:CGRectZero];
+        [noDataView image:nil text:@"抱歉！没有相关记录！"];
         [self.view addSubview:noDataView];
         [noDataView mas_makeConstraints:^(MASConstraintMaker *make) {
 //            make.edges.equalTo(self.view);
@@ -202,6 +205,9 @@ static NSString *LPBusinessReviewDetailSalaryCellID = @"LPBusinessReviewDetailSa
     if (model.type.integerValue == 1) {
         LPBusinessReviewDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:LPBusinessReviewDetailCellID];
         cell.model = self.listArray[indexPath.row];
+        cell.Block = ^(void) {
+            [self.tableview reloadData];
+        };
         return cell;
     }else{
         LPBusinessReviewDetailSalaryCell *cell = [tableView dequeueReusableCellWithIdentifier:LPBusinessReviewDetailSalaryCellID];
@@ -241,6 +247,18 @@ static NSString *LPBusinessReviewDetailSalaryCellID = @"LPBusinessReviewDetailSa
         NSLog(@"%@",responseObject);
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
+                if (self.bottomSelectType == 1) {
+                    LPbusinessMyReviewViewController *my =[[LPbusinessMyReviewViewController alloc] init];
+                    my.mechanismlistDataModel = self.mechanismlistDataModel;
+                    [self.navigationController pushViewController:my animated:YES];
+                }
+                else if (self.bottomSelectType == 2)
+                {
+                    LPBusinessReviewWageVC *wage = [[LPBusinessReviewWageVC alloc] init];
+                    wage.mechanismlistDataModel = self.mechanismlistDataModel;
+                    [self.navigationController pushViewController:wage animated:YES];
+                }
+
                 
             }else{
                 [self.view showLoadingMeg:responseObject[@"msg"] ? responseObject[@"msg"] : @"连接错误" time:MESSAGE_SHOW_TIME];
@@ -267,7 +285,7 @@ static NSString *LPBusinessReviewDetailSalaryCellID = @"LPBusinessReviewDetailSa
         
         
         
-        _tableview.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        _tableview.mj_header = [HZNormalHeader headerWithRefreshingBlock:^{
             self.page = 1;
             [self requestMechanismcommentDeatil];
         }];

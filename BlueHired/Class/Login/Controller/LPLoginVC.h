@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LPLoginVC : UIViewController
+@interface LPLoginVC : LPBaseViewController
+@property (nonatomic,assign) BOOL isRedpackVC;
+@property (nonatomic,assign) BOOL isCircleVC;
 
 @end

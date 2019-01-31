@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LPBusinessReviewSearchResultVC : UIViewController
+@interface LPBusinessReviewSearchResultVC : LPBaseViewController
 @property(nonatomic,strong) NSString *string;
 
 @end

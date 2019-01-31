@@ -17,7 +17,25 @@
 #define random(r, g, b, a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:(a)/255.0]
 #define randomColor random(arc4random_uniform(256), arc4random_uniform(256), arc4random_uniform(256), arc4random_uniform(256))
 
-#define BaseRequestURL  @"http://192.168.1.108:8080/lifetime/"
+//http://ceshi.lanpin123.com/lifetime/comment/get_comment_list?id=38&page=1&type=1
+//#define BaseRequestURL  @"http://192.168.0.152:8080/lifetime/"
+
+#define BaseRequestURL  @"http://192.168.0.108:8080/lifetime/"
+#define BaseRequestWeiXiURL  @"http://192.168.0.108:8080/"
+
+//#define BaseRequestURL  @"http://www.lanpin123.com/lifetime/"
+//#define BaseRequestWeiXiURL  @"http://www.lanpin123.com/"
+
+//#define BaseRequestURL  @"http://47.106.208.91:8180/lifetime/"
+//#define BaseRequestWeiXiURL  @"http://47.106.208.91:8180/"
+
+//#define BaseRequestURL  @"http://ceshi.lanpin123.com/lifetime/"
+//#define BaseRequestWeiXiURL  @"http://ceshi.lanpin123.com/"
+
+//#define BaseRequestURL  @"http://192.168.0.166:8081/lifetime/"        //胡经理
+//#define BaseRequestWeiXiURL  @"http://192.168.0.166:8081/"
+
+#define QiNiuBaseUrl @"http://pic.lanpin123.com/"
 
 //UserDefaults存取
 #pragma NSUserDefaults
@@ -31,9 +49,11 @@
 /**
  * 登录成功后保存
  */
-
+#define OLDLOGINID  @"OLDOGINID"
 #define LOGINID  @"LOGINID"
 #define COOKIES  @"COOKIES"
+#define USERDATA  @"USERDATA"
+#define USERIDENTIY  @"USERidentity"
 
 //登录状态
 #define kLoginStatus    @"LoginStatus"
@@ -54,7 +74,8 @@
 #define  UPLOAD_LOADING_MESSAGE     @"数据上传中"
 #define  NETE_ERROR_MESSAGE         @"网络不给力，请稍候再试"
 #define  NO_MORE_DATA_MESSAGE       @"没有更多数据了"
-#define  NETE_REQUEST_ERROR         @"网络请求错误"
+//#define  NETE_REQUEST_ERROR         @"当前网络不可用，请检查您的网络设置"
+#define  NETE_REQUEST_ERROR         @"当前网络请求超时,请稍候再试"
 #define  TOKEN_ERROR_MESSAGE        @"该账号已在其他设备上登录"
 #define     RESETREQUESTURL  @"RESETREQUESTURL"
 
@@ -92,4 +113,22 @@
 __typeof__(value) __a = (value); \
 ![__a isKindOfClass:[NSString class]] ? __a = @"" : __a; \
 })
+
+
+#define SetColor(r,g,b,a) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a]
+//** 颜色定义*/
+#define ViewBgColor SetColor(245, 245, 245, 1)
+#define LightTextColor SetColor(102, 102, 102, 1)
+#define BlackTextColor SetColor(51, 51, 51, 1)
+#define TextBlackColor SetColor(178, 178, 178, 1)
+#define NavBackColor SetColor(61, 199, 112, 1)
+#define LineColor SetColor(236, 236, 236, 1.0)
+#define OrangerColor SetColor(251, 182, 97, 1)
+#define WhiteColor  SetColor(255, 255, 255, 1)
+#define GreenColor  SetColor(61, 199, 112, 1)
+
+#define AlertMsg(alertMsg) [[SGAlertUtil alertManager]alertNowTimeWith:alertMsg];
+#define Alert(alertMsg) [[SGAlertUtil alertManager]alertNowTimeWith:alertMsg];
+#define CurrentDeviceSn [[UIDevice currentDevice].identifierForVendor UUIDString]//手机序列号
+#define RemovernNil(alertMsg) [LPTools isNullToString:alertMsg]
 #endif /* MacroDefine_h */

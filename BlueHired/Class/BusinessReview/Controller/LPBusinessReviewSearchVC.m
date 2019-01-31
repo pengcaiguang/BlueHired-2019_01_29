@@ -42,7 +42,7 @@ static NSString *BusinessReviewSearchHistory = @"BusinessReviewSearchHistory";
 }
 
 -(void)setSearchView{
-    LPSearchBar *searchBar = [self addSearchBarWithFrame:CGRectMake(0, 0, SCREEN_WIDTH - 2 * 44 - 2 * 15, 44)];
+    LPSearchBar *searchBar = [self addSearchBarWithFrame:CGRectMake(0, 0, SCREEN_WIDTH - 2 * 44 - 2 * 15 - 44, 44)];
     [searchBar becomeFirstResponder];
     UIView *wrapView = [[UIView alloc] initWithFrame:searchBar.frame];
     [wrapView addSubview:searchBar];
@@ -88,19 +88,25 @@ static NSString *BusinessReviewSearchHistory = @"BusinessReviewSearchHistory";
 }
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
-    self.searchWord = searchBar.text;
-    [self saveWords];
-    [self search:self.searchWord];
+    self.searchWord = [searchBar.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    [self touchSearchButton];
+
 }
 
 
 -(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText{
     NSLog(@"-%@",searchBar.text);
-    self.searchWord = searchBar.text;
+    self.searchWord = [searchBar.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 }
 -(void)touchSearchButton{
-    [self saveWords];
-    [self search:self.searchWord];
+    if (self.searchWord.length > 0) {
+        [self saveWords];
+        [self search:self.searchWord];
+    }
+    else
+    {
+        [self.view showLoadingMeg:@"请输入搜索关键字" time:MESSAGE_SHOW_TIME];
+    }
 }
 
 -(void)saveWords{
@@ -125,6 +131,9 @@ static NSString *BusinessReviewSearchHistory = @"BusinessReviewSearchHistory";
 
 #pragma mark - TableViewDelegate & Datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    if (self.textArray.count>5) {
+        return 5;
+    }
     return self.textArray.count;
 }
 

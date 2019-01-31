@@ -21,7 +21,7 @@
             make.size.mas_equalTo(CGSizeMake(21, 23));
             make.center.equalTo(self.contentView);
         }];
-        self.imgView.image = [UIImage imageNamed:@"sign_img"];
+//        self.imgView.image = [UIImage imageNamed:@"sign_img"];
         self.imgView.backgroundColor = [UIColor clearColor];
     }
     return self;

@@ -23,6 +23,7 @@ typedef void(^LPAddRecordCellDicBlock)(NSDictionary *dic);
 @property(nonatomic,strong) UIButton *addButton;
 
 @property(nonatomic,strong) NSArray *textArray;
+@property(nonatomic,strong) NSMutableArray *valueArray;
 
 @property(nonatomic,strong) NSDictionary *dic;
 

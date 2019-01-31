@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LPHourlyWorkVC : UIViewController
+@interface LPHourlyWorkVC : LPBaseViewController
 
 @end

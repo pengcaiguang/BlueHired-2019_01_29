@@ -20,8 +20,6 @@
 @property(nonatomic,strong) NSMutableArray *buttonGongzhongArray;
 
 
-@property(nonatomic,copy) NSString *typeId;
-@property(nonatomic,copy) NSString *workType;
 
 @end
 
@@ -67,7 +65,7 @@
         [btn setTitle:mechanismlistModel.data.mechanismTypeList[i].mechanismTypeName forState:UIControlStateNormal];
         btn.layer.masksToBounds = YES;
         btn.layer.cornerRadius = 15;
-        btn.tag = i;
+        btn.tag = mechanismlistModel.data.mechanismTypeList[i].id.integerValue;
         [btn addTarget:self action:@selector(touchHangyeButton:) forControlEvents:UIControlEventTouchUpInside];
         [self.tableBgView addSubview:btn];
         [self.buttonHangyeArray addObject:btn];
@@ -114,8 +112,8 @@
     button.layer.borderColor = [UIColor baseColor].CGColor;
     button.layer.borderWidth = 0.5;
     
-    self.typeId = self.mechanismlistModel.data.mechanismTypeList[button.tag].id.stringValue;
-    
+    self.typeId = [NSString stringWithFormat:@"%ld",(long)button.tag];
+    self.SuperView.mechanismTypeId = self.typeId;
 }
 -(void)touchGongzhongButton:(UIButton *)button{
     for (UIButton *btn in self.buttonGongzhongArray) {
@@ -136,21 +134,63 @@
         default:
             break;
     }
+    self.SuperView.workType = self.workType;
 }
 
 -(void)setHidden:(BOOL)hidden{
     self.bgView.hidden = hidden;
 //    self.tableview.hidden = hidden;
     self.touchButton.selected = !hidden;
+    
+    
     if (hidden) {
         [UIView animateWithDuration:0.3 animations:^{
             self.bgView.alpha = 0;
-            self.tableBgView.frame = CGRectMake(SCREEN_WIDTH, 0, SCREEN_WIDTH/3*2, SCREEN_HEIGHT);
+            self.tableBgView.frame = CGRectMake(SCREEN_WIDTH, 20, SCREEN_WIDTH/3*2, SCREEN_HEIGHT-69);
         }];
     }else{
+        if (self.typeId) {
+            for (UIButton *btn in self.buttonHangyeArray) {
+                btn.backgroundColor = [UIColor colorWithHexString:@"#EBEBEB"];
+                btn.layer.borderColor = [UIColor whiteColor].CGColor;
+                btn.layer.borderWidth = 0.5;
+                if (btn.tag == [self.typeId integerValue]) {
+                    btn.backgroundColor = [UIColor colorWithHexString:@"#E8F6FF"];
+                    btn.layer.borderColor = [UIColor baseColor].CGColor;
+                }
+            }
+        }
+
+        if (self.workType) {
+                        NSInteger *bttag = 0;
+            switch (self.workType.integerValue) {
+                case 0:
+                    bttag = 1;
+                    break;
+                case 1:
+                    bttag = 0;
+                    break;
+                default:
+                    break;
+            }
+
+            for (UIButton *btn in self.buttonGongzhongArray) {
+                btn.backgroundColor = [UIColor colorWithHexString:@"#EBEBEB"];
+                btn.layer.borderColor = [UIColor whiteColor].CGColor;
+                btn.layer.borderWidth = 0.5;
+                if (btn.tag == bttag) {
+                    btn.backgroundColor = [UIColor colorWithHexString:@"#E8F6FF"];
+                    btn.layer.borderColor = [UIColor baseColor].CGColor;
+                }
+            }
+            
+
+        }
+
+        
         [UIView animateWithDuration:0.3 animations:^{
-            self.bgView.alpha = 0.1;
-            self.tableBgView.frame = CGRectMake(SCREEN_WIDTH/3, 0, SCREEN_WIDTH/3*2, SCREEN_HEIGHT);
+            self.bgView.alpha = 0.5;
+            self.tableBgView.frame = CGRectMake(SCREEN_WIDTH/3, 20, SCREEN_WIDTH/3*2, SCREEN_HEIGHT-69);
         }];
     }
 }
@@ -190,6 +230,8 @@
     if (button.tag == 0) {
         self.typeId = nil;
         self.workType = nil;
+        self.SuperView.mechanismTypeId = nil;
+        self.SuperView.workType = nil;
         for (UIButton *btn in self.buttonHangyeArray) {
             btn.backgroundColor = [UIColor colorWithHexString:@"#EBEBEB"];
             btn.layer.borderColor = [UIColor whiteColor].CGColor;
@@ -256,8 +298,8 @@
 }
 -(UIView *)bgView{
     if (!_bgView) {
-        _bgView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
-        _bgView.backgroundColor = [UIColor lightGrayColor];
+        _bgView = [[UIView alloc]initWithFrame:CGRectMake(0, 20, SCREEN_WIDTH, SCREEN_HEIGHT - 69)];
+        _bgView.backgroundColor = [UIColor blackColor];
         _bgView.alpha = 0.1;
         _bgView.hidden = YES;
         _bgView.userInteractionEnabled = YES;

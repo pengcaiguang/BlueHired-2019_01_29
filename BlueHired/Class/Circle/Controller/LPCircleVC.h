@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LPCircleVC : UIViewController
+@interface LPCircleVC : LPBaseViewController
+
+@property(nonatomic,assign) NSInteger isSenderBack;
 
 @end

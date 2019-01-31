@@ -9,6 +9,8 @@
 #import "NetRequestManager.h"
 #import "NetApiManager.h"
 #import "AppDelegate.h"
+#import "LPUserModel.h"
+#import "DSBaActivityView.h"
 
 static AFHTTPSessionManager * afHttpSessionMgr = NULL;
 
@@ -17,8 +19,13 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
 {
     NSLog(@"\n\nrequestEnty.requestUrl == %@\n",requestEnty.requestUrl);
     if(![NetApiManager getNetStaus]){ //无网统一提示
-//        [[UIWindow visibleViewController].view showLoadingMeg:NETE_ERROR_MESSAGE time:MESSAGE_SHOW_TIME];
+//        [[UIWindow visibleViewController].view showLoadingMeg:NETE_ERROR_MESSAGE time:3];
+//        [LPTools AlertMessageView:NETE_ERROR_MESSAGE dismiss:1];
+        [NetRequestManager HiddView];
         requestEnty.responseHandle(NO,nil);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [DSBaActivityView hideActiviTy];
+        });
         return;
     }
 //    if ([self getProxyStatus]) {//系统设置了代理
@@ -33,18 +40,24 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
         AFHTTPSessionManager *manager = [self initHttpManager];
 
         if (AlreadyLogin) {
+//            NSLog(@"%@",kUserDefaultsValue(COOKIES));
             [manager.requestSerializer setValue:kUserDefaultsValue(COOKIES) forHTTPHeaderField:@"Cookie"];
         }else{
             [manager.requestSerializer setValue:nil forHTTPHeaderField:@"Cookie"];
+
         }
+        NSLog(@"%@",[manager.requestSerializer HTTPRequestHeaders]);
+        NSLog(@"%@",[manager.requestSerializer valueForHTTPHeaderField:@"Cookie"]);
+
         afHttpSessionMgr.requestSerializer =[AFJSONRequestSerializer serializer];
 
         [manager GET:requestEnty.requestUrl
           parameters:requestEnty.params
             progress:^(NSProgress * _Nonnull downloadProgress) {
-                
+//                [self performSelector:@selector(HiddView) withObject:nil afterDelay:0.1];
             } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                
+                [NetRequestManager HiddView];
+
 //                NSHTTPURLResponse* response = (NSHTTPURLResponse* )task.response;
 //                NSDictionary *allHeaderFieldsDic = response.allHeaderFields;
 //                NSString *setCookie = allHeaderFieldsDic[@"Set-Cookie"];
@@ -56,18 +69,88 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
                 
                 [self commonCheckErrorCode:responseObject];
                 if ([requestEnty.requestUrl containsString:@"login/user_sign_out"]) {
-                    kUserDefaultsRemove(COOKIES);
+                    
+                    kUserDefaultsSave(@"0", kLoginStatus);
+                     kUserDefaultsRemove(COOKIES);
+                    kUserDefaultsRemove(USERDATA);
+                    NSHTTPCookieStorage *cookieJar = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+                    NSArray *cookieArray = [NSArray arrayWithArray:[cookieJar cookies]];
+                    for(id obj in cookieArray)
+                    {
+                        [cookieJar deleteCookie:obj];
+                    }
                 }
                 
+                
+                //获取cookie
+                NSHTTPURLResponse* response = (NSHTTPURLResponse* )task.response;
+                NSDictionary *allHeaderFieldsDic = response.allHeaderFields;
+                NSString *setCookie = allHeaderFieldsDic[@"Set-Cookie"];
+                if (setCookie != nil) {
+                    NSString *cookie = [[setCookie componentsSeparatedByString:@";"] objectAtIndex:0];
+                    NSLog(@"cookie : %@", cookie); // 这里可对cookie进行存储
+                    NSString *cookiejiemi =  [NetRequestManager decodeFromPercentEscapeString:cookie];
+                    NSDictionary *dic = [NetRequestManager dictionaryWithJsonString:[cookiejiemi substringFromIndex:5]];
+                    //                     [LPTools shareInstance].UserRole = [dic[@"role"] integerValue];
+                    if (dic) {
+                        kUserDefaultsSave(dic[@"role"], USERDATA);
+                        kUserDefaultsSave(dic[@"userId"], LOGINID);
+                        kUserDefaultsSave(dic[@"USERIDENTIY"], USERIDENTIY);
+
+                        if (dic[@"userId"]) {
+                            kUserDefaultsSave(@"1", kLoginStatus);
+                         }
+                        if ([kUserDefaultsValue(LOGINID) integerValue]  != [kUserDefaultsValue(OLDLOGINID) integerValue]) {
+                            kUserDefaultsRemove(@"ERRORTIMES");
+                        }
+                        
+                        LPUserMaterialModel *userMaterialModel = [LPUserDefaults getObjectByFileName:USERINFO];
+                        if (userMaterialModel) {
+                            userMaterialModel.data.role = dic[@"role"];
+                            userMaterialModel.data.user_url = dic[@"userImage"];
+                            userMaterialModel.data.user_name = dic[@"userName"];
+                            userMaterialModel.data.workStatus = dic[@"workStatus"];
+                            userMaterialModel.data.grading = dic[@"grading"];
+                            userMaterialModel.data.identity = dic[@"identity"];
+
+                            [LPUserDefaults  saveObject:userMaterialModel byFileName:USERINFO];
+                        }else{
+                            LPUserMaterialModel *userMaterialModel = [[LPUserMaterialModel alloc] init];
+                            LPUserMaterialDataModel *data = [[LPUserMaterialDataModel alloc] init];
+                            data.role = dic[@"role"];
+                            data.user_url = dic[@"userImage"];
+                            data.user_name = dic[@"userName"];
+                            data.workStatus = dic[@"workStatus"];
+                            data.grading = dic[@"grading"];
+                            userMaterialModel.data.identity = dic[@"identity"];
+
+                            userMaterialModel.data = data;
+                            
+                            [LPUserDefaults  saveObject:userMaterialModel byFileName:USERINFO];
+                        }
+                        
+                        
+                        
+                        kUserDefaultsSave(cookie, COOKIES);
+                    }
+                   
+                }
+                
+                
+
                 requestEnty.responseHandle(YES,responseObject);
                 [self saveWithURL:requestEnty response:responseObject];
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                [NetRequestManager HiddView];
+
                 NSString * errorStr = [self returnStringWithError:error];
                 //打开可统一提示错误信息(考虑有的场景可能不需要,由自己去选择是否显示错误信息),
                 //错误信息已经过处理为NSString,可直接用于展示
                 //            [kKeyWindow showLoadingMeg:errorStr time:MESSAGESHOWTIME];
                 requestEnty.responseHandle(NO,errorStr);
                 if ([self getWithURL:requestEnty]) {
+//                    [self performSelector:@selector() withObject:nil afterDelay:0.1];
+
                     requestEnty.responseHandle(YES, [self getWithURL:requestEnty]);
                 }
             }];
@@ -94,9 +177,47 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
                  if (setCookie != nil) {
                      NSString *cookie = [[setCookie componentsSeparatedByString:@";"] objectAtIndex:0];
                      NSLog(@"cookie : %@", cookie); // 这里可对cookie进行存储
-                     kUserDefaultsSave(cookie, COOKIES);
+                     NSString *cookiejiemi =  [NetRequestManager decodeFromPercentEscapeString:cookie];
+                     NSDictionary *dic = [NetRequestManager dictionaryWithJsonString:[cookiejiemi substringFromIndex:5]];
+//                     [LPTools shareInstance].UserRole = [dic[@"role"] integerValue];
+                     if (dic) {
+                         kUserDefaultsSave(dic[@"role"], USERDATA);
+                         
+                         kUserDefaultsSave(dic[@"userId"], LOGINID);
+                         kUserDefaultsSave(dic[@"USERIDENTIY"], USERIDENTIY);
+                         if (dic[@"userId"]) {
+                             kUserDefaultsSave(@"1", kLoginStatus);
+                         }
+                         LPUserMaterialModel *userMaterialModel = [LPUserDefaults getObjectByFileName:USERINFO];
+                         if (userMaterialModel) {
+                             userMaterialModel.data.role = dic[@"role"];
+                             userMaterialModel.data.user_url = dic[@"userImage"];
+                             userMaterialModel.data.user_name = dic[@"userName"];
+                             userMaterialModel.data.workStatus = dic[@"workStatus"];
+                             userMaterialModel.data.grading = dic[@"grading"];
+                             userMaterialModel.data.identity = dic[@"identity"];
+
+                              [LPUserDefaults  saveObject:userMaterialModel byFileName:USERINFO];
+                         }else{
+                             LPUserMaterialModel *userMaterialModel = [[LPUserMaterialModel alloc] init];
+                             LPUserMaterialDataModel *data = [[LPUserMaterialDataModel alloc] init];
+                             data.role = dic[@"role"];
+                             data.user_url = dic[@"userImage"];
+                             data.user_name = dic[@"userName"];
+                             data.workStatus = dic[@"workStatus"];
+                             data.grading = dic[@"grading"];
+                             userMaterialModel.data.identity = dic[@"identity"];
+
+                             userMaterialModel.data = data;
+                             [LPUserDefaults  saveObject:userMaterialModel byFileName:USERINFO];
+                         }
+ 
+                          kUserDefaultsSave(cookie, COOKIES);
+                     }
+                     
                  }
-                 
+                 [NetRequestManager HiddView];
+
                  [self commonCheckErrorCode:responseObject];
                  requestEnty.responseHandle(YES,responseObject);
                  [self saveWithURL:requestEnty response:responseObject];
@@ -107,8 +228,11 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
                  //打开可统一提示错误信息(考虑有的场景可能不需要,由自己去选择是否显示错误信息),
                  //错误信息已经过处理为NSString,可直接用于展示
                  //            [kKeyWindow showLoadingMeg:errorStr time:MESSAGESHOWTIME];
+                 [NetRequestManager HiddView];
+
                  requestEnty.responseHandle(NO,errorStr);
                  if ([self getWithURL:requestEnty]) {
+
                      requestEnty.responseHandle(YES, [self getWithURL:requestEnty]);
                  }
              }];
@@ -233,7 +357,7 @@ constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
 //            }
 //        }
         if ([codeStr integerValue] == 10002) {
-            kUserDefaultsSave(@"0", kLoginStatus);
+//            kUserDefaultsSave(@"0", kLoginStatus);
             return YES;
         }else{
             return YES;
@@ -397,4 +521,42 @@ constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         return [LPUserDefaults getObjectByFileName:arr[arr.count-1]];
     }
 }
+
+//解编码
++ (NSString *)decodeFromPercentEscapeString: (NSString *) input
+{
+    NSMutableString *outputStr = [NSMutableString stringWithString:input];
+    [outputStr replaceOccurrencesOfString:@"+"
+                               withString:@" "
+                                  options:NSLiteralSearch
+                                    range:NSMakeRange(0, [outputStr length])];
+    return [outputStr stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+}
++ (NSDictionary *)dictionaryWithJsonString:(NSString *)jsonString
+{
+    if (jsonString == nil) {
+        return nil;
+    }
+    
+    NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+    NSError *err;
+    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:jsonData
+                                                        options:NSJSONReadingMutableContainers
+                                                          error:&err];
+    if(err)
+    {
+        NSLog(@"json解析失败：%@",err);
+        return nil;
+    }
+    return dic;
+}
+
++ (void)HiddView
+{
+    //    [DSBeiAnimationLoading hideInView:[UIApplication sharedApplication].keyWindow];
+    [DSBaActivityView hideActiviTy];
+}
+
+
+
 @end

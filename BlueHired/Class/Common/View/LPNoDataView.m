@@ -7,11 +7,13 @@
 //
 
 #import "LPNoDataView.h"
+#import "LPLoginVC.h"
 
 @interface LPNoDataView ()
 
 @property(nonatomic,strong) UIImageView *imageView;
 @property(nonatomic,strong) UILabel *label;
+@property(nonatomic,strong) UIButton *LoginBt;
 
 @end
 
@@ -49,6 +51,10 @@
     }
 }
 
+- (void)setIsShowLoginBt:(BOOL)isShowLoginBt{
+    _LoginBt.hidden = isShowLoginBt;
+}
+
 -(void)updateUI{
     self.backgroundColor = [UIColor whiteColor];
     
@@ -62,6 +68,14 @@
         make.left.mas_equalTo(50);
         make.right.mas_equalTo(-50);
         make.top.equalTo(self.imageView.mas_bottom).offset(14);
+    }];
+    
+    [self addSubview:self.LoginBt];
+    [self.LoginBt mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(30);
+        make.width.mas_equalTo(90);
+        make.top.equalTo(self.label.mas_bottom).offset(14);
+        make.centerX.equalTo(self.mas_centerX);
     }];
     
 }
@@ -85,4 +99,27 @@
     }
     return _label;
 }
+
+-(UIButton *)LoginBt{
+    if (!_LoginBt) {
+        _LoginBt = [[UIButton alloc] init];
+        _LoginBt.backgroundColor = [UIColor baseColor];
+        [_LoginBt setTitle:@"立即登录" forState:UIControlStateNormal];
+        [_LoginBt setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _LoginBt.titleLabel.font = [UIFont systemFontOfSize:13];
+         _LoginBt.layer.cornerRadius = 8;
+        [_LoginBt addTarget:self action:@selector(ToLoginView) forControlEvents:UIControlEventTouchUpInside];
+        _LoginBt.hidden = YES;
+    }
+    return _LoginBt;
+}
+
+-(void)ToLoginView{
+//    [LoginUtils validationLogin:[UIWindow visibleViewController]];
+    LPLoginVC *vc = [[LPLoginVC alloc]init];
+    vc.hidesBottomBarWhenPushed = YES;
+    vc.isCircleVC = YES;
+    [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+}
+
 @end

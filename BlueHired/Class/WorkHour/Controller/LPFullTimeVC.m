@@ -41,6 +41,8 @@
 @property(nonatomic,strong) NSNumber *workType;
 @property(nonatomic,assign) CGFloat workNormalHour;
 
+@property(nonatomic,strong) UIButton *senBt;
+
 @end
 
 @implementation LPFullTimeVC
@@ -52,9 +54,16 @@
     self.navigationItem.title = @"正式工";
     
     self.workTypeArray = @[@"早班",@"中班",@"晚班",@"夜班"];
-    self.addTypeTypeArray = @[@"普通加班",@"周末加班",@"节假日加班"];
+    self.addTypeTypeArray = @[@"普通加班",@"周六,日加班",@"节假日加班"];
     self.leaveTypeArray = @[@"带薪休假",@"调休",@"事假",@"病假",@"其它请假"];
-    self.timeArray = @[@"0.5",@"1",@"1.5",@"2",@"2.5",@"3",@"3.5",@"4",@"4.5",@"5",@"5.5",@"6",@"6.5",@"7",@"7.5",@"8",@"8.5",@"9",@"9.5",@"10",@"10.5",@"11",@"11.5",@"12",@"12.5",@"13",@"13.5",@"14",@"14.5",@"15",@"15.5",@"16",@"16.5",@"17",@"17.5",@"18",@"18.5",@"19",@"19.5",@"20",@"20.5",@"21",@"21.5",@"22",@"22.5",@"23",@"23.5",@"24"];
+    self.timeArray = @[@"1",@"2",@"3",@"4",@"5",@"6",
+                       @"0.5",@"1.5",@"2.5",@"3.5",@"4.5",@"5.5",
+                       @"7",@"8",@"9",@"10",@"11",@"12",
+                       @"6.5",@"7.5",@"8.5",@"9.5",@"10.5",@"11.5",
+                       @"13",@"14",@"15",@"16",@"17",@"18",
+                       @"12.5",@"13.5",@"14.5",@"15.5",@"16.5",@"17.5",
+                       @"19",@"20",@"21",@"22",@"23",@"24",
+                       @"18.5",@"19.5",@"20.5",@"21.5",@"22.5",@"23.5"];
     
     NSDate *currentDate = [NSDate date];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -153,6 +162,10 @@
         [weakSelf.timeButton setTitle:string forState:UIControlStateNormal];
         [weakSelf requestQueryCurrecord];
     };
+    
+    self.dateSelectView.pageblock = ^(NSString *string) {
+        [weakSelf requestQueryNormalrecordWithShowCalenderPage:string];
+     };
 }
 -(void)touchDeleteButton{
     if (!self.model.data) {
@@ -262,6 +275,7 @@
                 self.durationView.block = ^(NSInteger index) {
                     weakSelf.workType = [NSNumber numberWithInteger:index];
                     cell.detailTextLabel.text = weakSelf.workTypeArray[index];
+                    [weakSelf IsSenderBtBack];
                 };
             }else{
                 self.durationView.timeArray = self.timeArray;
@@ -269,6 +283,8 @@
                 self.durationView.block = ^(NSInteger index) {
                     weakSelf.workNormalHour = [weakSelf.timeArray[index] floatValue];
                     cell.detailTextLabel.text = weakSelf.timeArray[index];
+                    [weakSelf IsSenderBtBack];
+
                 };
             }
             
@@ -279,6 +295,8 @@
                 self.durationView.block = ^(NSInteger index) {
                     weakSelf.addType = [NSNumber numberWithInteger:index];;
                     cell.detailTextLabel.text = weakSelf.addTypeTypeArray[index];
+                    [weakSelf IsSenderBtBack];
+
                 };
             }else{
                 self.durationView.timeArray = self.timeArray;
@@ -286,6 +304,8 @@
                 self.durationView.block = ^(NSInteger index) {
                     weakSelf.addWorkHour = [weakSelf.timeArray[index] floatValue];
                     cell.detailTextLabel.text = weakSelf.timeArray[index];
+                    [weakSelf IsSenderBtBack];
+
                 };
             }
         }else if (indexPath.section == 2) {
@@ -295,6 +315,8 @@
                 self.durationView.block = ^(NSInteger index) {
                     weakSelf.leaveType = [NSNumber numberWithInteger:index];;
                     cell.detailTextLabel.text = weakSelf.leaveTypeArray[index];
+                    [weakSelf IsSenderBtBack];
+
                 };
             }else{
                 self.durationView.timeArray = self.timeArray;
@@ -302,6 +324,7 @@
                 self.durationView.block = ^(NSInteger index) {
                     weakSelf.leaveHour = [weakSelf.timeArray[index] floatValue];
                     cell.detailTextLabel.text = weakSelf.timeArray[index];
+                    [weakSelf IsSenderBtBack];
                 };
             }
         }
@@ -320,6 +343,7 @@
         self.leaveType = model.data.leaveType;
         self.leaveHour = model.data.leaveHour.floatValue;
         [self.tableview reloadData];
+    [self IsSenderBtBack];
 //    }
 }
 
@@ -329,11 +353,84 @@
     LPFullTimeDetailVC *vc = [[LPFullTimeDetailVC alloc]init];
     [self.navigationController pushViewController:vc animated:YES];
 }
+
+-(void)IsSenderBtBack
+{
+    
+    NSArray *aaa = @[[NSString stringWithFormat:@"%@",self.workType],
+                     [NSString stringWithFormat:@"%@",self.addType],
+                     [NSString stringWithFormat:@"%@",self.leaveType]];
+    
+    NSArray *aaa2 = @[[NSString stringWithFormat:@"%.1f",self.workNormalHour],
+                      [NSString stringWithFormat:@"%.1f",self.addWorkHour],
+                      [NSString stringWithFormat:@"%.1f",self.leaveHour]];
+    
+    NSArray *dicArr = @[@"workType",@"workNormalHour",@"addType",@"addWorkHour",@"leaveType",@"leaveHour"];
+    
+    NSMutableDictionary *dic1 = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                 self.currentDateString,@"time",
+                                 self.model.data ? @(2) : @(1),@"optType",
+                                 @(0),@"type",nil];
+    
+    bool isHL = NO;
+    for (int i = 0; i<3; i++)
+    {
+        if (![aaa[i] isEqualToString:@"(null)"] && [aaa2[i] floatValue] != 0.0)
+        {
+            NSDictionary *dic2 = [NSDictionary dictionaryWithObjectsAndKeys:aaa[i],dicArr[i*2],aaa2[i], dicArr[i*2+1],nil];
+            [dic1 addEntriesFromDictionary:dic2];
+            isHL = YES;
+        }
+    }
+    if (isHL) {
+        self.senBt.backgroundColor = [UIColor baseColor];
+        self.senBt.enabled = YES;
+    }
+    else
+    {
+        self.senBt.backgroundColor = [UIColor colorWithHexString:@"#e6e6e6"];
+        self.senBt.enabled = NO;
+    }
+}
+
 -(void)touchRecordButton{
     if (!self.workType && !self.addType && !self.leaveType) {
         [self.view showLoadingMeg:@"请选择以上内容" time:MESSAGE_SHOW_TIME];
         return;
     }
+
+    NSArray *aaa = @[[NSString stringWithFormat:@"%@",self.workType],
+                     [NSString stringWithFormat:@"%@",self.addType],
+                     [NSString stringWithFormat:@"%@",self.leaveType]];
+    
+    NSArray *aaa2 = @[[NSString stringWithFormat:@"%.1f",self.workNormalHour],
+                     [NSString stringWithFormat:@"%.1f",self.addWorkHour],
+                     [NSString stringWithFormat:@"%.1f",self.leaveHour]];
+    
+    NSArray *dicArr = @[@"workType",@"workNormalHour",@"addType",@"addWorkHour",@"leaveType",@"leaveHour"];
+
+    NSMutableDictionary *dic1 = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                 self.currentDateString,@"time",
+                                 self.model.data ? @(2) : @(1),@"optType",
+                                 @(0),@"type",
+                                 @"2.1",@"versionType",nil];
+    
+    bool isHL = NO;
+    for (int i = 0; i<3; i++)
+    {
+        if (![aaa[i] isEqualToString:@"(null)"] && [aaa2[i] floatValue] != 0.0)
+        {
+            NSDictionary *dic2 = [NSDictionary dictionaryWithObjectsAndKeys:aaa[i],dicArr[i*2],aaa2[i], dicArr[i*2+1],nil];
+            [dic1 addEntriesFromDictionary:dic2];
+            isHL = YES;
+        }
+    }
+    
+    if (isHL) {
+        [self requestSaveorupdateWorkhour:dic1];
+        return;
+    }
+
     if (self.workType) {
         if (!self.workNormalHour) {
             [self.view showLoadingMeg:@"请选择上班时长" time:MESSAGE_SHOW_TIME];
@@ -352,7 +449,9 @@
             return;
         }
     }
-    [self requestSaveorupdateWorkhour];
+    
+    
+    
 }
 
 #pragma mark - request
@@ -371,9 +470,11 @@
     }];
 }
 -(void)requestQueryNormalrecordWithShowCalender:(BOOL)show{
-    NSDate *currentDate = [NSDate date];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"YYYY-MM"];
+    dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"zh_CN"];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    NSDate *currentDate =[dateFormatter dateFromString:self.currentDateString];
+    [dateFormatter setDateFormat:@"yyyy-MM"];
     NSString *string = [dateFormatter stringFromDate:currentDate];
     
     NSDictionary *dic = @{
@@ -385,7 +486,14 @@
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
                 NSArray *array = responseObject[@"data"];
-                self.normalRecordArray = array;
+                NSMutableArray *strList = [[NSMutableArray alloc] init];
+                for (NSString *str in array) {
+                    NSLog(@"str  %@",str);
+                    [strList addObject:[NSString stringWithFormat:@"%@-%@",string,str]];
+                }
+                
+                self.normalRecordArray = [strList copy];
+                [self requestQueryCurrecord];
                 if (show) {
                     [self showCalender];
                 }
@@ -395,26 +503,60 @@
         }
     }];
 }
--(void)requestSaveorupdateWorkhour{
+
+
+-(void)requestQueryNormalrecordWithShowCalenderPage:(NSString *)string {
     NSDictionary *dic = @{
-                          @"addType":self.addType ? self.addType : @"",
-                          @"addWorkHour":self.addWorkHour ? @(self.addWorkHour) : @"",
-                          @"leaveHour":self.leaveHour ? @(self.leaveHour) : @"",
-                          @"leaveType":self.leaveType ? self.leaveType : @"",
-                          @"time":self.currentDateString,
-                          @"optType":self.model.data ? @(2) : @(1),
                           @"type":@(0),
-                          @"workType":self.workType,
-                          @"workNormalHour":@(self.workNormalHour),
+                          @"month":string
                           };
+    [NetApiManager requestQueryNormalrecordWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                NSArray *array = responseObject[@"data"];
+                NSMutableArray *strList = [[NSMutableArray alloc] init];
+                for (NSString *str in array) {
+                    NSLog(@"str  %@",str);
+                    [strList addObject:[NSString stringWithFormat:@"%@-%@",string,str]];
+                }
+                
+                self.normalRecordArray = [strList copy];                self.dateSelectView.selectArray = self.normalRecordArray;
+             }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+
+-(void)requestSaveorupdateWorkhour:(NSMutableDictionary *) dic{
+//    NSDictionary *dic = @{
+//                          @"addType":self.addType ? self.addType : @"",
+//                          @"addWorkHour":self.addWorkHour ? @(self.addWorkHour) : @"",
+//                          @"leaveHour":self.leaveHour ? @(self.leaveHour) : @"",
+//                          @"leaveType":self.leaveType ? self.leaveType : @"",
+//                          @"time":self.currentDateString,
+//                          @"optType":self.model.data ? @(2) : @(1),
+//                          @"type":@(0),
+//                          @"workType":self.workType,
+//                          @"workNormalHour":@(self.workNormalHour),
+//                          };
     [NetApiManager requestSaveorupdateWorkhourWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            if (responseObject[@"data"]) {
-                if ([responseObject[@"data"] integerValue] == 1) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if ([responseObject[@"data"] integerValue] == 1 ||[responseObject[@"data"] integerValue] == 2) {
+                    if ([responseObject[@"data"] integerValue] == 2) {
+                        [LPTools AlertWorkHourView:@""];
+                    }
                     [self.view showLoadingMeg:@"记录成功" time:MESSAGE_SHOW_TIME];
                     [self requestQueryNormalrecordWithShowCalender:NO];
+                }else{
+                    [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
                 }
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+
             }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
@@ -461,10 +603,14 @@
         _tableFooterView = [[UIView alloc]init];
         _tableFooterView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 150);
         UIButton *recordButton = [[UIButton alloc]init];
+        self.senBt = recordButton;
         recordButton.frame = CGRectMake(13, 21, SCREEN_WIDTH-26, 48);
         recordButton.backgroundColor = [UIColor baseColor];
         [recordButton setTitle:@"工时记录" forState:UIControlStateNormal];
         [recordButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        recordButton.enabled = NO;
+        recordButton.backgroundColor = [UIColor lightGrayColor];
+
         recordButton.layer.masksToBounds = YES;
         recordButton.layer.cornerRadius = 24;
         [recordButton addTarget:self action:@selector(touchRecordButton) forControlEvents:UIControlEventTouchUpInside];
@@ -475,6 +621,8 @@
         detailButton.backgroundColor = [UIColor whiteColor];
         [detailButton setTitle:@"工时详情" forState:UIControlStateNormal];
         [detailButton setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
+
+
         detailButton.layer.masksToBounds = YES;
         detailButton.layer.cornerRadius = 24;
         detailButton.layer.borderColor = [UIColor baseColor].CGColor;

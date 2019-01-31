@@ -23,10 +23,12 @@ static NSString *LPInformationMoreImageCollectionViewCellID = @"LPInformationMor
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
+//    self.imgeBgView.layer.cornerRadius = 6;
     [self.imgeBgView addSubview:self.collectionView];
     [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.imgeBgView);
     }];
+    
 }
 -(void)setModel:(LPEssaylistDataModel *)model{
     _model = model;
@@ -51,7 +53,7 @@ static NSString *LPInformationMoreImageCollectionViewCellID = @"LPInformationMor
 }
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     LPInformationMoreImageCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:LPInformationMoreImageCollectionViewCellID forIndexPath:indexPath];
-    [cell.imgView sd_setImageWithURL:self.imageArray[indexPath.row]];
+    [cell.imgView sd_setImageWithURL:self.imageArray[indexPath.row]  placeholderImage:[UIImage imageNamed:@"NoImage"]];
     return cell;
 }
 

@@ -10,8 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LPSalarycCardChangePasswordVC : UIViewController
-
+@interface LPSalarycCardChangePasswordVC : LPBaseViewController
+@property(nonatomic,assign) NSInteger times;
 @end
 
 NS_ASSUME_NONNULL_END

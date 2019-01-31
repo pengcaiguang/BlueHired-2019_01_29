@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "LPQuerySalarylistModel.h"
 
-@interface LPSalaryDetailVC : UIViewController
+@interface LPSalaryDetailVC : LPBaseViewController
 
 @property(nonatomic,strong) LPQuerySalarylistDataModel *model;
 @end

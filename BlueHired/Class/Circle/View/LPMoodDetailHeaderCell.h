@@ -13,9 +13,11 @@ typedef void(^LPMoodDetailHeaderCellUserConcernBlock)(void);
 
 @interface LPMoodDetailHeaderCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *userUrlImgView;
+@property (weak, nonatomic) IBOutlet UIImageView *gradingiamge;
 @property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *gradingLabel;
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *AddressLabel;
 @property (weak, nonatomic) IBOutlet UILabel *moodDetailsLabel;
 @property (weak, nonatomic) IBOutlet UILabel *viewLabel;
 @property (weak, nonatomic) IBOutlet UIView *imageBgView;
@@ -23,6 +25,7 @@ typedef void(^LPMoodDetailHeaderCellUserConcernBlock)(void);
 
 @property (weak, nonatomic) IBOutlet UIButton *userConcernButton;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *userConcern_constraint_width;
+@property (weak, nonatomic) IBOutlet UIImageView *AddressImage;
 
 
 @property(nonatomic,strong) LPGetMoodModel *model;
