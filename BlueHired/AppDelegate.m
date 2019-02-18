@@ -69,7 +69,9 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
  
     _mapManager = [[BMKMapManager alloc]init];
     //百度AR识别
+    #if !TARGET_IPHONE_SIMULATOR
     [[AipOcrService shardService] authWithAK:OCRAk andSK:OCRSK];
+    #endif
 
     [[BMKLocationAuth sharedInstance] checkPermisionWithKey:@"Is1tZn8s2L4SvALlxeBjef5Rzi3a7luV" authDelegate:self];
     BOOL ret = [_mapManager start:@"Is1tZn8s2L4SvALlxeBjef5Rzi3a7luV" generalDelegate:self];

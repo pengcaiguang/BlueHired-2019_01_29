@@ -45,6 +45,8 @@
     [self setupUI];
     [self configCallback];
 
+    NSLog(@"屏幕宽度 = %f,屏幕高度 = %f",Screen_Width,Screen_Height);
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -58,7 +60,6 @@
 
 - (void)configCallback {
     __weak typeof(self) weakSelf = self;
-    
     // 这是默认的识别成功的回调
     _successHandler = ^(id result){
         NSLog(@"%@      %@", result,result[@"result"][@"bank_name"]);
@@ -291,27 +292,7 @@
 }
 
 
-
-- (void)bankCardOCROnline{
-    
-    UIViewController * vc =
-                        [AipCaptureCardVC ViewControllerWithCardType:CardTypeIdCardFont
-                                                              Title:@"第二步: 银行卡扫描"
-                                                    andImageHandler:^(UIImage *image) {
-//                                     [[AipOcrService shardService] detectIdCardFrontFromImage:image
-//                                                                                  withOptions:nil
-//                                                                               successHandler:_successHandler
-//                                                                                  failHandler:_failHandler];
-//                                     [[AipOcrService shardService] detectBankCardFromImage:image
-//                                                                               successHandler:_successHandler
-//                                                                                  failHandler:_failHandler];
-                                     [[AipOcrService shardService] detectIdCardBackFromImage:image withOptions:nil successHandler:_successHandler failHandler:_failHandler];
-                                 }];
-//    [self presentViewController:vc animated:YES completion:nil];
-    vc.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:vc animated:YES];
-    
-}
+  
 #pragma mark UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
 //    [self dismissViewControllerAnimated:YES completion:nil];

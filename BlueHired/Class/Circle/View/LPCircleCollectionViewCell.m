@@ -42,6 +42,10 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
     [self.contentView addSubview:self.tableview];
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.contentView);
+//        make.top.mas_equalTo(0);
+//        make.left.mas_equalTo(0);
+//        make.right.mas_equalTo(0);
+//        make.bottom.mas_equalTo(0);
     }];
 }
 #pragma mark - setdata

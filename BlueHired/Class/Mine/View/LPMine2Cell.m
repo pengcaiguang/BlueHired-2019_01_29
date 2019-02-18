@@ -26,6 +26,11 @@
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(touchBgView)];
     [self.user_urlImgView addGestureRecognizer:tap];
 
+    if ([DeviceUtils deviceType] == IPhone_X) {
+        self.BackView1_Height.constant = 139.0 + 24;
+    }else{
+        self.BackView1_Height.constant = 139;
+    }
     
 }
 

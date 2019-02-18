@@ -48,25 +48,28 @@
     [_alertView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(15);
         make.right.mas_equalTo(-15);
-        make.center.equalTo(self);
+//        make.center.equalTo(self);
+        make.top.mas_equalTo(35);
     }];
     [_alertView setBackgroundColor:[UIColor whiteColor]];
     
     UIButton *deleteBt = [[UIButton alloc] init];
     [self.alertView addSubview:deleteBt];
     [deleteBt mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(8);
-        make.top.mas_equalTo(15);
-        make.height.mas_equalTo(10);
-        make.width.mas_equalTo(10);
+        make.left.mas_equalTo(0);
+        make.top.mas_equalTo(0);
+        make.height.mas_equalTo(40);
+        make.width.mas_equalTo(26);
     }];
-    [deleteBt setBackgroundImage:[UIImage imageNamed:@"closeButton"] forState:UIControlStateNormal];
+//    [deleteBt setBackgroundImage:[UIImage imageNamed:@"closeButton"] forState:UIControlStateNormal];
+    [deleteBt setImage:[UIImage imageNamed:@"closeButton"] forState:UIControlStateNormal];
     [deleteBt addTarget:self action:@selector(tapDismissBT:) forControlEvents:UIControlEventTouchUpInside];
     
     UILabel *HeadTitleLable = [[UILabel alloc] init];
     [self.alertView addSubview:HeadTitleLable];
     [HeadTitleLable mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(deleteBt.mas_right).offset(8);
+//        make.left.equalTo(deleteBt.mas_right).offset(8);
+        make.left.mas_equalTo(26);
         make.right.mas_equalTo(0);
         make.top.mas_equalTo(0);
         make.height.mas_equalTo(40);
@@ -210,12 +213,13 @@
         [_alertView addSubview:button];
         [button mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.mas_equalTo(leadingX);
-            make.top.equalTo(textField.mas_bottom).offset(0);
+//            make.top.equalTo(textField.mas_bottom).offset(0);
+            make.bottom.mas_equalTo(0);
             make.width.mas_equalTo(buttonWidth);
             make.height.mas_equalTo(42);
         }];
         [button setTitle:btnTitle forState:UIControlStateNormal];
-        button.titleLabel.font = [UIFont systemFontOfSize:15];
+        button.titleLabel.font = [UIFont systemFontOfSize:14];
         if (_buttonColors && _buttonColors.count > i) {
             [button setTitleColor:[_buttonColors objectAtIndex:i] forState:UIControlStateNormal];
         }

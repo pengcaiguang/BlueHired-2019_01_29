@@ -90,7 +90,7 @@ static NSString *LPInformationVideoCollectionViewCellID = @"LPInfoMationVideoCel
 
     self.ViewscrollView = [[UIScrollView alloc] init];
     if ([DeviceUtils deviceType] == IPhone_X) {
-        self.ViewscrollView.frame = CGRectMake(0, 50, Screen_Width,  SCREEN_HEIGHT-88-50-49);
+        self.ViewscrollView.frame = CGRectMake(0, 50, Screen_Width,  SCREEN_HEIGHT-88-50-83.0);
      }else{
         self.ViewscrollView.frame = CGRectMake(0, 50, Screen_Width,  SCREEN_HEIGHT-64-50-49);
      }

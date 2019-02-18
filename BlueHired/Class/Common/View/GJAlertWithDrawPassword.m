@@ -49,7 +49,8 @@
     [_alertView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(15);
         make.right.mas_equalTo(-15);
-        make.center.equalTo(self);
+//        make.center.equalTo(self);
+        make.top.mas_equalTo(35);
     }];
     [_alertView setBackgroundColor:[UIColor whiteColor]];
     

@@ -130,7 +130,7 @@
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="buZ-Rn-LW3" firstAttribute="top" secondItem="Xv7-Xc-qBe" secondAttribute="top" constant="23" id="2id-yn-hnb"/>
+                            <constraint firstItem="KmP-AL-xbt" firstAttribute="top" secondItem="usi-83-jcC" secondAttribute="bottom" constant="23" id="1yq-Cb-74O"/>
                             <constraint firstAttribute="height" constant="139" id="3PS-Bo-i82"/>
                             <constraint firstItem="NFT-yO-bse" firstAttribute="bottom" secondItem="7I7-z3-uJN" secondAttribute="bottom" id="CkY-f1-Yg5"/>
                             <constraint firstItem="OtV-zz-bAI" firstAttribute="leading" secondItem="Xv7-Xc-qBe" secondAttribute="leading" constant="-5" id="EQv-fB-Xrq"/>
@@ -139,17 +139,16 @@
                             <constraint firstAttribute="trailing" secondItem="KmP-AL-xbt" secondAttribute="trailing" constant="-14" id="OrK-pm-Z8D"/>
                             <constraint firstItem="NFT-yO-bse" firstAttribute="trailing" secondItem="7I7-z3-uJN" secondAttribute="trailing" id="Q0M-UB-JBF"/>
                             <constraint firstItem="OtV-zz-bAI" firstAttribute="top" secondItem="Xv7-Xc-qBe" secondAttribute="top" id="TAh-9n-PD8"/>
-                            <constraint firstItem="KmP-AL-xbt" firstAttribute="top" secondItem="Xv7-Xc-qBe" secondAttribute="top" constant="79" id="WFG-xn-mdS"/>
                             <constraint firstItem="buZ-Rn-LW3" firstAttribute="leading" secondItem="Xv7-Xc-qBe" secondAttribute="leading" constant="16" id="Yf9-jb-CBk"/>
-                            <constraint firstItem="usi-83-jcC" firstAttribute="top" secondItem="Xv7-Xc-qBe" secondAttribute="top" constant="23" id="Zj8-hX-nTQ"/>
+                            <constraint firstAttribute="bottom" secondItem="KmP-AL-xbt" secondAttribute="bottom" constant="32" id="cec-1l-SbW"/>
                             <constraint firstItem="7I7-z3-uJN" firstAttribute="centerX" secondItem="Xv7-Xc-qBe" secondAttribute="centerX" id="dPp-HL-5g4"/>
                             <constraint firstAttribute="trailing" secondItem="usi-83-jcC" secondAttribute="trailing" constant="16" id="oKp-qR-ylq"/>
+                            <constraint firstItem="usi-83-jcC" firstAttribute="centerY" secondItem="buZ-Rn-LW3" secondAttribute="centerY" id="osQ-9K-bDv"/>
                             <constraint firstAttribute="bottom" secondItem="7I7-z3-uJN" secondAttribute="bottom" constant="10" id="rQt-P3-f4V"/>
                         </constraints>
                     </view>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="Jdg-E3-3J6" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="91.5" id="531-Kc-yr6"/>
                     <constraint firstItem="Jdg-E3-3J6" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="60p-pI-FzZ"/>
                     <constraint firstAttribute="trailing" secondItem="Jdg-E3-3J6" secondAttribute="trailing" constant="10" id="9Nm-9j-d4f"/>
                     <constraint firstItem="Xv7-Xc-qBe" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="I6F-Va-Qvb"/>
@@ -162,6 +161,7 @@
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
             <connections>
                 <outlet property="BackView1" destination="Jdg-E3-3J6" id="hxP-6o-dhv"/>
+                <outlet property="BackView1_Height" destination="3PS-Bo-i82" id="Y17-jj-RiW"/>
                 <outlet property="concernNumLabel" destination="zgT-vP-DBN" id="tPC-iI-CFm"/>
                 <outlet property="gradingiamge" destination="xCP-UV-mqM" id="I7Z-Sc-KLV"/>
                 <outlet property="moodNumLabel" destination="Pwy-ec-DPZ" id="9a2-Vx-RvO"/>
@@ -172,7 +172,7 @@
                 <outlet property="user_urlImgView" destination="7I7-z3-uJN" id="mcp-qw-7oz"/>
                 <outlet property="workStatusLabel" destination="Ptd-Gg-BAi" id="gTi-eU-s6L"/>
             </connections>
-            <point key="canvasLocation" x="-51.200000000000003" y="-29.685157421289357"/>
+            <point key="canvasLocation" x="-147" y="-31"/>
         </tableViewCell>
     </objects>
     <resources>

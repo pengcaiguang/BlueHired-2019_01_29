@@ -31,7 +31,8 @@
 
 // iPhoneX
 
-#define IS_iPhoneX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size) : NO)
+//#define IS_iPhoneX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size) : NO)
+#define  IS_iPhoneX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [UIScreen mainScreen].bounds.size) || CGSizeEqualToSize(CGSizeMake(828, 1792), [UIScreen mainScreen].bounds.size)  || CGSizeEqualToSize(CGSizeMake(1242, 2688), [UIScreen mainScreen].bounds.size) : NO)
 
 
 

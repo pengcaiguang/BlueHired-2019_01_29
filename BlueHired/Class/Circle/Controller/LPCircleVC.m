@@ -40,7 +40,11 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
     [self setupTitleView];
     [self.view addSubview:self.collectionView];
     [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.view);
+//        make.edges.equalTo(self.view);
+        make.top.mas_equalTo(0);
+        make.left.mas_equalTo(0);
+        make.right.mas_equalTo(0);
+        make.bottom.mas_equalTo(-0);
     }];
     [self.collectionView reloadData];
     self.TypeIndex = 0;
@@ -49,8 +53,7 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
     
     [self selectButtonAtIndex:0];
     [self scrollToItenIndex:0];
- 
-    
+
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
@@ -225,7 +228,7 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
 #pragma mark -- UICollectionViewDelegateFlowLayout
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     if ([DeviceUtils deviceType] == IPhone_X) {
-        return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-88-49);
+        return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-88-83.0);
     }else{
         return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-64-49);
     }

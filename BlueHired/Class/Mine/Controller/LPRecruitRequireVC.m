@@ -203,7 +203,7 @@ static NSString *LPInformationCollectionViewCellID = @"LPRecruitReqiuerCollectio
 #pragma mark -- UICollectionViewDelegateFlowLayout
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     if ([DeviceUtils deviceType] == IPhone_X) {
-        return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-88-50-50);
+        return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-88-50-83.0);
     }else{
         return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-64-50-50);
     }

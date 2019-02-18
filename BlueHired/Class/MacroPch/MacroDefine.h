@@ -20,8 +20,8 @@
 //http://ceshi.lanpin123.com/lifetime/comment/get_comment_list?id=38&page=1&type=1
 //#define BaseRequestURL  @"http://192.168.0.152:8080/lifetime/"
 
-#define BaseRequestURL  @"http://192.168.0.108:8080/lifetime/"
-#define BaseRequestWeiXiURL  @"http://192.168.0.108:8080/"
+//#define BaseRequestURL  @"http://192.168.0.108:8080/lifetime/"
+//#define BaseRequestWeiXiURL  @"http://192.168.0.108:8080/"
 
 //#define BaseRequestURL  @"http://www.lanpin123.com/lifetime/"
 //#define BaseRequestWeiXiURL  @"http://www.lanpin123.com/"
@@ -32,8 +32,8 @@
 //#define BaseRequestURL  @"http://ceshi.lanpin123.com/lifetime/"
 //#define BaseRequestWeiXiURL  @"http://ceshi.lanpin123.com/"
 
-//#define BaseRequestURL  @"http://192.168.0.166:8081/lifetime/"        //胡经理
-//#define BaseRequestWeiXiURL  @"http://192.168.0.166:8081/"
+#define BaseRequestURL  @"http://192.168.0.167:8081/lifetime/"        //胡经理
+#define BaseRequestWeiXiURL  @"http://192.168.0.167:8081/"
 
 #define QiNiuBaseUrl @"http://pic.lanpin123.com/"
 

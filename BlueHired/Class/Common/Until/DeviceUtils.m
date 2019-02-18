@@ -52,8 +52,12 @@
     if ([platform isEqualToString:@"iPhone10,2"])    return IPhone_8P;
     if ([platform isEqualToString:@"iPhone10,5"])    return IPhone_8P;
     if ([platform isEqualToString:@"iPhone10,3"])    return IPhone_X;
-    if ([platform isEqualToString:@"iPhone10,6"])    return IPhone_X;
+    if ([platform isEqualToString:@"iPhone11,2"])    return IPhone_X;   //iPhone XS
+    if ([platform isEqualToString:@"iPhone11,4"])    return IPhone_X;   //iPhone XS Max
+    if ([platform isEqualToString:@"iPhone11,6"])    return IPhone_X;   //iPhone XS Max
+    if ([platform isEqualToString:@"iPhone11,8"])    return IPhone_X;   //iPhone XR
     
+
     return Unknown;
 #endif
     

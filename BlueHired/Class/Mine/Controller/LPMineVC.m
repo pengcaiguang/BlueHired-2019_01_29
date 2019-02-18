@@ -49,10 +49,15 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
     [self.view addSubview:self.Headtableview];
     [self.Headtableview mas_makeConstraints:^(MASConstraintMaker *make) {
         //        make.edges.equalTo(self.view);
-        make.top.mas_equalTo(-20);
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
-        make.height.mas_equalTo(250);
+        if ([DeviceUtils deviceType] == IPhone_X) {
+            make.height.mas_equalTo(250+24+24);
+            make.top.mas_equalTo(-44);
+        }else{
+            make.height.mas_equalTo(250);
+            make.top.mas_equalTo(-21);
+        }
 //        make.bottom.mas_equalTo(0);
     }];
     
@@ -61,7 +66,7 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
     self.tableview.clipsToBounds = YES;
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.edges.equalTo(self.view);
-        make.top.mas_equalTo(230);
+        make.top.equalTo(self.Headtableview.mas_bottom).offset(0);
         make.left.mas_equalTo(10);
         make.right.mas_equalTo(-10);
         make.bottom.mas_equalTo(0);
@@ -135,7 +140,7 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (tableView == self.Headtableview) {
-        return 230.0;
+        return [DeviceUtils deviceType] == IPhone_X ? 254.0 : 230.0;
     }else{
         if (indexPath.section == 0) {
             return 117;

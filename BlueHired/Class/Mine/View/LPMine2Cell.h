@@ -31,6 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UIView *BackView1;
 @property (weak, nonatomic) IBOutlet UIView *backView2;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *BackView1_Height;
 
 @property(nonatomic,strong) LPUserMaterialModel *userMaterialModel;
 @property(nonatomic,assign) BOOL signin;

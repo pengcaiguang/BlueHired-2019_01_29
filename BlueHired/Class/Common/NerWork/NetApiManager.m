@@ -190,9 +190,16 @@ static QNUploadManager *upManager = NULL;
                           if (imgArr.count == imgAdd.count)
                           {
                               NSLog(@"图片上传完成");
+                              if (imgAdd.count>1) {     //数据排序
+//                                  for (int j = 0; j < imgAdd.count; j++) {
+//                                      NSString *QiNiustrName = [[imgAdd objectAtIndex:j] componentsSeparatedByString:@"_"][1];
+//                                      NSLog(@"QiNiustrName = %@",QiNiustrName);
+//                                  }
+                                [imgAdd  sortUsingSelector:@selector(caseInsensitiveCompare:)];
+                              }
+                              
                                 BlockInfo(YES,imgAdd);
                           }
-                          
                       } option:opt];
             }
         }else{

@@ -92,8 +92,8 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
     self.passwordTextField.delegate = self;
     
     
-//    self.idcardTextField.clearButtonMode=UITextFieldViewModeWhileEditing;
-//    self.cardTextField.clearButtonMode=UITextFieldViewModeWhileEditing;
+    self.idcardTextField.clearButtonMode=UITextFieldViewModeWhileEditing;
+    self.cardTextField.clearButtonMode=UITextFieldViewModeWhileEditing;
 //    self.nameTextField.clearButtonMode=UITextFieldViewModeWhileEditing;
     
     UIButton *userNameClearButton = [self.idcardTextField valueForKey:@"_clearButton"];
@@ -384,7 +384,7 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
                     
                 }
                 
-                GJAlertPassword *alert = [[GJAlertPassword alloc]initWithTitle:@"请输入提现密码，完成身份验证" message:nil buttonTitles:@[@"忘记密码"] buttonsColor:@[[UIColor baseColor]] buttonClick:^(NSInteger buttonIndex, NSString *string) {
+                GJAlertPassword *alert = [[GJAlertPassword alloc]initWithTitle:@"请输入提现密码，完成身份验证" message:nil buttonTitles:@[@"忘记密码?请点击这里"] buttonsColor:@[[UIColor baseColor]] buttonClick:^(NSInteger buttonIndex, NSString *string) {
                     NSLog(@"%ld",buttonIndex);
                     self.passwordString = string;
                     if (string.length != 6) {
@@ -718,13 +718,16 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
 }
 
 - (IBAction)bankCardOCROnline{
+     #if !TARGET_IPHONE_SIMULATOR
     if ((self.IntStep == 1 && self.ClassType)) {
         self.CardType = CardTypeIdCardFont;
         UIViewController * vc =
         [AipCaptureCardVC ViewControllerWithCardType:CardTypeIdCardFont
                                                Title:@""
                                      andImageHandler:^(UIImage *image) {
+                                        
                                          [[AipOcrService shardService] detectIdCardFrontFromImage:image withOptions:nil successHandler:_successHandler failHandler:_failHandler];
+                                        
                                      }];
         vc.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:vc animated:YES];
@@ -736,12 +739,14 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
         [AipCaptureCardVC ViewControllerWithCardType:CardTypeBankCard
                                                Title:@""
                                      andImageHandler:^(UIImage *image) {
+                                         
                                          [[AipOcrService shardService] detectBankCardFromImage:image  successHandler:_successHandler failHandler:_failHandler];
+                                          
                                      }];
         vc.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:vc animated:YES];
     }
-    
+     #endif
     
 }
 

@@ -108,9 +108,7 @@ static const CGFloat kPhotoViewMargin = 13.0;
         }
         
         if (location.location) {//得到定位信息，添加annotation
-            
-//            NSLog(@"LOC = %@",location.location);
-//            NSLog(@"LOC ID= %@",location.locationID);
+ 
              NSArray *array = [location.rgcData poiList];
             
             [weakSelf.MapArray removeAllObjects];
@@ -249,7 +247,6 @@ static const CGFloat kPhotoViewMargin = 13.0;
         make.height.mas_equalTo(21);
     }];
     v3.image = [UIImage imageNamed:@"区域与板块-1"];
-    
     
     UIView *L3 = [[UIView alloc]init];
     [self.scrollView addSubview:L3];

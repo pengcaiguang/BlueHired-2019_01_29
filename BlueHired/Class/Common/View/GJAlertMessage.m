@@ -46,6 +46,8 @@
         make.left.mas_equalTo(30);
         make.right.mas_equalTo(-30);
         make.center.equalTo(self);
+
+        
     }];
     [_alertView setBackgroundColor:[UIColor whiteColor]];
     

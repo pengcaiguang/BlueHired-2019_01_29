@@ -24,7 +24,9 @@
 //    UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0,-20, SCREEN_WIDTH, 20)];
 //    [self.navigationController.navigationBar addSubview:backView];
 //    backView.backgroundColor = [UIColor baseColor];
- 
+//    if (@available(iOS 11.0, *)) {
+//        [UIScrollView appearance].contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+//    }
 }
 - (UIBarButtonItem *)rt_customBackItemWithTarget:(id)target action:(SEL)action {
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];

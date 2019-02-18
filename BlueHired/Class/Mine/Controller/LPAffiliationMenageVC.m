@@ -357,7 +357,7 @@ static NSString *LPInformationCollectionViewCellID = @"";
 #pragma mark -- UICollectionViewDelegateFlowLayout
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     if ([DeviceUtils deviceType] == IPhone_X) {
-        return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-88-48-50);
+        return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-88-48-83.0);
     }else{
         return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-64-48-50);
     }
