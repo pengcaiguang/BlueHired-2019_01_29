@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 typedef void (^AlertTextBlock)(NSInteger index , NSString *string);
 @interface GJAlertText : NSObject
-- (id)initWithTitle:(NSString *)title message:(NSString *)message buttonTitles:(NSArray *)buttonTitles buttonsColor:(NSArray *)buttonColors MaxLength:(NSInteger)Length buttonClick:(void(^)(NSInteger buttonIndex , NSString * string))block;
+- (id)initWithTitle:(NSString *)title message:(NSString *)message buttonTitles:(NSArray *)buttonTitles buttonsColor:(NSArray *)buttonColors MaxLength:(NSInteger)Length NilTitel:(NSString *)NilTitel buttonClick:(void(^)(NSInteger buttonIndex , NSString * string))block;
 - (void)show;
 - (void)dismiss;
 

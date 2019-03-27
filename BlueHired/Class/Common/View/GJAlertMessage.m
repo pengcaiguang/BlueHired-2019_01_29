@@ -21,12 +21,14 @@
 @property (nonatomic,strong) UIView *coverView;
 @property (nonatomic,strong) UIView *alertView;
 @property(nonatomic,strong)NSString *title;
+@property(nonatomic,strong)NSMutableAttributedString *Mutabletitle;
 @property(nonatomic,strong)NSString *message;
 @property(nonatomic,assign) NSTextAlignment textAlignment;
 @property(nonatomic,strong)NSArray *buttonTitles;
 @property(nonatomic,strong)NSArray *buttonColors;
 @property(nonatomic,strong) NSArray *buttonsBackgroundColors;
 @property(nonatomic,assign) BOOL isbackDismiss;
+@property(nonatomic,assign) BOOL isShowHead;
 
 @property(nonatomic,strong)id<GJAlertViewMessageDelegate>delegate;
 
@@ -58,9 +60,10 @@
         make.right.mas_equalTo(0);
         make.top.mas_equalTo(0);
         make.height.mas_equalTo(5);
-        v.backgroundColor = [UIColor baseColor];
     }];
+    v.backgroundColor = self.isShowHead?[UIColor whiteColor]:[UIColor baseColor];
     
+
     UILabel *labelTitle = [[UILabel alloc] init];
     [_alertView addSubview:labelTitle];
     [labelTitle mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -123,7 +126,7 @@
     
     CGFloat spacing = 0.0;
     CGFloat marginleft = 0.0;
-    CGFloat buttonWidth = (self.frame.size.width - marginleft*2 - 60 - (_buttonTitles.count - 1)*spacing)/_buttonTitles.count;
+    CGFloat buttonWidth = (self.frame.size.width - marginleft*2 - (self.isShowHead?96:60) - (_buttonTitles.count - 1)*spacing)/_buttonTitles.count;
     CGFloat leadingX = 0.0;
     NSInteger i = 0;
     for (NSString *btnTitle in _buttonTitles) {
@@ -152,7 +155,36 @@
         [button addTarget:self action:@selector(btnTap:) forControlEvents:UIControlEventTouchUpInside];
         button.tag = i;
         i++;
+        if (self.isShowHead) {
+            button.layer.borderColor = [UIColor colorWithHexString:@"#E6E6E6"].CGColor;
+            button.layer.borderWidth = 0.5;
+        }
     }
+    
+    if (self.isShowHead) {
+        self.alertView.layer.cornerRadius = 6;
+        [labelTitle mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_equalTo(32);
+            make.left.mas_equalTo(29);
+            make.right.mas_equalTo(-29);
+        }];
+        
+        [_alertView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(48);
+            make.right.mas_equalTo(-48);
+            make.center.equalTo(self);
+        }];
+        
+        [labelMessage mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(labelTitle.mas_bottom).offset(32);
+            make.left.mas_equalTo(30);
+            make.right.mas_equalTo(-30);
+            make.bottom.mas_equalTo(-42);
+        }];
+        
+        labelTitle.attributedText = _Mutabletitle;
+    }
+    
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapDismiss:)];
     [_coverView addGestureRecognizer:tap];
 }
@@ -172,6 +204,24 @@
     }
     return self;
 }
+
+- (id)initWithTitle:(NSMutableAttributedString *)title message:(NSString *)message IsShowhead:(BOOL) Dis textAlignment:(NSTextAlignment)textAlignment buttonTitles:(NSArray *)buttonTitles buttonsColor:(NSArray *)buttonColors  buttonsBackgroundColors:(NSArray *)buttonsBackgroundColors{
+    self = [super initWithFrame:[[UIScreen mainScreen]bounds]];
+    if (self) {
+        self.Mutabletitle = title;
+        self.message = message;
+        self.textAlignment = textAlignment;
+        self.buttonTitles = buttonTitles;
+        self.buttonColors = buttonColors;
+        self.buttonsBackgroundColors = buttonsBackgroundColors;
+        self.isShowHead = Dis;
+
+        [self setupCoverView];
+        [self setupContentView];
+    }
+    return self;
+}
+
 
 - (void)showAlert{
     
@@ -263,10 +313,18 @@
         self.gjAlertView = [[GJAlertViewMessage alloc] initWithTitle:title message:message textAlignment:textAlignment buttonTitles:buttonTitles buttonsColor:buttonColors buttonsBackgroundColors:buttonsBackgroundColors];
         self.gjAlertView.delegate = self;
         self.AlertMessageBlock = block;
-        self.gjAlertView.isbackDismiss = NO;
     }
     return self;
-    
+}
+
+- (id)initWithTitle:(NSMutableAttributedString *)title message:(NSString *)message IsShowhead:(BOOL) Dis textAlignment:(NSTextAlignment)textAlignment buttonTitles:(NSArray *)buttonTitles buttonsColor:(NSArray *)buttonColors buttonsBackgroundColors:(NSArray *)buttonsBackgroundColors buttonClick:(void(^)(NSInteger buttonIndex))block{
+    self = [super init];
+    if (self) {
+        self.gjAlertView = [[GJAlertViewMessage alloc] initWithTitle:title message:message IsShowhead:Dis textAlignment:textAlignment buttonTitles:buttonTitles buttonsColor:buttonColors buttonsBackgroundColors:buttonsBackgroundColors];
+        self.gjAlertView.delegate = self;
+        self.AlertMessageBlock = block;
+    }
+    return self;
 }
 
 - (void)showAlertHandle{

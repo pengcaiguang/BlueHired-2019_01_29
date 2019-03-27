@@ -18,7 +18,7 @@
 #endif
 #import <AdSupport/AdSupport.h>
 #import "LPHongBaoVC.h"
-#import "LPWorkHourVC.h"
+#import "LPWorkHour2VC.h"
 #import "LPEssaylistModel.h"
 #import "LPEssayDetailVC.h"
 #import "LPWXLoginBindingVC.h"
@@ -30,13 +30,13 @@
 #import "LPActivityModel.h"
 
 //极光
-static NSString *appKey = @"1f178d6e983414ed2ee662fb";
-static NSString *channel = @"edf99cf2a69b26084499b31b";
-static BOOL isProduction = YES;
+//static NSString *appKey = @"1f178d6e983414ed2ee662fb";
+//static NSString *channel = @"edf99cf2a69b26084499b31b";
+//static BOOL isProduction = YES;
 //极光测试
-//static NSString *appKey = @"2fd800e71146331dbcd9ffde";
-//static NSString *channel = @"37043b9486c186aa9abd902b";
-//static BOOL isProduction = NO;
+static NSString *appKey = @"2fd800e71146331dbcd9ffde";
+static NSString *channel = @"37043b9486c186aa9abd902b";
+static BOOL isProduction = NO;
 //微信
 static NSString *WXAPPID = @"wx566f19a70d573321";
 //QQ
@@ -394,7 +394,7 @@ fetchCompletionHandler:
         NSString *type = [LPTools isNullToString:userInfo[@"type"]];
         if(type.integerValue == 1 && AlreadyLogin){             //工时记录
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                LPWorkHourVC *vc = [[LPWorkHourVC alloc]init];
+                LPWorkHour2VC *vc = [[LPWorkHour2VC alloc]init];
                 vc.isPush = YES;
                 vc.hidesBottomBarWhenPushed = YES;
                 [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];

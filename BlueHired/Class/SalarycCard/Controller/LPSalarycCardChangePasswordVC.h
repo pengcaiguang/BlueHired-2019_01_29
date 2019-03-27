@@ -12,6 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface LPSalarycCardChangePasswordVC : LPBaseViewController
 @property(nonatomic,assign) NSInteger times;
+@property(nonatomic,strong) NSString *phone;
 @end
 
 NS_ASSUME_NONNULL_END

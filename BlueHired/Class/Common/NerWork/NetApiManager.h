@@ -204,6 +204,9 @@ typedef void (^UploadImageTempBlock)(BOOL sussess,NSMutableArray *array);
 //查询用户个人资料
 + (void)requestUserMaterialWithParam:(id)paramer
                           withHandle:(response)responseHandle;
+//查询用户个人资料
++ (void)requestUserMaterialSelectMechanism:(id)paramer
+                                withHandle:(response)responseHandle;
 //查询当天是否签到
 + (void)requestSelectCurIsSignWithParam:(id)paramer
                              withHandle:(response)responseHandle;
@@ -492,7 +495,94 @@ typedef void (^UploadImageTempBlock)(BOOL sussess,NSMutableArray *array);
 //获取广告弹框
 + (void)requestQueryActivityadvert:(id)paramer
                         withHandle:(response)responseHandle;
+//更新，修改企业底薪加班倍数
++ (void)requestQueryUpdateBaseSalary:(id)paramer
+                          withHandle:(response)responseHandle;
 
+//获取加班倍数及金额，以及小时工单价列表
++ (void)requestQueryGetYsetMulList:(id)paramer
+                        withHandle:(response)responseHandle;
+//添加、更新记加班记录
++ (void)requestQueryGetOvertime:(id)paramer
+                     withHandle:(response)responseHandle;
+//添加修改删除记账本
++ (void)requestQueryUpdateAccount:(id)paramer
+                       withHandle:(response)responseHandle;
+//查询具体某一天记加班详情
++ (void)requestQueryGetOvertimeRecordBy:(id)paramer
+                             withHandle:(response)responseHandle;
+//添加更新考勤周期内月工资详情
++ (void)requestQueryGetOvertimeAddMonthWage:(id)paramer
+                                 withHandle:(response)responseHandle;
+//首页展示
++ (void)requestQueryGetOvertimeGetMonthWage:(id)paramer
+                                 withHandle:(response)responseHandle;
+//首页获取记账本与工作记录
++ (void)requestQueryGetOvertimeAccount:(id)paramer
+                            withHandle:(response)responseHandle;
+//查询记加班时长，请假时长详情列表
++ (void)requestQueryGetOvertimeGetDetails:(id)paramer
+                               withHandle:(response)responseHandle;
+//查询考勤周期内消费金额分类统计
++ (void)requestQueryGetAccountPrice:(id)paramer
+                         withHandle:(response)responseHandle;
+//查询消费详情列表
++ (void)requestQueryGetAccountList:(id)paramer
+                        withHandle:(response)responseHandle;
+//查询月工资详情
++ (void)requestQueryGetMonthWageDetail:(id)paramer
+                            withHandle:(response)responseHandle;
+//月综合工资详情-工时列表
++ (void)requestQueryGetHoursWorkList:(id)paramer
+                          withHandle:(response)responseHandle;
+
+//查询用户设置的企业底薪
++ (void)requestQueryGetHoursWorkBaseSalary:(id)paramer
+                                withHandle:(response)responseHandle;
+//查询用户考勤周期和正常工作日
++ (void)requestQueryGetHoursWorkYset:(id)paramer
+                          withHandle:(response)responseHandle;
+
+//添加修改用户考勤周期和正常工作日
++ (void)requestQuerySetHoursWorkYset:(id)paramer
+                          withHandle:(response)responseHandle;
+//记加班日历列表查看
++ (void)requestQueryGetCalenderList:(id)paramer
+                         withHandle:(response)responseHandle;
+//月综合详情中-查询班次补贴金额和班次天数
++ (void)requestQueryGetSubsidy:(id)paramer
+                    withHandle:(response)responseHandle;
+//记加班初始化用户设置
++ (void)requestQueryYsetInit:(id)paramer
+                  withHandle:(response)responseHandle;
+//综合记加班-查询月工作小时数
++ (void)requestQueryGetMonthHours:(id)paramer
+                       withHandle:(response)responseHandle;
+
+//综合记加班-添加更新月工作小时数
++ (void)requestQueryUpdateMonthHours:(id)paramer
+                          withHandle:(response)responseHandle;
+//查询小时工单价列表
++ (void)requestQueryGetPriceName:(id)paramer
+                      withHandle:(response)responseHandle;
+
+//添加更新小时工单价列表
++ (void)requestQueryUpdatePriceName:(id)paramer
+                         withHandle:(response)responseHandle;
+//查询计件中用户设置的产品列表
++ (void)requestQueryGetProList:(id)paramer
+                    withHandle:(response)responseHandle;
+
+//计件中添加更新删除产品信息
++ (void)requestQueryUpdateProList:(id)paramer
+                       withHandle:(response)responseHandle;
+
+//计件模式-添加修改删除计件记录
++ (void)requestQueryUpdateProRecord:(id)paramer
+                         withHandle:(response)responseHandle;
+//计件模式计件详情
++ (void)requestQueryGetProRecordList:(id)paramer
+                          withHandle:(response)responseHandle;
 @end
 
 

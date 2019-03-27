@@ -30,7 +30,12 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
         make.top.mas_equalTo(0);
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
-        make.bottom.mas_equalTo(-58);
+//        make.bottom.mas_equalTo(-58);
+        if (@available(iOS 11.0, *)) {
+            make.bottom.mas_equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-58);
+        } else {
+            make.bottom.mas_equalTo(-58);
+        }
     }];
     
     UIButton *bt = [[UIButton alloc] init];
@@ -45,7 +50,13 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
         make.top.equalTo(self.tableview.mas_bottom).offset(0);
         make.left.mas_equalTo(20);
         make.right.mas_equalTo(-20);
-        make.bottom.mas_equalTo(-20);
+//        make.bottom.mas_equalTo(-20);
+        if (@available(iOS 11.0, *)) {
+            make.bottom.mas_equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-10);
+        } else {
+            make.bottom.mas_equalTo(-10);
+        }
+        
     }];
     
 }

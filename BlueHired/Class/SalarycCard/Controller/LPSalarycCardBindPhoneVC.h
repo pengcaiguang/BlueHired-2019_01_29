@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic,assign) int type;
 
+@property (nonatomic,strong) NSString *Phone;
+
 @end
 
 NS_ASSUME_NONNULL_END

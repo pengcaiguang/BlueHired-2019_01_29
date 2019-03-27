@@ -30,8 +30,8 @@ static DSBaActivityView *activiyView;
             activiyView.backgroundColor = [UIColor clearColor];
         }
     });
+    [[UIApplication sharedApplication].keyWindow bringSubviewToFront:activiyView];
     activiyView.showTimes += 1;
-    
     activiyView.alpha = 1;
 }
 

@@ -8,8 +8,11 @@
 
 #import "LPTools.h"
 #import "WHActivityView.h"
+@interface LPTools ()
 
- 
+@property (nonatomic, strong) NSDateFormatter * strDateFormatter;
+
+@end
 
 @implementation LPTools
 
@@ -40,6 +43,18 @@ LPTools * LPTools_instance = nil ;
 
 +(void)AlertMessageView:(NSString *)str dismiss:(CGFloat) Float{
     GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:str message:nil textAlignment:0 buttonTitles:@[@"确定"] buttonsColor:@[[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
+        
+    }];
+    [alert show];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Float * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [alert dismiss];
+    });
+}
+
++(void)AlertMessage2View:(NSString *)str dismiss:(CGFloat) Float{
+    NSMutableAttributedString *Mutablestr = [[NSMutableAttributedString alloc]initWithString:str];
+
+    GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:Mutablestr message:nil IsShowhead:YES textAlignment:0 buttonTitles:@[@"确定"] buttonsColor:@[[UIColor blackColor],[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
         
     }];
     [alert show];
@@ -392,5 +407,75 @@ LPTools * LPTools_instance = nil ;
     
     return text;
 }
+
+#pragma mark - 计算农历日期
++ (NSString *)calculationChinaCalendarWithDate:(NSDate *)date 
+{
+//    if (isEmpty(date)) {
+//        return nil;
+//    }
+ 
+    NSArray * chineseMonths = @[@"正月", @"二月", @"三月", @"四月", @"五月", @"六月", @"七月", @"八月",
+                                @"九月", @"十月", @"冬月", @"腊月"];
+    NSArray * chineseDays = @[@"初一", @"初二", @"初三", @"初四", @"初五", @"初六", @"初七", @"初八", @"初九", @"初十", @"十一", @"十二", @"十三", @"十四", @"十五", @"十六", @"十七", @"十八", @"十九", @"廿十", @"廿一", @"廿二", @"廿三", @"廿四", @"廿五", @"廿六", @"廿七", @"廿八", @"廿九", @"三十"];
+    
+    NSCalendar * localeCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierChinese];
+    
+    unsigned unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth |  NSCalendarUnitDay;
+    
+    NSDateComponents * localeComp = [localeCalendar components:unitFlags fromDate:date];
+    
+    NSString * m_str = [chineseMonths objectAtIndex:localeComp.month - 1];
+ 
+    NSString * d_str = [chineseDays objectAtIndex:localeComp.day - 1];
+    
+    NSString * chineseCal_str = d_str;
+    chineseCal_str = @"";
+    
+    //计算周六周日
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSTimeZone *timeZone = [[NSTimeZone alloc] initWithName:@"Asia/Shanghai"];
+    [calendar setTimeZone: timeZone];
+    NSCalendarUnit calendarUnit = NSCalendarUnitWeekday;
+
+    NSDateComponents *theComponents = [calendar components:calendarUnit fromDate:date];
+
+    if (theComponents.weekday == 1 || theComponents.weekday == 7) {
+        chineseCal_str = @"";
+    }
+    
+    // 农历节日
+    
+        if([m_str isEqualToString:@"正月"] && ([d_str isEqualToString:@"初一"])) {
+            chineseCal_str = @"春节";//春节
+        } else if ([m_str isEqualToString:@"五月"] && [d_str isEqualToString:@"初五"]) {
+            chineseCal_str = @"端午";//端午节
+        } else if ([m_str isEqualToString:@"三月"] && [d_str isEqualToString:@"初一"]) {
+            chineseCal_str = @"清明";//清明
+        }  else if ([m_str isEqualToString:@"八月"] && [d_str isEqualToString:@"十五"]) {
+            chineseCal_str = @"中秋";//中秋节
+        }
+
+    
+    // 公历节日
+    NSDictionary * Holidays = @{@"01-01":@"元旦",
+                                @"05-01":@"劳动",
+                                @"10-01":@"国庆",
+                                };
+    NSDateFormatter *strDateFormatter = [[NSDateFormatter alloc] init];
+    [strDateFormatter setDateFormat:@"MM-dd"];
+    
+    NSString * nowStr = [strDateFormatter stringFromDate:date];
+
+    NSArray * array = [Holidays allKeys];
+    if([array containsObject:nowStr]) {
+        chineseCal_str = [Holidays objectForKey:nowStr];
+    }
+ 
+ 
+ 
+    return chineseCal_str;
+}
+
 
 @end

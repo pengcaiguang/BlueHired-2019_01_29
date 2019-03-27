@@ -22,18 +22,24 @@
 
 //#define BaseRequestURL  @"http://192.168.0.108:8080/lifetime/"
 //#define BaseRequestWeiXiURL  @"http://192.168.0.108:8080/"
+//#define BaseRequestCookie  @"192.168.0.108"
 
 //#define BaseRequestURL  @"http://www.lanpin123.com/lifetime/"
 //#define BaseRequestWeiXiURL  @"http://www.lanpin123.com/"
+//#define BaseRequestCookie  @"www.lanpin123.com"
 
 //#define BaseRequestURL  @"http://47.106.208.91:8180/lifetime/"
-//#define BaseRequestWeiXiURL  @"http://47.106.208.91:8180/"
+//#define BaseRequestWeiXiURL  @"http://47.106.208.91/"
+//#define BaseRequestCookie  @"47.106.208.91"
 
 //#define BaseRequestURL  @"http://ceshi.lanpin123.com/lifetime/"
 //#define BaseRequestWeiXiURL  @"http://ceshi.lanpin123.com/"
+//#define BaseRequestCookie  @"ceshi.lanpin123.com"
 
-#define BaseRequestURL  @"http://192.168.0.167:8081/lifetime/"        //胡经理
-#define BaseRequestWeiXiURL  @"http://192.168.0.167:8081/"
+//
+#define BaseRequestURL  @"http://192.168.0.169:8080/lifetime/"        //胡经理
+#define BaseRequestWeiXiURL  @"http://192.168.0.169/"
+#define BaseRequestCookie  @"192.168.0.169"
 
 #define QiNiuBaseUrl @"http://pic.lanpin123.com/"
 
@@ -52,8 +58,12 @@
 #define OLDLOGINID  @"OLDOGINID"
 #define LOGINID  @"LOGINID"
 #define COOKIES  @"COOKIES"
+#define COOKIES2  @"COOKIES2"
+
 #define USERDATA  @"USERDATA"
 #define USERIDENTIY  @"USERidentity"
+#define BOOK  @"Cashbook"
+#define WORKTYPE  @"WorkType"
 
 //登录状态
 #define kLoginStatus    @"LoginStatus"
@@ -85,6 +95,12 @@
 #define  MESSAGE_SHOW_TIME       1
 
 #define TimeOutIntervalSet       60
+
+/**
+ * 判空处理
+ */
+//判断对象是否为空
+#define reviseString(temp)     [NSString reviseString:temp]
 
 /**
  * 判空处理
@@ -131,4 +147,7 @@ __typeof__(value) __a = (value); \
 #define Alert(alertMsg) [[SGAlertUtil alertManager]alertNowTimeWith:alertMsg];
 #define CurrentDeviceSn [[UIDevice currentDevice].identifierForVendor UUIDString]//手机序列号
 #define RemovernNil(alertMsg) [LPTools isNullToString:alertMsg]
+
+
+
 #endif /* MacroDefine_h */

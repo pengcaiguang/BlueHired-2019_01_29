@@ -10,11 +10,15 @@
 
 typedef void(^LPDurationViewBlock)(NSInteger index);
 
+
 @interface LPDurationView : UIView
+@property(nonatomic,strong) UIView *bgView;
+@property(nonatomic,strong) UIView *selectView;
 
 @property(nonatomic,assign) NSInteger type; //
 
 @property(nonatomic,strong) NSString *titleString;
+
 @property(nonatomic,strong) NSArray *typeArray;
 @property(nonatomic,strong) NSArray *timeArray;
 

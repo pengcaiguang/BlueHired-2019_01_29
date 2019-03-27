@@ -40,14 +40,14 @@
     if (hidden) {
         [UIView animateWithDuration:0.3 animations:^{
             self.bgView.alpha = 0;
-            self.tableBgView.frame = CGRectMake(0, 20+44+48+40, SCREEN_WIDTH,0);
+            self.tableBgView.frame = CGRectMake(0, kNavBarHeight+48+40, SCREEN_WIDTH,0);
             self.tableview.frame = CGRectMake(0, 0, SCREEN_WIDTH, 0);
         }];
     }else{
         
         [UIView animateWithDuration:0.3 animations:^{
             self.bgView.alpha = 0.5;
-            self.tableBgView.frame = CGRectMake(0, 20+44+48+40, SCREEN_WIDTH, 44 *4);
+            self.tableBgView.frame = CGRectMake(0, kNavBarHeight+48+40, SCREEN_WIDTH, 44 *4);
             self.tableview.frame = CGRectMake(0, 0, SCREEN_WIDTH, 44
                                           *4);
 

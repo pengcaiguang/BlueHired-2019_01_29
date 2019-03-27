@@ -34,7 +34,12 @@ static NSString *LPTLendAuditCellID = @"LPStoreAssistantCell";
         make.top.mas_equalTo(0);
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
-        make.bottom.mas_equalTo(-48);
+//        make.bottom.mas_equalTo(-48);
+        if (@available(iOS 11.0, *)) {
+            make.bottom.mas_equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-48);
+        } else {
+            make.bottom.mas_equalTo(-48);
+        }
     }];
     [self requestQueryshopincome];
 }
@@ -114,7 +119,11 @@ static NSString *LPTLendAuditCellID = @"LPStoreAssistantCell";
             make.left.mas_equalTo(0);
             make.right.mas_equalTo(0);
             make.top.mas_equalTo(0);
-            make.bottom.mas_equalTo(-48);
+            if (@available(iOS 11.0, *)) {
+                make.bottom.mas_equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-48);
+            } else {
+                make.bottom.mas_equalTo(-48);
+            }
         }];
         noDataView.hidden = hidden;
     }

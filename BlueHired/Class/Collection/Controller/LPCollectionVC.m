@@ -36,6 +36,9 @@ static NSString *LPCollectionCollectionViewCellID = @"LPCollectionCollectionView
     [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
+    if (@available(iOS 11.0, *)) {
+        self.collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    }
 }
 -(void)viewDidAppear:(BOOL)animated
 {
@@ -106,24 +109,37 @@ static NSString *LPCollectionCollectionViewCellID = @"LPCollectionCollectionView
     [self.view addSubview:selectButton];
     self.AllButton = selectButton;
     [selectButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(12);
-        make.bottom.mas_equalTo(-13);
-        make.width.mas_equalTo(70);
+        make.left.mas_equalTo(0);
+        //        make.bottom.mas_equalTo(0);
+        if (@available(iOS 11.0, *)) {
+            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
+        } else {
+            make.bottom.mas_equalTo(0);
+        }
+        make.width.mas_equalTo(SCREEN_WIDTH - 180);
+        make.height.mas_equalTo(49);
     }];
     [selectButton setTitle:@"全选" forState:UIControlStateNormal];
     [selectButton setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
     [selectButton setImage:[UIImage imageNamed:@"add_ record_normal"] forState:UIControlStateNormal];
     [selectButton setImage:[UIImage imageNamed:@"add_ record_selected"] forState:UIControlStateSelected];
     selectButton.titleLabel.font = [UIFont systemFontOfSize:16];
-    selectButton.titleEdgeInsets = UIEdgeInsetsMake(0, 20, 0, 0);
-    selectButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 0);
+    selectButton.titleEdgeInsets = UIEdgeInsetsMake(0, 30, 0, 0);
+    selectButton.imageEdgeInsets = UIEdgeInsetsMake(0, 20, 0, 0);
+    selectButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [selectButton addTarget:self action:@selector(touchSelectButton:) forControlEvents:UIControlEventTouchUpInside];
+//    selectButton.backgroundColor = [UIColor blueColor];
     
     UIButton *deleteButton = [[UIButton alloc]init];
     [self.view addSubview:deleteButton];
     [deleteButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.mas_equalTo(0);
-        make.bottom.mas_equalTo(0);
+//        make.bottom.mas_equalTo(0);
+        if (@available(iOS 11.0, *)) {
+            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
+        } else {
+            make.bottom.mas_equalTo(0);
+        }
         make.height.mas_equalTo(49);
         make.width.mas_equalTo(180);
     }];
@@ -157,7 +173,6 @@ static NSString *LPCollectionCollectionViewCellID = @"LPCollectionCollectionView
             make.right.mas_equalTo(0);
             make.bottom.mas_equalTo(0);
         }];
-        
     }else{
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"取消" style:UIBarButtonItemStyleDone target:self action:@selector(touchManagerButton)];
         [self.navigationItem.rightBarButtonItem setTintColor:[UIColor colorWithHexString:@"#1B1B1B"]];
@@ -166,7 +181,12 @@ static NSString *LPCollectionCollectionViewCellID = @"LPCollectionCollectionView
             make.top.mas_equalTo(0);
             make.left.mas_equalTo(0);
             make.right.mas_equalTo(0);
-            make.bottom.mas_equalTo(-49);
+//            make.bottom.mas_equalTo(-49);
+            if (@available(iOS 11.0, *)) {
+                make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-49);
+            } else {
+                make.bottom.mas_equalTo(-49);
+            }
         }];
     }
 

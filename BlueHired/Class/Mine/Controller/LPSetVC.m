@@ -40,7 +40,7 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
 
 }
 
--(void)viewDidAppear:(BOOL)animated{
+-(void)viewWillAppear:(BOOL)animated{
     if (AlreadyLogin) {
         [self setLogoutButton];
         LPUserMaterialModel *user = [LPUserDefaults getObjectByFileName:USERINFO];
@@ -70,6 +70,7 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
     NSLog(@"退出登录");
     [self requestSignout];
 }
+
 #pragma mark - TableViewDelegate & Datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return AlreadyLogin?5:3;

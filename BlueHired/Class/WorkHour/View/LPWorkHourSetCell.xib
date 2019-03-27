@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="LPWorkHourSetCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="WorkHourBackImage_icon" translatesAutoresizingMaskIntoConstraints="NO" id="vS6-WZ-rz8">
+                        <rect key="frame" x="299" y="15.5" width="8" height="13"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="8" id="W31-8K-nKw"/>
+                            <constraint firstAttribute="height" constant="13" id="rgf-Y2-BdS"/>
+                        </constraints>
+                    </imageView>
+                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Rs-x9-cbY">
+                        <rect key="frame" x="258" y="6.5" width="51" height="31"/>
+                        <color key="onTintColor" red="0.23529411759999999" green="0.68627450980000004" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <connections>
+                            <action selector="SwitchTouch:" destination="KGk-i7-Jjw" eventType="valueChanged" id="qhY-XQ-eJh"/>
+                        </connections>
+                    </switch>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dTW-H6-w5x">
+                        <rect key="frame" x="13" y="16" width="42" height="11.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="dTW-H6-w5x" secondAttribute="bottom" constant="16" id="9MZ-Ao-jPS"/>
+                    <constraint firstItem="6Rs-x9-cbY" firstAttribute="centerY" secondItem="dTW-H6-w5x" secondAttribute="centerY" id="LDj-Yg-pgO"/>
+                    <constraint firstAttribute="trailing" secondItem="6Rs-x9-cbY" secondAttribute="trailing" constant="13" id="PyQ-eb-Bys"/>
+                    <constraint firstItem="dTW-H6-w5x" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="13" id="SXw-Tt-ZbT"/>
+                    <constraint firstItem="dTW-H6-w5x" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="16" id="cpG-9r-IMY"/>
+                    <constraint firstItem="vS6-WZ-rz8" firstAttribute="centerY" secondItem="dTW-H6-w5x" secondAttribute="centerY" id="iYc-sf-FOR"/>
+                    <constraint firstAttribute="trailing" secondItem="vS6-WZ-rz8" secondAttribute="trailing" constant="13" id="zma-fL-kbp"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <connections>
+                <outlet property="Image" destination="vS6-WZ-rz8" id="AZg-Kz-6bI"/>
+                <outlet property="NameTitle" destination="dTW-H6-w5x" id="HGd-fr-umy"/>
+                <outlet property="Switch" destination="6Rs-x9-cbY" id="MLH-Ss-2NN"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="WorkHourBackImage_icon" width="8" height="13.5"/>
+    </resources>
+</document>

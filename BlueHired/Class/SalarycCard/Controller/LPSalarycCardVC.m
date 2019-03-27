@@ -88,6 +88,7 @@
             }
         }
         LPSalarycCardChangePasswordVC *vc = [[LPSalarycCardChangePasswordVC alloc]init];
+        vc.phone = self.model.data.phone;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

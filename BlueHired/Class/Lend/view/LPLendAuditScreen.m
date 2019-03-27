@@ -38,13 +38,13 @@
     if (hidden) {
         [UIView animateWithDuration:0.3 animations:^{
             self.bgView.alpha = 0;
-            self.tableBgView.frame = CGRectMake(SCREEN_WIDTH, 20+44+48, SCREEN_WIDTH/3*2, SCREEN_HEIGHT-69);
+            self.tableBgView.frame = CGRectMake(SCREEN_WIDTH, kNavBarHeight+48, SCREEN_WIDTH/3*2, SCREEN_HEIGHT-69);
         }];
     }else{
        
         [UIView animateWithDuration:0.3 animations:^{
             self.bgView.alpha = 0.5;
-            self.tableBgView.frame = CGRectMake(SCREEN_WIDTH/3, 20+44+48, SCREEN_WIDTH/3*2, SCREEN_HEIGHT-69);
+            self.tableBgView.frame = CGRectMake(SCREEN_WIDTH/3, kNavBarHeight+48, SCREEN_WIDTH/3*2, SCREEN_HEIGHT-69);
         }];
     }
 }
@@ -116,7 +116,7 @@
 -(UIView *)tableBgView{
     if (!_tableBgView) {
         _tableBgView = [[UIView alloc]init];
-        _tableBgView.frame = CGRectMake(SCREEN_WIDTH, 20+44+48, SCREEN_WIDTH/3*2, SCREEN_HEIGHT);
+        _tableBgView.frame = CGRectMake(SCREEN_WIDTH, kNavBarHeight+48, SCREEN_WIDTH/3*2, SCREEN_HEIGHT);
         _tableBgView.backgroundColor = [UIColor whiteColor];
         [_tableBgView addSubview:self.tableview];
  
@@ -125,7 +125,7 @@
 }
 -(UIView *)bgView{
     if (!_bgView) {
-        _bgView = [[UIView alloc]initWithFrame:CGRectMake(0, 20+44+48, SCREEN_WIDTH, SCREEN_HEIGHT)];
+        _bgView = [[UIView alloc]initWithFrame:CGRectMake(0, kNavBarHeight+48, SCREEN_WIDTH, SCREEN_HEIGHT)];
         _bgView.backgroundColor = [UIColor blackColor];
         _bgView.alpha = 0.1;
         _bgView.hidden = YES;

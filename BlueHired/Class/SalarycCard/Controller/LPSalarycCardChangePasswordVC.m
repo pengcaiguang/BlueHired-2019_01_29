@@ -145,6 +145,7 @@ static NSString *ERRORTIMES = @"ERRORTIMES";
 - (IBAction)touchPhone:(UIButton *)sender {
     LPSalarycCardBindPhoneVC *vc = [[LPSalarycCardBindPhoneVC alloc]init];
     vc.type = 2;
+    vc.Phone = self.phone;
     [self.navigationController pushViewController:vc animated:YES];
 }
 - (IBAction)touchCompleteButton:(id)sender {

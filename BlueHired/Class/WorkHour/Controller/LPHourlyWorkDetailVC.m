@@ -116,7 +116,11 @@ static NSString *LPSalaryHourlyStatisticsCellID = @"LPSalaryHourlyStatisticsCell
         //        make.edges.equalTo(self.view);
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
-        make.bottom.mas_equalTo(-48);
+        if (@available(iOS 11.0, *)) {
+            make.bottom.mas_equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-48);
+        } else {
+            make.bottom.mas_equalTo(-48);
+        }
         make.top.mas_equalTo(48);
     }];
     self.bottomButtonArray = [NSMutableArray array];
@@ -140,7 +144,11 @@ static NSString *LPSalaryHourlyStatisticsCellID = @"LPSalaryHourlyStatisticsCell
     [self.bottomButtonArray mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedSpacing:0 leadSpacing:0 tailSpacing:0];
     [self.bottomButtonArray mas_makeConstraints:^(MASConstraintMaker *make) {
         make.height.mas_equalTo(48);
-        make.bottom.mas_equalTo(0);
+        if (@available(iOS 11.0, *)) {
+            make.bottom.mas_equalTo(self.view.mas_safeAreaLayoutGuideBottom);
+        } else {
+            make.bottom.mas_equalTo(0);
+        }
     }];
 }
 -(void)chooseMonth{
@@ -283,10 +291,10 @@ static NSString *LPSalaryHourlyStatisticsCellID = @"LPSalaryHourlyStatisticsCell
             LPSubsidyDeductionVC *vc = [[LPSubsidyDeductionVC alloc]init];
             vc.type = 1;
             vc.selectArray = weakSelf.subsidiesArray;
-            vc.block = ^(NSArray *array) {
-                weakSelf.subsidiesArray = array;
-                [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-            };
+//            vc.block = ^(NSArray *array) {
+//                weakSelf.subsidiesArray = array;
+//                [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+//            };
             [self.navigationController pushViewController:vc animated:YES];
         };
         NSMutableDictionary *dic = [NSMutableDictionary dictionary];
@@ -323,10 +331,10 @@ static NSString *LPSalaryHourlyStatisticsCellID = @"LPSalaryHourlyStatisticsCell
             LPSubsidyDeductionVC *vc = [[LPSubsidyDeductionVC alloc]init];
             vc.type = 2;
             vc.selectArray = weakSelf.deductionsArray;
-            vc.block = ^(NSArray *array) {
-                weakSelf.deductionsArray = array;
-                [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-            };
+//            vc.block = ^(NSArray *array) {
+//                weakSelf.deductionsArray = array;
+//                [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+//            };
             [self.navigationController pushViewController:vc animated:YES];
         };
         NSMutableDictionary *dic = [NSMutableDictionary dictionary];

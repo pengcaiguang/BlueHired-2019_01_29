@@ -25,6 +25,7 @@
 @property(nonatomic,strong)NSArray *buttonTitles;
 @property(nonatomic,strong)NSArray *buttonColors;
 @property(nonatomic,assign) NSInteger MacLength;
+@property(nonatomic,strong)NSString *NilTitle;
 
 @property(nonatomic,strong) NSString *textFieldString;
 @property(nonatomic,strong)id<GJAlertViewTextDelegate>delegate;
@@ -168,8 +169,8 @@
         
         i++;
     }
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapDismiss:)];
-    [_coverView addGestureRecognizer:tap];
+//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapDismiss:)];
+//    [_coverView addGestureRecognizer:tap];
 }
 -(void)textFieldChanged:(UITextField *)textField{
 //
@@ -205,7 +206,7 @@
     self.textFieldString = textField.text;
 }
 
-- (id)initWithTitle:(NSString *)title message:(NSString *)message buttonTitles:(NSArray *)buttonTitles buttonsColor:(NSArray *)buttonColors MaxLength:(NSInteger) Length{
+- (id)initWithTitle:(NSString *)title message:(NSString *)message buttonTitles:(NSArray *)buttonTitles buttonsColor:(NSArray *)buttonColors MaxLength:(NSInteger) Length NilTitel:(NSString *) NilTitle{
     self = [super initWithFrame:[[UIScreen mainScreen]bounds]];
     if (self) {
         self.title = title;
@@ -213,6 +214,7 @@
         self.buttonTitles = buttonTitles;
         self.buttonColors = buttonColors;
         self.MacLength = Length;
+        self.NilTitle = NilTitle;
         [self setupCoverView];
         [self setupContentView];
     }
@@ -267,6 +269,11 @@
     }
 }
 - (void)btnTap:(UIButton *)button{
+    if (button.tag && self.textFieldString.length==0) {
+        [[UIApplication sharedApplication].keyWindow showLoadingMeg:self.NilTitle time:1.0];
+        return;
+    }
+    
     if ([_delegate respondsToSelector:@selector(buttonClick:string:)]) {
         [_delegate buttonClick:button.tag string:self.textFieldString];
     }
@@ -289,10 +296,10 @@
 
 @end
 @implementation GJAlertText
-- (id)initWithTitle:(NSString *)title message:(NSString *)message buttonTitles:(NSArray *)buttonTitles buttonsColor:(NSArray *)buttonColors MaxLength:(NSInteger)Length buttonClick:(void(^)(NSInteger buttonIndex , NSString * string))block{
+- (id)initWithTitle:(NSString *)title message:(NSString *)message buttonTitles:(NSArray *)buttonTitles buttonsColor:(NSArray *)buttonColors MaxLength:(NSInteger)Length NilTitel:(NSString *)NilTitel buttonClick:(void(^)(NSInteger buttonIndex , NSString * string))block{
     self = [super init];
     if (self) {
-        self.gjAlertView = [[GJAlertViewText alloc] initWithTitle:title message:message buttonTitles:buttonTitles buttonsColor:buttonColors MaxLength:Length];
+        self.gjAlertView = [[GJAlertViewText alloc] initWithTitle:title message:message buttonTitles:buttonTitles buttonsColor:buttonColors MaxLength:Length NilTitel:NilTitel];
         self.gjAlertView.delegate = self;
         self.alertTextBlock = block;
     }
@@ -317,6 +324,7 @@
 }
 - (void)buttonClick:(NSInteger)buttonIndex string:(NSString *)string{
     __weak typeof(self) weakSelf = self;
+
     if (_alertTextBlock) {
         _alertTextBlock(buttonIndex , string);
         [weakSelf dismiss];

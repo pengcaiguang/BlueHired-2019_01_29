@@ -11,6 +11,20 @@
 #import "sys/utsname.h"
 
 @implementation NSString (String)
+/*!
+ @brief 修正浮点型精度丢失
+ @param str 传入接口取到的数据
+ @return 修正精度后的数据
+ */
++(NSString *)reviseString:(NSString *)str
+{
+    //直接传入精度丢失有问题的Double类型
+    double conversionValue = [str doubleValue];
+    NSString *doubleString = [NSString stringWithFormat:@"%lf", conversionValue];
+    NSDecimalNumber *decNumber = [NSDecimalNumber decimalNumberWithString:doubleString];
+    return [decNumber stringValue];
+}
+
 
 //毫秒时间戳转时间
 + (NSString *)convertStringToTime:(NSString *)timeString{
@@ -39,6 +53,79 @@
     
 }
 
+//获取时间的时间戳
++(NSInteger)getNowTimestamp:(NSDate *)date{
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateStyle:NSDateFormatterMediumStyle];
+    [formatter setTimeStyle:NSDateFormatterShortStyle];
+    [formatter setDateFormat:@"YYYY-MM-dd HH:mm:ss"]; // ----------设置你想要的格式,hh与HH的区别:分别表示12小时制,24小时制
+    //设置时区,这个对于时间的处理有时很重要
+    NSTimeZone* timeZone = [NSTimeZone timeZoneWithName:@"Asia/Beijing"];
+    [formatter setTimeZone:timeZone];
+    
+//    NSDate *datenow = [NSDate date];//现在时间
+    //时间转时间戳的方法:
+    NSInteger timeSp = [[NSNumber numberWithDouble:[date timeIntervalSince1970]] integerValue]*1000;
+    return timeSp;
+    
+}
+
+
+//NSString转NSDate
++(NSDate*)dateFromString:(NSString*)string
+{
+    //设置转换格式
+    NSDateFormatter *formatter=[[NSDateFormatter alloc]init];
+    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    //NSString转NSDate
+    NSDate *date=[formatter dateFromString:string];
+    return date;
+}
+
+//NSDate加减
++(NSString*)dateAddFromString:(NSString*)string Day:(NSInteger) day
+{
+    //设置转换格式
+    NSDateFormatter *formatter=[[NSDateFormatter alloc]init];
+    [formatter setDateFormat:@"yyyy-MM-dd"];
+    //NSString转NSDate
+    NSDate *date=[formatter dateFromString:string];
+    NSDate *nextDay;
+    nextDay = [NSDate dateWithTimeInterval:24*60*60*day sinceDate:date];//后一天
+    
+    return [formatter stringFromDate:nextDay];
+}
+//时间string 计算周几
++ (NSString*)weekdayStringFromDate:(NSString*)inputDateStr {
+    NSArray *weekdays = [NSArray arrayWithObjects: [NSNull null], @"周日", @"周一", @"周二", @"周三", @"周四", @"周五", @"周六", nil];
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSTimeZone *timeZone = [[NSTimeZone alloc] initWithName:@"Asia/Shanghai"];
+    [calendar setTimeZone: timeZone];
+    NSCalendarUnit calendarUnit = NSCalendarUnitWeekday;
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    formatter.dateFormat = @"yyyy-MM-dd";//日期格式化类
+    NSDate *inputDate = [formatter dateFromString:inputDateStr];//转化为NSDate时间
+    NSDateComponents *theComponents = [calendar components:calendarUnit fromDate:inputDate];
+    return [weekdays objectAtIndex:theComponents.weekday];
+}
+//传入 分  得到  xx时xx分
++(NSString *)getMMSSFromSS:(NSString *)totalTime{
+    
+    NSInteger seconds = [totalTime integerValue];
+    
+    //format of minute
+    NSString *str_minute = [NSString stringWithFormat:@"%ld",seconds/60];
+    //format of second
+    NSString *str_second = [NSString stringWithFormat:@"%ld",seconds%60];
+    //format of time
+    NSString *format_time = [NSString stringWithFormat:@"%@小时%@分钟",str_minute,str_second];
+    
+    NSLog(@"format_time : %@",format_time);
+    
+    return format_time;
+    
+}
 //毫秒时间戳转时间
 + (NSString *)convertStringToYYYMMDD:(NSString *)timeString{
     long long time=[timeString longLongValue];
@@ -257,34 +344,33 @@
 
 - (NSString *)changeEndTimeByKind:(NSInteger)changeKind withNum:(int)changeNum {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-      formatter.dateFormat = @"yyyy-MM-dd HH:mm";
-      NSDate *nowDate = [formatter dateFromString:self];
-        NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    formatter.dateFormat = @"yyyy-MM-dd HH:mm";
+    NSDate *nowDate = [formatter dateFromString:self];
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     NSDateComponents *addComps = [[NSDateComponents alloc] init];
-        switch (changeKind) {
-               case 0:
-               [addComps setDay:changeNum];
-                  [addComps setMonth:0];
-                    [addComps setYear:0];
-                 break;
-               case 1:
-                    
+    switch (changeKind) {
+        case 0:
+            [addComps setDay:changeNum];
+            [addComps setMonth:0];
+            [addComps setYear:0];
+            break;
+        case 1:
             [addComps setDay:0];
-                    [addComps setMonth:changeNum];
-                   [addComps setYear:0];
-                 break;
-                case 2:
+            [addComps setMonth:changeNum];
+            [addComps setYear:0];
+            break;
+        case 2:
             [addComps setDay:0];
-                    [addComps setMonth:0];
-                     [addComps setYear:changeNum];
-                   break;
-                       default:
-                     break;
+            [addComps setMonth:0];
+            [addComps setYear:changeNum];
+            break;
+        default:
+            break;
             
-          }
+    }
     NSDate *finallDate = [calendar dateByAddingComponents:addComps toDate:nowDate options:0];
-       NSString *endTime = [formatter stringFromDate:finallDate];
-        return endTime;
+    NSString *endTime = [formatter stringFromDate:finallDate];
+    return endTime;
     
 }
 @end

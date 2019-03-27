@@ -41,14 +41,36 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
 
         if (AlreadyLogin) {
 //            NSLog(@"%@",kUserDefaultsValue(COOKIES));
-            [manager.requestSerializer setValue:kUserDefaultsValue(COOKIES) forHTTPHeaderField:@"Cookie"];
+//            [manager.requestSerializer setValue:kUserDefaultsValue(COOKIES) forHTTPHeaderField:@"Cookie"];
+            if (kUserDefaultsValue(COOKIES)) {
+ 
+                NSMutableDictionary *cookieProperties = [NSMutableDictionary dictionary];
+                [cookieProperties setObject:@"user" forKey:NSHTTPCookieName];
+                [cookieProperties setObject:[kUserDefaultsValue(COOKIES) substringFromIndex:5] forKey:NSHTTPCookieValue];
+                [cookieProperties setObject:BaseRequestCookie forKey:NSHTTPCookieDomain];
+                [cookieProperties setObject:BaseRequestCookie forKey:NSHTTPCookieOriginURL];
+                [cookieProperties setObject:@"/" forKey:NSHTTPCookiePath];
+                [cookieProperties setObject:@"0" forKey:NSHTTPCookieVersion];
+                NSDate *expiresDate = [NSDate dateWithTimeIntervalSinceNow:3600*24*30];
+                [cookieProperties setObject:expiresDate forKey:NSHTTPCookieExpires];
+
+                NSHTTPCookie *cookie = [NSHTTPCookie cookieWithProperties:cookieProperties];
+                [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie:cookie];
+                
+            }
+
         }else{
             [manager.requestSerializer setValue:nil forHTTPHeaderField:@"Cookie"];
 
         }
-        NSLog(@"%@",[manager.requestSerializer HTTPRequestHeaders]);
-        NSLog(@"%@",[manager.requestSerializer valueForHTTPHeaderField:@"Cookie"]);
+ 
 
+//        NSHTTPCookieStorage *cookieJar = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+//        for (NSHTTPCookie *cookie in [cookieJar cookies]) {
+//            NSLog(@"%@", cookie);
+//        }
+        
+        
         afHttpSessionMgr.requestSerializer =[AFJSONRequestSerializer serializer];
 
         [manager GET:requestEnty.requestUrl
@@ -159,7 +181,23 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
         AFHTTPSessionManager *manager = [self initHttpManager];
 
         if (AlreadyLogin) {
-            [manager.requestSerializer setValue:kUserDefaultsValue(COOKIES) forHTTPHeaderField:@"Cookie"];
+//            [manager.requestSerializer setValue:kUserDefaultsValue(COOKIES) forHTTPHeaderField:@"Cookie"];
+            if (kUserDefaultsValue(COOKIES)) {
+                
+                NSMutableDictionary *cookieProperties = [NSMutableDictionary dictionary];
+                [cookieProperties setObject:@"user" forKey:NSHTTPCookieName];
+                [cookieProperties setObject:[kUserDefaultsValue(COOKIES) substringFromIndex:5] forKey:NSHTTPCookieValue];
+                [cookieProperties setObject:BaseRequestCookie forKey:NSHTTPCookieDomain];
+                [cookieProperties setObject:BaseRequestCookie forKey:NSHTTPCookieOriginURL];
+                [cookieProperties setObject:@"/" forKey:NSHTTPCookiePath];
+                [cookieProperties setObject:@"0" forKey:NSHTTPCookieVersion];
+                NSDate *expiresDate = [NSDate dateWithTimeIntervalSinceNow:3600*24*30];
+                [cookieProperties setObject:expiresDate forKey:NSHTTPCookieExpires];
+                
+                NSHTTPCookie *cookie = [NSHTTPCookie cookieWithProperties:cookieProperties];
+                [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie:cookie];
+                
+            }
         }else{
             [manager.requestSerializer setValue:nil forHTTPHeaderField:@"Cookie"];
         }

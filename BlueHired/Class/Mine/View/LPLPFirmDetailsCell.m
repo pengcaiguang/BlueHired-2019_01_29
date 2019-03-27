@@ -22,6 +22,10 @@
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 
 {
+    //这里的if时候为了获取删除操作,如果没有次if会造成当达到字数限制后删除键也不能使用的后果.
+    if (range.length == 1 && string.length == 0) {
+        return YES;
+    }
     if (self.Row == 9) {
         NSString * str = [NSString stringWithFormat:@"%@%@",textField.text,string];
         //匹配以0开头的数字

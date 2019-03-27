@@ -27,7 +27,8 @@
     // Do any additional setup after loading the view from its nib.
     self.navigationItem.title = @"工资卡绑定";
     self.textField.delegate = self;
-    self.phoneLabel.text = [NSString stringWithFormat:@"%@",kUserDefaultsValue(@"PHONEUSERSAVE")];
+//    self.phoneLabel.text = [NSString stringWithFormat:@"%@",kUserDefaultsValue(@"PHONEUSERSAVE")];
+    self.phoneLabel.text = [NSString stringWithFormat:@"%@",self.Phone];
 }
 
 -(void)openCountdown{
@@ -91,7 +92,8 @@
 -(void)requestSendCode{
     NSDictionary *dic = @{
                           @"i":@(5),
-                          @"phone":kUserDefaultsValue(@"PHONEUSERSAVE"),
+                          @"phone":[LPTools isNullToString:self.Phone],
+//                          @"phone":kUserDefaultsValue(@"PHONEUSERSAVE"),
                           };
     [NetApiManager requestSendCodeWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
@@ -113,7 +115,7 @@
 -(void)requestMateCode{
     NSDictionary *dic = @{
                           @"i":@(5),
-                          @"phone":kUserDefaultsValue(@"PHONEUSERSAVE"),
+                          @"phone":[LPTools isNullToString:self.Phone],
                           @"code":self.textField.text,
                           @"token":self.token?self.token:@""
                           };

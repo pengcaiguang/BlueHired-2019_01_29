@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LPtestDateViewController">
+            <connections>
+                <outlet property="Datepicker" destination="HLz-bm-Lba" id="CKk-oO-yXB"/>
+                <outlet property="Label" destination="C7p-9l-Jdk" id="iyw-J2-LSD"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C7p-9l-Jdk">
+                    <rect key="frame" x="159" y="204" width="42" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="HLz-bm-Lba">
+                    <rect key="frame" x="0.0" y="329" width="375" height="216"/>
+                    <date key="date" timeIntervalSinceReferenceDate="574168329.94289994">
+                        <!--2019-03-13 11:12:09 +0000-->
+                    </date>
+                    <connections>
+                        <action selector="datetouch:" destination="-1" eventType="valueChanged" id="gQ0-o5-kFq"/>
+                    </connections>
+                </datePicker>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="C7p-9l-Jdk" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="184" id="99h-QR-Nu0"/>
+                <constraint firstItem="HLz-bm-Lba" firstAttribute="top" secondItem="C7p-9l-Jdk" secondAttribute="bottom" constant="104" id="cBG-sq-73U"/>
+                <constraint firstItem="HLz-bm-Lba" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="uuM-XG-D6a"/>
+                <constraint firstItem="HLz-bm-Lba" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="wal-5l-D2L"/>
+                <constraint firstItem="C7p-9l-Jdk" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="159" id="xwM-YY-8vL"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+        </view>
+    </objects>
+</document>

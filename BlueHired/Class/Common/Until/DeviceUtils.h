@@ -32,9 +32,11 @@
 // iPhoneX
 
 //#define IS_iPhoneX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [[UIScreen mainScreen] currentMode].size) : NO)
-#define  IS_iPhoneX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [UIScreen mainScreen].bounds.size) || CGSizeEqualToSize(CGSizeMake(828, 1792), [UIScreen mainScreen].bounds.size)  || CGSizeEqualToSize(CGSizeMake(1242, 2688), [UIScreen mainScreen].bounds.size) : NO)
+#define  IS_iPhoneX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(375.f, 812.f), [UIScreen mainScreen].bounds.size) || CGSizeEqualToSize(CGSizeMake(812.f, 375.f), [UIScreen mainScreen].bounds.size)  || CGSizeEqualToSize(CGSizeMake(414.f, 896.f), [UIScreen mainScreen].bounds.size) || CGSizeEqualToSize(CGSizeMake(896.f, 414.f), [UIScreen mainScreen].bounds.size) : NO)
+//#define  IS_iPhoneX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [UIScreen mainScreen].bounds.size) || CGSizeEqualToSize(CGSizeMake(828, 1792), [UIScreen mainScreen].bounds.size)  || CGSizeEqualToSize(CGSizeMake(1242, 2688), [UIScreen mainScreen].bounds.size) : NO)
+#define kNavBarHeight              ([DeviceUtils deviceType] == IPhone_X ? 88.0 : 64.0)
 
-
+#define kBottomBarHeight        ([DeviceUtils deviceType] == IPhone_X ? 34.0 : 0)
 
 typedef NS_ENUM(NSInteger,DeviceType) {
     

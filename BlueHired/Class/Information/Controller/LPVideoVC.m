@@ -276,7 +276,12 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     [self.BacksearchView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
-        make.bottom.mas_equalTo(0);
+//        make.bottom.mas_equalTo(0);
+        if (@available(iOS 11.0, *)) {
+            make.bottom.mas_equalTo(self.Commentview.mas_safeAreaLayoutGuideBottom);
+        } else {
+            make.bottom.mas_equalTo(0);
+        }
         make.height.mas_equalTo(48);
     }];
     
@@ -351,13 +356,18 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     [UIView animateWithDuration:duration animations:^{
         [self.BacksearchView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.left.mas_equalTo(10);
-            make.height.mas_equalTo(34);
+            make.height.mas_equalTo(48);
             if (transformY < 0) {
                 make.right.mas_equalTo(-10);
                 make.bottom.mas_equalTo(0+transformY);
             }else{
                 make.right.mas_equalTo(-10);
-                make.bottom.mas_equalTo(0);
+//                make.bottom.mas_equalTo(0);
+                if (@available(iOS 11.0, *)) {
+                    make.bottom.mas_equalTo(self.Commentview.mas_safeAreaLayoutGuideBottom);
+                } else {
+                    make.bottom.mas_equalTo(0);
+                }
             }
             make.right.mas_equalTo(-10);
         }];
@@ -924,7 +934,13 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
             make.left.mas_equalTo(0);
             make.right.mas_equalTo(0);
             make.top.mas_equalTo(30);
-            make.bottom.mas_equalTo(-48);
+//            make.bottom.mas_equalTo(-48);
+            if (@available(iOS 11.0, *)) {
+                make.bottom.equalTo(self.Commentview.mas_safeAreaLayoutGuideBottom).offset(-48);
+            } else {
+                // Fallback on earlier versions
+                make.bottom.mas_equalTo(-48);
+            }
         }];
         noDataView.hidden = hidden;
     }
@@ -955,7 +971,16 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     if (!_Commentview) {
         _Commentview = [[UIView alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT/3*2)];
         self.tableview.layer.cornerRadius = 10;
+        _Commentview.backgroundColor = [UIColor whiteColor];
         [_Commentview addSubview:self.tableview];
+        [self.tableview mas_makeConstraints:^(MASConstraintMaker *make){
+            make.top.left.right.mas_equalTo(0);
+            if (@available(iOS 11.0, *)) {
+                make.bottom.mas_equalTo(_Commentview.mas_safeAreaLayoutGuideBottom);
+            } else {
+                 make.bottom.mas_equalTo(0);
+            }
+        }];
     }
     return _Commentview;
 }
@@ -963,7 +988,8 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
 #pragma mark lazy
 - (UITableView *)tableview{
     if (!_tableview) {
-        _tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT/3*2)];
+//        _tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT/3*2)];
+        _tableview = [[UITableView alloc] init];
         _tableview.delegate = self;
         _tableview.dataSource = self;
         _tableview.tableFooterView = [[UIView alloc]init];
@@ -1095,7 +1121,8 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
 }
 
 -(void)requestQuerySetVideoView:(NSInteger) page{
-    NSDictionary *dic = @{@"id":self.listArray[page].id};
+    
+    NSDictionary *dic = @{@"id":[LPTools isNullToString:self.listArray[page].id]};
     self.listArray[page].view =[NSString stringWithFormat:@"%ld",self.listArray[page].view.integerValue+1];
     NSLog(@"%@",self.listArray[page].view);
     [NetApiManager requestQuerySetVideoView:dic withHandle:^(BOOL isSuccess, id responseObject) {
@@ -1111,7 +1138,7 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     NSDictionary *dic = @{
                           @"type":@(4),
                           @"page":@(self.Commentpage),
-                          @"id":self.listArray[self.currentpage].id
+                          @"id":[LPTools isNullToString:self.listArray[self.currentpage].id]
                           };
     [NetApiManager requestCommentListWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);

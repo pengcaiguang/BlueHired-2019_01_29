@@ -216,29 +216,56 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
         make.top.mas_equalTo(HeadView.frame.size.height+10);
         make.right.mas_equalTo(0);
         make.left.mas_equalTo(0);
-        make.bottom.mas_equalTo(0);
+        if (@available(iOS 11.0, *)) {
+            make.bottom.mas_equalTo(self.view.mas_safeAreaLayoutGuideBottom);
+        } else {
+            make.bottom.mas_equalTo(0);
+        }
     }];
     [self.TextFieldView mas_makeConstraints:^(MASConstraintMaker *make){
 //        make.top.equalTo(HeadView.mas_bottom).offset(10);
         make.top.mas_equalTo(HeadView.frame.size.height+10);
         make.right.mas_equalTo(0);
         make.left.mas_equalTo(0);
-        make.bottom.mas_equalTo(0);
+        if (@available(iOS 11.0, *)) {
+            make.bottom.mas_equalTo(self.view.mas_safeAreaLayoutGuideBottom);
+        } else {
+            make.bottom.mas_equalTo(0);
+        }
     }];
     [self.SetPassView mas_makeConstraints:^(MASConstraintMaker *make){
 //        make.top.equalTo(HeadView.mas_bottom).offset(10);
         make.top.mas_equalTo(HeadView.frame.size.height+10);
         make.right.mas_equalTo(0);
         make.left.mas_equalTo(0);
-        make.bottom.mas_equalTo(0);
+        if (@available(iOS 11.0, *)) {
+            make.bottom.mas_equalTo(self.view.mas_safeAreaLayoutGuideBottom);
+        } else {
+            make.bottom.mas_equalTo(0);
+        }
+        
     }];
     [self.HBTextFieldView mas_makeConstraints:^(MASConstraintMaker *make){
 //        make.top.equalTo(HeadView.mas_bottom).offset(10);
         make.top.mas_equalTo(HeadView.frame.size.height+10);
         make.right.mas_equalTo(0);
         make.left.mas_equalTo(0);
-        make.bottom.mas_equalTo(0);
+        if (@available(iOS 11.0, *)) {
+            make.bottom.mas_equalTo(self.view.mas_safeAreaLayoutGuideBottom);
+        } else {
+            make.bottom.mas_equalTo(0);
+        }
     }];
+    
+    UIView *BottomBar = [[UIView alloc] init];
+    [self.view addSubview:BottomBar];
+    [BottomBar mas_makeConstraints:^(MASConstraintMaker *make){
+        make.top.equalTo(self.HBTextFieldView.mas_bottom).offset(0);
+        make.right.mas_equalTo(0);
+        make.left.mas_equalTo(0);
+        make.bottom.mas_equalTo(0);
+    }] ;
+    BottomBar.backgroundColor = [UIColor whiteColor];
     //加载地区选择器
     [self.view addSubview:self.pickerView];
 
@@ -390,6 +417,7 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
                     if (string.length != 6) {
                         LPSalarycCardBindPhoneVC *vc = [[LPSalarycCardBindPhoneVC alloc]init];
                         vc.type = 1;
+                        vc.Phone = self.model.data.phone;
                         [self.navigationController pushViewController:vc animated:YES];
                     }
                     else
@@ -712,7 +740,13 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             [weakSelf.navigationController popViewControllerAnimated:YES];
 //            [weakSelf.view showLoadingMeg:msg time:2.0];
-            [weakSelf.view showLoadingMeg:@"扫描失败，请重新扫描！" time:2.0];
+            
+            if (error.code == 283602) {
+                [weakSelf.view showLoadingMeg:@"手机时间与当前时间不符，请手动校准后重试！" time:2.0];
+            }else{
+                [weakSelf.view showLoadingMeg:@"扫描失败，请重新扫描！" time:2.0];
+            }
+            
         }];
     };
 }

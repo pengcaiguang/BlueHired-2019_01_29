@@ -86,7 +86,7 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
 //        make.top.mas_equalTo(140);
 //        make.left.mas_equalTo(0);
 //        make.right.mas_equalTo(0);
-//        make.bottom.mas_equalTo(0);
+        make.bottom.mas_equalTo(0);
     }];
     
     [self.view addSubview:self.bgView];
@@ -457,6 +457,7 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
         _tableview.estimatedRowHeight = 44;
         _tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableview.separatorColor = [UIColor colorWithHexString:@"#F1F1F1"];
+        _tableview.backgroundColor = [UIColor whiteColor];
         [_tableview registerNib:[UINib nibWithNibName:LPTLendAuditCellID bundle:nil] forCellReuseIdentifier:LPTLendAuditCellID];
  
     }

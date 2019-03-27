@@ -60,6 +60,13 @@
 #import <AMapLocationKit/AMapLocationKit.h>
 #import <Photos/PHPhotoLibrary.h>
 #import <AipOcrSdk/AipOcrSdk.h>
-
-
+#import "LxButton.h"
+#import "UIColor+Expanded.h"
+#import "UILabel+LXLabel.h"
+#import "UIView+LX_Frame.h"
+#import "UIView+FTCornerdious.h"
+#import "NSString+NCDate.h"
+#import "iCarousel.h"
+#import "CustomDataPickView.h"
+#import "DataTimeTool.h"
 #endif /* Heads_h */

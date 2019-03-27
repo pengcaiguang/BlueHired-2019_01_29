@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="LXCalendarHearder">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="59"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UUJ-fK-rb1">
+                    <rect key="frame" x="13" y="7" width="10" height="19.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="共加班3天 | 20.5小时" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pp7-1C-yiE">
+                    <rect key="frame" x="227" y="32" width="135" height="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yOz-DQ-of9">
+                    <rect key="frame" x="13" y="30.5" width="10" height="20"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="0.23529411759999999" green="0.68627450980000004" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="UUJ-fK-rb1" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="7" id="Cvw-w5-XFj"/>
+                <constraint firstItem="yOz-DQ-of9" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="13" id="QR5-vZ-ygD"/>
+                <constraint firstItem="Pp7-1C-yiE" firstAttribute="centerY" secondItem="yOz-DQ-of9" secondAttribute="centerY" id="Rgy-mb-f4Y"/>
+                <constraint firstItem="Pp7-1C-yiE" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="32" id="SYY-Y5-k5f"/>
+                <constraint firstItem="UUJ-fK-rb1" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="13" id="clW-J9-cPc"/>
+                <constraint firstAttribute="trailing" secondItem="Pp7-1C-yiE" secondAttribute="trailing" constant="13" id="f0a-YR-VyF"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="BasicMoney" destination="UUJ-fK-rb1" id="Icl-hE-wyt"/>
+                <outlet property="LayoutConstraintTop" destination="SYY-Y5-k5f" id="QAh-ol-NmQ"/>
+                <outlet property="WorkMoney" destination="yOz-DQ-of9" id="tgG-iz-nrS"/>
+                <outlet property="dateLabel" destination="Pp7-1C-yiE" id="Hnn-5L-cbE"/>
+            </connections>
+            <point key="canvasLocation" x="23.199999999999999" y="51.724137931034484"/>
+        </view>
+    </objects>
+</document>

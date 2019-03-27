@@ -9,8 +9,7 @@
 #import "LPDurationView.h"
 
 @interface LPDurationView ()
-@property(nonatomic,strong) UIView *bgView;
-@property(nonatomic,strong) UIView *selectView;
+
 
 @property(nonatomic,strong) UILabel *titleLabel;
 
@@ -67,7 +66,7 @@
         self.bgView.hidden = NO;
         self.selectView.hidden = NO;
         [UIView animateWithDuration:0.3 animations:^{
-            self.bgView.alpha = 0.1;
+            self.bgView.alpha = 0.5;
             self.selectView.frame = CGRectMake(0, SCREEN_HEIGHT-CGRectGetHeight(self.selectView.frame), SCREEN_WIDTH, CGRectGetHeight(self.selectView.frame));
         }];
     }
@@ -88,6 +87,7 @@
     [self clearType];
     button.selected = YES;
     self.selectIndex = index;
+    [self save];
 }
 -(void)clearType{
     for (UIButton *button in self.typeButtonArray) {
@@ -169,19 +169,25 @@
     }
     self.typeButtonArray = [NSMutableArray array];
     
-    self.typebgView.frame = CGRectMake(0, 50, SCREEN_WIDTH, typeArray.count * 52);
-    self.selectView.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, typeArray.count * 52 + 50);
-
+    self.typebgView.frame = CGRectMake(0, 48, SCREEN_WIDTH, typeArray.count * 48);
+    self.selectView.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, typeArray.count * 48 + 48);
     
     for (int i = 0; i<self.typeArray.count; i++) {
         UIButton *button = [[UIButton alloc]init];
-        button.frame = CGRectMake(0, 20 + 41*i, SCREEN_WIDTH, 41);
+        button.frame = CGRectMake(0,48*i, SCREEN_WIDTH, 48);
         [button setTitle:self.typeArray[i] forState:UIControlStateNormal];
-        [button setTitleColor:[UIColor colorWithHexString:@"#878787"] forState:UIControlStateNormal];
-        [button setTitleColor:[UIColor colorWithHexString:@"#1D1D1D"] forState:UIControlStateSelected];
+        [button setTitleColor:[UIColor colorWithHexString:@"#929292"] forState:UIControlStateNormal];
+//        [button setTitleColor:[UIColor baseColor] forState:UIControlStateSelected];
         [button addTarget:self action:@selector(touchTypeButton:) forControlEvents:UIControlEventTouchUpInside];
         button.tag = i;
         [self.typebgView addSubview:button];
+        
+        button.selected = i== self.selectIndex;
+        
+        UIView *lineV = [[UIView alloc] initWithFrame:CGRectMake(0,48*i, SCREEN_WIDTH, 1)];
+        lineV.backgroundColor = [UIColor colorWithHexString:@"#FFDDDDDD"];
+        [self.typebgView addSubview:lineV];
+
         [self.typeButtonArray addObject:button];
     }
 }
@@ -190,7 +196,7 @@
 -(UIView *)bgView{
     if (!_bgView) {
         _bgView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
-        _bgView.backgroundColor = [UIColor lightGrayColor];
+        _bgView.backgroundColor = [UIColor blackColor];
         _bgView.alpha = 0;
         _bgView.userInteractionEnabled = YES;
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(hidden)];
@@ -201,19 +207,19 @@
 -(UIView *)selectView{
     if (!_selectView) {
         _selectView = [[UIView alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, 253)];
-         _selectView.backgroundColor = [UIColor whiteColor];
+        _selectView.backgroundColor = [UIColor whiteColor];
         
         self.titleLabel = [[UILabel alloc]init];
-//        [_selectView addSubview:self.titleLabel];
-//        [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.left.mas_equalTo(0);
-//            make.right.mas_equalTo(0);
-//            make.top.mas_equalTo(0);
-//            make.height.mas_equalTo(50);
-//        }];
-        self.titleLabel.text = @"正常上班时长";
+        [_selectView addSubview:self.titleLabel];
+        [self.titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(0);
+            make.right.mas_equalTo(0);
+            make.top.mas_equalTo(0);
+            make.height.mas_equalTo(48);
+        }];
+//        self.titleLabel.text = @"正常上班时长";
         self.titleLabel.textAlignment = NSTextAlignmentCenter;
-
+        self.titleLabel.font = [UIFont boldSystemFontOfSize:17];
         [self addTimeSubView];
         [self addTypeSubView];
         
@@ -233,7 +239,7 @@
         [cancelButton addTarget:self action:@selector(hidden) forControlEvents:UIControlEventTouchUpInside];
         cancelButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         cancelButton.titleEdgeInsets = UIEdgeInsetsMake(0, 20, 0, 0);
-        
+        cancelButton.hidden = YES;
         UIButton *saveButton = [[UIButton alloc]init];
         [_selectView addSubview:saveButton];
 //        saveButton.frame = CGRectMake(SCREEN_WIDTH/2, 253-47, SCREEN_WIDTH/2, 47);
@@ -250,6 +256,7 @@
         [saveButton addTarget:self action:@selector(save) forControlEvents:UIControlEventTouchUpInside];
         saveButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
         saveButton.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 20);
+        saveButton.hidden = YES;
     }
     return _selectView;
 }

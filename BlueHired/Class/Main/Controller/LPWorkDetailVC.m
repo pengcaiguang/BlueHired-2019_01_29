@@ -54,7 +54,12 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
         make.top.mas_equalTo(0);
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
-        make.bottom.mas_equalTo(-48);
+//        make.bottom.mas_equalTo(-48);
+        if (@available(iOS 11.0, *)) {
+            make.bottom.mas_equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-48);
+        } else {
+           make.bottom.mas_equalTo(-48);
+        }
     }];
     [self setBottomView];
     
@@ -78,7 +83,12 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
     [bottomBgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(-136);
-        make.bottom.mas_equalTo(0);
+//        make.bottom.mas_equalTo(0);
+        if (@available(iOS 11.0, *)) {
+            make.bottom.mas_equalTo(self.view.mas_safeAreaLayoutGuideBottom);
+        } else {
+            make.bottom.mas_equalTo(0);
+        }
         make.height.mas_equalTo(48);
     }];
     
@@ -86,7 +96,11 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
     [self.view addSubview:self.signUpButton];
     [self.signUpButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.mas_equalTo(0);
-        make.bottom.mas_equalTo(0);
+        if (@available(iOS 11.0, *)) {
+            make.bottom.mas_equalTo(self.view.mas_safeAreaLayoutGuideBottom);
+        } else {
+            make.bottom.mas_equalTo(0);
+        }
         make.height.mas_equalTo(48);
         make.width.mas_equalTo(136);
     }];
@@ -147,7 +161,7 @@ static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
             return;
         }
         if (kStringIsEmpty(self.isApplyOrIsCollectionModel.data.userName)) {
-            GJAlertText *alert = [[GJAlertText alloc]initWithTitle:@"企业入职报名，请填写您的真实姓名！" message:@"请填写真实姓名" buttonTitles:@[@"取消",@"确定"] buttonsColor:@[[UIColor colorWithHexString:@"#666666"],[UIColor baseColor]] MaxLength:5 buttonClick:^(NSInteger buttonIndex , NSString * string) {
+            GJAlertText *alert = [[GJAlertText alloc]initWithTitle:@"企业入职报名，请填写您的真实姓名！" message:@"请填写真实姓名" buttonTitles:@[@"取消",@"确定"] buttonsColor:@[[UIColor colorWithHexString:@"#666666"],[UIColor baseColor]] MaxLength:5 NilTitel:@"请填写真实姓名" buttonClick:^(NSInteger buttonIndex , NSString * string) {
                 if (buttonIndex == 0) {
                 }else{
                     self.userName = string;

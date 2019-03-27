@@ -240,6 +240,10 @@ static NSString *LPRecruitCellID = @"LPRecruitCell";
 
 -(BOOL)textField:( UITextField  *)textField shouldChangeCharactersInRange:(NSRange )range replacementString:( NSString  *)string
 {
+    //这里的if时候为了获取删除操作,如果没有次if会造成当达到字数限制后删除键也不能使用的后果.
+    if (range.length == 1 && string.length == 0) {
+        return YES;
+    }
     if (_number1 == textField || _number2 == textField) {
         if (textField.text.length >= 5) {
             textField.text = [textField.text substringToIndex:16];

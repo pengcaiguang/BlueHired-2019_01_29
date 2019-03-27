@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LPWorkHourBaseSalary2VC">
+            <connections>
+                <outlet property="DateBgView" destination="4P8-qj-83Y" id="vh5-v0-Qhh"/>
+                <outlet property="DateLabel" destination="Ib3-bU-Pmu" id="Rhj-L6-SpI"/>
+                <outlet property="DatePicker" destination="leo-KI-b25" id="7AV-Tl-NTu"/>
+                <outlet property="SaveBT" destination="1tV-oz-4Py" id="1sc-QH-dnT"/>
+                <outlet property="TextField" destination="LIX-PS-xw9" id="k31-c0-L9l"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="底薪设置生效日期" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AHU-yY-yk1">
+                    <rect key="frame" x="13" y="75" width="122.5" height="48"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="8vW-eo-G5g"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="企业底薪(元/月)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1b2-pH-SuQ">
+                    <rect key="frame" x="13" y="20" width="108" height="48"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="plX-Ek-Yad"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请设置底薪" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LIX-PS-xw9">
+                    <rect key="frame" x="129" y="20.5" width="210" height="47"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="47" id="FiX-vE-4Vz"/>
+                    </constraints>
+                    <nil key="textColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
+                </textField>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="WorkHourRedactimage" translatesAutoresizingMaskIntoConstraints="NO" id="WP3-tz-FDd">
+                    <rect key="frame" x="343" y="34.5" width="19" height="19"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="19" id="nVM-mx-lts"/>
+                        <constraint firstAttribute="height" constant="19" id="wHO-uB-1ci"/>
+                    </constraints>
+                </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Xw-nK-9MT">
+                    <rect key="frame" x="0.0" y="68" width="375" height="7"/>
+                    <color key="backgroundColor" red="0.94901960784313721" green="0.94901960784313721" blue="0.94901960784313721" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="7" id="MA2-aL-oab"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4P8-qj-83Y">
+                    <rect key="frame" x="0.0" y="126" width="375" height="240"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
+                <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="leo-KI-b25">
+                    <rect key="frame" x="0.0" y="126" width="375" height="240"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="240" id="thl-jO-TWD"/>
+                    </constraints>
+                    <date key="date" timeIntervalSinceReferenceDate="574224591.77310395">
+                        <!--2019-03-14 02:49:51 +0000-->
+                    </date>
+                    <date key="minimumDate" timeIntervalSinceReferenceDate="-31582800">
+                        <!--2000-01-01 11:00:00 +0000-->
+                    </date>
+                    <connections>
+                        <action selector="ChangedDatePicker:" destination="-1" eventType="valueChanged" id="vqX-da-QUh"/>
+                    </connections>
+                </datePicker>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2019.01.01" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ib3-bU-Pmu">
+                    <rect key="frame" x="281" y="88.5" width="81" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.26666666666666666" green="0.26666666666666666" blue="0.26666666666666666" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1tV-oz-4Py">
+                    <rect key="frame" x="13" y="602" width="349" height="48"/>
+                    <color key="backgroundColor" red="0.23529411759999999" green="0.68627450980000004" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="URo-9B-pLP"/>
+                    </constraints>
+                    <state key="normal" title="保存">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="SaveTouch:" destination="-1" eventType="touchUpInside" id="qiM-XN-dL1"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="温馨提示：每月总工资=企业底薪+计件总工资" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c2V-j6-giW">
+                    <rect key="frame" x="13" y="376" width="349" height="16"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <color key="textColor" red="1" green="0.37647058820000001" blue="0.37647058820000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="1tV-oz-4Py" secondAttribute="trailing" constant="13" id="0IF-BX-73f"/>
+                <constraint firstItem="1b2-pH-SuQ" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="6hX-t1-Eqd"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="5Xw-nK-9MT" secondAttribute="trailing" id="DwU-rG-KpQ"/>
+                <constraint firstItem="5Xw-nK-9MT" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="EgY-PU-Nxc"/>
+                <constraint firstItem="WP3-tz-FDd" firstAttribute="leading" secondItem="LIX-PS-xw9" secondAttribute="trailing" constant="4" id="EqW-BP-lDb"/>
+                <constraint firstItem="4P8-qj-83Y" firstAttribute="height" secondItem="leo-KI-b25" secondAttribute="height" id="H1g-OX-x4L"/>
+                <constraint firstItem="4P8-qj-83Y" firstAttribute="centerX" secondItem="leo-KI-b25" secondAttribute="centerX" id="HnN-V6-xHP"/>
+                <constraint firstItem="4P8-qj-83Y" firstAttribute="centerY" secondItem="leo-KI-b25" secondAttribute="centerY" id="KeU-Xy-Vio"/>
+                <constraint firstItem="5Xw-nK-9MT" firstAttribute="top" secondItem="1b2-pH-SuQ" secondAttribute="bottom" id="Li0-4q-PKd"/>
+                <constraint firstItem="LIX-PS-xw9" firstAttribute="centerY" secondItem="1b2-pH-SuQ" secondAttribute="centerY" id="OFy-yi-4gR"/>
+                <constraint firstItem="AHU-yY-yk1" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="13" id="OSq-ny-isI"/>
+                <constraint firstItem="LIX-PS-xw9" firstAttribute="leading" secondItem="1b2-pH-SuQ" secondAttribute="trailing" constant="8" id="RHf-1e-Kqx"/>
+                <constraint firstItem="4P8-qj-83Y" firstAttribute="width" secondItem="leo-KI-b25" secondAttribute="width" id="Shl-T9-jr8"/>
+                <constraint firstItem="1tV-oz-4Py" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="13" id="XZj-9t-6TA"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="Ib3-bU-Pmu" secondAttribute="trailing" constant="13" id="Z7n-58-6gb"/>
+                <constraint firstItem="WP3-tz-FDd" firstAttribute="centerY" secondItem="1b2-pH-SuQ" secondAttribute="centerY" id="aRH-fw-UrQ"/>
+                <constraint firstItem="c2V-j6-giW" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="13" id="bRz-wR-39W"/>
+                <constraint firstItem="leo-KI-b25" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="gn9-9f-ahF"/>
+                <constraint firstItem="leo-KI-b25" firstAttribute="top" secondItem="AHU-yY-yk1" secondAttribute="bottom" constant="3" id="lZy-M0-kNt"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="WP3-tz-FDd" secondAttribute="trailing" constant="13" id="lbQ-lb-8vB"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="c2V-j6-giW" secondAttribute="trailing" constant="13" id="lvu-EY-UFp"/>
+                <constraint firstItem="Ib3-bU-Pmu" firstAttribute="centerY" secondItem="AHU-yY-yk1" secondAttribute="centerY" id="qjf-3B-n6x"/>
+                <constraint firstItem="c2V-j6-giW" firstAttribute="top" secondItem="leo-KI-b25" secondAttribute="bottom" constant="10" id="rxf-UN-F5T"/>
+                <constraint firstItem="1b2-pH-SuQ" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="13" id="t9b-gN-ZRs"/>
+                <constraint firstItem="AHU-yY-yk1" firstAttribute="top" secondItem="5Xw-nK-9MT" secondAttribute="bottom" id="uOP-cp-z7O"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="1tV-oz-4Py" secondAttribute="bottom" constant="17" id="xM4-2U-zri"/>
+                <constraint firstItem="leo-KI-b25" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="ylu-4R-MVG"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+            <point key="canvasLocation" x="138.40000000000001" y="116.49175412293854"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="WorkHourRedactimage" width="16.5" height="16.5"/>
+    </resources>
+</document>

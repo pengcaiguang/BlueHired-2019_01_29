@@ -182,7 +182,6 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
 }
 
 // 重新绘制cell边框
-
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
     if (tableView == self.tableview && indexPath.section == 2) {
         if ([cell respondsToSelector:@selector(tintColor)]) {

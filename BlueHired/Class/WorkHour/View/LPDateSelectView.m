@@ -22,10 +22,8 @@
 -(instancetype)init{
     self = [super init];
     if (self) {
-        
         [[UIApplication sharedApplication].keyWindow addSubview:self.bgView];
         [[UIApplication sharedApplication].keyWindow addSubview:self.selectView];
-        
     }
     return self;
 }

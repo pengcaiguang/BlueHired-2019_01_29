@@ -94,8 +94,13 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     [self.view addSubview:self.bottomBgView];
     [self.bottomBgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.mas_equalTo(0);
-        make.bottom.mas_equalTo(0);
+//        make.bottom.mas_equalTo(0);
         make.height.mas_equalTo(48);
+        if (@available(iOS 11.0, *)) {
+            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
+        } else {
+            make.bottom.mas_equalTo(0);
+        }
     }];
     
     UIView *backSearch = [[UIView alloc] init];
@@ -106,7 +111,13 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
         make.left.mas_equalTo(10);
 //        make.right.mas_equalTo(self.bottomBgView.mas_left).offset(-5);
         make.right.mas_equalTo(-10);
-        make.bottom.mas_equalTo(0);
+//        make.bottom.mas_equalTo(0);
+ 
+        if (@available(iOS 11.0, *)) {
+            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
+        } else {
+            make.bottom.mas_equalTo(0);
+        }
         make.height.mas_equalTo(48);
     }];
  
@@ -208,14 +219,24 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
             }else{
 //                make.right.mas_equalTo(self.bottomBgView.mas_left).offset(-5);
                 make.right.mas_equalTo(-10);
-                make.bottom.mas_equalTo(0);
+//                make.bottom.mas_equalTo(0);
+                if (@available(iOS 11.0, *)) {
+                    make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
+                } else {
+                    make.bottom.mas_equalTo(0);
+                }
             }
             
         }];
         [self.searchBgView.superview layoutIfNeeded];
         
         [self.bottomBgView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.bottom.mas_equalTo(0);
+//            make.bottom.mas_equalTo(0);
+            if (@available(iOS 11.0, *)) {
+                make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
+            } else {
+                make.bottom.mas_equalTo(0);
+            }
             make.height.mas_equalTo(48);
             make.left.equalTo(self.searchBgView.mas_right).mas_offset(5);
             if (transformY == 0) {

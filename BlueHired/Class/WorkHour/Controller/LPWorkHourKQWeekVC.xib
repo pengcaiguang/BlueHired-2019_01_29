@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LPWorkHourKQWeekVC">
+            <connections>
+                <outlet property="BackPickerView" destination="nDz-s4-oQp" id="lIu-PC-gVB"/>
+                <outlet property="KQWeekLabel" destination="AJX-Ls-2W1" id="mLa-eL-YuE"/>
+                <outlet property="PickerView" destination="v8T-nx-0lb" id="EOU-Pn-Tj2"/>
+                <outlet property="SaveBT" destination="Zjs-XX-iwy" id="iqF-En-nw3"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="F7c-R7-3cf">
+                    <rect key="frame" x="13" y="33" width="2" height="15"/>
+                    <color key="backgroundColor" red="0.23529411759999999" green="0.68627450980000004" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="15" id="3pV-fI-Jcd"/>
+                        <constraint firstAttribute="width" constant="2" id="vWQ-J2-7K5"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="每月考勤周期" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3ZT-Jz-m7J">
+                    <rect key="frame" x="20" y="31" width="98" height="19.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="本月1号-本月结束" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AJX-Ls-2W1">
+                    <rect key="frame" x="233" y="30.5" width="129" height="20"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="温馨提示：用户的考勤周期与工资发放日期无关！例如：企业的考勤时间是从每月1号开始到本月结束，则考勤周期选择“本月1号—本月结束”。" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yx7-Zh-YYy">
+                    <rect key="frame" x="13" y="319" width="349" height="47"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <color key="textColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zjs-XX-iwy">
+                    <rect key="frame" x="13" y="602" width="349" height="48"/>
+                    <color key="backgroundColor" red="0.23529411759999999" green="0.68627450980000004" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="fpv-YP-DWr"/>
+                    </constraints>
+                    <state key="normal" title="保存">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="TouchCave:" destination="-1" eventType="touchUpInside" id="dG2-Ng-XOT"/>
+                    </connections>
+                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nDz-s4-oQp">
+                    <rect key="frame" x="0.0" y="57.5" width="375" height="240"/>
+                    <subviews>
+                        <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v8T-nx-0lb">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="240"/>
+                        </pickerView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="240" id="Jsa-7e-oSN"/>
+                        <constraint firstAttribute="trailing" secondItem="v8T-nx-0lb" secondAttribute="trailing" id="RzD-EE-fpC"/>
+                        <constraint firstItem="v8T-nx-0lb" firstAttribute="leading" secondItem="nDz-s4-oQp" secondAttribute="leading" id="Vyn-B1-kDs"/>
+                        <constraint firstAttribute="bottom" secondItem="v8T-nx-0lb" secondAttribute="bottom" id="ZqL-AG-tRX"/>
+                        <constraint firstItem="v8T-nx-0lb" firstAttribute="top" secondItem="nDz-s4-oQp" secondAttribute="top" id="k6T-dw-cfS"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="tintColor" red="0.23529411759999999" green="0.68627450980000004" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="3ZT-Jz-m7J" firstAttribute="leading" secondItem="F7c-R7-3cf" secondAttribute="trailing" constant="5" id="8xB-Ym-F0a"/>
+                <constraint firstItem="nDz-s4-oQp" firstAttribute="top" secondItem="3ZT-Jz-m7J" secondAttribute="bottom" constant="7" id="AK6-RT-CZc"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="Yx7-Zh-YYy" secondAttribute="trailing" constant="13" id="Cv9-NR-RU5"/>
+                <constraint firstItem="nDz-s4-oQp" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="JWt-bj-D2A"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="nDz-s4-oQp" secondAttribute="trailing" id="LmT-UM-xCg"/>
+                <constraint firstItem="Zjs-XX-iwy" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="13" id="R48-tw-toF"/>
+                <constraint firstItem="F7c-R7-3cf" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="13" id="Y6B-gQ-6uj"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="Zjs-XX-iwy" secondAttribute="trailing" constant="13" id="YK1-rC-u7G"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="AJX-Ls-2W1" secondAttribute="trailing" constant="13" id="YhV-6f-E5g"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="Zjs-XX-iwy" secondAttribute="bottom" constant="17" id="YiX-Dd-WwS"/>
+                <constraint firstItem="F7c-R7-3cf" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="13" id="old-l6-EGR"/>
+                <constraint firstItem="AJX-Ls-2W1" firstAttribute="centerY" secondItem="F7c-R7-3cf" secondAttribute="centerY" id="pgG-2R-lja"/>
+                <constraint firstItem="Yx7-Zh-YYy" firstAttribute="top" secondItem="nDz-s4-oQp" secondAttribute="bottom" constant="21.5" id="qwg-KP-gfN"/>
+                <constraint firstItem="Yx7-Zh-YYy" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="13" id="sWf-Mz-3xw"/>
+                <constraint firstItem="3ZT-Jz-m7J" firstAttribute="centerY" secondItem="F7c-R7-3cf" secondAttribute="centerY" id="wzs-Pt-FSr"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+        </view>
+    </objects>
+</document>

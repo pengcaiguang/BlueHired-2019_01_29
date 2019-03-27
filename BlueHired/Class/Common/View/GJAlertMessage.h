@@ -26,6 +26,14 @@ buttonsBackgroundColors:(NSArray *)buttonsBackgroundColors
 buttonsBackgroundColors:(NSArray *)buttonsBackgroundColors
         buttonClick:(void(^)(NSInteger buttonIndex))block;
 
+- (id)initWithTitle:(NSMutableAttributedString *)title
+            message:(NSString *)message
+        IsShowhead:(BOOL) Dis
+      textAlignment:(NSTextAlignment)textAlignment
+       buttonTitles:(NSArray *)buttonTitles
+       buttonsColor:(NSArray *)buttonColors
+buttonsBackgroundColors:(NSArray *)buttonsBackgroundColors
+        buttonClick:(void(^)(NSInteger buttonIndex))block;
 - (void)show;
 - (void)dismiss;
 

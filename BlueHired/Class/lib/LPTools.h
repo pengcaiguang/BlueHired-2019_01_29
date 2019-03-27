@@ -26,6 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 +(void)AlertMessageView:(NSString *)str dismiss:(CGFloat) Float;
 
++(void)AlertMessage2View:(NSString *)str dismiss:(CGFloat) Float;
+
 + (NSString *)dateTimeDifferenceWithStartTime:(NSString *)startTime endTime:(NSString *)endTime;
 
 + (NSString *)URLDecodedString:(NSString *)str;
@@ -57,6 +59,10 @@ NS_ASSUME_NONNULL_BEGIN
 +(void)AlertactivityView:(NSString *)str;
 //去掉字符串两端的空格及回车
 + (NSString *)removeSpaceAndNewline:(NSString *)str;
+
+#pragma mark - 计算农历日期
++ (NSString *)calculationChinaCalendarWithDate:(NSDate *)date ;
+
 @end
 
 NS_ASSUME_NONNULL_END

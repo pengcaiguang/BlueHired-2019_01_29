@@ -86,13 +86,14 @@
     
     self.automaticallyAdjustsScrollViewInsets = YES;
 
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT-kNavBarHeight - kBottomBarHeight - 48)];
+//    scrollView.backgroundColor = [UIColor redColor];
     scrollView.alwaysBounceVertical = YES;
      scrollView.delegate = self;
     [self.view addSubview:scrollView];
     self.scrollView = scrollView;
-    NSLog(@"%f",scrollView.frame.size.width);
-    
+    NSLog(@"%f",scrollView.frame.origin.y);
+    NSLog(@"self%f",SCREEN_HEIGHT);
 //    UIView *view2 = [[UIView alloc] init];
 //    [scrollView addSubview:view2];
 //    [view2 mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -171,7 +172,12 @@
     [self.bottomBgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
-        make.bottom.mas_equalTo(0);
+//        make.bottom.mas_equalTo(0);
+        if (@available(iOS 11.0, *)) {
+            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
+        } else {
+            make.bottom.mas_equalTo(0);
+        }
         make.height.mas_equalTo(48);
     }];
     
@@ -270,7 +276,11 @@
             if (transformY < 0) {
                 make.bottom.mas_equalTo(0+transformY);
             }else{
-                make.bottom.mas_equalTo(0);
+                if (@available(iOS 11.0, *)) {
+                    make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
+                } else {
+                    make.bottom.mas_equalTo(0);
+                }
             }
             make.right.mas_equalTo(0);
         }];

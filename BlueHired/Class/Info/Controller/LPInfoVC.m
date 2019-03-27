@@ -65,7 +65,10 @@ static NSString *LPInforCollectionViewCellID = @"LPInforCollectionViewCell";
         make.bottom.mas_equalTo(0);
     }];
     [self setBottomView];
-
+    
+    if (@available(iOS 11.0, *)) {
+        self.collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -105,7 +108,12 @@ static NSString *LPInforCollectionViewCellID = @"LPInforCollectionViewCell";
             make.top.mas_equalTo(50);
             make.left.mas_equalTo(0);
             make.right.mas_equalTo(0);
-            make.bottom.mas_equalTo(0);
+//            make.bottom.mas_equalTo(0);
+            if (@available(iOS 11.0, *)) {
+                make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
+            } else {
+                make.bottom.mas_equalTo(0);
+            }
         }];
         self.allButton.hidden = NO;
         self.deleteBt.hidden = NO;
@@ -159,7 +167,12 @@ static NSString *LPInforCollectionViewCellID = @"LPInforCollectionViewCell";
     [self.view addSubview:selectButton];
     [selectButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(0);
-        make.bottom.mas_equalTo(0);
+//        make.bottom.mas_equalTo(0);
+        if (@available(iOS 11.0, *)) {
+            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
+        } else {
+            make.bottom.mas_equalTo(0);
+        }
         make.width.mas_equalTo(SCREEN_WIDTH - 180);
         make.height.mas_equalTo(49);
      }];
@@ -180,7 +193,12 @@ static NSString *LPInforCollectionViewCellID = @"LPInforCollectionViewCell";
     self.deleteBt = deleteButton;
     [deleteButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.mas_equalTo(0);
-        make.bottom.mas_equalTo(0);
+//        make.bottom.mas_equalTo(0);
+        if (@available(iOS 11.0, *)) {
+            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
+        } else {
+            make.bottom.mas_equalTo(0);
+        }
         make.height.mas_equalTo(49);
         make.width.mas_equalTo(180);
     }];

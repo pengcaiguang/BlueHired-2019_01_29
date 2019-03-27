@@ -216,7 +216,7 @@
             cell.imageView.image = [UIImage imageNamed:@"StoreCode_img"];
             cell.textLabel.text = @"门店二维码";
         }else if (indexPath.section == 2) {
-            cell.imageView.image = [UIImage imageNamed:@"assistant_img"];
+            cell.imageView.image = [UIImage imageNamed:@"WorkersSetUp"];
             cell.textLabel.text = @"店员管理";
         }else if (indexPath.section == 3) {
             cell.imageView.image = [UIImage imageNamed:@"Workersset_img"];

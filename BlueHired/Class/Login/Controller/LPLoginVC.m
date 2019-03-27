@@ -442,7 +442,7 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
         [self.view showLoadingMeg:@"请安装微信" time:MESSAGE_SHOW_TIME];
          return;
     }
-    [WXApiRequestHandler sendAuthRequestScope: @"snsapi_userinfo"
+    [WXApiRequestHandler sendAuthRequestScope:@"snsapi_userinfo"
                                         State:@"123x"
                                        OpenID:WXAPPID
                              InViewController:self];

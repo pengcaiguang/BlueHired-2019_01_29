@@ -40,7 +40,8 @@ target 'BlueHired' do
     pod 'WechatOpenSDK'
     pod 'YBAttributeTextTapAction'
     pod 'SDAutoLayout'
-    
+    pod 'iCarousel'
+     
     
   target 'BlueHiredTests' do
     inherit! :search_paths

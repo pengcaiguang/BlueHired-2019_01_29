@@ -60,6 +60,10 @@
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
+    //这里的if时候为了获取删除操作,如果没有次if会造成当达到字数限制后删除键也不能使用的后果.
+    if (range.length == 1 && string.length == 0) {
+        return YES;
+    }
     NSString * str = [NSString stringWithFormat:@"%@%@",textField.text,string];
     //匹配以0开头的数字
     NSPredicate * predicate0 = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",@"^[0][0-9]+$"];
@@ -190,6 +194,7 @@
                                                                                     if (buttonIndex) {
                                                                                         LPSalarycCardBindPhoneVC *vc = [[LPSalarycCardBindPhoneVC alloc]init];
                                                                                         vc.type = 1;
+                                                                                        vc.Phone = self.model.data.phone;
                                                                                         [self.navigationController pushViewController:vc animated:YES];
                                                                                     }
                                                                                     //                               [self.navigationController popViewControllerAnimated:YES];
@@ -217,6 +222,7 @@
                                                                                 if (buttonIndex) {
                                                                                     LPSalarycCardBindPhoneVC *vc = [[LPSalarycCardBindPhoneVC alloc]init];
                                                                                     vc.type = 1;
+                                                                                    vc.Phone = self.model.data.phone;
                                                                                     [self.navigationController pushViewController:vc animated:YES];
                                                                                 }
                                                                             }];

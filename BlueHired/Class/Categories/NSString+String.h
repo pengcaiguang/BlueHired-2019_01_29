@@ -9,16 +9,33 @@
 #import <Foundation/Foundation.h>
 
 @interface NSString (String)
+
+/*!
+ @brief 修正浮点型精度丢失
+ @param str 传入接口取到的数据
+ @return 修正精度后的数据
+ */
++(NSString *)reviseString:(NSString *)str;
+
 //毫秒时间戳转时间
 + (NSString *)convertStringToTime:(NSString *)timeString;
 //获取当前系统时间的时间戳
 +(NSInteger)getNowTimestamp;
+//获取时间的时间戳
++(NSInteger)getNowTimestamp:(NSDate *)date;
 //毫秒时间戳转时间
 + (NSString *)convertStringToYYYMMDD:(NSString *)timeString;
 + (NSString *)convertStringToYYYNMMYDDR:(NSString *)timeString;
 //毫秒时间戳转几天前
 + (NSString *) compareCurrentTime:(NSString *)str;
-
+//NSDate加减
++(NSString*)dateAddFromString:(NSString*)string Day:(NSInteger) day;
+//时间string 计算周几
++ (NSString*)weekdayStringFromDate:(NSString*)inputDateStr;
+//传入 分  得到  xx时xx分
++(NSString *)getMMSSFromSS:(NSString *)totalTime;
+//NSString转NSDate
++(NSDate*)dateFromString:(NSString*)string;
 //验证手机号
 + (BOOL)isMobilePhoneNumber:(NSString *)mobileNum;
 //身份证

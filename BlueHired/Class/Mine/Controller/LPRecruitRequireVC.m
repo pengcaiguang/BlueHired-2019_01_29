@@ -43,7 +43,11 @@ static NSString *LPInformationCollectionViewCellID = @"LPRecruitReqiuerCollectio
         make.top.equalTo(self.labelListView.mas_bottom).offset(0);
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
-        make.bottom.mas_equalTo(-50);
+        if (@available(iOS 11.0, *)) {
+            make.bottom.mas_equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-58);
+        } else {
+            make.bottom.mas_equalTo(-58);
+        }
     }];
     
  
@@ -98,7 +102,12 @@ static NSString *LPInformationCollectionViewCellID = @"LPRecruitReqiuerCollectio
         make.top.equalTo(self.collectionView.mas_bottom).offset(0);
         make.left.mas_equalTo(20);
         make.right.mas_equalTo(-20);
-        make.bottom.mas_equalTo(-10);
+//        make.bottom.mas_equalTo(-10);
+        if (@available(iOS 11.0, *)) {
+            make.bottom.mas_equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-10);
+        } else {
+            make.bottom.mas_equalTo(-10);
+        }
     }];
     
     

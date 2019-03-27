@@ -38,7 +38,7 @@
     
 //    controllers = [NSMutableArray arrayWithArray:@[@"LPMainVC",@"LPInformationVC",@"LPCircleVC",@"LPMineVC"]];
 //    titleArrays = [NSMutableArray arrayWithArray:@[@"招工",@"资讯",@"圈子",@"我的"]];
-    controllers = [NSMutableArray arrayWithArray:@[@"LPWorkHourVC",@"LPInformationVC",@"LPCircleVC",@"LPMineVC"]];
+    controllers = [NSMutableArray arrayWithArray:@[@"LPWorkHour2VC",@"LPInformationVC",@"LPCircleVC",@"LPMineVC"]];
     titleArrays = [NSMutableArray arrayWithArray:@[@"工时",@"看看",@"圈子",@"我的"]];
     
     for (int index = 0; index<controllers.count; index++) {
@@ -78,7 +78,6 @@
 
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
 {
-    NSLog(@"item name = %@", item.title);
     if ([item.title isEqualToString:@"圈子"]) {
         NSLog(@"%@",[self.viewControllers[2] rt_topViewController].class);
              LPCircleVC *vc = (LPCircleVC *)[self.viewControllers[2] rt_topViewController];

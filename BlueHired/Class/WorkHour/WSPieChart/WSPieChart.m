@@ -95,14 +95,16 @@
 //            [self drawText:[NSString stringWithFormat:@"%@ 销售额:%ld万 占比:%.1f%c",_descArr[i],[_valueArr[i] integerValue],present,'%'] andContext:contex atPoint:P_M(30+self.frame.size.width/2*(i%2), 20*(i/2  )+25+_chartArcLength*2) WithColor:[UIColor blackColor] andTextFontSize:8];
             
             
-            [self drawQuartWithColor:colors[i%colors.count] andBeginPoint:P_M(123, 24*(i)+x) andContext:contex];
-//            CGFloat present = [_valueArr[i] floatValue]/_allValueCount*100;
+//            [self drawQuartWithColor:colors[i%colors.count] andBeginPoint:P_M(self.frame.size.width-26-145, 24*(i)+x) andContext:contex];
+////            CGFloat present = [_valueArr[i] floatValue]/_allValueCount*100;
+//
+//            [self drawText:[NSString stringWithFormat:@"%@",_descArr[i]] andContext:contex atPoint:P_M(self.frame.size.width-26-130, 24*(i)+x-3) WithColor:[UIColor colorWithHexString:@"#666666"] andTextFontSize:12];
+//
+//            NSString *str = [NSString stringWithFormat:@"%@",_valueArr[i]];
+//            CGRect rect = [str getStringSize:CGSizeMake(MAXFLOAT, MAXFLOAT) font:[UIFont systemFontOfSize:14]];
+//            [self drawText:str andContext:contex atPoint:P_M(self.frame.size.width-26-rect.size.width, 24*(i)+x-3) WithColor:[UIColor colorWithHexString:@"#8E8E8E"] andTextFontSize:14];
             
-            [self drawText:[NSString stringWithFormat:@"%@",_descArr[i]] andContext:contex atPoint:P_M(143, 24*(i)+x-3) WithColor:[UIColor colorWithHexString:@"#666666"] andTextFontSize:12];
-            
-            NSString *str = [NSString stringWithFormat:@"%@小时",_valueArr[i]];
-            CGRect rect = [str getStringSize:CGSizeMake(MAXFLOAT, MAXFLOAT) font:[UIFont systemFontOfSize:14]];
-            [self drawText:str andContext:contex atPoint:P_M(self.frame.size.width-13-rect.size.width, 24*(i)+x-3) WithColor:[UIColor colorWithHexString:@"#8E8E8E"] andTextFontSize:14];
+ 
         }
         
     }
@@ -172,7 +174,7 @@
         
         _layersArr = [NSMutableArray array];
         
-        CGFloat wid = 66.0/320*SCREEN_WIDTH;
+        CGFloat wid = 107.0/320*SCREEN_WIDTH;
         self.chartOrigin = P_M(10 + wid / 2, 15 + wid / 2);
 //        if (_descArr.count>0) {
 //
@@ -204,7 +206,7 @@
         
         
         if (_allValueCount == 0) {
-            _itemsBackView = [[WSPieItemsView alloc] initWithFrame:CGRectMake(10, 10, wid/2.0, wid/2.0) andBeginAngle:0.0 andEndAngle:2.0 * M_PI  andFillColor:[UIColor colorWithRed:187/255.0 green:187/255.0 blue:187/255.0 alpha:1]];
+            _itemsBackView = [[WSPieItemsView alloc] initWithFrame:CGRectMake(10, 13, wid, wid) andBeginAngle:0.0 andEndAngle:2.0 * M_PI  andFillColor:[UIColor colorWithRed:187/255.0 green:187/255.0 blue:187/255.0 alpha:1]];
             _itemsBackView.center = CGPointMake(13+wid/2, self.frame.size.height/2);
             
             _itemsBackView.tag = 0;
@@ -214,12 +216,13 @@
         }
         else
         {
+//             _countPreAngeleArr.count
             for (NSInteger i = 0; i<_countPreAngeleArr.count-1; i++) {
-                WSPieItemsView *itemsView = [[WSPieItemsView alloc] initWithFrame:CGRectMake(10, 10, wid/2.0, wid/2.0) andBeginAngle:[_countPreAngeleArr[i] floatValue] andEndAngle:[_countPreAngeleArr[i+1] floatValue] andFillColor:colors[i%colors.count]];
+                WSPieItemsView *itemsView = [[WSPieItemsView alloc] initWithFrame:CGRectMake(10, 13, wid, wid) andBeginAngle:[_countPreAngeleArr[i] floatValue] andEndAngle:[_countPreAngeleArr[i+1] floatValue] andFillColor:colors[i%colors.count]];
                 itemsView.center = CGPointMake(13+wid/2, self.frame.size.height/2);
                 
                 itemsView.tag = i;
-                //            itemsView.backgroundColor = [UIColor redColor];
+//                            itemsView.backgroundColor = [UIColor redColor];
                 [_layersArr addObject:itemsView];
                 [self addSubview:itemsView];
             }

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="85" id="KGk-i7-Jjw" customClass="LPWorkHourTallyBookCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="90"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="89.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="TallyBook_icon" translatesAutoresizingMaskIntoConstraints="NO" id="Bln-wp-EBn">
+                        <rect key="frame" x="13" y="13" width="20" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="7El-ep-jvI"/>
+                            <constraint firstAttribute="height" constant="20" id="xVI-T2-a0Q"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="记账本" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BE9-Tb-jCg">
+                        <rect key="frame" x="41" y="14" width="46" height="18"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="今日总消费30.00元" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="78F-7y-QHV">
+                        <rect key="frame" x="175" y="14" width="132" height="18"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <color key="textColor" red="1" green="0.37647058820000001" blue="0.37647058820000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ha9-iy-16l">
+                        <rect key="frame" x="0.0" y="40" width="320" height="40"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="40" id="xdt-7a-NtS"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <state key="normal" title="编辑消费记录">
+                            <color key="titleColor" red="0.23529411759999999" green="0.68627450980000004" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        </state>
+                    </button>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CcU-oe-sFT">
+                        <rect key="frame" x="16" y="40" width="288" height="0.0"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="height" id="LIR-FL-fen"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="BE9-Tb-jCg" firstAttribute="centerY" secondItem="Bln-wp-EBn" secondAttribute="centerY" id="1Ys-mC-vbw"/>
+                    <constraint firstItem="CcU-oe-sFT" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="3b8-kn-7h8"/>
+                    <constraint firstItem="Bln-wp-EBn" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="13" id="BFa-LD-KYH"/>
+                    <constraint firstItem="BE9-Tb-jCg" firstAttribute="leading" secondItem="Bln-wp-EBn" secondAttribute="trailing" constant="8" id="YPL-KG-lkC"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="CcU-oe-sFT" secondAttribute="trailing" id="ZaA-MJ-TRO"/>
+                    <constraint firstAttribute="trailing" secondItem="78F-7y-QHV" secondAttribute="trailing" constant="13" id="cfa-2Y-4mr"/>
+                    <constraint firstItem="Bln-wp-EBn" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="13" id="dAZ-sx-mOc"/>
+                    <constraint firstItem="CcU-oe-sFT" firstAttribute="top" secondItem="Bln-wp-EBn" secondAttribute="bottom" constant="7" id="fta-iD-Uj3"/>
+                    <constraint firstAttribute="trailing" secondItem="ha9-iy-16l" secondAttribute="trailing" id="hxq-yA-GM2"/>
+                    <constraint firstAttribute="bottom" secondItem="ha9-iy-16l" secondAttribute="bottom" id="j9p-NJ-azJ"/>
+                    <constraint firstItem="78F-7y-QHV" firstAttribute="centerY" secondItem="Bln-wp-EBn" secondAttribute="centerY" id="kS1-Zy-Gnv"/>
+                    <constraint firstItem="ha9-iy-16l" firstAttribute="top" secondItem="CcU-oe-sFT" secondAttribute="bottom" id="uwS-Bs-8er"/>
+                    <constraint firstItem="ha9-iy-16l" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="xT2-1i-fHl"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <connections>
+                <outlet property="BookContentView" destination="CcU-oe-sFT" id="ajm-41-jhV"/>
+                <outlet property="ContentView_Height" destination="LIR-FL-fen" id="cnc-bN-3XV"/>
+                <outlet property="MoneyLabel" destination="78F-7y-QHV" id="QaB-68-mF9"/>
+                <outlet property="TallyButton" destination="ha9-iy-16l" id="6Vs-vy-MXa"/>
+            </connections>
+            <point key="canvasLocation" x="137.59999999999999" y="140.32983508245877"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="TallyBook_icon" width="20" height="20"/>
+    </resources>
+</document>

@@ -8,6 +8,7 @@
 
 #import "LPUserInfoVC.h"
 #import "LPUserMaterialModel.h"
+#import "LPMechanismModel.h"
 
 #import <AVFoundation/AVCaptureDevice.h>
 #import <AVFoundation/AVMediaFormat.h>
@@ -52,13 +53,15 @@
 
 @property(nonatomic,strong) NSArray *pickerArray;
 
-@property(nonatomic,strong) NSArray *p1Array;
+//@property(nonatomic,strong) NSArray *p1Array;
 @property(nonatomic,strong) NSArray *p2Array;
 @property(nonatomic,assign) NSInteger select1;
 
 @property(nonatomic,strong) UITextField *userNameTF;
 
 @property(nonatomic,strong) LPUserMaterialModel *userDic;
+
+@property(nonatomic,strong) LPMechanismModel *TypeList;
 
 @end
 
@@ -78,6 +81,7 @@
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
+    [self requestUserMaterialSelectMechanism];
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
@@ -415,16 +419,16 @@
         pickerView.dataSource = self;
         [self.popView addSubview:pickerView];
         self.pickerView = pickerView;
-        self.p1Array = @[@{@"服装厂":@[@"普工",@"服装新手",@"服装大师"]},
-                         @{@"电子厂":@[@"普工",@"司机",@"叉车工",@"仓管员"]},
-                         @{@"纺织厂":@[@"普工",@"纺织新手",@"纺织大师"]},
-                         @{@"鞋厂":@[@"普工",@"运动鞋工",@"休闲鞋工",@"皮鞋工"]},
-                         @{@"挖掘厂":@[@"普工",@"挖掘大师"]},
-                         @{@"食品厂":@[@"普工",@"吃货",@"吃货大师"]}];
+//        self.p1Array = @[@{@"服装厂":@[@"普工",@"服装新手",@"服装大师"]},
+//                         @{@"电子厂":@[@"普工",@"司机",@"叉车工",@"仓管员"]},
+//                         @{@"纺织厂":@[@"普工",@"纺织新手",@"纺织大师"]},
+//                         @{@"鞋厂":@[@"普工",@"运动鞋工",@"休闲鞋工",@"皮鞋工"]},
+//                         @{@"挖掘厂":@[@"普工",@"挖掘大师"]},
+//                         @{@"食品厂":@[@"普工",@"吃货",@"吃货大师"]}];
         if (index == 4) {
-            self.cengzaizhi = [NSString stringWithFormat:@"%@-%@",[(NSDictionary *)self.p1Array[0] allKeys][0],[(NSDictionary *)self.p1Array[0] allValues][0][0]];
+            self.cengzaizhi = [NSString stringWithFormat:@"%@-%@",self.TypeList.data[0].mechanismTypeName,self.TypeList.data[0].workTypeList[0].workTypeName ];
         }else{
-            self.lixaing = [NSString stringWithFormat:@"%@-%@",[(NSDictionary *)self.p1Array[0] allKeys][0],[(NSDictionary *)self.p1Array[0] allValues][0][0]];
+            self.lixaing = [NSString stringWithFormat:@"%@-%@",self.TypeList.data[0].mechanismTypeName,self.TypeList.data[0].workTypeList[0].workTypeName ];
         }
         [self.pickerView reloadAllComponents];
     }
@@ -446,9 +450,10 @@
 -(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
     if (self.selectIndex == 4 || self.selectIndex == 7) {
         if (component == 0) {
-            return self.p1Array.count;
+            return self.TypeList.data.count;
         }else{
-            return ((NSArray *)((NSDictionary *)self.p1Array[self.select1]).allValues[0]).count;
+//            return ((NSArray *)((NSDictionary *)self.p1Array[self.select1]).allValues[0]).count;
+            return self.TypeList.data[self.select1].workTypeList.count;
         }
     }else{
         return [self.pickerArray count];
@@ -461,15 +466,17 @@
     if (self.selectIndex == 4 || self.selectIndex == 7) {
         UILabel *text = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width/2, 20)];
         text.textAlignment = NSTextAlignmentCenter;
-        NSMutableArray *a = [NSMutableArray array];
-        for (NSDictionary *dic in self.p1Array) {
-            [a addObject:[dic allKeys][0]];
-        }
+//        NSMutableArray *a = [NSMutableArray array];
+//        for (NSDictionary *dic in self.p1Array) {
+//            [a addObject:[dic allKeys][0]];
+//        }
         if (component == 0) {
-            text.text = a[row];
+//            text.text = a[row];
+            text.text = self.TypeList.data[row].mechanismTypeName;
         }else{
-            NSArray *arr = [(NSDictionary *)self.p1Array[self.select1] allValues][0];
-            text.text = arr[row];
+//            NSArray *arr = [(NSDictionary *)self.p1Array[self.select1] allValues][0];
+//            text.text = arr[row];
+            text.text = self.TypeList.data[self.select1].workTypeList[row].workTypeName;
         }
         [view addSubview:text];
     }else{
@@ -506,10 +513,12 @@
             [pickerView reloadComponent:1];
         }
         //获取选中的省会
-        NSString *s = [self.p1Array[self.select1] allKeys][0];
+//        NSString *s = [self.p1Array[self.select1] allKeys][0];
+        NSString *s = self.TypeList.data[self.select1].mechanismTypeName;
         //获取选中的城市
         NSInteger cityIndex = [pickerView selectedRowInComponent:1];
-        NSString *cityName = [self.p1Array[self.select1] allValues][0][cityIndex];
+//        NSString *cityName = [self.p1Array[self.select1] allValues][0][cityIndex];
+        NSString *cityName = self.TypeList.data[self.select1].workTypeList[cityIndex].workTypeName;
         if (self.selectIndex == 4) {
             self.cengzaizhi = [NSString stringWithFormat:@"%@-%@",s,cityName];
         }else{
@@ -611,6 +620,22 @@
         }
     }];
 }
+
+
+-(void)requestUserMaterialSelectMechanism{
+    NSDictionary *dic = @{};
+    [NetApiManager requestUserMaterialSelectMechanism:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            self.TypeList = [LPMechanismModel mj_objectWithKeyValues:responseObject];
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+
+
+
 #pragma mark lazy
 - (UITableView *)tableview{
     if (!_tableview) {
@@ -673,6 +698,12 @@
     
     return _tableHeaderView;
 }
+
+-(void)setTypeList:(LPMechanismModel *)TypeList{
+    _TypeList = TypeList;
+    
+}
+
 -(void)tuchHeadImgView{
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
                                                                              message:nil

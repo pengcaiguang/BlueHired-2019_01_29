@@ -72,6 +72,7 @@ PODS:
   - HappyDNS (0.3.14)
   - HXPhotoPicker (2.2.1):
     - SDWebImage (~> 4.4.1)
+  - iCarousel (1.8.3)
   - IQKeyboardManager (6.1.1)
   - JWNetAutoCache (0.0.2)
   - Masonry (1.1.0)
@@ -112,6 +113,7 @@ DEPENDENCIES:
   - FMDB
   - FSCalendar
   - HXPhotoPicker (~> 2.2.1)
+  - iCarousel
   - IQKeyboardManager
   - JWNetAutoCache
   - Masonry
@@ -148,6 +150,7 @@ SPEC REPOS:
     - GoogleUtilities
     - HappyDNS
     - HXPhotoPicker
+    - iCarousel
     - IQKeyboardManager
     - JWNetAutoCache
     - Masonry
@@ -184,6 +187,7 @@ SPEC CHECKSUMS:
   GoogleUtilities: 6f681e27050c5e130325e89fa0316dfca826f954
   HappyDNS: dc6a164ee81979093123c241c6353bcf0218add6
   HXPhotoPicker: 2db199617edcc6cae476fe5ccde241ab5089906e
+  iCarousel: d782f635afac190c49bb8ee455882284cff8b85f
   IQKeyboardManager: 79c57795f5c2408d259d37b9da2ed07efcbb5225
   JWNetAutoCache: 434f10855da06d29a381359552ae9d27ef35cad7
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
@@ -202,6 +206,6 @@ SPEC CHECKSUMS:
   YBAttributeTextTapAction: 650ff36251479f8cfc7b5dd8fb62587c538ce502
   YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
 
-PODFILE CHECKSUM: ac7c5c85613dbe3150742efb144750d90c8d5668
+PODFILE CHECKSUM: b21624c1195cbfdb4b167e59e3975160318054a0
 
 COCOAPODS: 1.5.3
