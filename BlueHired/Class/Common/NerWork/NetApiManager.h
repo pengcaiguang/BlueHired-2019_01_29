@@ -583,6 +583,15 @@ typedef void (^UploadImageTempBlock)(BOOL sussess,NSMutableArray *array);
 //计件模式计件详情
 + (void)requestQueryGetProRecordList:(id)paramer
                           withHandle:(response)responseHandle;
+
+;//获取百度图像识别token
++ (void)requestQueryGetBiaduBankAccessToken:(id)paramer
+                                 withHandle:(response)responseHandle;
+
+//获取百度图像识别
++ (void)requestQueryGetBiaduUserBankScan:(id)paramer
+                               URLString:(NSString *)URLString
+                              withHandle:(response)responseHandle;
 @end
 
 

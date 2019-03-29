@@ -19,6 +19,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic,strong) NSArray <LPHoursWorkListLeaveModel *> *model;
 
+@property (weak, nonatomic) IBOutlet UILabel *TitleLable1;
+@property (weak, nonatomic) IBOutlet UILabel *TitleLable2;
+@property (weak, nonatomic) IBOutlet UILabel *TitleLable3;
 
 
 @end

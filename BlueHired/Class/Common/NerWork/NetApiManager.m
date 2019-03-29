@@ -2023,4 +2023,36 @@ static QNUploadManager *upManager = NULL;
 }
 
 
+//获取百度图像识别token
++ (void)requestQueryGetBiaduBankAccessToken:(id)paramer
+                         withHandle:(response)responseHandle{
+    NSString * appendURLString = @"userbank/get_bank_access_token";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+
+//获取百度图像识别
++ (void)requestQueryGetBiaduUserBankScan:(id)paramer
+                                   URLString:(NSString *)URLString
+                                 withHandle:(response)responseHandle{
+    NSString * appendURLString = URLString;
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+//    enty.singleImage = image;
+//    enty.singleImageName = @"image";
+    [NetRequestManager requestWithEnty:enty];
+}
+
+
+
+
+
 @end

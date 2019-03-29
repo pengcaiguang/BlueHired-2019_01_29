@@ -61,8 +61,8 @@
         make.top.mas_equalTo(0);
         make.height.mas_equalTo(5);
     }];
-    v.backgroundColor = self.isShowHead?[UIColor whiteColor]:[UIColor baseColor];
-    
+//    v.backgroundColor = self.isShowHead?[UIColor whiteColor]:[UIColor baseColor];
+    v.backgroundColor = [UIColor whiteColor];
 
     UILabel *labelTitle = [[UILabel alloc] init];
     [_alertView addSubview:labelTitle];

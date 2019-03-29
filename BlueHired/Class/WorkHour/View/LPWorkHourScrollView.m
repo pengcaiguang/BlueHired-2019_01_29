@@ -260,6 +260,9 @@ static NSString *LPByThePieceCellID = @"LPByThePieceCell";
                return 48+48*6+6;
            }
        }else if (self.WorkHourType == 4){
+           if (self.HoursWorkListModel.data.leaveList.count == 0) {
+               return 48+6;
+           }
            return 86+40*self.HoursWorkListModel.data.leaveList.count+6;
        }else if (self.WorkHourType == 2){
            if (indexPath.section == 0) {

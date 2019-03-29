@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -41,7 +41,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1GA-tp-Eso">
-                                <rect key="frame" x="13" y="46" width="307" height="1"/>
+                                <rect key="frame" x="13" y="46" width="301" height="1"/>
                                 <color key="backgroundColor" red="0.90196078431372551" green="0.90196078431372551" blue="0.90196078431372551" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="J6m-0W-nkh"/>
@@ -86,7 +86,6 @@
                         <constraints>
                             <constraint firstItem="6D0-Wo-HNr" firstAttribute="top" secondItem="4Eu-Ot-ld7" secondAttribute="bottom" constant="1" id="2fa-vI-gAq"/>
                             <constraint firstItem="1GA-tp-Eso" firstAttribute="top" secondItem="hut-XM-Gfp" secondAttribute="bottom" id="7Rg-9s-OgO"/>
-                            <constraint firstItem="4Eu-Ot-ld7" firstAttribute="top" secondItem="1GA-tp-Eso" secondAttribute="bottom" id="8F9-8C-I53"/>
                             <constraint firstItem="1Uv-c1-9dJ" firstAttribute="centerY" secondItem="hut-XM-Gfp" secondAttribute="centerY" id="AO3-sZ-1Fj"/>
                             <constraint firstAttribute="trailing" secondItem="1Uv-c1-9dJ" secondAttribute="trailing" constant="13" id="HfY-Yc-w49"/>
                             <constraint firstAttribute="trailing" secondItem="6D0-Wo-HNr" secondAttribute="trailing" id="ILb-Jd-ibH"/>
@@ -96,8 +95,8 @@
                             <constraint firstItem="lUo-x1-sbl" firstAttribute="centerX" secondItem="gPX-Q6-7dI" secondAttribute="centerX" constant="2.5" id="e9X-EI-wAQ"/>
                             <constraint firstItem="2wI-RE-hIW" firstAttribute="centerY" secondItem="4Eu-Ot-ld7" secondAttribute="centerY" id="e9x-Y7-jMb"/>
                             <constraint firstItem="lUo-x1-sbl" firstAttribute="centerY" secondItem="4Eu-Ot-ld7" secondAttribute="centerY" id="j0r-dT-rv5"/>
+                            <constraint firstAttribute="trailing" secondItem="1GA-tp-Eso" secondAttribute="trailing" id="kiw-p2-zor"/>
                             <constraint firstAttribute="bottom" secondItem="6D0-Wo-HNr" secondAttribute="bottom" constant="-0.5" id="mXm-QA-6pI"/>
-                            <constraint firstAttribute="trailing" secondItem="1GA-tp-Eso" secondAttribute="trailing" constant="-6" id="oIb-5d-OUa"/>
                             <constraint firstAttribute="trailing" secondItem="2wI-RE-hIW" secondAttribute="trailing" constant="13" id="qzS-nQ-dFa"/>
                             <constraint firstItem="6D0-Wo-HNr" firstAttribute="leading" secondItem="gPX-Q6-7dI" secondAttribute="leading" id="wSb-OR-Dx9"/>
                             <constraint firstItem="hut-XM-Gfp" firstAttribute="top" secondItem="gPX-Q6-7dI" secondAttribute="top" id="ypA-1e-roI"/>
@@ -117,6 +116,9 @@
                 <outlet property="MoneyLabel" destination="1Uv-c1-9dJ" id="ALU-mT-MTr"/>
                 <outlet property="SubBGView" destination="6D0-Wo-HNr" id="iJh-cl-M4T"/>
                 <outlet property="Subview_constrait_height" destination="nt1-zP-aMr" id="HeP-fz-swv"/>
+                <outlet property="TitleLable1" destination="4Eu-Ot-ld7" id="Ksh-F5-h7t"/>
+                <outlet property="TitleLable2" destination="lUo-x1-sbl" id="VSH-Kn-5Qb"/>
+                <outlet property="TitleLable3" destination="2wI-RE-hIW" id="ek3-6c-Tna"/>
             </connections>
             <point key="canvasLocation" x="137.59999999999999" y="169.11544227886057"/>
         </tableViewCell>

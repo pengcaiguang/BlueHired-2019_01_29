@@ -12,6 +12,7 @@
 #import "AddressPickerView.h"
 #import "LPSalarycCardBindPhoneVC.h"
 #import "LPSalarycCardChangePasswordVC.h"
+#import "LPDurationView.h"
 
 static NSString *ERROT = @"ERROR";
 
@@ -52,6 +53,13 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
 @property (weak, nonatomic) IBOutlet UITextField *phoneTextField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 
+@property (nonatomic,strong) UIView *ToolTextView;
+
+
+@property(nonatomic,strong) LPDurationView *durationView;
+@property(nonatomic,strong) NSArray *TypeArray;
+
+
 @property (nonatomic,strong) UIView *StepHeadView;
 
 @property(nonatomic,strong) LPSelectBindbankcardModel *model;
@@ -69,11 +77,12 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self setTextFieldView];
 
     self.headViewArr = [[NSMutableArray alloc] init];
     self.IntStep = 1;
     self.navigationItem.title = @"工资卡绑定";
-    
+    self.TypeArray = @[@"招商银行",@"兴业银行",@"中国建设银行"];
     self.view.backgroundColor = [UIColor colorWithHexString:@"#FFF2F2F2"];
     
     self.TextFieldViewTopBt.layer.cornerRadius = 4;
@@ -85,12 +94,24 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
     [self configCallback];
     [self requestSelectBindbankcard];
     [self.nameTextField addTarget:self action:@selector(fieldTextDidChange:) forControlEvents:UIControlEventEditingChanged];
-    
+    self.nameTextField.inputAccessoryView = self.ToolTextView;
+
     self.idcardTextField.delegate = self;
+    self.idcardTextField.inputAccessoryView = self.ToolTextView;
+
     self.cardTextField.delegate = self;
+    self.cardTextField.inputAccessoryView = self.ToolTextView;
+
     self.phoneTextField.delegate = self;
+    self.phoneTextField.inputAccessoryView = self.ToolTextView;
+
     self.passwordTextField.delegate = self;
+    self.passwordTextField.secureTextEntry = YES;
+    self.passwordTextField.inputAccessoryView = self.ToolTextView;
     
+    self.BankNameField.delegate = self;
+    self.BankNameField.inputAccessoryView = self.ToolTextView;
+
     
     self.idcardTextField.clearButtonMode=UITextFieldViewModeWhileEditing;
     self.cardTextField.clearButtonMode=UITextFieldViewModeWhileEditing;
@@ -113,6 +134,56 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
         self.ispass = NO;
     }
 }
+
+
+
+#pragma mark - 编辑view
+-(void)setTextFieldView{
+    //输入框编辑view
+    UIView *ToolTextView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 40)];
+    self.ToolTextView = ToolTextView;
+    ToolTextView.backgroundColor = [UIColor colorWithHexString:@"#E6E6E6"];
+    UIButton *DoneBt = [[UIButton alloc] init];
+    [ToolTextView addSubview:DoneBt];
+    [DoneBt mas_makeConstraints:^(MASConstraintMaker *make){
+        make.top.mas_equalTo(0);
+        make.bottom.mas_equalTo(0);
+        make.right.mas_equalTo(0);
+    }];
+    [DoneBt setTitle:@"确定" forState:UIControlStateNormal];
+    [DoneBt setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
+    DoneBt.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+    DoneBt.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);
+    [DoneBt addTarget:self action:@selector(TouchTextDone:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    UIButton *CancelBt = [[UIButton alloc] init];
+    [ToolTextView addSubview:CancelBt];
+    [CancelBt mas_makeConstraints:^(MASConstraintMaker *make){
+        make.top.mas_equalTo(0);
+        make.bottom.mas_equalTo(0);
+        make.left.mas_equalTo(0);
+        make.right.equalTo(DoneBt.mas_left).offset(0);
+        make.width.equalTo(DoneBt.mas_width);
+    }];
+    [CancelBt setTitle:@"取消" forState:UIControlStateNormal];
+    [CancelBt setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    CancelBt.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    CancelBt.titleEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
+    [CancelBt addTarget:self action:@selector(TouchTextCancel:) forControlEvents:UIControlEventTouchUpInside];
+}
+-(void)TouchTextDone:(UIButton *)sender{
+    [[[UIApplication sharedApplication] keyWindow] endEditing:YES];
+}
+
+-(void)TouchTextCancel:(UIButton *)sender{
+    [[[UIApplication sharedApplication] keyWindow] endEditing:YES];
+}
+
+
+
+
+
 
 -(void)setHeadView{
     UIView *HeadView = [[UIView alloc] init];
@@ -361,12 +432,19 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
                     [self.view showLoadingMeg:@"请输入正确的银行卡号" time:MESSAGE_SHOW_TIME];
                     return;
                 }
+                
+                if (self.BankNameField.text.length <= 0 ) {
+                    [self.view showLoadingMeg:@"请选择银行名称" time:MESSAGE_SHOW_TIME];
+                    return;
+                }
+                
                 if (self.phoneTextField.text.length <= 0 ) {
                     [self.view showLoadingMeg:@"请选择银行卡归属地" time:MESSAGE_SHOW_TIME];
                     return;
                 }
                 self.model.data.bankNumber = [RSAEncryptor encryptString:self.cardTextField.text publicKey:RSAPublickKey];
                 self.model.data.openBankAddr = self.phoneTextField.text;
+                self.model.data.bankName = self.BankNameField.text;
             }
         }else if (self.ClassType == 2){
             if (self.IntStep == 3){
@@ -379,8 +457,16 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
                     [self.view showLoadingMeg:@"请选择银行卡归属地" time:MESSAGE_SHOW_TIME];
                     return;
                 }
+                
+                if (self.BankNameField.text.length <= 0 ) {
+                    [self.view showLoadingMeg:@"请选择银行名称" time:MESSAGE_SHOW_TIME];
+                    return;
+                }
+                
                 self.model.data.bankNumber = [RSAEncryptor encryptString:self.cardTextField.text publicKey:RSAPublickKey];
                 self.model.data.openBankAddr = self.phoneTextField.text;
+                self.model.data.bankName = self.BankNameField.text;
+
             }
         }else if (self.ClassType == 3){
             if (self.IntStep == 1) {
@@ -539,6 +625,7 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
             }
             self.nameTextField.text = self.model.data.userName;
             self.idcardTextField.text = [RSAEncryptor decryptString:self.model.data.identityNo privateKey:RSAPrivateKey];
+ 
         }else if (self.IntStep == 3){       //银行卡扫描
             self.ScanningView.hidden = NO;
             UIButton *bt = (UIButton *)[self.ScanningView viewWithTag:1000];
@@ -558,6 +645,8 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
                 }
             }
              self.cardTextField.text = [RSAEncryptor decryptString:self.model.data.bankNumber privateKey:RSAPrivateKey];
+            self.BankNameField.text = self.model.data.bankName;
+
         }else if (self.IntStep == 5){       //设置提现密码
             self.SetPassView.hidden = NO;
         }
@@ -601,6 +690,7 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
                 }
             }
             self.cardTextField.text = [RSAEncryptor decryptString:self.model.data.bankNumber privateKey:RSAPrivateKey];
+            self.BankNameField.text = self.model.data.bankName;
 
         }else if (self.IntStep == 4){       //提现密码
             self.SetPassView.hidden = NO;
@@ -612,11 +702,14 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
             UITextField *idcardNOTF = [self.HBTextFieldView viewWithTag:1002];
             UITextField *CardNOTF = [self.HBTextFieldView viewWithTag:1003];
             UITextField *PhoneTF = [self.HBTextFieldView viewWithTag:1004];
+            UITextField *BankNameTF = [self.HBTextFieldView viewWithTag:1005];
+            
             NameTF.text = self.model.data.userName;
             idcardNOTF.text = [RSAEncryptor decryptString:self.model.data.identityNo privateKey:RSAPrivateKey];
             CardNOTF.text = [RSAEncryptor decryptString:self.model.data.bankNumber privateKey:RSAPrivateKey];
             PhoneTF.text = self.model.data.openBankAddr;
-            
+            BankNameTF.text = self.model.data.bankName;
+
         }else if (self.IntStep == 2){       //银行卡扫描
             self.ScanningView.hidden = NO;
             UIButton *bt = (UIButton *)[self.ScanningView viewWithTag:1000];
@@ -636,6 +729,7 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
                 }
             }
             self.cardTextField.text = [RSAEncryptor decryptString:self.model.data.bankNumber privateKey:RSAPrivateKey];
+            self.BankNameField.text = self.model.data.bankName;
             self.phoneTextField.text = self.model.data.openBankAddr;
             [self.TextFieldViewNext2Bt setTitle:@"确定换绑" forState:UIControlStateNormal];
             self.TextFieldViewNext2Bt.hidden = NO;
@@ -719,10 +813,32 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
                 }
             }else{
                 NSString *strBank = [result[@"result"][@"bank_card_number"] stringByReplacingOccurrencesOfString:@" " withString:@""];
+                NSLog(@"%@",result[@"result"][@"bank_name"]);
                     if (strBank.length) {
                         if ([result[@"result"][@"bank_card_type"] integerValue] == 1) {
 //                            weakSelf.model.data.bankName = result[@"result"][@"bank_name"];
+                            //判断银行卡
+                            NSString *name =result[@"result"][@"bank_name"];
+                            if ([name containsString:@"建设"]) {
+                                weakSelf.model.data.bankName = @"中国建设银行";
+                            }else if ([name containsString:@"招商"]){
+                                weakSelf.model.data.bankName = @"招商银行";
+                            }else if ([name containsString:@"兴业"]){
+                                weakSelf.model.data.bankName = @"兴业银行";
+                            }else{
+                                GJAlertMessage *alert = [[GJAlertMessage alloc] initWithTitle:@"本平台工资卡绑定仅支持中国建设银行、招商银行或者兴业银行的银行卡，若没有此三种银行卡，请联系驻厂老师或者客服人员为您办理。"
+                                                                                      message:nil
+                                                                                textAlignment:NSTextAlignmentCenter
+                                                                                 buttonTitles:@[@"确定"]
+                                                                                 buttonsColor:@[[UIColor baseColor]]
+                                                                      buttonsBackgroundColors:@[[UIColor whiteColor]]
+                                                                                  buttonClick:^(NSInteger buttonIndex) {
+                                                                                  }];
+                                [alert show];
+                                return ;
+                            }
                             weakSelf.model.data.bankNumber = [RSAEncryptor encryptString:strBank publicKey:RSAPublickKey];
+
                             [weakSelf TouchNextBt:nil];
                         }else{
                             [weakSelf.view showLoadingMeg:@"工资卡必须为借记卡！" time:2.0];
@@ -759,8 +875,8 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
         [AipCaptureCardVC ViewControllerWithCardType:CardTypeIdCardFont
                                                Title:@""
                                      andImageHandler:^(UIImage *image) {
-                                        
-                                         [[AipOcrService shardService] detectIdCardFrontFromImage:image withOptions:nil successHandler:_successHandler failHandler:_failHandler];
+                                         [self requestQueryGetBiaduBankAccessToken:image];
+//                                         [[AipOcrService shardService] detectIdCardFrontFromImage:image withOptions:nil successHandler:_successHandler failHandler:_failHandler];
                                         
                                      }];
         vc.hidesBottomBarWhenPushed = YES;
@@ -773,9 +889,10 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
         [AipCaptureCardVC ViewControllerWithCardType:CardTypeBankCard
                                                Title:@""
                                      andImageHandler:^(UIImage *image) {
+                                         [self requestQueryGetBiaduBankAccessToken:image];
+
+//                                         [[AipOcrService shardService] detectBankCardFromImage:image  successHandler:_successHandler failHandler:_failHandler];
                                          
-                                         [[AipOcrService shardService] detectBankCardFromImage:image  successHandler:_successHandler failHandler:_failHandler];
-                                          
                                      }];
         vc.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:vc animated:YES];
@@ -801,9 +918,29 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
         [self.phoneTextField resignFirstResponder];
         [self.passwordTextField resignFirstResponder];
         [self.BankNameField resignFirstResponder];
-
+ 
         [self.pickerView show];
         
+        return NO;
+    }
+    if (textField == self.BankNameField) {
+        //        self.CompanyTableView.hidden = !self.CompanyTableView.hidden;
+        //        self.bgView.hidden = self.CompanyTableView.hidden;
+        [self.nameTextField resignFirstResponder];
+        [self.idcardTextField resignFirstResponder];
+        [self.cardTextField resignFirstResponder];
+        [self.phoneTextField resignFirstResponder];
+        [self.passwordTextField resignFirstResponder];
+        [self.BankNameField resignFirstResponder];
+        self.durationView.titleString = @"请选择银行名称";
+        self.durationView.typeArray = self.TypeArray;
+        WEAK_SELF()
+        self.durationView.block = ^(NSInteger index) {
+            weakSelf.BankNameField.text = weakSelf.TypeArray[index];
+            weakSelf.model.data.bankName = weakSelf.TypeArray[index];
+        };
+        self.durationView.hidden = NO;
+
         return NO;
     }
     return YES;
@@ -958,6 +1095,7 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
                  @"bankNumber":bankNumberString,
                  @"openBankAddr":self.model.data.openBankAddr,
                  @"moneyPassword":passwordString,
+                 @"bankName":self.model.data.bankName,
                  @"type":@"1", //1绑定 2变更
                  };
     }
@@ -967,6 +1105,7 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
                  @"identityNo":identityNoString,
                  @"bankNumber":bankNumberString,
                  @"openBankAddr":self.model.data.openBankAddr,
+                 @"bankName":self.model.data.bankName,
                  @"type":@"2", //1绑定 2变更
                  };
     }else if (self.ClassType == 2){
@@ -976,6 +1115,7 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
                  @"bankNumber":bankNumberString,
                  @"openBankAddr":self.model.data.openBankAddr,
                  @"moneyPassword":passwordString,
+                 @"bankName":self.model.data.bankName,
                  @"type":@"2", //1绑定 2变更
                  };
     }
@@ -1167,6 +1307,130 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
     }];
 }
 
+
+-(void)requestQueryGetBiaduBankAccessToken:(UIImage *) Image{
+    WEAK_SELF()
+    [NetApiManager requestQueryGetBiaduBankAccessToken:nil withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if (responseObject[@"data"]) {
+                    [weakSelf requestQueryGetBiaduUserBankScan:Image Token:responseObject[@"data"]];
+                }else{
+                    [self.view showLoadingMeg:@"获取Token失败" time:MESSAGE_SHOW_TIME];
+                }
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+
+-(void)requestQueryGetBiaduUserBankScan:(UIImage *) Image Token:(NSString *) token{
+    
+    
+    NSString *virValue = [DataTimeTool stringFromDate:[NSDate date] DateFormat:@"yyyy-MM-dd-HH-mm"];
+    NSString *virValueData = [NSString stringWithFormat:@"%@-%@-lp",virValue,kUserDefaultsValue(LOGINID)];
+    NSData *imageData = [self jpgDataWithImage:Image sizeLimit:512000];
+
+    
+    NSDictionary *dic = @{@"image":[imageData base64EncodedStringWithOptions:0],
+                          @"id_card_side":@"front",
+                          @"accessToken":[RSAEncryptor decryptString:token privateKey:RSAPrivateKey],
+                          @"deviceType":@(1),
+                          @"virValue":[RSAEncryptor encryptString:virValueData publicKey:RSAPublickKey]
+                          };
+    NSString * appendURLString = [NSString stringWithFormat:@"userbank/scan?type=%@",self.CardType == CardTypeIdCardFont?@"1":@"2"];
+
+    WEAK_SELF()
+    [NetApiManager requestQueryGetBiaduUserBankScan:dic  URLString:appendURLString withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            [weakSelf.navigationController popViewControllerAnimated:YES];
+
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if (responseObject[@"data"]) {
+                    if (weakSelf.CardType == CardTypeIdCardFont) {      //身份证
+                        
+                        NSString *Identity = responseObject[@"data"][@"IdCard"][@"words"];
+                        NSString *IdentityName = responseObject[@"data"][@"name"][@"words"];
+                        
+                        if (Identity.length || IdentityName.length ) {
+                            weakSelf.model.data.identityNo =[RSAEncryptor encryptString:Identity publicKey:RSAPublickKey];
+                            weakSelf.model.data.userName = IdentityName;
+                            [weakSelf TouchNextBt:nil];
+                        }else{
+                            [weakSelf.view showLoadingMeg:@"扫描失败，请重新扫描！" time:2.0];
+                        }
+                    }else{
+                        NSString *strBank = [responseObject[@"data"][@"result"][@"bank_card_number"] stringByReplacingOccurrencesOfString:@" " withString:@""];
+                        NSLog(@"%@",strBank);
+                        if (strBank.length) {
+                            if ([responseObject[@"data"][@"result"][@"bank_card_type"] integerValue] == 1) {
+                                //                            weakSelf.model.data.bankName = result[@"result"][@"bank_name"];
+                                //判断银行卡
+                                NSString *name =responseObject[@"data"][@"result"][@"bank_name"];
+                                if ([name containsString:@"建设"]) {
+                                    weakSelf.model.data.bankName = @"中国建设银行";
+                                }else if ([name containsString:@"招商"]){
+                                    weakSelf.model.data.bankName = @"招商银行";
+                                }else if ([name containsString:@"兴业"]){
+                                    weakSelf.model.data.bankName = @"兴业银行";
+                                }else{
+                                    GJAlertMessage *alert = [[GJAlertMessage alloc] initWithTitle:@"本平台工资卡绑定仅支持中国建设银行、招商银行或者兴业银行的银行卡，若没有此三种银行卡，请联系驻厂老师或者客服人员为您办理。"
+                                                                                          message:nil
+                                                                                    textAlignment:NSTextAlignmentCenter
+                                                                                     buttonTitles:@[@"确定"]
+                                                                                     buttonsColor:@[[UIColor baseColor]]
+                                                                          buttonsBackgroundColors:@[[UIColor whiteColor]]
+                                                                                      buttonClick:^(NSInteger buttonIndex) {
+                                                                                      }];
+                                    [alert show];
+                                    return ;
+                                }
+                                weakSelf.model.data.bankNumber = [RSAEncryptor encryptString:strBank publicKey:RSAPublickKey];
+                                
+                                [weakSelf TouchNextBt:nil];
+                            }else{
+                                [weakSelf.view showLoadingMeg:@"工资卡必须为借记卡！" time:2.0];
+                            }
+                        }else{
+                            [weakSelf.view showLoadingMeg:@"扫描失败，请重新扫描！" time:2.0];
+                        }
+                    }
+                }else{
+                    [self.view showLoadingMeg:@"图像识别失败" time:MESSAGE_SHOW_TIME];
+                }
+            }else{
+                if ([responseObject[@"code"] integerValue] == 10000 ||
+                    [responseObject[@"code"] integerValue] == 20055 ||
+                    [responseObject[@"code"] integerValue] == 10002 ) {
+                    [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+                }else{
+                    if (responseObject[@"data"][@"error_msg"]) {
+                        [self.view showLoadingMeg:responseObject[@"data"][@"error_msg"] time:MESSAGE_SHOW_TIME];
+                    }
+                    
+                }
+            }
+            
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+
+
+
+-(LPDurationView *)durationView{
+    if (!_durationView) {
+        _durationView = [[LPDurationView alloc]init];
+    }
+    return _durationView;
+}
+
 -(void)setModel:(LPSelectBindbankcardModel *)model{
     _model = model;
     if (model.data) {
@@ -1209,6 +1473,7 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
     
     //    [self btnClick:_addressBtn];
 }
+
 - (AddressPickerView *)pickerView{
     if (!_pickerView) {
         _pickerView = [[AddressPickerView alloc]init];
@@ -1234,5 +1499,18 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
     return str;
 }
 
+
+- (NSData *)jpgDataWithImage:(UIImage *)image sizeLimit:(NSUInteger)maxSize {
+    CGFloat compressionQuality = 1.0;
+    NSData *imageData = nil;
+    
+    int i = 0;
+    do{
+        imageData = UIImageJPEGRepresentation(image, compressionQuality);
+        compressionQuality -= 0.1;
+        i += 1;
+    }while(i < 3 && imageData.length > maxSize);
+    return imageData;
+}
 
 @end

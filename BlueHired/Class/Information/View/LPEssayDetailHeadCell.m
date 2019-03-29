@@ -35,8 +35,49 @@
     if (!kStringIsEmpty(model.data.essayDetails)) {
 //        [self.wkWebView loadHTMLString:model.data.essayDetails baseURL:nil];
         [self.wkWebView loadHTMLString:[NSString stringWithFormat:@"<html><head><meta content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0\" name=\"viewport\"><style type=\"text/css\">img{display: inline-block;max-width: 100%%;width:auto; height:auto;}</style></head><body>\%@</body></html>",model.data.essayDetails] baseURL: nil];
+        
+        WEAK_SELF()
+        [self.wkWebView evaluateJavaScript:@"document.body.scrollHeight"
+                  completionHandler:^(id result, NSError *_Nullable error) {
+                      CGFloat documentHeight = [result doubleValue];
+                      NSLog(@"%f",documentHeight);
+                      weakSelf.webBgView_constraint_height.constant = documentHeight;
+                      
+                      weakSelf.essayNameLabel.text = weakSelf.model.data.essayName;
+                      weakSelf.essayAuthorLabel.text = weakSelf.model.data.essayAuthor;
+                      weakSelf.timeLabel.text = [NSString convertStringToTime:[weakSelf.model.data.time stringValue]];
+                      weakSelf.viewLabel.text = weakSelf.model.data.view ? [weakSelf.model.data.view stringValue] : @"0";
+                      weakSelf.commentTotalLabel.text = weakSelf.model.data.commentTotal ? [weakSelf.model.data.commentTotal stringValue] : @"0";
+                      weakSelf.praiseTotalLabel.text = weakSelf.model.data.praiseTotal ? [weakSelf.model.data.praiseTotal stringValue] : @"0";
+                      
+                      
+                      
+                      if (weakSelf.Block) {
+                          weakSelf.Block(documentHeight);
+                      }
+                      
+                  }];
+        
+        
     }
     
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
+//    [self stopAnimating];
+    
+    // 如果是被取消，什么也不干
+    if([error code] == NSURLErrorCancelled)  {
+        return;
+    }
+}
+
+- (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation withError:(NSError *)error {
+    // 如果是被取消，这里根据自身实际业务需求进行编辑
+    if (error.code == NSURLErrorCancelled) {
+        return;
+    }
+//    [MBProgressHUD showError:NSLocalizedString(@"网络加载失败!", nil)];
 }
 
 
@@ -54,26 +95,26 @@
     [webView evaluateJavaScript:js completionHandler:^(id result, NSError *_Nullable error) {
     }];
     WEAK_SELF()
-    [webView evaluateJavaScript:@"document.body.scrollHeight"
-              completionHandler:^(id result, NSError *_Nullable error) {
-                  CGFloat documentHeight = [result doubleValue];
-                  NSLog(@"%f",documentHeight);
-                  weakSelf.webBgView_constraint_height.constant = documentHeight;
-                  
-                  weakSelf.essayNameLabel.text = weakSelf.model.data.essayName;
-                  weakSelf.essayAuthorLabel.text = weakSelf.model.data.essayAuthor;
-                  weakSelf.timeLabel.text = [NSString convertStringToTime:[weakSelf.model.data.time stringValue]];
-                  weakSelf.viewLabel.text = weakSelf.model.data.view ? [weakSelf.model.data.view stringValue] : @"0";
-                  weakSelf.commentTotalLabel.text = weakSelf.model.data.commentTotal ? [weakSelf.model.data.commentTotal stringValue] : @"0";
-                  weakSelf.praiseTotalLabel.text = weakSelf.model.data.praiseTotal ? [weakSelf.model.data.praiseTotal stringValue] : @"0";
- 
-                  
-                  
-                  if (weakSelf.Block) {
-                      weakSelf.Block(documentHeight);
-                  }
-                  
-              }];
+    [self.wkWebView evaluateJavaScript:@"document.body.scrollHeight"
+                     completionHandler:^(id result, NSError *_Nullable error) {
+                         CGFloat documentHeight = [result doubleValue];
+                         NSLog(@"%f",documentHeight);
+                         weakSelf.webBgView_constraint_height.constant = documentHeight;
+                         
+                         weakSelf.essayNameLabel.text = weakSelf.model.data.essayName;
+                         weakSelf.essayAuthorLabel.text = weakSelf.model.data.essayAuthor;
+                         weakSelf.timeLabel.text = [NSString convertStringToTime:[weakSelf.model.data.time stringValue]];
+                         weakSelf.viewLabel.text = weakSelf.model.data.view ? [weakSelf.model.data.view stringValue] : @"0";
+                         weakSelf.commentTotalLabel.text = weakSelf.model.data.commentTotal ? [weakSelf.model.data.commentTotal stringValue] : @"0";
+                         weakSelf.praiseTotalLabel.text = weakSelf.model.data.praiseTotal ? [weakSelf.model.data.praiseTotal stringValue] : @"0";
+                         
+                         
+                         
+                         if (weakSelf.Block) {
+                             weakSelf.Block(documentHeight);
+                         }
+                         
+                     }];
 }
 
 

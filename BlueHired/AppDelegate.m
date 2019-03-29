@@ -30,13 +30,13 @@
 #import "LPActivityModel.h"
 
 //极光
-//static NSString *appKey = @"1f178d6e983414ed2ee662fb";
-//static NSString *channel = @"edf99cf2a69b26084499b31b";
-//static BOOL isProduction = YES;
+static NSString *appKey = @"1f178d6e983414ed2ee662fb";
+static NSString *channel = @"edf99cf2a69b26084499b31b";
+static BOOL isProduction = YES;
 //极光测试
-static NSString *appKey = @"2fd800e71146331dbcd9ffde";
-static NSString *channel = @"37043b9486c186aa9abd902b";
-static BOOL isProduction = NO;
+//static NSString *appKey = @"2fd800e71146331dbcd9ffde";
+//static NSString *channel = @"37043b9486c186aa9abd902b";
+//static BOOL isProduction = NO;
 //微信
 static NSString *WXAPPID = @"wx566f19a70d573321";
 //QQ
@@ -69,9 +69,9 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
  
     _mapManager = [[BMKMapManager alloc]init];
     //百度AR识别
-    #if !TARGET_IPHONE_SIMULATOR
-    [[AipOcrService shardService] authWithAK:OCRAk andSK:OCRSK];
-    #endif
+//    #if !TARGET_IPHONE_SIMULATOR
+//    [[AipOcrService shardService] authWithAK:OCRAk andSK:OCRSK];
+//    #endif
 
     [[BMKLocationAuth sharedInstance] checkPermisionWithKey:@"Is1tZn8s2L4SvALlxeBjef5Rzi3a7luV" authDelegate:self];
     BOOL ret = [_mapManager start:@"Is1tZn8s2L4SvALlxeBjef5Rzi3a7luV" generalDelegate:self];
@@ -295,8 +295,6 @@ fetchCompletionHandler:
                              } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                                  NSLog(@"收到微信回调 responseObject %@",responseObject);
                                  if (responseObject[@"unionid"]) {
-                                     
- 
                                      LPWXUserInfoModel *UserModel = [LPWXUserInfoModel mj_objectWithKeyValues:responseObject];
                                      
                                      if ([self.WXdelegate respondsToSelector:@selector(LPWxLoginHBBack:)]) {

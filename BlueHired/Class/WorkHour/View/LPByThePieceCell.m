@@ -104,6 +104,17 @@
  
         TopLineView = lineV;
     }
+    
+    if (model.count ==0) {
+        self.TitleLable1.hidden = YES;
+        self.TitleLable2.hidden = YES;
+        self.TitleLable3.hidden = YES;
+    }else{
+        self.TitleLable1.hidden = NO;
+        self.TitleLable2.hidden = NO;
+        self.TitleLable3.hidden = NO;
+    }
+    
     self.MoneyLabel.text = [NSString stringWithFormat:@"%.0f件",NumMoney];
     self.Subview_constrait_height.constant =40*model.count;
 }

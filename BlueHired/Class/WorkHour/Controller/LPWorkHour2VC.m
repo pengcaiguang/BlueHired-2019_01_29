@@ -1208,7 +1208,7 @@ static NSString *LPWorkHourTallyBookCellID = @"LPWorkHourTallyBookCell";
             bt.userInteractionEnabled = YES;
         }
     }
-    __block NSInteger time = 0; //倒计时时间
+    __block NSInteger time = 3; //倒计时时间
     
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
@@ -1225,7 +1225,7 @@ static NSString *LPWorkHourTallyBookCellID = @"LPWorkHourTallyBookCell";
                  self.carousButtonList[index].userInteractionEnabled = YES;
             });
         }else{
-            int seconds = time % 1;
+            int seconds = time % 4;
             dispatch_async(dispatch_get_main_queue(), ^{
                 //设置按钮显示读秒效果
                 [self.carousButtonList[index] setTitle:[NSString stringWithFormat:@"是(%d)", seconds] forState:UIControlStateNormal];
