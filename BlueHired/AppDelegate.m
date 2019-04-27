@@ -2,7 +2,7 @@
 //  AppDelegate.m
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/8/27.
+//  Created by peng on 2018/8/27.
 //  Copyright © 2018年 lanpin. All rights reserved.
 //
 
@@ -116,6 +116,7 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
     
     [WXApi registerApp:WXAPPID];
     _tencentOAuth = [[TencentOAuth alloc] initWithAppId:QQAPPID andDelegate:self];
+    
 
     return YES;
 }
@@ -133,7 +134,7 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:BOOLFORKEY];
         NSArray *imageNameArray = @[@"guideImage1",@"guideImage2",@"guideImage3",@"guideImage4"];
         // 创建并添加引导页
-        DHGuidePageHUD *guidePage = [[DHGuidePageHUD alloc] dh_initWithFrame:self.window.frame imageNameArray:imageNameArray buttonIsHidden:NO];
+        DHGuidePageHUD *guidePage = [[DHGuidePageHUD alloc] dh_initWithFrame:self.window.frame imageNameArray:imageNameArray buttonIsHidden:NO isShowBt:NO isTouchNext:NO];
         guidePage.slideInto = NO;
         [self.window addSubview:guidePage];
     }

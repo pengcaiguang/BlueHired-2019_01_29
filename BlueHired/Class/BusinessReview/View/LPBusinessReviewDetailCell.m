@@ -2,7 +2,7 @@
 //  LPBusinessReviewDetailCell.m
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/9/27.
+//  Created by peng on 2018/9/27.
 //  Copyright © 2018 lanpin. All rights reserved.
 //
 
@@ -19,9 +19,7 @@
     self.userUrlImgView.layer.masksToBounds = YES;
     self.userUrlImgView.layer.cornerRadius = 20;
     self.imageViewsRectArray = [NSMutableArray array];
-    self.commentContentLabel.delegate = self;
-    self.commentContentLabel.editable = NO;        //必须禁止输入，否则点击将弹出输入键盘
-    self.commentContentLabel.scrollEnabled = NO;
+ 
 }
 
 -(void)setModel:(LPMechanismcommentDetailDataModel *)model{
@@ -29,45 +27,56 @@
     [self.userUrlImgView sd_setImageWithURL:[NSURL URLWithString:model.userUrl] placeholderImage:[UIImage imageNamed:@"Head_image"]];
     self.userNameLabel.text = model.userName;
     self.commentContentLabel.text = model.commentContent;
-    
+    self.commentContentLabel.lineBreakMode = NSLineBreakByCharWrapping;
+
     NSArray *array = [self getSeparatedLinesFromLabel:self.commentContentLabel];
-    if (array.count>4) {
+    if (array.count>5) {
         if (model.IsAllShow == NO) {
             //组合需要显示的文本
-            NSString *str = @"...[查看全部]";
-            NSString *line4String =  [array[3] stringByReplacingOccurrencesOfString:@"\n" withString:@""];;
-            NSString *line4Content = [NSString stringWithFormat:@"%@%@",line4String,str];
-            NSString *showText;
-            CGSize size =[line4Content sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15]}];
-            while (size.width>SCREEN_WIDTH-28) {
-                line4String = [line4String substringToIndex:line4String.length-1];
-                line4Content =[NSString stringWithFormat:@"%@%@",line4String,str];
-                size =[line4Content sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15]}];
-            }
-            showText = [NSString stringWithFormat:@"%@%@%@%@", array[0], array[1], array[2], line4Content];
-            //设置label的attributedText
-            NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:showText attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15.0], NSForegroundColorAttributeName:[UIColor blackColor]}];
-            [attStr addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15.0], NSForegroundColorAttributeName:[UIColor baseColor]} range:NSMakeRange(showText.length-6, 6)];
-            [attStr addAttribute:NSLinkAttributeName
-                           value:@"All://"
-                           range:NSMakeRange(showText.length-6, 6)];
-            self.commentContentLabel.attributedText = attStr;
+//            NSString *str = @"...[查看全部]";
+//            NSString *line4String =  [array[3] stringByReplacingOccurrencesOfString:@"\n" withString:@""];;
+//            NSString *line4Content = [NSString stringWithFormat:@"%@%@",line4String,str];
+//            NSString *showText;
+//            CGSize size =[line4Content sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15]}];
+//            while (size.width>SCREEN_WIDTH-28) {
+//                line4String = [line4String substringToIndex:line4String.length-1];
+//                line4Content =[NSString stringWithFormat:@"%@%@",line4String,str];
+//                size =[line4Content sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15]}];
+//            }
+//            showText = [NSString stringWithFormat:@"%@%@%@%@", array[0], array[1], array[2], line4Content];
+//            //设置label的attributedText
+//            NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:showText attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15.0], NSForegroundColorAttributeName:[UIColor blackColor]}];
+//            [attStr addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15.0], NSForegroundColorAttributeName:[UIColor baseColor]} range:NSMakeRange(showText.length-6, 6)];
+//            [attStr addAttribute:NSLinkAttributeName
+//                           value:@"All://"
+//                           range:NSMakeRange(showText.length-6, 6)];
+//            self.commentContentLabel.attributedText = attStr;
+            self.commentContentLabel.numberOfLines = 5;
+            [self.AllButton setTitle:@"全文" forState:UIControlStateNormal];
          }else{
             //组合需要显示的文本
-            NSString *str = @"[收起]";
-             NSString *line4Content = [NSString stringWithFormat:@"%@%@",model.commentContent,str];
- 
-            //设置label的attributedText
-            NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:line4Content attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15.0], NSForegroundColorAttributeName:[UIColor blackColor]}];
-            [attStr addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15.0], NSForegroundColorAttributeName:[UIColor baseColor]} range:NSMakeRange(line4Content.length-4, 4)];
-            [attStr addAttribute:NSLinkAttributeName
-                           value:@"NoAll://"
-                           range:NSMakeRange(line4Content.length-4, 4)];
-            self.commentContentLabel.attributedText = attStr;
+//            NSString *str = @"[收起]";
+//             NSString *line4Content = [NSString stringWithFormat:@"%@%@",model.commentContent,str];
+//
+//            //设置label的attributedText
+//            NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:line4Content attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15.0], NSForegroundColorAttributeName:[UIColor blackColor]}];
+//            [attStr addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15.0], NSForegroundColorAttributeName:[UIColor baseColor]} range:NSMakeRange(line4Content.length-4, 4)];
+//            [attStr addAttribute:NSLinkAttributeName
+//                           value:@"NoAll://"
+//                           range:NSMakeRange(line4Content.length-4, 4)];
+//            self.commentContentLabel.attributedText = attStr;
+             self.commentContentLabel.numberOfLines = 0;
+             [self.AllButton setTitle:@"收起" forState:UIControlStateNormal];
         }
+        
+        self.AllButton.hidden = NO;
+        self.LayoutConstraint_Label_Top.constant = 28;
+        
     }else{
-        NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:model.commentContent attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15.0], NSForegroundColorAttributeName:[UIColor blackColor]}];
-        self.commentContentLabel.attributedText = attStr;
+//        NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:model.commentContent attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15.0], NSForegroundColorAttributeName:[UIColor blackColor]}];
+//        self.commentContentLabel.attributedText = attStr;
+        self.AllButton.hidden = YES;
+        self.LayoutConstraint_Label_Top.constant = 8;
     }
     
     self.workEnvironScoreLabel.text = [NSString stringWithFormat:@"工作环境：%@分",model.workEnvironScore];
@@ -86,16 +95,39 @@
         self.imageBgView.hidden = NO;
         NSArray *imageArray = [model.commentUrl componentsSeparatedByString:@";"];
         CGFloat imgw = (SCREEN_WIDTH-28 - 10)/3;
+        CGFloat imageHeight = 260.0;
+
         self.imageViewsRectArray = [NSMutableArray array];
         for (int i = 0; i < imageArray.count; i++) {
             UIImageView *imageView = [[UIImageView alloc]init];
-            imageView.frame = CGRectMake((imgw + 5)* (i%3), floor(i/3)*(imgw + 5), imgw, imgw);
+            imageView.frame = imageArray.count ==1?CGRectMake(0,0,imageHeight,imageHeight): CGRectMake((imgw + 5)* (i%3), floor(i/3)*(imgw + 5), imgw, imgw);
             imageView.contentMode = UIViewContentModeScaleAspectFill;
             imageView.clipsToBounds = YES;
-            imageView.image = [UIImage imageNamed:@"NoImage"];
-    
-            [imageView sd_setImageWithURL:[NSURL URLWithString:imageArray[i]] placeholderImage:[UIImage imageNamed:@"NoImage"]];
-             [self.imageBgView addSubview:imageView];
+       
+            NSInteger  downWidth= imageView.frame.size.width +100;
+            NSString *imageStr;
+            if (imageArray.count ==1) {
+                imageStr = [NSString stringWithFormat:@"%@",imageArray[i]];
+            }else{
+                imageStr = [NSString stringWithFormat:@"%@?imageView2/3/w/%ld/h/%ld/q/100",imageArray[i],(long)downWidth,(long)downWidth];
+            }
+            
+            [imageView yy_setImageWithURL:[NSURL URLWithString:imageStr]
+                              placeholder:[UIImage imageNamed:@"NoImage"]
+                                  options:YYWebImageOptionProgressiveBlur | YYWebImageOptionShowNetworkActivity | YYWebImageOptionSetImageWithFadeAnimation
+                                 progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+                                     
+                                 }
+                                transform:^UIImage *(UIImage *image, NSURL *url) {
+                                    return  image  ;
+                                }
+                               completion:^(UIImage *image, NSURL *url, YYWebImageFromType from, YYWebImageStage stage, NSError *error) {
+                                   if (stage == YYWebImageStageFinished) {
+                                       
+                                   }
+                               }];
+ 
+            [self.imageBgView addSubview:imageView];
             
             UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(selectImage:)];
             [imageView addGestureRecognizer:tap];
@@ -105,7 +137,20 @@
             
         }
         self.imageArray = imageArray;
-        self.imageBgView_constraint_height.constant = ceil(imageArray.count/3.0)*imgw + floor(imageArray.count/3)*5;
+        
+        
+        if (imageArray.count ==1)
+        {
+            self.imageBgView_constraint_height.constant = imageHeight;
+//            self.imageBgView_constraint_right.constant = SCREEN_WIDTH-250-28;
+        }
+        else
+        {
+            self.imageBgView_constraint_height.constant = ceil(imageArray.count/3.0)*imgw + floor(imageArray.count/3)*5;
+//            self.imageBgView_constraint_right.constant = 14;
+         }
+        
+//        self.imageBgView_constraint_height.constant = ceil(imageArray.count/3.0)*imgw + floor(imageArray.count/3)*5;
         
         LZImageBrowserManger *imageBrowserManger = [LZImageBrowserManger imageBrowserMangerWithUrlStr:self.imageArray originImageViews:self.imageViewsRectArray originController:[UIWindow visibleViewController] forceTouch:NO forceTouchActionTitles:@[] forceTouchActionComplete:^(NSInteger selectIndex, NSString *title) {
             NSLog(@"当前选中%ld--标题%@",(long)selectIndex, title);
@@ -115,6 +160,19 @@
     }
     
 }
+
+
+- (IBAction)TouchAllDetailsBt:(id)sender {
+    self.model.IsAllShow = !self.model.IsAllShow;
+    if (self.Block) {
+        self.Block();
+    }
+    
+    
+}
+
+
+
 -(void)selectImage:(UITapGestureRecognizer *)sender{
     
     UITapGestureRecognizer *singleTap = (UITapGestureRecognizer *)sender;
@@ -267,20 +325,31 @@
     // Configure the view for the selected state
 }
 
-- (NSArray *)getSeparatedLinesFromLabel:(UITextView *)label
+- (NSArray *)getSeparatedLinesFromLabel:(UILabel *)label
 {
+    NSMutableParagraphStyle *paraStyle01 = [[NSMutableParagraphStyle alloc] init];  paraStyle01.lineBreakMode = NSLineBreakByCharWrapping;
+    NSDictionary *attributes = @{ NSParagraphStyleAttributeName:paraStyle01,
+                                  };
+    
     NSString *text = [label text];
     UIFont   *font = [label font];
     CGRect    rect = [label frame];
     CTFontRef myFont = CTFontCreateWithName((__bridge CFStringRef)([font fontName]), [font pointSize], NULL);
-    NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:text];
+    NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:text attributes:attributes];
     [attStr addAttribute:(NSString *)kCTFontAttributeName value:(__bridge id)myFont range:NSMakeRange(0, attStr.length)];
+    //    NSLog(@"屏幕宽度 = %f,   rect = %f",SCREEN_WIDTH,rect.size.width);
+    //    NSMutableParagraphStyle *paraStyle01 = [[NSMutableParagraphStyle alloc] init];
+    //    paraStyle01.lineBreakMode = NSLineBreakByCharWrapping;
+    //    [attStr addAttributes:@{NSParagraphStyleAttributeName:paraStyle01,
+    //                            NSFontAttributeName:[UIFont systemFontOfSize:15.0],
+    //                            }range:NSMakeRange(0, attStr.length)];
+    //    [attStr addAttribute:(NSString *)kCTFontAttributeName value:(__bridge id)myFont range:NSMakeRange(0, attStr.length)];
     
     CTFramesetterRef frameSetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)attStr);
     
     CGMutablePathRef path = CGPathCreateMutable();
     //    CGPathAddRect(path, NULL, CGRectMake(0,0,rect.size.width,100000));
-    CGPathAddRect(path, NULL, CGRectMake(0,0,SCREEN_WIDTH-28,100000));
+    CGPathAddRect(path, NULL, CGRectMake(0,0,SCREEN_WIDTH-26,100000));
     
     CTFrameRef frame = CTFramesetterCreateFrame(frameSetter, CFRangeMake(0, 0), path, NULL);
     
@@ -297,8 +366,8 @@
         [linesArray addObject:lineString];
     }
     return linesArray;
-    
 }
+
 - (BOOL)textView:(UITextView *)textView shouldInteractWithURL:(NSURL *)URL inRange:(NSRange)characterRange {
         if ([[URL scheme] isEqualToString:@"All"]) {
             NSLog(@"点击了全部");

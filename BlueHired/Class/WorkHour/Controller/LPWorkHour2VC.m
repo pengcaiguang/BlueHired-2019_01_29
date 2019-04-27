@@ -114,12 +114,15 @@ static NSString *LPWorkHourTallyBookCellID = @"LPWorkHourTallyBookCell";
         [self requestQueryDownload];
         [self requestQueryActivityadvert];
     }
-    
+     self.navigationController.navigationBar.hidden = YES;
+     
+ 
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:YES animated:NO];
+//    [self.navigationController setNavigationBarHidden:YES animated:animated];
+
     if (AlreadyLogin) {
         [self requestQueryGetOvertimeGetMonthWage];
     }
@@ -127,9 +130,8 @@ static NSString *LPWorkHourTallyBookCellID = @"LPWorkHourTallyBookCell";
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
-    
-}
+//    [self.navigationController setNavigationBarHidden:NO animated:animated];
+ }
 
 -(void)setNavigationButton{
 //    self.navigationController.navigationBar.barTintColor = [UIColor baseColor];
@@ -899,7 +901,6 @@ static NSString *LPWorkHourTallyBookCellID = @"LPWorkHourTallyBookCell";
     NSLog(@"切换模式成功 %ld",sender.tag);
     NSInteger selectRow = sender.tag-100;
     self.carous.hidden = YES;
-    
     if (selectRow == 1) {
         self.CustTitleLabel.text = @"加班记工时模式";
         self.WorkHourType = 1;
@@ -1205,7 +1206,7 @@ static NSString *LPWorkHourTallyBookCellID = @"LPWorkHourTallyBookCell";
         _timer = nil;
         for (UIButton *bt in self.carousButtonList) {
             [bt setTitle:@"是" forState:UIControlStateNormal];
-            bt.userInteractionEnabled = YES;
+            bt.userInteractionEnabled = NO;
         }
     }
     __block NSInteger time = 3; //倒计时时间

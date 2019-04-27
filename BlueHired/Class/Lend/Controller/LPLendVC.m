@@ -2,7 +2,7 @@
 //  LPLendVC.m
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/9/25.
+//  Created by peng on 2018/9/25.
 //  Copyright © 2018 lanpin. All rights reserved.
 //
 
@@ -12,16 +12,20 @@
 #import "LPLendMechanismModel.h"
 #import "LPMapLocCell.h"
 
+#import <AVFoundation/AVCaptureDevice.h>
+#import <AVFoundation/AVMediaFormat.h>
+
 static NSString *LPTLendAuditCellID = @"LPLendCell";
 static NSString *LPMapLocCellID = @"LPMapLocCell";
 
-@interface LPLendVC ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource>
+@interface LPLendVC ()<UITextFieldDelegate,UITableViewDelegate,UITableViewDataSource,UIPickerViewDelegate,UIPickerViewDataSource,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *lendMoneyLabel;
 
 @property (weak, nonatomic) IBOutlet UITextField *CompanyTextField;
 @property (weak, nonatomic) IBOutlet UITextField *PhoneTextField;
 @property (weak, nonatomic) IBOutlet UITextField *lendTextField;
 @property (weak, nonatomic) IBOutlet UIButton *lendButton;
+@property(nonatomic,strong) NSString *userUrl;
 
 @property (nonatomic,strong) NSString *lendMoney;
 @property (nonatomic,strong) UITableView *CompanyTableView;
@@ -43,6 +47,8 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
 @property (weak, nonatomic) IBOutlet UILabel *time3;
 
 @property (weak, nonatomic) IBOutlet UIButton *bottomButton;
+@property (weak, nonatomic) IBOutlet UIView *LendImageView;
+@property (weak, nonatomic) IBOutlet UIButton *ImageBT;
 
 @property (nonatomic,strong) LPQueryCheckrecordModel *model;
 @property (nonatomic,strong) LPLendMechanismModel *MechanismModel;
@@ -51,6 +57,7 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
 @property(nonatomic,assign) NSInteger page;
 
 @property(nonatomic,assign) NSInteger selectCell;
+@property (nonatomic,strong) LPUserProblemModel *Pmodel;
 
 @end
 
@@ -60,7 +67,7 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.navigationItem.title = @"借支";
-    
+    self.userUrl = @"";
     self.recordView.hidden = YES;
     self.tableview.hidden = YES;
     self.page = 1;
@@ -79,6 +86,14 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
     self.lendTextField.superview.layer.cornerRadius = 6;
     self.lendTextField.superview.layer.borderColor = [UIColor whiteColor].CGColor;
     self.lendTextField.superview.layer.borderWidth = 1;
+    
+    self.LendImageView.layer.cornerRadius = 6;
+    self.LendImageView.layer.borderColor = [UIColor whiteColor].CGColor;
+    self.LendImageView.layer.borderWidth = 1;
+    
+    self.lendButton.layer.cornerRadius = 4;
+    
+//    self.ImageBT.imageView.contentMode = UIViewContentModeScaleToFill;
     
     [self.view addSubview:self.tableview];
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make){
@@ -100,9 +115,15 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
     self.CompanyTableView.hidden = YES;
     self.bgView.hidden = YES;
     [self requestQueryLendMoneyMechanism];
-    [self requestQueryLendApi];
 //     [self requestQueryIsLend];
+    [self requestQueryLendApi];
+
+//    [self requestQueryGetUserProdlemList];
+
 }
+
+
+
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
      //返回一个BOOL值，指定是否循序文本字段开始编辑
     if (textField == self.CompanyTextField) {
@@ -285,6 +306,8 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
 
 - (IBAction)touchLendButton:(UIButton *)sender {
     
+    self.PhoneTextField.text = [self.PhoneTextField.text stringByReplacingOccurrencesOfString:@" " withString:@""];
+
     if (self.lendTextField.text.floatValue==0.0) {
         [self.view showLoadingMeg:@"请输入借支金额" time:MESSAGE_SHOW_TIME];
         return;
@@ -309,10 +332,160 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
     if (self.model.data.status.integerValue == 0) {
         [self.navigationController popViewControllerAnimated:YES];
     }else{
-        self.recordView.hidden = YES;
-        self.tableview.hidden = YES;
+        [self requestQueryGetRefuseLendDay];
     }
 }
+
+- (IBAction)TouchImageBT:(id)sender {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
+                                                                             message:nil
+                                                                      preferredStyle:UIAlertControllerStyleActionSheet];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"拍照"
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction * _Nonnull action) {
+                                                          
+#if (TARGET_IPHONE_SIMULATOR)
+                                                          
+#else
+                                                          [self takePhoto];
+#endif
+                                                          
+                                                      }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"从相册中选择"
+                                                        style:UIAlertActionStyleDefault
+                                                      handler:^(UIAlertAction * _Nonnull action) {
+                                                          [self choosePhoto];
+                                                      }]];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"取消"
+                                                        style:UIAlertActionStyleCancel
+                                                      handler:^(UIAlertAction * _Nonnull action) {
+                                                          
+                                                      }]];
+    [self presentViewController:alertController animated:YES completion:nil];
+    
+}
+
+
+#pragma mark - UIImagePickerControllerDelegate
+-(void)takePhoto{
+    
+    //#if (TARGET_IPHONE_SIMULATOR)
+    //
+    //#else
+    //    [self startDevice];
+    //#endif
+    
+    AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+    if (authStatus == AVAuthorizationStatusRestricted || authStatus ==AVAuthorizationStatusDenied){
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"请进入设置-隐私-相机-中打开相机权限"
+                                                                       message:nil
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            nil;
+        }];
+        UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"好" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+        }];
+        [alert addAction:action1];
+        [alert addAction:action2];
+        [self presentViewController:alert animated:YES completion:nil];
+        
+        
+        return;
+    }
+    
+    
+    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+    imagePicker.delegate = self;
+    imagePicker.allowsEditing = YES;
+    imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    [self presentViewController:imagePicker animated:YES completion:nil];
+}
+
+-(void)choosePhoto{
+    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+    imagePicker.delegate = self;
+    imagePicker.allowsEditing = YES;
+    imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    [self presentViewController:imagePicker animated:YES completion:nil];
+}
+
+
+#pragma mark - UIImagePickerControllerDelegate
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    if ([[info objectForKey:UIImagePickerControllerMediaType] isEqualToString:(__bridge NSString *)kUTTypeImage]) {
+        UIImage *img = [info objectForKey:UIImagePickerControllerEditedImage];
+        [self performSelector:@selector(saveImage:)  withObject:img afterDelay:0.5];
+    }
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    //    [picker dismissModalViewControllerAnimated:YES];
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    if ([UIDevice currentDevice].systemVersion.floatValue < 11) {
+        return;
+    }
+    if ([viewController isKindOfClass:NSClassFromString(@"PUPhotoPickerHostViewController")]) {
+        [viewController.view.subviews enumerateObjectsUsingBlock:^(__kindof UIView * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            if (obj.frame.size.width < 42) {
+                [viewController.view sendSubviewToBack:obj];
+                *stop = YES;
+            }
+        }];
+    }
+}
+
+
+- (void)saveImage:(UIImage *)image {
+    //    NSLog(@"保存头像！");
+    //    [userPhotoButton setImage:image forState:UIControlStateNormal];
+    BOOL success;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSError *error;
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *imageFilePath = [documentsDirectory stringByAppendingPathComponent:@"headImage.jpg"];
+    NSLog(@"imageFile->>%@",imageFilePath);
+    success = [fileManager fileExistsAtPath:imageFilePath];
+    if(success) {
+        success = [fileManager removeItemAtPath:imageFilePath error:&error];
+    }
+    //    UIImage *smallImage=[self scaleFromImage:image toSize:CGSizeMake(80.0f, 80.0f)];//将图片尺寸改为80*80
+    [UIImageJPEGRepresentation(image, 1.0f) writeToFile:imageFilePath atomically:YES];//写入文件
+    UIImage *headImage = [UIImage imageWithContentsOfFile:imageFilePath];//读取图片文件
+    [self updateHeadImage:headImage];
+}
+// 改变图像的尺寸，方便上传服务器
+- (UIImage *) scaleFromImage: (UIImage *) image toSize: (CGSize) size
+{
+    UIGraphicsBeginImageContext(size);
+    [image drawInRect:CGRectMake(0, 0, size.width, size.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
+}
+#pragma mark - updateImage
+-(void)updateHeadImage:(UIImage *)image{
+    [NetApiManager avartarChangeWithParamDict:nil singleImage:image singleImageName:@"file" withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if (responseObject[@"data"]) {
+                self.userUrl = responseObject[@"data"];
+                [self.ImageBT yy_setImageWithURL:[NSURL URLWithString:self.userUrl] forState:UIControlStateNormal options:YYWebImageOptionProgressive];
+             }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+
 
 #pragma mark - request
 -(void)requestQueryIsLend{
@@ -345,7 +518,6 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
     [NetApiManager requestQueryCheckrecordWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-        
             self.model = [LPQueryCheckrecordModel mj_objectWithKeyValues:responseObject];
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
@@ -373,7 +545,7 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
 -(void)requestQueryAddLendApi{
     
     
-    NSString *url = [NSString stringWithFormat:@"lendmoney/add_lendmoney_api?lendMoney=%@&mechanismId=%ld&teacherTel=%@",self.lendTextField.text,(long)self.CompanyTextField.tag,self.PhoneTextField.text];
+    NSString *url = [NSString stringWithFormat:@"lendmoney/add_lendmoney_api?lendMoney=%@&mechanismId=%ld&teacherTel=%@&userWorkImage=%@",self.lendTextField.text,(long)self.CompanyTextField.tag,self.PhoneTextField.text,self.userUrl];
 
     [NetApiManager requestQueryAddLendApi:url withParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
@@ -445,6 +617,66 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
         }
     }];
 }
+
+-(void)requestQueryGetRefuseLendDay{
+    [NetApiManager requestQueryGetRefuseLendDay:nil withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if ([responseObject[@"data"] integerValue] == 1 && [responseObject[@"code"] integerValue] == 0) {
+                self.recordView.hidden = YES;
+                self.tableview.hidden = YES;
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+
+- (void)setPmodel:(LPUserProblemModel *)Pmodel{
+    _Pmodel = Pmodel;
+    if (Pmodel.data.count == 0) {
+        NSString *str1 = @"为了您的账号安全，请先设置密保问题。";
+        NSMutableAttributedString *str = [[NSMutableAttributedString alloc]initWithString:str1];
+        WEAK_SELF()
+        GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:str message:nil IsShowhead:YES textAlignment:0 buttonTitles:@[@"去设置"] buttonsColor:@[[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
+            if (buttonIndex == 0) {
+                LPSetSecretVC *vc = [[LPSetSecretVC alloc] init];
+                //                [self.navigationController pushViewController:vc animated:YES];
+                NSMutableArray *naviVCsArr = [[NSMutableArray alloc]initWithArray:weakSelf.navigationController.viewControllers];
+                for (UIViewController *vc in naviVCsArr) {
+                    if ([vc isKindOfClass:[weakSelf class]]) {
+                        [naviVCsArr removeObject:vc];
+                        break;
+                    }
+                }
+                [naviVCsArr addObject:vc];
+                vc.hidesBottomBarWhenPushed = YES;
+                
+                [weakSelf.navigationController  setViewControllers:naviVCsArr animated:YES];
+                
+            }
+        }];
+        [alert show];
+    }else{
+    }
+}
+
+#pragma mark - request
+-(void)requestQueryGetUserProdlemList{
+    
+    NSDictionary *dic = @{};
+    [NetApiManager requestQueryGetUserProdlemList:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            self.Pmodel = [LPUserProblemModel mj_objectWithKeyValues:responseObject];
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+
 
 #pragma mark lazy
 - (UITableView *)tableview{

@@ -27,11 +27,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (weak, nonatomic) IBOutlet UIButton *signInButton;
 @property (weak, nonatomic) IBOutlet UIButton *redactButton;
+@property (weak, nonatomic) IBOutlet UIButton *MessageButton;
 
 @property (weak, nonatomic) IBOutlet UIView *BackView1;
 @property (weak, nonatomic) IBOutlet UIView *backView2;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *BackView1_Height;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *Edit_Top;
 
 @property(nonatomic,strong) LPUserMaterialModel *userMaterialModel;
 @property(nonatomic,assign) BOOL signin;

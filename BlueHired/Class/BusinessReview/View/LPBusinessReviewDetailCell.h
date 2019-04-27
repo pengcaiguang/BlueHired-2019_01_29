@@ -2,7 +2,7 @@
 //  LPBusinessReviewDetailCell.h
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/9/27.
+//  Created by peng on 2018/9/27.
 //  Copyright © 2018 lanpin. All rights reserved.
 //
 
@@ -16,7 +16,7 @@ typedef void(^LPBusinessReviewDetailCellBlock)(void);
 
 @property (weak, nonatomic) IBOutlet UIImageView *userUrlImgView;
 @property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
-@property (weak, nonatomic) IBOutlet UITextView *commentContentLabel;
+@property (weak, nonatomic) IBOutlet UILabel *commentContentLabel;
 @property (weak, nonatomic) IBOutlet UILabel *workEnvironScoreLabel;
 @property (weak, nonatomic) IBOutlet UILabel *sleepEnvironScoreLabel;
 @property (weak, nonatomic) IBOutlet UILabel *foodEnvironScoreLabel;
@@ -25,7 +25,11 @@ typedef void(^LPBusinessReviewDetailCellBlock)(void);
 @property (weak, nonatomic) IBOutlet UIView *imageBgView;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *imageBgView_constraint_height;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *imageBgView_constraint_right;
+
 @property (nonatomic,copy) LPBusinessReviewDetailCellBlock Block;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *LayoutConstraint_Label_Top;
+@property (weak, nonatomic) IBOutlet UIButton *AllButton;
 
 
 @property(nonatomic,strong) LPMechanismcommentDetailDataModel *model;
@@ -37,6 +41,8 @@ typedef void(^LPBusinessReviewDetailCellBlock)(void);
 @property (nonatomic,strong) UIImageView *touchImage;
 @property (nonatomic,assign) CGRect imageRect;
 @property (nonatomic,strong) NSMutableArray <UIImageView *>*imageViewsRectArray;
+
+ 
 
 @end
 

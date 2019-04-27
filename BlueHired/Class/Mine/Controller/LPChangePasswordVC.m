@@ -2,7 +2,7 @@
 //  LPChangePasswordVC.m
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/9/25.
+//  Created by peng on 2018/9/25.
 //  Copyright © 2018 lanpin. All rights reserved.
 //
 
@@ -338,13 +338,12 @@
                 [self.view showLoadingMeg:@"密码修改成功" time:MESSAGE_SHOW_TIME];
                 [LPTools UserDefaulatsRemove];
                 [self requestSignout];
+                [self.navigationController popToRootViewControllerAnimated:NO];
 
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    [self.navigationController popViewControllerAnimated:YES];
-
                     LPLoginVC *vc = [[LPLoginVC alloc]init];
                     vc.hidesBottomBarWhenPushed = YES;
-                    [self.navigationController pushViewController:vc animated:YES];
+                    [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
                 });
             }else{
                 [self.view showLoadingMeg:responseObject[@"msg"] ? responseObject[@"msg"] : @"修改失败" time:MESSAGE_SHOW_TIME];

@@ -2,7 +2,7 @@
 //  LPMoodDetailHeaderCell.m
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/9/18.
+//  Created by peng on 2018/9/18.
 //  Copyright © 2018年 lanpin. All rights reserved.
 //
 
@@ -34,6 +34,8 @@
     [self.userConcernButton setTitleColor:[UIColor colorWithHexString:@"#939393"] forState:UIControlStateSelected];
     UITapGestureRecognizer *TapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(TouchUpInside:)];
     [self.userUrlImgView addGestureRecognizer:TapGestureRecognizer];
+    self.moodDetailsLabel.copyable = YES;
+    
 }
 
 -(void)TouchUpInside:(UITapGestureRecognizer *)recognizer{
@@ -114,7 +116,28 @@
             imageView.contentMode = UIViewContentModeScaleAspectFill;
             imageView.clipsToBounds = YES;
 //            [imageView sd_setImageWithURL:[NSURL URLWithString:imageArray[i]] placeholderImage:[UIImage imageNamed:@"NoImage"]];
-            [imageView yy_setImageWithURL:[NSURL URLWithString:imageArray[i]]
+            NSInteger  downWidth= imageView.frame.size.width +100;
+            NSString *imageStr;
+            if (imageArray.count ==1) {
+                imageStr = [NSString stringWithFormat:@"%@",imageArray[i]];
+                if ([imageStr containsString:@".mp4"]) {
+                    imageStr =[NSString stringWithFormat:@"%@?vframe/png/offset/0.001",imageStr];
+                }
+            }else{
+                imageStr = [NSString stringWithFormat:@"%@?imageView2/3/w/%ld/h/%ld/q/100",imageArray[i],(long)downWidth,(long)downWidth];
+            }
+            
+            if ([imageStr containsString:@".mp4"]) {
+                UIImageView *palyBTImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PlayImage"]];
+                [imageView addSubview:palyBTImage];
+                [palyBTImage mas_makeConstraints:^(MASConstraintMaker *make){
+                    make.width.height.mas_offset(58);
+                    make.center.equalTo(imageView);
+                }];
+            }
+            
+            
+            [imageView yy_setImageWithURL:[NSURL URLWithString:imageStr]
                               placeholder:[UIImage imageNamed:@"NoImage"]
                                   options:YYWebImageOptionProgressiveBlur | YYWebImageOptionShowNetworkActivity | YYWebImageOptionSetImageWithFadeAnimation
                                  progress:^(NSInteger receivedSize, NSInteger expectedSize) {
@@ -205,7 +228,20 @@
 -(void)selectImage:(UITapGestureRecognizer *)sender{
     
     UITapGestureRecognizer *singleTap = (UITapGestureRecognizer *)sender;
-    NSLog(@"menues = %ld",[singleTap view].tag);
+    
+    NSInteger index = [singleTap view].tag;
+    if ([self.imageArray[index] containsString:@".mp4"]) {
+//        if (self.VideoBlock) {
+//            self.VideoBlock(self.imageArray[index],(UI    ImageView *)singleTap.view);
+//        }
+        //播放网络url视频 先下载 再播放
+        WJMoviePlayerView *playerView = [[WJMoviePlayerView alloc] init];
+        playerView.movieURL = [NSURL URLWithString:self.imageArray[index]];
+        playerView.coverView = singleTap.view;
+        [playerView show];
+        return;
+    }
+    
     _imageBrowserManger.selectPage = singleTap.view.tag;
     [_imageBrowserManger showImageBrowser];
     

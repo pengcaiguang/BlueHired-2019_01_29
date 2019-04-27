@@ -2,7 +2,7 @@
 //  LPDurationView.m
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/9/10.
+//  Created by peng on 2018/9/10.
 //  Copyright © 2018年 lanpin. All rights reserved.
 //
 
@@ -204,6 +204,7 @@
     }
     return _bgView;
 }
+
 -(UIView *)selectView{
     if (!_selectView) {
         _selectView = [[UIView alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, 253)];

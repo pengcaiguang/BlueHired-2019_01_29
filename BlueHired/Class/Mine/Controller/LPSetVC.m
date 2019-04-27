@@ -2,7 +2,7 @@
 //  LPSetVC.m
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/8/30.
+//  Created by peng on 2018/8/30.
 //  Copyright © 2018年 lanpin. All rights reserved.
 //
 
@@ -73,7 +73,7 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
 
 #pragma mark - TableViewDelegate & Datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return AlreadyLogin?5:3;
+    return AlreadyLogin?4:3;
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -90,19 +90,18 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
     cell.detailTextLabel.text = @"";
     if (AlreadyLogin) {
         if (indexPath.row == 0) {
-            cell.textLabel.text = @"微信绑定";
-            if ([[LPTools isNullToString:self.userMaterialModel.data.openid] isEqualToString:@""]) {
-                cell.detailTextLabel.text = @"未绑定";
-            }else{
-                cell.detailTextLabel.text = @"已绑定";
-            }
-        }else if (indexPath.row == 1) {
+//            cell.textLabel.text = @"微信绑定";
+//            if ([[LPTools isNullToString:self.userMaterialModel.data.openid] isEqualToString:@""]) {
+//                cell.detailTextLabel.text = @"未绑定";
+//            }else{
+//                cell.detailTextLabel.text = @"已绑定";
+//            }
             cell.textLabel.text = @"意见反馈";
-        }else if (indexPath.row == 2) {
+        }else if (indexPath.row == 1) {
             cell.textLabel.text = @"关注微信公众号";
-        }else if (indexPath.row == 3) {
+        }else if (indexPath.row == 2) {
             cell.textLabel.text = AlreadyLogin?@"黑名单":@"关于我们";
-        }else if (indexPath.row == 4) {
+        }else if (indexPath.row == 3) {
             cell.textLabel.text = @"关于我们";
         }
     }else{
@@ -127,38 +126,39 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (AlreadyLogin) {
+//        if (indexPath.row == 0) {
+//            if ([WXApi isWXAppInstalled]==NO) {
+//                [self.view showLoadingMeg:@"请安装微信" time:MESSAGE_SHOW_TIME];
+//                return;
+//            }
+//
+//            if ([[LPTools isNullToString:self.userMaterialModel.data.openid] isEqualToString:@""]) {
+//                GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"是否前去绑定微信号？" message:nil textAlignment:0 buttonTitles:@[@"取消",@"确定"] buttonsColor:@[[UIColor blackColor],[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
+//                    if (buttonIndex) {
+//                        [WXApiRequestHandler sendAuthRequestScope: @"snsapi_userinfo"
+//                                                            State:@"123x"
+//                                                           OpenID:WXAPPID
+//                                                 InViewController:self];
+//                    }
+//                }];
+//                [alert show];
+//            }else{
+//                GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"是否换绑微信号？" message:nil textAlignment:0 buttonTitles:@[@"取消",@"确定"] buttonsColor:@[[UIColor blackColor],[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
+//                    if (buttonIndex) {
+//                        [WXApiRequestHandler sendAuthRequestScope: @"snsapi_userinfo"
+//                                                            State:@"123x"
+//                                                           OpenID:WXAPPID
+//                                                 InViewController:self];
+//                    }
+//                }];
+//                [alert show];
+//            }
+//        }else
         if (indexPath.row == 0) {
-            if ([WXApi isWXAppInstalled]==NO) {
-                [self.view showLoadingMeg:@"请安装微信" time:MESSAGE_SHOW_TIME];
-                return;
-            }
-            
-            if ([[LPTools isNullToString:self.userMaterialModel.data.openid] isEqualToString:@""]) {
-                GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"是否前去绑定微信号？" message:nil textAlignment:0 buttonTitles:@[@"取消",@"确定"] buttonsColor:@[[UIColor blackColor],[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
-                    if (buttonIndex) {
-                        [WXApiRequestHandler sendAuthRequestScope: @"snsapi_userinfo"
-                                                            State:@"123x"
-                                                           OpenID:WXAPPID
-                                                 InViewController:self];
-                    }
-                }];
-                [alert show];
-            }else{
-                GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"是否换绑微信号？" message:nil textAlignment:0 buttonTitles:@[@"取消",@"确定"] buttonsColor:@[[UIColor blackColor],[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
-                    if (buttonIndex) {
-                        [WXApiRequestHandler sendAuthRequestScope: @"snsapi_userinfo"
-                                                            State:@"123x"
-                                                           OpenID:WXAPPID
-                                                 InViewController:self];
-                    }
-                }];
-                [alert show];
-            }
-        }else if (indexPath.row == 1) {
             LPFeedBackVC *vc = [[LPFeedBackVC alloc]init];
             [self.navigationController pushViewController:vc animated:YES];
         }
-        else if (indexPath.row == 2)
+        else if (indexPath.row == 1)
         {
             NSString *urlsting =[[NSString stringWithFormat:@"weixin://"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:urlsting]]) {
@@ -169,7 +169,7 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
                     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlsting]];
                 });
              }
-        }else if (indexPath.row == 3){
+        }else if (indexPath.row == 2){
             if ([kUserDefaultsValue(LOGINID) integerValue]) {
                 if ([LoginUtils validationLogin:[UIWindow visibleViewController]]){
                     LPBlackUserVC *vc = [[LPBlackUserVC alloc] init];
@@ -178,7 +178,7 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
             }else{
                 [self showAlert];
             }
-         }else if (indexPath.row == 4){
+         }else if (indexPath.row == 3){
             [self showAlert];
         }
     
@@ -263,8 +263,7 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
     }else{
         [self.view showLoadingMeg:@"此次微信号与之前绑定的一致，请更换微信号重试！" time:MESSAGE_SHOW_TIME];
     }
-    
-     
+
 }
 
 

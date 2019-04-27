@@ -13,6 +13,8 @@
 #import "LPSalarycCardBindPhoneVC.h"
 #import "LPSalarycCardChangePasswordVC.h"
 #import "LPDurationView.h"
+#import <AVFoundation/AVCaptureDevice.h>
+#import <AVFoundation/AVMediaFormat.h>
 
 static NSString *ERROT = @"ERROR";
 
@@ -125,6 +127,10 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
     
     UIButton *userNameClearButton2 = [self.nameTextField valueForKey:@"_clearButton"];
     [userNameClearButton2 setImage:[UIImage imageNamed:@"deleteCard"] forState:UIControlStateNormal];
+    
+ 
+    
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -870,6 +876,26 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
 - (IBAction)bankCardOCROnline{
      #if !TARGET_IPHONE_SIMULATOR
     if ((self.IntStep == 1 && self.ClassType)) {
+        AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+        if (authStatus == AVAuthorizationStatusRestricted || authStatus ==AVAuthorizationStatusDenied){
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"请进入设置-隐私-相机-中打开相机权限"
+                                                                           message:nil
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                nil;
+            }];
+            UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"好" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+            }];
+            [alert addAction:action1];
+            [alert addAction:action2];
+            [self presentViewController:alert animated:YES completion:nil];
+            
+            
+            return;
+        }
+        
         self.CardType = CardTypeIdCardFont;
         UIViewController * vc =
         [AipCaptureCardVC ViewControllerWithCardType:CardTypeIdCardFont
@@ -884,6 +910,26 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
     }else if ((self.ClassType == 1 && self.IntStep == 3) ||
               (self.ClassType == 2 && self.IntStep == 2) ||
               (self.ClassType == 3 && self.IntStep == 2)) {
+        AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+        if (authStatus == AVAuthorizationStatusRestricted || authStatus ==AVAuthorizationStatusDenied){
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"请进入设置-隐私-相机-中打开相机权限"
+                                                                           message:nil
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                nil;
+            }];
+            UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"好" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+            }];
+            [alert addAction:action1];
+            [alert addAction:action2];
+            [self presentViewController:alert animated:YES completion:nil];
+            
+            
+            return;
+        }
+        
         self.CardType = CardTypeBankCard;
         UIViewController * vc =
         [AipCaptureCardVC ViewControllerWithCardType:CardTypeBankCard
@@ -1406,13 +1452,11 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
             }else{
                 if ([responseObject[@"code"] integerValue] == 10000 ||
                     [responseObject[@"code"] integerValue] == 20055 ||
-                    [responseObject[@"code"] integerValue] == 10002 ) {
+                    [responseObject[@"code"] integerValue] == 10002 ||
+                    [responseObject[@"code"] integerValue] == 10004 ) {
                     [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
                 }else{
-                    if (responseObject[@"data"][@"error_msg"]) {
                         [self.view showLoadingMeg:responseObject[@"data"][@"error_msg"] time:MESSAGE_SHOW_TIME];
-                    }
-                    
                 }
             }
             

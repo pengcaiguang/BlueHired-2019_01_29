@@ -18,7 +18,7 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    self.useriamge.layer.cornerRadius = 55.0/2;
+    self.useriamge.layer.cornerRadius = 50.0/2;
     self.agreeBt.layer.cornerRadius = 12.0;
     self.repulseBt.layer.cornerRadius = 12.0;
     self.repulseBt.layer.borderColor = [UIColor baseColor].CGColor;
@@ -31,7 +31,14 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
     [_useriamge sd_setImageWithURL:[NSURL URLWithString:model.userUrl] placeholderImage:[UIImage imageNamed:@"Head_image"]];
     _userName.text = [LPTools isNullToString:model.userName];
     _userTel.text = [RSAEncryptor decryptString:self.model.certNo privateKey:RSAPrivateKey];
-    _lendmoney.text = [LPTools isNullToString:model.lendMoney];
+    _lendmoney.text = [NSString stringWithFormat:@"%@元",reviseString(model.lendMoney)];
+    
+    if (model.userWorkImage.length>0) {
+        _ImageStatueLabel.text = @"已上传图片";
+    }else{
+        _ImageStatueLabel.text = @"未上传图片";
+    }
+    
     if (model.status.integerValue == 0) {
         _agreeBt.hidden = NO;
         _repulseBt.hidden = NO;
@@ -76,7 +83,6 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
 -(void)requestQueryUpdateMoneyList{
     NSDictionary *dic = @{@"status":@"1",
                           @"id":self.model.id};
-    
     [NetApiManager requestQueryUpdateLandMoneyList:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {

@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *activityDetails;
 @property (nonatomic, copy) NSString *activityEndTime;
 @property (nonatomic, copy) NSString *activityName;
+@property (nonatomic, copy) NSString *activityImage;
 @property (nonatomic, copy) NSString *activityUrl;
 @property (nonatomic, copy) NSString *countDownTime;
 @property (nonatomic, copy) NSString *id;

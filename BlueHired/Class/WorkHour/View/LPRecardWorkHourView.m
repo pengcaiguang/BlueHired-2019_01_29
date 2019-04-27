@@ -386,6 +386,7 @@ static NSString *TEXT2 = @"可以备注您请假的原因，最多30字!";
         _selectView.lx_y = SCREEN_HEIGHT - 412;
         self.textView.textColor = [UIColor lightGrayColor];
         self.textView.text = TEXT2;
+        self.SalaryTF.hidden = YES;
         [self.SalaryLabel mas_updateConstraints:^(MASConstraintMaker *make){
             make.height.mas_equalTo(0);
         }];
@@ -1297,7 +1298,7 @@ static NSString *TEXT2 = @"可以备注您请假的原因，最多30字!";
                     weakSelf.selectView.lx_y = SCREEN_HEIGHT - weakSelf.selectView.lx_height;
                 }
             }];
-    }else if (firstResponder == self.textView){
+    }else if (firstResponder == self.textView || firstResponder  == self.KeyBoardText){
         if (transformY < 0) {
             [self.KeyBoardText becomeFirstResponder];
             if ([self.textView.textColor isEqual:[UIColor blackColor]]) {

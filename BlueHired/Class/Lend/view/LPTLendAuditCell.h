@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UILabel *userTel;
 @property (weak, nonatomic) IBOutlet UILabel *lendmoney;
 @property (weak, nonatomic) IBOutlet UILabel *statueLabel;
+@property (weak, nonatomic) IBOutlet UILabel *ImageStatueLabel;
 @property (weak, nonatomic) IBOutlet UIButton *agreeBt;
 @property (weak, nonatomic) IBOutlet UIButton *repulseBt;
 @property (nonatomic,copy) LPAddRecordCellDicBlock Block;

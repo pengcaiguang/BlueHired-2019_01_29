@@ -2,7 +2,7 @@
 //  LPCircleListCell.m
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/8/29.
+//  Created by peng on 2018/8/29.
 //  Copyright © 2018年 lanpin. All rights reserved.
 //
 
@@ -49,7 +49,10 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
     self.userUrlImgView.layer.masksToBounds = YES;
     self.userUrlImgView.layer.cornerRadius = 20;
     self.imageViewsRectArray = [NSMutableArray array];
-    
+    self.moodDetailsLabel.copyable = YES;
+    self.moodDetailsLabel.TouchBlock = ^(void){
+        [self TouchCellSelect:nil];
+    };
     self.userUrlImgView.userInteractionEnabled=YES;
     
     UITapGestureRecognizer *TapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(TouchUpInside:)];
@@ -57,7 +60,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
     
     UITapGestureRecognizer *TapGestureRecognizerimageBg = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(TouchCellSelect:)];
 //    TapGestureRecognizerimageBg.delegate = self;
-    [self.imageBgView addGestureRecognizer:TapGestureRecognizerimageBg];
+     [self.imageBgView addGestureRecognizer:TapGestureRecognizerimageBg];
    
     self.TriangleView.transform = CGAffineTransformMakeRotation(45 *M_PI / 180.0);
     
@@ -101,7 +104,6 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
 
 - (IBAction)TouchCellSelect:(id)sender {
     LPMoodDetailVC *vc = [[LPMoodDetailVC alloc]init];
-    vc.Type = self.ClaaViewType;
     vc.hidesBottomBarWhenPushed = YES;
     vc.moodListDataModel = self.model;
     vc.moodListArray = self.moodListArray;
@@ -325,26 +327,39 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
             NSInteger  downWidth= imageView.frame.size.width +100;
             NSString *imageStr;
             if (imageArray.count ==1) {
-               imageStr = [NSString stringWithFormat:@"%@",imageArray[i]];
+                imageStr = [NSString stringWithFormat:@"%@",imageArray[i]];
+                if ([imageStr containsString:@".mp4"]) {
+                    imageStr =[NSString stringWithFormat:@"%@?vframe/png/offset/0.001",imageStr];
+                }
             }else{
                imageStr = [NSString stringWithFormat:@"%@?imageView2/3/w/%ld/h/%ld/q/100",imageArray[i],(long)downWidth,(long)downWidth];
             }
             
-             [imageView yy_setImageWithURL:[NSURL URLWithString:imageStr]
+            if ([imageStr containsString:@".mp4"]) {
+                UIImageView *palyBTImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PlayImage"]];
+                [imageView addSubview:palyBTImage];
+                [palyBTImage mas_makeConstraints:^(MASConstraintMaker *make){
+                    make.width.height.mas_offset(58);
+                    make.center.equalTo(imageView);
+                }];
+            }
+                [imageView yy_setImageWithURL:[NSURL URLWithString:imageStr]
                                   placeholder:[UIImage imageNamed:@"NoImage"]
                                       options:YYWebImageOptionProgressiveBlur | YYWebImageOptionShowNetworkActivity | YYWebImageOptionSetImageWithFadeAnimation
                                      progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-
+                                         
                                      }
-                                transform:^UIImage *(UIImage *image, NSURL *url) {
-                                            return  image  ;
-                                }
+                                    transform:^UIImage *(UIImage *image, NSURL *url) {
+                                        return  image  ;
+                                    }
                                    completion:^(UIImage *image, NSURL *url, YYWebImageFromType from, YYWebImageStage stage, NSError *error) {
                                        if (stage == YYWebImageStageFinished) {
-
+                                           
                                        }
                                    }];
-            
+                
+       
+
  
             
             
@@ -543,6 +558,23 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
             
             UILabel *commentLabel = [[UILabel alloc] init];
             commentLabel.tag = 1000+i;
+            commentLabel.copyable = YES;
+            //评论复制处理
+            WEAK_SELF()
+            commentLabel.CopyBlock = ^(UILabel *Label){
+                UIPasteboard *pastboard = [UIPasteboard generalPasteboard];
+                pastboard.string = weakSelf.model.commentModelList[Label.tag-1000].commentDetails;
+            };
+ 
+            if (CModel.userId.integerValue == kUserDefaultsValue(LOGINID).integerValue) {
+                commentLabel.Deleteable = YES;
+                
+                commentLabel.DeleteBlock = ^(UILabel *Label){
+                    NSLog(@"删除评论 %@",Label.text);
+                    [weakSelf requestQueryDeleteComment:weakSelf.model.commentModelList[Label.tag-1000].id];
+                };
+            }
+
             NSString *CommentStr;
             
             if (CModel.toUserName) {        //回复
@@ -605,7 +637,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
             }else{      //评论
                 ClickArray = @[CModel.userName];
             }
-            WEAK_SELF()
+            
             [commentLabel yb_addAttributeTapActionWithStrings:ClickArray tapClicked:^(NSString *string, NSRange range, NSInteger index) {
                 NSLog(@"%@ %ld",string,(long)commentLabel.tag);
                 
@@ -669,8 +701,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
             CommentViewHeight += 23;
             [commentAllLabel yb_addAttributeTapActionWithStrings:@[@"查看所有评论"] tapClicked:^(NSString *string, NSRange range, NSInteger index) {
                 LPMoodDetailVC *vc = [[LPMoodDetailVC alloc]init];
-                vc.Type = 1;
-                vc.hidesBottomBarWhenPushed = YES;
+                 vc.hidesBottomBarWhenPushed = YES;
                 vc.moodListDataModel = model;
                 vc.moodListArray = self.moodListArray;
                 vc.SuperTableView = self.SuperTableView;
@@ -711,7 +742,13 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
 -(void)selectImage:(UITapGestureRecognizer *)sender{
     
     UITapGestureRecognizer *singleTap = (UITapGestureRecognizer *)sender;
-    NSLog(@"menues = %ld",[singleTap view].tag);
+    NSInteger index = [singleTap view].tag;
+    if ([self.imageArray[index] containsString:@".mp4"]) {
+        if (self.VideoBlock) {
+            self.VideoBlock(self.imageArray[index],(UIImageView *)singleTap.view);
+        }
+        return;
+    }
     _imageBrowserManger.selectPage = singleTap.view.tag;
     [_imageBrowserManger showImageBrowser];
 //
@@ -1016,6 +1053,48 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
         }
     } IsShowActiviTy:YES];
 }
+
+
+
+-(void)requestQueryDeleteComment:(NSString *) CommentId{
+ 
+    NSString * appendURLString = [NSString stringWithFormat:@"comment/update_comment?id=%@&moodId=%@",CommentId,self.model.id];
+    
+    [NetApiManager requestQueryDeleteComment:nil URLString:appendURLString withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if ([responseObject[@"data"][@"result"] integerValue] == 1) {
+                    NSMutableArray <LPMoodCommentListDataModel *>*CommArr = [LPMoodCommentListDataModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"commentList"]];
+                    self.model.commentModelList =  CommArr;
+                    for (int i =0 ; i < self.moodListArray.count ; i++) {
+                        LPMoodListDataModel *DataModel = self.moodListArray[i];
+                        if (DataModel.id.integerValue == self.model.id.integerValue) {
+                            DataModel.commentModelList = CommArr;
+                            break;
+                        }
+                    }
+                    if (self.SuperTableView) {
+                        [self.SuperTableView reloadData];
+                    }
+                    
+                    if (self.PraiseBlock) {
+                        self.PraiseBlock();
+                    }
+ 
+                }else{
+                    [[UIWindow  visibleViewController].view showLoadingMeg:@"删除失败" time:MESSAGE_SHOW_TIME];
+                }
+            }else{
+                [[UIWindow  visibleViewController].view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
+        }else{
+            [[UIWindow  visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+        
+    }];
+}
+
 
 
 - (NSArray *)getSeparatedLinesFromLabel:(UILabel *)label

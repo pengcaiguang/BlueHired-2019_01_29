@@ -2,7 +2,7 @@
 //  LPUserMaterialModel.h
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/9/6.
+//  Created by peng on 2018/9/6.
 //  Copyright © 2018年 lanpin. All rights reserved.
 //
 
@@ -39,5 +39,7 @@
 @property (nonatomic, copy) NSString *work_type;
 @property (nonatomic, copy) NSNumber *work_years;
 @property (nonatomic, copy) NSString *identity;
+@property (nonatomic, copy) NSString *attentionNum;
+@property (nonatomic, copy) NSString *isUserProblem;
 
 @end

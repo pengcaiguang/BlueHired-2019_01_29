@@ -2,7 +2,7 @@
 //  LPMineCardCell.m
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/8/30.
+//  Created by peng on 2018/8/30.
 //  Copyright © 2018年 lanpin. All rights reserved.
 //
 
@@ -19,6 +19,7 @@
 #import "LPLendAuditVC.h"
 #import "LPStaffManageViewController.h"
 #import "LPWStoreManageVC.h"
+#import "LPWorkHour2VC.h"
 
 
 @implementation LPMineCardCell
@@ -47,7 +48,7 @@
 //        imgArray = @[@"workingRecord",@"salaryDetail",@"borrow",@"resignation",@"businessReview",@"interview",@"invitationReward",@"inviteFriends"];
 //        titleArray = @[@"工时记录",@"工资明细",@"蓝聘借支",@"离职通知",@"企业点评",@"面试预约",@"邀请奖励",@"邀请好友"];
 //    }
-    self.cellBghigh.constant = 172;
+//    self.cellBghigh.constant = 172;
 
     if (kUserDefaultsValue(USERDATA).integerValue == 4 ||
         kUserDefaultsValue(USERDATA).integerValue >= 8){
@@ -61,6 +62,8 @@
         imgArray = @[@"salaryDetail",@"borrow",@"resignation",@"invitationReward",@"storefront"];
         titleArray = @[@"工资明细",@"蓝聘借支",@"离职通知",@"邀请奖励",@"门店管理"];
     }else{
+//        imgArray = @[@"salaryDetail",@"borrow",@"resignation",@"invitationReward",@"inviteFriends",@"interview",@"workingRecord",@"businessReview"];
+//        titleArray = @[@"工资明细",@"蓝聘借支",@"离职通知",@"邀请奖励",@"邀请好友",@"面试预约",@"工时记录",@"企业点评"];
         imgArray = @[@"salaryDetail",@"borrow",@"resignation",@"invitationReward",@"inviteFriends"];
         titleArray = @[@"工资明细",@"蓝聘借支",@"离职通知",@"邀请奖励",@"邀请好友"];
     }
@@ -82,7 +85,7 @@
         label.frame = CGRectMake(0, 50, (SCREEN_WIDTH-20)/4, 20);
 //        label.backgroundColor = randomColor;
         label.textColor = [UIColor colorWithHexString:@"#343434"];
-        label.font = [UIFont systemFontOfSize:12];
+        label.font = [UIFont systemFontOfSize:13];
         label.text = titleArray[i];
         label.textAlignment = NSTextAlignmentCenter;
         [bgView addSubview:label];
@@ -152,6 +155,11 @@
                 [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
             }else if (index == 1){
 //                LPSalaryBreakdownVC *vc = [[LPSalaryBreakdownVC alloc]init];
+                if (self.userMaterialModel.data.isUserProblem.integerValue == 0) {
+                    [self initSetSecretVC];
+                    return;
+                }
+                
                 LPLendVC *vc = [[LPLendVC alloc]init];
                 vc.hidesBottomBarWhenPushed = YES;
                 [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
@@ -179,7 +187,7 @@
 //                vc.hidesBottomBarWhenPushed = YES;
 //                [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
 //            }
-            
+
         }else if (kUserDefaultsValue(USERDATA).integerValue == 6){
             if (index == 0) {
 //                LPWorkHourVC *vc = [[LPWorkHourVC alloc]init];
@@ -188,6 +196,10 @@
                 [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
             }else if (index == 1){
 //                LPSalaryBreakdownVC *vc = [[LPSalaryBreakdownVC alloc]init];
+                if (self.userMaterialModel.data.isUserProblem.integerValue == 0) {
+                    [self initSetSecretVC];
+                    return;
+                }
                 LPLendVC *vc = [[LPLendVC alloc]init];
                 vc.hidesBottomBarWhenPushed = YES;
                 [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
@@ -228,6 +240,11 @@
                 [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
             }else if (index == 1){
 //                LPSalaryBreakdownVC *vc = [[LPSalaryBreakdownVC alloc]init];
+                if (self.userMaterialModel.data.isUserProblem.integerValue == 0) {
+                    [self initSetSecretVC];
+                    return;
+                }
+                
                 LPLendVC *vc = [[LPLendVC alloc]init];
                 vc.hidesBottomBarWhenPushed = YES;
                 [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
@@ -250,23 +267,50 @@
                 vc.hidesBottomBarWhenPushed = YES;
                 [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
             }
-//            else if (index == 5){
-//                LPWorkorderListVC *vc = [[LPWorkorderListVC alloc]init];
-//                vc.hidesBottomBarWhenPushed = YES;
-//                [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
-//            }else if (index == 6){
-//                LPRegisterVC *vc = [[LPRegisterVC alloc]init];
-//                vc.hidesBottomBarWhenPushed = YES;
-//                [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
-//            }else if (index == 7){
-//                LPInviteVC *vc = [[LPInviteVC alloc]init];
-//                vc.hidesBottomBarWhenPushed = YES;
-//                [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
-//            }
+            else if (index == 5){
+                LPWorkorderListVC *vc = [[LPWorkorderListVC alloc]init];
+                vc.hidesBottomBarWhenPushed = YES;
+                [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+            }else if (index == 6){
+                LPWorkHour2VC *vc = [[LPWorkHour2VC alloc]init];
+                vc.hidesBottomBarWhenPushed = YES;
+                vc.isPush = YES;
+                [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+            }else if (index == 7){
+                LPBusinessReviewVC *vc = [[LPBusinessReviewVC alloc] init];
+                vc.hidesBottomBarWhenPushed = YES;
+                [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+            }
         }
         
     }
 }
+
+-(void)initSetSecretVC{
+    
+    NSString *str1 = @"为了您的账号安全，请先设置密保问题。";
+    NSMutableAttributedString *str = [[NSMutableAttributedString alloc]initWithString:str1];
+    WEAK_SELF()
+    GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:str
+                                                         message:nil
+                                                      IsShowhead:YES
+                                                     backDismiss:YES
+                                                   textAlignment:0
+                                                    buttonTitles:@[@"去设置"]
+                                                    buttonsColor:@[[UIColor baseColor]]
+                                         buttonsBackgroundColors:@[[UIColor whiteColor]]
+                                                     buttonClick:^(NSInteger buttonIndex){
+        if (buttonIndex == 0) {
+            LPChangePhoneVC *vc = [[LPChangePhoneVC alloc]init];
+            vc.type = 1;
+            vc.hidesBottomBarWhenPushed = YES;
+            [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+        }
+    }];
+    [alert show];
+    
+}
+
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];

@@ -34,6 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *userName;
 @property (nonatomic, copy) NSString *userTel;
 @property (nonatomic, copy) NSString *userUrl;
+@property (nonatomic, copy) NSString *userWorkImage;
 
 
 @property (nonatomic, copy) NSString *certNo;

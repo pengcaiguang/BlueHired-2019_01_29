@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LPSecurityQuestionVC">
+            <connections>
+                <outlet property="issueLabel" destination="HRj-32-B44" id="t9A-24-BuH"/>
+                <outlet property="issueLabel2" destination="gIJ-gd-tUR" id="IfT-wA-T7a"/>
+                <outlet property="issueTF" destination="uUj-n4-j3p" id="PDj-S6-lOo"/>
+                <outlet property="issueTF2" destination="PMO-mI-Rt0" id="YNj-iK-dle"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(至少选填一个)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OfI-X9-idn">
+                    <rect key="frame" x="13" y="40" width="96.5" height="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="问题1：您最喜欢的城市？" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HRj-32-B44">
+                    <rect key="frame" x="13" y="77" width="187" height="19.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <color key="textColor" red="0.23529411759999999" green="0.68627450980000004" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入问题答案" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="uUj-n4-j3p">
+                    <rect key="frame" x="13" y="106.5" width="349" height="38"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="38" id="WAk-E1-u7j"/>
+                    </constraints>
+                    <nil key="textColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gra-2h-51z">
+                    <rect key="frame" x="13" y="144.5" width="349" height="1"/>
+                    <color key="backgroundColor" red="0.90196078431372551" green="0.90196078431372551" blue="0.90196078431372551" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="SYE-MX-5Zo"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="问题1：您最喜欢的城市？" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gIJ-gd-tUR">
+                    <rect key="frame" x="13" y="165.5" width="187" height="19.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <color key="textColor" red="0.23529411759999999" green="0.68627450980000004" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="请输入问题答案" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="PMO-mI-Rt0">
+                    <rect key="frame" x="13" y="195" width="349" height="38"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="38" id="AeH-O8-XAg"/>
+                    </constraints>
+                    <nil key="textColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CPW-9Z-TW0">
+                    <rect key="frame" x="13" y="233" width="349" height="1"/>
+                    <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="PBC-kf-nFa"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4mb-W3-dfz">
+                    <rect key="frame" x="13" y="601" width="349" height="48"/>
+                    <color key="backgroundColor" red="0.23529411759999999" green="0.68627450980000004" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="BvG-zl-iMw"/>
+                    </constraints>
+                    <state key="normal" title="确定">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="4"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="TouchSave:" destination="-1" eventType="touchUpInside" id="Y17-b2-HQg"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dxG-cd-q1W">
+                    <rect key="frame" x="69.5" y="537" width="236" height="29"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <state key="normal" title="如若您忘记密保问题，请联系客服 &gt;&gt;">
+                        <color key="titleColor" red="0.23529411759999999" green="0.68627450980000004" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="TouchToService:" destination="-1" eventType="touchUpInside" id="kOI-Z0-jR5"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="4mb-W3-dfz" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="13" id="D92-B0-mKx"/>
+                <constraint firstItem="HRj-32-B44" firstAttribute="top" secondItem="OfI-X9-idn" secondAttribute="bottom" constant="20" id="DXc-On-Mas"/>
+                <constraint firstItem="PMO-mI-Rt0" firstAttribute="top" secondItem="gIJ-gd-tUR" secondAttribute="bottom" constant="10" id="DwA-Qq-qc3"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="4mb-W3-dfz" secondAttribute="trailing" constant="13" id="Fk2-j8-s9h"/>
+                <constraint firstItem="dxG-cd-q1W" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="GG3-3o-pMO"/>
+                <constraint firstItem="uUj-n4-j3p" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="13" id="IE3-yD-L5s"/>
+                <constraint firstItem="CPW-9Z-TW0" firstAttribute="top" secondItem="PMO-mI-Rt0" secondAttribute="bottom" id="Jmt-Zo-FLX"/>
+                <constraint firstItem="OfI-X9-idn" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" constant="20" id="LrM-QX-QqI"/>
+                <constraint firstItem="PMO-mI-Rt0" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="13" id="M38-GP-5IB"/>
+                <constraint firstAttribute="trailing" secondItem="CPW-9Z-TW0" secondAttribute="trailing" constant="13" id="OBD-zp-Gg9"/>
+                <constraint firstItem="gIJ-gd-tUR" firstAttribute="top" secondItem="Gra-2h-51z" secondAttribute="bottom" constant="20" id="RLj-uM-C9x"/>
+                <constraint firstItem="OfI-X9-idn" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="13" id="RdK-4S-w1n"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="4mb-W3-dfz" secondAttribute="bottom" constant="18" id="TRP-bJ-BZB"/>
+                <constraint firstItem="gIJ-gd-tUR" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="13" id="WqD-Hz-mcm"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="Gra-2h-51z" secondAttribute="trailing" constant="13" id="c3c-cY-Q7c"/>
+                <constraint firstItem="4mb-W3-dfz" firstAttribute="top" secondItem="dxG-cd-q1W" secondAttribute="bottom" constant="35" id="hCK-tc-71e"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="uUj-n4-j3p" secondAttribute="trailing" constant="13" id="iZI-OM-Cao"/>
+                <constraint firstItem="CPW-9Z-TW0" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="13" id="l3h-ex-eRw"/>
+                <constraint firstItem="Gra-2h-51z" firstAttribute="top" secondItem="uUj-n4-j3p" secondAttribute="bottom" id="mf5-RL-DUU"/>
+                <constraint firstItem="HRj-32-B44" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="13" id="o5H-8K-cVi"/>
+                <constraint firstItem="Gra-2h-51z" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="13" id="ruE-Xg-ttO"/>
+                <constraint firstItem="uUj-n4-j3p" firstAttribute="top" secondItem="HRj-32-B44" secondAttribute="bottom" constant="10" id="uJz-mb-lko"/>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="PMO-mI-Rt0" secondAttribute="trailing" constant="13" id="vDs-Rr-xxV"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+        </view>
+    </objects>
+</document>

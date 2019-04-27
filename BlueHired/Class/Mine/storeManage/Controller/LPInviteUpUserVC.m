@@ -17,9 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @"邀请店员";
-    
     [self.textTF addTarget:self action:@selector(textFieldChanged:) forControlEvents:UIControlEventEditingChanged];
-
  }
 
 -(void)textFieldChanged:(UITextField *)textField{
@@ -29,11 +27,11 @@
 }
 
 - (IBAction)touchBt:(id)sender {
-    if (self.textTF.text.length != 11) {
+    self.textTF.text = [self.textTF.text stringByReplacingOccurrencesOfString:@" " withString:@""];
+    if (self.textTF.text.length != 11 ||![NSString isMobilePhoneNumber:self.textTF.text]) {
         [self.view showLoadingMeg:@"请输入正确的手机号码" time:MESSAGE_SHOW_TIME];
         return;
     }
-    
     [self requestQueryinviteshopUser];
 }
 
@@ -51,7 +49,6 @@
               }else{
                   [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
               }
-                            
          }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

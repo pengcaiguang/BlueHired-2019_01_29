@@ -2,7 +2,7 @@
 //  LPInfoDetailVC.m
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/9/25.
+//  Created by peng on 2018/9/25.
 //  Copyright © 2018 lanpin. All rights reserved.
 //
 
@@ -88,7 +88,7 @@
     [self.view addSubview:textView];
     [textView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(13);
-        make.centerY.mas_equalTo(self.view.mas_centerY);
+//        make.centerY.mas_equalTo(self.view.mas_centerY);
         make.right.mas_equalTo(-13);
 //        make.height.mas_equalTo(166);
     }];
@@ -101,6 +101,7 @@
     _Agreedbutton = [[UIButton alloc] init];
     [self.view addSubview:_Agreedbutton];
     [_Agreedbutton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(textView.mas_bottom).offset(48);
         make.left.mas_equalTo(13);
         make.bottom.mas_equalTo(-102);
         make.right.mas_equalTo(-13);

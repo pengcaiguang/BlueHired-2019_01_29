@@ -2,7 +2,7 @@
 //  LPWorkorderListCell.m
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/9/6.
+//  Created by peng on 2018/9/6.
 //  Copyright © 2018年 lanpin. All rights reserved.
 //
 
@@ -59,7 +59,7 @@
     
     self.interviewTimeLabel.text = [NSString stringWithFormat:@"面试时间：%@",model.interviewTime];
     self.workNameLabel.text = [NSString stringWithFormat:@"应聘岗位：%@",model.workName];
-    self.teacherNameLabel.text = [NSString stringWithFormat:@"驻厂老师：%@",model.teacherList.count?model.teacherList[0].teacherName:@""];
+    self.teacherNameLabel.text = [NSString stringWithFormat:@"驻厂老师：%@",model.teacherList.count?[LPTools isNullToString:model.teacherList[0].teacherName]:@""];
     
     if (model.teacherList.count > 1) {
         self.teacherNameLabel.text = [NSString stringWithFormat:@"驻厂老师：%@ -%@",model.teacherList.count?model.teacherList[0].teacherName:@"",model.teacherList[0].teacherTel];
@@ -98,6 +98,14 @@
             [self.delegate buttonClick:index workId:self.model.workId.integerValue];
         }
     }
+}
+
+
+- (IBAction)Touchshare:(id)sender {
+    NSString *url = [NSString stringWithFormat:@"%@bluehired/recruitmentlist_detail.html?id=%@",BaseRequestWeiXiURL,self.model.mechanismId];
+    
+    NSString *encodedUrl = [NSString stringWithString:[url stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    [LPTools ClickShare:encodedUrl Title:_model.mechanismName];
 }
 
 - (IBAction)ToMap:(id)sender {
@@ -148,7 +156,7 @@
         [alertController addAction:[UIAlertAction actionWithTitle:@"高德地图" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             
             NSLog(@"alertController -- 高德地图");
-            NSString *urlsting =[[NSString stringWithFormat:@"iosamap://navi?sourceApplication= &backScheme= &lat=%f&lon=%f&dev=0&style=2",self.coordinate.latitude,self.coordinate.longitude]stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            NSString *urlsting =[[NSString stringWithFormat:@"iosamap://navi?sourceApplication= &backScheme= &lat=%f&lon=%f&dev=0&style=2&dname=%@",self.coordinate.latitude,self.coordinate.longitude,self.model.recruitAddress]stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             [[UIApplication  sharedApplication]openURL:[NSURL URLWithString:urlsting]];
             
         }]];
@@ -159,11 +167,25 @@
         [alertController addAction:[UIAlertAction actionWithTitle:@"百度地图" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             
             NSLog(@"alertController -- 百度地图");
-            NSString *urlsting =[[NSString stringWithFormat:@"baidumap://map/direction?origin={{我的位置}}&destination=latlng:%f,%f|name=目的地&mode=driving&coord_type=gcj02",self.coordinate.latitude,self.coordinate.longitude] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            NSString *urlsting =[[NSString stringWithFormat:@"baidumap://map/direction?origin={{我的位置}}&destination=latlng:%f,%f|name=目的地&mode=driving&coord_type=gcj02&title=%@",self.coordinate.latitude,self.coordinate.longitude,self.model.recruitAddress] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlsting]];
             
         }]];
     }
+    
+    //判断是否安装了百度地图，如果安装了百度地图，则使用百度地图导航
+    if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"qqmap://"]]) {
+        [alertController addAction:[UIAlertAction actionWithTitle:@"腾讯地图" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+            NSLog(@"alertController -- 腾讯地图");
+  
+            NSString *urlsting =[[NSString stringWithFormat:@"qqmap://map/routeplan?from=我的位置&to=%@&type=drive&tocoord=%f,%f&coord_type=1&referer={ios.blackfish.XHY}",self.model.recruitAddress,self.coordinate.latitude,self.coordinate.longitude] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlsting]];
+            
+        }]];
+    }
+    
+    
     
     //添加取消选项
     [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {

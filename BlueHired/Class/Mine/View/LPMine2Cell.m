@@ -12,6 +12,10 @@
 #import "LPUserInfoVC.h"
 #import "LPBillRecordVC.h"
 #import "LPWithDrawalVC.h"
+#import "LPMyMoodVC.h"
+#import "LPConcerNumVC.h"
+#import "LPInfoVC.h"
+
 @implementation LPMine2Cell
 
 - (void)awakeFromNib {
@@ -28,25 +32,104 @@
 
     if ([DeviceUtils deviceType] == IPhone_X) {
         self.BackView1_Height.constant = 139.0 + 24;
+        self.Edit_Top.constant = 30 +24;
     }else{
         self.BackView1_Height.constant = 139;
+        self.Edit_Top.constant = 30;
     }
     
+    UITapGestureRecognizer *TapGestureRecognizerimageBg = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(TouchMoodNum)];
+    self.moodNumLabel.userInteractionEnabled = YES;
+    [self.moodNumLabel addGestureRecognizer:TapGestureRecognizerimageBg];
+    
+    UITapGestureRecognizer *TapGestureRecognizerimageBg2 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(TouchconcernNum)];
+    self.concernNumLabel.userInteractionEnabled = YES;
+    [self.concernNumLabel addGestureRecognizer:TapGestureRecognizerimageBg2];
+    
+    UITapGestureRecognizer *TapGestureRecognizerimageBg3 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(TouchworkStatus)];
+    self.workStatusLabel.userInteractionEnabled = YES;
+    [self.workStatusLabel addGestureRecognizer:TapGestureRecognizerimageBg3];
+    
+//    self.user_urlImgView.layer.borderWidth = 10;
+//    self.user_urlImgView.layer.borderColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:0.15].CGColor;
+    
+//    UIView *view = self.moodNumLabel.superview;
+    self.contentView.backgroundColor = [UIColor colorWithRed:60/255.0 green:175/255.0 blue:255/255.0 alpha:1.0];
+    
+    CAGradientLayer *gl = [CAGradientLayer layer];
+    gl.frame = CGRectMake(0,0,Screen_Width,200);
+    gl.startPoint = CGPointMake(1, 1);
+    gl.endPoint = CGPointMake(0, 0);
+    gl.colors = @[(__bridge id)[UIColor colorWithRed:31/255.0 green:163/255.0 blue:255/255.0 alpha:1.0].CGColor,
+                  (__bridge id)[UIColor colorWithRed:67/255.0 green:204/255.0 blue:255/255.0 alpha:1.0].CGColor];
+    gl.locations = @[@(0.0),@(1.0)];
+    
+    [self.contentView.layer insertSublayer:gl atIndex:0];
+    
+    self.MessageButton.layer.cornerRadius = 6.5;
+    
+}
+
+-(void)TouchMoodNum{
+    if (AlreadyLogin) {
+        LPMyMoodVC *vc = [[LPMyMoodVC alloc] init];
+        vc.hidesBottomBarWhenPushed = YES;
+        [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+    }
+}
+
+-(void)TouchconcernNum{
+    if (AlreadyLogin) {
+        LPConcerNumVC *vc = [[LPConcerNumVC alloc] init];
+        vc.Type = 1;
+        vc.hidesBottomBarWhenPushed = YES;
+        [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+    }
+}
+-(void)TouchworkStatus{
+    if (AlreadyLogin) {
+        LPConcerNumVC *vc = [[LPConcerNumVC alloc] init];
+        vc.Type = 2;
+        vc.hidesBottomBarWhenPushed = YES;
+        [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+    }
 }
 
 -(void)setUserMaterialModel:(LPUserMaterialModel *)userMaterialModel{
     _userMaterialModel = userMaterialModel;
     if (AlreadyLogin) {
         self.redactButton.hidden = NO;
+        self.user_nameLabel.text =  [LPTools isNullToString:userMaterialModel.data.user_name] ;
+        if ([userMaterialModel.data.workStatus integerValue] == 0) { //0待业1在职2入职中
+            self.user_nameLabel.text = [NSString stringWithFormat:@"%@(待业)",[LPTools isNullToString:userMaterialModel.data.user_name]];
+        } else if ([userMaterialModel.data.workStatus integerValue] == 1){
+            self.user_nameLabel.text = [NSString stringWithFormat:@"%@(在职)",[LPTools isNullToString:userMaterialModel.data.user_name]];
+        } else if ([userMaterialModel.data.workStatus integerValue] == 2){
+            self.user_nameLabel.text = [NSString stringWithFormat:@"%@(入职中)",[LPTools isNullToString:userMaterialModel.data.user_name]];
+        }
     }else{
         self.redactButton.hidden = YES;
+        self.user_nameLabel.text = @"登录/注册";
     }
     
     [self.user_urlImgView sd_setImageWithURL:[NSURL URLWithString:userMaterialModel.data.user_url] placeholderImage:[UIImage imageNamed:@"UserImage"]];
-    self.user_nameLabel.text = userMaterialModel.data.user_name ? userMaterialModel.data.user_name : @"登录/注册";
 //    self.gradingLabel.text = userMaterialModel.data.grading ? userMaterialModel.data.grading : @"登录后可享受更多特权";
-    self.moodNumLabel.text = [NSString stringWithFormat:@"帖子：%@",userMaterialModel.data.moodNum ? userMaterialModel.data.moodNum : @"--"];
-    self.concernNumLabel.text = [NSString stringWithFormat:@"粉丝：%@",userMaterialModel.data.concernNum ? userMaterialModel.data.concernNum : @"--"];
+    self.moodNumLabel.text = [NSString stringWithFormat:@"动态: %@",userMaterialModel.data.moodNum ? userMaterialModel.data.moodNum : @"--"];
+    self.concernNumLabel.text = [NSString stringWithFormat:@"粉丝: %@",userMaterialModel.data.concernNum ? userMaterialModel.data.concernNum : @"--"];
+    self.workStatusLabel.text = [NSString stringWithFormat:@"关注: %@",userMaterialModel.data.attentionNum ? userMaterialModel.data.attentionNum : @"--"];
+
+//    if (userMaterialModel.data.workStatus) {
+//        if ([userMaterialModel.data.workStatus integerValue] == 0) { //0待业1在职2入职中
+//            self.workStatusLabel.text = @"状态：待业";
+//        } else if ([userMaterialModel.data.workStatus integerValue] == 1){
+//            self.workStatusLabel.text = @"状态：在职";
+//        } else if ([userMaterialModel.data.workStatus integerValue] == 2){
+//            self.workStatusLabel.text = @"状态：入职中";
+//        }
+//    }else{
+//        self.workStatusLabel.text = @"状态：--";
+//    }
+    
     if (userMaterialModel.data.money) {
         self.moneyLabel.text = [NSString stringWithFormat:@"账户余额：%.2f",userMaterialModel.data.money.floatValue];
     }else{
@@ -99,17 +182,7 @@
     }else if ([userMaterialModel.data.user_sex integerValue] == 2) {
         self.user_sexImgView.image = [UIImage imageNamed:@"female"];
     }
-    if (userMaterialModel.data.workStatus) {
-        if ([userMaterialModel.data.workStatus integerValue] == 0) { //0待业1在职2入职中
-            self.workStatusLabel.text = @"状态：待业";
-        } else if ([userMaterialModel.data.workStatus integerValue] == 1){
-            self.workStatusLabel.text = @"状态：在职";
-        } else if ([userMaterialModel.data.workStatus integerValue] == 2){
-            self.workStatusLabel.text = @"状态：入职中";
-        }
-    }else{
-        self.workStatusLabel.text = @"状态：--";
-    }
+    
     
     self.scoreLabel.text = [NSString stringWithFormat:@"积分：%@",userMaterialModel.data.score ? userMaterialModel.data.score : @"--"];
 }
@@ -122,8 +195,11 @@
     }
     if (signin) {
         [self.signInButton setTitle:@"已签到" forState:UIControlStateNormal];
+        [self.signInButton setImage:nil forState:UIControlStateNormal];
     }else{
         [self.signInButton setTitle:@"签到" forState:UIControlStateNormal];
+        [self.signInButton setImage:[UIImage imageNamed:@"sign"] forState:UIControlStateNormal];
+        [self.signInButton setImageEdgeInsets:UIEdgeInsetsMake(0.0, -14, 0.0, 0.0)];
     }
 }
 
@@ -147,6 +223,13 @@
     [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
 }
 
+- (IBAction)TouchMessageButton:(id)sender {
+    if ([LoginUtils validationLogin:[UIWindow visibleViewController]]) {
+        LPInfoVC *vc = [[LPInfoVC alloc]init];
+        vc.hidesBottomBarWhenPushed = YES;
+        [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+    }
+}
 
 
 - (IBAction)touchEditButton:(UIButton *)sender {

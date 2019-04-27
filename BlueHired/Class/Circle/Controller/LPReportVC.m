@@ -94,6 +94,8 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
         self.userConcernButton.hidden = NO;
     }
     
+    [self.Circletableview reloadData];
+    
     if (self.isSenderBack == 3) {
         [self requestMoodList];
     }
@@ -165,7 +167,8 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
     if (tableView == _Circletableview) {
         LPMoodListDataModel *model = self.moodListArray[indexPath.row];
         float DetailsHeight = [self calculateRowHeight:model.moodDetails fontSize:15 Width:SCREEN_WIDTH - 71];
-        CGFloat CommentHeight = [self calculateCommentHeight:model];
+//        [self calculateCommentHeight:model];
+        CGFloat CommentHeight = 0;
 //        return   107 + (DetailsHeight>=80?80:DetailsHeight+5)+[self calculateImageHeight:model.moodUrl]+CommentHeight;
         if (DetailsHeight>90) {
             if ([[LPTools isNullToString:model.address] isEqualToString:@""] || [model.address isEqualToString:@"保密"]) {
@@ -202,6 +205,14 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
         cell.SuperTableView = self.SuperTableView;
         cell.indexPath = indexPath;
 
+ 
+        cell.CommentView.hidden = YES;
+        cell.TriangleView.hidden = YES;
+        cell.operationButton.hidden = YES;
+        
+        cell.ReportBt.hidden = YES;
+//        cell.operationButton.hidden = YES;
+
         cell.delegate =self;
         WEAK_SELF()
         cell.PraiseBlock = ^(void){
@@ -215,6 +226,16 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
                 
             }];
         }
+        
+        cell.VideoBlock =  ^(NSString *VideoUrl,UIImageView *view){
+            //播放网络url视频 先下载 再播放
+            WJMoviePlayerView *playerView = [[WJMoviePlayerView alloc] init];
+            playerView.movieURL = [NSURL URLWithString:VideoUrl];
+            playerView.coverView = view;
+            [playerView show];
+        };
+        
+        
         return cell;
     }
     
@@ -268,10 +289,11 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
     if (tableView == _Circletableview) {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         LPMoodDetailVC *vc = [[LPMoodDetailVC alloc]init];
-        vc.Type = 2;
+       
         vc.hidesBottomBarWhenPushed = YES;
         vc.moodListDataModel = self.moodListArray[indexPath.row];
-        vc.SuperTableView = self.Circletableview;
+        vc.moodListArray = self.SupermoodListArray;
+        vc.SuperTableView = self.SuperTableView;
         [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
     }
 }
@@ -279,19 +301,19 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
 - (void)didClickcCommentButtonInCell:(UITableViewCell *)cell  with:(NSIndexPath *)indexPath
 {
     LPMoodDetailVC *vc = [[LPMoodDetailVC alloc]init];
-    vc.Type = 1;
+ 
     vc.hidesBottomBarWhenPushed = YES;
     vc.moodListDataModel = self.moodListArray[indexPath.row];
-    vc.moodListArray = self.moodListArray;
-    vc.SuperTableView = self.tableview;
+    vc.moodListArray = self.SupermoodListArray;
+    vc.SuperTableView = self.SuperTableView;
     
     [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
     
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        LPCircleListCell *cell = (LPCircleListCell*)[self.tableview cellForRowAtIndexPath:indexPath];
-        cell.viewLabel.text = [NSString stringWithFormat:@"%ld",[cell.viewLabel.text integerValue] + 1];
-        self.moodListArray[indexPath.row].view = @([cell.viewLabel.text integerValue]);
-    });
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        LPCircleListCell *cell = (LPCircleListCell*)[self.tableview cellForRowAtIndexPath:indexPath];
+//        cell.viewLabel.text = [NSString stringWithFormat:@"%ld",[cell.viewLabel.text integerValue] + 1];
+//        self.moodListArray[indexPath.row].view = @([cell.viewLabel.text integerValue]);
+//    });
 }
 
 #pragma mark lazy

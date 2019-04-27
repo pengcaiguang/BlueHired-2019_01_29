@@ -24,6 +24,8 @@ static const CGFloat kPhotoViewMargin = 13.0;
 @property(nonatomic,strong) NSArray <UIImage *>*imageArray;
 @property(nonatomic,strong) NSArray *imageUrlArray;
 
+@property (nonatomic,strong) UIView *ToolTextView;
+
 @end
 
 @implementation LPbusinessMyReviewViewController
@@ -31,12 +33,14 @@ static const CGFloat kPhotoViewMargin = 13.0;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @"写点评";
+    [self setTextFieldView];
 
     _textView.layer.borderColor = [UIColor blackColor].CGColor;
     _textView.layer.borderWidth = 0.5;
     _textView.textColor = [UIColor lightGrayColor];
     _textView.text = TEXT;
     _textView.delegate = self;
+    _textView.inputAccessoryView = self.ToolTextView;
 
     _button.layer.cornerRadius = 20;
 //    self.view.layer.contentsRect
@@ -94,6 +98,56 @@ static const CGFloat kPhotoViewMargin = 13.0;
 }
 
 
+
+#pragma mark - 编辑view
+-(void)setTextFieldView{
+    //输入框编辑view
+    UIView *ToolTextView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 40)];
+    self.ToolTextView = ToolTextView;
+    ToolTextView.backgroundColor = [UIColor colorWithHexString:@"#E6E6E6"];
+    UIButton *DoneBt = [[UIButton alloc] init];
+    [ToolTextView addSubview:DoneBt];
+    [DoneBt mas_makeConstraints:^(MASConstraintMaker *make){
+        make.top.mas_equalTo(0);
+        make.bottom.mas_equalTo(0);
+        make.right.mas_equalTo(0);
+    }];
+    [DoneBt setTitle:@"确定" forState:UIControlStateNormal];
+    [DoneBt setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
+    DoneBt.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+    DoneBt.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);
+    [DoneBt addTarget:self action:@selector(TouchTextDone:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    UIButton *CancelBt = [[UIButton alloc] init];
+    [ToolTextView addSubview:CancelBt];
+    [CancelBt mas_makeConstraints:^(MASConstraintMaker *make){
+        make.top.mas_equalTo(0);
+        make.bottom.mas_equalTo(0);
+        make.left.mas_equalTo(0);
+        make.right.equalTo(DoneBt.mas_left).offset(0);
+        make.width.equalTo(DoneBt.mas_width);
+    }];
+    [CancelBt setTitle:@"取消" forState:UIControlStateNormal];
+    [CancelBt setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    CancelBt.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    CancelBt.titleEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
+    [CancelBt addTarget:self action:@selector(TouchTextCancel:) forControlEvents:UIControlEventTouchUpInside];
+}
+-(void)TouchTextDone:(UIButton *)sender{
+    [[[UIApplication sharedApplication] keyWindow] endEditing:YES];
+}
+
+-(void)TouchTextCancel:(UIButton *)sender{
+    [[[UIApplication sharedApplication] keyWindow] endEditing:YES];
+}
+
+
+
+
+
+
+
 -(BOOL)textViewShouldBeginEditing:(UITextView *)textView{
     if ([textView.textColor isEqual:[UIColor lightGrayColor]]) {
         textView.text = @"";
@@ -141,6 +195,9 @@ static const CGFloat kPhotoViewMargin = 13.0;
         _manager.configuration.reverseDate = YES;
         _manager.configuration.openCamera = YES;
         _manager.configuration.photoCanEdit = NO;
+        _manager.configuration.changeAlbumListContentView = NO;
+        [_manager preloadData];
+
         //        _manager.configuration.selectTogether = NO;
     }
     return _manager;
@@ -168,7 +225,7 @@ static const CGFloat kPhotoViewMargin = 13.0;
         return;
     }
     
-    if (string.length<6)
+    if (string.length<5)
     {
         [self.view showLoadingMeg:@"点评内容字数不得低于5！" time:MESSAGE_SHOW_TIME];
         return;

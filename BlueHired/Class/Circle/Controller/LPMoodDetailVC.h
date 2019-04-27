@@ -2,7 +2,7 @@
 //  LPMoodDetailVC.h
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/9/18.
+//  Created by peng on 2018/9/18.
 //  Copyright © 2018年 lanpin. All rights reserved.
 //
 
@@ -16,6 +16,6 @@
 @property(nonatomic,strong) UITableView *SuperTableView;
 
 @property(nonatomic,strong) NSString *InfoId;
-@property(nonatomic,assign) NSInteger Type;
+//@property(nonatomic,assign) NSInteger Type;
 
 @end

@@ -2,7 +2,7 @@
 //  LPEssayDetailCommentCell.m
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/9/3.
+//  Created by peng on 2018/9/3.
 //  Copyright © 2018年 lanpin. All rights reserved.
 //
 
@@ -27,6 +27,8 @@ static NSString *LPEssayDetailCommentReplyCellID = @"LPEssayDetailCommentReplyCe
     // Initialization code
     self.replyButton.layer.borderWidth = 0.5;
     self.replyButton.layer.borderColor = [UIColor colorWithHexString:@"#939393"].CGColor;
+    self.commentDetailsLabel.copyable = YES;
+    
 }
 - (IBAction)touchReplyButton:(id)sender {
     if ([LoginUtils validationLogin:[UIWindow visibleViewController]]) {
@@ -45,6 +47,18 @@ static NSString *LPEssayDetailCommentReplyCellID = @"LPEssayDetailCommentReplyCe
      self.userNameLabel.text = model.userName;
     self.commentDetailsLabel.text = model.commentDetails;
     self.timeLabel.text = [NSString compareCurrentTime:[model.time stringValue]];
+    
+    if (model.userId.integerValue == kUserDefaultsValue(LOGINID).integerValue) {
+        self.commentDetailsLabel.Deleteable = YES;
+        WEAK_SELF()
+        self.commentDetailsLabel.DeleteBlock = ^(UILabel *Label){
+            NSLog(@"删除评论 %@",Label.text);
+            if (weakSelf.DeleteBlock) {
+                weakSelf.DeleteBlock([NSString stringWithFormat:@"%@",model.id]);
+            }
+//            [weakSelf requestQueryDeleteComment:weakSelf.model.id];
+         };
+    }
     
     for (UIView *view in self.replyBgView.subviews) {
         [view removeFromSuperview];
@@ -102,6 +116,22 @@ static NSString *LPEssayDetailCommentReplyCellID = @"LPEssayDetailCommentReplyCe
 //        cell.nameLabel.text = @"";
 //        cell.contentLabel.text = [NSString stringWithFormat:@"查看全部%ld条回复➡️",self.model.commentList.count];
 //    }
+    
+    LPCommentListDataModel *m = self.model.commentList[indexPath.row];
+    cell.contentLabel.copyable  = YES;
+    if (m.userId.integerValue == kUserDefaultsValue(LOGINID).integerValue) {
+        cell.contentLabel.Deleteable = YES;
+        WEAK_SELF()
+        cell.contentLabel.DeleteBlock = ^(UILabel *Label){
+            NSLog(@"删除评论 %@",Label.text);
+            if (weakSelf.DeleteBlock) {
+                weakSelf.DeleteBlock([NSString stringWithFormat:@"%@",m.id]);
+            }
+            //            [weakSelf requestQueryDeleteComment:weakSelf.model.id];
+        };
+    }
+    
+    
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{

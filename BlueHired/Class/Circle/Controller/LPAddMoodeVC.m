@@ -2,7 +2,7 @@
 //  LPAddMoodeVC.m
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/9/19.
+//  Created by peng on 2018/9/19.
 //  Copyright © 2018年 lanpin. All rights reserved.
 //
 
@@ -14,6 +14,7 @@
 #import "LPMapLocCell.h"
 #import "LPMapLoctionModel.h"
 #import "LPCircleSearchVC.h"
+#import <AVFoundation/AVFoundation.h>
 
 static NSString *LPMapLocCellID = @"LPMapLocCell";
 
@@ -37,6 +38,8 @@ static const CGFloat kPhotoViewMargin = 13.0;
 @property(nonatomic,strong) LPMoodTypeModel *moodTypeModel;
 
 @property(nonatomic,strong) NSArray <UIImage *>*imageArray;
+@property(nonatomic,strong) NSString *VideoURL;
+
 @property(nonatomic, strong) BMKLocationManager *locationManager;
 @property(nonatomic, copy) BMKLocatingCompletionBlock completionBlock;
 
@@ -45,6 +48,8 @@ static const CGFloat kPhotoViewMargin = 13.0;
 @property(nonatomic,strong) NSString *moodMap;
 @property(nonatomic,strong) NSArray *imageUrlArray;
 @property(nonatomic,strong) UIView *bgView;
+
+
 
 @end
 
@@ -57,7 +62,7 @@ static const CGFloat kPhotoViewMargin = 13.0;
     _MapArray = [[NSMutableArray alloc] init];
     self.navigationItem.title = @"我的圈子";
     [self setupUI];
-    [self requestMoodType];
+//    [self requestMoodType];
 
     [self initBlock];
 //    [self initLocation];
@@ -179,70 +184,71 @@ static const CGFloat kPhotoViewMargin = 13.0;
     textView.font = [UIFont systemFontOfSize:14];
     textView.delegate = self;
     
-    //v1
-    UIImageView *v1 = [[UIImageView alloc]init];
-    [self.scrollView addSubview:v1];
-    [v1 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(13);
-        make.top.equalTo(textView.mas_bottom).offset(30);
-        make.width.mas_equalTo(21);
-        make.height.mas_equalTo(21);
-    }];
-    v1.image = [UIImage imageNamed:@"板块标签"];
-    
-    
-    UIView *L1 = [[UIView alloc]init];
-    [self.scrollView addSubview:L1];
-    [L1 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(0);
-        make.top.equalTo(v1.mas_bottom).offset(10);
-        make.right.mas_equalTo(0);
-        make.height.mas_equalTo(0.5);
-    }];
-    
-    UILabel *label1 = [[UILabel alloc]init];
-    [self.scrollView addSubview:label1];
-    [label1 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(v1.mas_right).offset(7);
-        make.centerY.equalTo(v1);
-    }];
-    label1.textColor = [UIColor colorWithHexString:@"#1B1B1B"];
-    label1.font = [UIFont systemFontOfSize:16];
-    label1.text = @"板块选择";
-    
-    UIButton *selectButton = [[UIButton alloc]init];
-    [self.scrollView addSubview:selectButton];
-    [selectButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(label1.mas_right).offset(9);
-        make.right.mas_equalTo(-35);
-        make.centerY.equalTo(label1);
-        make.height.mas_equalTo(35);
-    }];
-    [selectButton setTitleColor:[UIColor colorWithHexString:@"#AAAAAA"] forState:UIControlStateNormal];
-    selectButton.titleLabel.font = [UIFont systemFontOfSize:15];
-//    selectButton.layer.borderColor = [UIColor colorWithHexString:@"#AAAAAA"].CGColor;
-//    selectButton.layer.borderWidth = 0.5;
-    [selectButton addTarget:self action:@selector(touchSelectButton:) forControlEvents:UIControlEventTouchUpInside];
-    [label1 setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-    selectButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-
-    self.selectButton = selectButton;
-    
-    UIImageView *img = [[UIImageView alloc]init];
-    [self.scrollView addSubview:img];
-    [img mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.mas_equalTo(-8);
-        make.centerY.equalTo(selectButton);
-        make.size.mas_equalTo(CGSizeMake(18, 10));
-    }];
-    img.image = [UIImage imageNamed:@"select_moodtype"];
-    
+//    //v1
+//    UIImageView *v1 = [[UIImageView alloc]init];
+//    [self.scrollView addSubview:v1];
+//    [v1 mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.mas_equalTo(13);
+//        make.top.equalTo(textView.mas_bottom).offset(30);
+//        make.width.mas_equalTo(21);
+//        make.height.mas_equalTo(21);
+//    }];
+//    v1.image = [UIImage imageNamed:@"板块标签"];
+//
+//
+//    UIView *L1 = [[UIView alloc]init];
+//    [self.scrollView addSubview:L1];
+//    [L1 mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.mas_equalTo(0);
+//        make.top.equalTo(v1.mas_bottom).offset(10);
+//        make.right.mas_equalTo(0);
+//        make.height.mas_equalTo(0.5);
+//    }];
+//
+//    UILabel *label1 = [[UILabel alloc]init];
+//    [self.scrollView addSubview:label1];
+//    [label1 mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.equalTo(v1.mas_right).offset(7);
+//        make.centerY.equalTo(v1);
+//    }];
+//    label1.textColor = [UIColor colorWithHexString:@"#1B1B1B"];
+//    label1.font = [UIFont systemFontOfSize:16];
+//    label1.text = @"板块选择";
+//
+//    UIButton *selectButton = [[UIButton alloc]init];
+//    [self.scrollView addSubview:selectButton];
+//    [selectButton mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.equalTo(label1.mas_right).offset(9);
+//        make.right.mas_equalTo(-35);
+//        make.centerY.equalTo(label1);
+//        make.height.mas_equalTo(35);
+//    }];
+//    [selectButton setTitleColor:[UIColor colorWithHexString:@"#AAAAAA"] forState:UIControlStateNormal];
+//    selectButton.titleLabel.font = [UIFont systemFontOfSize:15];
+////    selectButton.layer.borderColor = [UIColor colorWithHexString:@"#AAAAAA"].CGColor;
+////    selectButton.layer.borderWidth = 0.5;
+//    [selectButton addTarget:self action:@selector(touchSelectButton:) forControlEvents:UIControlEventTouchUpInside];
+//    [label1 setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
+//    selectButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+//
+//    self.selectButton = selectButton;
+//
+//    UIImageView *img = [[UIImageView alloc]init];
+//    [self.scrollView addSubview:img];
+//    [img mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.right.mas_equalTo(-8);
+//        make.centerY.equalTo(selectButton);
+//        make.size.mas_equalTo(CGSizeMake(18, 10));
+//    }];
+//    img.image = [UIImage imageNamed:@"select_moodtype"];
+//
     //v3
     UIImageView *v3 = [[UIImageView alloc]init];
     [self.scrollView addSubview:v3];
     [v3 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(13);
-        make.top.equalTo(v1.mas_bottom).offset(20);
+//        make.top.equalTo(v1.mas_bottom).offset(20);
+        make.top.equalTo(textView.mas_bottom).offset(30);
         make.width.mas_equalTo(21);
         make.height.mas_equalTo(21);
     }];
@@ -316,7 +322,7 @@ static const CGFloat kPhotoViewMargin = 13.0;
         make.height.mas_equalTo(0.5);
     }];
     L2.backgroundColor = [UIColor colorWithRed:230/255.0 green:230/255.0 blue:230/255.0 alpha:1.0];
-    L1.backgroundColor = [UIColor colorWithRed:230/255.0 green:230/255.0 blue:230/255.0 alpha:1.0];
+//    L1.backgroundColor = [UIColor colorWithRed:230/255.0 green:230/255.0 blue:230/255.0 alpha:1.0];
     L3.backgroundColor = [UIColor colorWithRed:230/255.0 green:230/255.0 blue:230/255.0 alpha:1.0];
 
     UILabel *label2 = [[UILabel alloc]init];
@@ -344,6 +350,7 @@ static const CGFloat kPhotoViewMargin = 13.0;
         make.top.equalTo(label2.mas_bottom).offset(20);
         make.width.mas_equalTo(width - kPhotoViewMargin * 2);
     }];
+    [photoView.collectionView reloadData];
     [self.photoView refreshView];
     
     UIButton *sendButton = [[UIButton alloc]init];
@@ -374,13 +381,43 @@ static const CGFloat kPhotoViewMargin = 13.0;
     }];
 }
 -(void)photoView:(HXPhotoView *)photoView changeComplete:(NSArray<HXPhotoModel *> *)allList photos:(NSArray<HXPhotoModel *> *)photos videos:(NSArray<HXPhotoModel *> *)videos original:(BOOL)isOriginal{
-    [self.toolManager getSelectedImageList:allList requestType:HXDatePhotoToolManagerRequestTypeOriginal success:^(NSArray<UIImage *> *imageList) {
-        if (imageList.count > 0) {
-            self.imageArray = imageList;
-        }
-    } failed:^{
+//    [self.toolManager writeSelectModelListToTempPathWithList:allList requestType:HXDatePhotoToolManagerRequestTypeOriginal success:^(NSArray<NSURL *> *allURL, NSArray<NSURL *> *photoURL, NSArray<NSURL *> *videoURL)  {
+//        if (photoURL.count > 0) {
+//            NSMutableArray *Image = [[NSMutableArray alloc] init];
+//
+//            self.imageArray = imageList;
+//        }
+//    } failed:^{
+//
+//    }];
+    NSSLog(@"所有:%ld - 照片:%ld - 视频:%ld       ",allList.count,photos.count,videos.count);
+    if (photos.count) {
+        self.sendButton.enabled = NO;
+        [self.toolManager getSelectedImageList:photos requestType:HXDatePhotoToolManagerRequestTypeOriginal success:^(NSArray<UIImage *> *imageList) {
+            self.sendButton.enabled = YES;
+            if (imageList.count > 0) {
+                self.imageArray = imageList;
+            }
+        } failed:^{
+            
+        }];
+    }else{
+        self.sendButton.enabled = NO;
+        [self.toolManager writeSelectModelListToTempPathWithList:videos requestType:0 success:^(NSArray<NSURL *> *allURL, NSArray<NSURL *> *photoURL, NSArray<NSURL *> *videoURL) {
+            self.VideoURL = @"";
+            self.sendButton.enabled = YES;
+            if (videoURL.count) {
+                self.VideoURL = [videoURL[0] absoluteString];
+                NSSLog(@"视频地址:%@       ",self.VideoURL);
+            }
+            
+        } failed:^{
+            
+        }];
+    }
 
-    }];
+    
+    
 }
 
 #pragma mark - target
@@ -503,15 +540,21 @@ static const CGFloat kPhotoViewMargin = 13.0;
         return;
     }
     
-    if (!self.moodTypeId) {
-        [self.view showLoadingMeg:@"请选择板块" time:MESSAGE_SHOW_TIME];
-        return;
-    }
+//    if (!self.moodTypeId) {
+//        [self.view showLoadingMeg:@"请选择板块" time:MESSAGE_SHOW_TIME];
+//        return;
+//    }
     [DSBaActivityView showActiviTy];
-    if (kArrayIsEmpty(self.imageArray)) {
+    NSSLog(@"发送圈子:%@       ",self.VideoURL);
+
+    if (kArrayIsEmpty(self.imageArray) && self.VideoURL.length == 0) {
         [self requestAddMood];
     }else{
-        [self requestUploadImages];
+        if (self.VideoURL.length) {
+            [self requestUploadVideo];
+        }else{
+            [self requestUploadImages];
+        }
     }
 }
 #pragma mark - textView
@@ -647,6 +690,21 @@ static const CGFloat kPhotoViewMargin = 13.0;
         }
     }];
 }
+
+-(void)requestUploadVideo{
+    [NetApiManager requestPublishVideo:nil VideoUrl:self.VideoURL response:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if (responseObject[@"data"]) {
+                self.imageUrlArray = responseObject[@"data"];
+                [self requestAddMood];
+            }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+
 -(void)requestUploadImages{
     [NetApiManager requestPublishArticle:nil imageArray:self.imageArray imageNameArray:nil response:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
@@ -686,16 +744,56 @@ static const CGFloat kPhotoViewMargin = 13.0;
 #pragma mark - lazy
 - (HXPhotoManager *)manager {
     if (!_manager) {
-        _manager = [[HXPhotoManager alloc] initWithType:HXPhotoManagerSelectedTypePhoto];
+        _manager = [[HXPhotoManager alloc] initWithType:HXPhotoManagerSelectedTypePhotoAndVideo];
         //        _manager.configuration.openCamera = NO;
         _manager.configuration.saveSystemAblum = YES;
         _manager.configuration.photoMaxNum = 9; //
-//        _manager.configuration.videoMaxNum = 1;  //
-//        _manager.configuration.maxNum = 6;
+        _manager.configuration.videoMaxNum = 1;
+        _manager.configuration.videoMaximumDuration = 10;
+        _manager.configuration.videoMinimumSelectDuration = 0;
+        _manager.configuration.videoMaximumSelectDuration = 10;
+        _manager.configuration.selectTogether = NO;
         _manager.configuration.reverseDate = YES;
         _manager.configuration.openCamera = YES;
         _manager.configuration.photoCanEdit = NO;
-        //        _manager.configuration.selectTogether = NO;
+        _manager.configuration.videoCanEdit = YES;
+        _manager.configuration.changeAlbumListContentView = NO;
+ 
+//        _manager.configuration.replaceVideoEditViewController = YES;
+        
+         //        _manager.configuration.selectTogether = NO;
+        [_manager preloadData];
+        HXWeakSelf
+        _manager.configuration.shouldUseCamera = ^(UIViewController *viewController, HXPhotoConfigurationCameraType cameraType, HXPhotoManager *manager) {
+            
+            // 这里拿使用系统相机做例子
+            UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
+            imagePickerController.delegate = (id)weakSelf;
+            imagePickerController.allowsEditing = NO;
+            NSString *requiredMediaTypeImage = ( NSString *)kUTTypeImage;
+            NSString *requiredMediaTypeMovie = ( NSString *)kUTTypeMovie;
+            NSArray *arrMediaTypes;
+            if (cameraType == HXPhotoConfigurationCameraTypePhoto) {
+                arrMediaTypes=[NSArray arrayWithObjects:requiredMediaTypeImage,nil];
+            }else if (cameraType == HXPhotoConfigurationCameraTypeVideo) {
+                arrMediaTypes=[NSArray arrayWithObjects:requiredMediaTypeMovie,nil];
+            }else {
+                arrMediaTypes=[NSArray arrayWithObjects:requiredMediaTypeImage, requiredMediaTypeMovie,nil];
+            }
+            [imagePickerController setMediaTypes:arrMediaTypes];
+            // 设置录制视频的质量
+            [imagePickerController setVideoQuality:UIImagePickerControllerQualityTypeHigh];
+            //设置最长摄像时间
+            [imagePickerController setVideoMaximumDuration:60.f];
+            imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+            imagePickerController.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+            imagePickerController.modalPresentationStyle=UIModalPresentationOverCurrentContext;
+            [viewController presentViewController:imagePickerController animated:YES completion:nil];
+        };
+
+        
+        
+        
     }
     return _manager;
 }
@@ -754,5 +852,11 @@ static const CGFloat kPhotoViewMargin = 13.0;
     }
     return _bgView;
 }
+//yasuo
+- (CGFloat)fileSize:(NSURL *)path
+{
+    return [[NSData dataWithContentsOfURL:path] length]/1024.00 /1024.00;
+}
+
 
 @end

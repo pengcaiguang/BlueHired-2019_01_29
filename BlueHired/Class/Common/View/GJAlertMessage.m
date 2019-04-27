@@ -2,7 +2,7 @@
 //  GJAlertMessage.m
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/9/6.
+//  Created by peng on 2018/9/6.
 //  Copyright © 2018年 lanpin. All rights reserved.
 //
 
@@ -205,6 +205,25 @@
     return self;
 }
 
+- (id)initWithTitle:(NSMutableAttributedString *)title message:(NSString *)message backDismiss:(BOOL) backDis IsShowhead:(BOOL) Dis textAlignment:(NSTextAlignment)textAlignment buttonTitles:(NSArray *)buttonTitles buttonsColor:(NSArray *)buttonColors  buttonsBackgroundColors:(NSArray *)buttonsBackgroundColors{
+    self = [super initWithFrame:[[UIScreen mainScreen]bounds]];
+    if (self) {
+        self.Mutabletitle = title;
+        self.message = message;
+        self.textAlignment = textAlignment;
+        self.buttonTitles = buttonTitles;
+        self.buttonColors = buttonColors;
+        self.buttonsBackgroundColors = buttonsBackgroundColors;
+        self.isShowHead = Dis;
+        self.isbackDismiss = backDis;
+        
+        [self setupCoverView];
+        [self setupContentView];
+    }
+    return self;
+}
+
+
 - (id)initWithTitle:(NSMutableAttributedString *)title message:(NSString *)message IsShowhead:(BOOL) Dis textAlignment:(NSTextAlignment)textAlignment buttonTitles:(NSArray *)buttonTitles buttonsColor:(NSArray *)buttonColors  buttonsBackgroundColors:(NSArray *)buttonsBackgroundColors{
     self = [super initWithFrame:[[UIScreen mainScreen]bounds]];
     if (self) {
@@ -215,12 +234,15 @@
         self.buttonColors = buttonColors;
         self.buttonsBackgroundColors = buttonsBackgroundColors;
         self.isShowHead = Dis;
+  
 
         [self setupCoverView];
         [self setupContentView];
     }
     return self;
 }
+
+
 
 
 - (void)showAlert{
@@ -326,6 +348,24 @@
     }
     return self;
 }
+- (id)initWithTitle:(NSMutableAttributedString *)title
+            message:(NSString *)message
+         IsShowhead:(BOOL) Dis
+        backDismiss:(BOOL) backDis
+      textAlignment:(NSTextAlignment)textAlignment
+       buttonTitles:(NSArray *)buttonTitles
+       buttonsColor:(NSArray *)buttonColors
+buttonsBackgroundColors:(NSArray *)buttonsBackgroundColors
+        buttonClick:(void(^)(NSInteger buttonIndex))block{
+    self = [super init];
+    if (self) {
+        self.gjAlertView = [[GJAlertViewMessage alloc] initWithTitle:title message:message  backDismiss:backDis IsShowhead:Dis textAlignment:textAlignment buttonTitles:buttonTitles buttonsColor:buttonColors buttonsBackgroundColors:buttonsBackgroundColors];
+        self.gjAlertView.delegate = self;
+        self.AlertMessageBlock = block;
+    }
+    return self;
+}
+
 
 - (void)showAlertHandle{
     UIWindow *keywindow = [UIApplication sharedApplication].keyWindow;

@@ -296,9 +296,11 @@ static NSString *LPTLendAuditCellID = @"LPTLendAuditCell";
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return self.listArray.count;
 }
+
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 85;
+    return 126;
 }
+
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
      LPTLendAuditCell *cell = [tableView dequeueReusableCellWithIdentifier:LPTLendAuditCellID];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -315,6 +317,7 @@ static NSString *LPTLendAuditCellID = @"LPTLendAuditCell";
     };
     return cell;
 }
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     LPLendRepulsedetailsVC *vc = [[LPLendRepulsedetailsVC alloc] init];

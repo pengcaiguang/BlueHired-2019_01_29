@@ -2,7 +2,7 @@
 //  MacroDefine.h
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/8/27.
+//  Created by peng on 2018/8/27.
 //  Copyright © 2018年 lanpin. All rights reserved.
 //
 
@@ -24,9 +24,9 @@
 //#define BaseRequestWeiXiURL  @"http://192.168.0.108:8080/"
 //#define BaseRequestCookie  @"192.168.0.108"
 
-#define BaseRequestURL  @"http://www.lanpin123.com/lifetime/"
-#define BaseRequestWeiXiURL  @"http://www.lanpin123.com/"
-#define BaseRequestCookie  @"www.lanpin123.com"
+//#define BaseRequestURL  @"http://www.lanpin123.com/lifetime/"
+//#define BaseRequestWeiXiURL  @"http://www.lanpin123.com/"
+//#define BaseRequestCookie  @"www.lanpin123.com"
 
 //#define BaseRequestURL  @"http://47.106.208.91:8180/lifetime/"
 //#define BaseRequestWeiXiURL  @"http://47.106.208.91/"
@@ -36,12 +36,16 @@
 //#define BaseRequestWeiXiURL  @"http://ceshi.lanpin123.com/"
 //#define BaseRequestCookie  @"ceshi.lanpin123.com"
 
-//
-//#define BaseRequestURL  @"http://192.168.0.169:8080/lifetime/"        //胡经理
-//#define BaseRequestWeiXiURL  @"http://192.168.0.169/"
-//#define BaseRequestCookie  @"192.168.0.169"
+
+#define BaseRequestURL  @"http://192.168.0.169:8081/lifetime/"        //胡经理
+#define BaseRequestWeiXiURL  @"http://192.168.0.169/"
+#define BaseRequestCookie  @"192.168.0.169"
 
 #define QiNiuBaseUrl @"http://pic.lanpin123.com/"
+
+
+ 
+
 
 //UserDefaults存取
 #pragma NSUserDefaults

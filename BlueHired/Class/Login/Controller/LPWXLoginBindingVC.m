@@ -257,6 +257,8 @@
 
 -(void)touchGetVerificationCodeButtonButton:(UIButton *)button{
     NSLog(@"获取验证码");
+    self.phoneTextField.text = [self.phoneTextField.text stringByReplacingOccurrencesOfString:@" " withString:@""];
+
     if (self.phoneTextField.text.length <= 0 || ![NSString isMobilePhoneNumber:self.phoneTextField.text]) {
         [self.view showLoadingMeg:@"请输入正确的手机号" time:MESSAGE_SHOW_TIME];
         return;
@@ -321,6 +323,9 @@
 }
 -(void)touchRegisteredButton:(UIButton *)button{
     NSLog(@"确认");
+    self.phoneTextField.text = [self.phoneTextField.text stringByReplacingOccurrencesOfString:@" " withString:@""];
+    self.verificationCodeTextField.text = [self.verificationCodeTextField.text stringByReplacingOccurrencesOfString:@" " withString:@""];
+
     if (self.phoneTextField.text.length <= 0 || ![NSString isMobilePhoneNumber:self.phoneTextField.text]) {
         [self.view showLoadingMeg:@"请输入正确的手机号" time:MESSAGE_SHOW_TIME];
         return;

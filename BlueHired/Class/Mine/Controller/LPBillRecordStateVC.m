@@ -12,9 +12,18 @@
 @interface LPBillRecordStateVC ()
 @property (weak, nonatomic) IBOutlet UILabel *time1;
 @property (weak, nonatomic) IBOutlet UIImageView *image1;
+@property (weak, nonatomic) IBOutlet UIView *lineView;
+
 @property (weak, nonatomic) IBOutlet UILabel *time2;
 @property (weak, nonatomic) IBOutlet UIImageView *image2;
-@property (weak, nonatomic) IBOutlet UIView *lineView;
+@property (weak, nonatomic) IBOutlet UIView *lineView2;
+@property (weak, nonatomic) IBOutlet UILabel *Label2;
+
+@property (weak, nonatomic) IBOutlet UILabel *time3;
+@property (weak, nonatomic) IBOutlet UIImageView *image3;
+@property (weak, nonatomic) IBOutlet UILabel *Label3;
+
+
 @property (weak, nonatomic) IBOutlet UILabel *text3;
 @property (weak, nonatomic) IBOutlet UILabel *text4;
 @property (weak, nonatomic) IBOutlet UILabel *text5;
@@ -26,7 +35,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *moneyLabel;
 @property (weak, nonatomic) IBOutlet UILabel *dateLabel;
 
-@end
+@end 
 
 @implementation LPBillRecordStateVC
 
@@ -47,16 +56,42 @@
             self.time1.text = [NSString convertStringToTime:[_modelstate.time stringValue]];
             self.image1.image = [UIImage imageNamed:@"add_ record_selected"];
             self.image2.image = [UIImage imageNamed:@"add_ record_normal"];
-//            self.lineView.backgroundColor = [UIColor grayColor];
+            self.image3.image = [UIImage imageNamed:@"add_ record_normal"];
+
+            self.lineView2.backgroundColor = [UIColor colorWithHexString:@"#C5C5C5"];
+            self.Label2.text = @" ";
+            self.Label3.text = @" ";
 
         }
         else
         {
             self.image1.image = [UIImage imageNamed:@"add_ record_selected"];
             self.image2.image = [UIImage imageNamed:@"add_ record_selected"];
+            self.image3.image = [UIImage imageNamed:@"add_ record_normal"];
 //            self.lineView.backgroundColor = random(78, 191, 252, 1);
             self.time1.text = [NSString convertStringToTime:[_modelstate.time stringValue]];
             self.time2.text = [NSString convertStringToTime:[_modelstate.set_time stringValue]];
+            self.lineView2.backgroundColor = [UIColor baseColor];
+            self.Label2.text = @"财务处理提现，已提交到银行进行转账";
+            self.Label3.text = @" ";
+        }
+        
+        long long timeSet=[[self.model.set_time stringValue] longLongValue];
+
+//        NSLog(@"  %f    %f",[NSString getNowTimestamp]/1000.0-timeSet/1000.0,60*60*2.0);
+        
+        if (timeSet/1000.0+60*60*2<[NSString getNowTimestamp]/1000.0 && timeSet >0) {
+            self.image1.image = [UIImage imageNamed:@"add_ record_selected"];
+            self.image2.image = [UIImage imageNamed:@"add_ record_selected"];
+            self.image3.image = [UIImage imageNamed:@"add_ record_selected"];
+
+            //            self.lineView.backgroundColor = random(78, 191, 252, 1);
+            self.time1.text = [NSString convertStringToTime:[_modelstate.time stringValue]];
+            self.time2.text = [NSString convertStringToTime:[_modelstate.set_time stringValue]];
+            self.lineView2.backgroundColor = [UIColor baseColor];
+            self.Label2.text = @"财务处理提现，已提交到银行进行转账";
+            self.Label3.text = @"银行处理转账，具体到账时间请留意银行短信通知";
+
         }
         
         _text3.text = [NSString stringWithFormat:@"¥%@",_modelstate.money];

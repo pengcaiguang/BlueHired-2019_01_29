@@ -2,7 +2,7 @@
 //  LPInformationSearchVC.m
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/8/31.
+//  Created by peng on 2018/8/31.
 //  Copyright © 2018年 lanpin. All rights reserved.
 //
 
@@ -12,6 +12,7 @@
 
 static NSString *InformationSearchHistory = @"InformationSearchHistory";
 static NSString *VideoSearchHistory = @"VideoSearchHistory";
+static NSString *CircleSearchHistory = @"CircleSearchHistory";
 
 
 @interface LPInformationSearchVC ()<UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource>
@@ -41,6 +42,8 @@ static NSString *VideoSearchHistory = @"VideoSearchHistory";
         self.textArray = (NSArray *)kUserDefaultsValue(InformationSearchHistory);
     }else if (self.Type == 2){
         self.textArray = (NSArray *)kUserDefaultsValue(VideoSearchHistory);
+    }else if (self.Type == 3){
+        self.textArray = (NSArray *)kUserDefaultsValue(CircleSearchHistory);
     }
     [self.tableview reloadData];
 }
@@ -59,6 +62,9 @@ static NSString *VideoSearchHistory = @"VideoSearchHistory";
     LPSearchBar *searchBar = [[LPSearchBar alloc]initWithFrame:frame];
     searchBar.delegate = self;
     searchBar.placeholder = @"请输入搜索关键字";
+    if (self.Type == 2) {
+        searchBar.placeholder = @"请输入视频关键字";
+    }
     [searchBar setShowsCancelButton:NO];
     [searchBar setTintColor:[UIColor lightGrayColor]];
     
@@ -121,6 +127,8 @@ static NSString *VideoSearchHistory = @"VideoSearchHistory";
             kUserDefaultsSave([array copy], InformationSearchHistory);
         }else if (self.Type == 2){
             kUserDefaultsSave([array copy], VideoSearchHistory);
+        }else if (self.Type == 3){
+            kUserDefaultsSave([array copy], CircleSearchHistory);
         }
      }
 }
@@ -137,6 +145,8 @@ static NSString *VideoSearchHistory = @"VideoSearchHistory";
         kUserDefaultsRemove(InformationSearchHistory);
     }else if (self.Type == 2){
         kUserDefaultsRemove(VideoSearchHistory);
+    }else if (self.Type == 3){
+        kUserDefaultsRemove(CircleSearchHistory);
     }
      self.textArray = nil;
     [self.tableview reloadData];

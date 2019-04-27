@@ -2,8 +2,8 @@
 //  NetApiManager.m
 //  RedPacket
 //
-//  Created by 邢晓亮 on 2018/6/8.
-//  Copyright © 2018年 邢晓亮. All rights reserved.
+//  Created by peng on 2018/6/8.
+//  Copyright © 2018年 peng. All rights reserved.
 //
 
 #import "NetApiManager.h"
@@ -211,6 +211,49 @@ static QNUploadManager *upManager = NULL;
     
     
 }
+
+
+
+/**
+ *  上传视频---七牛云
+ *
+ *  @param VideoUrl 上传的视频路径
+ *  @param BlockInfo  返回的是否成功和失败 和图片的Url
+ */
++(void)getUploadTempVideo:(NSString *)VideoUrl andBlock:(UploadImageTempBlock)BlockInfo{
+    
+    [NetApiManager requestQueryGetQiniuParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            NSMutableArray *imgAdd = [[NSMutableArray alloc] init];
+
+                NSString *fileName = [NSString stringWithFormat:@"%.f_video_",[[NSDate date] timeIntervalSince1970]];
+                fileName = [fileName stringByAppendingString:CurrentDeviceSn];
+                fileName = [fileName stringByAppendingString:@"_ios.mp4"];
+                NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:VideoUrl]];
+                NSString *token = responseObject[@"data"];
+                QNUploadOption *opt;
+                if (opt == nil) {
+                    opt = [[QNUploadOption alloc] initWithMime:nil progressHandler:nil params:nil checkCrc:YES cancellationSignal:nil];
+                }
+                upManager = [self initupManager];
+                [upManager putData:data key:fileName token:token
+                          complete: ^(QNResponseInfo *info, NSString *key, NSDictionary *resp) {
+                              NSLog(@"%@", info);
+                              NSLog(@"%@", resp);
+                              //                          BlockInfo(YES,[QiNiuBaseUrl stringByAppendingString:key]);
+                              [imgAdd addObject:[QiNiuBaseUrl stringByAppendingString:key]];
+                                  NSLog(@"图片上传完成");
+                                  BlockInfo(YES,imgAdd);
+                          } option:opt];
+        }else{
+            //            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+
+
+
 
 
 #pragma mark - 首页
@@ -484,6 +527,21 @@ static QNUploadManager *upManager = NULL;
                                                  IsShowActiviTy:YES];
     [NetRequestManager requestWithEnty:enty];
 }
+
+
+// 视频上传
++ (void)requestPublishVideo:(id)parameters
+                   VideoUrl:(NSString *) VideoUrl
+                     response:(response)response{
+ 
+    [NetApiManager getUploadTempVideo:VideoUrl andBlock:^(BOOL sussess,NSMutableArray *array)  {
+        
+        NSDictionary *dic = @{@"data":array
+                              };
+        response(sussess,dic);
+    }];
+}
+
 
 // 多张图片上传
 + (void)requestPublishArticle:(id)parameters
@@ -2051,7 +2109,122 @@ static QNUploadManager *upManager = NULL;
     [NetRequestManager requestWithEnty:enty];
 }
 
+//删除评论信息
++ (void)requestQueryDeleteComment:(id)paramer
+                        URLString:(NSString *)URLString
+                                 withHandle:(response)responseHandle{
+//    NSString * appendURLString = @"comment/update_comment";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:URLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
 
+//粉丝、关注列表
++ (void)requestQueryUserConcernList:(id)paramer
+                                 withHandle:(response)responseHandle{
+    NSString * appendURLString = @"userConcern/get_user_concern_list";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+//招聘详情中推荐招聘信息接口
++ (void)requestQueryWorkRecommend:(id)paramer
+                         withHandle:(response)responseHandle{
+    NSString * appendURLString = @"work/query_recommend_work";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//查询拒绝申请借支天数  get请求
++ (void)requestQueryGetRefuseLendDay:(id)paramer
+                       withHandle:(response)responseHandle{
+    NSString * appendURLString = @"lendmoney/get_refuse_lend_day";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+
+//查询幸运球开奖记录列表
++ (void)requestQueryGetPrizeRecordList:(id)paramer
+                          withHandle:(response)responseHandle{
+    NSString * appendURLString = @"prize/get_lucky_ball_record_list";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+//一键清空圈子消息
++ (void)requestQueryDeleteInfoMood:(id)paramer
+                            withHandle:(response)responseHandle{
+    NSString * appendURLString = @"info/update_info_mood";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+//查询密保问题列表  post 请求  无参数
++ (void)requestQueryGetUserProdlemList:(id)paramer
+                        withHandle:(response)responseHandle{
+    NSString * appendURLString = @"userMaterial/get_user_problem_list";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+//添加更新密保问题
++ (void)requestQueryUpdateUserProdlemList:(id)paramer
+                            withHandle:(response)responseHandle{
+    NSString * appendURLString = @"userMaterial/update_user_problem";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+//校验密保正确性   post请求  参数
++ (void)requestQueryVerifyUserProdlemList:(id)paramer
+                               withHandle:(response)responseHandle{
+    NSString * appendURLString = @"userMaterial/get_user_problem";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//查询客服电话 get请求
++ (void)requestQueryGetCustomerTel:(id)paramer
+                               withHandle:(response)responseHandle{
+    NSString * appendURLString = @"customerser/get_customer_tel";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
 
 
 

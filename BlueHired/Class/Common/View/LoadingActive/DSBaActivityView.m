@@ -84,7 +84,7 @@ static DSBaActivityView *activiyView;
 - (UIView *)contentView {
     if (_contentView == nil) {
         UIView *contentView = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
-        contentView.layer.cornerRadius = 10.0f;
+//        contentView.layer.cornerRadius = 10.0f;
         contentView.layer.borderColor = [UIColor colorWithWhite:0.926 alpha:1.000].CGColor;
         contentView.layer.shadowColor = [UIColor blackColor].CGColor;
         contentView.layer.shadowOpacity = 0.5;

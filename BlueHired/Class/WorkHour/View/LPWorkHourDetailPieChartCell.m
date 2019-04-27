@@ -2,7 +2,7 @@
 //  LPWorkHourDetailPieChartCell.m
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/9/11.
+//  Created by peng on 2018/9/11.
 //  Copyright © 2018年 lanpin. All rights reserved.
 //
 
@@ -64,12 +64,12 @@
     // 阴影颜色
     theView.layer.shadowColor = theColor.CGColor;
     // 阴影偏移，默认(0, -3)
-    theView.layer.shadowOffset = CGSizeMake(0,3);
+    theView.layer.shadowOffset = CGSizeMake(0,4);
     // 阴影透明度，默认0
     theView.layer.shadowOpacity = 0.5;
     // 阴影半径，默认3
     theView.layer.shadowRadius = 3;
-    theView.layer.cornerRadius = 4;
+    theView.layer.cornerRadius = 6;
     theView.layer.masksToBounds = NO;
 
 }

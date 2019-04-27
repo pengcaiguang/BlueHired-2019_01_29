@@ -22,8 +22,7 @@ target 'BlueHired' do
     pod 'FMDB'
     pod 'FSCalendar'
     pod 'SCIndexView'
-    pod 'HXPhotoPicker', '~> 2.2.1'
- 
+#    pod 'HXPhotoPicker', '~> 2.2.1'
     pod 'Firebase'
     pod 'Firebase/Core'
     pod 'Fabric', '~> 1.7.11'

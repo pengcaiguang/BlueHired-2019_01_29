@@ -34,7 +34,14 @@
     if ([_model.billType integerValue] == 2)
     {
         _titleLabel.text = [NSString stringWithFormat:@"账户提现: %.2f",_model.money.floatValue];
-        _stateLabel.text =  [_model.type integerValue] == 1?@"处理中": @"处理完成";
+        _stateLabel.text =  [_model.type integerValue] == 1?@"待处理": @"处理中";
+        
+        long long timeSet=[[self.model.set_time stringValue] longLongValue];
+
+        if (timeSet/1000.0+60*60*2<[NSString getNowTimestamp]/1000.0 && timeSet >0) {
+            _stateLabel.text = @"已完成";
+        }
+        
      }
     else{
         if ([_model.type integerValue] == 0) {

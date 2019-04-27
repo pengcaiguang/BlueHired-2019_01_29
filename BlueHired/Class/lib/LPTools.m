@@ -8,6 +8,8 @@
 
 #import "LPTools.h"
 #import "WHActivityView.h"
+#import <AVFoundation/AVFoundation.h>
+
 @interface LPTools ()
 
 @property (nonatomic, strong) NSDateFormatter * strDateFormatter;
@@ -243,10 +245,6 @@ LPTools * LPTools_instance = nil ;
     }
 }
 
- 
-
-
-
 //分享按钮：
 +(void)ClickShare:(NSString *)Url  Title:(NSString *)Title
 {
@@ -477,5 +475,28 @@ LPTools * LPTools_instance = nil ;
     return chineseCal_str;
 }
 
+//获取本地/网络视频的第一帧图片
++ (UIImage *)getImage:(NSString *)videoURL{
+    
+    AVURLAsset *asset = [[AVURLAsset alloc] initWithURL:[NSURL fileURLWithPath:videoURL] options:nil];
+    
+    AVAssetImageGenerator *gen = [[AVAssetImageGenerator alloc] initWithAsset:asset];
+    
+    gen.appliesPreferredTrackTransform = YES;
+    
+    CMTime time = CMTimeMakeWithSeconds(0.0, 600);
+    
+    NSError *error = nil;
+    
+    CMTime actualTime;
+    
+    CGImageRef image = [gen copyCGImageAtTime:time actualTime:&actualTime error:&error];
+    
+    UIImage *thumb = [[UIImage alloc] initWithCGImage:image];
+    
+    CGImageRelease(image);
+    
+    return thumb;
+}
 
 @end

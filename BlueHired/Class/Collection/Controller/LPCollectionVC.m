@@ -2,7 +2,7 @@
 //  LPCollectionVC.m
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/9/28.
+//  Created by peng on 2018/9/28.
 //  Copyright © 2018 lanpin. All rights reserved.
 //
 
@@ -19,7 +19,8 @@ static NSString *LPCollectionCollectionViewCellID = @"LPCollectionCollectionView
 @property(nonatomic,assign) BOOL isSelect;
 @property(nonatomic,assign) BOOL selectAll;
 @property(nonatomic,assign) NSInteger selectType;
-@property(nonatomic,strong) UIButton *AllButton;
+@property(nonatomic,strong) UIButton *allButton;
+@property(nonatomic,strong) UIButton *deleteBt;
 
 @end
 
@@ -34,8 +35,17 @@ static NSString *LPCollectionCollectionViewCellID = @"LPCollectionCollectionView
     [self setBottomView];
     [self.view addSubview:self.collectionView];
     [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.view);
+        make.top.mas_equalTo(0);
+        make.left.mas_equalTo(0);
+        make.right.mas_equalTo(0);
+        if (@available(iOS 11.0, *)) {
+            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
+        } else {
+            make.bottom.mas_equalTo(0);
+        }
     }];
+    [self setBottomView];
+
     if (@available(iOS 11.0, *)) {
         self.collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
     }
@@ -107,7 +117,7 @@ static NSString *LPCollectionCollectionViewCellID = @"LPCollectionCollectionView
 -(void)setBottomView{
     UIButton *selectButton = [[UIButton alloc]init];
     [self.view addSubview:selectButton];
-    self.AllButton = selectButton;
+    self.allButton = selectButton;
     [selectButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(0);
         //        make.bottom.mas_equalTo(0);
@@ -128,10 +138,11 @@ static NSString *LPCollectionCollectionViewCellID = @"LPCollectionCollectionView
     selectButton.imageEdgeInsets = UIEdgeInsetsMake(0, 20, 0, 0);
     selectButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [selectButton addTarget:self action:@selector(touchSelectButton:) forControlEvents:UIControlEventTouchUpInside];
-//    selectButton.backgroundColor = [UIColor blueColor];
+    selectButton.backgroundColor = [UIColor whiteColor];
     
     UIButton *deleteButton = [[UIButton alloc]init];
     [self.view addSubview:deleteButton];
+    self.deleteBt = deleteButton;
     [deleteButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.mas_equalTo(0);
 //        make.bottom.mas_equalTo(0);
@@ -148,7 +159,9 @@ static NSString *LPCollectionCollectionViewCellID = @"LPCollectionCollectionView
     [deleteButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     deleteButton.titleLabel.font = [UIFont systemFontOfSize:16];
     [deleteButton addTarget:self action:@selector(touchDeleteButton:) forControlEvents:UIControlEventTouchUpInside];
-    
+    self.allButton.hidden = YES;
+    self.deleteBt.hidden = YES;
+    self.allButton.selected = NO;
 }
 -(void)touchSelectButton:(UIButton *)button{
     button.selected = !button.isSelected;
@@ -167,27 +180,32 @@ static NSString *LPCollectionCollectionViewCellID = @"LPCollectionCollectionView
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"管理" style:UIBarButtonItemStyleDone target:self action:@selector(touchManagerButton)];
         [self.navigationItem.rightBarButtonItem setTintColor:[UIColor colorWithHexString:@"#1B1B1B"]];
         self.isSelect = NO;
-        [self.collectionView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(0);
-            make.left.mas_equalTo(0);
-            make.right.mas_equalTo(0);
-            make.bottom.mas_equalTo(0);
-        }];
+//        [self.collectionView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//            make.top.mas_equalTo(0);
+//            make.left.mas_equalTo(0);
+//            make.right.mas_equalTo(0);
+//            make.bottom.mas_equalTo(0);
+//        }];
+        self.allButton.hidden = YES;
+        self.deleteBt.hidden = YES;
+        self.allButton.selected = NO;
     }else{
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"取消" style:UIBarButtonItemStyleDone target:self action:@selector(touchManagerButton)];
         [self.navigationItem.rightBarButtonItem setTintColor:[UIColor colorWithHexString:@"#1B1B1B"]];
         self.isSelect = YES;
-        [self.collectionView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(0);
-            make.left.mas_equalTo(0);
-            make.right.mas_equalTo(0);
-//            make.bottom.mas_equalTo(-49);
-            if (@available(iOS 11.0, *)) {
-                make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-49);
-            } else {
-                make.bottom.mas_equalTo(-49);
-            }
-        }];
+//        [self.collectionView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//            make.top.mas_equalTo(0);
+//            make.left.mas_equalTo(0);
+//            make.right.mas_equalTo(0);
+////            make.bottom.mas_equalTo(-49);
+//            if (@available(iOS 11.0, *)) {
+//                make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
+//            } else {
+//                make.bottom.mas_equalTo(0);
+//            }
+//        }];
+        self.allButton.hidden = NO;
+        self.deleteBt.hidden = NO;
     }
 
     [self.collectionView reloadData];
@@ -222,23 +240,25 @@ static NSString *LPCollectionCollectionViewCellID = @"LPCollectionCollectionView
     self.isSelect = NO;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"管理" style:UIBarButtonItemStyleDone target:self action:@selector(touchManagerButton)];
     [self.navigationItem.rightBarButtonItem setTintColor:[UIColor colorWithHexString:@"#1B1B1B"]];
-    [self.collectionView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(0);
-        make.left.mas_equalTo(0);
-        make.right.mas_equalTo(0);
-        make.bottom.mas_equalTo(0);
-    }];
+//    [self.collectionView mas_remakeConstraints:^(MASConstraintMaker *make) {
+//        make.top.mas_equalTo(0);
+//        make.left.mas_equalTo(0);
+//        make.right.mas_equalTo(0);
+//        make.bottom.mas_equalTo(0);
+//    }];
 //    [self.collectionView reloadData];
     LPCollectionCollectionViewCell *cell = (LPCollectionCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     cell.selectStatus =self.isSelect;
+    self.allButton.hidden = YES;
+    self.deleteBt.hidden = YES;
+    self.allButton.selected = NO;
     
 }
 -(void)scrollToItenIndex:(NSInteger)index{
     [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:YES];
-//    LPCollectionCollectionViewCell *cell = (LPCollectionCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-//    cell.index =index;
     self.selectType =index;
     [self.collectionView reloadData];
+    
 
 }
 #pragma mark -- UICollectionViewDelegate
@@ -257,7 +277,7 @@ static NSString *LPCollectionCollectionViewCellID = @"LPCollectionCollectionView
     cell.contentView.backgroundColor = randomColor;
     cell.selectStatus = self.isSelect;
 //    cell.selectAll = self.selectAll;
-    cell.AllButton = self.AllButton;
+    cell.AllButton = self.allButton;
     cell.index = self.selectType;
 
     return cell;
@@ -270,13 +290,13 @@ static NSString *LPCollectionCollectionViewCellID = @"LPCollectionCollectionView
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     if ([DeviceUtils deviceType] == IPhone_X) {
         if (self.isSelect) {
-            return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-88-49);
+            return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-88-kBottomBarHeight);
         }else{
-            return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-88);
+            return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-88-kBottomBarHeight);
         }
     }else{
         if (self.isSelect) {
-            return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-64-49);
+            return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-64);
         }else{
             return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-64);
         }

@@ -2,7 +2,7 @@
 //  LPCircleVC.m
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/8/27.
+//  Created by peng on 2018/8/27.
 //  Copyright © 2018年 lanpin. All rights reserved.
 //
 
@@ -13,6 +13,7 @@
 #import "LPAddMoodeVC.h"
 #import "LPInfoVC.h"
 #import "UIBarButtonItem+Badge.h"
+#import "LPInformationSearchVC.h"
 
  
 static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
@@ -37,7 +38,9 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:[UIColor baseColor]] forBarMetrics:UIBarMetricsDefault];
 
     [self setNavigationButton];
-    [self setupTitleView];
+    [self setSearchView];
+//    [self setupTitleView];
+//    self.navigationItem.title = @"圈子";
     [self.view addSubview:self.collectionView];
     [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.edges.equalTo(self.view);
@@ -58,10 +61,10 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     if (self.isSenderBack == 1 && !_isTopbar ) {
-        if (self.TypeIndex != 0) {
+//        if (self.TypeIndex != 0) {
             [self selectButtonAtIndex:0];
             [self scrollToItenIndex:0];
-        }
+//        }
         self.isSenderBack   = 0;
     }else if (self.isSenderBack == 3){
         LPCircleCollectionViewCell *cell = (LPCircleCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:self.TypeIndex inSection:0]];
@@ -80,6 +83,9 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
     }
     if (AlreadyLogin) {
         [self requestQueryInfounreadNum];
+    }else{
+        LPCircleCollectionViewCell *cell = (LPCircleCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+        [cell setCircleMessage:0];
     }
     _isTopbar = NO;
 //    [self.collectionView reloadData];
@@ -87,21 +93,84 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
 - (UIStatusBarStyle)preferredStatusBarStyle{
     return UIStatusBarStyleLightContent;
 }
+
+
+-(void)setSearchView{
+    
+    NSLog(@"self.navigationItem.leftBarButtonItem = %f"
+          ,self.navigationItem.leftBarButtonItem.customView.frame.size.width);
+    
+    LPSearchBar *searchBar = [self addSearchBar];
+    UIView *wrapView = [[UIView alloc]init];
+    wrapView.frame = CGRectMake(0, 0,  SCREEN_WIDTH - 80  , 32);
+    wrapView.layer.cornerRadius = 16;
+    wrapView.layer.masksToBounds = YES;
+    //    wrapView.clipsToBounds = YES;
+    wrapView.backgroundColor = [UIColor whiteColor];
+    self.navigationItem.titleView = wrapView;
+//    self.navigationItem.titleView.backgroundColor = [UIColor redColor];
+    
+    [wrapView addSubview:searchBar];
+    [searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(0);
+        make.right.mas_equalTo(0);
+        make.top.mas_equalTo(0);
+        make.bottom.mas_equalTo(0);
+        
+    }];
+}
+
+- (LPSearchBar *)addSearchBar{
+    
+    self.definesPresentationContext = YES;
+    
+    LPSearchBar *searchBar = [[LPSearchBar alloc]init];
+    
+    searchBar.delegate = self;
+    searchBar.placeholder = @"请输入关键字";
+    [searchBar setShowsCancelButton:NO];
+    [searchBar setTintColor:[UIColor lightGrayColor]];
+    
+    UITextField *searchField = [searchBar valueForKey:@"searchField"];
+    if (searchField) {
+        [searchField setBackgroundColor:[UIColor whiteColor]];
+        searchField.layer.cornerRadius = 14;
+        searchField.layer.masksToBounds = YES;
+        searchField.font = [UIFont systemFontOfSize:13];
+    }
+    if (YES) {
+        CGFloat height = searchBar.bounds.size.height;
+        CGFloat top = (height - 28.0) / 2.0;
+        CGFloat bottom = top;
+        searchBar.contentInset = UIEdgeInsetsMake(top, 0, bottom, 0);
+    }
+    return searchBar;
+}
+#pragma mark - search
+-(BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar{
+    LPInformationSearchVC *vc = [[LPInformationSearchVC alloc]init];
+    vc.hidesBottomBarWhenPushed = YES;
+    vc.Type = 3;
+    [self.navigationController pushViewController:vc animated:YES];
+    return NO;
+}
+
+
 -(void)setNavigationButton{
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"logo_Information" WithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStyleDone target:self action:nil];
     self.navigationItem.leftBarButtonItem.enabled = NO;
     
     
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setImage:[UIImage imageNamed:@"message"] forState:UIControlStateNormal];
-    button.frame = CGRectMake(0,100,button.currentImage.size.width, button.currentImage.size.height);
-    [button addTarget:self action:@selector(touchMessageButton) forControlEvents:UIControlEventTouchDown];
-    
-    // 添加角标
-    UIBarButtonItem *navLeftButton = [[UIBarButtonItem alloc] initWithCustomView:button];
-    self.navigationItem.rightBarButtonItem = navLeftButton;
-    self.navigationItem.rightBarButtonItem.badgeValue = @"";
-    self.navigationItem.rightBarButtonItem.badgeBGColor = [UIColor redColor];
+//    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+//    [button setImage:[UIImage imageNamed:@"message"] forState:UIControlStateNormal];
+//    button.frame = CGRectMake(0,100,button.currentImage.size.width, button.currentImage.size.height);
+//    [button addTarget:self action:@selector(touchMessageButton) forControlEvents:UIControlEventTouchDown];
+//
+//    // 添加角标
+//    UIBarButtonItem *navLeftButton = [[UIBarButtonItem alloc] initWithCustomView:button];
+//    self.navigationItem.rightBarButtonItem = navLeftButton;
+//    self.navigationItem.rightBarButtonItem.badgeValue = @"";
+//    self.navigationItem.rightBarButtonItem.badgeBGColor = [UIColor redColor];
 
 
     
@@ -198,8 +267,8 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
         LPCircleCollectionViewCell *cell = (LPCircleCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:self.TypeIndex inSection:0]];
         [cell setIndex:self.TypeIndex];
     });
-
  }
+
 #pragma mark -- UICollectionViewDelegate
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     CGFloat pageWidth = scrollView.frame.size.width;
@@ -210,7 +279,7 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
  }
 #pragma mark -- UICollectionViewDataSource
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return 3;
+    return 1;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -274,24 +343,15 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
 }
 
 -(void)requestQueryInfounreadNum{
-    NSDictionary *dic = @{
+    NSDictionary *dic = @{@"type":@(6)
                           };
     [NetApiManager requestQueryUnreadNumWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
                 NSInteger num = [responseObject[@"data"] integerValue];
-                if (num == 0) {
-                    self.navigationItem.rightBarButtonItem.badgeValue = @"";
-                }
-                else if (num>9)
-                {
-                    self.navigationItem.rightBarButtonItem.badgeValue = @"9+";
-                }
-                else
-                {
-                    self.navigationItem.rightBarButtonItem.badgeValue = [NSString stringWithFormat:@"%ld",(long)num];
-                }
+                LPCircleCollectionViewCell *cell = (LPCircleCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+                [cell setCircleMessage:num];
             }else{
                 if ([responseObject[@"code"] integerValue] == 10002) {
                     [LPTools UserDefaulatsRemove];

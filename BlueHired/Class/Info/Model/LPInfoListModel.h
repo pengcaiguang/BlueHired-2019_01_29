@@ -2,7 +2,7 @@
 //  LPInfoListModel.h
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/9/21.
+//  Created by peng on 2018/9/21.
 //  Copyright © 2018年 lanpin. All rights reserved.
 //
 
@@ -30,6 +30,13 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSNumber *type;
 @property (nonatomic, copy) NSNumber *unreadTotal;
 @property (nonatomic, copy) NSNumber *userId;
+@property (nonatomic, copy) NSString *moodUrl;
+@property (nonatomic, copy) NSString *moodDetails;
+@property (nonatomic, copy) NSString *userUrl;
+@property (nonatomic, copy) NSString *userName;
+@property (nonatomic, copy) NSString *grading;
+@property (nonatomic, copy) NSString *identity;
+ 
 @end
 
 NS_ASSUME_NONNULL_END

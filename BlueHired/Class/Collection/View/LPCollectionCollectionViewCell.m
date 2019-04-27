@@ -2,7 +2,7 @@
 //  LPCollectionCollectionViewCell.m
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/9/29.
+//  Created by peng on 2018/9/29.
 //  Copyright © 2018 lanpin. All rights reserved.
 //
 
@@ -46,7 +46,8 @@ static NSString *LPCollectionVideoCellID = @"LPCollectionVideoCell";
     self.selectArray = [NSMutableArray array];
     [self.contentView addSubview:self.tableview];
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.contentView);
+//        make.edges.equalTo(self.contentView);
+        make.top.left.right.bottom.mas_offset(0);
     }];
 }
 #pragma mark - setdata

@@ -2,14 +2,14 @@
 //  LPSortAlertView.m
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/8/30.
+//  Created by peng on 2018/8/30.
 //  Copyright © 2018年 lanpin. All rights reserved.
 //
 
 #import "LPSortAlertView.h"
 
 
-static NSInteger rowHeight = 44;
+static NSInteger rowHeight = 30;
 
 @interface LPSortAlertView ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong)UITableView *tableview;
@@ -24,12 +24,12 @@ static NSInteger rowHeight = 44;
 -(instancetype)init{
     self = [super init];
     if (self) {
-//        if (kUserDefaultsValue(USERDATA).integerValue == 1 ||
-//            kUserDefaultsValue(USERDATA).integerValue == 2 ) {
-//            self.titleArray = @[@"综合工资最高",@"报名人数最多",@"企业评分最高",@"工价最高",@"可借支",@"平台合作价",@"管理费"];
-//        }else{
-//            self.titleArray = @[@"综合工资最高",@"报名人数最多",@"企业评分最高",@"工价最高",@"可借支"];
-//        }
+        if (kUserDefaultsValue(USERDATA).integerValue == 1 ||
+            kUserDefaultsValue(USERDATA).integerValue == 2 ) {
+            self.titleArray = @[@"综合工资最高",@"报名人数最多",@"企业评分最高",@"工价最高",@"可借支",@"平台合作价",@"管理费"];
+        }else{
+            self.titleArray = @[@"综合工资最高",@"报名人数最多",@"企业评分最高",@"工价最高",@"可借支"];
+        }
         self.selectTitle = @"";
 
         self.userInteractionEnabled = YES;
@@ -48,8 +48,9 @@ static NSInteger rowHeight = 44;
     
     UIWindow *window=[[[UIApplication sharedApplication] delegate] window];
     CGRect rect=[self.touchButton convertRect: self.touchButton.bounds toView:window];
-    self.tableview.frame = CGRectMake(0, CGRectGetMaxY(rect)+5, SCREEN_WIDTH, rowHeight*self.titleArray.count);
-    self.bgView.frame = CGRectMake(0, self.tableview.frame.size.height+self.tableview.frame.origin.y, SCREEN_WIDTH, SCREEN_HEIGHT);
+    self.tableview.frame = CGRectMake(rect.origin.x, CGRectGetMaxY(rect), rect.size.width, rowHeight*self.titleArray.count);
+//    self.tableview.frame.size.height+self.tableview.frame.origin.y
+    self.bgView.frame = CGRectMake(0,0 , SCREEN_WIDTH, SCREEN_HEIGHT);
     [self.tableview reloadData];
 }
 
@@ -82,6 +83,9 @@ static NSInteger rowHeight = 44;
     cell.textLabel.font = [UIFont systemFontOfSize:14];
     cell.textLabel.text = self.titleArray[indexPath.row];
     
+    cell.contentView.backgroundColor = indexPath.row%2 ? [UIColor colorWithHexString:@"#FFFFFF"] :[UIColor colorWithHexString:@"#F2F2F2"];
+  
+    
     if ([cell.textLabel.text isEqualToString:_selectTitle]) {
         cell.textLabel.textColor = [UIColor baseColor];
         imageViews.hidden = NO;
@@ -94,7 +98,7 @@ static NSInteger rowHeight = 44;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    self.selectTitle = self.titleArray[indexPath.row];
+//    self.selectTitle = self.titleArray[indexPath.row];
     [self.tableview reloadData];
 
     if ([self.delegate respondsToSelector:@selector(touchTableView:)]) {
@@ -112,15 +116,18 @@ static NSInteger rowHeight = 44;
         _tableview.tableFooterView = [[UIView alloc]init];
         _tableview.rowHeight = UITableViewAutomaticDimension;
         _tableview.estimatedRowHeight = 44;
-        _tableview.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+        _tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _tableview.layer.borderWidth = 0.5;
+        _tableview.layer.borderColor = [UIColor colorWithHexString:@"#929292"].CGColor;
+        
     }
     return _tableview;
 }
 -(UIView *)bgView{
     if (!_bgView) {
         _bgView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
-        _bgView.backgroundColor = [UIColor lightGrayColor];
-        _bgView.alpha = 0.5;
+//        _bgView.backgroundColor = [UIColor lightGrayColor];
+//        _bgView.alpha = 0.5;
         _bgView.userInteractionEnabled = YES;
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(hidden)];
         [_bgView addGestureRecognizer:tap];

@@ -2,7 +2,7 @@
 //  LPInformationVC.m
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/8/27.
+//  Created by peng on 2018/8/27.
 //  Copyright © 2018年 lanpin. All rights reserved.
 //
 
@@ -50,6 +50,8 @@ static NSString *LPInformationVideoCollectionViewCellID = @"LPInfoMationVideoCel
 @property (nonatomic, strong) UIScrollView *ViewscrollView;
 @property (nonatomic, strong) NSMutableArray <LPInformationView *>*ViewArray;
 
+@property (nonatomic,strong) UISegmentedControl *Segmented;
+
 @end
 
 @implementation LPInformationVC
@@ -78,7 +80,7 @@ static NSString *LPInformationVideoCollectionViewCellID = @"LPInfoMationVideoCel
         make.top.mas_equalTo(0);
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
-        make.height.mas_equalTo(50);
+        make.height.mas_equalTo(40);
     }];
 //    [self.view addSubview:self.collectionView];
 //    [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -90,9 +92,9 @@ static NSString *LPInformationVideoCollectionViewCellID = @"LPInfoMationVideoCel
 
     self.ViewscrollView = [[UIScrollView alloc] init];
     if ([DeviceUtils deviceType] == IPhone_X) {
-        self.ViewscrollView.frame = CGRectMake(0, 50, Screen_Width,  SCREEN_HEIGHT-88-50-83.0);
+        self.ViewscrollView.frame = CGRectMake(0, 40, Screen_Width,  SCREEN_HEIGHT-88-40-83.0);
      }else{
-        self.ViewscrollView.frame = CGRectMake(0, 50, Screen_Width,  SCREEN_HEIGHT-64-50-49);
+        self.ViewscrollView.frame = CGRectMake(0, 40, Screen_Width,  SCREEN_HEIGHT-64-40-49);
      }
     self.ViewscrollView.delegate = self;
     self.ViewscrollView.pagingEnabled = YES;
@@ -127,9 +129,9 @@ static NSString *LPInformationVideoCollectionViewCellID = @"LPInfoMationVideoCel
         }
     }
     
-    if (AlreadyLogin) {
-        [self requestQueryInfounreadNum];
-    }
+//    if (AlreadyLogin) {
+//        [self requestQueryInfounreadNum];
+//    }
 
     //视频列表获取规则
     NSLog(@"%ld",(long)kUserDefaultsValue(LOGINID).integerValue);
@@ -162,18 +164,19 @@ static NSString *LPInformationVideoCollectionViewCellID = @"LPInfoMationVideoCel
     return UIStatusBarStyleLightContent;
 }
 -(void)setNavigationButton{
-//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"logo_Information" WithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStyleDone target:self action:nil];
-    self.navigationItem.leftBarButtonItem.enabled = NO;
+//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"serch" WithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStyleDone target:self action:nil];
+//    self.navigationItem.leftBarButtonItem.enabled = NO;
+    
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setImage:[UIImage imageNamed:@"message"] forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"serch"] forState:UIControlStateNormal];
     button.frame = CGRectMake(0,100,24, 24);
     [button addTarget:self action:@selector(touchMessageButton) forControlEvents:UIControlEventTouchDown];
-    
-    // 添加角标
+//
+//    // 添加角标
     UIBarButtonItem *navLeftButton = [[UIBarButtonItem alloc] initWithCustomView:button];
     self.navigationItem.rightBarButtonItem = navLeftButton;
-    self.navigationItem.rightBarButtonItem.badgeValue = @"";
-    self.navigationItem.rightBarButtonItem.badgeBGColor = [UIColor redColor];
+//    self.navigationItem.rightBarButtonItem.badgeValue = @"";
+//    self.navigationItem.rightBarButtonItem.badgeBGColor = [UIColor redColor];
 
 }
 
@@ -197,44 +200,73 @@ static NSString *LPInformationVideoCollectionViewCellID = @"LPInfoMationVideoCel
 //    }];
 //    pimageView.image = [UIImage imageNamed:@"positioning"];
     
-    self.VideoLabel = [[UIButton alloc]init];
-    [leftBarButtonView addSubview:self.VideoLabel];
-    [self.VideoLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(0);
-        make.bottom.mas_equalTo(-5);
-    }];
-    [self.VideoLabel setTitle:@"视频" forState:UIControlStateNormal];
-    self.VideoLabel.titleLabel.font = [UIFont systemFontOfSize:17];
-    [self.VideoLabel setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.VideoLabel addTarget:self action:@selector(touchSortButton:) forControlEvents:UIControlEventTouchUpInside];
-    self.VideoLabel.selected = NO;
-    UIImageView *dimageView = [[UIImageView alloc]init];
-    [leftBarButtonView addSubview:dimageView];
-    [dimageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.VideoLabel.mas_right).offset(3);
-        make.centerY.equalTo(self.VideoLabel);
-        make.size.mas_equalTo(CGSizeMake(11, 6));
-        make.right.equalTo(leftBarButtonView.mas_right).offset(0);
-    }];
-    dimageView.image = [UIImage imageNamed:@"downArrow"];
+//    self.VideoLabel = [[UIButton alloc]init];
+//    [leftBarButtonView addSubview:self.VideoLabel];
+//    [self.VideoLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.mas_equalTo(0);
+//        make.bottom.mas_equalTo(-5);
+//    }];
+//    [self.VideoLabel setTitle:@"视频" forState:UIControlStateNormal];
+//    self.VideoLabel.titleLabel.font = [UIFont systemFontOfSize:17];
+//    [self.VideoLabel setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//    [self.VideoLabel addTarget:self action:@selector(touchSortButton:) forControlEvents:UIControlEventTouchUpInside];
+//    self.VideoLabel.selected = NO;
+//    UIImageView *dimageView = [[UIImageView alloc]init];
+//    [leftBarButtonView addSubview:dimageView];
+//    [dimageView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.equalTo(self.VideoLabel.mas_right).offset(3);
+//        make.centerY.equalTo(self.VideoLabel);
+//        make.size.mas_equalTo(CGSizeMake(11, 6));
+//        make.right.equalTo(leftBarButtonView.mas_right).offset(0);
+//    }];
+//    dimageView.image = [UIImage imageNamed:@"downArrow"];
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"logo_Information" WithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStyleDone target:self action:nil];
+    self.navigationItem.leftBarButtonItem.enabled = NO;
+    
 }
 
 -(void)touchMessageButton{
-    self.VideoLabel.selected = NO;
-    self.sortAlertView.hidden =YES;
-    if ([LoginUtils validationLogin:self]) {
-         LPInfoVC *vc = [[LPInfoVC alloc]init];
-        vc.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:vc animated:YES];
-    }
+//    self.VideoLabel.selected = NO;
+//    self.sortAlertView.hidden =YES;
+//    if ([LoginUtils validationLogin:self]) {
+//         LPInfoVC *vc = [[LPInfoVC alloc]init];
+//        vc.hidesBottomBarWhenPushed = YES;
+//        [self.navigationController pushViewController:vc animated:YES];
+//    }
+    
+    [self searchBarShouldBeginEditing:nil];
+    
 }
 -(void)setSearchView{
-    LPSearchBar *searchBar = [self addSearchBarWithFrame:CGRectMake(0, 0, SCREEN_WIDTH - 2 * 44 - 2 * 22, 44)];
-    self.search = searchBar;
-    UIView *wrapView = [[UIView alloc] initWithFrame:searchBar.frame];
-    [wrapView addSubview:searchBar];
-    self.navigationItem.titleView = wrapView;
+//    LPSearchBar *searchBar = [self addSearchBarWithFrame:CGRectMake(0, 0, SCREEN_WIDTH - 2 * 44 , 44)];
+//    self.search = searchBar;
+//    UIView *wrapView = [[UIView alloc] initWithFrame:searchBar.frame];
+//    [wrapView addSubview:searchBar];
+//    self.navigationItem.titleView = wrapView;
+    
+    UISegmentedControl *Segmented = [[UISegmentedControl alloc] initWithItems:@[@"视频",@"资讯"]];
+    self.Segmented = Segmented;
+    Segmented.frame = CGRectMake(0, 0, 160, 28);
+    Segmented.tintColor = [UIColor whiteColor];
+    Segmented.selectedSegmentIndex = 0;
+    [Segmented addTarget:self action:@selector(Segmentedselected:) forControlEvents:UIControlEventValueChanged];
+
+    self.navigationItem.titleView = Segmented;
 }
+
+-(void)Segmentedselected:(UISegmentedControl *) sender{
+    if (sender.selectedSegmentIndex == 0) {
+//        [self.VideoLabel setTitle:@"视频" forState:UIControlStateNormal];
+//        self.search.placeholder = @"搜索感兴趣的短视频";
+        self.videocollectionView.hidden = NO;
+    }else{
+//        [self.VideoLabel setTitle:@"资讯" forState:UIControlStateNormal];
+//        self.search.placeholder = @"搜索关键字";
+        self.videocollectionView.hidden =  YES;
+    }
+}
+
 - (LPSearchBar *)addSearchBarWithFrame:(CGRect)frame {
     
     self.definesPresentationContext = YES;
@@ -312,7 +344,7 @@ static NSString *LPInformationVideoCollectionViewCellID = @"LPInfoMationVideoCel
  
         self.ViewscrollView.contentSize = CGSizeMake(Screen_Width*labelListModel.data.count, self.ViewscrollView.frame.size.height);
 
-        UIScrollView *scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 50)];
+        UIScrollView *scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 40)];
         [self.labelListView addSubview:scrollView];
         self.LabelscrollView = scrollView;
         scrollView.showsHorizontalScrollIndicator = NO;
@@ -331,18 +363,18 @@ static NSString *LPInformationVideoCollectionViewCellID = @"LPInfoMationVideoCel
 
             CGFloat lw = rect.size.width + 30;
             w += lw;
-            label.frame = CGRectMake(w - lw, 0, lw, 50);
+            label.frame = CGRectMake(w - lw, 0, lw, 40);
             label.tag = i;
             label.userInteractionEnabled = YES;
             UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(touchLabel:)];
             [label addGestureRecognizer:tap];
             [self.labelArray addObject:label];
         }
-        scrollView.contentSize = CGSizeMake(w, 50);
+        scrollView.contentSize = CGSizeMake(w, 40);
 
         self.lineView = [[UIView alloc]init];
         CGFloat s = CGRectGetWidth(self.labelArray[0].frame);
-        self.lineView.frame = CGRectMake(0, 48, s, 2);
+        self.lineView.frame = CGRectMake(0, 38, s, 2);
         self.lineView.backgroundColor = [UIColor baseColor];
         [scrollView addSubview:self.lineView];
         self.labelArray[0].textColor = [UIColor blackColor];
@@ -366,7 +398,7 @@ static NSString *LPInformationVideoCollectionViewCellID = @"LPInfoMationVideoCel
     }
     self.labelArray[index].textColor = [UIColor blackColor];
     [UIView animateWithDuration:0.2 animations:^{
-        self.lineView.frame = CGRectMake(x, 48, w, 2);
+        self.lineView.frame = CGRectMake(x, 38, w, 2);
     }];
  
     if (x+w>SCREEN_WIDTH) {
@@ -389,7 +421,8 @@ static NSString *LPInformationVideoCollectionViewCellID = @"LPInfoMationVideoCel
     self.sortAlertView.hidden =YES;
     LPInformationSearchVC *vc = [[LPInformationSearchVC alloc]init];
     vc.hidesBottomBarWhenPushed = YES;
-    if ([self.VideoLabel.currentTitle isEqualToString:@"资讯"]) {
+    NSLog(@"%ld",(long)self.Segmented.selectedSegmentIndex);
+    if (self.Segmented.selectedSegmentIndex == 1) {
         vc.Type = 1;
     }else{
         vc.Type = 2;
@@ -478,9 +511,9 @@ static NSString *LPInformationVideoCollectionViewCellID = @"LPInfoMationVideoCel
     }
     
     if ([DeviceUtils deviceType] == IPhone_X) {
-        return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-88-50-49);
+        return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-88-40-49);
     }else{
-        return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-64-50-49);
+        return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-64-40-49);
     }
 }
 

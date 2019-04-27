@@ -11,12 +11,14 @@
 #import "LPMoodListModel.h"
 #import "LPCircleListCell.h"
 #import "LPMoodDetailVC.h"
+#import "LPCircleInfoListVC.h"
 
 static NSString *LPCircleListCellID = @"LPCircleListCell";
 
 @interface LPCircleCollectionViewCell ()<UITableViewDelegate,UITableViewDataSource,SDTimeLineCellDelegate>
 @property (nonatomic, strong)UITableView *tableview;
 @property(nonatomic,strong) UIView *tableHeaderView;
+@property(nonatomic,strong) UIView *tableHeader2View;
 @property(nonatomic,strong) UIButton *expandbutton;
 @property(nonatomic,assign) NSInteger page;
 
@@ -27,6 +29,9 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
 
 @property(nonatomic,strong) LPMoodListModel *moodListModel;
 @property(nonatomic,strong) NSMutableArray <LPMoodListDataModel *>*moodListArray;
+
+@property(nonatomic,strong) UIButton *messageBT;
+@property (nonatomic,assign) NSInteger GetMoodUserID;
 
 @end
 
@@ -52,26 +57,26 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
 -(void)setIndex:(NSInteger)index{
     _index = index;
     NSLog(@"index -= %ld",(long)index);
-    if (index == 0 ) {
-        if (_moodTypeModel== nil) {
-//            CIRCLETYPELISTCACHEDATE
-            NSDate *date = [LPUserDefaults getObjectByFileName:[NSString stringWithFormat: @"CIRCLETYPELISTCACHEDATE"]];
-            id CacheList = [LPUserDefaults getObjectByFileName:[NSString stringWithFormat: @"CIRCLETYPELISTCACHE"]];
-            NSString *ISLoginstr = [LPUserDefaults getObjectByFileName:[NSString stringWithFormat: @"CIRCLELISTCACHEISLogin"]];
-            self.moodTypeModel = [LPMoodTypeModel mj_objectWithKeyValues:CacheList];
-
-            if ([LPTools compareOneDay:date withAnotherDay:[NSDate date]]<=15 && CacheList) {
-                if (ISLoginstr.integerValue == 1) {
-                    [self requestMoodType];
-                }
-            }else{
-                [self requestMoodType];
-            }
-        }
-        self.tableview.tableHeaderView = self.tableHeaderView;
-    }else{
-        self.tableview.tableHeaderView = [[UIView alloc]init];
-    }
+//    if (index == 0 ) {
+//        if (_moodTypeModel== nil) {
+////            CIRCLETYPELISTCACHEDATE
+//            NSDate *date = [LPUserDefaults getObjectByFileName:[NSString stringWithFormat: @"CIRCLETYPELISTCACHEDATE"]];
+//            id CacheList = [LPUserDefaults getObjectByFileName:[NSString stringWithFormat: @"CIRCLETYPELISTCACHE"]];
+//            NSString *ISLoginstr = [LPUserDefaults getObjectByFileName:[NSString stringWithFormat: @"CIRCLELISTCACHEISLogin"]];
+//            self.moodTypeModel = [LPMoodTypeModel mj_objectWithKeyValues:CacheList];
+//
+//            if ([LPTools compareOneDay:date withAnotherDay:[NSDate date]]<=15 && CacheList) {
+//                if (ISLoginstr.integerValue == 1) {
+//                    [self requestMoodType];
+//                }
+//            }else{
+//                [self requestMoodType];
+//            }
+//        }
+////        self.tableview.tableHeaderView = [[UIView alloc]init];
+//    }else{
+//
+//    }
     
     if (self.moodListArray.count == 0 ) {
         //查看缓存
@@ -97,11 +102,30 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
          }
         
         return;
+    }else{
+        if (self.GetMoodUserID != kUserDefaultsValue(LOGINID).integerValue) {
+            self.page = 1;
+            [self requestMoodList];
+        }
     }
     
-    if (index>0) {
-        self.page = 1;
-        [self requestMoodList];
+    
+
+    
+//    if (index>0) {
+//        self.page = 1;
+//        [self requestMoodList];
+//    }
+}
+
+- (void)setCircleMessage:(NSInteger)CircleMessage{
+    _CircleMessage = CircleMessage;
+    if (CircleMessage != 0 && self.index == 0) {
+        self.tableview.tableHeaderView = self.tableHeader2View;
+        [self.messageBT setTitle:[NSString stringWithFormat:@"  您有%ld条新消息！ ",(long)CircleMessage] forState:UIControlStateNormal];
+        [self.tableview  reloadData];
+    }else{
+        self.tableview.tableHeaderView = [[UIView alloc]init];
     }
 }
 
@@ -163,6 +187,7 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
     if ([moodListModel.code integerValue] == 0) {
         if (self.page == 1) {
             self.moodListArray = [NSMutableArray array];
+            self.GetMoodUserID = kUserDefaultsValue(LOGINID).integerValue;
 //            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 //                NSIndexPath * dayOne = [NSIndexPath indexPathForRow:0 inSection:0];
 //                [self.tableview scrollToRowAtIndexPath:dayOne atScrollPosition:UITableViewScrollPositionTop animated:YES];
@@ -212,10 +237,11 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
     
     if (self.index == 0) {
          if (_expandbutton.selected) {
-             noDataView.frame = CGRectMake(0, ( 64+120 + floor((self.moodTypeModel.data.count-1)/4)*80),
-                                           SCREEN_WIDTH, SCREEN_HEIGHT- ( 120 + floor((self.moodTypeModel.data.count-1)/4)*80) -64);
+//             noDataView.frame = CGRectMake(0, ( 64+120 + floor((self.moodTypeModel.data.count-1)/4)*80),
+//                                           SCREEN_WIDTH, SCREEN_HEIGHT- ( 120 + floor((self.moodTypeModel.data.count-1)/4)*80) -64);
         }else{
-            noDataView.frame = CGRectMake(0, 64+120, SCREEN_WIDTH, SCREEN_HEIGHT - 120 -64);
+//            noDataView.frame = CGRectMake(0, 64+120, SCREEN_WIDTH, SCREEN_HEIGHT - 120 -64);
+            noDataView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT -64);
         }
         
          [noDataView image:nil text:@"赶紧来抢占一楼吧!"];
@@ -272,14 +298,7 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
     [self.tableview reloadData];
     [self.tableview layoutIfNeeded];
 
-    if (index == 0 ) {
-        if (_moodTypeModel== nil) {
-            [self requestMoodType];
-        }
-        self.tableview.tableHeaderView = self.tableHeaderView;
-    }else{
-        self.tableview.tableHeaderView = [[UIView alloc]init];
-    }
+    
     self.index = 0;
     self.page = 1;
     [self requestMoodList];
@@ -355,6 +374,15 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
     cell.PraiseBlock = ^(void){
         [weakSelf.tableview reloadData];
     };
+    
+    cell.VideoBlock =  ^(NSString *VideoUrl,UIImageView *view){
+        //播放网络url视频 先下载 再播放
+        WJMoviePlayerView *playerView = [[WJMoviePlayerView alloc] init];
+        playerView.movieURL = [NSURL URLWithString:VideoUrl];
+        playerView.coverView = view;
+        [playerView show];
+    };
+    
     if (!cell.moreButtonClickedBlock) {
         [cell setMoreButtonClickedBlock:^(NSIndexPath *indexPath) {
             weakSelf.moodListArray[indexPath.row].isOpening = !weakSelf.moodListArray[indexPath.row].isOpening;
@@ -368,7 +396,7 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
 - (void)didClickcCommentButtonInCell:(UITableViewCell *)cell  with:(NSIndexPath *)indexPath
 {
          LPMoodDetailVC *vc = [[LPMoodDetailVC alloc]init];
-        vc.Type = 1;
+
         vc.hidesBottomBarWhenPushed = YES;
         vc.moodListDataModel = self.moodListArray[indexPath.row];
         vc.moodListArray = self.moodListArray;
@@ -376,11 +404,11 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
         
         [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
         
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            LPCircleListCell *cell = (LPCircleListCell*)[self.tableview cellForRowAtIndexPath:indexPath];
-            cell.viewLabel.text = [NSString stringWithFormat:@"%ld",[cell.viewLabel.text integerValue] + 1];
-            self.moodListArray[indexPath.row].view = @([cell.viewLabel.text integerValue]);
-        });
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//            LPCircleListCell *cell = (LPCircleListCell*)[self.tableview cellForRowAtIndexPath:indexPath];
+//            cell.viewLabel.text = [NSString stringWithFormat:@"%ld",[cell.viewLabel.text integerValue] + 1];
+//            self.moodListArray[indexPath.row].view = @([cell.viewLabel.text integerValue]);
+//        });
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -416,25 +444,24 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
 
 -(void)requestMoodList{
     NSInteger type = 0;
-    switch (self.index) {
-        case 0:
-            type = 0;
-            break;
-        case 1:
-            type = 2;
-            self.selectMoodTypeDataModel = nil;
-            break;
-            
-        case 2:
-            type = 1;
-            self.selectMoodTypeDataModel = nil;
-            break;
-            
-        default:
-            break;
-    }
+//    switch (self.index) {
+//        case 0:
+//            type = 0;
+//            break;
+//        case 1:
+//            type = 2;
+//            self.selectMoodTypeDataModel = nil;
+//            break;
+//
+//        case 2:
+//            type = 1;
+//            self.selectMoodTypeDataModel = nil;
+//            break;
+//
+//        default:
+//            break;
+//    }
     NSDictionary *dic = @{
-                          @"moodTypeId":self.selectMoodTypeDataModel.id ? self.selectMoodTypeDataModel.id : @"",
                           @"page":@(self.page),
                           @"type":@(type)
                           };
@@ -453,7 +480,7 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
         
     }];
 }
-
+ 
 #pragma mark lazy
 - (UITableView *)tableview{
     if (!_tableview) {
@@ -481,11 +508,46 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
 -(UIView *)tableHeaderView{
     if (!_tableHeaderView){
         _tableHeaderView = [[UIView alloc]init];
-        _tableHeaderView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 110);
-
+        _tableHeaderView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 47);
     }
     return _tableHeaderView;
 }
+
+-(UIView *)tableHeader2View{
+    if (!_tableHeader2View) {
+        _tableHeader2View = [[UIView alloc] init];
+        _tableHeader2View.frame = CGRectMake(0, 0, SCREEN_WIDTH, 47);
+        UIButton *button = [[UIButton alloc] init];
+        self.messageBT = button;
+        [_tableHeader2View addSubview:button];
+        [button mas_makeConstraints:^(MASConstraintMaker *make){
+            make.center.equalTo(self.tableHeader2View);
+            make.height.mas_offset(30);
+        }];
+        button.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.65];
+        button.layer.cornerRadius = 15;
+        button.clipsToBounds = YES;
+        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(TouchMoreMessage:) forControlEvents:UIControlEventTouchUpInside];
+ 
+        UIView *lineV = [[UIView alloc] init];
+        [_tableHeader2View addSubview:lineV];
+        [lineV mas_makeConstraints:^(MASConstraintMaker *make){
+            make.left.right.bottom.mas_offset(0);
+            make.height.mas_offset(1);
+        }];
+        lineV.backgroundColor = [UIColor colorWithHexString:@"#E6E6E6"];
+    }
+    return _tableHeader2View;
+}
+-(void)TouchMoreMessage:(UIButton *)sender{
+    NSLog(@"您有1条新消息");
+    LPCircleInfoListVC *vc = [[LPCircleInfoListVC alloc] init];
+    vc.hidesBottomBarWhenPushed = YES;
+    [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+
+}
+
 -(UIButton *)expandbutton{
     if (!_expandbutton) {
         _expandbutton = [[UIButton alloc]init];

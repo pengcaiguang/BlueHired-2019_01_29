@@ -2,16 +2,16 @@
 //  LPMainSearchResultVC.m
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/8/31.
+//  Created by peng on 2018/8/31.
 //  Copyright © 2018年 lanpin. All rights reserved.
 //
 
 #import "LPMainSearchResultVC.h"
-#import "LPMainCell.h"
+#import "LPMain2Cell.h"
 #import "LPWorklistModel.h"
 #import "LPWorkDetailVC.h"
 
-static NSString *LPMainCellID = @"LPMainCell";
+static NSString *LPMainCellID = @"LPMain2Cell";
 
 
 @interface LPMainSearchResultVC ()<UITableViewDelegate,UITableViewDataSource>
@@ -78,9 +78,9 @@ static NSString *LPMainCellID = @"LPMainCell";
     return self.listArray.count;
 }
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    LPMainCell *cell = [tableView dequeueReusableCellWithIdentifier:LPMainCellID];
+    LPMain2Cell *cell = [tableView dequeueReusableCellWithIdentifier:LPMainCellID];
     if(cell == nil){
-        cell = [[LPMainCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:LPMainCellID];
+        cell = [[LPMain2Cell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:LPMainCellID];
     }
     cell.model = self.listArray[indexPath.row];
     return cell;
@@ -121,7 +121,7 @@ static NSString *LPMainCellID = @"LPMainCell";
         _tableview.rowHeight = UITableViewAutomaticDimension;
         _tableview.estimatedRowHeight = 100;
         _tableview.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-        _tableview.separatorColor = [UIColor baseColor];
+        _tableview.separatorColor = [UIColor colorWithHexString:@"#E6E6E6"];
         _tableview.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
         [_tableview registerNib:[UINib nibWithNibName:LPMainCellID bundle:nil] forCellReuseIdentifier:LPMainCellID];
         _tableview.mj_header = [HZNormalHeader headerWithRefreshingBlock:^{

@@ -69,7 +69,7 @@ static NSString *LPLPPraiseListCellID = @"LPPraiseListCell";
     }
     
     LPPraiseDataModel *m = self.PraiseListArray[indexPath.row];
-    LPMoodListDataModel *Moodmodel = [[LPMoodPraiseListDataModel alloc] init];
+    LPMoodListDataModel *Moodmodel = [[LPMoodListDataModel alloc] init];
     Moodmodel.userId = @(m.id.integerValue);
     Moodmodel.userName = m.userName;
     Moodmodel.identity = m.identity;

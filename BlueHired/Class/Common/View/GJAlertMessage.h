@@ -2,7 +2,7 @@
 //  GJAlertMessage.h
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/9/6.
+//  Created by peng on 2018/9/6.
 //  Copyright © 2018年 lanpin. All rights reserved.
 //
 
@@ -34,6 +34,17 @@ buttonsBackgroundColors:(NSArray *)buttonsBackgroundColors
        buttonsColor:(NSArray *)buttonColors
 buttonsBackgroundColors:(NSArray *)buttonsBackgroundColors
         buttonClick:(void(^)(NSInteger buttonIndex))block;
+
+- (id)initWithTitle:(NSMutableAttributedString *)title
+            message:(NSString *)message
+         IsShowhead:(BOOL) Dis
+        backDismiss:(BOOL) backDis
+      textAlignment:(NSTextAlignment)textAlignment
+       buttonTitles:(NSArray *)buttonTitles
+       buttonsColor:(NSArray *)buttonColors
+buttonsBackgroundColors:(NSArray *)buttonsBackgroundColors
+        buttonClick:(void(^)(NSInteger buttonIndex))block;
+
 - (void)show;
 - (void)dismiss;
 

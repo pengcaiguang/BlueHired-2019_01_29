@@ -2,7 +2,7 @@
 //  LPUserInfoVC.m
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/9/29.
+//  Created by peng on 2018/9/29.
 //  Copyright © 2018 lanpin. All rights reserved.
 //
 
@@ -731,6 +731,7 @@
                                                       }]];
     [self presentViewController:alertController animated:YES completion:nil];
 }
+
 #pragma mark - UIImagePickerControllerDelegate
 -(void)takePhoto{
     
@@ -775,7 +776,6 @@
     [self presentViewController:imagePicker animated:YES completion:nil];
 }
 #pragma mark - UIImagePickerControllerDelegate
-
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     if ([[info objectForKey:UIImagePickerControllerMediaType] isEqualToString:(__bridge NSString *)kUTTypeImage]) {

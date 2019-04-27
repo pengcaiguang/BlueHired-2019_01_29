@@ -2,7 +2,7 @@
 //  LPBusinessReviewDetailVC.m
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/9/5.
+//  Created by peng on 2018/9/5.
 //  Copyright © 2018年 lanpin. All rights reserved.
 //
 
@@ -200,6 +200,23 @@ static NSString *LPBusinessReviewDetailSalaryCellID = @"LPBusinessReviewDetailSa
     return self.listArray.count;
 }
 
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    LPMechanismcommentDetailDataModel *model = self.listArray[indexPath.row];
+    
+    if (model.type.integerValue == 1) {
+       CGFloat ImageHeight = [self calculateImageHeight:model.commentUrl];
+        CGFloat DetailsHeight = [self calculateRowHeight:model.commentContent fontSize:15 Width:SCREEN_WIDTH - 26];
+        if (DetailsHeight>90) {
+            return 118+ ImageHeight + (model.IsAllShow?DetailsHeight:90.0)+28;
+        }else{
+            return 118+ ImageHeight + DetailsHeight+8;
+        }
+    }
+    return 120.5;
+}
+
+
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     LPMechanismcommentDetailDataModel *model = self.listArray[indexPath.row];
     if (model.type.integerValue == 1) {
@@ -276,7 +293,7 @@ static NSString *LPBusinessReviewDetailSalaryCellID = @"LPBusinessReviewDetailSa
         _tableview.dataSource = self;
         _tableview.tableFooterView = [[UIView alloc]init];
         _tableview.rowHeight = UITableViewAutomaticDimension;
-        _tableview.estimatedRowHeight = 100;
+        _tableview.estimatedRowHeight = 0;
         _tableview.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         _tableview.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
         [_tableview registerNib:[UINib nibWithNibName:LPBusinessReviewDetailCellID bundle:nil] forCellReuseIdentifier:LPBusinessReviewDetailCellID];
@@ -300,14 +317,33 @@ static NSString *LPBusinessReviewDetailSalaryCellID = @"LPBusinessReviewDetailSa
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+//计算图片高度
+- (CGFloat)calculateImageHeight:(NSString *)string
+{
+    if (kStringIsEmpty(string)) {
+        return -10;
+    }
+    CGFloat imgw = (SCREEN_WIDTH-28 - 10)/3;
+    NSArray *imageArray = [string componentsSeparatedByString:@";"];
+    if (imageArray.count ==1)
+    {
+        return 260;
+    }
+    else
+    {
+        return ceil(imageArray.count/3.0)*imgw + floor(imageArray.count/3)*5;
+    }
 }
-*/
-
+- (CGFloat)calculateRowHeight:(NSString *)string fontSize:(NSInteger)fontSize Width:(CGFloat) W
+{
+    NSMutableParagraphStyle *paraStyle01 = [[NSMutableParagraphStyle alloc] init];
+    paraStyle01.lineBreakMode = NSLineBreakByCharWrapping;
+    NSDictionary *dic = @{NSFontAttributeName:[UIFont systemFontOfSize:fontSize],NSParagraphStyleAttributeName:paraStyle01};
+    /*计算高度要先指定宽度*/
+    CGRect rect = [string boundingRectWithSize:CGSizeMake(W, 0) options:NSStringDrawingUsesLineFragmentOrigin |
+                   NSStringDrawingUsesFontLeading attributes:dic context:nil];
+    return ceil(rect.size.height);
+    
+}
 @end

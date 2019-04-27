@@ -63,6 +63,8 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - 计算农历日期
 + (NSString *)calculationChinaCalendarWithDate:(NSDate *)date ;
 
+//获取本地/网络视频的第一帧图片
++ (UIImage *)getImage:(NSString *)videoURL;
 @end
 
 NS_ASSUME_NONNULL_END

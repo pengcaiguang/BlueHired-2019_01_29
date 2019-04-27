@@ -2,7 +2,7 @@
 //  LPEssayDetailHeadCell.m
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/9/1.
+//  Created by peng on 2018/9/1.
 //  Copyright © 2018年 lanpin. All rights reserved.
 //
 
@@ -49,9 +49,7 @@
                       weakSelf.viewLabel.text = weakSelf.model.data.view ? [weakSelf.model.data.view stringValue] : @"0";
                       weakSelf.commentTotalLabel.text = weakSelf.model.data.commentTotal ? [weakSelf.model.data.commentTotal stringValue] : @"0";
                       weakSelf.praiseTotalLabel.text = weakSelf.model.data.praiseTotal ? [weakSelf.model.data.praiseTotal stringValue] : @"0";
-                      
-                      
-                      
+ 
                       if (weakSelf.Block) {
                           weakSelf.Block(documentHeight);
                       }

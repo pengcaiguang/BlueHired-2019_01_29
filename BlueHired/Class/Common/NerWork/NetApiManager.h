@@ -2,8 +2,8 @@
 //  NetApiManager.h
 //  RedPacket
 //
-//  Created by 邢晓亮 on 2018/6/8.
-//  Copyright © 2018年 邢晓亮. All rights reserved.
+//  Created by peng on 2018/6/8.
+//  Copyright © 2018年 peng. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -143,6 +143,12 @@ typedef void (^UploadImageTempBlock)(BOOL sussess,NSMutableArray *array);
                        singleImage:(UIImage *)image
                    singleImageName:(NSString *)imageName
                         withHandle:(response)responseHandle;
+
+// 视频上传
++ (void)requestPublishVideo:(id)parameters
+                   VideoUrl:(NSString *) VideoUrl
+                   response:(response)response;
+
 //人员关注
 + (void)requestSetUserConcernWithParam:(id)paramer
                             withHandle:(response)responseHandle;
@@ -592,6 +598,39 @@ typedef void (^UploadImageTempBlock)(BOOL sussess,NSMutableArray *array);
 + (void)requestQueryGetBiaduUserBankScan:(id)paramer
                                URLString:(NSString *)URLString
                               withHandle:(response)responseHandle;
+
+//删除评论信息
++ (void)requestQueryDeleteComment:(id)paramer
+                        URLString:(NSString *)URLString
+                       withHandle:(response)responseHandle;
+//粉丝、关注列表
++ (void)requestQueryUserConcernList:(id)paramer
+                         withHandle:(response)responseHandle;
+//招聘详情中推荐招聘信息接口
++ (void)requestQueryWorkRecommend:(id)paramer
+                       withHandle:(response)responseHandle;
+
+//查询拒绝申请借支天数  get请求
++ (void)requestQueryGetRefuseLendDay:(id)paramer
+                          withHandle:(response)responseHandle;
+//查询幸运球开奖记录列表
++ (void)requestQueryGetPrizeRecordList:(id)paramer
+                            withHandle:(response)responseHandle;
+//一键清空圈子消息
++ (void)requestQueryDeleteInfoMood:(id)paramer
+                        withHandle:(response)responseHandle;
+//查询密保问题列表  post 请求  无参数
++ (void)requestQueryGetUserProdlemList:(id)paramer
+                            withHandle:(response)responseHandle;
+//添加更新密保问题
++ (void)requestQueryUpdateUserProdlemList:(id)paramer
+                               withHandle:(response)responseHandle;
+//校验密保正确性   post请求  参数
++ (void)requestQueryVerifyUserProdlemList:(id)paramer
+                               withHandle:(response)responseHandle;
+//查询客服电话 get请求
++ (void)requestQueryGetCustomerTel:(id)paramer
+                        withHandle:(response)responseHandle;
 @end
 
 

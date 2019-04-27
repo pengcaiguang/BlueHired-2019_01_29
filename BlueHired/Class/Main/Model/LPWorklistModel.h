@@ -2,7 +2,7 @@
 //  LPWorklistModel.h
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/8/28.
+//  Created by peng on 2018/8/28.
 //  Copyright © 2018年 lanpin. All rights reserved.
 //
 
@@ -15,10 +15,12 @@
 @property (nonatomic, copy) NSString *msg;
 @end
 
-@class LPWorklistDataSlideshowListModel,LPWorklistDataWorkListModel;
+@class LPWorklistDataSlideshowListModel,LPWorklistDataWorkListModel,LPWorklistDataWorkBarsListModel;
 @interface LPWorklistDataModel : NSObject
 @property (nonatomic, copy) NSArray <LPWorklistDataWorkListModel *> *slideshowList;
 @property (nonatomic, copy) NSArray <LPWorklistDataWorkListModel *> *workList;
+@property (nonatomic, copy) NSArray <LPWorklistDataWorkBarsListModel *> *workBarsList;
+
 @end
 
 
@@ -100,5 +102,33 @@
 @property (nonatomic, copy) NSString *workUrl;
 @property (nonatomic, copy) NSString *workWatchStatus;
 @property (nonatomic, copy) NSString *reStatus;
+
+@end
+@interface LPWorklistDataWorkBarsListModel : NSObject
+@property (nonatomic, copy) NSString *delStatus;
+@property (nonatomic, copy) NSString *id;
+@property (nonatomic, copy) NSString *identity;
+@property (nonatomic, copy) NSString *interviewTime;
+@property (nonatomic, copy) NSString *mechanismId;
+@property (nonatomic, copy) NSString *mechanismName;
+@property (nonatomic, copy) NSString *postType;
+@property (nonatomic, copy) NSString *reMoney;
+@property (nonatomic, copy) NSString *reTime;
+@property (nonatomic, copy) NSString *recruitAddress;
+@property (nonatomic, copy) NSString *recruitStatus;
+@property (nonatomic, copy) NSString *role;
+@property (nonatomic, copy) NSString *set_status;
+@property (nonatomic, copy) NSString *set_time;
+@property (nonatomic, copy) NSString *status;
+@property (nonatomic, copy) NSString *teacherList;
+@property (nonatomic, copy) NSString *time;
+@property (nonatomic, copy) NSString *upUserId;
+@property (nonatomic, copy) NSString *userId;
+@property (nonatomic, copy) NSString *userName;
+@property (nonatomic, copy) NSString *workId;
+@property (nonatomic, copy) NSString *workName;
+@property (nonatomic, copy) NSString *x;
+@property (nonatomic, copy) NSString *y;
+
 
 @end

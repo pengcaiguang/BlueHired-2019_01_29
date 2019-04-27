@@ -2,7 +2,7 @@
 //  LPLoginVC.m
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/8/30.
+//  Created by peng on 2018/8/30.
 //  Copyright © 2018年 lanpin. All rights reserved.
 //
 
@@ -37,6 +37,7 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
     AppDelegate * appDelegate = (AppDelegate*)[UIApplication sharedApplication].delegate;
     appDelegate.WXdelegate = self;
     [self setupUI];
+    [UIWindow visibleViewController];
 }
 
 -(void)setupUI{
@@ -357,6 +358,7 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
 
 -(void)touchLoginButton:(UIButton *)button{
     NSLog(@"登录");
+    self.phoneTextField.text = [self.phoneTextField.text stringByReplacingOccurrencesOfString:@" " withString:@""];
     if (self.phoneTextField.text.length <= 0 || ![NSString isMobilePhoneNumber:self.phoneTextField.text]) {
         [self.view showLoadingMeg:@"请输入正确的手机号" time:MESSAGE_SHOW_TIME];
         return;
@@ -478,6 +480,7 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
             self.phoneTextField.text = [textField.text substringToIndex:11];
             return NO;
         }
+ 
     }
     return YES;
 

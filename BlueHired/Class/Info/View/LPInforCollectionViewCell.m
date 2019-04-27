@@ -2,7 +2,7 @@
 //  LPInforCollectionViewCell.m
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/9/21.
+//  Created by peng on 2018/9/21.
 //  Copyright © 2018年 lanpin. All rights reserved.
 //
 
@@ -38,8 +38,10 @@ static NSString *LPInfoCellID = @"LPInfoCell";
     
     [self.contentView addSubview:self.tableview];
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.contentView);
+//        make.edges.equalTo(self.contentView);
+        make.top.left.right.bottom.mas_offset(0);
     }];
+ 
 }
 -(void)setType:(NSInteger)type{
     _type = type;
@@ -172,7 +174,6 @@ static NSString *LPInfoCellID = @"LPInfoCell";
         LPInfoListDataModel *modelData = self.listArray[indexPath.row];
         if (modelData.moodId != nil) {
             LPMoodDetailVC *vc = [[LPMoodDetailVC alloc]init];
-            vc.Type = 3;
             vc.hidesBottomBarWhenPushed = YES;
             LPMoodListDataModel *moodListDataModel = [[LPMoodListDataModel alloc] init];
             moodListDataModel.id = modelData.moodId;
@@ -206,7 +207,8 @@ static NSString *LPInfoCellID = @"LPInfoCell";
 -(void)requestQueryInfolist{
     NSDictionary *dic = @{
                           @"page":@(self.page),
-                          @"type":@(self.type)
+                          @"type":@(self.type),
+                          @"versionType":@"2.2"
                           };
     [NetApiManager requestQueryInfolistWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
@@ -232,9 +234,18 @@ static NSString *LPInfoCellID = @"LPInfoCell";
         NSLog(@"%@",responseObject);
         if (isSuccess) {
             [self.selectArray removeAllObjects];
-            self.page = 1;
-            [self requestQueryInfolist];
-            [[UIWindow visibleViewController].view showLoadingMeg:@"删除成功" time:MESSAGE_SHOW_TIME];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if ([responseObject[@"data"] integerValue] == 1) {
+                    self.page = 1;
+                    [self requestQueryInfolist];
+                    [[UIWindow visibleViewController].view showLoadingMeg:@"删除成功" time:MESSAGE_SHOW_TIME];
+                }else{
+                    [[UIWindow visibleViewController].view showLoadingMeg:@"删除失败" time:MESSAGE_SHOW_TIME];
+                }
+            }else{
+                [[UIWindow visibleViewController].view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
+
         }else{
             [[UIWindow visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

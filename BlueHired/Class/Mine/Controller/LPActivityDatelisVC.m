@@ -16,6 +16,7 @@
 @property (nonatomic, strong) UISwipeGestureRecognizer *rightSwipeGestureRecognizer;
 @property (nonatomic, strong) UISwipeGestureRecognizer *leftSwipeGestureRecognizer;
 @property (nonatomic,weak) CALayer *progressLayer;
+@property (nonatomic,assign) BOOL isfirst;
 
 @end
 
@@ -27,21 +28,22 @@
     [self WebKit];
 }
 -(void)viewDidAppear:(BOOL)animated{
-    NSURL *url;
-    if ([kUserDefaultsValue(LOGINID) integerValue]) {
-        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@bluehired/activity.html?sign=%ld&id=%@",BaseRequestWeiXiURL,[kUserDefaultsValue(LOGINID) integerValue],self.Model.id]];
-    }else{
-        url =  [NSURL URLWithString:[NSString stringWithFormat:@"%@bluehired/activity.html?id=%@",BaseRequestWeiXiURL,self.Model.id]];
+    if (_isfirst) {
+        NSURL *url;
+        if ([kUserDefaultsValue(LOGINID) integerValue]) {
+            url = [NSURL URLWithString:[NSString stringWithFormat:@"%@bluehired/activity.html?sign=%ld&id=%@",BaseRequestWeiXiURL,[kUserDefaultsValue(LOGINID) integerValue],self.Model.id]];
+        }else{
+            url =  [NSURL URLWithString:[NSString stringWithFormat:@"%@bluehired/activity.html?id=%@",BaseRequestWeiXiURL,self.Model.id]];
+        }
+        NSURLRequest *request = [NSURLRequest requestWithURL:url];
+        [webview loadRequest:request];
     }
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    [webview loadRequest:request];
-    
+    _isfirst = YES;
+
 }
 
 - (void)WebKit {
     self.view.backgroundColor = [UIColor whiteColor];
-    CGFloat view_w = self.view.frame.size.width;
-    CGFloat view_h = self.view.frame.size.height;
     
     WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc]init];
     config.selectionGranularity = WKSelectionGranularityDynamic;

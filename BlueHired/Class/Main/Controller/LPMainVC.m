@@ -2,9 +2,11 @@
 //  LPMainVC.m
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/8/27.
+//  Created by peng on 2018/8/27.
 //  Copyright © 2018年 lanpin. All rights reserved.
 //
+
+
 
 #import "LPMainVC.h"
 #import "LPSearchBar.h"
@@ -18,10 +20,14 @@
 #import "LPWorkDetailVC.h"
 #import "LPSelectCityVC.h"
 #import "LPHongBaoVC.h"
+#import "LPMain2Cell.h"
+#import "DHGuidePageHUD.h"
 
-static NSString *LPMainCellID = @"LPMainCell";
+#define OPERATIONFORKEY @"operationGuidePage"
 
-@interface LPMainVC ()<UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,SDCycleScrollViewDelegate,LPSortAlertViewDelegate,LPSelectCityVCDelegate,LPScreenAlertViewDelegate,UITabBarDelegate>
+static NSString *LPMainCellID = @"LPMain2Cell";
+
+@interface LPMainVC ()<UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,SDCycleScrollViewDelegate,LPSortAlertViewDelegate,LPSelectCityVCDelegate,LPScreenAlertViewDelegate,UITabBarDelegate,UIScrollViewDelegate>
 
 @property (nonatomic, strong)UITableView *tableview;
 @property(nonatomic,strong) UIView *tableHeaderView;
@@ -42,8 +48,13 @@ static NSString *LPMainCellID = @"LPMainCell";
 @property(nonatomic,strong) NSString *orderType;
 @property(nonatomic,strong) NSString *mechanismAddress;
 
-@property(nonatomic,assign) BOOL isRequest;
 
+@property(nonatomic,strong) UIScrollView *RecommendScrollView;
+@property(nonatomic,strong) UIImageView *RecommendBackImage;
+@property (strong, nonatomic) NSTimer * myTimer;//定时器管控轮播
+
+@property(nonatomic,strong) UIView *ButtonView;//定时器管控轮播
+@property(nonatomic,strong) NSMutableArray <UIButton *>*ButtonArr;//定时器管控轮播
 
 @end
 
@@ -66,24 +77,56 @@ static NSString *LPMainCellID = @"LPMainCell";
 //    self.listArray = [NSMutableArray array];
 //    [self request];
 //    [self requestMechanismlist];
+    _myTimer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(changeScrollContentOffSetY) userInfo:nil repeats:YES];
+    
+    [[NSRunLoop currentRunLoop] addTimer:_myTimer forMode:NSRunLoopCommonModes];
+ 
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:OPERATIONFORKEY]) {
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:OPERATIONFORKEY];
+        GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"是否进行招工报名引导？" message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"否",@"是"] buttonsColor:@[[UIColor colorWithHexString:@"#666666"],[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor],[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
+            if (buttonIndex == 1) {
+                NSArray *imageNameArray = @[@"报名操作指导_01",@"报名操作指导_02",@"报名操作指导_03",@"报名操作指导_04",@"报名操作指导_05"];
+                //        if (IS_iPhoneX) {
+                //            imageNameArray = @[@"报名操作指导X_01",@"报名操作指导X_02",@"报名操作指导X_03",@"报名操作指导X_04",@"报名操作指导X_05",@"报名操作指导X_06"];
+                //        }
+                // 创建并添加引导页
+                DHGuidePageHUD *guidePage = [[DHGuidePageHUD alloc] dh_initWithFrame:[UIApplication sharedApplication].keyWindow.frame imageNameArray:imageNameArray buttonIsHidden:YES isShowBt:YES isTouchNext:YES ];
+                guidePage.slideInto = YES;
+                [[UIApplication sharedApplication].keyWindow addSubview:guidePage];
+            }
+        }];
+        [alert show];
+    }
     
     [self requestQueryDownload];
+    [self requestMechanismlist];
     
-    
+ 
+    //查看缓存
+    NSDate *date = [LPUserDefaults getObjectByFileName:[NSString stringWithFormat: @"WORKLISTCACHEDATE"]];
+    id CacheList = [LPUserDefaults getObjectByFileName:[NSString stringWithFormat: @"WORKLISTCACHE"]];
+    NSString *ISLoginstr = [LPUserDefaults getObjectByFileName:[NSString stringWithFormat: @"CIRCLELISTCACHEISLogin"]];
+    if ([LPTools compareOneDay:date withAnotherDay:[NSDate date]]<=15 && CacheList ) {
+        self.page = 1;
+        self.model = [LPWorklistModel mj_objectWithKeyValues:CacheList];
+        if (ISLoginstr.integerValue == 1) {
+            self.page = 1;
+            [self request];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                 [LPUserDefaults saveObject:@"0" byFileName:[NSString stringWithFormat:@"CIRCLELISTCACHEISLogin"]];
+            });
+        }
+    }else{
+        self.page = 1;
+        [self request];
+    }
+
 }
 
--(void)viewWillAppear:(BOOL)animated{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    if (self.isRequest == YES) {
-        self.isRequest = NO;
-        return;
-    }
-    self.page = 1;
- 
-     [self request];
-    [self requestMechanismlist];
-}
+    [self.tableview reloadData];
+ }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
@@ -91,6 +134,8 @@ static NSString *LPMainCellID = @"LPMainCell";
     if (!self.screenAlertView.hidden) {
         self.screenAlertView.hidden = YES;
     }
+    [_myTimer invalidate];
+    _myTimer = nil;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle{
@@ -140,8 +185,8 @@ static NSString *LPMainCellID = @"LPMainCell";
 -(void)setSearchView{
     LPSearchBar *searchBar = [self addSearchBar];
     UIView *wrapView = [[UIView alloc]init];
-    wrapView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 28);
-    wrapView.layer.cornerRadius = 14;
+    wrapView.frame = CGRectMake(0, 0, SCREEN_WIDTH - 99, 32);
+    wrapView.layer.cornerRadius = 16;
     wrapView.layer.masksToBounds = YES;
 //    wrapView.clipsToBounds = YES;
     wrapView.backgroundColor = [UIColor whiteColor];
@@ -200,6 +245,19 @@ static NSString *LPMainCellID = @"LPMainCell";
 //            self.cycleScrollView.pageControlStyle = SDCycleScrollViewPageContolStyleNone;
 //        }
         
+        [self.RecommendScrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+ 
+        for (int i =0 ;i <self.model.data.workBarsList.count;i++) {
+            LPWorklistDataWorkBarsListModel *m = self.model.data.workBarsList[i];
+            UILabel *label= [[UILabel alloc] initWithFrame:CGRectMake(0, i*27 , SCREEN_WIDTH-69, 27)];
+            [self.RecommendScrollView addSubview:label];
+            label.text = [NSString stringWithFormat:@"恭喜用户%@报名%@,入职成功!",m.userName,m.mechanismName];
+            label.textColor = [UIColor whiteColor];
+            label.font = [UIFont systemFontOfSize:12];
+            label.textAlignment = NSTextAlignmentCenter;
+        }
+        self.RecommendScrollView.contentSize = CGSizeMake(0, self.model.data.workBarsList.count*27);
+        
         if (self.page == 1) {
             self.listArray = [NSMutableArray array];
         }
@@ -234,7 +292,7 @@ static NSString *LPMainCellID = @"LPMainCell";
         }
     }
     if (!has) {
-        LPNoDataView *noDataView = [[LPNoDataView alloc]initWithFrame:CGRectMake(0, 240, SCREEN_WIDTH, SCREEN_HEIGHT-240-49-64)];
+        LPNoDataView *noDataView = [[LPNoDataView alloc]initWithFrame:CGRectMake(0, 266, SCREEN_WIDTH, SCREEN_HEIGHT-266-49-kNavBarHeight-kBottomBarHeight)];
         [noDataView image:nil text:@"抱歉！没有相关记录！"];
         [self.tableview addSubview:noDataView];
         noDataView.hidden = hidden;
@@ -257,7 +315,7 @@ static NSString *LPMainCellID = @"LPMainCell";
     vc.hidesBottomBarWhenPushed = YES;
     vc.delegate = self;
     [self.navigationController pushViewController:vc animated:YES];
-    self.isRequest = YES;
+ 
 }
 
 #pragma mark - LPSelectCityVCDelegate
@@ -269,7 +327,7 @@ static NSString *LPMainCellID = @"LPMainCell";
     }
     self.cityLabel.text = model.c_name;
     self.page = 1;
-//    [self request];
+    [self request];
 }
 
 
@@ -279,9 +337,9 @@ static NSString *LPMainCellID = @"LPMainCell";
     return self.listArray.count;
 }
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    LPMainCell *cell = [tableView dequeueReusableCellWithIdentifier:LPMainCellID];
+    LPMain2Cell *cell = [tableView dequeueReusableCellWithIdentifier:LPMainCellID];
     if(cell == nil){
-        cell = [[LPMainCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:LPMainCellID];
+        cell = [[LPMain2Cell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:LPMainCellID];
     }
     cell.model = self.listArray[indexPath.row];
 //    WEAK_SELF()
@@ -297,7 +355,8 @@ static NSString *LPMainCellID = @"LPMainCell";
     vc.hidesBottomBarWhenPushed = YES;
     vc.workListModel = self.listArray[indexPath.row];
     [self.navigationController pushViewController:vc animated:YES];
-    self.isRequest = YES;
+
+    
 //    LPHongBaoVC *vc = [[LPHongBaoVC alloc] init];
 //    vc.hidesBottomBarWhenPushed = YES;
 //    [self.navigationController   pushViewController:vc animated:YES];
@@ -308,7 +367,7 @@ static NSString *LPMainCellID = @"LPMainCell";
     LPMainSearchVC *vc = [[LPMainSearchVC alloc]init];
     vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
-    self.isRequest  = YES;
+ 
     return NO;
 }
 
@@ -319,21 +378,32 @@ static NSString *LPMainCellID = @"LPMainCell";
     vc.hidesBottomBarWhenPushed = YES;
     vc.workListModel = self.model.data.slideshowList[index];
     [self.navigationController pushViewController:vc animated:YES];
-    self.isRequest = YES;
+ 
 }
 
 #pragma mark - target
 -(void)touchSortButton:(UIButton *)button{
-    if (kUserDefaultsValue(USERDATA).integerValue == 1 ||
-        kUserDefaultsValue(USERDATA).integerValue == 2 ||
-        kUserDefaultsValue(USERDATA).integerValue == 6 ) {
-        self.sortAlertView.titleArray = @[@"综合工资最高",@"报名人数最多",@"企业评分最高",@"工价最高",@"可借支",@"平台合作价",@"管理费"];
-    }else{
+//    if (kUserDefaultsValue(USERDATA).integerValue == 1 ||
+//        kUserDefaultsValue(USERDATA).integerValue == 2 ||
+//        kUserDefaultsValue(USERDATA).integerValue == 6 ) {
+//        self.sortAlertView.titleArray = @[@"综合工资最高",@"报名人数最多",@"企业评分最高",@"工价最高",@"可借支",@"平台合作价",@"管理费"];
+//    }else{
         self.sortAlertView.titleArray  = @[@"综合工资最高",@"报名人数最多",@"企业评分最高",@"工价最高",@"可借支"];
-    }
+//    }
     button.selected = !button.isSelected;
     self.sortAlertView.hidden = !button.isSelected;
 }
+#pragma mark - UIScrollViewDelegate
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+{
+    if (scrollView == self.RecommendScrollView) {
+        if (scrollView.contentOffset.y==scrollView.contentSize.height){
+            [scrollView setContentOffset:CGPointMake(0, 0)];
+        }
+    }
+
+}
+
 
 #pragma mark - LPSortAlertViewDelegate
 -(void)touchTableView:(NSInteger)index{
@@ -372,6 +442,10 @@ static NSString *LPMainCellID = @"LPMainCell";
         [self.tableview.mj_header endRefreshing];
         [self.tableview.mj_footer endRefreshing];
         if (isSuccess) {
+            if (self.page == 1&&!self.orderType&&!self.mechanismAddress&&!self.mechanismTypeId&&!self.workType) {
+                 [LPUserDefaults saveObject:responseObject byFileName:[NSString stringWithFormat:@"WORKLISTCACHE"]];
+                [LPUserDefaults saveObject:[NSDate date] byFileName:[NSString stringWithFormat: @"WORKLISTCACHEDATE"]];
+            }
             self.model = [LPWorklistModel mj_objectWithKeyValues:responseObject];
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
@@ -420,7 +494,7 @@ static NSString *LPMainCellID = @"LPMainCell";
         _tableview.estimatedRowHeight = 100;
         _tableview.tableHeaderView = self.tableHeaderView;
         _tableview.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-        _tableview.separatorColor = [UIColor baseColor];
+        _tableview.separatorColor = [UIColor colorWithHexString:@"#E6E6E6"];
         _tableview.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
         [_tableview registerNib:[UINib nibWithNibName:LPMainCellID bundle:nil] forCellReuseIdentifier:LPMainCellID];
         _tableview.mj_header = [HZNormalHeader headerWithRefreshingBlock:^{
@@ -436,12 +510,16 @@ static NSString *LPMainCellID = @"LPMainCell";
 -(UIView *)tableHeaderView{
     if (!_tableHeaderView){
         _tableHeaderView = [[UIView alloc]init];
-        _tableHeaderView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 240);
+        _tableHeaderView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 266);
         [_tableHeaderView addSubview:self.cycleScrollView];
+        [_tableHeaderView addSubview:self.RecommendBackImage];
+        [_tableHeaderView addSubview:self.RecommendScrollView];
+        [_tableHeaderView addSubview:self.ButtonView];
+
         [_tableHeaderView addSubview:self.sortButton];
         [_tableHeaderView addSubview:self.screenButton];
         UIView *lineView = [[UIView alloc]init];
-        lineView.frame = CGRectMake(0, 239.5, SCREEN_WIDTH, 0.5);
+        lineView.frame = CGRectMake(0, 265.5, SCREEN_WIDTH, 0.5);
         lineView.backgroundColor = [UIColor baseColor];
         [_tableHeaderView addSubview:lineView];
     }
@@ -450,23 +528,24 @@ static NSString *LPMainCellID = @"LPMainCell";
 -(UIButton *)sortButton{
     if (!_sortButton) {
         _sortButton = [[UIButton alloc]init];
-        _sortButton.frame = CGRectMake(13, 210, 70, 20);
-        [_sortButton setTitle:@"综合排序" forState:UIControlStateNormal];
-        [_sortButton setImage:[UIImage imageNamed:@"sort_normal"] forState:UIControlStateNormal];
-        [_sortButton setImage:[UIImage imageNamed:@"sort_selected"] forState:UIControlStateSelected];
+        _sortButton.frame = CGRectMake(13, 233, 70, 20);
+        [_sortButton setTitle:@"默认排序" forState:UIControlStateNormal];
+        [_sortButton setImage:[UIImage imageNamed:@"add_ record_normal"] forState:UIControlStateNormal];
+        [_sortButton setImage:[UIImage imageNamed:@"add_ record_selected"] forState:UIControlStateSelected];
         [_sortButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [_sortButton setTitleColor:[UIColor baseColor] forState:UIControlStateSelected];
         _sortButton.titleLabel.font = [UIFont systemFontOfSize:14];
         _sortButton.titleEdgeInsets = UIEdgeInsetsMake(0, -_sortButton.imageView.frame.size.width - _sortButton.frame.size.width + _sortButton.titleLabel.intrinsicContentSize.width, 0, 0);
         _sortButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -_sortButton.titleLabel.frame.size.width - _sortButton.frame.size.width + _sortButton.imageView.frame.size.width);
-        [_sortButton addTarget:self action:@selector(touchSortButton:) forControlEvents:UIControlEventTouchUpInside];
+        [_sortButton addTarget:self action:@selector(TouchBt:) forControlEvents:UIControlEventTouchUpInside];
+        _sortButton.selected = YES;
     }
     return _sortButton;
 }
 -(UIButton *)screenButton{
     if (!_screenButton) {
         _screenButton = [[UIButton alloc]init];
-        _screenButton.frame = CGRectMake(SCREEN_WIDTH-45-13, 210, 45, 20);
+        _screenButton.frame = CGRectMake(SCREEN_WIDTH-45-13, 233, 45, 20);
         [_screenButton setTitle:@"筛选" forState:UIControlStateNormal];
         [_screenButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [_screenButton setImage:[UIImage imageNamed:@"screen_normal"] forState:UIControlStateNormal];
@@ -497,12 +576,91 @@ static NSString *LPMainCellID = @"LPMainCell";
 
 -(SDCycleScrollView *)cycleScrollView{
     if (!_cycleScrollView) {
-        _cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 200) delegate:self placeholderImage:nil];
+        _cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 150) delegate:self placeholderImage:nil];
         _cycleScrollView.pageControlAliment = SDCycleScrollViewPageContolAlimentCenter;
         _cycleScrollView.currentPageDotColor = [UIColor whiteColor]; // 自定义分页控件小圆标颜色
     }
     return _cycleScrollView;
+    
 }
+
+-(UIScrollView *)RecommendScrollView{
+    if (!_RecommendScrollView) {
+        _RecommendScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(48 , 156, SCREEN_WIDTH-69, 27)];
+        _RecommendScrollView.delegate = self;
+        _RecommendScrollView.showsVerticalScrollIndicator = NO;
+        _RecommendScrollView.scrollEnabled = NO;
+        _RecommendScrollView.bounces = NO;
+     }
+    return _RecommendScrollView;
+}
+-(void)changeScrollContentOffSetY{
+    //启动定时器
+    CGPoint point = self.RecommendScrollView.contentOffset;
+    [self.RecommendScrollView setContentOffset:CGPointMake(0, point.y+CGRectGetHeight(self.RecommendScrollView.frame)) animated:YES];
+}
+
+- (UIImageView *)RecommendBackImage{
+    if (!_RecommendBackImage) {
+        _RecommendBackImage = [[UIImageView alloc] initWithFrame:CGRectMake(13, 156, SCREEN_WIDTH-26, 27)];
+        _RecommendBackImage.image = [UIImage imageNamed:@"RecommendBackImage"];
+    }
+    return _RecommendBackImage;
+}
+
+- (UIView *)ButtonView{
+    if (!_ButtonView) {
+        _ButtonView = [[UIView alloc] initWithFrame:CGRectMake(13, 193, SCREEN_WIDTH-26, 27)];
+        NSArray *arr = @[@"推荐好厂",@"高额返费",@"好评企业",@"可借支"];
+        self.ButtonArr = [[NSMutableArray alloc] init];
+        for (int i = 0; i<arr.count; i++) {
+            UIButton *Bt = [[UIButton alloc] init];
+            [_ButtonView addSubview:Bt];
+            [Bt setTitle:arr[i] forState:UIControlStateNormal];
+            [Bt setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"#F2F2F2"]] forState:UIControlStateNormal];
+            [Bt setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"#E4F4FF"]] forState:UIControlStateSelected];
+            [Bt setTitleColor:[UIColor colorWithHexString:@"#444444"] forState:UIControlStateNormal];
+            [Bt setTitleColor:[UIColor colorWithHexString:@"#3CAFFF"] forState:UIControlStateSelected];
+            Bt.titleLabel.font = [UIFont systemFontOfSize:13];
+            Bt.layer.cornerRadius = 4;
+            Bt.clipsToBounds = YES;
+            [Bt addTarget:self action:@selector(TouchBt:) forControlEvents:UIControlEventTouchUpInside];
+            [self.ButtonArr addObject:Bt];
+        }
+        
+        [self.ButtonArr mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedSpacing:10 leadSpacing:0 tailSpacing:0];
+        [self.ButtonArr mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_offset(0);
+            make.height.mas_equalTo(27);
+        }];
+    }
+    return _ButtonView;
+}
+-(void)TouchBt:(UIButton *) sender{
+    if (sender.selected == YES) {
+        return;
+    }
+    self.sortButton.selected = NO;
+
+    for (UIButton *bt in self.ButtonArr) {
+        bt.selected = NO;
+    }
+    sender.selected = YES;
+    if ([sender.currentTitle isEqualToString:@"默认排序"]) {
+        self.orderType = @"";
+    }else if ([sender.currentTitle isEqualToString:@"推荐好厂"]){
+        self.orderType = @"7";
+    }else if ([sender.currentTitle isEqualToString:@"高额返费"]){
+        self.orderType = @"8";
+    }else if ([sender.currentTitle isEqualToString:@"好评企业"]){
+        self.orderType = @"2";
+    }else if ([sender.currentTitle isEqualToString:@"可借支"]){
+        self.orderType = @"4";
+    }
+    self.page = 1;
+    [self request];
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -540,5 +698,7 @@ static NSString *LPMainCellID = @"LPMainCell";
     NSString *app_Version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
     return app_Version;
 }
+
+
 
 @end

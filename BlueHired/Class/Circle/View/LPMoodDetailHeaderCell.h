@@ -2,7 +2,7 @@
 //  LPMoodDetailHeaderCell.h
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/9/18.
+//  Created by peng on 2018/9/18.
 //  Copyright © 2018年 lanpin. All rights reserved.
 //
 
@@ -10,6 +10,7 @@
 #import "LPGetMoodModel.h"
 
 typedef void(^LPMoodDetailHeaderCellUserConcernBlock)(void);
+typedef void (^LPCircleListCellVideoBlock)(NSString *VideoUrl,UIImageView *view);
 
 @interface LPMoodDetailHeaderCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *userUrlImgView;
@@ -31,6 +32,7 @@ typedef void(^LPMoodDetailHeaderCellUserConcernBlock)(void);
 @property(nonatomic,strong) LPGetMoodModel *model;
 
 @property (nonatomic,copy) LPMoodDetailHeaderCellUserConcernBlock userConcernBlock;
+@property (nonatomic,copy) LPCircleListCellVideoBlock VideoBlock;
 
 @property(nonatomic,assign) BOOL isUserConcern;
 

@@ -9,6 +9,7 @@
 #import "LPBusinessReviewWageVC.h"
 #import "HXPhotoPicker.h"
 #import "LPTools.h"
+#import "LPMechanismModel.h"
 
 
 static const CGFloat kPhotoViewMargin = 13.0;
@@ -24,7 +25,7 @@ static const CGFloat kPhotoViewMargin = 13.0;
 
 @property(nonatomic,strong) NSArray *pickerArray;
 
-@property(nonatomic,strong) NSArray *p1Array;
+//@property(nonatomic,strong) NSArray *p1Array;
 @property(nonatomic,strong) NSArray *p2Array;
 @property(nonatomic,assign) NSInteger select1;
 
@@ -53,7 +54,9 @@ static const CGFloat kPhotoViewMargin = 13.0;
 @property(nonatomic,strong) UIImageView *headImgView;
 @property(nonatomic,strong) NSString *userUrl;
 
+@property (nonatomic,strong) UIView *ToolTextView;
 
+@property(nonatomic,strong) LPMechanismModel *TypeList;
 
 @end
 
@@ -65,7 +68,8 @@ static const CGFloat kPhotoViewMargin = 13.0;
     
     self.navigationItem.title = @"晒工资";
     self.userUrl = @"";
-    
+    [self setTextFieldView];
+
     NSDate *currentDate = [NSDate date];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 
@@ -111,10 +115,58 @@ static const CGFloat kPhotoViewMargin = 13.0;
     //    photoView.showAddCell = NO;
     _photoView.backgroundColor = [UIColor whiteColor];
 
-    
+    [self requestUserMaterialSelectMechanism];
+
     
     
 }
+
+
+#pragma mark - 编辑view
+-(void)setTextFieldView{
+    //输入框编辑view
+    UIView *ToolTextView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 40)];
+    self.ToolTextView = ToolTextView;
+    ToolTextView.backgroundColor = [UIColor colorWithHexString:@"#E6E6E6"];
+    UIButton *DoneBt = [[UIButton alloc] init];
+    [ToolTextView addSubview:DoneBt];
+    [DoneBt mas_makeConstraints:^(MASConstraintMaker *make){
+        make.top.mas_equalTo(0);
+        make.bottom.mas_equalTo(0);
+        make.right.mas_equalTo(0);
+    }];
+    [DoneBt setTitle:@"确定" forState:UIControlStateNormal];
+    [DoneBt setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
+    DoneBt.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+    DoneBt.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);
+    [DoneBt addTarget:self action:@selector(TouchTextDone:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    UIButton *CancelBt = [[UIButton alloc] init];
+    [ToolTextView addSubview:CancelBt];
+    [CancelBt mas_makeConstraints:^(MASConstraintMaker *make){
+        make.top.mas_equalTo(0);
+        make.bottom.mas_equalTo(0);
+        make.left.mas_equalTo(0);
+        make.right.equalTo(DoneBt.mas_left).offset(0);
+        make.width.equalTo(DoneBt.mas_width);
+    }];
+    [CancelBt setTitle:@"取消" forState:UIControlStateNormal];
+    [CancelBt setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    CancelBt.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    CancelBt.titleEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
+    [CancelBt addTarget:self action:@selector(TouchTextCancel:) forControlEvents:UIControlEventTouchUpInside];
+}
+-(void)TouchTextDone:(UIButton *)sender{
+    [[[UIApplication sharedApplication] keyWindow] endEditing:YES];
+}
+
+-(void)TouchTextCancel:(UIButton *)sender{
+    [[[UIApplication sharedApplication] keyWindow] endEditing:YES];
+}
+
+
+
 
 -(void)setLogoutButton{
     UIButton *button = [[UIButton alloc]init];
@@ -217,6 +269,8 @@ static const CGFloat kPhotoViewMargin = 13.0;
         _manager.configuration.openCamera = YES;
         _manager.configuration.photoCanEdit = NO;
         //        _manager.configuration.selectTogether = NO;
+        _manager.configuration.changeAlbumListContentView = NO;
+        [_manager preloadData];
     }
     return _manager;
 }
@@ -292,6 +346,7 @@ static const CGFloat kPhotoViewMargin = 13.0;
         //        [textField addTarget:self action:@selector(textFieldChanged:) forControlEvents:UIControlEventEditingChanged];
         //        self.userName = self.userMaterialModel.data.user_name;
         self.yinfaTF = textField;
+        textField.inputAccessoryView = self.ToolTextView;
         [cell.contentView addSubview:textField];
     }else if (indexPath.row == 4){
         cell.textLabel.text = @"实发工资：";
@@ -303,6 +358,8 @@ static const CGFloat kPhotoViewMargin = 13.0;
         //        [textField addTarget:self action:@selector(textFieldChanged:) forControlEvents:UIControlEventEditingChanged];
         //        self.userName = self.userMaterialModel.data.user_name;
         self.shifaTF = textField;
+        textField.inputAccessoryView = self.ToolTextView;
+
         [cell.contentView addSubview:textField];
     }
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 43, SCREEN_WIDTH, 0.5)];
@@ -371,13 +428,13 @@ static const CGFloat kPhotoViewMargin = 13.0;
         pickerView.dataSource = self;
         [self.popView addSubview:pickerView];
         self.pickerView = pickerView;
-        self.p1Array = @[@{@"服装厂":@[@"普工",@"服装新手",@"服装大师"]},
-                         @{@"电子厂":@[@"普工",@"司机",@"叉车工",@"仓管员"]},
-                         @{@"纺织厂":@[@"普工",@"纺织新手",@"纺织大师"]},
-                         @{@"鞋厂":@[@"普工",@"运动鞋工",@"休闲鞋工",@"皮鞋工"]},
-                         @{@"挖掘厂":@[@"普工",@"挖掘大师"]},
-                         @{@"食品厂":@[@"普工",@"吃货",@"吃货大师"]}];
-        self.cengzaizhi = [NSString stringWithFormat:@"%@-%@",[(NSDictionary *)self.p1Array[0] allKeys][0],[(NSDictionary *)self.p1Array[0] allValues][0][0]];
+//        self.p1Array = @[@{@"服装厂":@[@"普工",@"服装新手",@"服装大师"]},
+//                         @{@"电子厂":@[@"普工",@"司机",@"叉车工",@"仓管员"]},
+//                         @{@"纺织厂":@[@"普工",@"纺织新手",@"纺织大师"]},
+//                         @{@"鞋厂":@[@"普工",@"运动鞋工",@"休闲鞋工",@"皮鞋工"]},
+//                         @{@"挖掘厂":@[@"普工",@"挖掘大师"]},
+//                         @{@"食品厂":@[@"普工",@"吃货",@"吃货大师"]}];
+        self.cengzaizhi = [NSString stringWithFormat:@"%@-%@",self.TypeList.data[0].mechanismTypeName,self.TypeList.data[0].workTypeList[0].workTypeName ];
         [self.pickerView reloadAllComponents];
     }
     
@@ -395,9 +452,9 @@ static const CGFloat kPhotoViewMargin = 13.0;
 }
 -(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
         if (component == 0) {
-            return self.p1Array.count;
+            return self.TypeList.data.count;
         }else{
-            return ((NSArray *)((NSDictionary *)self.p1Array[self.select1]).allValues[0]).count;
+            return self.TypeList.data[self.select1].workTypeList.count;
         }
  
 }
@@ -408,15 +465,16 @@ static const CGFloat kPhotoViewMargin = 13.0;
     
         UILabel *text = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width/2, 20)];
         text.textAlignment = NSTextAlignmentCenter;
-        NSMutableArray *a = [NSMutableArray array];
-        for (NSDictionary *dic in self.p1Array) {
-            [a addObject:[dic allKeys][0]];
-        }
+//        NSMutableArray *a = [NSMutableArray array];
+//        for (NSDictionary *dic in self.p1Array) {
+//            [a addObject:[dic allKeys][0]];
+//        }
         if (component == 0) {
-            text.text = a[row];
+//            text.text = a[row];
+            text.text = self.TypeList.data[row].mechanismTypeName;
         }else{
-            NSArray *arr = [(NSDictionary *)self.p1Array[self.select1] allValues][0];
-            text.text = arr[row];
+//            NSArray *arr = [(NSDictionary *)self.p1Array[self.select1] allValues][0];
+            text.text = self.TypeList.data[self.select1].workTypeList[row].workTypeName;
         }
         [view addSubview:text];
   
@@ -445,12 +503,12 @@ static const CGFloat kPhotoViewMargin = 13.0;
             [pickerView reloadComponent:1];
         }
     
-        NSString *s = [self.p1Array[self.select1] allKeys][0];
-    
+        NSString *s = self.TypeList.data[self.select1].mechanismTypeName;
+
         NSInteger cityIndex = [pickerView selectedRowInComponent:1];
-        NSString *cityName = [self.p1Array[self.select1] allValues][0][cityIndex];
+        NSString *cityName = self.TypeList.data[self.select1].workTypeList[cityIndex].workTypeName;
         self.cengzaizhi = [NSString stringWithFormat:@"%@-%@",s,cityName];
-    
+
 }
 
 -(void)confirmBirthday{
@@ -717,4 +775,20 @@ static const CGFloat kPhotoViewMargin = 13.0;
         }
     }];
 }
+-(void)setTypeList:(LPMechanismModel *)TypeList{
+    _TypeList = TypeList;
+    
+}
+-(void)requestUserMaterialSelectMechanism{
+    NSDictionary *dic = @{};
+    [NetApiManager requestUserMaterialSelectMechanism:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            self.TypeList = [LPMechanismModel mj_objectWithKeyValues:responseObject];
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+
 @end

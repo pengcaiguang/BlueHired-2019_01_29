@@ -2,7 +2,7 @@
 //  Heads.h
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/8/27.
+//  Created by peng on 2018/8/27.
 //  Copyright © 2018年 lanpin. All rights reserved.
 //
 
@@ -69,4 +69,11 @@
 #import "iCarousel.h"
 #import "CustomDataPickView.h"
 #import "DataTimeTool.h"
+#import "UILabel+Copy.h"
+#import "NSString+Extension.h"
+#import "WJMoviePlayerView.h"
+#import "LPUserProblemModel.h"
+#import "LPSetSecretVC.h"
+#import "LPChangePhoneVC.h"
+
 #endif /* Heads_h */

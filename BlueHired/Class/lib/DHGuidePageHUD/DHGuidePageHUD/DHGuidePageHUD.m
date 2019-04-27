@@ -21,11 +21,12 @@
 @property (nonatomic, strong) UIPageControl           *imagePageControl;
 @property (nonatomic, assign) NSInteger               slideIntoNumber;
 @property (nonatomic, strong) MPMoviePlayerController *playerController;
+@property (nonatomic, strong) UIScrollView *guidePageView;
 @end
 
 @implementation DHGuidePageHUD
 
-- (instancetype)dh_initWithFrame:(CGRect)frame imageNameArray:(NSArray<NSString *> *)imageNameArray buttonIsHidden:(BOOL)isHidden {
+- (instancetype)dh_initWithFrame:(CGRect)frame imageNameArray:(NSArray<NSString *> *)imageNameArray buttonIsHidden:(BOOL)isHidden isShowBt:(BOOL)isShowBt isTouchNext:(BOOL)isTouchNext {
     if ([super initWithFrame:frame]) {
         self.slideInto = NO;
         if (isHidden == YES) {
@@ -34,13 +35,25 @@
         
         // 设置引导视图的scrollview
         UIScrollView *guidePageView = [[UIScrollView alloc]initWithFrame:frame];
-        [guidePageView setBackgroundColor:[UIColor lightGrayColor]];
+        self.guidePageView = guidePageView;
+        [guidePageView setBackgroundColor:[UIColor clearColor]];
         [guidePageView setContentSize:CGSizeMake(DDScreenW*imageNameArray.count, DDScreenH)];
         [guidePageView setBounces:NO];
         [guidePageView setPagingEnabled:YES];
         [guidePageView setShowsHorizontalScrollIndicator:NO];
         [guidePageView setDelegate:self];
         [self addSubview:guidePageView];
+        
+        if (isTouchNext) {
+            UITapGestureRecognizer *tapGesture=[[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapUiscrollView)];
+            
+            tapGesture.numberOfTapsRequired=1;//设置点按次数，默认为1，注意在iOS中很少用双击操作
+            tapGesture.numberOfTouchesRequired=1;//点按的手指数
+            [guidePageView addGestureRecognizer:tapGesture];
+        }
+
+        
+        
         
         // 设置引导页上的跳过按钮
         UIButton *skipButton = [[UIButton alloc]initWithFrame:CGRectMake(DDScreenW*0.8, DDScreenW*0.1, 50, 25)];
@@ -53,6 +66,12 @@
         [skipButton.layer setCornerRadius:(skipButton.frame.size.height * 0.5)];
         [skipButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
         [self addSubview:skipButton];
+        
+        if (isShowBt) {
+            skipButton.hidden = YES;
+        }else{
+            skipButton.hidden = NO;
+        }
         
         // 添加在引导视图上的多张引导图片
         for (int i=0; i<imageNameArray.count; i++) {
@@ -88,10 +107,24 @@
         self.imagePageControl.pageIndicatorTintColor = [UIColor clearColor];
         self.imagePageControl.currentPageIndicatorTintColor = [UIColor clearColor];
         [self addSubview:self.imagePageControl];
-        
+ 
     }
     return self;
 }
+
+-(void)tapUiscrollView
+{
+    int page = self.guidePageView.contentOffset.x / self.guidePageView.frame.size.width;
+
+    if (self.imageArray && page == self.imageArray.count-1) {
+        [self buttonClick:nil];
+        return;
+    }
+    
+     [self.guidePageView setContentOffset:CGPointMake(self.guidePageView.frame.size.width*(page+1),0 ) animated:YES];
+    self.guidePageView.bouncesZoom = NO;
+}
+
 
 #pragma mark - UIScrollViewDelegate
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollview {

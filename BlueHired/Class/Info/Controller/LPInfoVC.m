@@ -2,7 +2,7 @@
 //  LPInfoVC.m
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/9/20.
+//  Created by peng on 2018/9/20.
 //  Copyright © 2018年 lanpin. All rights reserved.
 //
 
@@ -39,9 +39,12 @@ static NSString *LPInforCollectionViewCellID = @"LPInforCollectionViewCell";
     if (kUserDefaultsValue(USERDATA).integerValue == 1 ||
         kUserDefaultsValue(USERDATA).integerValue == 2 ||
         kUserDefaultsValue(USERDATA).integerValue == 6) {
-        self.titleArray = @[@"系统通知",@"其他消息",@"门店消息"];
+//        self.titleArray = @[@"系统通知",@"其他消息",@"门店消息"];
+                self.titleArray = @[@"系统通知",@"门店消息"];
     }else{
-        self.titleArray = @[@"系统通知",@"其他消息"];
+//        self.titleArray = @[@"系统通知",@"其他消息"];
+                self.titleArray = @[@"系统通知"];
+        self.navigationItem.title = @"系统通知";
     }
     
     self.labelArray = [NSMutableArray array];
@@ -55,7 +58,7 @@ static NSString *LPInforCollectionViewCellID = @"LPInforCollectionViewCell";
         make.top.mas_equalTo(0);
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
-        make.height.mas_equalTo(50);
+        make.height.mas_equalTo(self.titleArray.count > 1 ? 50:0);
     }];
     [self.view addSubview:self.collectionView];
     [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -64,6 +67,7 @@ static NSString *LPInforCollectionViewCellID = @"LPInforCollectionViewCell";
         make.right.mas_equalTo(0);
         make.bottom.mas_equalTo(0);
     }];
+ 
     [self setBottomView];
     
     if (@available(iOS 11.0, *)) {
@@ -92,7 +96,7 @@ static NSString *LPInforCollectionViewCellID = @"LPInforCollectionViewCell";
         [self.navigationItem.rightBarButtonItem setTintColor:[UIColor colorWithHexString:@"#1B1B1B"]];
         self.isSelect = NO;
         [self.collectionView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(50);
+            make.top.equalTo(self.labelListView.mas_bottom).offset(0);
             make.left.mas_equalTo(0);
             make.right.mas_equalTo(0);
             make.bottom.mas_equalTo(0);
@@ -105,7 +109,7 @@ static NSString *LPInforCollectionViewCellID = @"LPInforCollectionViewCell";
         [self.navigationItem.rightBarButtonItem setTintColor:[UIColor colorWithHexString:@"#1B1B1B"]];
         self.isSelect = YES;
         [self.collectionView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(50);
+            make.top.equalTo(self.labelListView.mas_bottom).offset(0);
             make.left.mas_equalTo(0);
             make.right.mas_equalTo(0);
 //            make.bottom.mas_equalTo(0);
@@ -254,7 +258,7 @@ static NSString *LPInforCollectionViewCellID = @"LPInforCollectionViewCell";
         [self.navigationItem.rightBarButtonItem setTintColor:[UIColor colorWithHexString:@"#1B1B1B"]];
         self.isSelect = NO;
         [self.collectionView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(50);
+            make.top.equalTo(self.labelListView.mas_bottom).offset(0);
             make.left.mas_equalTo(0);
             make.right.mas_equalTo(0);
             make.bottom.mas_equalTo(0);
@@ -280,7 +284,7 @@ static NSString *LPInforCollectionViewCellID = @"LPInforCollectionViewCell";
         [self.navigationItem.rightBarButtonItem setTintColor:[UIColor colorWithHexString:@"#1B1B1B"]];
         self.isSelect = NO;
         [self.collectionView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_equalTo(50);
+            make.top.equalTo(self.labelListView.mas_bottom).offset(0);
             make.left.mas_equalTo(0);
             make.right.mas_equalTo(0);
             make.bottom.mas_equalTo(0);
@@ -306,7 +310,12 @@ static NSString *LPInforCollectionViewCellID = @"LPInforCollectionViewCell";
 }
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     LPInforCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:LPInforCollectionViewCellID forIndexPath:indexPath];
-    cell.type = indexPath.row+1;
+//    cell.type = indexPath.row+1;
+    if (indexPath.row == 0) {
+        cell.type = 1;
+    }else if (indexPath.row == 1){
+        cell.type = 3;
+    }
     cell.selectStatus = self.isSelect;
     cell.selectAll = self.selectAll;
     cell.allButton = self.allButton;
@@ -320,15 +329,15 @@ static NSString *LPInforCollectionViewCellID = @"LPInforCollectionViewCell";
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
     if ([DeviceUtils deviceType] == IPhone_X) {
         if (self.isSelect) {
-            return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-88-50-49);
+            return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-88-self.labelListView.lx_height-49);
         }else{
-            return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-88-50);
+            return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-88-self.labelListView.lx_height);
         }
     }else{
         if (self.isSelect) {
-            return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-64-50-49);
+            return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-64-self.labelListView.lx_height-49);
         }else{
-            return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-64-50);
+            return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-64-self.labelListView.lx_height);
         }
     }
 }

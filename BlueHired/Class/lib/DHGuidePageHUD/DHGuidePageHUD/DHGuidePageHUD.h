@@ -16,6 +16,7 @@
  *  新增视频引导页同样不支持滑动进入APP
  */
 @property (nonatomic, assign) BOOL slideInto;
+ 
 /**
  *  DHGuidePageHUD(图片引导页 | 可自动识别动态图片和静态图片)
  *
@@ -25,7 +26,7 @@
  *
  *  @return DHGuidePageHUD对象
  */
-- (instancetype)dh_initWithFrame:(CGRect)frame imageNameArray:(NSArray<NSString *> *)imageNameArray buttonIsHidden:(BOOL)isHidden;
+- (instancetype)dh_initWithFrame:(CGRect)frame imageNameArray:(NSArray<NSString *> *)imageNameArray buttonIsHidden:(BOOL)isHidden isShowBt:(BOOL)isShowBt isTouchNext:(BOOL)isTouchNext;
 /**
  *  DHGuidePageHUD(视频引导页)
  *

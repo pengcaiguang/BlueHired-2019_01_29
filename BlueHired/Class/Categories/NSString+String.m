@@ -2,7 +2,7 @@
 //  NSString+String.m
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/8/29.
+//  Created by peng on 2018/8/29.
 //  Copyright © 2018年 lanpin. All rights reserved.
 //
 
@@ -180,8 +180,10 @@
     if (mobileNum.length != 11) {
         return NO;
     }
-    NSString *MOBILE = @"^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(16[6])|(17[0,1,3,5-8])|(18[0-9])|(19[8,9]))\\d{8}$";
+//    NSString *MOBILE = @"^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(16[6])|(17[0,1,3,5-8])|(18[0-9])|(19[8,9]))\\d{8}$";
+    NSString *MOBILE = @"^[1][3,4,5,6,7,8,9][0-9]{9}$";
     NSPredicate *regextestmobile = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", MOBILE];
+    NSLog(@"%@",[regextestmobile evaluateWithObject:mobileNum]?@"1":@"0");
     return [regextestmobile evaluateWithObject:mobileNum];
 }
 //身份证

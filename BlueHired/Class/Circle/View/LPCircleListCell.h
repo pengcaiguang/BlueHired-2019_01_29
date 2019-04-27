@@ -2,7 +2,7 @@
 //  LPCircleListCell.h
 //  BlueHired
 //
-//  Created by 邢晓亮 on 2018/8/29.
+//  Created by peng on 2018/8/29.
 //  Copyright © 2018年 lanpin. All rights reserved.
 //
 
@@ -18,6 +18,7 @@
 
 typedef void (^LPCircleListCellBlock)(void);
 typedef void (^LPCircleListCellPraiseBlock)(void);
+typedef void (^LPCircleListCellVideoBlock)(NSString *VideoUrl,UIImageView *view);
 
 @interface LPCircleListCell : UITableViewCell
 @property (nonatomic, weak) id<SDTimeLineCellDelegate> delegate;
@@ -43,6 +44,7 @@ typedef void (^LPCircleListCellPraiseBlock)(void);
 @property (weak, nonatomic) IBOutlet UIButton *ReportBt;
 @property (nonatomic,copy) LPCircleListCellBlock Block;
 @property (nonatomic,copy) LPCircleListCellPraiseBlock PraiseBlock;
+@property (nonatomic,copy) LPCircleListCellVideoBlock VideoBlock;
 
 @property (weak, nonatomic) IBOutlet UIButton *operationButton;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *imageBgView_constraint_height;
