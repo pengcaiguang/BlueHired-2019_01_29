@@ -43,18 +43,15 @@ static NSString *LLPCustomerServiceCellID = @"LLPCustomerServiceCell";
     NSDictionary *dic = @{NSFontAttributeName:font,
                               NSForegroundColorAttributeName: [UIColor whiteColor]};
     self.navigationController.navigationBar.titleTextAttributes =dic;
- 
     
     self.navigationController.navigationBar.barTintColor = [UIColor baseColor];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:[UIColor baseColor]] forBarMetrics:UIBarMetricsDefault];
-    
     
     UIButton*rightButton = [[UIButton alloc]initWithFrame:CGRectMake(0,0,30,30)];
     [rightButton setImage:[UIImage imageNamed:@"Phone_Image"] forState:UIControlStateNormal];
     [rightButton addTarget:self action:@selector(touchButton:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem*rightItem = [[UIBarButtonItem alloc]initWithCustomView:rightButton];
     self.navigationItem.rightBarButtonItem= rightItem;
-    
     
     [self.view addSubview:self.tableview];
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {

@@ -443,11 +443,21 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
                             vc.type = 3;
                             [self.navigationController pushViewController:vc animated:YES];
                         }else if (self.type == 4){
+                            if ([WXApi isWXAppInstalled]==NO) {
+                                SendAuthReq* req =[[SendAuthReq alloc ] init];
+                                req.scope = @"snsapi_userinfo";
+                                req.state = @"123x";
+                                [WXApi sendAuthReq:req viewController:self delegate:[WXApiManager sharedManager]];
+                            }else{
+                                [WXApiRequestHandler sendAuthRequestScope: @"snsapi_userinfo"
+                                                                    State:@"123x"
+                                                                   OpenID:WXAPPID
+                                                         InViewController:self];
+                            }
+
+
                             
-                            [WXApiRequestHandler sendAuthRequestScope: @"snsapi_userinfo"
-                                                                State:@"123x"
-                                                               OpenID:WXAPPID
-                                                     InViewController:self];
+                            
 //                                    if ([self.Openid isEqualToString:@""]) {
 //                                        GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"是否前去绑定微信号？" message:nil textAlignment:0 buttonTitles:@[@"取消",@"确定"] buttonsColor:@[[UIColor blackColor],[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
 //                                            if (buttonIndex) {

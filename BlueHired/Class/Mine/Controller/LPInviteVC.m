@@ -327,6 +327,7 @@
             [LPTools AlertMessageView:@"请安装微信" dismiss:1.0];
             return;
         }
+ 
         // 用于微信终端和第三方程序之间传递消息的多媒体消息内容
         WXMediaMessage *message = [WXMediaMessage message];
         // 多媒体消息中包含的图片数据对象

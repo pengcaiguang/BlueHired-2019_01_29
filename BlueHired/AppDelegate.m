@@ -117,6 +117,9 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
     [WXApi registerApp:WXAPPID];
     _tencentOAuth = [[TencentOAuth alloc] initWithAppId:QQAPPID andDelegate:self];
     
+    
+    NSLog(@"获取微信安装地址 = %@",[WXApi getWXAppInstallUrl]);
+    
 
     return YES;
 }

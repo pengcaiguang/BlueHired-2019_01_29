@@ -20,6 +20,7 @@
 #import <UIView+SDAutoLayout.h>
 #import "LPMoodDetailVC.h"
 
+//弹框监听
 NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLineCellOperationButtonClickedNotification";
 
 

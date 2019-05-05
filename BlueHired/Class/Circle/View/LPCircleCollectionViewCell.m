@@ -108,10 +108,6 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
             [self requestMoodList];
         }
     }
-    
-    
-
-    
 //    if (index>0) {
 //        self.page = 1;
 //        [self requestMoodList];
@@ -200,8 +196,6 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
         }else{
             if (self.page == 1) {
                 [self.tableview reloadData];
-
-
             }else{
                  [self.tableview.mj_footer endRefreshingWithNoMoreData];
             }

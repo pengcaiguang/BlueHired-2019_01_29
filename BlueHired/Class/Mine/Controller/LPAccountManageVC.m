@@ -44,6 +44,13 @@
         self.WXLabel.text = @"已绑定";
     }
     
+//    if ([WXApi isWXAppInstalled]==NO) {
+//        self.WXLabel.superview.hidden = YES;
+//    }else{
+//        self.WXLabel.superview.hidden = NO;
+//    }
+    
+    
 //    [self requestQueryGetUserProdlemList];
     
 }
@@ -73,10 +80,10 @@
         [self.navigationController pushViewController:vc animated:YES];
 
     }else if (sender.tag == 1004){      //微信绑定
-        if ([WXApi isWXAppInstalled]==NO) {
-            [self.view showLoadingMeg:@"请安装微信" time:MESSAGE_SHOW_TIME];
-            return;
-        }
+//        if ([WXApi isWXAppInstalled]==NO) {
+//            [self.view showLoadingMeg:@"请安装微信" time:MESSAGE_SHOW_TIME];
+//            return;
+//        }
         
         LPChangePhoneVC *vc = [[LPChangePhoneVC alloc]init];
         vc.type = 4;

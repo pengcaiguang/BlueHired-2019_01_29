@@ -325,6 +325,18 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
     [OtherLoginBt addTarget:self action:@selector(touchWeiXinLoginButton:) forControlEvents:UIControlEventTouchUpInside];
 
     
+    //如果用户没有安装微信.隐藏微信登入
+//    if ([WXApi isWXAppInstalled]==NO) {
+//        OtherLoginBt.hidden = YES;
+//        OtherloginLabel.hidden = YES;
+//        otherLoginback.hidden = YES;
+
+//    }else{
+//        OtherLoginBt.hidden = NO;
+//        OtherloginLabel.hidden = NO;
+//        otherLoginback.hidden = NO;
+//    }
+    
     
     NSString *phone = kUserDefaultsValue(PHONEUSERSAVE);
     if (!kStringIsEmpty(phone)) {
@@ -441,7 +453,11 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
 -(void)touchWeiXinLoginButton:(UIButton *)button{
     
     if ([WXApi isWXAppInstalled]==NO) {
-        [self.view showLoadingMeg:@"请安装微信" time:MESSAGE_SHOW_TIME];
+//        [self.view showLoadingMeg:@"请安装微信" time:MESSAGE_SHOW_TIME];
+        SendAuthReq* req =[[SendAuthReq alloc ] init];
+        req.scope = @"snsapi_userinfo";
+        req.state = @"123x";
+        [WXApi sendAuthReq:req viewController:self delegate:[WXApiManager sharedManager]];
          return;
     }
     [WXApiRequestHandler sendAuthRequestScope:@"snsapi_userinfo"
