@@ -67,14 +67,19 @@
     [NetApiManager requestQueryshopdismiss:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            if ([responseObject[@"data"] integerValue] == 1) {
-                [[UIWindow visibleViewController].view showLoadingMeg:@"发送成功" time:MESSAGE_SHOW_TIME];
-                if (self.Block) {
-                    self.Block();
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if ([responseObject[@"data"] integerValue] == 1) {
+                    [[UIWindow visibleViewController].view showLoadingMeg:@"发送成功" time:MESSAGE_SHOW_TIME];
+                    if (self.Block) {
+                        self.Block();
+                    }
+                }else{
+                    [[UIWindow visibleViewController].view showLoadingMeg:@"操作失败" time:MESSAGE_SHOW_TIME];
                 }
             }else{
-                [[UIWindow visibleViewController].view showLoadingMeg:@"操作失败" time:MESSAGE_SHOW_TIME];
+                [[UIWindow visibleViewController].view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
+
         }else{
             [[UIWindow visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

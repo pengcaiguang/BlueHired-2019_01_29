@@ -154,20 +154,20 @@ static NSString *LPSalaryHourlyStatisticsCellID = @"LPSalaryHourlyStatisticsCell
 -(void)chooseMonth{
 //    self.monthView.hidden = !self.monthView.isHidden;
 //    self.monthBackView.hidden = !self.monthBackView.isHidden;
-    QFDatePickerView *datePickerView = [[QFDatePickerView  alloc]initDatePackerWithResponse:^(NSString *str) {
-        NSLog(@"str = %@", str);
-        [self.timeButton setTitle:str forState:UIControlStateNormal];
-        self.currentDateString = self.timeButton.titleLabel.text;
-        
-        
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:@"yyyy-MM"];
-        NSDate *birthdayDate = [dateFormatter dateFromString:self.currentDateString];
-        [self.calendar selectDate:birthdayDate];
-        
-        [self requestSelectWorkhour];
-    }];
-    [datePickerView show];
+//    QFDatePickerView *datePickerView = [[QFDatePickerView  alloc]initDatePackerWithResponse:^(NSString *str) {
+//        NSLog(@"str = %@", str);
+//        [self.timeButton setTitle:str forState:UIControlStateNormal];
+//        self.currentDateString = self.timeButton.titleLabel.text;
+//
+//
+//        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//        [dateFormatter setDateFormat:@"yyyy-MM"];
+//        NSDate *birthdayDate = [dateFormatter dateFromString:self.currentDateString];
+//        [self.calendar selectDate:birthdayDate];
+//
+//        [self requestSelectWorkhour];
+//    }];
+//    [datePickerView show];
 }
 -(void)monthViewHidden{
     self.monthView.hidden = YES;
@@ -177,7 +177,7 @@ static NSString *LPSalaryHourlyStatisticsCellID = @"LPSalaryHourlyStatisticsCell
 
 -(void)touchMonthButton:(UIButton *)button{
     NSString *year = [self.currentDateString substringToIndex:4];
-    self.currentDateString = [NSString stringWithFormat:@"%@-%02ld",year,button.tag+1];
+    self.currentDateString = [NSString stringWithFormat:@"%@-%02d",year,button.tag+1];
     [self.timeButton setTitle:self.currentDateString forState:UIControlStateNormal];
     for (UIButton *button in self.monthButtonArray) {
         button.selected = NO;
@@ -414,7 +414,12 @@ static NSString *LPSalaryHourlyStatisticsCellID = @"LPSalaryHourlyStatisticsCell
     [NetApiManager requestSelectWorkhourWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            self.model = [LPSelectWorkhourHourlyModel mj_objectWithKeyValues:responseObject];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.model = [LPSelectWorkhourHourlyModel mj_objectWithKeyValues:responseObject];
+
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -498,10 +503,17 @@ static NSString *LPSalaryHourlyStatisticsCellID = @"LPSalaryHourlyStatisticsCell
     [NetApiManager requestAddWorkrecordWithParam:[dic copy] withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            if ([responseObject[@"data"] integerValue] == 1) {
-                [self requestSelectWorkhour];
-                [self.view showLoadingMeg:@"保存成功" time:MESSAGE_SHOW_TIME];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if ([responseObject[@"data"] integerValue] == 1) {
+                    [self requestSelectWorkhour];
+                    [self.view showLoadingMeg:@"保存成功" time:MESSAGE_SHOW_TIME];
+                }else{
+                     [self.view showLoadingMeg:@"保存失败" time:MESSAGE_SHOW_TIME];
+                }
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
+            
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

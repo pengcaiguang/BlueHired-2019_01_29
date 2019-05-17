@@ -44,9 +44,7 @@
     }
     [self setupUI];
     [self configCallback];
-
     NSLog(@"屏幕宽度 = %f,屏幕高度 = %f",Screen_Width,Screen_Height);
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -258,13 +256,16 @@
         NSLog(@"%@",responseObject);
         if (isSuccess) {
             if (responseObject[@"data"] != nil &&
-                [responseObject[@"data"][@"version"] length]>1) {
+                [responseObject[@"data"][@"version"] length]>0) {
                 NSLog(@"%.2f",self.version.floatValue);
                 if (self.version.floatValue <  [responseObject[@"data"][@"version"] floatValue]  ) {
                     NSString *updateStr = [NSString stringWithFormat:@"发现新版本V%@\n为保证软件的正常运行\n请及时更新到最新版本",responseObject[@"data"][@"version"]];
                     [self creatAlterView:updateStr];
                 }
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
+            
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

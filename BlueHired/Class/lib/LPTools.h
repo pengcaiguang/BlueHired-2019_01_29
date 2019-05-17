@@ -65,6 +65,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 //获取本地/网络视频的第一帧图片
 + (UIImage *)getImage:(NSString *)videoURL;
+
++ (CGFloat)calculateRowHeight:(NSString *)string fontSize:(NSInteger)fontSize Width:(CGFloat) W;
+//获取字符串的宽度
++(CGFloat) widthForString:(NSString *)value fontSize:(float)fontSize andHeight:(float)height;
+
 @end
 
 NS_ASSUME_NONNULL_END

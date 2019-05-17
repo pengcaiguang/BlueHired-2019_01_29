@@ -45,6 +45,16 @@
 @property (nonatomic, copy) NSString *workName;
 @property (nonatomic, copy) NSString *x;
 @property (nonatomic, copy) NSString *y;
+@property (nonatomic, copy) NSString *applyNumber;
+@property (nonatomic, copy) NSNumber *isApply;
+@property (nonatomic, copy) NSString *maxNumber;
+@property (nonatomic, copy) NSString *mechanismUrl;
+@property (nonatomic, copy) NSString *set_status;
+@property (nonatomic, copy) NSString *wageRange;
+@property (nonatomic, copy) NSString *workMoney;
+@property (nonatomic, copy) NSString *workTypeName;
+@property (nonatomic, copy) NSString *postName;
+
 
 @end
 

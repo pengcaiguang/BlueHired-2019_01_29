@@ -95,31 +95,36 @@ static NSString *NORMALSTRING = @"请输入离职原因及想要离职的日期"
     [NetApiManager requestGetNoticeWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            if (responseObject[@"data"]) {
-                if (responseObject[@"data"][@"isNotice"]) {
-                    if ([responseObject[@"data"][@"isNotice"] integerValue] == 1){
-                        self.detailsLabel.hidden = NO;
-                        self.cancelButton.hidden = NO;
-                        
-                        self.textView.hidden = YES;
-                        self.submitButton.hidden = YES;
-                        self.backButton.hidden = YES;
-                        self.textLabel.hidden = YES;
-                        
-                        if (responseObject[@"data"][@"details"]){
-                            self.detailsLabel.text = responseObject[@"data"][@"details"];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if ([responseObject[@"data"] isKindOfClass:[NSDictionary class]]) {
+                    if (responseObject[@"data"][@"isNotice"]) {
+                        if ([responseObject[@"data"][@"isNotice"] integerValue] == 1){
+                            self.detailsLabel.hidden = NO;
+                            self.cancelButton.hidden = NO;
+                            
+                            self.textView.hidden = YES;
+                            self.submitButton.hidden = YES;
+                            self.backButton.hidden = YES;
+                            self.textLabel.hidden = YES;
+                            
+                            if (responseObject[@"data"][@"details"]){
+                                self.detailsLabel.text = responseObject[@"data"][@"details"];
+                            }
+                        }else{
+                            self.detailsLabel.hidden = YES;
+                            self.cancelButton.hidden = YES;
+                            
+                            self.textView.hidden = NO;
+                            self.submitButton.hidden = NO;
+                            self.backButton.hidden = NO;
+                            self.textLabel.hidden = NO;
                         }
-                    }else{
-                        self.detailsLabel.hidden = YES;
-                        self.cancelButton.hidden = YES;
-                        
-                        self.textView.hidden = NO;
-                        self.submitButton.hidden = NO;
-                        self.backButton.hidden = NO;
-                        self.textLabel.hidden = NO;
                     }
                 }
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
+
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

@@ -292,9 +292,13 @@ static const CGFloat kPhotoViewMargin = 13.0;
             {
                 if ([responseObject[@"data"] integerValue] == 2) {
                     [LPTools AlertBusinessView:@""];
+                    [self.navigationController popViewControllerAnimated:YES];
+                }else if ([responseObject[@"data"] integerValue] == 1){
+                    [self.view showLoadingMeg:@"提交成功,等待系统审核" time:MESSAGE_SHOW_TIME];
+                    [self.navigationController popViewControllerAnimated:YES];
+                }else{
+                    [self.view showLoadingMeg:@"提交失败,请稍后再试" time:MESSAGE_SHOW_TIME];
                 }
-                [self.view showLoadingMeg:@"发送成功" time:MESSAGE_SHOW_TIME];
-                [self.navigationController popViewControllerAnimated:YES];
              }else{
                 if ([responseObject[@"code"] integerValue] == 10045) {
                     [LPTools AlertMessageView:responseObject[@"msg"]];

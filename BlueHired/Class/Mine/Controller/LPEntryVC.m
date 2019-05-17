@@ -316,9 +316,13 @@ static NSString *LPTLendAuditCellID = @"LPEntryCell";
         [weakSelf.tableview.mj_footer endRefreshing];
         [DSBaActivityView hideActiviTy];
         if (isSuccess) {
-            weakSelf.model = [LPentryModel mj_objectWithKeyValues:responseObject];
-            [weakSelf.tableview reloadData];
 
+            if ([responseObject[@"code"] integerValue] == 0) {
+                weakSelf.model = [LPentryModel mj_objectWithKeyValues:responseObject];
+                [weakSelf.tableview reloadData];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

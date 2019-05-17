@@ -84,10 +84,17 @@ static NSString *TEXT = @"请输入内容";
     [NetApiManager requestQueryReportAdd:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            if ([responseObject[@"data"] integerValue] == 1) {
-                [self.view showLoadingMeg:@"举报成功" time:MESSAGE_SHOW_TIME];
-                [self.navigationController popViewControllerAnimated:YES];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if ([responseObject[@"data"] integerValue] == 1) {
+                    [self.view showLoadingMeg:@"举报成功" time:MESSAGE_SHOW_TIME];
+                    [self.navigationController popViewControllerAnimated:YES];
+                }else{
+                    [self.view showLoadingMeg:@"举报失败,请稍后再试" time:MESSAGE_SHOW_TIME];
+                }
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
+            
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

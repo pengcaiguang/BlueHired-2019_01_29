@@ -172,14 +172,14 @@ static NSString *LPSalaryStatisticsCellID = @"LPSalaryStatisticsCell";
     
 }
 -(void)chooseMonth{
-    QFDatePickerView *datePickerView = [[QFDatePickerView  alloc]initDatePackerWithResponse:^(NSString *str) {
-        NSLog(@"str = %@", str);
-        [self.timeButton setTitle:str forState:UIControlStateNormal];
-        self.currentDateString = self.timeButton.titleLabel.text;
-        [self requestSelectWorkhour];
-    }];
+//    QFDatePickerView *datePickerView = [[QFDatePickerView  alloc]initDatePackerWithResponse:^(NSString *str) {
+//        NSLog(@"str = %@", str);
+//        [self.timeButton setTitle:str forState:UIControlStateNormal];
+//        self.currentDateString = self.timeButton.titleLabel.text;
+//        [self requestSelectWorkhour];
+//    }];
     
-    [datePickerView show];
+//    [datePickerView show];
 //    self.monthView.hidden = !self.monthView.isHidden;
 //    self.monthBackView.hidden = !self.monthBackView.isHidden;
 }
@@ -433,9 +433,14 @@ static NSString *LPSalaryStatisticsCellID = @"LPSalaryStatisticsCell";
     [NetApiManager requestSelectWorkhourWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            self.model = [LPSelectWorkhourModel mj_objectWithKeyValues:responseObject];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.model = [LPSelectWorkhourModel mj_objectWithKeyValues:responseObject];
                 [self calculation];
-            [self refresh:[self.model.data.workRecord.normlDeductMoney floatValue] add:[self.model.data.workRecord.normlSubsidyMoney floatValue]];
+                [self refresh:[self.model.data.workRecord.normlDeductMoney floatValue] add:[self.model.data.workRecord.normlSubsidyMoney floatValue]];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
+            
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -520,10 +525,17 @@ static NSString *LPSalaryStatisticsCellID = @"LPSalaryStatisticsCell";
     [NetApiManager requestAddWorkrecordWithParam:[dic copy] withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            if ([responseObject[@"data"] integerValue] == 1) {
-                [self refresh:dedMoney add:subMoney];
-                [self.view showLoadingMeg:@"保存成功" time:MESSAGE_SHOW_TIME];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if ([responseObject[@"data"] integerValue] == 1) {
+                    [self refresh:dedMoney add:subMoney];
+                    [self.view showLoadingMeg:@"保存成功" time:MESSAGE_SHOW_TIME];
+                }else{
+                    [self.view showLoadingMeg:@"保存失败,请稍后再试" time:MESSAGE_SHOW_TIME];
+                }
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
+            
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

@@ -40,7 +40,7 @@
 //    titleArrays = [NSMutableArray arrayWithArray:@[@"招工",@"资讯",@"圈子",@"我的"]];
     controllers = [NSMutableArray arrayWithArray:@[@"LPWorkHour2VC",@"LPInformationVC",@"LPCircleVC",@"LPMineVC"]];
     titleArrays = [NSMutableArray arrayWithArray:@[@"工时",@"看看",@"圈子",@"我的"]];
-    
+//
     for (int index = 0; index<controllers.count; index++) {
         [normalImages addObject:[[UIImage imageNamed:[NSString stringWithFormat:@"ic_tab_normal0%d.png",index]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         [selectedImages addObject:[[UIImage imageNamed:[NSString stringWithFormat:@"ic_tab_selected0%d.png",index]] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];

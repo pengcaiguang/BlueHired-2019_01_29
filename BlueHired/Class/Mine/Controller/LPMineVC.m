@@ -154,11 +154,11 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
         if (indexPath.section == 0) {
             return 117;
         }else if (indexPath.section == 1) {
-            if (kUserDefaultsValue(USERDATA).integerValue == 1 || kUserDefaultsValue(USERDATA).integerValue == 2){
-                return 86;
-            }else{
+//            if (kUserDefaultsValue(USERDATA).integerValue == 1 || kUserDefaultsValue(USERDATA).integerValue == 2){
+//                return 86;
+//            }else{
                 return 172;
-            }
+//            }
         }else{
             return 50;
         }
@@ -173,11 +173,11 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
     if (section == 0 || section == 1) {
         return 1;
     }else{
-        if (kUserDefaultsValue(USERDATA).integerValue == 4 ||
-            kUserDefaultsValue(USERDATA).integerValue == 3 ||
-            kUserDefaultsValue(USERDATA).integerValue >= 8){
-            return 7;
-        }
+//        if (kUserDefaultsValue(USERDATA).integerValue == 4 ||
+//            kUserDefaultsValue(USERDATA).integerValue == 3 ||
+//            kUserDefaultsValue(USERDATA).integerValue >= 8){
+//            return 7;
+//        }
         return 6;
     }
 }
@@ -332,32 +332,32 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
         cell.textLabel.font = [UIFont systemFontOfSize:16];
         cell.imageView.contentMode=UIViewContentModeScaleAspectFit;
         
-        if (kUserDefaultsValue(USERDATA).integerValue == 4 ||
-            kUserDefaultsValue(USERDATA).integerValue == 3 ||
-            kUserDefaultsValue(USERDATA).integerValue >= 8){
-            if (indexPath.row == 0) {
-                cell.imageView.image = [UIImage imageNamed:@"salaryCard_img"];
-                cell.textLabel.text = @"工资卡管理";
-            }else if (indexPath.row == 1) {
-                cell.imageView.image = [UIImage imageNamed:@"assistant_img"];
-                cell.textLabel.text = @"归属员工管理";
-            }else if (indexPath.row == 2) {
-                cell.imageView.image = [UIImage imageNamed:@"changePassword_img"];
-                cell.textLabel.text = @"账号管理";
-            }else if (indexPath.row == 3) {
-                cell.imageView.image = [UIImage imageNamed:@"ActivityCenterImage"];
-                cell.textLabel.text = @"活动中心";
-            }else if (indexPath.row == 4) {
-                cell.imageView.image = [UIImage imageNamed:@"c_integral"];
-                cell.textLabel.text = @"幸运积分";
-            }else if (indexPath.row == 5) {
-                cell.imageView.image = [UIImage imageNamed:@"collectionCenter_img"];
-                cell.textLabel.text = @"收藏中心";
-            }else if (indexPath.row == 6){
-                cell.imageView.image = [UIImage imageNamed:@"customerService_img"];
-                cell.textLabel.text = @"专属客服";
-            }
-        }else{
+//        if (kUserDefaultsValue(USERDATA).integerValue == 4 ||
+//            kUserDefaultsValue(USERDATA).integerValue == 3 ||
+//            kUserDefaultsValue(USERDATA).integerValue >= 8){
+//            if (indexPath.row == 0) {
+//                cell.imageView.image = [UIImage imageNamed:@"salaryCard_img"];
+//                cell.textLabel.text = @"工资卡管理";
+//            }else if (indexPath.row == 1) {
+//                cell.imageView.image = [UIImage imageNamed:@"assistant_img"];
+//                cell.textLabel.text = @"归属员工管理";
+//            }else if (indexPath.row == 2) {
+//                cell.imageView.image = [UIImage imageNamed:@"changePassword_img"];
+//                cell.textLabel.text = @"账号管理";
+//            }else if (indexPath.row == 3) {
+//                cell.imageView.image = [UIImage imageNamed:@"ActivityCenterImage"];
+//                cell.textLabel.text = @"活动中心";
+//            }else if (indexPath.row == 4) {
+//                cell.imageView.image = [UIImage imageNamed:@"c_integral"];
+//                cell.textLabel.text = @"幸运积分";
+//            }else if (indexPath.row == 5) {
+//                cell.imageView.image = [UIImage imageNamed:@"collectionCenter_img"];
+//                cell.textLabel.text = @"收藏中心";
+//            }else if (indexPath.row == 6){
+//                cell.imageView.image = [UIImage imageNamed:@"customerService_img"];
+//                cell.textLabel.text = @"专属客服";
+//            }
+//        }else{
             if (indexPath.row == 0) {
                 cell.imageView.image = [UIImage imageNamed:@"salaryCard_img"];
                 cell.textLabel.text = @"工资卡管理";
@@ -377,7 +377,7 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
                 cell.imageView.image = [UIImage imageNamed:@"customerService_img"];
                 cell.textLabel.text = @"专属客服";
             }
-        }
+//        }
         
     }
     
@@ -394,76 +394,76 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
 //    [LoginUtils validationLogin:self]
     if ( AlreadyLogin || (indexPath.section == 2 && indexPath.row == 2)) {
         if (indexPath.section == 2) {
-            if (kUserDefaultsValue(USERDATA).integerValue == 4 ||
-                kUserDefaultsValue(USERDATA).integerValue == 3 ||
-                kUserDefaultsValue(USERDATA).integerValue >= 8) {
-                if (indexPath.row == 0) {
-                    //工资卡管理
-                    if (self.userMaterialModel.data.isUserProblem.integerValue == 0) {
-                        [self initSetSecretVC];
-                        return;
-                    }
-                    LPSalarycCardVC *vc = [[LPSalarycCardVC alloc]init];
-                    vc.hidesBottomBarWhenPushed = YES;
-                    [self.navigationController pushViewController:vc animated:YES];
-                }else if (indexPath.row == 1) {
-                    //归属员工
-                    LPAffiliationMenageVC *vc = [[LPAffiliationMenageVC alloc]init];
-                    vc.hidesBottomBarWhenPushed = YES;
-                    [self.navigationController pushViewController:vc animated:YES];
-                }else if (indexPath.row == 2) {
-                    //账号管理
-                    if (self.userMaterialModel.data.isUserProblem.integerValue == 0) {
-                        [self initSetSecretVC];
-                        return;
-                    }
-                    LPAccountManageVC *vc = [[LPAccountManageVC alloc]init];
-                    vc.hidesBottomBarWhenPushed = YES;
-                    [self.navigationController pushViewController:vc animated:YES];
-                }else if (indexPath.row == 3){
-                    //活动中心
-//                    LPChangePasswordVC *vc = [[LPChangePasswordVC alloc]init];
+//            if (kUserDefaultsValue(USERDATA).integerValue == 4 ||
+//                kUserDefaultsValue(USERDATA).integerValue == 3 ||
+//                kUserDefaultsValue(USERDATA).integerValue >= 8) {
+//                if (indexPath.row == 0) {
+//                    //工资卡管理
+//                    if (self.userMaterialModel.data.isUserProblem.integerValue == 0) {
+//                        [self initSetSecretVC];
+//                        return;
+//                    }
+//                    LPSalarycCardVC *vc = [[LPSalarycCardVC alloc]init];
 //                    vc.hidesBottomBarWhenPushed = YES;
 //                    [self.navigationController pushViewController:vc animated:YES];
-                    LPActivityVC *vc = [[LPActivityVC alloc] init];
-                    vc.hidesBottomBarWhenPushed = YES;
-                    [self.navigationController pushViewController:vc animated:YES];
-                }else if (indexPath.row == 4){
-                    //幸运积分
-                    if (self.userMaterialModel.data.isUserProblem.integerValue == 0) {
-                        [self initSetSecretVC];
-                        return;
-                    }
-                    
-                    LPIntegralDrawVC *vc = [[LPIntegralDrawVC alloc]init];
-                    vc.hidesBottomBarWhenPushed = YES;
-                    [self.navigationController pushViewController:vc animated:YES];
-                }else if (indexPath.row == 5){
-                    //收藏
-                    LPCollectionVC *vc = [[LPCollectionVC alloc] init];
-                    vc.hidesBottomBarWhenPushed = YES;
-                    [self.navigationController pushViewController:vc animated:YES];
-                }else{
-//                    NSString *class = @"LPCollectionVC";
-//                    const char *className = [class cStringUsingEncoding:NSASCIIStringEncoding];
-//                    Class newClass = objc_getClass(className);
-//                    if (!newClass) {        //创建一个类
-//                        Class superClass = [NSObject class];
-//                        newClass = objc_allocateClassPair(superClass, className, 0);        //注册你创建的这个类
-//                        objc_registerClassPair(newClass);
+//                }else if (indexPath.row == 1) {
+//                    //归属员工
+//                    LPAffiliationMenageVC *vc = [[LPAffiliationMenageVC alloc]init];
+//                    vc.hidesBottomBarWhenPushed = YES;
+//                    [self.navigationController pushViewController:vc animated:YES];
+//                }else if (indexPath.row == 2) {
+//                    //账号管理
+//                    if (self.userMaterialModel.data.isUserProblem.integerValue == 0) {
+//                        [self initSetSecretVC];
+//                        return;
 //                    }
-//                    // 创建对象(写到这里已经可以进行随机页面跳转了)
-//                    UIViewController *instance = [[newClass alloc] init];
-//                    instance.hidesBottomBarWhenPushed = YES;
-//                    [self.navigationController pushViewController:instance animated:YES];
-                    //客服
-                    LPHomeCustomerServiceVC *vc = [[LPHomeCustomerServiceVC alloc] init];
-                    vc.hidesBottomBarWhenPushed = YES;
-                    [self.navigationController pushViewController:vc animated:YES];
-                }
-                
-            }else{
-                
+//                    LPAccountManageVC *vc = [[LPAccountManageVC alloc]init];
+//                    vc.hidesBottomBarWhenPushed = YES;
+//                    [self.navigationController pushViewController:vc animated:YES];
+//                }else if (indexPath.row == 3){
+//                    //活动中心
+////                    LPChangePasswordVC *vc = [[LPChangePasswordVC alloc]init];
+////                    vc.hidesBottomBarWhenPushed = YES;
+////                    [self.navigationController pushViewController:vc animated:YES];
+//                    LPActivityVC *vc = [[LPActivityVC alloc] init];
+//                    vc.hidesBottomBarWhenPushed = YES;
+//                    [self.navigationController pushViewController:vc animated:YES];
+//                }else if (indexPath.row == 4){
+//                    //幸运积分
+//                    if (self.userMaterialModel.data.isUserProblem.integerValue == 0) {
+//                        [self initSetSecretVC];
+//                        return;
+//                    }
+//
+//                    LPIntegralDrawVC *vc = [[LPIntegralDrawVC alloc]init];
+//                    vc.hidesBottomBarWhenPushed = YES;
+//                    [self.navigationController pushViewController:vc animated:YES];
+//                }else if (indexPath.row == 5){
+//                    //收藏
+//                    LPCollectionVC *vc = [[LPCollectionVC alloc] init];
+//                    vc.hidesBottomBarWhenPushed = YES;
+//                    [self.navigationController pushViewController:vc animated:YES];
+//                }else{
+////                    NSString *class = @"LPCollectionVC";
+////                    const char *className = [class cStringUsingEncoding:NSASCIIStringEncoding];
+////                    Class newClass = objc_getClass(className);
+////                    if (!newClass) {        //创建一个类
+////                        Class superClass = [NSObject class];
+////                        newClass = objc_allocateClassPair(superClass, className, 0);        //注册你创建的这个类
+////                        objc_registerClassPair(newClass);
+////                    }
+////                    // 创建对象(写到这里已经可以进行随机页面跳转了)
+////                    UIViewController *instance = [[newClass alloc] init];
+////                    instance.hidesBottomBarWhenPushed = YES;
+////                    [self.navigationController pushViewController:instance animated:YES];
+//                    //客服
+//                    LPHomeCustomerServiceVC *vc = [[LPHomeCustomerServiceVC alloc] init];
+//                    vc.hidesBottomBarWhenPushed = YES;
+//                    [self.navigationController pushViewController:vc animated:YES];
+//                }
+//
+//            }else{
+            
                 if (indexPath.row == 0) {//工资卡管理
                     if (self.userMaterialModel.data.isUserProblem.integerValue == 0) {
                         [self initSetSecretVC];
@@ -521,7 +521,7 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
                     [self.navigationController pushViewController:vc animated:YES];
                 }
                 
-            }
+//            }
             
         }
     }else{
@@ -562,13 +562,18 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
         NSLog(@"%@",responseObject);
         [self.tableview.mj_header endRefreshing];
         if (isSuccess) {
-            if (!ISNIL(responseObject[@"data"])) {
-                if ([responseObject[@"data"] integerValue] == 0) {
-                    self.signin = NO;
-                }else if ([responseObject[@"data"] integerValue] == 1) {
-                    self.signin = YES;
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if (!ISNIL(responseObject[@"data"])) {
+                    if ([responseObject[@"data"] integerValue] == 0) {
+                        self.signin = NO;
+                    }else if ([responseObject[@"data"] integerValue] == 1) {
+                        self.signin = YES;
+                    }
                 }
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
+
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

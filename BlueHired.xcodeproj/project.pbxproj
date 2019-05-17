@@ -332,6 +332,7 @@
 		88B8C62E227180AD00313854 /* LPSecurityQuestionVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 88B8C62C227180AD00313854 /* LPSecurityQuestionVC.m */; };
 		88B8C62F227180AD00313854 /* LPSecurityQuestionVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 88B8C62D227180AD00313854 /* LPSecurityQuestionVC.xib */; };
 		88B8C632227188CB00313854 /* LPUserProblemModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 88B8C631227188CB00313854 /* LPUserProblemModel.m */; };
+		88BC48882286782800B03424 /* LPMainSearchVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC30E1912138E622000C7A91 /* LPMainSearchVC.m */; };
 		88BCB9AD2181BE30003D5A2E /* DSBeiAnimationLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = 88BCB9A82181BE30003D5A2E /* DSBeiAnimationLoading.m */; };
 		88BCB9AE2181BE30003D5A2E /* DSBaActivityView.m in Sources */ = {isa = PBXBuildFile; fileRef = 88BCB9AC2181BE30003D5A2E /* DSBaActivityView.m */; };
 		88BCEF1F222CF89F000C3876 /* LPMonthWageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 88BCEF1E222CF89E000C3876 /* LPMonthWageModel.m */; };
@@ -361,6 +362,8 @@
 		88BD9E07225DDDC000816825 /* YYWebImageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 88BD9DF5225DDDBF00816825 /* YYWebImageOperation.m */; };
 		88BEA6932251B99B0028DDC2 /* UILabel+Copy.m in Sources */ = {isa = PBXBuildFile; fileRef = 88BEA6922251B99A0028DDC2 /* UILabel+Copy.m */; };
 		88BF00A721F9625B00DFE778 /* GJAlertWithDrawPassword.m in Sources */ = {isa = PBXBuildFile; fileRef = 88BF00A621F9625B00DFE778 /* GJAlertWithDrawPassword.m */; };
+		88BF82972283BE9E00DBB1BB /* LPWorkOrderList2Cell.m in Sources */ = {isa = PBXBuildFile; fileRef = 88BF82952283BE9E00DBB1BB /* LPWorkOrderList2Cell.m */; };
+		88BF82982283BE9E00DBB1BB /* LPWorkOrderList2Cell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 88BF82962283BE9E00DBB1BB /* LPWorkOrderList2Cell.xib */; };
 		88C1B26521BF454F00DBA508 /* LPVideoTypeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 88C1B26421BF454F00DBA508 /* LPVideoTypeModel.m */; };
 		88C1B26921BFAC0A00DBA508 /* AMapSearchKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88C1B26821BFAC0A00DBA508 /* AMapSearchKit.framework */; };
 		88C1B26D21BFAC4600DBA508 /* LPCircleSearchVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 88C1B26B21BFAC4600DBA508 /* LPCircleSearchVC.m */; };
@@ -402,6 +405,7 @@
 		88C5AFD121C1349E00B4A9E2 /* LPWXLoginBindingVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 88C5AFCF21C1349E00B4A9E2 /* LPWXLoginBindingVC.m */; };
 		88C5AFD221C1349E00B4A9E2 /* LPWXLoginBindingVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 88C5AFD021C1349E00B4A9E2 /* LPWXLoginBindingVC.xib */; };
 		88C5AFD521C1EA7B00B4A9E2 /* LPWXUserInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 88C5AFD421C1EA7B00B4A9E2 /* LPWXUserInfoModel.m */; };
+		88C66443227FDFF9005C70B4 /* LPMainSortAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 88C66442227FDFF9005C70B4 /* LPMainSortAlertView.m */; };
 		88C708E1218FEAC10095FE65 /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = 88C708E0218FEAC10095FE65 /* NSString+HTML.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		88C708E4218FEB690095FE65 /* GTMNSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = 88C708E3218FEB690095FE65 /* GTMNSString+HTML.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		88C708E821903B5D0095FE65 /* LPRegisteredContentVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 88C708E621903B5D0095FE65 /* LPRegisteredContentVC.m */; };
@@ -495,6 +499,15 @@
 		88E6070821A39C20007D0257 /* LPInfoMationVideoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 88E6070621A39C20007D0257 /* LPInfoMationVideoCell.m */; };
 		88E6070921A39C20007D0257 /* LPInfoMationVideoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 88E6070721A39C20007D0257 /* LPInfoMationVideoCell.xib */; };
 		88E6070C21A3A16E007D0257 /* LPVideoListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 88E6070B21A3A16E007D0257 /* LPVideoListModel.m */; };
+		88EADA3A228573850000299B /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 88EADA26228573850000299B /* LICENSE */; };
+		88EADA3B228573850000299B /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 88EADA27228573850000299B /* README.md */; };
+		88EADA3C228573850000299B /* SDCycleScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 88EADA2E228573850000299B /* SDCycleScrollView.m */; };
+		88EADA3D228573850000299B /* UIView+SDExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 88EADA2F228573850000299B /* UIView+SDExtension.m */; };
+		88EADA3E228573850000299B /* SDCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 88EADA30228573850000299B /* SDCollectionViewCell.m */; };
+		88EADA3F228573850000299B /* TADotView.m in Sources */ = {isa = PBXBuildFile; fileRef = 88EADA33228573850000299B /* TADotView.m */; };
+		88EADA40228573850000299B /* TAPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 88EADA34228573850000299B /* TAPageControl.m */; };
+		88EADA41228573850000299B /* TAAnimatedDotView.m in Sources */ = {isa = PBXBuildFile; fileRef = 88EADA35228573850000299B /* TAAnimatedDotView.m */; };
+		88EADA42228573850000299B /* TAAbstractDotView.m in Sources */ = {isa = PBXBuildFile; fileRef = 88EADA36228573850000299B /* TAAbstractDotView.m */; };
 		88ED8F3021AF905700B25C16 /* WebP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88ED8F2E21AF905600B25C16 /* WebP.framework */; };
 		88ED8F3121AF905700B25C16 /* WebP.sh in Resources */ = {isa = PBXBuildFile; fileRef = 88ED8F2F21AF905700B25C16 /* WebP.sh */; };
 		88EDC1A52265847D00F7AAE6 /* LPCustomPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 88EDC1A42265847D00F7AAE6 /* LPCustomPickerView.m */; };
@@ -1398,6 +1411,9 @@
 		88BEA6922251B99A0028DDC2 /* UILabel+Copy.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Copy.m"; sourceTree = "<group>"; };
 		88BF00A521F9625B00DFE778 /* GJAlertWithDrawPassword.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GJAlertWithDrawPassword.h; sourceTree = "<group>"; };
 		88BF00A621F9625B00DFE778 /* GJAlertWithDrawPassword.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GJAlertWithDrawPassword.m; sourceTree = "<group>"; };
+		88BF82942283BE9E00DBB1BB /* LPWorkOrderList2Cell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPWorkOrderList2Cell.h; sourceTree = "<group>"; };
+		88BF82952283BE9E00DBB1BB /* LPWorkOrderList2Cell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPWorkOrderList2Cell.m; sourceTree = "<group>"; };
+		88BF82962283BE9E00DBB1BB /* LPWorkOrderList2Cell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPWorkOrderList2Cell.xib; sourceTree = "<group>"; };
 		88C1B26321BF454F00DBA508 /* LPVideoTypeModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPVideoTypeModel.h; sourceTree = "<group>"; };
 		88C1B26421BF454F00DBA508 /* LPVideoTypeModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPVideoTypeModel.m; sourceTree = "<group>"; };
 		88C1B26621BFABE800DBA508 /* MAMapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MAMapKit.framework; path = ../../Downloads/MAMapKit.framework; sourceTree = "<group>"; };
@@ -1465,6 +1481,8 @@
 		88C5AFD021C1349E00B4A9E2 /* LPWXLoginBindingVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPWXLoginBindingVC.xib; sourceTree = "<group>"; };
 		88C5AFD321C1EA7B00B4A9E2 /* LPWXUserInfoModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPWXUserInfoModel.h; sourceTree = "<group>"; };
 		88C5AFD421C1EA7B00B4A9E2 /* LPWXUserInfoModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPWXUserInfoModel.m; sourceTree = "<group>"; };
+		88C66441227FDFF9005C70B4 /* LPMainSortAlertView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPMainSortAlertView.h; sourceTree = "<group>"; };
+		88C66442227FDFF9005C70B4 /* LPMainSortAlertView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPMainSortAlertView.m; sourceTree = "<group>"; };
 		88C708DF218FEAB40095FE65 /* NSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HTML.h"; sourceTree = "<group>"; };
 		88C708E0218FEAC10095FE65 /* NSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HTML.m"; sourceTree = "<group>"; };
 		88C708E2218FEB600095FE65 /* GTMNSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GTMNSString+HTML.h"; sourceTree = "<group>"; };
@@ -1598,6 +1616,22 @@
 		88E6070721A39C20007D0257 /* LPInfoMationVideoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPInfoMationVideoCell.xib; sourceTree = "<group>"; };
 		88E6070A21A3A16E007D0257 /* LPVideoListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPVideoListModel.h; sourceTree = "<group>"; };
 		88E6070B21A3A16E007D0257 /* LPVideoListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPVideoListModel.m; sourceTree = "<group>"; };
+		88EADA26228573850000299B /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		88EADA27228573850000299B /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		88EADA2B228573850000299B /* UIView+SDExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+SDExtension.h"; sourceTree = "<group>"; };
+		88EADA2C228573850000299B /* SDCycleScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDCycleScrollView.h; sourceTree = "<group>"; };
+		88EADA2D228573850000299B /* SDCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDCollectionViewCell.h; sourceTree = "<group>"; };
+		88EADA2E228573850000299B /* SDCycleScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDCycleScrollView.m; sourceTree = "<group>"; };
+		88EADA2F228573850000299B /* UIView+SDExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+SDExtension.m"; sourceTree = "<group>"; };
+		88EADA30228573850000299B /* SDCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDCollectionViewCell.m; sourceTree = "<group>"; };
+		88EADA32228573850000299B /* TAAbstractDotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TAAbstractDotView.h; sourceTree = "<group>"; };
+		88EADA33228573850000299B /* TADotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TADotView.m; sourceTree = "<group>"; };
+		88EADA34228573850000299B /* TAPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TAPageControl.m; sourceTree = "<group>"; };
+		88EADA35228573850000299B /* TAAnimatedDotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TAAnimatedDotView.m; sourceTree = "<group>"; };
+		88EADA36228573850000299B /* TAAbstractDotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TAAbstractDotView.m; sourceTree = "<group>"; };
+		88EADA37228573850000299B /* TADotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TADotView.h; sourceTree = "<group>"; };
+		88EADA38228573850000299B /* TAAnimatedDotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TAAnimatedDotView.h; sourceTree = "<group>"; };
+		88EADA39228573850000299B /* TAPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TAPageControl.h; sourceTree = "<group>"; };
 		88ED8F2E21AF905600B25C16 /* WebP.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WebP.framework; sourceTree = "<group>"; };
 		88ED8F2F21AF905700B25C16 /* WebP.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = WebP.sh; sourceTree = "<group>"; };
 		88EDC1A32265847D00F7AAE6 /* LPCustomPickerView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPCustomPickerView.h; sourceTree = "<group>"; };
@@ -2288,6 +2322,7 @@
 		88988DE4216DC75000042589 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				88EADA25228573850000299B /* SDCycleScrollView */,
 				889A5298225EE5CA00C35736 /* HXPhotoPicker */,
 				88BD9DCD225DDDBF00816825 /* YYWebImage */,
 				88A0F5EE2226762D00AF50EA /* Category */,
@@ -2893,6 +2928,61 @@
 				88CCFAB421E2FA5F00C1B6FE /* Untitled-3.gif */,
 			);
 			path = DesignSketchGIF;
+			sourceTree = "<group>";
+		};
+		88EADA25228573850000299B /* SDCycleScrollView */ = {
+			isa = PBXGroup;
+			children = (
+				88EADA26228573850000299B /* LICENSE */,
+				88EADA27228573850000299B /* README.md */,
+				88EADA28228573850000299B /* SDCycleScrollView */,
+			);
+			path = SDCycleScrollView;
+			sourceTree = "<group>";
+		};
+		88EADA28228573850000299B /* SDCycleScrollView */ = {
+			isa = PBXGroup;
+			children = (
+				88EADA29228573850000299B /* Lib */,
+			);
+			path = SDCycleScrollView;
+			sourceTree = "<group>";
+		};
+		88EADA29228573850000299B /* Lib */ = {
+			isa = PBXGroup;
+			children = (
+				88EADA2A228573850000299B /* SDCycleScrollView */,
+			);
+			path = Lib;
+			sourceTree = "<group>";
+		};
+		88EADA2A228573850000299B /* SDCycleScrollView */ = {
+			isa = PBXGroup;
+			children = (
+				88EADA2B228573850000299B /* UIView+SDExtension.h */,
+				88EADA2C228573850000299B /* SDCycleScrollView.h */,
+				88EADA2D228573850000299B /* SDCollectionViewCell.h */,
+				88EADA2E228573850000299B /* SDCycleScrollView.m */,
+				88EADA2F228573850000299B /* UIView+SDExtension.m */,
+				88EADA30228573850000299B /* SDCollectionViewCell.m */,
+				88EADA31228573850000299B /* PageControl */,
+			);
+			path = SDCycleScrollView;
+			sourceTree = "<group>";
+		};
+		88EADA31228573850000299B /* PageControl */ = {
+			isa = PBXGroup;
+			children = (
+				88EADA32228573850000299B /* TAAbstractDotView.h */,
+				88EADA33228573850000299B /* TADotView.m */,
+				88EADA34228573850000299B /* TAPageControl.m */,
+				88EADA35228573850000299B /* TAAnimatedDotView.m */,
+				88EADA36228573850000299B /* TAAbstractDotView.m */,
+				88EADA37228573850000299B /* TADotView.h */,
+				88EADA38228573850000299B /* TAAnimatedDotView.h */,
+				88EADA39228573850000299B /* TAPageControl.h */,
+			);
+			path = PageControl;
 			sourceTree = "<group>";
 		};
 		DC13BB48213E1BF600800955 /* ChooseCity */ = {
@@ -3968,6 +4058,8 @@
 				DC7383A62134F6580055DC10 /* LPMainCell.xib */,
 				DC7A32E5213812E200E09C6C /* LPSortAlertView.h */,
 				DC7A32E6213812E200E09C6C /* LPSortAlertView.m */,
+				88C66441227FDFF9005C70B4 /* LPMainSortAlertView.h */,
+				88C66442227FDFF9005C70B4 /* LPMainSortAlertView.m */,
 				DC30E18D2138D9CB000C7A91 /* LPScreenAlertView.h */,
 				DC30E18E2138D9CB000C7A91 /* LPScreenAlertView.m */,
 				DC30E1A221393BB0000C7A91 /* LPWorkDetailHeadCell.h */,
@@ -3982,6 +4074,9 @@
 				8885D91521DF5F830065D6DA /* LPMain2Cell.h */,
 				8885D91621DF5F840065D6DA /* LPMain2Cell.m */,
 				8885D91721DF5F840065D6DA /* LPMain2Cell.xib */,
+				88BF82942283BE9E00DBB1BB /* LPWorkOrderList2Cell.h */,
+				88BF82952283BE9E00DBB1BB /* LPWorkOrderList2Cell.m */,
+				88BF82962283BE9E00DBB1BB /* LPWorkOrderList2Cell.xib */,
 				88EDC1A32265847D00F7AAE6 /* LPCustomPickerView.h */,
 				88EDC1A42265847D00F7AAE6 /* LPCustomPickerView.m */,
 			);
@@ -4421,6 +4516,7 @@
 				88C3FDCB21807A48003AC177 /* LPRecruitRequireVC.xib in Resources */,
 				DC30E1B021394055000C7A91 /* LPWorkDetailTextCell.xib in Resources */,
 				88CB1290219D706B00EFED06 /* 组8.png in Resources */,
+				88EADA3B228573850000299B /* README.md in Resources */,
 				DCB57F7B215CA5EB0043AA43 /* LPBusinessReviewDetailSalaryCell.xib in Resources */,
 				8895F94C22378F3700215EEF /* LPLeaveListCell.xib in Resources */,
 				DC13BB5B213E5B6A00800955 /* LPCityCell.xib in Resources */,
@@ -4435,6 +4531,7 @@
 				DCC969BB2160BAD300D9E99C /* LPBillRecordVC.xib in Resources */,
 				88AB2887218341180067F67B /* LPEntryVC.xib in Resources */,
 				8895D9AA2239F6ED006737E6 /* LPWorkHourBaseSalary2VC.xib in Resources */,
+				88EADA3A228573850000299B /* LICENSE in Resources */,
 				88C5908E221E35F3004F6576 /* LPWorkHour2VC.xib in Resources */,
 				88C59098221E799D004F6576 /* LPWorkHourDetailsCell.xib in Resources */,
 				8895D9BC223A379F006737E6 /* LPPieceListVC.xib in Resources */,
@@ -4537,6 +4634,7 @@
 				DC2C590B2154A14700741ED8 /* LPInfoCell.xib in Resources */,
 				DC7383A82134F6580055DC10 /* LPMainCell.xib in Resources */,
 				88CCFAD921E2FA5F00C1B6FE /* Untitled-9.gif in Resources */,
+				88BF82982283BE9E00DBB1BB /* LPWorkOrderList2Cell.xib in Resources */,
 				DC5C389E213682F500B3CF6E /* LPCircleListCell.xib in Resources */,
 				DCF5D9C6213FA5BD009F5DCE /* LPBusinessReviewCell.xib in Resources */,
 				88BD9AC02182FAE300D7272D /* LPTLendAuditCell.xib in Resources */,
@@ -4768,6 +4866,7 @@
 				88B8035B21D0BA4D00FB4D25 /* JXCategoryBaseView.m in Sources */,
 				DCB57F7F215CBA680043AA43 /* LPQueryCheckrecordModel.m in Sources */,
 				88BD9DF6225DDDBF00816825 /* YYImageCache.m in Sources */,
+				88EADA3E228573850000299B /* SDCollectionViewCell.m in Sources */,
 				DC7A32E42138074900E09C6C /* LPSetVC.m in Sources */,
 				88BD9DFB225DDDBF00816825 /* YYWebImageManager.m in Sources */,
 				88D1FAA122697A0F00178BFC /* LPIntegralDrawVC.m in Sources */,
@@ -4835,6 +4934,7 @@
 				889E1F982184073C0045D247 /* LPEntryScreenView.m in Sources */,
 				DC5C38A421369B9B00B3CF6E /* NSString+String.m in Sources */,
 				DC2C590A2154A14700741ED8 /* LPInfoCell.m in Sources */,
+				88EADA3C228573850000299B /* SDCycleScrollView.m in Sources */,
 				88B8034721D0BA4D00FB4D25 /* JXCategoryDotView.m in Sources */,
 				88BD9E01225DDDBF00816825 /* _YYWebImageSetter.m in Sources */,
 				882594CC22362BAC00D24216 /* LPCalenderModel.m in Sources */,
@@ -4852,6 +4952,7 @@
 				8895F950223794C700215EEF /* LPLeaveEditorVC.m in Sources */,
 				88AEA2D621D3267A0073C99C /* WHActivityView.m in Sources */,
 				882594D02236622900D24216 /* LPAddSubsidiesVC.m in Sources */,
+				88EADA40228573850000299B /* TAPageControl.m in Sources */,
 				DC13BB50213E1FD100800955 /* LPCityDataManager.m in Sources */,
 				884471B621770B1E00ECC047 /* WXApiResponseHandler.m in Sources */,
 				88AD92F921D724BF001D85AD /* LPHFButton.m in Sources */,
@@ -4924,6 +5025,7 @@
 				DC7383872134DC200055DC10 /* LPMineCell.m in Sources */,
 				88B8035321D0BA4D00FB4D25 /* JXCategoryNumberCell.m in Sources */,
 				8809F67121887AC800B44A95 /* LPSetReMoneyVC.m in Sources */,
+				88BF82972283BE9E00DBB1BB /* LPWorkOrderList2Cell.m in Sources */,
 				88CAD8DC2224DE8600AECBC9 /* LPTypeWorkHourCell.m in Sources */,
 				88B8035621D0BA4D00FB4D25 /* JXCategoryListVCContainerView.m in Sources */,
 				88CB4ECA21C8F0600038BE97 /* XWScanImage.m in Sources */,
@@ -4940,7 +5042,9 @@
 				88CA7B5822532DC700FABD4E /* LPConcernModel.m in Sources */,
 				889A530E225EE5CB00C35736 /* NSTimer+HXExtension.m in Sources */,
 				88B8035C21D0BA4D00FB4D25 /* JXCategoryBaseCell.m in Sources */,
+				88EADA3F228573850000299B /* TADotView.m in Sources */,
 				88A0F5FC2226762D00AF50EA /* LxButton.m in Sources */,
+				88EADA42228573850000299B /* TAAbstractDotView.m in Sources */,
 				8895D6E921CCE58B00AF01AE /* LZImageBrowserMainView.m in Sources */,
 				DC5C389921366D1A00B3CF6E /* LPMoodTypeModel.m in Sources */,
 				88C1B26D21BFAC4600DBA508 /* LPCircleSearchVC.m in Sources */,
@@ -5019,6 +5123,7 @@
 				889A531C225EE5CB00C35736 /* HXCustomCollectionReusableView.m in Sources */,
 				889A5303225EE5CB00C35736 /* HXPhotoPersentInteractiveTransition.m in Sources */,
 				88217879217D806B00C662F6 /* WSPieForeBGView.m in Sources */,
+				88C66443227FDFF9005C70B4 /* LPMainSortAlertView.m in Sources */,
 				88A4B550222A290F00C75BF7 /* LPConsumeTypeVC.m in Sources */,
 				88B1AE08222913E800EAF366 /* LPWorkHourKQWeekVC.m in Sources */,
 				88B8037821D0CA0E00FB4D25 /* TestListBaseView.m in Sources */,
@@ -5030,6 +5135,7 @@
 				88A0F5FA2226762D00AF50EA /* UIView+LX_Frame.m in Sources */,
 				DCB57F75215C88CA0043AA43 /* LPBusinessReviewDetailCell.m in Sources */,
 				88BF00A721F9625B00DFE778 /* GJAlertWithDrawPassword.m in Sources */,
+				88EADA3D228573850000299B /* UIView+SDExtension.m in Sources */,
 				88217878217D806B00C662F6 /* WSShowInfoView.m in Sources */,
 				88988DE0216DC71700042589 /* LPBusinessReviewWageVC.m in Sources */,
 				88CCFAE421E35F3C00C1B6FE /* LPMineBillCell.m in Sources */,
@@ -5121,6 +5227,7 @@
 				88A0D9A0222FA0E30023587E /* LPLeaveDetailsVC.m in Sources */,
 				88B8034421D0BA4D00FB4D25 /* JXCategoryIndicatorCell.m in Sources */,
 				88B8037621D0CA0E00FB4D25 /* PagingViewTableHeaderView.m in Sources */,
+				88EADA41228573850000299B /* TAAnimatedDotView.m in Sources */,
 				88C3FDC621804744003AC177 /* LPWork_ListModel.m in Sources */,
 				88A0F5CE22266FF800AF50EA /* LPWorkHourCalendarVC.m in Sources */,
 				DC44DBA021353D5800D00FAC /* LPLabelListModel.m in Sources */,
@@ -5184,6 +5291,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DC73833D2133E3680055DC10 /* BlueHiredTests.m in Sources */,
+				88BC48882286782800B03424 /* LPMainSearchVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

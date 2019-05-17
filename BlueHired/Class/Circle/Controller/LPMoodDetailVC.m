@@ -422,6 +422,14 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
                           };
     [NetApiManager requestSetMoodViewWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
     }];
 }
 -(void)requestGetMood{
@@ -432,29 +440,28 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     [NetApiManager requestGetMoodWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            self.model = [LPGetMoodModel mj_objectWithKeyValues:responseObject];
-            if (self.model.data == nil)
-            {
-//                [self.view showLoadingMeg:@"圈子可能已经被删除" time:MESSAGE_SHOW_TIME];
-//                [LPTools AlertMessageView:@"圈子可能已经被删除" dismiss:1.0];
-                [self  addNodataViewHidden:NO];
-
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//                    [self.navigationController popViewControllerAnimated:YES];
-                    
-                    if ([[self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2] isKindOfClass:[LPCircleVC class]]) {
-                        LPCircleVC *vc = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
-                        vc.isSenderBack = 3;
-                        [self.moodListArray removeObject:self.moodListDataModel];
-                        [self.SuperTableView reloadData];
-//                        [self.navigationController popToViewController:vc animated:YES];
-                    }else{
-                         [self.navigationController popViewControllerAnimated:YES];
-                    }
-                    
-                });
-        
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.model = [LPGetMoodModel mj_objectWithKeyValues:responseObject];
+                if (self.model.data == nil)
+                {
+                    [self  addNodataViewHidden:NO];
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        
+                        if ([[self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2] isKindOfClass:[LPCircleVC class]]) {
+                            LPCircleVC *vc = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
+                            vc.isSenderBack = 3;
+                            [self.moodListArray removeObject:self.moodListDataModel];
+                            [self.SuperTableView reloadData];
+                        }else{
+                            [self.navigationController popViewControllerAnimated:YES];
+                        }
+                        
+                    });
+                }
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
+
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -471,7 +478,11 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
         NSLog(@"%@",responseObject);
         [self.tableview.mj_footer endRefreshing];
         if (isSuccess) {
-            self.commentListModel = [LPCommentListModel mj_objectWithKeyValues:responseObject];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.commentListModel = [LPCommentListModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -486,47 +497,52 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     [NetApiManager requestSocialSetlikeWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            LPUserMaterialModel *user = [LPUserDefaults getObjectByFileName:USERINFO];
-            if (!ISNIL(responseObject[@"data"])) {
-                if ([responseObject[@"data"] integerValue] == 0) {
-                    self.praiseButton.selected = YES;
-                    self.moodListDataModel.praiseTotal = @(self.moodListDataModel.praiseTotal.integerValue+1);
-                    self.moodListDataModel.isPraise = @([responseObject[@"data"] integerValue]);
-
-                    LPMoodPraiseListDataModel *Pmodel = [[LPMoodPraiseListDataModel alloc] init];
-                    Pmodel.grading = user.data.grading;
-                    Pmodel.role = user.data.role;
-                    Pmodel.userId = kUserDefaultsValue(LOGINID);
-                    Pmodel.userName = user.data.user_name;
-                    Pmodel.userImage = user.data.user_url;
-                    Pmodel.phone = user.data.userTel;
-                    
-                    [self.moodListDataModel.praiseList insertObject:Pmodel atIndex:0];
-                    
-                }else if ([responseObject[@"data"] integerValue] == 1) {
-                    self.praiseButton.selected = NO;
-                    self.moodListDataModel.praiseTotal = @(self.moodListDataModel.praiseTotal.integerValue-1);
-                    self.moodListDataModel.isPraise = @([responseObject[@"data"] integerValue]);
-                    for (LPMoodPraiseListDataModel *m in self.moodListDataModel.praiseList) {
-                        if (m.userId == kUserDefaultsValue(LOGINID)) {
-                            [self.moodListDataModel.praiseList removeObject:m];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                LPUserMaterialModel *user = [LPUserDefaults getObjectByFileName:USERINFO];
+                if (!ISNIL(responseObject[@"data"])) {
+                    if ([responseObject[@"data"] integerValue] == 0) {
+                        self.praiseButton.selected = YES;
+                        self.moodListDataModel.praiseTotal = @(self.moodListDataModel.praiseTotal.integerValue+1);
+                        self.moodListDataModel.isPraise = @([responseObject[@"data"] integerValue]);
+                        
+                        LPMoodPraiseListDataModel *Pmodel = [[LPMoodPraiseListDataModel alloc] init];
+                        Pmodel.grading = user.data.grading;
+                        Pmodel.role = user.data.role;
+                        Pmodel.userId = kUserDefaultsValue(LOGINID);
+                        Pmodel.userName = user.data.user_name;
+                        Pmodel.userImage = user.data.user_url;
+                        Pmodel.phone = user.data.userTel;
+                        
+                        [self.moodListDataModel.praiseList insertObject:Pmodel atIndex:0];
+                        
+                    }else if ([responseObject[@"data"] integerValue] == 1) {
+                        self.praiseButton.selected = NO;
+                        self.moodListDataModel.praiseTotal = @(self.moodListDataModel.praiseTotal.integerValue-1);
+                        self.moodListDataModel.isPraise = @([responseObject[@"data"] integerValue]);
+                        for (LPMoodPraiseListDataModel *m in self.moodListDataModel.praiseList) {
+                            if (m.userId == kUserDefaultsValue(LOGINID)) {
+                                [self.moodListDataModel.praiseList removeObject:m];
+                                break;
+                            }
+                        }
+                    }
+                    for (int i =0 ; i < self.moodListArray.count ; i++) {
+                        LPMoodListDataModel *DataModel = self.moodListArray[i];
+                        if (DataModel.id.integerValue == self.moodListDataModel.id.integerValue) {
+                            DataModel.praiseList = self.moodListDataModel.praiseList;
+                            DataModel.isPraise = self.moodListDataModel.isPraise;
+                            DataModel.praiseTotal = self.moodListDataModel.praiseTotal;
                             break;
                         }
                     }
-                }
-                for (int i =0 ; i < self.moodListArray.count ; i++) {
-                    LPMoodListDataModel *DataModel = self.moodListArray[i];
-                    if (DataModel.id.integerValue == self.moodListDataModel.id.integerValue) {
-                        DataModel.praiseList = self.moodListDataModel.praiseList;
-                        DataModel.isPraise = self.moodListDataModel.isPraise;
-                        DataModel.praiseTotal = self.moodListDataModel.praiseTotal;
-                        break;
+                    if (self.SuperTableView) {
+                        [self.SuperTableView reloadData];
                     }
                 }
-                if (self.SuperTableView) {
-                    [self.SuperTableView reloadData];
-                }
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
+           
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -669,15 +685,19 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     [NetApiManager requestSetUserConcernWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            if (!ISNIL(responseObject[@"data"])) {
-                LPMoodDetailHeaderCell *cell = [self.tableview cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-                if ([responseObject[@"data"] integerValue] == 0) {
-                    cell.isUserConcern = YES;
-                }else if ([responseObject[@"data"] integerValue] == 1) {
-                    cell.isUserConcern = NO;
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if (!ISNIL(responseObject[@"data"])) {
+                    LPMoodDetailHeaderCell *cell = [self.tableview cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+                    if ([responseObject[@"data"] integerValue] == 0) {
+                        cell.isUserConcern = YES;
+                    }else if ([responseObject[@"data"] integerValue] == 1) {
+                        cell.isUserConcern = NO;
+                    }
                 }
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
-            
+
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -691,22 +711,23 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     [NetApiManager requestDeleteMoodWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            if ([responseObject[@"data"] integerValue] == 1) {
-//                [self.navigationController popViewControllerAnimated:YES];
-        
-//                if (self.Type == 1) {
-//                    LPCircleVC *vc = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
-//                    vc.isSenderBack = 3;
-//                    [self.moodListArray removeObject:self.moodListDataModel];
-//
-//                    [self.navigationController popToViewController:vc animated:YES];
-////                    [self.navigationController popViewControllerAnimated:YES];
-//                }else if (self.Type == 2){
-//                    LPReportVC *vc = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
-//                    vc.isSenderBack = 3;
-//                     [self.navigationController popToViewController:vc animated:YES];
-////                    [self.navigationController popViewControllerAnimated:YES];
-//                }else{
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if ([responseObject[@"data"] integerValue] == 1) {
+                    //                [self.navigationController popViewControllerAnimated:YES];
+                    
+                    //                if (self.Type == 1) {
+                    //                    LPCircleVC *vc = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
+                    //                    vc.isSenderBack = 3;
+                    //                    [self.moodListArray removeObject:self.moodListDataModel];
+                    //
+                    //                    [self.navigationController popToViewController:vc animated:YES];
+                    ////                    [self.navigationController popViewControllerAnimated:YES];
+                    //                }else if (self.Type == 2){
+                    //                    LPReportVC *vc = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
+                    //                    vc.isSenderBack = 3;
+                    //                     [self.navigationController popToViewController:vc animated:YES];
+                    ////                    [self.navigationController popViewControllerAnimated:YES];
+                    //                }else{
                     if (self.moodListArray.count) {
                         [self.moodListArray removeObject:self.moodListDataModel];
                     }
@@ -714,9 +735,15 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
                         [self.SuperTableView reloadData];
                     }
                     [self.navigationController popViewControllerAnimated:YES];
-//                }
-
+                    //                }
+                    
+                }else{
+                    [self.view showLoadingMeg:@"删除失败,请稍后再试" time:MESSAGE_SHOW_TIME];
+                }
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
+            
             
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];

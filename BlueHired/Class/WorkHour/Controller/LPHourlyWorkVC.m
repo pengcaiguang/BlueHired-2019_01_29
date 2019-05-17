@@ -349,7 +349,11 @@
     [NetApiManager requestQueryCurrecordWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            self.model = [LPQueryCurrecordModel mj_objectWithKeyValues:responseObject];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.model = [LPQueryCurrecordModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -384,6 +388,8 @@
                 if (show) {
                     [self showCalender];
                 }
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
@@ -409,6 +415,8 @@
                 }
                 self.normalRecordArray = [strList copy];
                 self.dateSelectView.selectArray = self.normalRecordArray;
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
@@ -456,8 +464,15 @@
         NSLog(@"%@",responseObject);
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
-                [self requestQueryCurrecord];
-                [self requestQueryNormalrecordWithShowCalender:NO];
+                if ([responseObject[@"data"] integerValue] == 1) {
+                    [self requestQueryCurrecord];
+                    [self requestQueryNormalrecordWithShowCalender:NO];
+                }else{
+                    [self.view showLoadingMeg:@"删除失败,请稍后再试" time:MESSAGE_SHOW_TIME];
+                }
+
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];

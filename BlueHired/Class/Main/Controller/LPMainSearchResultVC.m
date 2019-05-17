@@ -77,6 +77,23 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return self.listArray.count;
 }
+
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    UIView *view = [[UIView alloc]init];
+    view.backgroundColor = [UIColor colorWithHexString:@"#F2F1F0"];
+    UILabel *label = [[UILabel alloc]init];
+    [view addSubview:label];
+    [label mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(12);
+        make.centerY.equalTo(view);
+    }];
+    label.text = @"搜索结果";
+    label.font = [UIFont systemFontOfSize:13];
+    label.textColor = [UIColor colorWithHexString:@"#999999"];
+    return view;
+}
+
+
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     LPMain2Cell *cell = [tableView dequeueReusableCellWithIdentifier:LPMainCellID];
     if(cell == nil){
@@ -87,9 +104,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    LPWorkDetailVC *vc = [[LPWorkDetailVC alloc]init];
-    vc.workListModel = self.listArray[indexPath.row];
-    [self.navigationController pushViewController:vc animated:YES];
+
 }
 
 #pragma mark - request
@@ -104,7 +119,11 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         [self.tableview.mj_header endRefreshing];
         [self.tableview.mj_footer endRefreshing];
         if (isSuccess) {
-            self.model = [LPWorklistModel mj_objectWithKeyValues:responseObject];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.model = [LPWorklistModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -120,6 +139,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         _tableview.tableFooterView = [[UIView alloc]init];
         _tableview.rowHeight = UITableViewAutomaticDimension;
         _tableview.estimatedRowHeight = 100;
+
         _tableview.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         _tableview.separatorColor = [UIColor colorWithHexString:@"#E6E6E6"];
         _tableview.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;

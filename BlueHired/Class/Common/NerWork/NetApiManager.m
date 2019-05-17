@@ -1193,7 +1193,7 @@ static QNUploadManager *upManager = NULL;
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
                                                      withHandle:responseHandle
-                                                 IsShowActiviTy:YES];
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 //查询工资明细详情
@@ -1204,7 +1204,7 @@ static QNUploadManager *upManager = NULL;
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
                                                      withHandle:responseHandle
-                                                 IsShowActiviTy:YES];
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 //晒工资

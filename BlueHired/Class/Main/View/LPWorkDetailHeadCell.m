@@ -26,8 +26,21 @@
     [self.cycleScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.imageBgView);
     }];
-    [self addShadowToView:self.BackView withColor:[UIColor colorWithHexString:@"#12598B"]];
+    self.cycleScrollView.delegate = self;
+    
+    self.lendTypeLabel.layer.borderColor = [UIColor baseColor].CGColor;
+    self.lendTypeLabel.layer.borderWidth = 0.5;
+    self.lendTypeLabel.layer.cornerRadius = 2;
+//    [self addShadowToView:self.BackView withColor:[UIColor colorWithHexString:@"#12598B"]];
 
+    XHStarRateView *starRateView = [[XHStarRateView alloc] initWithFrame:CGRectMake(0,0, 100, 17) isTouch:YES];
+    starRateView.isAnimation = YES;
+    starRateView.rateStyle = HalfStar;
+    starRateView.delegate = self;
+    self.starRateView = starRateView;
+    [self.mechanismScoreView addSubview:starRateView];
+    
+    
 }
 
 
@@ -51,80 +64,99 @@
     self.mechanismNameLabel.text = model.data.mechanismName;
     self.mechanismScoreLabel.text = [NSString stringWithFormat:@"%@分",model.data.mechanismScore];
     self.postNameLabel.text = model.data.postName;
+    self.starRateView.currentScore = model.data.mechanismScore.floatValue/2;
+
+    if (model.data.reMoney.integerValue>0) {
+        [self.reMoneyLabel setTitle:[NSString stringWithFormat:@"返%ld",(long)model.data.reMoney.integerValue] forState:UIControlStateNormal];
+        self.reMoneyLabel.hidden = NO;
+    }else{
+        self.reMoneyLabel.hidden = YES;
+    }
+    
     if ([model.data.postName isEqualToString:@"小时工"]) {
         self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/时",model.data.workMoney];
     }else{
         self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/月",model.data.wageRange];
     }
+    
+    self.workTypeNameLabel.text = [NSString stringWithFormat:@"招%@人 / 已报名%@人",model.data.maxNumber,model.data.applyNumber];
+    self.workName.text = model.data.workTypeName;
+    self.lendTypeLabel.hidden = ![model.data.lendType integerValue];
+
+    
     if (model.data.status.integerValue == 1) {
-        self.workTypeNameLabel.text = [NSString stringWithFormat:@"需%@：已招满",model.data.workTypeName];
+        self.applyNumberLabel.hidden = NO;
     }else{
-        self.workTypeNameLabel.text = [NSString stringWithFormat:@"需%@：%@人",model.data.workTypeName,model.data.maxNumber ? model.data.maxNumber : @"0"];
+        self.applyNumberLabel.hidden = YES;
     }
-    self.applyNumberLabel.text = [NSString stringWithFormat:@"已报名：%@人",model.data.applyNumber ? model.data.applyNumber : @"0"];
+ 
+//    self.keyLabel.text =  [model.data.key stringByReplacingOccurrencesOfString:@"|" withString:@" "];
+//        CGRect rect = [model.data.key getStringSize:CGSizeMake(MAXFLOAT, MAXFLOAT) font:[UIFont systemFontOfSize:12]];
     
-    if (model.data.key.length > 0) {
-        self.keyLabel.text = model.data.key;
-        CGRect rect = [model.data.key getStringSize:CGSizeMake(MAXFLOAT, MAXFLOAT) font:[UIFont systemFontOfSize:12]];
-        self.keyLabel_constraint_width.constant = rect.size.width + 10;
-    }else{
-        self.keyLabel_constraint_width.constant = 0;
+    
+//
+//    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:self.workTypeNameLabel.text];
+//    NSRange range = [[str string] rangeOfString:[NSString stringWithFormat:@"%@人",model.data.maxNumber ? model.data.maxNumber : @"0"]];
+//    [str addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#FF6666"] range:range];
+//    self.workTypeNameLabel.attributedText = str;
+    
+ 
+    
+    
+    NSArray *imageStrArray = [model.data.imageList componentsSeparatedByString:@";"];
+    NSMutableArray *imageUrlArray = [[NSMutableArray alloc] init];
+    for (NSString *str in imageStrArray) {
+        if ([str containsString:@".mp4"]) {
+            [imageUrlArray addObject:[NSString stringWithFormat:@"%@?vframe/png/offset/0.001",str]];
+        }else{
+            [imageUrlArray addObject:str];
+        }
     }
-    
-    
-    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:self.workTypeNameLabel.text];
-    NSRange range = [[str string] rangeOfString:[NSString stringWithFormat:@"%@人",model.data.maxNumber ? model.data.maxNumber : @"0"]];
-    [str addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#FF6666"] range:range];
-    self.workTypeNameLabel.attributedText = str;
-    
-    NSMutableAttributedString *str1 = [[NSMutableAttributedString alloc] initWithString:self.applyNumberLabel.text];
-    NSRange range1 = [[str1 string] rangeOfString:[NSString stringWithFormat:@"%@人",model.data.applyNumber ? model.data.applyNumber : @"0"]];
-    [str1 addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#FF6666"] range:range1];
-    self.applyNumberLabel.attributedText = str1;
-    
-    
-    NSArray *imageArray = [model.data.imageList componentsSeparatedByString:@";"];
-    self.cycleScrollView.imageURLStringsGroup = imageArray;
-    
-    NSString *strbackmoney = [self removeHTML2:model.data.reInstruction];
-    if (strbackmoney.length>0) {
-        self.BackMoneylabel.text = strbackmoney;
-        CGFloat BackMoneyHeight = [self calculateRowHeight:strbackmoney fontSize:14 Width:SCREEN_WIDTH - 46];
-        self.LayouConstraint_BackView_Height.constant = 124 + 56 +BackMoneyHeight;
-    }else{
-        self.LayouConstraint_BackView_Height.constant = 124;
-    }
+//    self.cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:self.imageBgView.frame imageNamesGroup:imageArray];
+    self.cycleScrollView.imageURLStringsGroup = imageUrlArray;
+ 
 
 
-    [self.KeyView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    self.keyLabel.text = @"";
+    [self.keyLabel.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
 
     
     NSArray * tagArr = [model.data.key componentsSeparatedByString:@"|"];
     CGFloat tagBtnX = 0;
     CGFloat tagBtnY = 0;
     for (int i= 0; i<tagArr.count; i++) {
-        
-        CGSize tagTextSize = [tagArr[i] sizeWithFont:[UIFont systemFontOfSize:12] maxSize:CGSizeMake(SCREEN_WIDTH-23-23, 17)];
-        if (tagBtnX+tagTextSize.width+30 > SCREEN_WIDTH-23-23) {
-            
+
+        CGSize tagTextSize = [tagArr[i] sizeWithFont:[UIFont systemFontOfSize:12] maxSize:CGSizeMake(SCREEN_WIDTH-13-13, 17)];
+        if (tagBtnX+tagTextSize.width+14 > SCREEN_WIDTH-13-13) {
             tagBtnX = 0;
             tagBtnY += 17+8;
         }
         UIButton * tagBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         tagBtn.tag = 100+i;
-        tagBtn.frame = CGRectMake(tagBtnX, tagBtnY, tagTextSize.width+16, 17);
+        tagBtn.frame = CGRectMake(tagBtnX, tagBtnY, tagTextSize.width+10, 17);
         [tagBtn setTitle:tagArr[i] forState:UIControlStateNormal];
-        [tagBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        tagBtn.titleLabel.font = [UIFont systemFontOfSize:12];
-        tagBtn.layer.cornerRadius = 5;
+        [tagBtn setTitleColor:[UIColor colorWithHexString:@"#808080"] forState:UIControlStateNormal];
+        tagBtn.titleLabel.font = [UIFont systemFontOfSize:11];
+        tagBtn.layer.cornerRadius = 2;
         tagBtn.layer.masksToBounds = YES;
-        tagBtn.backgroundColor = [UIColor colorWithHexString:@"#F2F2F2"];
-        [self.KeyView addSubview:tagBtn];
-        
-        tagBtnX = CGRectGetMaxX(tagBtn.frame)+14;
+        tagBtn.backgroundColor = [UIColor colorWithHexString:@"#F5F6F7"];
+        [self.keyLabel addSubview:tagBtn];
+
+        tagBtnX = CGRectGetMaxX(tagBtn.frame)+4;
     }
 //    self.KeyView.backgroundColor = [UIColor redColor];
     self.LayoutConstraint_KeyView.constant  = tagBtnY+17;
+    
+    
+    NSString *strbackmoney = [self removeHTML2:model.data.reInstruction];
+    if (strbackmoney.length>0) {
+        self.BackMoneylabel.text = strbackmoney;
+        CGFloat BackMoneyHeight = [LPTools calculateRowHeight:strbackmoney fontSize:14 Width:SCREEN_WIDTH - 26];
+        self.LayouConstraint_BackView_Height.constant = 153 + 44 +BackMoneyHeight+20 + tagBtnY;
+    }else{
+        self.LayouConstraint_BackView_Height.constant = 153 + tagBtnY;
+    }
+    
     
     
 }
@@ -132,16 +164,29 @@
 #pragma mark - SDCycleScrollViewDelegate
 
 - (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didSelectItemAtIndex:(NSInteger)index{
-    NSLog(@"---点击了第%ld张图片", (long)index);
+    NSLog(@"---点击了第%ld张图片 ", (long)index);
+    NSArray *imageStrArray = [self.model.data.imageList componentsSeparatedByString:@";"];
+
+    NSString *url = imageStrArray[index];
+    if ([url containsString:@".mp4"]) {
+        WJMoviePlayerView *playerView = [[WJMoviePlayerView alloc] init];
+        playerView.movieURL = [NSURL URLWithString:url];
+//        [playerView.coverView yy_setImageWithURL:[NSString stringWithFormat:@"%@?vframe/png/offset/0.001",url] options:nil];
+        [playerView.coverView yy_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@?vframe/png/offset/0.001",url]]
+                          placeholder:[UIImage imageNamed:@"NoImage"]];
+        [playerView show];
+    }
 }
 
 #pragma mark lazy
 
 -(SDCycleScrollView *)cycleScrollView{
     if (!_cycleScrollView) {
-        _cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectZero delegate:self placeholderImage:nil];
+//        _cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectZero delegate:self placeholderImage:nil];
+        _cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectZero shouldInfiniteLoop:YES imageNamesGroup:nil];
         _cycleScrollView.pageControlAliment = SDCycleScrollViewPageContolAlimentCenter;
         _cycleScrollView.currentPageDotColor = [UIColor whiteColor]; // 自定义分页控件小圆标颜色
+        _cycleScrollView.bannerImageViewContentMode = UIViewContentModeScaleAspectFill;
     }
     return _cycleScrollView;
 }
@@ -150,18 +195,7 @@
 
     // Configure the view for the selected state
 }
-
-- (CGFloat)calculateRowHeight:(NSString *)string fontSize:(NSInteger)fontSize Width:(CGFloat) W
-{
-    NSMutableParagraphStyle *paraStyle01 = [[NSMutableParagraphStyle alloc] init];
-    paraStyle01.lineBreakMode = NSLineBreakByCharWrapping;
-    NSDictionary *dic = @{NSFontAttributeName:[UIFont systemFontOfSize:fontSize],NSParagraphStyleAttributeName:paraStyle01};
-    /*计算高度要先指定宽度*/
-    CGRect rect = [string boundingRectWithSize:CGSizeMake(W, 0) options:NSStringDrawingUsesLineFragmentOrigin |
-                   NSStringDrawingUsesFontLeading attributes:dic context:nil];
-    return ceil(rect.size.height);
-    
-}
+ 
 
 - (NSString *)removeHTML2:(NSString *)html{
     NSArray *components = [html componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];

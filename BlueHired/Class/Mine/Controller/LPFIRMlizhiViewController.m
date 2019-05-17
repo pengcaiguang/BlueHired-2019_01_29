@@ -186,8 +186,15 @@ static NSString *TEXT = @"请输入离职的原因";
         NSLog(@"%@",responseObject);
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
-                [weakSelf.view showLoadingMeg:@"操作成功" time:MESSAGE_SHOW_TIME];
-                [weakSelf.navigationController popViewControllerAnimated:YES];
+                if ([responseObject[@"data"] integerValue] == 1) {
+                    [weakSelf.view showLoadingMeg:@"操作成功" time:MESSAGE_SHOW_TIME];
+                    [weakSelf.navigationController popViewControllerAnimated:YES];
+                }else{
+                    [weakSelf.view showLoadingMeg:@"操作失败,请稍后再试" time:MESSAGE_SHOW_TIME];
+                }
+
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];

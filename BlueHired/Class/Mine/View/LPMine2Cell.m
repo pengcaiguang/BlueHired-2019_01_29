@@ -16,6 +16,8 @@
 #import "LPConcerNumVC.h"
 #import "LPInfoVC.h"
 
+
+
 @implementation LPMine2Cell
 
 - (void)awakeFromNib {
@@ -270,6 +272,7 @@
         [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
     }
 }
+ 
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];

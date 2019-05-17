@@ -10,4 +10,6 @@
 
 @interface LPBaseViewController : UIViewController
 
+@property (nonatomic,strong) UIButton *NBackBT;
+
 @end

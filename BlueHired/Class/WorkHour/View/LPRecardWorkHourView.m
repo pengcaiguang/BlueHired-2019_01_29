@@ -165,8 +165,14 @@ static NSString *TEXT2 = @"可以备注您请假的原因，最多30字!";
         
         self.LeaveTextField.hidden = YES;
         self.OverTypeButton.hidden = NO;
-        _selectView.lx_height = 453;
-        _selectView.lx_y = SCREEN_HEIGHT - 453;
+        WEAK_SELF()
+        [UIView animateWithDuration:0.3 animations:^{
+            weakSelf.selectView.lx_height = 453;
+            weakSelf.selectView.lx_y = SCREEN_HEIGHT - 453;
+        }completion:^(BOOL finished){
+            
+        }];
+
  
         [self.SalaryLabel mas_updateConstraints:^(MASConstraintMaker *make){
             make.height.mas_equalTo(40);
@@ -382,8 +388,15 @@ static NSString *TEXT2 = @"可以备注您请假的原因，最多30字!";
         self.SalaryButton.tag = 0;
         self.LeaveTextField.hidden = NO;
         self.OverTypeButton.hidden = YES;
-        _selectView.lx_height = 412;
-        _selectView.lx_y = SCREEN_HEIGHT - 412;
+//        _selectView.lx_height = 412;
+//        _selectView.lx_y = SCREEN_HEIGHT - 412;
+        WEAK_SELF()
+        [UIView animateWithDuration:0.3 animations:^{
+            weakSelf.selectView.lx_height = 412;
+            weakSelf.selectView.lx_y = SCREEN_HEIGHT - 412;
+        }completion:^(BOOL finished){
+            
+        }];
         self.textView.textColor = [UIColor lightGrayColor];
         self.textView.text = TEXT2;
         self.SalaryTF.hidden = YES;
@@ -679,8 +692,7 @@ static NSString *TEXT2 = @"可以备注您请假的原因，最多30字!";
 //            [self clearType];
         }];
     }else{
-        self.bgView.hidden = NO;
-        self.selectView.hidden = NO;
+
         self.LeaveModel = [[LPOverTimeAccountDataRecordListModel alloc] init];
         self.SalaryModel = [[LPOverTimeAccountDataRecordListModel alloc] init];
 
@@ -708,12 +720,15 @@ static NSString *TEXT2 = @"可以备注您请假的原因，最多30字!";
         }else if (self.WorkHourType == 3){
             [self requestQueryGetOvertimeAccount];
         }
-
+        self.bgView.hidden = NO;
+        self.selectView.hidden = NO;
         
         
         [UIView animateWithDuration:0.3 animations:^{
             self.bgView.alpha = 0.5;
             self.selectView.frame = CGRectMake(0, SCREEN_HEIGHT-CGRectGetHeight(self.selectView.frame), SCREEN_WIDTH, CGRectGetHeight(self.selectView.frame));
+        }completion:^(BOOL finished){
+
         }];
     }
 }
@@ -1325,7 +1340,11 @@ static NSString *TEXT2 = @"可以备注您请假的原因，最多30字!";
     [NetApiManager requestQueryGetPriceName:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            self.model = [LPLabourCostModel mj_objectWithKeyValues:responseObject];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.model = [LPLabourCostModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [[UIApplication sharedApplication].keyWindow showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [[UIApplication sharedApplication].keyWindow showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -1340,7 +1359,11 @@ static NSString *TEXT2 = @"可以备注您请假的原因，最多30字!";
     [NetApiManager requestQueryGetYsetMulList:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            self.YsetModel = [LPYsetMulListModel mj_objectWithKeyValues:responseObject];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.YsetModel = [LPYsetMulListModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [[UIApplication sharedApplication].keyWindow showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [[UIApplication sharedApplication].keyWindow showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

@@ -590,7 +590,10 @@
     [NetApiManager requestSaveOrUpdateWithParam:string withParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            
+            if ([responseObject[@"code"] integerValue] == 0) {
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -605,16 +608,21 @@
         NSLog(@"%@",responseObject);
         [self.tableview.mj_header endRefreshing];
         if (isSuccess) {
-            self.userMaterialModel = [LPUserMaterialModel mj_objectWithKeyValues:responseObject];
-            NSDictionary *dic = [self.userMaterialModel mj_keyValues];
-            self.userDic = [LPUserMaterialModel mj_objectWithKeyValues:dic];
-            self.userUrl = self.userMaterialModel.data.user_url;
-            self.userSex = self.userMaterialModel.data.user_sex;
-            self.userName = self.userMaterialModel.data.user_name;
-            [self.headImgView sd_setImageWithURL:[NSURL URLWithString:self.userMaterialModel.data.user_url] placeholderImage:[UIImage imageNamed:@"mine_headimg_placeholder"]];
-            self.headIName.text = self.userMaterialModel.data.user_name;
-
-            [self.tableview reloadData];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.userMaterialModel = [LPUserMaterialModel mj_objectWithKeyValues:responseObject];
+                NSDictionary *dic = [self.userMaterialModel mj_keyValues];
+                self.userDic = [LPUserMaterialModel mj_objectWithKeyValues:dic];
+                self.userUrl = self.userMaterialModel.data.user_url;
+                self.userSex = self.userMaterialModel.data.user_sex;
+                self.userName = self.userMaterialModel.data.user_name;
+                [self.headImgView sd_setImageWithURL:[NSURL URLWithString:self.userMaterialModel.data.user_url] placeholderImage:[UIImage imageNamed:@"mine_headimg_placeholder"]];
+                self.headIName.text = self.userMaterialModel.data.user_name;
+                
+                [self.tableview reloadData];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
+            
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -627,7 +635,11 @@
     [NetApiManager requestUserMaterialSelectMechanism:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            self.TypeList = [LPMechanismModel mj_objectWithKeyValues:responseObject];
+            if ([responseObject[@"code"] integerValue] == 0) {
+               self.TypeList = [LPMechanismModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

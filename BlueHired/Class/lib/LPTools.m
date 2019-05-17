@@ -499,4 +499,25 @@ LPTools * LPTools_instance = nil ;
     return thumb;
 }
 
++ (CGFloat)calculateRowHeight:(NSString *)string fontSize:(NSInteger)fontSize Width:(CGFloat) W
+{
+    NSMutableParagraphStyle *paraStyle01 = [[NSMutableParagraphStyle alloc] init];
+    paraStyle01.lineBreakMode = NSLineBreakByCharWrapping;
+    NSDictionary *dic = @{NSFontAttributeName:[UIFont systemFontOfSize:fontSize],NSParagraphStyleAttributeName:paraStyle01};
+    /*计算高度要先指定宽度*/
+    CGRect rect = [string boundingRectWithSize:CGSizeMake(W, 0) options:NSStringDrawingUsesLineFragmentOrigin |
+                   NSStringDrawingUsesFontLeading attributes:dic context:nil];
+    return ceil(rect.size.height);
+    
+}
+
+//获取字符串的宽度
++(CGFloat) widthForString:(NSString *)value fontSize:(float)fontSize andHeight:(float)height
+{
+    CGSize sizeToFit = [value sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(CGFLOAT_MAX, height) lineBreakMode:NSLineBreakByWordWrapping];//此处的换行类型（lineBreakMode）可根据自己的实际情况进行设置
+    return sizeToFit.width;
+}
+
+
+
 @end

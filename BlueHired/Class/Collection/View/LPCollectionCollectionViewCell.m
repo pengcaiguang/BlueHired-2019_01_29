@@ -455,7 +455,11 @@ static NSString *LPCollectionVideoCellID = @"LPCollectionVideoCell";
         [self.tableview.mj_header endRefreshing];
         [self.tableview.mj_footer endRefreshing];
         if (isSuccess) {
-            self.workCollectionModel = [LPWorkCollectionModel mj_objectWithKeyValues:responseObject];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                 self.workCollectionModel = [LPWorkCollectionModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [[UIWindow visibleViewController].view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [[UIWindow visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -470,7 +474,11 @@ static NSString *LPCollectionVideoCellID = @"LPCollectionVideoCell";
         [self.tableview.mj_header endRefreshing];
         [self.tableview.mj_footer endRefreshing];
         if (isSuccess) {
-            self.essayCollectionModel = [LPEssayCollectionModel mj_objectWithKeyValues:responseObject];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.essayCollectionModel = [LPEssayCollectionModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [[UIWindow visibleViewController].view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [[UIWindow visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -486,7 +494,11 @@ static NSString *LPCollectionVideoCellID = @"LPCollectionVideoCell";
         [self.tableview.mj_header endRefreshing];
         [self.tableview.mj_footer endRefreshing];
         if (isSuccess) {
-            self.VideoCollectionModel = [LPVideoCollectionModel mj_objectWithKeyValues:responseObject];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.VideoCollectionModel = [LPVideoCollectionModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [[UIWindow visibleViewController].view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [[UIWindow visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -519,17 +531,26 @@ static NSString *LPCollectionVideoCellID = @"LPCollectionVideoCell";
     [NetApiManager requestDeleteCollectionWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            [self.selectArray removeAllObjects];
-            self.page = 1;
-            if (self.index == 0) {
-                [self requestGetEssayCollection];
-            }else if (self.index == 1){
-//                [self requestGetWorkCollection];
-                [self requestGetVideoCollection];
-            }else if (self.index == 2){
-                [self requestGetVideoCollection];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if ([responseObject[@"data"] integerValue] == 1) {
+                    [self.selectArray removeAllObjects];
+                    self.page = 1;
+                    if (self.index == 0) {
+                        [self requestGetEssayCollection];
+                    }else if (self.index == 1){
+                        //                [self requestGetWorkCollection];
+                        [self requestGetVideoCollection];
+                    }else if (self.index == 2){
+                        [self requestGetVideoCollection];
+                    }
+                    [[UIWindow visibleViewController].view showLoadingMeg:@"删除成功" time:MESSAGE_SHOW_TIME];
+                }else{
+                    [[UIWindow visibleViewController].view showLoadingMeg:@"删除失败,请稍后再试" time:MESSAGE_SHOW_TIME];
+                }
+            }else{
+                [[UIWindow visibleViewController].view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
-            [[UIWindow visibleViewController].view showLoadingMeg:@"删除成功" time:MESSAGE_SHOW_TIME];
+           
         }else{
             [[UIWindow visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

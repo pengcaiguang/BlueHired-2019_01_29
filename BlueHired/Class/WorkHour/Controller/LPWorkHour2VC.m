@@ -164,6 +164,7 @@ static NSString *LPWorkHourTallyBookCellID = @"LPWorkHourTallyBookCell";
         make.centerX.equalTo(ConstView);
     }];
     TitleLabel.textColor = [UIColor whiteColor];
+    TitleLabel.font = FONT_SIZE(18);
     if (self.WorkHourType == 1) {
         self.CustTitleLabel.text = @"加班记工时模式";
     }else if (self.WorkHourType == 2){
@@ -182,9 +183,9 @@ static NSString *LPWorkHourTallyBookCellID = @"LPWorkHourTallyBookCell";
         make.width.mas_equalTo(70);
         make.height.mas_equalTo(44);
     }];
-    [backBt setImage:[UIImage imageNamed:@"BackBttonImage_White"] forState:UIControlStateNormal];
+    [backBt setImage:[UIImage imageNamed:@"BackBttonImage"] forState:UIControlStateNormal];
     [backBt setTitle:@" 返回" forState:UIControlStateNormal];
-    [backBt setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [backBt setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [backBt sizeToFit];
     [backBt addTarget:self action:@selector(ToBack:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -214,6 +215,7 @@ static NSString *LPWorkHourTallyBookCellID = @"LPWorkHourTallyBookCell";
     }];
     RightBt.titleLabel.font = [UIFont systemFontOfSize: 15.0];
     [RightBt setTitle:@"设置" forState:UIControlStateNormal];
+    [RightBt setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [RightBt addTarget:self action:@selector(RightBtTouch:) forControlEvents:UIControlEventTouchUpInside];
     
     
@@ -1002,12 +1004,14 @@ static NSString *LPWorkHourTallyBookCellID = @"LPWorkHourTallyBookCell";
         NSLog(@"%@",responseObject);
         if (isSuccess) {
             if (responseObject[@"data"] != nil &&
-                [responseObject[@"data"][@"version"] length]>1) {
+                [responseObject[@"data"][@"version"] length]>0) {
                 NSLog(@"%.2f",self.version.floatValue);
                 if (self.version.floatValue <  [responseObject[@"data"][@"version"] floatValue]  ) {
                     NSString *updateStr = [NSString stringWithFormat:@"发现新版本V%@\n为保证软件的正常运行\n请及时更新到最新版本",responseObject[@"data"][@"version"]];
                     [self creatAlterView:updateStr];
                 }
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
@@ -1181,15 +1185,13 @@ static NSString *LPWorkHourTallyBookCellID = @"LPWorkHourTallyBookCell";
     [NetApiManager requestQueryYsetInit:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            if ([responseObject[@"code"] integerValue] == 0) {
-                if ([responseObject[@"data"] integerValue] == 1) {
+            if ([responseObject[@"code"] integerValue] == 0 && [responseObject[@"data"] integerValue] == 1) {
                     weakSelf.RecardView.currentDateString = weakSelf.currentDateString;
                     weakSelf.RecardView.monthHours = weakSelf.OverModel.data.monthHours;
                     weakSelf.RecardView.RecordModelList = weakSelf.OverModel.data.overtimeRecordList;
                     weakSelf.RecardView.WorkHourType = weakSelf.WorkHourType;
                     weakSelf.RecardView.hidden = NO;
                     [self requestQueryGetOvertimeGetMonthWage];
-                }
             }else{
                 [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }

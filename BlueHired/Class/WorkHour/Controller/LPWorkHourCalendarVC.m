@@ -282,12 +282,17 @@
     [NetApiManager requestQueryGetCalenderList:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.baseSalary = responseObject[@"data"][@"baseSalary"];
+                self.monthHours = responseObject[@"data"][@"monthHours"];
+                self.Dictionary = responseObject;
+                self.calenderView.KQDateString = self.KQDateString;
+                [self.calenderView dealData:responseObject];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
 //            self.model = [LPWorkHourYsetModel mj_objectWithKeyValues:responseObject];
-            self.baseSalary = responseObject[@"data"][@"baseSalary"];
-            self.monthHours = responseObject[@"data"][@"monthHours"];
-            self.Dictionary = responseObject;
-            self.calenderView.KQDateString = self.KQDateString;
-            [self.calenderView dealData:responseObject];
+
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -332,7 +337,7 @@
                 if ([responseObject[@"data"] integerValue] == 1) {
                     [self requestQueryGetCalenderList];
                 }else{
-                    
+                    [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
                 }
             }else{
                 [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];

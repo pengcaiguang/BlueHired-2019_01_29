@@ -11,7 +11,12 @@ NS_ASSUME_NONNULL_BEGIN
 typedef void (^GJAlertPasswordBlock)(NSInteger index , NSString *string);
 
 @interface GJAlertWithDrawPassword : NSObject
-- (id)initWithTitle:(NSString *)title message:(NSString *)message buttonTitles:(NSArray *)buttonTitles buttonsColor:(NSArray *)buttonColors buttonClick:(void(^)(NSInteger buttonIndex , NSString * string))block;
+
+- (id)initWithTitle:(NSMutableAttributedString *)title
+            message:(NSString *)message
+       buttonTitles:(NSArray *)buttonTitles
+       buttonsColor:(NSArray *)buttonColors
+        buttonClick:(void(^)(NSInteger buttonIndex , NSString * string))block;
 - (void)show;
 - (void)dismiss;
 @end

@@ -116,13 +116,15 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
 
 - (void)setCircleMessage:(NSInteger)CircleMessage{
     _CircleMessage = CircleMessage;
-    if (CircleMessage != 0 && self.index == 0) {
-        self.tableview.tableHeaderView = self.tableHeader2View;
-        [self.messageBT setTitle:[NSString stringWithFormat:@"  您有%ld条新消息！ ",(long)CircleMessage] forState:UIControlStateNormal];
-        [self.tableview  reloadData];
-    }else{
-        self.tableview.tableHeaderView = [[UIView alloc]init];
-    }
+//    if (CircleMessage != 0 && self.index == 0) {
+//        self.tableview.tableHeaderView = self.tableHeader2View;
+//        [self.messageBT setTitle:[NSString stringWithFormat:@"  您有%ld条新消息！ ",(long)CircleMessage] forState:UIControlStateNormal];
+//        [self.tableview  reloadData];
+//    }else{
+//        self.tableview.tableHeaderView = [[UIView alloc]init];
+//    }
+    [self.tableview  reloadData];
+
 }
 
 
@@ -318,13 +320,30 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
 }
 
 #pragma mark - TableViewDelegate & Datasource
+
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    if (self.CircleMessage>0) {
+        return 47;
+    }
+    return 0;
+}
+
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    UIView *view = self.tableHeader2View;
+    [self.messageBT setTitle:[NSString stringWithFormat:@"  您有%ld条新消息！ ",(long)_CircleMessage] forState:UIControlStateNormal];
+
+    return view;
+}
+
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return self.moodListArray.count;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     LPMoodListDataModel *model = self.moodListArray[indexPath.row];
-    CGFloat DetailsHeight = [self calculateRowHeight:model.moodDetails fontSize:15 Width:SCREEN_WIDTH - 71];
+    CGFloat DetailsHeight = [LPTools calculateRowHeight:model.moodDetails fontSize:15 Width:SCREEN_WIDTH - 71];
  
     CGFloat CommentHeight = [self calculateCommentHeight:model];
     if (DetailsHeight>90) {
@@ -427,9 +446,13 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
     [NetApiManager requestMoodTypeWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            [LPUserDefaults saveObject:responseObject byFileName:[NSString stringWithFormat:@"CIRCLETYPELISTCACHE"]];
-            [LPUserDefaults saveObject:[NSDate date] byFileName:[NSString stringWithFormat: @"CIRCLETYPELISTCACHEDATE"]];
-            self.moodTypeModel = [LPMoodTypeModel mj_objectWithKeyValues:responseObject];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                [LPUserDefaults saveObject:responseObject byFileName:[NSString stringWithFormat:@"CIRCLETYPELISTCACHE"]];
+                [LPUserDefaults saveObject:[NSDate date] byFileName:[NSString stringWithFormat: @"CIRCLETYPELISTCACHEDATE"]];
+                self.moodTypeModel = [LPMoodTypeModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [[UIWindow visibleViewController].view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [[UIWindow visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -465,15 +488,44 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
         [self.tableview.mj_footer endRefreshing];
         [DSBaActivityView hideActiviTy];
         if (isSuccess) {
-            if (self.page == 1 && type == 0) {
-                [LPUserDefaults saveObject:responseObject byFileName:[NSString stringWithFormat:@"CIRCLELISTCACHE"]];
-                [LPUserDefaults saveObject:[NSDate date] byFileName:[NSString stringWithFormat: @"CIRCLELISTCACHEDATE"]];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if (self.page == 1 && type == 0) {
+                    [LPUserDefaults saveObject:responseObject byFileName:[NSString stringWithFormat:@"CIRCLELISTCACHE"]];
+                    [LPUserDefaults saveObject:[NSDate date] byFileName:[NSString stringWithFormat: @"CIRCLELISTCACHEDATE"]];
+                }
+                self.moodListModel = [LPMoodListModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [[UIWindow visibleViewController].view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
-            self.moodListModel = [LPMoodListModel mj_objectWithKeyValues:responseObject];
+        }else{
+            [[UIWindow visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
         
     }];
 }
+
+
+-(void)requestQueryInfounreadNum{
+    NSDictionary *dic = @{@"type":@(6)
+                          };
+    [NetApiManager requestQueryUnreadNumWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                NSInteger num = [responseObject[@"data"] integerValue];
+                self.CircleMessage=num;
+            }else{
+                if ([responseObject[@"code"] integerValue] == 10002) {
+                    [LPTools UserDefaulatsRemove];
+                }
+                [[UIWindow visibleViewController].view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
+        }else{
+            [[UIWindow visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+
  
 #pragma mark lazy
 - (UITableView *)tableview{
@@ -492,6 +544,9 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
         _tableview.mj_header = [HZNormalHeader headerWithRefreshingBlock:^{
             self.page = 1;
             [self requestMoodList];
+            if (AlreadyLogin) {
+                [self requestQueryInfounreadNum];
+            }
         }];
         _tableview.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
             [self requestMoodList];
@@ -511,6 +566,7 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
     if (!_tableHeader2View) {
         _tableHeader2View = [[UIView alloc] init];
         _tableHeader2View.frame = CGRectMake(0, 0, SCREEN_WIDTH, 47);
+        _tableHeader2View.backgroundColor = [UIColor whiteColor];
         UIButton *button = [[UIButton alloc] init];
         self.messageBT = button;
         [_tableHeader2View addSubview:button];
@@ -528,7 +584,7 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
         [_tableHeader2View addSubview:lineV];
         [lineV mas_makeConstraints:^(MASConstraintMaker *make){
             make.left.right.bottom.mas_offset(0);
-            make.height.mas_offset(1);
+            make.height.mas_offset(0.5);
         }];
         lineV.backgroundColor = [UIColor colorWithHexString:@"#E6E6E6"];
     }
@@ -559,18 +615,7 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
     return _expandbutton;
     
 }
-
-- (CGFloat)calculateRowHeight:(NSString *)string fontSize:(NSInteger)fontSize Width:(CGFloat) W
-{
-    NSMutableParagraphStyle *paraStyle01 = [[NSMutableParagraphStyle alloc] init];
-    paraStyle01.lineBreakMode = NSLineBreakByCharWrapping;
-    NSDictionary *dic = @{NSFontAttributeName:[UIFont systemFontOfSize:fontSize],NSParagraphStyleAttributeName:paraStyle01};
-    /*计算高度要先指定宽度*/
-    CGRect rect = [string boundingRectWithSize:CGSizeMake(W, 0) options:NSStringDrawingUsesLineFragmentOrigin |
-                   NSStringDrawingUsesFontLeading attributes:dic context:nil];
-    return ceil(rect.size.height);
-    
-}
+ 
 
 //计算图片高度
 - (CGFloat)calculateImageHeight:(NSString *)string
@@ -608,7 +653,7 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
             }
             PraiseStr = [PraiseStr substringToIndex:PraiseStr.length -1];
         }
-        Praiseheighe = [self calculateRowHeight:PraiseStr fontSize:13 Width:SCREEN_WIDTH-70-14];
+        Praiseheighe = [LPTools calculateRowHeight:PraiseStr fontSize:13 Width:SCREEN_WIDTH-70-14];
 //        Praiseheighe = Praiseheighe >48 ?48:Praiseheighe;
         Praiseheighe = Praiseheighe + 14;
     }else{
@@ -626,7 +671,7 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
             }else{      //评论
                 CommentStr = [NSString stringWithFormat:@"%@:%@",CModel.userName,CModel.commentDetails];
             }
-            commentheighe += [self calculateRowHeight:CommentStr fontSize:13 Width:SCREEN_WIDTH-70-14]+7;
+            commentheighe += [LPTools calculateRowHeight:CommentStr fontSize:13 Width:SCREEN_WIDTH-70-14]+7;
         }
         if (model.commentModelList.count >=5) {
             commentheighe += 23;

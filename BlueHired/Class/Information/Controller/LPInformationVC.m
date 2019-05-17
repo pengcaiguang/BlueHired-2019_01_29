@@ -454,9 +454,14 @@ static NSString *LPInformationVideoCollectionViewCellID = @"LPInfoMationVideoCel
     [NetApiManager requestLabellistWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            self.labelListModel = [LPLabelListModel mj_objectWithKeyValues:responseObject];
-            [LPUserDefaults saveObject:responseObject byFileName:@"INFOLABELLISTCACHE"];
-            [LPUserDefaults saveObject:[NSDate date] byFileName:@"INFOLABELLISTCACHEDATE"];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.labelListModel = [LPLabelListModel mj_objectWithKeyValues:responseObject];
+                [LPUserDefaults saveObject:responseObject byFileName:@"INFOLABELLISTCACHE"];
+                [LPUserDefaults saveObject:[NSDate date] byFileName:@"INFOLABELLISTCACHEDATE"];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
+
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -760,8 +765,11 @@ static NSString *LPInformationVideoCollectionViewCellID = @"LPInfoMationVideoCel
         [self.videocollectionView.mj_header endRefreshing];
         [self.videocollectionView.mj_footer endRefreshing];
         if (isSuccess) {
-           
-            self.VideoListModel = [LPVideoListModel mj_objectWithKeyValues:responseObject];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.VideoListModel = [LPVideoListModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
 
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
@@ -774,7 +782,11 @@ static NSString *LPInformationVideoCollectionViewCellID = @"LPInfoMationVideoCel
     [NetApiManager requestQueryGetVideoType:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
                 self.VideoTypeModel = [LPVideoTypeModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
          }else{
 //            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

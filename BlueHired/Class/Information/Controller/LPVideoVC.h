@@ -11,6 +11,7 @@
 #import "LPInformationVC.h"
 #import "LPInformationSearchResultVC.h"
 #import "LPVideoTypeModel.h"
+#import "LPInformationSearchVC.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -20,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property(nonatomic,assign) NSInteger VideoRow;
 @property(nonatomic,assign) LPInformationVC *superVC;
-@property(nonatomic,assign) LPInformationSearchResultVC *KeySuperVC;
+@property(nonatomic,assign) LPInformationSearchVC *KeySuperVC;
 @property(nonatomic,strong) NSString *key;
 @property(nonatomic,assign) NSInteger Type;
 @property (nonatomic, assign) BOOL isReloadData;

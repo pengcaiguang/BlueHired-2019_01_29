@@ -487,11 +487,11 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
                 }
                
             }else{
-                if (self.type == 1||self.type == 2) {
-                    [self.view showLoadingMeg:responseObject[@"msg"] ? responseObject[@"msg"] : @"操作失败" time:MESSAGE_SHOW_TIME];
-                }else{
+//                if (self.type == 1||self.type == 2) {
+//                    [self.view showLoadingMeg:responseObject[@"msg"] ? responseObject[@"msg"] : @"操作失败" time:MESSAGE_SHOW_TIME];
+//                }else{
                     [self.view showLoadingMeg:responseObject[@"msg"] ? responseObject[@"msg"] : @"修改失败" time:MESSAGE_SHOW_TIME];
-                }
+//                }
             }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
@@ -513,17 +513,22 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
         [NetApiManager requestQueryWXSetPhone:dic withHandle:^(BOOL isSuccess, id responseObject) {
             NSLog(@"%@",responseObject);
             if (isSuccess) {
-                if ([responseObject[@"data"] integerValue] > 0) {
-                    if ([self.Openid isEqualToString:@""]) {
-                        [self.view showLoadingMeg:@"绑定成功" time:MESSAGE_SHOW_TIME];
+                if ([responseObject[@"code"] integerValue] == 0) {
+                    if ([responseObject[@"data"] integerValue] > 0) {
+                        if ([self.Openid isEqualToString:@""]) {
+                            [self.view showLoadingMeg:@"绑定成功" time:MESSAGE_SHOW_TIME];
+                        }else{
+                            [self.view showLoadingMeg:@"换绑成功，请之后用新微信号进行登录！" time:MESSAGE_SHOW_TIME];
+                        }
+                        self.userData.data.openid = wxUserInfo.unionid;
+                        //                    self.WXLabel.text = @"已绑定";
+                        [self.navigationController   popToRootViewControllerAnimated:YES];
                     }else{
-                        [self.view showLoadingMeg:@"换绑成功，请之后用新微信号进行登录！" time:MESSAGE_SHOW_TIME];
+                        [self.view showLoadingMeg:responseObject[@"msg"] ? responseObject[@"msg"] : @"注册失败" time:MESSAGE_SHOW_TIME];
                     }
-                    self.userData.data.openid = wxUserInfo.unionid;
-//                    self.WXLabel.text = @"已绑定";
-                    [self.navigationController   popToRootViewControllerAnimated:YES];
+
                 }else{
-                    [self.view showLoadingMeg:responseObject[@"msg"] ? responseObject[@"msg"] : @"注册失败" time:MESSAGE_SHOW_TIME];
+                    [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
                 }
             }else{
                 [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
@@ -589,11 +594,13 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
     [NetApiManager requestSignoutWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            //            kUserDefaultsRemove(LOGINID);
-            //            kUserDefaultsRemove(kLoginStatus);
-            //            [self.navigationController popViewControllerAnimated:YES];
+            if ([responseObject[@"code"] integerValue] == 0) {
+ 
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
-            //            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+                        [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
     }];
 }

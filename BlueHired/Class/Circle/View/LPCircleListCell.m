@@ -982,7 +982,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
     [NetApiManager requestQueryDefriendPullBlack:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            if ([responseObject[@"data"] integerValue] == 1) {
+            if ([responseObject[@"data"] integerValue] == 1 && [responseObject[@"code"] integerValue] == 0) {
                 if (self.Block) {
                     self.Block();
                 }
@@ -1004,51 +1004,57 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
     [NetApiManager requestSocialSetlikeWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            if (!ISNIL(responseObject[@"data"])) {
-                LPUserMaterialModel *user = [LPUserDefaults getObjectByFileName:USERINFO];
-                if ([responseObject[@"data"] integerValue] == 0) {
-                    self.praiseBt.selected = YES;
-                    self.model.praiseTotal = @(self.model.praiseTotal.integerValue+1);
-                    self.model.isPraise = @([responseObject[@"data"] integerValue]);
-                    LPMoodPraiseListDataModel *Pmodel = [[LPMoodPraiseListDataModel alloc] init];
-                    Pmodel.grading = user.data.grading;
-                    Pmodel.role = user.data.role;
-                    Pmodel.userId = kUserDefaultsValue(LOGINID);
-                    Pmodel.userName = user.data.user_name;
-                    Pmodel.userImage = user.data.user_url;
-                    Pmodel.phone = user.data.userTel;
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if (!ISNIL(responseObject[@"data"])) {
+                    LPUserMaterialModel *user = [LPUserDefaults getObjectByFileName:USERINFO];
+                    if ([responseObject[@"data"] integerValue] == 0) {
+                        self.praiseBt.selected = YES;
+                        self.model.praiseTotal = @(self.model.praiseTotal.integerValue+1);
+                        self.model.isPraise = @([responseObject[@"data"] integerValue]);
+                        LPMoodPraiseListDataModel *Pmodel = [[LPMoodPraiseListDataModel alloc] init];
+                        Pmodel.grading = user.data.grading;
+                        Pmodel.role = user.data.role;
+                        Pmodel.userId = kUserDefaultsValue(LOGINID);
+                        Pmodel.userName = user.data.user_name;
+                        Pmodel.userImage = user.data.user_url;
+                        Pmodel.phone = user.data.userTel;
+                        
+                        [self.model.praiseList insertObject:Pmodel atIndex:0];
+                        
+                    }else if ([responseObject[@"data"] integerValue] == 1) {
+                        self.praiseBt.selected = NO;
+                        self.model.praiseTotal = @(self.model.praiseTotal.integerValue-1);
+                        self.model.isPraise = @([responseObject[@"data"] integerValue]);
+                        for (LPMoodPraiseListDataModel *m in self.model.praiseList) {
+                            if (m.userId == kUserDefaultsValue(LOGINID)) {
+                                [self.model.praiseList removeObject:m];
+                                break;
+                            }
+                        }
+                    }
                     
-                    [self.model.praiseList insertObject:Pmodel atIndex:0];
-                    
-                }else if ([responseObject[@"data"] integerValue] == 1) {
-                    self.praiseBt.selected = NO;
-                    self.model.praiseTotal = @(self.model.praiseTotal.integerValue-1);
-                    self.model.isPraise = @([responseObject[@"data"] integerValue]);
-                    for (LPMoodPraiseListDataModel *m in self.model.praiseList) {
-                        if (m.userId == kUserDefaultsValue(LOGINID)) {
-                            [self.model.praiseList removeObject:m];
+                    for (int i =0 ; i < self.moodListArray.count ; i++) {
+                        LPMoodListDataModel *DataModel = self.moodListArray[i];
+                        if (DataModel.id.integerValue == self.model.id.integerValue) {
+                            DataModel.praiseList = self.model.praiseList;
+                            DataModel.isPraise = self.model.isPraise;
+                            DataModel.praiseTotal = self.model.praiseTotal;
                             break;
                         }
                     }
-                }
-                
-                for (int i =0 ; i < self.moodListArray.count ; i++) {
-                    LPMoodListDataModel *DataModel = self.moodListArray[i];
-                    if (DataModel.id.integerValue == self.model.id.integerValue) {
-                        DataModel.praiseList = self.model.praiseList;
-                        DataModel.isPraise = self.model.isPraise;
-                        DataModel.praiseTotal = self.model.praiseTotal;
-                        break;
+                    if (self.SuperTableView) {
+                        [self.SuperTableView reloadData];
+                    }
+                    
+                    if (self.PraiseBlock) {
+                        self.PraiseBlock();
                     }
                 }
-                if (self.SuperTableView) {
-                    [self.SuperTableView reloadData];
-                }
-                
-                if (self.PraiseBlock) {
-                    self.PraiseBlock();
-                }
+            }else{
+                [[UIWindow  visibleViewController].view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
+            
+
         }else{
             [[UIWindow  visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -1262,7 +1268,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
             PraiseStr = [PraiseStr substringToIndex:PraiseStr.length -1];
         }
  
-        Praiseheighe = [self calculateRowHeight:PraiseStr fontSize:13 Width:SCREEN_WIDTH-70-14];
+        Praiseheighe = [LPTools calculateRowHeight:PraiseStr fontSize:13 Width:SCREEN_WIDTH-70-14];
 //        Praiseheighe = Praiseheighe >48 ?48:Praiseheighe;
         Praiseheighe = Praiseheighe + 14;
     }else{
@@ -1280,7 +1286,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
             }else{      //评论
                 CommentStr = [NSString stringWithFormat:@"%@:%@",CModel.userName,CModel.commentDetails];
             }
-            commentheighe += [self calculateRowHeight:CommentStr fontSize:13 Width:SCREEN_WIDTH-70-14]+7;
+            commentheighe += [LPTools calculateRowHeight:CommentStr fontSize:13 Width:SCREEN_WIDTH-70-14]+7;
         }
         if (model.commentModelList.count >=5) {
             commentheighe += 23;
@@ -1299,16 +1305,5 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
     return floor(commentheighe + Praiseheighe);
 }
 
-- (CGFloat)calculateRowHeight:(NSString *)string fontSize:(NSInteger)fontSize Width:(CGFloat) W
-{
-    NSMutableParagraphStyle *paraStyle01 = [[NSMutableParagraphStyle alloc] init];
-    paraStyle01.lineBreakMode = NSLineBreakByCharWrapping;
-    
-    NSDictionary *dic = @{NSFontAttributeName:[UIFont systemFontOfSize:fontSize],NSParagraphStyleAttributeName:paraStyle01};
-    /*计算高度要先指定宽度*/
-    CGRect rect = [string boundingRectWithSize:CGSizeMake(W, 0) options:NSStringDrawingUsesLineFragmentOrigin |
-                   NSStringDrawingUsesFontLeading attributes:dic context:nil];
-    return ceil(rect.size.height);
-    
-}
+ 
 @end

@@ -55,7 +55,7 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     LPMoodListDataModel *model = self.moodListArray[indexPath.row];
-    CGFloat DetailsHeight = [self calculateRowHeight:model.moodDetails fontSize:15 Width:SCREEN_WIDTH - 71];
+    CGFloat DetailsHeight = [LPTools calculateRowHeight:model.moodDetails fontSize:15 Width:SCREEN_WIDTH - 71];
 //    [self calculateCommentHeight:model];
     CGFloat CommentHeight = 0;
     if (DetailsHeight>90) {
@@ -212,7 +212,13 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
         [self.tableview.mj_footer endRefreshing];
         [DSBaActivityView hideActiviTy];
         if (isSuccess) {
-            self.moodListModel = [LPMoodListModel mj_objectWithKeyValues:responseObject];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.moodListModel = [LPMoodListModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
         
     }];
@@ -247,17 +253,6 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
 
 #pragma mark  计算高度
 
-- (CGFloat)calculateRowHeight:(NSString *)string fontSize:(NSInteger)fontSize Width:(CGFloat) W
-{
-    NSMutableParagraphStyle *paraStyle01 = [[NSMutableParagraphStyle alloc] init];
-    paraStyle01.lineBreakMode = NSLineBreakByCharWrapping;
-    NSDictionary *dic = @{NSFontAttributeName:[UIFont systemFontOfSize:fontSize],NSParagraphStyleAttributeName:paraStyle01};
-    /*计算高度要先指定宽度*/
-    CGRect rect = [string boundingRectWithSize:CGSizeMake(W, 0) options:NSStringDrawingUsesLineFragmentOrigin |
-                   NSStringDrawingUsesFontLeading attributes:dic context:nil];
-    return ceil(rect.size.height);
-    
-}
 
 //计算图片高度
 - (CGFloat)calculateImageHeight:(NSString *)string
@@ -295,7 +290,7 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
             }
             PraiseStr = [PraiseStr substringToIndex:PraiseStr.length -1];
         }
-        Praiseheighe = [self calculateRowHeight:PraiseStr fontSize:13 Width:SCREEN_WIDTH-70-14];
+        Praiseheighe = [LPTools calculateRowHeight:PraiseStr fontSize:13 Width:SCREEN_WIDTH-70-14];
         //        Praiseheighe = Praiseheighe >48 ?48:Praiseheighe;
         Praiseheighe = Praiseheighe + 14;
     }else{
@@ -313,7 +308,7 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
             }else{      //评论
                 CommentStr = [NSString stringWithFormat:@"%@:%@",CModel.userName,CModel.commentDetails];
             }
-            commentheighe += [self calculateRowHeight:CommentStr fontSize:13 Width:SCREEN_WIDTH-70-14]+7;
+            commentheighe += [LPTools calculateRowHeight:CommentStr fontSize:13 Width:SCREEN_WIDTH-70-14]+7;
         }
         if (model.commentModelList.count >=5) {
             commentheighe += 23;

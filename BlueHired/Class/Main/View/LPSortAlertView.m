@@ -24,12 +24,12 @@ static NSInteger rowHeight = 30;
 -(instancetype)init{
     self = [super init];
     if (self) {
-        if (kUserDefaultsValue(USERDATA).integerValue == 1 ||
-            kUserDefaultsValue(USERDATA).integerValue == 2 ) {
-            self.titleArray = @[@"综合工资最高",@"报名人数最多",@"企业评分最高",@"工价最高",@"可借支",@"平台合作价",@"管理费"];
-        }else{
+//        if (kUserDefaultsValue(USERDATA).integerValue == 1 ||
+//            kUserDefaultsValue(USERDATA).integerValue == 2 ) {
+//            self.titleArray = @[@"综合工资最高",@"报名人数最多",@"企业评分最高",@"工价最高",@"可借支",@"平台合作价",@"管理费"];
+//        }else{
             self.titleArray = @[@"综合工资最高",@"报名人数最多",@"企业评分最高",@"工价最高",@"可借支"];
-        }
+//        }
         self.selectTitle = @"";
 
         self.userInteractionEnabled = YES;

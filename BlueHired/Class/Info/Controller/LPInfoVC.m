@@ -36,16 +36,16 @@ static NSString *LPInforCollectionViewCellID = @"LPInforCollectionViewCell";
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = @"消息中心";
-    if (kUserDefaultsValue(USERDATA).integerValue == 1 ||
-        kUserDefaultsValue(USERDATA).integerValue == 2 ||
-        kUserDefaultsValue(USERDATA).integerValue == 6) {
-//        self.titleArray = @[@"系统通知",@"其他消息",@"门店消息"];
-                self.titleArray = @[@"系统通知",@"门店消息"];
-    }else{
+//    if (kUserDefaultsValue(USERDATA).integerValue == 1 ||
+//        kUserDefaultsValue(USERDATA).integerValue == 2 ||
+//        kUserDefaultsValue(USERDATA).integerValue == 6) {
+////        self.titleArray = @[@"系统通知",@"其他消息",@"门店消息"];
+//                self.titleArray = @[@"系统通知",@"门店消息"];
+//    }else{
 //        self.titleArray = @[@"系统通知",@"其他消息"];
                 self.titleArray = @[@"系统通知"];
         self.navigationItem.title = @"系统通知";
-    }
+//    }
     
     self.labelArray = [NSMutableArray array];
     self.selectType = 1;

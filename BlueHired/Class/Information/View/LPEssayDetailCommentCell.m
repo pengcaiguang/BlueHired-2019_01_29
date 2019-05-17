@@ -77,7 +77,7 @@ static NSString *LPEssayDetailCommentReplyCellID = @"LPEssayDetailCommentReplyCe
         //计算tableviewheight
         CGFloat RowHeight = 0;
         for (int i = 0 ;i < model.commentList.count;i++) {
-            RowHeight +=[self calculateRowHeight:[NSString stringWithFormat:@"%@:  %@",model.commentList[i].userName,model.commentList[i].commentDetails]
+            RowHeight +=[LPTools calculateRowHeight:[NSString stringWithFormat:@"%@:  %@",model.commentList[i].userName,model.commentList[i].commentDetails]
                                         fontSize:13 Width:SCREEN_WIDTH-78]+11;
         }
         self.replyBgView_constraint_height.constant = RowHeight;
@@ -209,17 +209,7 @@ static NSString *LPEssayDetailCommentReplyCellID = @"LPEssayDetailCommentReplyCe
     return _tableview;
 }
 
-- (CGFloat)calculateRowHeight:(NSString *)string fontSize:(NSInteger)fontSize Width:(CGFloat) W
-{
-    NSMutableParagraphStyle *paraStyle01 = [[NSMutableParagraphStyle alloc] init];
-    paraStyle01.lineBreakMode = NSLineBreakByCharWrapping;
-    NSDictionary *dic = @{NSFontAttributeName:[UIFont systemFontOfSize:fontSize],NSParagraphStyleAttributeName:paraStyle01};
-    /*计算高度要先指定宽度*/
-    CGRect rect = [string boundingRectWithSize:CGSizeMake(W, 0) options:NSStringDrawingUsesLineFragmentOrigin |
-                   NSStringDrawingUsesFontLeading attributes:dic context:nil];
-    return ceil(rect.size.height);
-    
-}
+ 
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];

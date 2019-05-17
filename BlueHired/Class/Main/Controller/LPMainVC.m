@@ -14,7 +14,7 @@
 #import "LPWorklistModel.h"
 #import "LPMechanismlistModel.h"
 #import "SDCycleScrollView.h"
-#import "LPSortAlertView.h"
+#import "LPMainSortAlertView.h"
 #import "LPScreenAlertView.h"
 #import "LPMainSearchVC.h"
 #import "LPWorkDetailVC.h"
@@ -22,12 +22,18 @@
 #import "LPHongBaoVC.h"
 #import "LPMain2Cell.h"
 #import "DHGuidePageHUD.h"
+#import "LPAdvertModel.h"
+#import "ADAlertView.h"
+#import "LPActivityModel.h"
+#import "LPActivityDatelisVC.h"
+
 
 #define OPERATIONFORKEY @"operationGuidePage"
 
 static NSString *LPMainCellID = @"LPMain2Cell";
 
-@interface LPMainVC ()<UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,SDCycleScrollViewDelegate,LPSortAlertViewDelegate,LPSelectCityVCDelegate,LPScreenAlertViewDelegate,UITabBarDelegate,UIScrollViewDelegate>
+@interface LPMainVC ()<UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,SDCycleScrollViewDelegate,LPMainSortAlertViewDelegate,LPSelectCityVCDelegate,LPScreenAlertViewDelegate,UITabBarDelegate,UIScrollViewDelegate>
+@property (nonatomic,strong)LPAdvertModel *AdvertModel;
 
 @property (nonatomic, strong)UITableView *tableview;
 @property(nonatomic,strong) UIView *tableHeaderView;
@@ -35,8 +41,10 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 @property(nonatomic,strong) SDCycleScrollView *cycleScrollView;
 @property(nonatomic,strong) UIButton *sortButton;
 @property(nonatomic,strong) UIButton *screenButton;
+@property(nonatomic,strong) UIButton *screenTypeButton;
+@property(nonatomic,strong) UIView *screenView;
 
-@property(nonatomic,strong) LPSortAlertView *sortAlertView;
+@property(nonatomic,strong) LPMainSortAlertView *sortAlertView;
 @property(nonatomic,strong) LPScreenAlertView *screenAlertView;
 
 @property(nonatomic,assign) NSInteger page;
@@ -55,6 +63,10 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 
 @property(nonatomic,strong) UIView *ButtonView;//定时器管控轮播
 @property(nonatomic,strong) NSMutableArray <UIButton *>*ButtonArr;//定时器管控轮播
+@property(nonatomic,assign) NSInteger oldY;
+@property(nonatomic,strong) UIView *HeaderView;
+@property(nonatomic,assign) BOOL IsShowHeaderView;
+@property(nonatomic,assign) BOOL IsShowHeader2View;
 
 @end
 
@@ -82,25 +94,38 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     [[NSRunLoop currentRunLoop] addTimer:_myTimer forMode:NSRunLoopCommonModes];
  
     if (![[NSUserDefaults standardUserDefaults] boolForKey:OPERATIONFORKEY]) {
-        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:OPERATIONFORKEY];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:OPERATIONFORKEY];
         GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"是否进行招工报名引导？" message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"否",@"是"] buttonsColor:@[[UIColor colorWithHexString:@"#666666"],[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor],[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
             if (buttonIndex == 1) {
-                NSArray *imageNameArray = @[@"报名操作指导_01",@"报名操作指导_02",@"报名操作指导_03",@"报名操作指导_04",@"报名操作指导_05"];
-                //        if (IS_iPhoneX) {
-                //            imageNameArray = @[@"报名操作指导X_01",@"报名操作指导X_02",@"报名操作指导X_03",@"报名操作指导X_04",@"报名操作指导X_05",@"报名操作指导X_06"];
-                //        }
+                NSArray *imageNameArray = @[@"OperationGuidance_01",
+                                            @"OperationGuidance_02",
+                                            @"OperationGuidance_03",
+                                            @"OperationGuidance_04",
+                                            @"OperationGuidance_05"];
+                        if (IS_iPhoneX) {
+                            imageNameArray =@[@"OperationGuidance_01_X",
+                                              @"OperationGuidance_02_X",
+                                              @"OperationGuidance_03_X",
+                                              @"OperationGuidance_04_X",
+                                              @"OperationGuidance_05_X"];
+                        }
                 // 创建并添加引导页
                 DHGuidePageHUD *guidePage = [[DHGuidePageHUD alloc] dh_initWithFrame:[UIApplication sharedApplication].keyWindow.frame imageNameArray:imageNameArray buttonIsHidden:YES isShowBt:YES isTouchNext:YES ];
                 guidePage.slideInto = YES;
                 [[UIApplication sharedApplication].keyWindow addSubview:guidePage];
             }
+            
+            [self requestQueryActivityadvert];
+            
         }];
-        [alert show];
+        [alert showToWindow];
+    }else{
+        [self requestQueryActivityadvert];
     }
     
     [self requestQueryDownload];
     [self requestMechanismlist];
-    
+
  
     //查看缓存
     NSDate *date = [LPUserDefaults getObjectByFileName:[NSString stringWithFormat: @"WORKLISTCACHEDATE"]];
@@ -131,8 +156,8 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    if (!self.screenAlertView.hidden) {
-        self.screenAlertView.hidden = YES;
+    if (self.sortAlertView.touchButton.selected) {
+        [self.sortAlertView close];
     }
     [_myTimer invalidate];
     _myTimer = nil;
@@ -176,7 +201,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     [dimageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.cityLabel.mas_right).offset(3);
         make.centerY.equalTo(pimageView);
-        make.size.mas_equalTo(CGSizeMake(11, 6));
+        make.size.mas_equalTo(CGSizeMake(0, 6));
         make.right.equalTo(leftBarButtonView.mas_right).offset(0);
     }];
     dimageView.image = [UIImage imageNamed:@"downArrow"];
@@ -249,14 +274,14 @@ static NSString *LPMainCellID = @"LPMain2Cell";
  
         for (int i =0 ;i <self.model.data.workBarsList.count;i++) {
             LPWorklistDataWorkBarsListModel *m = self.model.data.workBarsList[i];
-            UILabel *label= [[UILabel alloc] initWithFrame:CGRectMake(0, i*27 , SCREEN_WIDTH-69, 27)];
+            UILabel *label= [[UILabel alloc] initWithFrame:CGRectMake(38, i*36 , SCREEN_WIDTH-38, 36)];
             [self.RecommendScrollView addSubview:label];
             label.text = [NSString stringWithFormat:@"恭喜用户%@报名%@,入职成功!",m.userName,m.mechanismName];
-            label.textColor = [UIColor whiteColor];
-            label.font = [UIFont systemFontOfSize:12];
-            label.textAlignment = NSTextAlignmentCenter;
+            label.textColor = [UIColor baseColor];
+            label.font = [UIFont systemFontOfSize:13];
+            label.textAlignment = NSTextAlignmentLeft;
         }
-        self.RecommendScrollView.contentSize = CGSizeMake(0, self.model.data.workBarsList.count*27);
+        self.RecommendScrollView.contentSize = CGSizeMake(0, self.model.data.workBarsList.count*36);
         
         if (self.page == 1) {
             self.listArray = [NSMutableArray array];
@@ -330,9 +355,78 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     [self request];
 }
 
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if ([scrollView isEqual: self.tableview]) {
+        if (self.tableview.contentOffset.y > 186) {
+            if (self.IsShowHeaderView != YES) {
+                self.IsShowHeaderView = YES;
+                [self.tableview reloadData];
+            }
+        }else{
+            if (self.IsShowHeaderView != NO) {
+                self.ButtonView.lx_y = 225;
+                self.screenView.lx_y = 186;
+                self.ButtonView.hidden = NO;
+                self.screenView.hidden = NO;
+                [_tableHeaderView addSubview:self.ButtonView];
+                [_tableHeaderView addSubview:self.screenView];
+                self.IsShowHeaderView = NO;
+                [self.tableview reloadData];
+            }
+        }
+        
+        if (self.tableview.contentOffset.y > _oldY) {
+//             上滑
+//            [self.HeaderView viewWithTag:1000].hidden = YES;
+//            [self.HeaderView viewWithTag:2000].hidden = NO;
+//            self.HeaderView.lx_height = 80;
+        }else{
+//             下滑
+//            [self.HeaderView viewWithTag:1000].hidden = NO;
+//            [self.HeaderView viewWithTag:2000].hidden = YES;
+//            self.HeaderView.lx_height = 40;
+            self.tableview.sectionHeaderHeight = 20;
 
+        }
+    }
+ 
+}
 
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
+    // 获取开始拖拽时tableview偏移量
+    _oldY = self.tableview.contentOffset.y;
+
+}
 #pragma mark - TableViewDelegate & Datasource
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+    if (self.IsShowHeaderView) {
+        return 80;
+    }
+    return 0;
+    
+}
+
+
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    UIView *view = [[UIView alloc] init];
+    view.backgroundColor = [UIColor whiteColor];
+ 
+    self.ButtonView.lx_y = 40;
+    self.screenView.lx_y = 0;
+
+    [view addSubview:self.ButtonView];
+    [view addSubview:self.screenView];
+
+    self.HeaderView = view;
+    return view;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 140.0;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return self.listArray.count;
 }
@@ -405,18 +499,77 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 }
 
 
-#pragma mark - LPSortAlertViewDelegate
+#pragma mark - LPMainSortAlertViewDelegate
 -(void)touchTableView:(NSInteger)index{
-    self.orderType = [NSString stringWithFormat:@"%ld",(long)index];
-    self.page = 1;
-    [self request];
+
+    if (self.sortAlertView.touchButton == self.screenTypeButton) {
+//        self.orderType = [NSString stringWithFormat:@"%ld",(long)index];
+        if (index == 0) {
+            self.mechanismTypeId = @"";
+            [self.screenTypeButton setTitle:@"全部企业" forState:UIControlStateNormal];
+        }else{
+            self.mechanismTypeId =[NSString stringWithFormat:@"%@", self.mechanismlistModel.data.mechanismTypeList[index-1].id];
+            [self.screenTypeButton setTitle:self.mechanismlistModel.data.mechanismTypeList[index-1].mechanismTypeName forState:UIControlStateNormal];
+        }
+        
+
+        
+        self.screenTypeButton.tag = index;
+        self.page = 1;
+        [self request];
+    }else if (self.sortAlertView.touchButton == self.screenButton){
+        if (index == 0) {
+            self.workType = @"";
+            [self.screenButton setTitle:@"全部工种" forState:UIControlStateNormal];
+        }else if (index == 1){
+            self.workType = @"1";
+            [self.screenButton setTitle:@"小时工" forState:UIControlStateNormal];
+        }else if (index == 2){
+            self.workType = @"0";
+            [self.screenButton setTitle:@"正式工" forState:UIControlStateNormal];
+        }
+        self.screenButton.tag = index;
+        self.page = 1;
+        [self request];
+    }
+
 }
 
 -(void)touchScreenButton:(UIButton *)button{
+    if (self.tableview.contentOffset.y < 186) {
+        CGPoint bottomOffset = CGPointMake(0, 186);
+        [self.tableview setContentOffset:bottomOffset animated:NO];
+    }
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (button == self.screenButton) {
+            self.screenTypeButton.selected = NO;
+            self.sortAlertView.titleArray  = @[@"全部工种",@"小时工",@"正式工"];
+            button.selected = !button.isSelected;
+            self.sortAlertView.touchButton = button;
+            self.sortAlertView.selectTitle = button.tag;
+            self.sortAlertView.hidden = !button.isSelected;
+        }else if (button == self.screenTypeButton){
+            NSMutableArray *Array = [[NSMutableArray alloc] init];
+            [Array addObject:@"全部企业"];
+            for (int i = 0; i < self.mechanismlistModel.data.mechanismTypeList.count; i++) {
+                [Array addObject:self.mechanismlistModel.data.mechanismTypeList[i].mechanismTypeName];
+            }
+            self.screenButton.selected = NO;
 
-    self.screenAlertView.SuperView = self;
-    button.selected = !button.isSelected;
-    self.screenAlertView.hidden = !button.isSelected;
+            self.sortAlertView.titleArray  = Array;
+            button.selected = !button.isSelected;
+            self.sortAlertView.selectTitle = button.tag;
+            self.sortAlertView.touchButton = button;
+            self.sortAlertView.hidden = !button.isSelected;
+        }
+    });
+   
+
+    
+//    self.screenAlertView.SuperView = self;
+//    button.selected = !button.isSelected;
+//    self.screenAlertView.hidden = !button.isSelected;
 
 }
 #pragma mark - LPScreenAlertViewDelegate
@@ -442,11 +595,15 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         [self.tableview.mj_header endRefreshing];
         [self.tableview.mj_footer endRefreshing];
         if (isSuccess) {
-            if (self.page == 1&&!self.orderType&&!self.mechanismAddress&&!self.mechanismTypeId&&!self.workType) {
-                 [LPUserDefaults saveObject:responseObject byFileName:[NSString stringWithFormat:@"WORKLISTCACHE"]];
-                [LPUserDefaults saveObject:[NSDate date] byFileName:[NSString stringWithFormat: @"WORKLISTCACHEDATE"]];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if (self.page == 1&&!self.orderType&&!self.mechanismAddress&&!self.mechanismTypeId&&!self.workType) {
+                    [LPUserDefaults saveObject:responseObject byFileName:[NSString stringWithFormat:@"WORKLISTCACHE"]];
+                    [LPUserDefaults saveObject:[NSDate date] byFileName:[NSString stringWithFormat: @"WORKLISTCACHEDATE"]];
+                }
+                self.model = [LPWorklistModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
-            self.model = [LPWorklistModel mj_objectWithKeyValues:responseObject];
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -456,7 +613,11 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     [NetApiManager requestMechanismlistWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            self.mechanismlistModel = [LPMechanismlistModel mj_objectWithKeyValues:responseObject];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.mechanismlistModel = [LPMechanismlistModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -471,11 +632,13 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         NSLog(@"%@",responseObject);
         if (isSuccess) {
             if (responseObject[@"data"] != nil &&
-                [responseObject[@"data"][@"version"] length]>1) {
+                [responseObject[@"data"][@"version"] length]>0) {
                 if (self.version.floatValue <  [responseObject[@"data"][@"version"] floatValue]  ) {
                     NSString *updateStr = [NSString stringWithFormat:@"发现新版本V%@\n为保证软件的正常运行\n请及时更新到最新版本",responseObject[@"data"][@"version"]];
                     [self creatAlterView:updateStr];
                 }
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
@@ -491,7 +654,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         _tableview.dataSource = self;
         _tableview.tableFooterView = [[UIView alloc]init];
         _tableview.rowHeight = UITableViewAutomaticDimension;
-        _tableview.estimatedRowHeight = 100;
+        _tableview.estimatedRowHeight = 0;
         _tableview.tableHeaderView = self.tableHeaderView;
         _tableview.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         _tableview.separatorColor = [UIColor colorWithHexString:@"#E6E6E6"];
@@ -512,15 +675,15 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         _tableHeaderView = [[UIView alloc]init];
         _tableHeaderView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 266);
         [_tableHeaderView addSubview:self.cycleScrollView];
-        [_tableHeaderView addSubview:self.RecommendBackImage];
         [_tableHeaderView addSubview:self.RecommendScrollView];
+        [_tableHeaderView addSubview:self.RecommendBackImage];
         [_tableHeaderView addSubview:self.ButtonView];
-
-        [_tableHeaderView addSubview:self.sortButton];
-        [_tableHeaderView addSubview:self.screenButton];
+        [_tableHeaderView addSubview:self.screenView];
+//        [_tableHeaderView addSubview:self.sortButton];
+//        [_tableHeaderView addSubview:self.screenButton];
         UIView *lineView = [[UIView alloc]init];
         lineView.frame = CGRectMake(0, 265.5, SCREEN_WIDTH, 0.5);
-        lineView.backgroundColor = [UIColor baseColor];
+        lineView.backgroundColor = [UIColor clearColor];
         [_tableHeaderView addSubview:lineView];
     }
     return _tableHeaderView;
@@ -528,37 +691,81 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 -(UIButton *)sortButton{
     if (!_sortButton) {
         _sortButton = [[UIButton alloc]init];
-        _sortButton.frame = CGRectMake(13, 233, 70, 20);
-        [_sortButton setTitle:@"默认排序" forState:UIControlStateNormal];
-        [_sortButton setImage:[UIImage imageNamed:@"add_ record_normal"] forState:UIControlStateNormal];
-        [_sortButton setImage:[UIImage imageNamed:@"add_ record_selected"] forState:UIControlStateSelected];
+        _sortButton.frame = CGRectMake(13, 0, 70, 40);
+        [_sortButton setTitle:@"企业列表" forState:UIControlStateNormal];
+//        [_sortButton setImage:[UIImage imageNamed:@"add_ record_normal"] forState:UIControlStateNormal];
+//        [_sortButton setImage:[UIImage imageNamed:@"add_ record_selected"] forState:UIControlStateSelected];
         [_sortButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [_sortButton setTitleColor:[UIColor baseColor] forState:UIControlStateSelected];
-        _sortButton.titleLabel.font = [UIFont systemFontOfSize:14];
-        _sortButton.titleEdgeInsets = UIEdgeInsetsMake(0, -_sortButton.imageView.frame.size.width - _sortButton.frame.size.width + _sortButton.titleLabel.intrinsicContentSize.width, 0, 0);
-        _sortButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -_sortButton.titleLabel.frame.size.width - _sortButton.frame.size.width + _sortButton.imageView.frame.size.width);
-        [_sortButton addTarget:self action:@selector(TouchBt:) forControlEvents:UIControlEventTouchUpInside];
-        _sortButton.selected = YES;
+//        [_sortButton setTitleColor:[UIColor baseColor] forState:UIControlStateSelected];
+        _sortButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
+//        _sortButton.titleEdgeInsets = UIEdgeInsetsMake(0, -_sortButton.imageView.frame.size.width - _sortButton.frame.size.width + _sortButton.titleLabel.intrinsicContentSize.width, 0, 0);
+//        _sortButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -_sortButton.titleLabel.frame.size.width - _sortButton.frame.size.width + _sortButton.imageView.frame.size.width);
+//        [_sortButton addTarget:self action:@selector(TouchBt:) forControlEvents:UIControlEventTouchUpInside];
+        _sortButton.enabled = NO;
     }
     return _sortButton;
 }
 -(UIButton *)screenButton{
     if (!_screenButton) {
         _screenButton = [[UIButton alloc]init];
-        _screenButton.frame = CGRectMake(SCREEN_WIDTH-45-13, 233, 45, 20);
-        [_screenButton setTitle:@"筛选" forState:UIControlStateNormal];
-        [_screenButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        [_screenButton setImage:[UIImage imageNamed:@"screen_normal"] forState:UIControlStateNormal];
-        _screenButton.titleLabel.font = [UIFont systemFontOfSize:14];
-        _screenButton.titleEdgeInsets = UIEdgeInsetsMake(0, -_screenButton.imageView.frame.size.width - _screenButton.frame.size.width + _screenButton.titleLabel.intrinsicContentSize.width, 0, 0);
-        _screenButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -_screenButton.titleLabel.frame.size.width - _screenButton.frame.size.width + _screenButton.imageView.frame.size.width);
+        _screenButton.frame = CGRectMake(SCREEN_WIDTH-75-13, 0, 75, 40);
+        [_screenButton setTitle:@"全部工种" forState:UIControlStateNormal];
+        [_screenButton setTitleColor:[UIColor colorWithHexString:@"#666666"] forState:UIControlStateNormal];
+        [_screenButton setTitleColor:[UIColor baseColor] forState:UIControlStateSelected];
+        [_screenButton setImage:[UIImage imageNamed:@"drop_down"] forState:UIControlStateNormal];
+        [_screenButton setImage:[UIImage imageNamed:@"drop_down_sel"] forState:UIControlStateSelected];
+        _screenButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+
+        _screenButton.titleLabel.font = [UIFont systemFontOfSize:13];
+        _screenButton.titleEdgeInsets = UIEdgeInsetsMake(0, -_screenButton.imageView.frame.size.width - _screenButton.frame.size.width + _screenButton.titleLabel.intrinsicContentSize.width, 0, 20);
+        _screenButton.imageEdgeInsets = UIEdgeInsetsMake(0, 55+8, 0, 0);
         [_screenButton addTarget:self action:@selector(touchScreenButton:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _screenButton;
 }
--(LPSortAlertView *)sortAlertView{
+
+-(UIButton *)screenTypeButton{
+    if (!_screenTypeButton) {
+        _screenTypeButton = [[UIButton alloc]init];
+        _screenTypeButton.frame = CGRectMake(SCREEN_WIDTH-75-13 - 80 - 10, 0, 75, 40);
+        [_screenTypeButton setTitle:@"全部企业" forState:UIControlStateNormal];
+        [_screenTypeButton setTitleColor:[UIColor colorWithHexString:@"#666666"] forState:UIControlStateNormal];
+        [_screenTypeButton setTitleColor:[UIColor baseColor] forState:UIControlStateSelected];
+        [_screenTypeButton setImage:[UIImage imageNamed:@"drop_down"] forState:UIControlStateNormal];
+        [_screenTypeButton setImage:[UIImage imageNamed:@"drop_down_sel"] forState:UIControlStateSelected];
+
+        _screenTypeButton.titleLabel.font = [UIFont systemFontOfSize:13];
+        _screenTypeButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+
+        _screenTypeButton.titleEdgeInsets = UIEdgeInsetsMake(0,
+                                                             -_screenTypeButton.imageView.frame.size.width - _screenTypeButton.frame.size.width + _screenTypeButton.titleLabel.intrinsicContentSize.width,
+                                                             0,
+                                                             20);
+        
+        _screenTypeButton.imageEdgeInsets = UIEdgeInsetsMake(0,
+                                                             55+8,
+                                                             0,
+                                                             0);
+        [_screenTypeButton addTarget:self action:@selector(touchScreenButton:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _screenTypeButton;
+}
+
+- (UIView *)screenView{
+     if (!_screenView) {
+         _screenView = [[UIView alloc] initWithFrame:CGRectMake(0, 186, SCREEN_WIDTH, 40)];
+         _screenView.tag = 2000;
+         [_screenView addSubview:self.screenButton];
+         [_screenView addSubview:self.screenTypeButton];
+         [_screenView addSubview:self.sortButton];
+     }
+    return _screenView;
+}
+
+
+-(LPMainSortAlertView *)sortAlertView{
     if (!_sortAlertView) {
-        _sortAlertView = [[LPSortAlertView alloc]init];
+        _sortAlertView = [[LPMainSortAlertView alloc]init];
         _sortAlertView.touchButton = self.sortButton;
         _sortAlertView.delegate = self;
     }
@@ -586,11 +793,12 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 
 -(UIScrollView *)RecommendScrollView{
     if (!_RecommendScrollView) {
-        _RecommendScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(48 , 156, SCREEN_WIDTH-69, 27)];
+        _RecommendScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0 , 150, SCREEN_WIDTH, 36)];
         _RecommendScrollView.delegate = self;
         _RecommendScrollView.showsVerticalScrollIndicator = NO;
         _RecommendScrollView.scrollEnabled = NO;
         _RecommendScrollView.bounces = NO;
+        _RecommendScrollView.backgroundColor = [UIColor colorWithHexString:@"#F5F8FA"];
      }
     return _RecommendScrollView;
 }
@@ -602,15 +810,16 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 
 - (UIImageView *)RecommendBackImage{
     if (!_RecommendBackImage) {
-        _RecommendBackImage = [[UIImageView alloc] initWithFrame:CGRectMake(13, 156, SCREEN_WIDTH-26, 27)];
-        _RecommendBackImage.image = [UIImage imageNamed:@"RecommendBackImage"];
+        _RecommendBackImage = [[UIImageView alloc] initWithFrame:CGRectMake(13, 159, 18, 18)];
+        _RecommendBackImage.image = [UIImage imageNamed:@"radio"];
     }
     return _RecommendBackImage;
 }
 
 - (UIView *)ButtonView{
     if (!_ButtonView) {
-        _ButtonView = [[UIView alloc] initWithFrame:CGRectMake(13, 193, SCREEN_WIDTH-26, 27)];
+        _ButtonView = [[UIView alloc] initWithFrame:CGRectMake(13, 225, SCREEN_WIDTH-26, 42)];
+        _ButtonView.tag = 1000;
         NSArray *arr = @[@"推荐好厂",@"高额返费",@"好评企业",@"可借支"];
         self.ButtonArr = [[NSMutableArray alloc] init];
         for (int i = 0; i<arr.count; i++) {
@@ -619,7 +828,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
             [Bt setTitle:arr[i] forState:UIControlStateNormal];
             [Bt setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"#F2F2F2"]] forState:UIControlStateNormal];
             [Bt setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"#E4F4FF"]] forState:UIControlStateSelected];
-            [Bt setTitleColor:[UIColor colorWithHexString:@"#444444"] forState:UIControlStateNormal];
+            [Bt setTitleColor:[UIColor colorWithHexString:@"#666666"] forState:UIControlStateNormal];
             [Bt setTitleColor:[UIColor colorWithHexString:@"#3CAFFF"] forState:UIControlStateSelected];
             Bt.titleLabel.font = [UIFont systemFontOfSize:13];
             Bt.layer.cornerRadius = 4;
@@ -628,19 +837,29 @@ static NSString *LPMainCellID = @"LPMain2Cell";
             [self.ButtonArr addObject:Bt];
         }
         
-        [self.ButtonArr mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedSpacing:10 leadSpacing:0 tailSpacing:0];
+        [self.ButtonArr mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedSpacing:7 leadSpacing:0 tailSpacing:0];
         [self.ButtonArr mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_offset(0);
-            make.height.mas_equalTo(27);
+            make.top.mas_offset(6);
+            make.height.mas_equalTo(30);
         }];
     }
     return _ButtonView;
 }
 -(void)TouchBt:(UIButton *) sender{
+    
+    if (self.tableview.contentOffset.y < 186) {
+        CGPoint bottomOffset = CGPointMake(0, 186);
+        [self.tableview setContentOffset:bottomOffset animated:NO];
+    }
+    
     if (sender.selected == YES) {
+        self.orderType = @"";
+        sender.selected = NO;
+        self.page = 1;
+        [self request];
         return;
     }
-    self.sortButton.selected = NO;
+  
 
     for (UIButton *bt in self.ButtonArr) {
         bt.selected = NO;
@@ -677,6 +896,33 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 }
 */
 
+-(void)requestQueryActivityadvert{
+    [NetApiManager requestQueryActivityadvert:nil withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                LPAdvertModel *model = [LPAdvertModel mj_objectWithKeyValues:responseObject];
+                if (model.data.count) {
+                    self.AdvertModel = model;
+                    [ADAlertView  showInView:[UIWindow visibleViewController].view theDelegate:self theADInfo:model.data placeHolderImage:@"1"];
+                }
+            }else{
+                [[UIWindow visibleViewController].view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
+        }else{
+            [[UIWindow visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+
+-(void)clickAlertViewAtIndex:(NSInteger)index{
+    LPActivityDatelisVC *vc = [[LPActivityDatelisVC alloc] init];
+    LPActivityDataModel *M = [[LPActivityDataModel alloc] init];
+    M.id = self.AdvertModel.data[index].id;
+    vc.Model = M;
+    vc.hidesBottomBarWhenPushed = YES;
+    [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+}
 
 //3. 弹框提示
 -(void)creatAlterView:(NSString *)msg{

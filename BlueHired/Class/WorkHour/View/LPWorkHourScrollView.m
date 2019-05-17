@@ -1294,7 +1294,11 @@ static NSString *LPByThePieceCellID = @"LPByThePieceCell";
     [NetApiManager requestQueryGetHoursWorkList:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            self.HoursWorkListModel = [LPHoursWorkListModel mj_objectWithKeyValues:responseObject];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.HoursWorkListModel = [LPHoursWorkListModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [[UIWindow visibleViewController].view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [[UIWindow visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -1309,7 +1313,11 @@ static NSString *LPByThePieceCellID = @"LPByThePieceCell";
     [NetApiManager requestQueryGetAccountPrice:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            self.AccountPriceModel = [LPAccountPriceModel mj_objectWithKeyValues:responseObject];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.AccountPriceModel = [LPAccountPriceModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [[UIWindow visibleViewController].view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [[UIWindow visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -1323,7 +1331,11 @@ static NSString *LPByThePieceCellID = @"LPByThePieceCell";
     [NetApiManager requestQueryGetMonthWageDetail:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            self.WageDetailsModel = [LPMonthWageDetailsModel mj_objectWithKeyValues:responseObject];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.WageDetailsModel = [LPMonthWageDetailsModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [[UIWindow visibleViewController].view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [[UIWindow visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

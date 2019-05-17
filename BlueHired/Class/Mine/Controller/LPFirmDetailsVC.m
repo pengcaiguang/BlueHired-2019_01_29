@@ -303,12 +303,17 @@ static NSString *LPTLendAuditCellID = @"LPLPFirmDetailsCell";
         [weakSelf.tableview.mj_header endRefreshing];
         [weakSelf.tableview.mj_footer endRefreshing];
         if (isSuccess) {
-            weakSelf.DetailsModel = [LPFirmDetailsModel mj_objectWithKeyValues:responseObject[@"data"]];
-            weakSelf.DetailsModel.experienceId = self.model.id;
-            weakSelf.DetailsModel.userId = self.model.userId;
-            weakSelf.DetailsModel.teacherId = kUserDefaultsValue(LOGINID);
+            if ([responseObject[@"code"] integerValue] == 0) {
+                weakSelf.DetailsModel = [LPFirmDetailsModel mj_objectWithKeyValues:responseObject[@"data"]];
+                weakSelf.DetailsModel.experienceId = self.model.id;
+                weakSelf.DetailsModel.userId = self.model.userId;
+                weakSelf.DetailsModel.teacherId = kUserDefaultsValue(LOGINID);
+                
+                [weakSelf.tableview reloadData];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
 
-            [weakSelf.tableview reloadData];
 
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
@@ -324,11 +329,17 @@ static NSString *LPTLendAuditCellID = @"LPLPFirmDetailsCell";
         NSLog(@"%@",responseObject);
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
-                [self.view showLoadingMeg:@"操作成功" time:MESSAGE_SHOW_TIME];
-                if (self.Block) {
-                    self.Block();
+                if ([responseObject[@"data"] integerValue] == 1) {
+                    [self.view showLoadingMeg:@"操作成功" time:MESSAGE_SHOW_TIME];
+                    if (self.Block) {
+                        self.Block();
+                    }
+                    [self.navigationController popViewControllerAnimated:YES];
+                }else{
+                    [weakSelf.view showLoadingMeg:@"操作失败,请稍后再试" time:MESSAGE_SHOW_TIME];
                 }
-                [self.navigationController popViewControllerAnimated:YES];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];

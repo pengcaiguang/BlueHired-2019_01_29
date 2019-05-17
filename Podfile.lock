@@ -89,8 +89,6 @@ PODS:
   - RTRootNavigationController/Core (0.6.7)
   - SCIndexView (2.1.1)
   - SDAutoLayout (2.2.1)
-  - SDCycleScrollView (1.75):
-    - SDWebImage (>= 4.0.0)
   - SDWebImage (4.4.3):
     - SDWebImage/Core (= 4.4.3)
   - SDWebImage/Core (4.4.3)
@@ -121,7 +119,6 @@ DEPENDENCIES:
   - RTRootNavigationController
   - SCIndexView
   - SDAutoLayout
-  - SDCycleScrollView (~> 1.75)
   - SDWebImage
   - TXLiteAVSDK_Player
   - WechatOpenSDK
@@ -158,7 +155,6 @@ SPEC REPOS:
     - RTRootNavigationController
     - SCIndexView
     - SDAutoLayout
-    - SDCycleScrollView
     - SDWebImage
     - TXLiteAVSDK_Player
     - WechatOpenSDK
@@ -194,13 +190,12 @@ SPEC CHECKSUMS:
   RTRootNavigationController: d6aa6cbb78a3eaecea4f6e4df63f15dd887836b8
   SCIndexView: b68cded2054ddf3000cdaa56f17627dfb1041c78
   SDAutoLayout: 8bf6b3bbc8b01f775d4defbb4fda2ace805461be
-  SDCycleScrollView: 884b88f0266dd4708a0e1934975c69cb971707b1
   SDWebImage: c5594f1a19c48d526d321e548902b56b479cd508
   TXLiteAVSDK_Player: 0ae5dbfa79619f53265d88cc990b1baf7abe1d97
   WechatOpenSDK: 3117412f8aafde4758cac1e8d20b93c67cafcfef
   YBAttributeTextTapAction: 650ff36251479f8cfc7b5dd8fb62587c538ce502
   YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
 
-PODFILE CHECKSUM: f3643437f478c0c1e2480e2d998b11d935a73f09
+PODFILE CHECKSUM: 6ec1fb13c969cb7c883e4d8c8b0042d7a5e32689
 
 COCOAPODS: 1.5.3

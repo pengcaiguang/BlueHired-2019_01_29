@@ -58,18 +58,23 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
         [NetApiManager requestQueryWXSetPhone:dic withHandle:^(BOOL isSuccess, id responseObject) {
             NSLog(@"%@",responseObject);
             if (isSuccess) {
-                if ([responseObject[@"data"] integerValue] > 0) {
-                    if ([self.Openid isEqualToString:@""]) {
-                        [self.view showLoadingMeg:@"绑定成功" time:MESSAGE_SHOW_TIME];
+                if ([responseObject[@"code"] integerValue] == 0) {
+                    if ([responseObject[@"data"] integerValue] > 0) {
+                        if ([self.Openid isEqualToString:@""]) {
+                            [self.view showLoadingMeg:@"绑定成功" time:MESSAGE_SHOW_TIME];
+                        }else{
+                            [self.view showLoadingMeg:@"换绑成功，请之后用新微信号进行登录！" time:MESSAGE_SHOW_TIME];
+                        }
+                        self.userData.data.openid = wxUserInfo.unionid;
+                        //                    self.WXLabel.text = @"已绑定";
+                        [self.navigationController   popToRootViewControllerAnimated:YES];
                     }else{
-                        [self.view showLoadingMeg:@"换绑成功，请之后用新微信号进行登录！" time:MESSAGE_SHOW_TIME];
+                        [self.view showLoadingMeg:responseObject[@"msg"] ? responseObject[@"msg"] : @"注册失败" time:MESSAGE_SHOW_TIME];
                     }
-                    self.userData.data.openid = wxUserInfo.unionid;
-                    //                    self.WXLabel.text = @"已绑定";
-                    [self.navigationController   popToRootViewControllerAnimated:YES];
                 }else{
-                    [self.view showLoadingMeg:responseObject[@"msg"] ? responseObject[@"msg"] : @"注册失败" time:MESSAGE_SHOW_TIME];
+                    [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
                 }
+               
             }else{
                 [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
             }
@@ -225,7 +230,6 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
             if ([responseObject[@"code"] integerValue] == 0) {
                 NSMutableString * string = [[NSMutableString alloc] initWithFormat:@"telprompt:%@",responseObject[@"data"]];
                 [[UIApplication sharedApplication] openURL:[NSURL URLWithString:string]];
-
             }else{
                 [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
@@ -241,7 +245,11 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
     [NetApiManager requestQueryGetUserProdlemList:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            self.model = [LPUserProblemModel mj_objectWithKeyValues:responseObject];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.model = [LPUserProblemModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

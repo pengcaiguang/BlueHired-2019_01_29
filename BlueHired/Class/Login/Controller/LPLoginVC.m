@@ -392,36 +392,41 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
     [NetApiManager requestLoginWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            if ([responseObject[@"data"] isEqualToString:@"null"]) {
-                [self.view showLoadingMeg:@"用户不存在" time:MESSAGE_SHOW_TIME];
-            }else if ([responseObject[@"data"] isEqualToString:@"error"]) {
-                [self.view showLoadingMeg:@"密码错误" time:MESSAGE_SHOW_TIME];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if ([responseObject[@"data"] isEqualToString:@"null"]) {
+                    [self.view showLoadingMeg:@"用户不存在" time:MESSAGE_SHOW_TIME];
+                }else if ([responseObject[@"data"] isEqualToString:@"error"]) {
+                    [self.view showLoadingMeg:@"密码错误" time:MESSAGE_SHOW_TIME];
+                }else{
+                    kUserDefaultsSave(responseObject[@"data"], LOGINID);
+                    if ([kUserDefaultsValue(LOGINID) integerValue]  != [kUserDefaultsValue(OLDLOGINID) integerValue]) {
+                        kUserDefaultsRemove(ERRORTIMES);
+                    }
+                    if (self.keepPassword) {
+                        [self save];
+                    }else{
+                        kUserDefaultsSave(@"", PASSWORDUSERSAVE);
+                    }
+                    kUserDefaultsSave(@"1", kLoginStatus);
+                    kUserDefaultsSave(self.phoneTextField.text, PHONEUSERSAVE);
+                    if (self.isRedpackVC == YES) {
+                        LPHongBaoVC *vc = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
+                        vc.isLogin = YES;
+                        [self.navigationController popToViewController:vc animated:YES];
+                    }else if(self.isCircleVC == YES){
+                        LPCircleVC *vc = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
+                        vc.isSenderBack = 1;
+                        [self.navigationController popToViewController:vc animated:YES];
+                    }else{
+                        [self.navigationController popViewControllerAnimated:YES];
+                    }
+                }
             }else{
-                 kUserDefaultsSave(responseObject[@"data"], LOGINID);
-                if ([kUserDefaultsValue(LOGINID) integerValue]  != [kUserDefaultsValue(OLDLOGINID) integerValue]) {
-                    kUserDefaultsRemove(@"ERRORTIMES");
-                }
-                if (self.keepPassword) {
-                    [self save];
-                }else{
-                    kUserDefaultsSave(@"", PASSWORDUSERSAVE);
-                }
-                kUserDefaultsSave(@"1", kLoginStatus);
-                kUserDefaultsSave(self.phoneTextField.text, PHONEUSERSAVE);
-                if (self.isRedpackVC == YES) {
-                    LPHongBaoVC *vc = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
-                    vc.isLogin = YES;
-                    [self.navigationController popToViewController:vc animated:YES];
-                }else if(self.isCircleVC == YES){
-                    LPCircleVC *vc = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
-                    vc.isSenderBack = 1;
-                    [self.navigationController popToViewController:vc animated:YES];
-                }else{
-                    [self.navigationController popViewControllerAnimated:YES];
-                }
-                
-                
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
+            
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
     }];
 }
@@ -431,14 +436,19 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
     [NetApiManager requestQueryWXUserStatus:dic  withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            if ([responseObject[@"data"] integerValue] == 0) {
-                LPWXLoginBindingVC *vc = [[LPWXLoginBindingVC alloc] init];
-                vc.userModel = wxUserInfo;
-                [[UIWindow visibleViewController].navigationController pushViewController:vc animated:NO];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if ([responseObject[@"data"] integerValue] == 0) {
+                    LPWXLoginBindingVC *vc = [[LPWXLoginBindingVC alloc] init];
+                    vc.userModel = wxUserInfo;
+                    [[UIWindow visibleViewController].navigationController pushViewController:vc animated:NO];
+                }else{
+                    [[UIWindow visibleViewController].view showLoadingMeg:@"登录成功" time:MESSAGE_SHOW_TIME];
+                    [[UIWindow visibleViewController].navigationController popViewControllerAnimated:NO];
+                }
             }else{
-                [[UIWindow visibleViewController].view showLoadingMeg:@"登录成功" time:MESSAGE_SHOW_TIME];
-                [[UIWindow visibleViewController].navigationController popViewControllerAnimated:NO];
-             }
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
+            
         }else{
             [[UIWindow visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

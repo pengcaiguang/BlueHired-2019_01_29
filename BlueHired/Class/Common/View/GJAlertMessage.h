@@ -46,6 +46,7 @@ buttonsBackgroundColors:(NSArray *)buttonsBackgroundColors
         buttonClick:(void(^)(NSInteger buttonIndex))block;
 
 - (void)show;
+- (void)showToWindow;
 - (void)dismiss;
 
 @end

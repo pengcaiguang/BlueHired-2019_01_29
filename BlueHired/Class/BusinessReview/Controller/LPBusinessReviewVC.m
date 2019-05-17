@@ -13,6 +13,7 @@
 #import "LPSearchBar.h"
 #import "LPBusinessReviewSearchVC.h"
 #import "LPBusinessReviewDetailVC.h"
+#import "LPInformationSearchVC.h"
 
 static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
 
@@ -110,7 +111,7 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
         make.left.equalTo(leftBarButtonView.mas_right).offset(10);
         make.right.mas_equalTo(-10);
         make.top.mas_equalTo(10);
-        make.height.mas_equalTo(28);
+        make.height.mas_equalTo(30);
     }];
     wrapView.layer.cornerRadius = 14;
     wrapView.layer.masksToBounds = YES;
@@ -140,13 +141,13 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
     UITextField *searchField = [searchBar valueForKey:@"searchField"];
     if (searchField) {
         [searchField setBackgroundColor:[UIColor whiteColor]];
-        searchField.layer.cornerRadius = 14;
+        searchField.layer.cornerRadius = 15;
         searchField.layer.masksToBounds = YES;
         searchField.font = [UIFont systemFontOfSize:13];
     }
     if (YES) {
         CGFloat height = searchBar.bounds.size.height;
-        CGFloat top = (height - 28.0) / 2.0;
+        CGFloat top = (height - 30.0) / 2.0;
         CGFloat bottom = top;
         searchBar.contentInset = UIEdgeInsetsMake(top, 0, bottom, 0);
     }
@@ -161,8 +162,10 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
 
 #pragma mark - search
 -(BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar{
-    LPBusinessReviewSearchVC *vc = [[LPBusinessReviewSearchVC alloc]init];
+    LPInformationSearchVC *vc = [[LPInformationSearchVC alloc]init];
     [self.navigationController pushViewController:vc animated:YES];
+    vc.Type = 4;
+
     return NO;
 }
 #pragma mark - LPSelectCityVCDelegate
@@ -240,7 +243,12 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
         [self.tableview.mj_header endRefreshing];
         [self.tableview.mj_footer endRefreshing];
         if (isSuccess) {
-            self.model = [LPMechanismcommentMechanismlistModel mj_objectWithKeyValues:responseObject];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.model = [LPMechanismcommentMechanismlistModel mj_objectWithKeyValues:responseObject];
+
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

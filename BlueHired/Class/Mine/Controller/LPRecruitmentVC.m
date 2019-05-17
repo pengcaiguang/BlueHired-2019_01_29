@@ -292,8 +292,13 @@ static NSString *LPRecruitCellID = @"LPRecruitCell";
     [NetApiManager requestQueryWorkList:nil withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            self.model = [LPWork_ListModel mj_objectWithKeyValues:responseObject];
-            [self.tableview reloadData];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.model = [LPWork_ListModel mj_objectWithKeyValues:responseObject];
+                [self.tableview reloadData];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
+
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

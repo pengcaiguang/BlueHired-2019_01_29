@@ -192,7 +192,11 @@ static NSString *LPPieceListCellID = @"LPPieceListCell";
         [weakSelf.tableview.mj_header endRefreshing];
         [weakSelf.tableview.mj_footer endRefreshing];
         if (isSuccess) {
-            self.model = [LPProRecirdModel mj_objectWithKeyValues:responseObject];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.model = [LPProRecirdModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

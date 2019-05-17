@@ -244,17 +244,22 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
         [NetApiManager requestQueryWXSetPhone:dic withHandle:^(BOOL isSuccess, id responseObject) {
             NSLog(@"%@",responseObject);
             if (isSuccess) {
-                if ([responseObject[@"data"] integerValue] > 0) {
-                    if ([[LPTools isNullToString:self.userMaterialModel.data.openid] isEqualToString:@""]) {
-                        [self.view showLoadingMeg:@"绑定成功" time:MESSAGE_SHOW_TIME];
-                     }else{
-                        [self.view showLoadingMeg:@"换绑成功，请之后用新微信号进行登录！" time:MESSAGE_SHOW_TIME];
+                if ([responseObject[@"code"] integerValue] == 0) {
+                    if ([responseObject[@"data"] integerValue] > 0) {
+                        if ([[LPTools isNullToString:self.userMaterialModel.data.openid] isEqualToString:@""]) {
+                            [self.view showLoadingMeg:@"绑定成功" time:MESSAGE_SHOW_TIME];
+                        }else{
+                            [self.view showLoadingMeg:@"换绑成功，请之后用新微信号进行登录！" time:MESSAGE_SHOW_TIME];
+                        }
+                        self.userMaterialModel.data.openid = wxUserInfo.unionid;
+                        [self.tableview reloadData];
+                    }else{
+                        [self.view showLoadingMeg:responseObject[@"msg"] ? responseObject[@"msg"] : @"注册失败" time:MESSAGE_SHOW_TIME];
                     }
-                    self.userMaterialModel.data.openid = wxUserInfo.unionid;
-                    [self.tableview reloadData];
                 }else{
-                    [self.view showLoadingMeg:responseObject[@"msg"] ? responseObject[@"msg"] : @"注册失败" time:MESSAGE_SHOW_TIME];
+                    [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
                 }
+
             }else{
                 [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
             }
@@ -272,10 +277,14 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
     [NetApiManager requestSignoutWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            kUserDefaultsSave(kUserDefaultsValue(LOGINID), OLDLOGINID);
-            kUserDefaultsRemove(LOGINID);
-            kUserDefaultsRemove(kLoginStatus);
-            [self.navigationController popViewControllerAnimated:YES];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                kUserDefaultsSave(kUserDefaultsValue(LOGINID), OLDLOGINID);
+                kUserDefaultsRemove(LOGINID);
+                kUserDefaultsRemove(kLoginStatus);
+                [self.navigationController popViewControllerAnimated:YES];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

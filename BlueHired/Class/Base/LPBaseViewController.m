@@ -19,7 +19,7 @@
     self.edgesForExtendedLayout = UIRectEdgeNone;
    
     self.navigationItem.hidesBackButton = YES;
-    
+
 //    self.navigationController.navigationBar.barStyle = UIStatusBarStyleLightContent;
 //    UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0,-20, SCREEN_WIDTH, 20)];
 //    [self.navigationController.navigationBar addSubview:backView];
@@ -33,8 +33,11 @@
     [btn setImage:[UIImage imageNamed:@"BackBttonImage"] forState:UIControlStateNormal];
     [btn setTitle:@" 返回" forState:UIControlStateNormal];
     [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    btn.imageView.contentMode = UIViewContentModeScaleAspectFit;
+    btn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [btn sizeToFit];
     [btn addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+    self.NBackBT = btn;
     return [[UIBarButtonItem alloc] initWithCustomView:btn];
 }
 

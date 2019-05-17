@@ -23,4 +23,7 @@
 @property (nonatomic, copy) NSString *set_time;
 @property (nonatomic, copy) NSString *time;
 @property (nonatomic, copy) NSNumber *userId;
+@property (nonatomic, copy) NSString *actualPay;
+@property (nonatomic, copy) NSString *status;
+
 @end

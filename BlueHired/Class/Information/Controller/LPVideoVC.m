@@ -740,10 +740,10 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
       //开始手动计算cell高度
     LPCommentListDataModel *m = self.commentListArray[indexPath.row];
-    CGFloat cellHeigh = 93.5 + [self calculateRowHeight:m.commentDetails fontSize:13 Width:SCREEN_WIDTH - 67];
+    CGFloat cellHeigh = 93.5 + [LPTools calculateRowHeight:m.commentDetails fontSize:13 Width:SCREEN_WIDTH - 67];
     //计算回复高度
     for (int i = 0 ;i < m.commentList.count;i++) {
-        cellHeigh +=[self calculateRowHeight:[NSString stringWithFormat:@"%@:  %@",m.commentList[i].userName,m.commentList[i].commentDetails] fontSize:13 Width:SCREEN_WIDTH-80]+11;
+        cellHeigh +=[LPTools calculateRowHeight:[NSString stringWithFormat:@"%@:  %@",m.commentList[i].userName,m.commentList[i].commentDetails] fontSize:13 Width:SCREEN_WIDTH-80]+11;
     }
     return cellHeigh;
 //    return 100;
@@ -1108,12 +1108,17 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
  
     [NetApiManager requestQueryGetVideoList:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
-        NSLog(@"收到数据");
+ 
+        [self.collectionView.mj_header endRefreshing];
+        [self.collectionView.mj_footer endRefreshing];
+        [DSBaActivityView hideActiviTy];
+
         if (isSuccess) {
-            [self.collectionView.mj_header endRefreshing];
-            [self.collectionView.mj_footer endRefreshing];
-            self.VideoListModel = [LPVideoListModel mj_objectWithKeyValues:responseObject];
-            [DSBaActivityView hideActiviTy];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.VideoListModel = [LPVideoListModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -1128,6 +1133,10 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     [NetApiManager requestQuerySetVideoView:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
          }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -1144,7 +1153,11 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
         NSLog(@"%@",responseObject);
         [self.tableview.mj_footer endRefreshing];
         if (isSuccess) {
-            self.commentListModel = [LPCommentListModel mj_objectWithKeyValues:responseObject];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.commentListModel = [LPCommentListModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -1227,14 +1240,5 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
          NSIndexPath * dayOne = [NSIndexPath indexPathForRow:0 inSection:0];
         [self.tableview scrollToRowAtIndexPath:dayOne atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
-
-- (CGFloat)calculateRowHeight:(NSString *)string fontSize:(NSInteger)fontSize Width:(CGFloat) W
-{
-    NSDictionary *dic = @{NSFontAttributeName:[UIFont systemFontOfSize:fontSize]};
-    /*计算高度要先指定宽度*/
-    CGRect rect = [string boundingRectWithSize:CGSizeMake(W, 0) options:NSStringDrawingUsesLineFragmentOrigin |
-                   NSStringDrawingUsesFontLeading attributes:dic context:nil];
-    return rect.size.height;
-    
-}
+ 
 @end

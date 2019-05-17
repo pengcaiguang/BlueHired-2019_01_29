@@ -7,12 +7,14 @@
 //
 
 #import "LPWorkorderListVC.h"
-#import "LPWorkorderListCell.h"
+//#import "LPWorkorderListCell.h"
 #import "LPWorkorderListModel.h"
+#import "LPWorkOrderList2Cell.h"
+#import "LPWorkDetailVC.h"
 
-static NSString *LPWorkorderListCellID = @"LPWorkorderListCell";
+static NSString *LPWorkorderListCellID = @"LPWorkOrderList2Cell";
 
-@interface LPWorkorderListVC ()<UITableViewDelegate,UITableViewDataSource,LPWorkorderListCellDelegate>
+@interface LPWorkorderListVC ()<UITableViewDelegate,UITableViewDataSource,LPWorkorderList2CellDelegate>
 @property (nonatomic, strong)UITableView *tableview;
 
 @property(nonatomic,strong) LPWorkorderListModel *model;
@@ -32,7 +34,12 @@ static NSString *LPWorkorderListCellID = @"LPWorkorderListCell";
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
+}
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
     [self requestWorkorderlist];
+
 }
 
 -(void)setModel:(LPWorkorderListModel *)model{
@@ -65,13 +72,23 @@ static NSString *LPWorkorderListCellID = @"LPWorkorderListCell";
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    LPWorkorderListCell *cell = [tableView dequeueReusableCellWithIdentifier:LPWorkorderListCellID];
+    LPWorkOrderList2Cell *cell = [tableView dequeueReusableCellWithIdentifier:LPWorkorderListCellID];
     cell.model = self.listArray[indexPath.row];
     cell.delegate = self;
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    LPWorklistDataWorkListModel *m = [[LPWorklistDataWorkListModel alloc] init];
+    m.id = self.listArray[indexPath.row].workId;
+    m.isApply = self.listArray[indexPath.row].isApply;
+    
+    LPWorkDetailVC *vc = [[LPWorkDetailVC alloc]init];
+    vc.hidesBottomBarWhenPushed = YES;
+    vc.workListModel = m;
+    [self.navigationController pushViewController:vc animated:YES];
+    
 }
 
 #pragma mark - LPWorkorderListCellDelegate
@@ -93,7 +110,11 @@ static NSString *LPWorkorderListCellID = @"LPWorkorderListCell";
     [NetApiManager requestWorkorderlistWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            self.model = [LPWorkorderListModel mj_objectWithKeyValues:responseObject];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.model = [LPWorkorderListModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -104,11 +125,15 @@ static NSString *LPWorkorderListCellID = @"LPWorkorderListCell";
     [NetApiManager requestCancleApplyWithUrl:string withParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            if (!ISNIL(responseObject[@"code"])) {
                 if ([responseObject[@"code"] integerValue] == 0) {
-                    [self requestWorkorderlist];
+                    if ([responseObject[@"data"] integerValue] > 0) {
+                        [self requestWorkorderlist];
+                    }else{
+                        [self.view showLoadingMeg:@"取消报名失败,请稍后再试" time:MESSAGE_SHOW_TIME*2];
+                    }
+                }else{
+                    [self.view showLoadingMeg:responseObject[@"msg"] ? responseObject[@"msg"] : NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME*2];
                 }
-            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -121,10 +146,14 @@ static NSString *LPWorkorderListCellID = @"LPWorkorderListCell";
     [NetApiManager requestDelWorkorderWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            if (!ISNIL(responseObject[@"code"])) {
-                if ([responseObject[@"code"] integerValue] == 0) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if ([responseObject[@"data"] integerValue]>0) {
                     [self requestWorkorderlist];
+                }else{
+                    [self.view showLoadingMeg:@"面试预约删除失败,请稍后再试" time:MESSAGE_SHOW_TIME];
                 }
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];

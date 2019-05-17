@@ -58,49 +58,49 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
     
 }
 - (IBAction)touchentry:(id)sender {
-    if (kUserDefaultsValue(USERDATA).integerValue == 4  ||
-        kUserDefaultsValue(USERDATA).integerValue == 11  ||
-        kUserDefaultsValue(USERDATA).integerValue == 12 ||
-        kUserDefaultsValue(USERDATA).integerValue == 13 ||
-        kUserDefaultsValue(USERDATA).integerValue == 14 ||
-        kUserDefaultsValue(USERDATA).integerValue == 19 ||
-        kUserDefaultsValue(USERDATA).integerValue == 20 ||
-        kUserDefaultsValue(USERDATA).integerValue == 21 ) {
-        
-        if (self.SelectBt.currentTitle.length == 0) {
-            [LPTools AlertMessageView:@"请选择企业"];
-            return;
-        }
-        
-        LPEntryVC *vc = [[LPEntryVC alloc] init];
-        vc.Mechanismodel = self.model.data[self.selectCell];
-        [self.navigationController pushViewController:vc animated:YES];
-    }else{
-        [LPTools AlertMessageView:@"权限不足"];
-    }
+//    if (kUserDefaultsValue(USERDATA).integerValue == 4  ||
+//        kUserDefaultsValue(USERDATA).integerValue == 11  ||
+//        kUserDefaultsValue(USERDATA).integerValue == 12 ||
+//        kUserDefaultsValue(USERDATA).integerValue == 13 ||
+//        kUserDefaultsValue(USERDATA).integerValue == 14 ||
+//        kUserDefaultsValue(USERDATA).integerValue == 19 ||
+//        kUserDefaultsValue(USERDATA).integerValue == 20 ||
+//        kUserDefaultsValue(USERDATA).integerValue == 21 ) {
+//        
+//        if (self.SelectBt.currentTitle.length == 0) {
+//            [LPTools AlertMessageView:@"请选择企业"];
+//            return;
+//        }
+//        
+//        LPEntryVC *vc = [[LPEntryVC alloc] init];
+//        vc.Mechanismodel = self.model.data[self.selectCell];
+//        [self.navigationController pushViewController:vc animated:YES];
+//    }else{
+//        [LPTools AlertMessageView:@"权限不足"];
+//    }
 
 }
 - (IBAction)touchFirm:(id)sender {
-    if (kUserDefaultsValue(USERDATA).integerValue == 4  ||
-        kUserDefaultsValue(USERDATA).integerValue == 15  ||
-        kUserDefaultsValue(USERDATA).integerValue == 16 ||
-        kUserDefaultsValue(USERDATA).integerValue == 17 ||
-        kUserDefaultsValue(USERDATA).integerValue == 18 ||
-        kUserDefaultsValue(USERDATA).integerValue == 19 ||
-        kUserDefaultsValue(USERDATA).integerValue == 20 ||
-        kUserDefaultsValue(USERDATA).integerValue == 21 ) {
-        NSLog(@"%@",self.SelectBt.currentTitle);
-        if (self.SelectBt.currentTitle.length == 0) {
-            [LPTools AlertMessageView:@"请选择企业"];
-            return;
-        }
-        
-        LPFirmVC *vc = [[LPFirmVC alloc] init];
-        vc.Mechanismodel = self.model.data[self.selectCell];
-        [self.navigationController pushViewController:vc animated:YES];
-    }else{
-        [LPTools AlertMessageView:@"权限不足"];
-    }
+//    if (kUserDefaultsValue(USERDATA).integerValue == 4  ||
+//        kUserDefaultsValue(USERDATA).integerValue == 15  ||
+//        kUserDefaultsValue(USERDATA).integerValue == 16 ||
+//        kUserDefaultsValue(USERDATA).integerValue == 17 ||
+//        kUserDefaultsValue(USERDATA).integerValue == 18 ||
+//        kUserDefaultsValue(USERDATA).integerValue == 19 ||
+//        kUserDefaultsValue(USERDATA).integerValue == 20 ||
+//        kUserDefaultsValue(USERDATA).integerValue == 21 ) {
+//        NSLog(@"%@",self.SelectBt.currentTitle);
+//        if (self.SelectBt.currentTitle.length == 0) {
+//            [LPTools AlertMessageView:@"请选择企业"];
+//            return;
+//        }
+//
+//        LPFirmVC *vc = [[LPFirmVC alloc] init];
+//        vc.Mechanismodel = self.model.data[self.selectCell];
+//        [self.navigationController pushViewController:vc animated:YES];
+//    }else{
+//        [LPTools AlertMessageView:@"权限不足"];
+//    }
 
 }
 
@@ -153,12 +153,17 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
     [NetApiManager requestQueryTeacherMechanism:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
           if (isSuccess) {
-              weakSelf.model = [LPLendMechanismModel mj_objectWithKeyValues:responseObject];
-              if (weakSelf.model.data.count) {
-                self.selectCell = 0;
-                [self.SelectBt setTitle:self.model.data[self.selectCell].mechanismName forState:UIControlStateNormal];
-               }
-              [weakSelf.CompanyTableView reloadData];
+              if ([responseObject[@"code"] integerValue] == 0) {
+                  weakSelf.model = [LPLendMechanismModel mj_objectWithKeyValues:responseObject];
+                  if (weakSelf.model.data.count) {
+                      self.selectCell = 0;
+                      [self.SelectBt setTitle:self.model.data[self.selectCell].mechanismName forState:UIControlStateNormal];
+                  }
+                  [weakSelf.CompanyTableView reloadData];
+              }else{
+                  [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+              }
+             
 
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];

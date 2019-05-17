@@ -9,7 +9,6 @@
 #import "LPSalarycCardChangePasswordVC.h"
 #import "LPSalarycCardBindPhoneVC.h"
 
-static NSString *ERRORTIMES = @"ERRORTIMES";
 
 @interface LPSalarycCardChangePasswordVC ()<UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *textField;
@@ -100,6 +99,7 @@ static NSString *ERRORTIMES = @"ERRORTIMES";
         self.labelArray[i].text = @"●";
     }
     if (textField.text.length == 6) {
+        
         if (self.times == 0) {
             [self requestUpdateDrawpwd];
         }
@@ -118,6 +118,7 @@ static NSString *ERRORTIMES = @"ERRORTIMES";
             if ([self.textField.text isEqualToString:_passNew])
             {
                 [self requestUpdateNewDrawpwd];
+//                [textField resignFirstResponder];
             }
             else
             {
@@ -155,6 +156,36 @@ static NSString *ERRORTIMES = @"ERRORTIMES";
 #pragma mark - request
 -(void)requestUpdateDrawpwd{        //验证旧密码
     
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm";
+    NSString *string = [dateFormatter stringFromDate:[NSDate date]];
+    
+    NSString *errorString123 = kUserDefaultsValue(ERRORTIMES);
+
+    if (kUserDefaultsValue(ERRORTIMES)) {
+        NSString *errorString = kUserDefaultsValue(ERRORTIMES);
+        if(errorString.length<17){
+            kUserDefaultsRemove(ERRORTIMES);
+        }else{
+            NSString *d = [errorString substringToIndex:16];
+            NSString *t = [errorString substringFromIndex:17];
+            NSString *str = [LPTools dateTimeDifferenceWithStartTime:d endTime:string];
+            self.errorTimes = [t integerValue];
+            if ([t integerValue] >= 3 && [str integerValue] < 10) {
+                GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"提现密码错误次数过多，请10分钟后再试" message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"确定"] buttonsColor:@[[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
+                }];
+                [alert show];
+                return;
+            }else{
+                kUserDefaultsRemove(ERRORTIMES);
+ 
+            }
+        }
+        
+    }
+    
+    
+    
     NSString *passwordmd5 = [self.textField.text md5];
     NSString *newpasswordmd5 = [[NSString stringWithFormat:@"%@lanpin123.com",passwordmd5] md5];
     
@@ -166,28 +197,19 @@ static NSString *ERRORTIMES = @"ERRORTIMES";
         NSLog(@"%@",responseObject);
         if (isSuccess) {
             if (responseObject[@"code"]) {
-                if ([responseObject[@"code"] integerValue] == 0) {
-//                    if (self.times == 2) {
+                if ([responseObject[@"code"] integerValue] == 0 && [responseObject[@"data"] integerValue] == 1) {
                         self.oldPass = newpasswordmd5;
-//                        [self.view showLoadingMeg:@"修改成功" time:MESSAGE_SHOW_TIME];
-//                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//                            [self.navigationController popViewControllerAnimated:YES];
-//                        });
-//                    }else{
+ 
                         self.times += 1;
                         self.phoneCodeButton.hidden = YES;
                         for (UILabel *label in self.labelArray) {
                             label.text = @"";
                         }
                         self.textField.text = @"";
-//                        if (self.times == 1) {
-                            self.msgLabel.text = @"请输入新的提现密码";
-//                        }else{
-//                            self.msgLabel.text = @"请再次输入新的提现密码";
-//                            self.completeButton.hidden = NO;
-//                        }
-//                    }
+                        self.msgLabel.text = @"请输入新的提现密码";
+
                 }else{
+                    [self.textField resignFirstResponder];
                     self.textField.text = @"";
                     for (UILabel *label in self.labelArray) {
                         label.text = @"";
@@ -200,22 +222,46 @@ static NSString *ERRORTIMES = @"ERRORTIMES";
                     if (kUserDefaultsValue(ERRORTIMES)) {
                         NSString *errorString = kUserDefaultsValue(ERRORTIMES);
                         NSString *d = [errorString substringToIndex:16];
-                        NSString *str = [self dateTimeDifferenceWithStartTime:d endTime:string];
+                        NSString *str = [LPTools dateTimeDifferenceWithStartTime:d endTime:string];
                         NSString *t = [errorString substringFromIndex:17];
                         self.errorTimes = [t integerValue];
                         if ([t integerValue] >= 3 && [str integerValue] < 10) {
-                            GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"提现密码错误次数过多，请十分钟后再试" message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"确定"] buttonsColor:@[[UIColor whiteColor]] buttonsBackgroundColors:@[[UIColor baseColor]] buttonClick:^(NSInteger buttonIndex) {
+                            GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"提现密码错误次数过多，请10分钟后再试" message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"确定"] buttonsColor:@[[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
                                 [self.navigationController popViewControllerAnimated:YES];
                             }];
                             [alert show];
                         }else{
-                            [self.view showLoadingMeg:[NSString stringWithFormat:@"密码错误，剩余%ld次机会",2-self.errorTimes] time:MESSAGE_SHOW_TIME];
+ 
+                            GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:[NSString stringWithFormat:@"密码错误，剩余%ld次机会",2-self.errorTimes]
+                                                                                 message:nil
+                                                                           textAlignment:NSTextAlignmentCenter
+                                                                            buttonTitles:@[@"确定"]
+                                                                            buttonsColor:@[[UIColor baseColor]]
+                                                                 buttonsBackgroundColors:@[[UIColor whiteColor]]
+                                                                             buttonClick:^(NSInteger buttonIndex) {
+                                                                                 [self.textField becomeFirstResponder];
+                            }];
+                            [alert show];
+                            
                             self.errorTimes += 1;
                             NSString *str = [NSString stringWithFormat:@"%@-%ld",string,self.errorTimes];
                             kUserDefaultsSave(str, ERRORTIMES);
                         }
                     }else{
-                        [self.view showLoadingMeg:[NSString stringWithFormat:@"密码错误，剩余%ld次机会",2-self.errorTimes] time:MESSAGE_SHOW_TIME];
+                        if (self.errorTimes >2) {
+                            self.errorTimes = 0;
+                        }
+                        GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:[NSString stringWithFormat:@"密码错误，剩余%ld次机会",2-self.errorTimes]
+                                                                             message:nil
+                                                                       textAlignment:NSTextAlignmentCenter
+                                                                        buttonTitles:@[@"确定"]
+                                                                        buttonsColor:@[[UIColor baseColor]]
+                                                             buttonsBackgroundColors:@[[UIColor whiteColor]]
+                                                                         buttonClick:^(NSInteger buttonIndex) {
+                                                                             [self.textField becomeFirstResponder];
+                                                                         }];
+                        [alert show];
+
                         self.errorTimes += 1;
                         NSString *str = [NSString stringWithFormat:@"%@-%ld",string,self.errorTimes];
                         kUserDefaultsSave(str, ERRORTIMES);
@@ -244,7 +290,7 @@ static NSString *ERRORTIMES = @"ERRORTIMES";
         NSLog(@"%@",responseObject);
         if (isSuccess) {
             if (responseObject[@"code"]) {
-                if ([responseObject[@"code"] integerValue] == 0) {
+                if ([responseObject[@"code"] integerValue] == 0 && [responseObject[@"data"] integerValue] == 1) {
 //                    if (self.times == 2) {
                         [self.view showLoadingMeg:@"修改成功" time:MESSAGE_SHOW_TIME];
 //                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -266,6 +312,8 @@ static NSString *ERRORTIMES = @"ERRORTIMES";
 //                        }
 //                    }
                 }else{
+                    [self.textField resignFirstResponder];
+
                     self.textField.text = @"";
                     for (UILabel *label in self.labelArray) {
                         label.text = @"";
@@ -278,11 +326,11 @@ static NSString *ERRORTIMES = @"ERRORTIMES";
                     if (kUserDefaultsValue(ERRORTIMES)) {
                         NSString *errorString = kUserDefaultsValue(ERRORTIMES);
                         NSString *d = [errorString substringToIndex:16];
-                        NSString *str = [self dateTimeDifferenceWithStartTime:d endTime:string];
+                        NSString *str = [LPTools dateTimeDifferenceWithStartTime:d endTime:string];
                         NSString *t = [errorString substringFromIndex:17];
                         self.errorTimes = [t integerValue];
                         if ([t integerValue] >= 3&& [str integerValue] < 10) {
-                            GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"提现密码错误次数过多，请十分钟后再试" message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"确定"] buttonsColor:@[[UIColor whiteColor]] buttonsBackgroundColors:@[[UIColor baseColor]] buttonClick:^(NSInteger buttonIndex) {
+                            GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"提现密码错误次数过多，请10分钟后再试" message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"确定"] buttonsColor:@[[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
                                 [self.navigationController popViewControllerAnimated:YES];
                             }];
                             [alert show];
@@ -307,19 +355,5 @@ static NSString *ERRORTIMES = @"ERRORTIMES";
     }];
 }
 
-- (NSString *)dateTimeDifferenceWithStartTime:(NSString *)startTime endTime:(NSString *)endTime{
-    
-    NSDateFormatter *date = [[NSDateFormatter alloc]init];
-    [date setDateFormat:@"yyyy-MM-dd HH:mm"];
-    NSDate *startD =[date dateFromString:startTime];
-    NSDate *endD = [date dateFromString:endTime];
-    NSTimeInterval start = [startD timeIntervalSince1970]*1;
-    NSTimeInterval end = [endD timeIntervalSince1970]*1;
-    NSTimeInterval value = end - start;
-    int minute = (int)value /60%60;
-    //    int house = (int)value / (24 * 3600)%3600;
-    //    int sum = house * 60 + minute + 1;
-    NSString *str = [NSString stringWithFormat:@"%d",minute];
-    return str;
-}
+
 @end

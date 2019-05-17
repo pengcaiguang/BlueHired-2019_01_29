@@ -13,7 +13,7 @@
 #import "LPSalarycCardBindPhoneVC.h"
 #import "LPSalarycCardChangePasswordVC.h"
 #import "AddressPickerView.h"
-static NSString *ERROT = @"ERROR";
+//static NSString *ERROT = @"ERROR";
 
 static  NSString *RSAPublickKey = @"MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDvh1MAVToAiuEVOFq9mo3IOJxN5aekgto1kyOh07qQ+1Wc+Uxk1wX2t6+HCA31ojcgaR/dZz/kQ5aZvzlB8odYHJXRtIcOAVQe/FKx828XFTzC8gp1zGh7vTzBCW3Ieuq+WRiq9cSzEZlNw9RcU38st9q9iBT8PhK0AkXE2hLbKQIDAQAB";
 static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAAoGBAO+HUwBVOgCK4RU4Wr2ajcg4nE3lp6SC2jWTI6HTupD7VZz5TGTXBfa3r4cIDfWiNyBpH91nP+RDlpm/OUHyh1gcldG0hw4BVB78UrHzbxcVPMLyCnXMaHu9PMEJbch66r5ZGKr1xLMRmU3D1FxTfyy32r2IFPw+ErQCRcTaEtspAgMBAAECgYBSczN39t5LV4LZChf6Ehxh4lKzYa0OLNit/mMSjk43H7y9lvbb80QjQ+FQys37UoZFSspkLOlKSpWpgLBV6gT5/f5TXnmmIiouXXvgx4YEzlXgm52RvocSCvxL81WCAp4qTrp+whPfIjQ4RhfAT6N3t8ptP9rLgr0CNNHJ5EfGgQJBAP2Qkq7RjTxSssjTLaQCjj7FqEYq1f5l+huq6HYGepKU+BqYYLksycrSngp0y/9ufz0koKPgv1/phX73BmFWyhECQQDx1D3Gui7ODsX02rH4WlcEE5gSoLq7g74U1swbx2JVI0ybHVRozFNJ8C5DKSJT3QddNHMtt02iVu0a2V/uM6eZAkEAhvmce16k9gV3khuH4hRSL+v7hU5sFz2lg3DYyWrteHXAFDgk1K2YxVSUODCwHsptBNkogdOzS5T9MPbB+LLAYQJBAKOAknwIaZjcGC9ipa16txaEgO8nSNl7S0sfp0So2+0gPq0peWaZrz5wa3bxGsqEyHPWAIHKS20VRJ5AlkGhHxECQQDr18OZQkk0LDBZugahV6ejb+JIZdqA2cEQPZFzhA3csXgqkwOdNmdp4sPR1RBuvlVjjOE7tCiFLup/8TvRJDdr";
@@ -135,23 +135,23 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
         dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm";
         NSString *string = [dateFormatter stringFromDate:[NSDate date]];
         
-        if (kUserDefaultsValue(ERROT)) {
-            NSString *errorString = kUserDefaultsValue(ERROT);
+        if (kUserDefaultsValue(ERRORTIMES)) {
+            NSString *errorString = kUserDefaultsValue(ERRORTIMES);
             if(errorString.length<17){
-                kUserDefaultsRemove(ERROT);
+                kUserDefaultsRemove(ERRORTIMES);
             }else{
                 NSString *d = [errorString substringToIndex:16];
                 NSString *t = [errorString substringFromIndex:17];
-                NSString *str = [self dateTimeDifferenceWithStartTime:d endTime:string];
+                NSString *str = [LPTools dateTimeDifferenceWithStartTime:d endTime:string];
                 self.errorTimes = [t integerValue];
                 if ([t integerValue] >= 3 && [str integerValue] < 10) {
-                    GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"提现密码错误次数过多，请十分钟后再试" message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"确定"] buttonsColor:@[[UIColor whiteColor]] buttonsBackgroundColors:@[[UIColor baseColor]] buttonClick:^(NSInteger buttonIndex) {
+                    GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"提现密码错误次数过多，请10分钟后再试" message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"确定"] buttonsColor:@[[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
                     }];
                     [alert show];
                     return;
                 }else{
                     self.errorTimes = 0;
-                    kUserDefaultsRemove(ERROT);
+                    kUserDefaultsRemove(ERRORTIMES);
                 }
             }
             
@@ -412,7 +412,11 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
     [NetApiManager requestSelectBindbankcardWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            self.model = [LPSelectBindbankcardModel mj_objectWithKeyValues:responseObject];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.model = [LPSelectBindbankcardModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -453,35 +457,35 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
     [NetApiManager requestBindunbindBankcardWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            if (responseObject[@"data"]) {
-                if (responseObject[@"data"][@"res_code"]) {
-                    if ([responseObject[@"data"][@"res_code"] integerValue] == 0) {
-                        if (responseObject[@"data"][@"res_msg"]) {
-                            [self.view showLoadingMeg:responseObject[@"data"][@"res_msg"] time:2];
-                            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//                                [self.navigationController popViewControllerAnimated:YES];
-                                self.SucceedView.hidden = NO;
-                            });
-                            return ;
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if ([responseObject[@"data"] isKindOfClass:[NSDictionary class]]) {
+                    if (responseObject[@"data"][@"res_code"]) {
+                        if ([responseObject[@"data"][@"res_code"] integerValue] == 0) {
+                            if (responseObject[@"data"][@"res_msg"]) {
+                                [self.view showLoadingMeg:responseObject[@"data"][@"res_msg"] time:2];
+                                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                                    //                                [self.navigationController popViewControllerAnimated:YES];
+                                    self.SucceedView.hidden = NO;
+                                });
+                                return ;
+                            }
                         }
                     }
+                    if (responseObject[@"data"][@"res_error_num"]) {
+                        GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:[NSString stringWithFormat:@"%@,剩余%@次机会",responseObject[@"data"][@"res_msg"],responseObject[@"data"][@"res_error_num"]] message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"确定"] buttonsColor:@[[UIColor whiteColor]] buttonsBackgroundColors:@[[UIColor baseColor]] buttonClick:^(NSInteger buttonIndex) {
+                        }];
+                        [alert show];
+                    }else{
+                        GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:responseObject[@"data"][@"res_msg"] message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"确定"] buttonsColor:@[[UIColor whiteColor]] buttonsBackgroundColors:@[[UIColor baseColor]] buttonClick:^(NSInteger buttonIndex) {
+                            [self.navigationController popViewControllerAnimated:YES];
+                        }];
+                        [alert show];
+                    }
                 }
-                if (responseObject[@"data"][@"res_error_num"]) {
-                    GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:[NSString stringWithFormat:@"%@,剩余%@次机会",responseObject[@"data"][@"res_msg"],responseObject[@"data"][@"res_error_num"]] message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"确定"] buttonsColor:@[[UIColor whiteColor]] buttonsBackgroundColors:@[[UIColor baseColor]] buttonClick:^(NSInteger buttonIndex) {
-                    }];
-                    [alert show];
-                }else{
-                    GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:responseObject[@"data"][@"res_msg"] message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"确定"] buttonsColor:@[[UIColor whiteColor]] buttonsBackgroundColors:@[[UIColor baseColor]] buttonClick:^(NSInteger buttonIndex) {
-                        [self.navigationController popViewControllerAnimated:YES];
-                    }];
-                    [alert show];
-                }
-                
-
-                
-         
-//                    [self.view showLoadingMeg:[NSString stringWithFormat:@"%@,剩余%@次机会",responseObject[@"data"][@"res_msg"],responseObject[@"data"][@"res_error_num"]?responseObject[@"data"][@"res_error_num"]:@"0"] time:2];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
+
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -530,7 +534,7 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
         NSLog(@"%@",responseObject);
         if (isSuccess) {
             if (responseObject[@"code"]) {
-                if ([responseObject[@"code"] integerValue] == 0) {
+                if ([responseObject[@"code"] integerValue] == 0 && [responseObject[@"data"] integerValue] == 1) {
                     self.deleteCardButton.hidden = NO;
                     self.deletePhoneButton.hidden = NO;
                     self.cardTextField.enabled = YES;
@@ -542,21 +546,21 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
                     dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm";
                     NSString *string = [dateFormatter stringFromDate:[NSDate date]];
                     
-                    if (kUserDefaultsValue(ERROT)) {
-                        NSString *errorString = kUserDefaultsValue(ERROT);
+                    if (kUserDefaultsValue(ERRORTIMES)) {
+                        NSString *errorString = kUserDefaultsValue(ERRORTIMES);
                         NSString *d = [errorString substringToIndex:16];
 //                        if ([d isEqualToString:string]) {
                             NSString *t = [errorString substringFromIndex:17];
-                            NSString *str = [self dateTimeDifferenceWithStartTime:d endTime:string];
+                            NSString *str = [LPTools dateTimeDifferenceWithStartTime:d endTime:string];
                             self.errorTimes = [t integerValue];
                             if ([t integerValue] >= 3&& [str integerValue] < 10) {
-                                GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"提现密码错误次数过多，请十分钟后再试" message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"确定"] buttonsColor:@[[UIColor whiteColor]] buttonsBackgroundColors:@[[UIColor baseColor]] buttonClick:^(NSInteger buttonIndex) {
+                                GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"提现密码错误次数过多，请10分钟后再试" message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"确定"] buttonsColor:@[[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
                                 }];
                                 [alert show];
                             }else{
                                 NSString *s = [NSString stringWithFormat:@"密码错误，剩余%ld次机会",2-self.errorTimes];
-                                GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:s message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"重试",@"忘记密码"] buttonsColor:@[[UIColor lightGrayColor],[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor],[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
-                                    if (buttonIndex == 1) {
+                                GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:s message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"忘记密码",@"重新输入"] buttonsColor:@[[UIColor colorWithHexString:@"#999999"],[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor],[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
+                                    if (buttonIndex == 0) {
                                         LPSalarycCardChangePasswordVC *vc = [[LPSalarycCardChangePasswordVC alloc]init];
                                         [self.navigationController pushViewController:vc animated:YES];
                                     }
@@ -564,7 +568,7 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
                                 [alert show];
                                 self.errorTimes += 1;
                                 NSString *str = [NSString stringWithFormat:@"%@-%ld",string,self.errorTimes];
-                                kUserDefaultsSave(str, ERROT);
+                                kUserDefaultsSave(str, ERRORTIMES);
                             }
 //                        }else{
 //                            NSString *s = [NSString stringWithFormat:@"密码错误，剩余%ld次机会",2-self.errorTimes];
@@ -581,8 +585,14 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
 //                        }
                     }else{
                         NSString *s = [NSString stringWithFormat:@"密码错误，剩余%ld次机会",2-self.errorTimes];
-                        GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:s message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"重试",@"忘记密码"] buttonsColor:@[[UIColor lightGrayColor],[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor],[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
-                            if (buttonIndex == 1) {
+                        GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:s
+                                                                             message:nil
+                                                                       textAlignment:NSTextAlignmentCenter
+                                                                        buttonTitles:@[@"忘记密码",@"重新输入"]
+                                                                        buttonsColor:@[[UIColor colorWithHexString:@"#999999"],[UIColor baseColor]]
+                                                             buttonsBackgroundColors:@[[UIColor whiteColor],[UIColor whiteColor]]
+                                                                         buttonClick:^(NSInteger buttonIndex) {
+                            if (buttonIndex == 0) {
                                 LPSalarycCardChangePasswordVC *vc = [[LPSalarycCardChangePasswordVC alloc]init];
                                 [self.navigationController pushViewController:vc animated:YES];
                             }
@@ -590,7 +600,7 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
                         [alert show];
                         self.errorTimes += 1;
                         NSString *str = [NSString stringWithFormat:@"%@-%ld",string,self.errorTimes];
-                        kUserDefaultsSave(str, ERROT);
+                        kUserDefaultsSave(str, ERRORTIMES);
                     }
                     //                    kUserDefaultsRemove(ERRORTIMES);
                 }
@@ -620,20 +630,5 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
 }
 
 
-- (NSString *)dateTimeDifferenceWithStartTime:(NSString *)startTime endTime:(NSString *)endTime{
-    
-    NSDateFormatter *date = [[NSDateFormatter alloc]init];
-    [date setDateFormat:@"yyyy-MM-dd HH:mm"];
-    NSDate *startD =[date dateFromString:startTime];
-    NSDate *endD = [date dateFromString:endTime];
-    NSTimeInterval start = [startD timeIntervalSince1970]*1;
-    NSTimeInterval end = [endD timeIntervalSince1970]*1;
-    NSTimeInterval value = end - start;
-    int minute = (int)value /60%60;
-    //    int house = (int)value / (24 * 3600)%3600;
-    //    int sum = house * 60 + minute + 1;
-    NSString *str = [NSString stringWithFormat:@"%d",minute];
-    return str;
-}
 
 @end

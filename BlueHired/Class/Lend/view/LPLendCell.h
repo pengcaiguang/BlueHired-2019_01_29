@@ -27,6 +27,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (weak, nonatomic) IBOutlet UILabel *Title3;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *LayoutConstraint_TimeR;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *LayoutConstraint_Timew;
 
 @property (weak, nonatomic) IBOutlet UIButton *bottomButton;
 @property (nonatomic,copy) LPAddRecordCellDicBlock Block;

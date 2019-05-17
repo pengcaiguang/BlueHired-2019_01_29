@@ -37,14 +37,12 @@
         self.titleBgView.backgroundColor = [UIColor colorWithHexString:@"#939393"];
         [self.selectButton setTitle:@"删除" forState:UIControlStateNormal];
         self.selectButton.backgroundColor = [UIColor colorWithHexString:@"#FF6666"];
-    }
-    else if ([model.status integerValue] == 4){//3。招满
+    }else if ([model.status integerValue] == 4){//3。招满
         self.statusLabel.text = @"入职状态：放弃入职";
         self.titleBgView.backgroundColor = [UIColor colorWithHexString:@"#939393"];
         [self.selectButton setTitle:@"删除" forState:UIControlStateNormal];
         self.selectButton.backgroundColor = [UIColor colorWithHexString:@"#FF6666"];
-    }
-    else if ([model.status integerValue] == 5){//3。招满
+    }else if ([model.status integerValue] == 5){//3。招满
         self.statusLabel.text = @"入职状态：入职成功";
         self.titleBgView.backgroundColor = [UIColor colorWithHexString:@"#939393"];
         [self.selectButton setTitle:@"删除" forState:UIControlStateNormal];

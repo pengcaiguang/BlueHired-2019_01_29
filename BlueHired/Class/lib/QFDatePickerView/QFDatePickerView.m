@@ -25,6 +25,11 @@
     BOOL onlySelectYear;
     
     UIView *superView;
+    
+    NSDate *_CurrentDate;
+    NSDate *_minDate;
+    NSDate *_maxDate;
+
 }
 
 
@@ -35,14 +40,20 @@
 #pragma mark - initDatePickerView
 /**
  初始化方法，只带年月的日期选择
- 
+ CurrentDate 默认时间
+ minDate 最小时间
+ maxDate 最大时间
  @param block 返回选中的日期
  @return QFDatePickerView对象
  */
-- (instancetype)initDatePackerWithResponse:(void (^)(NSString *))block{
+- (instancetype)initDatePackerWith:(NSDate *)CurrentDate minDate:(NSDate *)minDate maxDate:(NSDate *)maxDate Response:(void (^)(NSString *))block{
     if (self = [super init]) {
         self.frame = [UIScreen mainScreen].bounds;
     }
+    _CurrentDate = CurrentDate;
+    _minDate = minDate;
+    _maxDate = maxDate;
+    
     [self setViewInterface];
     if (block) {
         backBlock = block;
@@ -73,14 +84,19 @@
 
 /**
  初始化方法，只带年份的日期选择
- 
+ CurrentDate 默认时间
+ minDate 最小时间
+ maxDate 最大时间
  @param block 返回选中的年份
  @return QFDatePickerView对象
  */
-- (instancetype)initYearPickerViewWithResponse:(void(^)(NSString*))block {
+- (instancetype)initYearPickerViewWith:(NSDate *)CurrentDate minDate:(NSDate *)minDate maxDate:(NSDate *)maxDate Response:(void(^)(NSString*))block {
     if (self = [super init]) {
         self.frame = [UIScreen mainScreen].bounds;
     }
+    _CurrentDate = CurrentDate;
+    _minDate = minDate;
+    _maxDate = maxDate;
     [self setViewInterface];
     if (block) {
         backBlock = block;
@@ -146,11 +162,18 @@
     pickerView.dataSource = self;
     pickerView.backgroundColor = [UIColor colorWithRed:240.0/255 green:243.0/255 blue:250.0/255 alpha:1];
     
+    NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+    [formatter setDateFormat:@"yyyy"];//自定义时间格式
+    NSString *minDateStr = [formatter stringFromDate:_minDate];
+    
     //设置pickerView默认选中当前时间
-    [pickerView selectRow:[selectedYear integerValue] - 1970 inComponent:0 animated:YES];
-    if (!onlySelectYear) {
-        [pickerView selectRow:[selectecMonth integerValue] - 1 inComponent:1 animated:YES];
+    if ([selectedYear integerValue] - minDateStr.integerValue>=0) {
+        [pickerView selectRow:[selectedYear integerValue] - minDateStr.integerValue inComponent:0 animated:YES];
+        if (!onlySelectYear) {
+            [pickerView selectRow:[selectecMonth integerValue] - 1 inComponent:1 animated:YES];
+        }
     }
+
     
     [contentView addSubview:pickerView];
 }
@@ -161,7 +184,7 @@
     //获取当前时间 （时间格式支持自定义）
     NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
     [formatter setDateFormat:@"yyyy-MM"];//自定义时间格式
-    NSString *currentDateStr = [formatter stringFromDate:[NSDate date]];
+    NSString *currentDateStr = [formatter stringFromDate:_CurrentDate];
     //拆分年月成数组
     NSArray *dateArray = [currentDateStr componentsSeparatedByString:@"-"];
     if (dateArray.count == 2) {//年 月
@@ -174,8 +197,13 @@
 
 - (void)setYearArray {
     //初始化年数据源数组
+    NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+    [formatter setDateFormat:@"yyyy"];//自定义时间格式
+    NSString *maxDateStr = [formatter stringFromDate:_maxDate];
+    NSString *minDateStr = [formatter stringFromDate:_minDate];
+
     yearArray = [[NSMutableArray alloc]init];
-    for (NSInteger i = 1970; i <= currentYear+100 ; i++) {
+    for (NSInteger i = minDateStr.integerValue; i <= maxDateStr.integerValue ; i++) {
         NSString *yearStr = [NSString stringWithFormat:@"%ld年",(long)i];
         [yearArray addObject:yearStr];
     }
@@ -186,8 +214,15 @@
     //初始化月数据源数组
     monthArray = [[NSMutableArray alloc]init];
     
-    if ([[selectedYear substringWithRange:NSMakeRange(0, 4)] isEqualToString:[NSString stringWithFormat:@"%ld",(long)currentYear]]) {
-        for (NSInteger i = 1 ; i <= 12; i++) {
+    NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+    [formatter setDateFormat:@"yyyy"];//自定义时间格式
+    NSString *maxDateYear = [formatter stringFromDate:_maxDate];
+    [formatter setDateFormat:@"MM"];//自定义时间格式
+
+    NSString *maxDateMonth = [formatter stringFromDate:_maxDate];
+    
+    if ([[selectedYear substringWithRange:NSMakeRange(0, 4)] isEqualToString:[NSString stringWithFormat:@"%@",maxDateYear]]) {
+        for (NSInteger i = 1 ; i <= maxDateMonth.integerValue; i++) {
             NSString *monthStr = [NSString stringWithFormat:@"%02ld月",(long)i];
             [monthArray addObject:monthStr];
         }
@@ -292,7 +327,6 @@
                 selectecMonth = [NSString stringWithFormat:@"%02ld",(long)currentMonth];
             }
             [pickerView reloadComponent:1];
-            
         } else {
             selectecMonth = monthArray[row];
         }

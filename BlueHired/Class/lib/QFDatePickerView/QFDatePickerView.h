@@ -13,11 +13,13 @@
 
 /**
  初始化方法，只带年月的日期选择
-
+ CurrentDate 默认时间
+ minDate 最小时间
+ maxDate 最大时间
  @param block 返回选中的日期
  @return QFDatePickerView对象
  */
-- (instancetype)initDatePackerWithResponse:(void(^)(NSString*))block;
+- (instancetype)initDatePackerWith:(NSDate *)CurrentDate minDate:(NSDate *)minDate maxDate:(NSDate *)maxDate Response:(void(^)(NSString*))block;
 
 
 /**

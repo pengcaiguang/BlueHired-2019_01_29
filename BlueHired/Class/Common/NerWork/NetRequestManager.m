@@ -123,7 +123,7 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
                             kUserDefaultsSave(@"1", kLoginStatus);
                          }
                         if ([kUserDefaultsValue(LOGINID) integerValue]  != [kUserDefaultsValue(OLDLOGINID) integerValue]) {
-                            kUserDefaultsRemove(@"ERRORTIMES");
+                            kUserDefaultsRemove(ERRORTIMES);
                         }
                         
                         LPUserMaterialModel *userMaterialModel = [LPUserDefaults getObjectByFileName:USERINFO];

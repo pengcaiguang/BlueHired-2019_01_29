@@ -206,7 +206,7 @@ static NSString *LPBusinessReviewDetailSalaryCellID = @"LPBusinessReviewDetailSa
     
     if (model.type.integerValue == 1) {
        CGFloat ImageHeight = [self calculateImageHeight:model.commentUrl];
-        CGFloat DetailsHeight = [self calculateRowHeight:model.commentContent fontSize:15 Width:SCREEN_WIDTH - 26];
+        CGFloat DetailsHeight = [LPTools calculateRowHeight:model.commentContent fontSize:15 Width:SCREEN_WIDTH - 26];
         if (DetailsHeight>90) {
             return 118+ ImageHeight + (model.IsAllShow?DetailsHeight:90.0)+28;
         }else{
@@ -248,7 +248,11 @@ static NSString *LPBusinessReviewDetailSalaryCellID = @"LPBusinessReviewDetailSa
         [self.tableview.mj_header endRefreshing];
         [self.tableview.mj_footer endRefreshing];
         if (isSuccess) {
-            self.model = [LPMechanismcommentDetailModel mj_objectWithKeyValues:responseObject];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.model = [LPMechanismcommentDetailModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -275,8 +279,6 @@ static NSString *LPBusinessReviewDetailSalaryCellID = @"LPBusinessReviewDetailSa
                     wage.mechanismlistDataModel = self.mechanismlistDataModel;
                     [self.navigationController pushViewController:wage animated:YES];
                 }
-
-                
             }else{
                 [self.view showLoadingMeg:responseObject[@"msg"] ? responseObject[@"msg"] : @"连接错误" time:MESSAGE_SHOW_TIME];
             }
@@ -335,15 +337,5 @@ static NSString *LPBusinessReviewDetailSalaryCellID = @"LPBusinessReviewDetailSa
         return ceil(imageArray.count/3.0)*imgw + floor(imageArray.count/3)*5;
     }
 }
-- (CGFloat)calculateRowHeight:(NSString *)string fontSize:(NSInteger)fontSize Width:(CGFloat) W
-{
-    NSMutableParagraphStyle *paraStyle01 = [[NSMutableParagraphStyle alloc] init];
-    paraStyle01.lineBreakMode = NSLineBreakByCharWrapping;
-    NSDictionary *dic = @{NSFontAttributeName:[UIFont systemFontOfSize:fontSize],NSParagraphStyleAttributeName:paraStyle01};
-    /*计算高度要先指定宽度*/
-    CGRect rect = [string boundingRectWithSize:CGSizeMake(W, 0) options:NSStringDrawingUsesLineFragmentOrigin |
-                   NSStringDrawingUsesFontLeading attributes:dic context:nil];
-    return ceil(rect.size.height);
-    
-}
+
 @end

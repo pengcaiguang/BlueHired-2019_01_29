@@ -537,9 +537,9 @@
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
                 [self.view showLoadingMeg:@"密码重置成功" time:MESSAGE_SHOW_TIME];
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     [self.navigationController popViewControllerAnimated:YES];
-                });
+//                });
             }else{
                 [self.view showLoadingMeg:responseObject[@"msg"] ? responseObject[@"msg"] : @"重置失败" time:MESSAGE_SHOW_TIME];
             }

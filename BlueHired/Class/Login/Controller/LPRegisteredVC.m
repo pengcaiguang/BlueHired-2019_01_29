@@ -472,7 +472,7 @@
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
                 [self.view showLoadingMeg:@"注册成功" time:MESSAGE_SHOW_TIME];
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     [self.navigationController popViewControllerAnimated:YES];
                 });
             }else{

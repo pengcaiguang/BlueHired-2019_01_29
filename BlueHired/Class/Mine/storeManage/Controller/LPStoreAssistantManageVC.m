@@ -172,8 +172,13 @@ static NSString *LPTLendAuditCellID = @"LPStoreAssistantCell";
         [self.tableview.mj_footer endRefreshing];
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            self.model = [LPAssistantModel mj_objectWithKeyValues:responseObject];
-             [self.tableview reloadData];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.model = [LPAssistantModel mj_objectWithKeyValues:responseObject];
+                [self.tableview reloadData];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
+
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

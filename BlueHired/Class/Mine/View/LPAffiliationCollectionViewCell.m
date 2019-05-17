@@ -164,11 +164,15 @@ static NSString *LPTLendAuditCellID = @"LPAffiliationMenageCell";
     WEAK_SELF()
     [NetApiManager requestQuerylabourlist:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
+        [weakSelf.tableview.mj_header endRefreshing];
+        [weakSelf.tableview.mj_footer endRefreshing];
         if (isSuccess) {
-            weakSelf.model = [LPAffiliationModel mj_objectWithKeyValues:responseObject];
-            [weakSelf.tableview reloadData];
-            [weakSelf.tableview.mj_header endRefreshing];
-            [weakSelf.tableview.mj_footer endRefreshing];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                weakSelf.model = [LPAffiliationModel mj_objectWithKeyValues:responseObject];
+                [weakSelf.tableview reloadData];
+            }else{
+                [[UIWindow visibleViewController].view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [[UIWindow visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

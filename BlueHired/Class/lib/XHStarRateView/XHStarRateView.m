@@ -35,6 +35,15 @@ typedef void(^completeBlock)(CGFloat currentScore);
     }
     return self;
 }
+-(instancetype)initWithFrame:(CGRect)frame isTouch:(BOOL) Touch{
+    if (self = [super initWithFrame:frame]) {
+        _numberOfStars = 5;
+        _rateStyle = WholeStar;
+        _isTouch = Touch;
+        [self createStarView];
+    }
+    return self;
+}
 
 -(instancetype)initWithFrame:(CGRect)frame numberOfStars:(NSInteger)numberOfStars rateStyle:(RateStyle)rateStyle isAnination:(BOOL)isAnimation delegate:(id)delegate{
     if (self = [super initWithFrame:frame]) {
@@ -83,9 +92,12 @@ typedef void(^completeBlock)(CGFloat currentScore);
     [self addSubview:self.backgroundStarView];
     [self addSubview:self.foregroundStarView];
     
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userTapRateView:)];
-    tapGesture.numberOfTapsRequired = 1;
-    [self addGestureRecognizer:tapGesture];
+    if (!self.isTouch) {
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(userTapRateView:)];
+        tapGesture.numberOfTapsRequired = 1;
+        [self addGestureRecognizer:tapGesture];
+    }
+
 
 }
 
@@ -104,6 +116,7 @@ typedef void(^completeBlock)(CGFloat currentScore);
 }
 
 - (void)userTapRateView:(UITapGestureRecognizer *)gesture {
+ 
     CGPoint tapPoint = [gesture locationInView:self];
     CGFloat offset = tapPoint.x;
     CGFloat realStarScore = offset / (self.bounds.size.width / self.numberOfStars);

@@ -6,11 +6,15 @@
 //  Copyright © 2018年 lanpin. All rights reserved.
 //
 
+#import <UIKit/UIKit.h>
+
 #ifndef MacroDefine_h
 #define MacroDefine_h
 
 #define SCREEN_WIDTH ([UIScreen mainScreen].bounds.size.width)
 #define SCREEN_HEIGHT ([UIScreen mainScreen].bounds.size.height)
+#define FONT_SIZE(size) ([UIFont systemFontOfSize:FontSize(size)])
+#define LENGTH_SIZE(length) ((length)/375.0*SCREEN_WIDTH)
 
 #define WEAK_SELF()  __weak __typeof(self) weakSelf = self;
 
@@ -20,13 +24,13 @@
 //http://ceshi.lanpin123.com/lifetime/comment/get_comment_list?id=38&page=1&type=1
 //#define BaseRequestURL  @"http://192.168.0.152:8080/lifetime/"
 
-//#define BaseRequestURL  @"http://192.168.0.108:8080/lifetime/"
-//#define BaseRequestWeiXiURL  @"http://192.168.0.108:8080/"
-//#define BaseRequestCookie  @"192.168.0.108"
+#define BaseRequestURL  @"http://192.168.0.108:8080/lifetime/"
+#define BaseRequestWeiXiURL  @"http://192.168.0.108:8080/"
+#define BaseRequestCookie  @"192.168.0.108"
 
-#define BaseRequestURL  @"http://www.lanpin123.com/lifetime/"
-#define BaseRequestWeiXiURL  @"http://www.lanpin123.com/"
-#define BaseRequestCookie  @"www.lanpin123.com"
+//#define BaseRequestURL  @"http://www.lanpin123.com/lifetime/"
+//#define BaseRequestWeiXiURL  @"http://www.lanpin123.com/"
+//#define BaseRequestCookie  @"www.lanpin123.com"
 
 //#define BaseRequestURL  @"http://47.106.208.91:8180/lifetime/"
 //#define BaseRequestWeiXiURL  @"http://47.106.208.91/"
@@ -68,6 +72,10 @@
 #define USERIDENTIY  @"USERidentity"
 #define BOOK  @"Cashbook"
 #define WORKTYPE  @"WorkType"
+
+//提现秘密输入错误次数
+#define ERRORTIMES  @"ERRORTIMES"
+
 
 //登录状态
 #define kLoginStatus    @"LoginStatus"
@@ -152,6 +160,16 @@ __typeof__(value) __a = (value); \
 #define CurrentDeviceSn [[UIDevice currentDevice].identifierForVendor UUIDString]//手机序列号
 #define RemovernNil(alertMsg) [LPTools isNullToString:alertMsg]
 
-
+static inline CGFloat FontSize(CGFloat fontSize){
+    if (SCREEN_WIDTH==320) {
+        return fontSize-2;
+    }else if (SCREEN_WIDTH==375){
+        return fontSize;
+    }else{
+        return fontSize+2;
+    }
+}
 
 #endif /* MacroDefine_h */
+
+

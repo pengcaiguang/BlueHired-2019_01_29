@@ -336,7 +336,11 @@ static NSString *LPTypeWorkHourCellID = @"LPTypeWorkHourCell";
     [NetApiManager requestQueryGetMonthWageDetail:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-//            self.WageModel = [LPMonthWageModel mj_objectWithKeyValues:responseObject];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                
+             }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

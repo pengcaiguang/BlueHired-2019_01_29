@@ -190,15 +190,17 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
         [self.tableview.mj_header endRefreshing];
         [self.tableview.mj_footer endRefreshing];
         if (isSuccess) {
-            if (self.page ==1 ) {
-                [LPUserDefaults saveObject:responseObject byFileName:[NSString stringWithFormat:@"ESSAYLISTCACHE%@",self.labelListModelId]];
-                [LPUserDefaults saveObject:[NSDate date] byFileName:[NSString stringWithFormat: @"ESSAYLISTCACHEDATE%@",self.labelListModelId]];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if (self.page ==1 ) {
+                    [LPUserDefaults saveObject:responseObject byFileName:[NSString stringWithFormat:@"ESSAYLISTCACHE%@",self.labelListModelId]];
+                    [LPUserDefaults saveObject:[NSDate date] byFileName:[NSString stringWithFormat: @"ESSAYLISTCACHEDATE%@",self.labelListModelId]];
+                }
+                self.model = [LPEssaylistModel mj_objectWithKeyValues:responseObject];
                 
-                id CacheList = [LPUserDefaults getObjectByFileName:[NSString stringWithFormat:@"ESSAYLISTCACHE%@",self.labelListModelId]];                
+            }else{
+                [[UIWindow visibleViewController].view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
-            self.model = [LPEssaylistModel mj_objectWithKeyValues:responseObject];
-            
-            
+ 
         }else{
             [[UIWindow visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -217,12 +219,17 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
         [self.tableview.mj_header endRefreshing];
         [self.tableview.mj_footer endRefreshing];
         if (isSuccess) {
-            if (self.page == 1) {
-                [LPUserDefaults saveObject:responseObject byFileName:[NSString stringWithFormat:@"ESSAYCHOICELISTCACHE%@",self.labelListModelId]];
-                [LPUserDefaults saveObject:[NSDate date] byFileName:[NSString stringWithFormat: @"ESSAYCHOICELISTCACHEDATE%@",self.labelListModelId]];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if (self.page == 1) {
+                    [LPUserDefaults saveObject:responseObject byFileName:[NSString stringWithFormat:@"ESSAYCHOICELISTCACHE%@",self.labelListModelId]];
+                    [LPUserDefaults saveObject:[NSDate date] byFileName:[NSString stringWithFormat: @"ESSAYCHOICELISTCACHEDATE%@",self.labelListModelId]];
+                }
+                self.Choicemodel = [LPEssaylistModel mj_objectWithKeyValues:responseObject];
+                
+            }else{
+                [[UIWindow visibleViewController].view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
-            self.Choicemodel = [LPEssaylistModel mj_objectWithKeyValues:responseObject];
-            
+
         }else{
             [[UIWindow visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

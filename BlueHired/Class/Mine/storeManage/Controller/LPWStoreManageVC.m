@@ -47,27 +47,27 @@
     
     
      [self.view addSubview:self.tableview];
-    if (kUserDefaultsValue(USERDATA).integerValue == 1||
-        kUserDefaultsValue(USERDATA).integerValue == 2) {
-        [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
-            //        make.edges.equalTo(self.view);
-            make.top.mas_equalTo(240);
-            make.left.mas_equalTo(0);
-            make.right.mas_equalTo(0);
-            make.bottom.mas_equalTo(0);
-        }];
-        [self requestQueryshopkeeperinfo];
-
-    }else if (kUserDefaultsValue(USERDATA).integerValue == 6){
-        [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
-            //        make.edges.equalTo(self.view);
-            make.top.mas_equalTo(240-63);
-            make.left.mas_equalTo(0);
-            make.right.mas_equalTo(0);
-            make.bottom.mas_equalTo(0);
-        }];
-        [self requestQueryassistantshopkeeperinfo];
-    }
+//    if (kUserDefaultsValue(USERDATA).integerValue == 1||
+//        kUserDefaultsValue(USERDATA).integerValue == 2) {
+//        [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
+//            //        make.edges.equalTo(self.view);
+//            make.top.mas_equalTo(240);
+//            make.left.mas_equalTo(0);
+//            make.right.mas_equalTo(0);
+//            make.bottom.mas_equalTo(0);
+//        }];
+//        [self requestQueryshopkeeperinfo];
+//
+//    }else if (kUserDefaultsValue(USERDATA).integerValue == 6){
+//        [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
+//            //        make.edges.equalTo(self.view);
+//            make.top.mas_equalTo(240-63);
+//            make.left.mas_equalTo(0);
+//            make.right.mas_equalTo(0);
+//            make.bottom.mas_equalTo(0);
+//        }];
+//        [self requestQueryassistantshopkeeperinfo];
+//    }
 
     
     [self setCodeUI];
@@ -170,9 +170,9 @@
 
 #pragma mark - TableViewDelegate & Datasource
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    if (kUserDefaultsValue(USERDATA).integerValue == 6) {
-        return 3;
-    }
+//    if (kUserDefaultsValue(USERDATA).integerValue == 6) {
+//        return 3;
+//    }
     return 4;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -197,18 +197,18 @@
     cell.textLabel.textColor = [UIColor colorWithHexString:@"#3A3A3A"];
     cell.textLabel.font = [UIFont systemFontOfSize:16];
     
-    if (kUserDefaultsValue(USERDATA).integerValue == 6) {
-        if (indexPath.section == 0) {
-            cell.imageView.image = [UIImage imageNamed:@"Results"];
-            cell.textLabel.text = @"门店业绩";
-        }else if (indexPath.section == 1) {
-            cell.imageView.image = [UIImage imageNamed:@"StoreCode_img"];
-            cell.textLabel.text = @"门店二维码";
-        }else if (indexPath.section == 2) {
-            cell.imageView.image = [UIImage imageNamed:@"Workersset_img"];
-            cell.textLabel.text = @"劳务工管理";
-        }
-    }else{
+//    if (kUserDefaultsValue(USERDATA).integerValue == 6) {
+//        if (indexPath.section == 0) {
+//            cell.imageView.image = [UIImage imageNamed:@"Results"];
+//            cell.textLabel.text = @"门店业绩";
+//        }else if (indexPath.section == 1) {
+//            cell.imageView.image = [UIImage imageNamed:@"StoreCode_img"];
+//            cell.textLabel.text = @"门店二维码";
+//        }else if (indexPath.section == 2) {
+//            cell.imageView.image = [UIImage imageNamed:@"Workersset_img"];
+//            cell.textLabel.text = @"劳务工管理";
+//        }
+//    }else{
         if (indexPath.section == 0) {
             cell.imageView.image = [UIImage imageNamed:@"Paymentdetails_img"];
             cell.textLabel.text = @"门店收支明细";
@@ -222,7 +222,7 @@
             cell.imageView.image = [UIImage imageNamed:@"Workersset_img"];
             cell.textLabel.text = @"劳务工管理";
         }
-    }
+//    }
     
 
     
@@ -231,22 +231,22 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (kUserDefaultsValue(USERDATA).integerValue == 6) {
-        if (indexPath.section == 0) {
-            LPBonusDetailVC *vc = [[LPBonusDetailVC alloc] init];
-            LPAssistantDataModel *Assistantmodel = [[LPAssistantDataModel alloc] init];
-            Assistantmodel.userName = [LPTools isNullToString: _model.data.userName];
-            Assistantmodel.role = [LPTools isNullToString:_model.data.role];
-            Assistantmodel.certNo = [LPTools isNullToString:_model.data.userCardNumber];
-            vc.Assistantmodel = Assistantmodel;
-            [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
-        }else if (indexPath.section == 1) {
-            [self chooseMonth];
-        }else if (indexPath.section == 2) {
-            LPAffiliationMenageVC *vc = [[LPAffiliationMenageVC alloc] init];
-            [self.navigationController pushViewController:vc animated:YES];
-        }
-    }else{
+//    if (kUserDefaultsValue(USERDATA).integerValue == 6) {
+//        if (indexPath.section == 0) {
+//            LPBonusDetailVC *vc = [[LPBonusDetailVC alloc] init];
+//            LPAssistantDataModel *Assistantmodel = [[LPAssistantDataModel alloc] init];
+//            Assistantmodel.userName = [LPTools isNullToString: _model.data.userName];
+//            Assistantmodel.role = [LPTools isNullToString:_model.data.role];
+//            Assistantmodel.certNo = [LPTools isNullToString:_model.data.userCardNumber];
+//            vc.Assistantmodel = Assistantmodel;
+//            [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+//        }else if (indexPath.section == 1) {
+//            [self chooseMonth];
+//        }else if (indexPath.section == 2) {
+//            LPAffiliationMenageVC *vc = [[LPAffiliationMenageVC alloc] init];
+//            [self.navigationController pushViewController:vc animated:YES];
+//        }
+//    }else{
         if (indexPath.section == 0) {
             LPWStoreBalanceVC *vc = [[LPWStoreBalanceVC alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
@@ -260,7 +260,7 @@
             LPAffiliationMenageVC *vc = [[LPAffiliationMenageVC alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
         }
-    }
+//    }
 
 }
 #pragma mark lazy
@@ -332,12 +332,12 @@
     }
     _ShopNum.text = [NSString stringWithFormat:@"加盟编号:%@",[LPTools isNullToString:_model.data.shopNum]];
     
-    if (kUserDefaultsValue(USERDATA).integerValue == 6) {
-        _Time.text =[NSString stringWithFormat:@"入店时间:%@",[NSString convertStringToYYYMMDD:_model.data.time]];
-    }else if (kUserDefaultsValue(USERDATA).integerValue == 1 ||
-              kUserDefaultsValue(USERDATA).integerValue == 2){
-        _Time.text =[NSString stringWithFormat:@"注册时间:%@",[NSString convertStringToYYYMMDD:_model.data.time]];
-    }
+//    if (kUserDefaultsValue(USERDATA).integerValue == 6) {
+//        _Time.text =[NSString stringWithFormat:@"入店时间:%@",[NSString convertStringToYYYMMDD:_model.data.time]];
+//    }else if (kUserDefaultsValue(USERDATA).integerValue == 1 ||
+//              kUserDefaultsValue(USERDATA).integerValue == 2){
+//        _Time.text =[NSString stringWithFormat:@"注册时间:%@",[NSString convertStringToYYYMMDD:_model.data.time]];
+//    }
     
     _UserNum.text = [LPTools isNullToString:_model.data.shopUserNum];
     _LabourNum.text = [LPTools isNullToString:_model.data.shopLabourNum];
@@ -381,7 +381,12 @@
     [NetApiManager requestQueryshopkeeperinfo:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            self.model = [LPWStoreManageModel mj_objectWithKeyValues:responseObject];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.model = [LPWStoreManageModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
+            
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -393,7 +398,11 @@
     [NetApiManager requestQueryassistantshopkeeperinfo:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            self.model = [LPWStoreManageModel mj_objectWithKeyValues:responseObject];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.model = [LPWStoreManageModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

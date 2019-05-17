@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -37,7 +37,7 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mrs-Jp-odB">
-                        <rect key="frame" x="59" y="12" width="40" height="15"/>
+                        <rect key="frame" x="59" y="12" width="132" height="15"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="15" id="MRY-Q2-VBH"/>
                         </constraints>
@@ -45,10 +45,10 @@
                         <color key="textColor" red="0.11372549019607843" green="0.11372549019607843" blue="0.11372549019607843" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GzP-Oi-FGO">
-                        <rect key="frame" x="278.5" y="15.5" width="28.5" height="8"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2029/04/27 07:07:03" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GzP-Oi-FGO">
+                        <rect key="frame" x="195" y="13" width="112" height="13.5"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="8" id="3XF-bl-SEi"/>
+                            <constraint firstAttribute="width" constant="112" id="sWC-v3-k7D"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
                         <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -70,6 +70,7 @@
                     <constraint firstItem="2Yn-En-kad" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="13" id="HRY-mu-5se"/>
                     <constraint firstItem="KUa-l7-QE4" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="P56-Yo-gtI"/>
                     <constraint firstAttribute="bottom" secondItem="DQd-F9-zKU" secondAttribute="bottom" constant="12" id="TmY-US-A5p"/>
+                    <constraint firstItem="GzP-Oi-FGO" firstAttribute="leading" secondItem="Mrs-Jp-odB" secondAttribute="trailing" constant="4" id="VpB-su-7Qd"/>
                     <constraint firstAttribute="trailing" secondItem="DQd-F9-zKU" secondAttribute="trailing" constant="13" id="Vw8-Tf-aZT"/>
                     <constraint firstItem="Mrs-Jp-odB" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="WzZ-sR-wVh"/>
                     <constraint firstAttribute="trailing" secondItem="GzP-Oi-FGO" secondAttribute="trailing" constant="13" id="cZ7-kt-R1Q"/>

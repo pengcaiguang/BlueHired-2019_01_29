@@ -207,17 +207,21 @@ static NSString *TEXT = @"请输入审核拒绝的原因";
     [NetApiManager requestQueryUpdateLandMoneyList:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            if ([responseObject[@"data"] integerValue] == 1) {
-                
-                [self.view showLoadingMeg:@"发送成功" time:MESSAGE_SHOW_TIME];
-                self.model.status = @"2";
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    [self.navigationController popViewControllerAnimated:YES];
-                });
-                
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if ([responseObject[@"data"] integerValue] == 1) {
+                    [self.view showLoadingMeg:@"发送成功" time:MESSAGE_SHOW_TIME];
+                    self.model.status = @"2";
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        [self.navigationController popViewControllerAnimated:YES];
+                    });
+                }else{
+                    [self.view showLoadingMeg:@"操作失败" time:MESSAGE_SHOW_TIME];
+                }
             }else{
-                [self.view showLoadingMeg:@"操作失败" time:MESSAGE_SHOW_TIME];
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
+            
+
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -232,16 +236,21 @@ static NSString *TEXT = @"请输入审核拒绝的原因";
     [NetApiManager requestQueryUodateWorkOrderList:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            if ([responseObject[@"data"] integerValue] == 1) {
-                [self.view showLoadingMeg:@"发送成功" time:MESSAGE_SHOW_TIME];
-                if (self.BlockTL) {
-                    self.BlockTL(self.EntryModel);
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if ([responseObject[@"data"] integerValue] == 1) {
+                    [self.view showLoadingMeg:@"发送成功" time:MESSAGE_SHOW_TIME];
+                    if (self.BlockTL) {
+                        self.BlockTL(self.EntryModel);
+                    }
+                    [self.navigationController popViewControllerAnimated:YES];
+                    
+                }else{
+                    [[UIWindow visibleViewController].view showLoadingMeg:@"操作失败" time:MESSAGE_SHOW_TIME];
                 }
-                [self.navigationController popViewControllerAnimated:YES];
-                
             }else{
-                [[UIWindow visibleViewController].view showLoadingMeg:@"操作失败" time:MESSAGE_SHOW_TIME];
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
+            
         }else{
             [[UIWindow visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "LPWorkDetailModel.h"
+#import "XHStarRateView.h"
 
 @interface LPWorkDetailHeadCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIView *imageBgView;
@@ -19,15 +20,20 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *keyLabel_constraint_width;
 @property (weak, nonatomic) IBOutlet UIView *KeyView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *LayoutConstraint_KeyView;
+@property (weak, nonatomic) IBOutlet UIButton *reMoneyLabel;
+@property (weak, nonatomic) IBOutlet UIButton *lendTypeLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *workTypeNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *workName;
 @property (weak, nonatomic) IBOutlet UILabel *applyNumberLabel;
 
 @property (weak, nonatomic) IBOutlet UIView *BackView;
 @property (weak, nonatomic) IBOutlet UILabel *BackMoneylabel;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *LayouConstraint_BackView_Height;
+@property (strong, nonatomic) IBOutlet UIView *mechanismScoreView;
 
 @property(nonatomic,strong) LPWorkDetailModel *model;
+@property(nonatomic,strong) XHStarRateView *starRateView;
 
 @end

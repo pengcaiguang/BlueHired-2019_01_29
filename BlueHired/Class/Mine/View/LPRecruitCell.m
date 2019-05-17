@@ -229,9 +229,15 @@
     [NetApiManager requestQueryUpdateWorkList:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-//            self.model = [LPWork_ListModel mj_objectWithKeyValues:responseObject];
-//            [self.tableview reloadData];
-            [[UIWindow visibleViewController].view showLoadingMeg:@"提交成功" time:MESSAGE_SHOW_TIME];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if ([responseObject[@"data"] integerValue] == 1) {
+                    [[UIWindow visibleViewController].view showLoadingMeg:@"提交成功" time:MESSAGE_SHOW_TIME];
+                }else{
+                    [[UIWindow visibleViewController].view showLoadingMeg:@"提交失败,请稍后再试" time:MESSAGE_SHOW_TIME];
+                }
+            }else{
+                [[UIWindow visibleViewController].view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
 
         }else{
             [[UIWindow visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];

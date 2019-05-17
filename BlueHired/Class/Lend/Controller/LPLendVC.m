@@ -166,6 +166,22 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
     return 1;
 }
 
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (tableView == self.tableview) {
+
+        CGFloat str1H = [LPTools calculateRowHeight:@"借支金额%@元，我们将在1-3个工作日内完成审核" fontSize:13.0 Width:SCREEN_WIDTH- 66.0];
+        
+        CGFloat remarksH = [LPTools calculateRowHeight:self.model.data.remarks fontSize:13.0 Width:SCREEN_WIDTH- 66.0];
+        
+        CGFloat timeW = [LPTools widthForString:[self.model.data.set_time stringValue] fontSize:11.0 andHeight:20.0];
+        
+        CGFloat str2H = [LPTools calculateRowHeight:self.model.data.status.integerValue == 2?@"失败":@"审核通过，系统已转账，请注意查收" fontSize:17.0 Width:SCREEN_WIDTH-timeW-13];
+        return 364+str1H+remarksH+str2H;
+        
+    }
+    return 60;
+}
+
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     if (tableView == self.CompanyTableView) {
@@ -317,10 +333,10 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
         [self.view showLoadingMeg:@"输入的金额应不大于借支额度" time:MESSAGE_SHOW_TIME];
         return;
     }
-    if (self.PhoneTextField.text.length <= 0 || ![NSString isMobilePhoneNumber:self.PhoneTextField.text]) {
-        [self.view showLoadingMeg:@"请输入正确的手机号" time:MESSAGE_SHOW_TIME];
-        return;
-    }
+//    if (self.PhoneTextField.text.length <= 0 || ![NSString isMobilePhoneNumber:self.PhoneTextField.text]) {
+//        [self.view showLoadingMeg:@"请输入正确的手机号" time:MESSAGE_SHOW_TIME];
+//        return;
+//    }
     if (self.CompanyTextField.text.length <= 0) {
         [self.view showLoadingMeg:@"请选择企业！" time:MESSAGE_SHOW_TIME];
         return;
@@ -492,23 +508,28 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
     [NetApiManager requestQueryIsLendWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            if (responseObject[@"data"]) {
-                if (responseObject[@"data"][@"res_code"]) {
-                    if ([responseObject[@"data"][@"res_code"] integerValue] != 0) {
-                        GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:responseObject[@"data"][@"res_msg"] message:nil backDismiss:NO textAlignment:0 buttonTitles:@[@"确定"] buttonsColor:@[[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
-                            [self.navigationController popViewControllerAnimated:YES];
-                        }];
-                        [alert show];
-                    }
-                    if ([responseObject[@"data"][@"res_code"] integerValue] == 0) {
-                        if (responseObject[@"data"][@"lendMoney"]) {
-                            self.lendMoneyLabel.text = [NSString stringWithFormat:@"借支额度：%@",responseObject[@"data"][@"lendMoney"]];
-                            self.lendMoney = responseObject[@"data"][@"lendMoney"];
-                            [self requestQueryCheckrecord];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if ([responseObject[@"data"] isKindOfClass:[NSDictionary class]]) {
+                    if (responseObject[@"data"][@"res_code"]) {
+                        if ([responseObject[@"data"][@"res_code"] integerValue] != 0) {
+                            GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:responseObject[@"data"][@"res_msg"] message:nil backDismiss:NO textAlignment:0 buttonTitles:@[@"确定"] buttonsColor:@[[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
+                                [self.navigationController popViewControllerAnimated:YES];
+                            }];
+                            [alert show];
+                        }
+                        if ([responseObject[@"data"][@"res_code"] integerValue] == 0) {
+                            if (responseObject[@"data"][@"lendMoney"]) {
+                                self.lendMoneyLabel.text = [NSString stringWithFormat:@"借支额度：%@",responseObject[@"data"][@"lendMoney"]];
+                                self.lendMoney = responseObject[@"data"][@"lendMoney"];
+                                [self requestQueryCheckrecord];
+                            }
                         }
                     }
                 }
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
+
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -518,7 +539,12 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
     [NetApiManager requestQueryCheckrecordWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            self.model = [LPQueryCheckrecordModel mj_objectWithKeyValues:responseObject];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.model = [LPQueryCheckrecordModel mj_objectWithKeyValues:responseObject];
+
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -530,11 +556,18 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
     [NetApiManager requestSaveOrUpdateWithParam:url withParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            if ([responseObject[@"data"] integerValue]== 1)
-            {
-                [self.view showLoadingMeg:@"发送成功" time:MESSAGE_SHOW_TIME];
-                [self requestQueryIsLend];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if ([responseObject[@"data"] integerValue]== 1)
+                {
+                    [self.view showLoadingMeg:@"发送成功" time:MESSAGE_SHOW_TIME];
+                    [self requestQueryIsLend];
+                }else{
+                    [self.view showLoadingMeg:@"发送失败" time:MESSAGE_SHOW_TIME];
+                }
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
+
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -579,7 +612,14 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
                 if ([responseObject[@"data"][@"res_code"] integerValue] != 0) {
-                    GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:responseObject[@"data"][@"res_msg"] message:nil backDismiss:NO textAlignment:0 buttonTitles:@[@"确定"] buttonsColor:@[[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
+                    GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:responseObject[@"data"][@"res_msg"]
+                                                                         message:nil
+                                                                     backDismiss:NO
+                                                                   textAlignment:0
+                                                                    buttonTitles:@[@"确定"]
+                                                                    buttonsColor:@[[UIColor baseColor]]
+                                                         buttonsBackgroundColors:@[[UIColor whiteColor]]
+                                                                     buttonClick:^(NSInteger buttonIndex) {
                         [self.navigationController popViewControllerAnimated:YES];
                     }];
                     [alert show];
@@ -595,7 +635,7 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
                    
                 }
             }else{
-                [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
          }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
@@ -611,7 +651,11 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
         [self.CompanyTableView.mj_header endRefreshing];
         [self.CompanyTableView.mj_footer endRefreshing];
         if (isSuccess) {
-              self.MechanismModel = [LPLendMechanismModel mj_objectWithKeyValues:responseObject];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.MechanismModel = [LPLendMechanismModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -670,7 +714,11 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
     [NetApiManager requestQueryGetUserProdlemList:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            self.Pmodel = [LPUserProblemModel mj_objectWithKeyValues:responseObject];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.Pmodel = [LPUserProblemModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -686,7 +734,7 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
         _tableview.dataSource = self;
         _tableview.tableFooterView = [[UIView alloc]init];
         _tableview.rowHeight = UITableViewAutomaticDimension;
-        _tableview.estimatedRowHeight = 44;
+        _tableview.estimatedRowHeight = 0;
         _tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableview.separatorColor = [UIColor colorWithHexString:@"#F1F1F1"];
         _tableview.backgroundColor = [UIColor whiteColor];
@@ -703,7 +751,7 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
         _CompanyTableView.dataSource = self;
         _CompanyTableView.tableFooterView = [[UIView alloc]init];
         _CompanyTableView.rowHeight = UITableViewAutomaticDimension;
-        _CompanyTableView.estimatedRowHeight = 100;
+        _CompanyTableView.estimatedRowHeight = 0;
         _CompanyTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         _CompanyTableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
         [_CompanyTableView registerNib:[UINib nibWithNibName:LPMapLocCellID bundle:nil] forCellReuseIdentifier:LPMapLocCellID];

@@ -123,39 +123,44 @@ static NSString *LPTLendAuditCellID = @"LPLendDetailsCell";
     [NetApiManager requestQueryUpdateLandMoneyDetail:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            weakSelf.Detailmodel = [LPLandAuditDataModel mj_objectWithKeyValues:responseObject[@"data"]];
-            [weakSelf.contentArr removeAllObjects];
-            [weakSelf.contentArr addObject:[LPTools isNullToString:weakSelf.Detailmodel.userName]];
-            [weakSelf.contentArr addObject:[LPTools isNullToString:weakSelf.Detailmodel.workNum]];
-            [weakSelf.contentArr addObject:[LPTools isNullToString:weakSelf.Detailmodel.userTel]];
-            [weakSelf.contentArr addObject:[RSAEncryptor decryptString:weakSelf.Detailmodel.certNo privateKey:RSAPrivateKey]];
-            if (weakSelf.Detailmodel.status.integerValue == 0) {
-                [weakSelf.contentArr addObject:@"审核中"];
-            }else if (weakSelf.Detailmodel.status.integerValue == 1){
-                long long time=[weakSelf.Detailmodel.set_time longLongValue];
-                NSDate *d = [[NSDate alloc]initWithTimeIntervalSince1970:time/1000.0];
-                NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
-                [formatter setDateFormat:@"yyyy年MM月dd日"];
-                NSString*timeStr=[formatter stringFromDate:d];
-                
-                [weakSelf.contentArr addObject:timeStr];
-            }else if (weakSelf.Detailmodel.status.integerValue == 2){
-                [weakSelf.contentArr addObject:@"已拒绝"];
-            }
-            [weakSelf.contentArr addObject:[NSString stringWithFormat:@"%@元",[LPTools isNullToString:weakSelf.Detailmodel.lendMoney]]];
-            [weakSelf.contentArr addObject:[LPTools isNullToString:weakSelf.Detailmodel.mechanismName]];
-            long long time=[weakSelf.Detailmodel.workBeginTime longLongValue];
-            if (time>0) {
-                NSDate *d = [[NSDate alloc]initWithTimeIntervalSince1970:time/1000.0];
-                NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
-                [formatter setDateFormat:@"yyyy年MM月dd日"];
-                NSString*timeStr=[formatter stringFromDate:d];
-                [weakSelf.contentArr addObject:timeStr];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                weakSelf.Detailmodel = [LPLandAuditDataModel mj_objectWithKeyValues:responseObject[@"data"]];
+                [weakSelf.contentArr removeAllObjects];
+                [weakSelf.contentArr addObject:[LPTools isNullToString:weakSelf.Detailmodel.userName]];
+                [weakSelf.contentArr addObject:[LPTools isNullToString:weakSelf.Detailmodel.workNum]];
+                [weakSelf.contentArr addObject:[LPTools isNullToString:weakSelf.Detailmodel.userTel]];
+                [weakSelf.contentArr addObject:[RSAEncryptor decryptString:weakSelf.Detailmodel.certNo privateKey:RSAPrivateKey]];
+                if (weakSelf.Detailmodel.status.integerValue == 0) {
+                    [weakSelf.contentArr addObject:@"审核中"];
+                }else if (weakSelf.Detailmodel.status.integerValue == 1){
+                    long long time=[weakSelf.Detailmodel.set_time longLongValue];
+                    NSDate *d = [[NSDate alloc]initWithTimeIntervalSince1970:time/1000.0];
+                    NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+                    [formatter setDateFormat:@"yyyy年MM月dd日"];
+                    NSString*timeStr=[formatter stringFromDate:d];
+                    
+                    [weakSelf.contentArr addObject:timeStr];
+                }else if (weakSelf.Detailmodel.status.integerValue == 2){
+                    [weakSelf.contentArr addObject:@"已拒绝"];
+                }
+                [weakSelf.contentArr addObject:[NSString stringWithFormat:@"%@元",[LPTools isNullToString:weakSelf.Detailmodel.lendMoney]]];
+                [weakSelf.contentArr addObject:[LPTools isNullToString:weakSelf.Detailmodel.mechanismName]];
+                long long time=[weakSelf.Detailmodel.workBeginTime longLongValue];
+                if (time>0) {
+                    NSDate *d = [[NSDate alloc]initWithTimeIntervalSince1970:time/1000.0];
+                    NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+                    [formatter setDateFormat:@"yyyy年MM月dd日"];
+                    NSString*timeStr=[formatter stringFromDate:d];
+                    [weakSelf.contentArr addObject:timeStr];
+                }else{
+                    [weakSelf.contentArr addObject:@""];
+                }
+                [self.ImageButton yy_setImageWithURL:[NSURL URLWithString:weakSelf.Detailmodel.userWorkImage] forState:UIControlStateNormal placeholder:[UIImage imageNamed:@"LendNormalImage"]];
+                [weakSelf.tableview reloadData];
             }else{
-                [weakSelf.contentArr addObject:@""];
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
-            [self.ImageButton yy_setImageWithURL:[NSURL URLWithString:weakSelf.Detailmodel.userWorkImage] forState:UIControlStateNormal placeholder:[UIImage imageNamed:@"LendNormalImage"]];
-            [weakSelf.tableview reloadData];
+            
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

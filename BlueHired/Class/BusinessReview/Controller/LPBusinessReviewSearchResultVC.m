@@ -46,7 +46,6 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
 #pragma mark - setter
 -(void)setModel:(LPMechanismcommentMechanismlistModel *)model{
     _model = model;
-    _model = model;
     if ([self.model.code integerValue] == 0) {
         
         if (self.page == 1) {
@@ -107,7 +106,11 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
         [self.tableview.mj_header endRefreshing];
         [self.tableview.mj_footer endRefreshing];
         if (isSuccess) {
-            self.model = [LPMechanismcommentMechanismlistModel mj_objectWithKeyValues:responseObject];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.model = [LPMechanismcommentMechanismlistModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

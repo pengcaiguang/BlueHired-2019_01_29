@@ -20,7 +20,7 @@
 @interface GJAlertWithDrawViewPassword : UIView
 @property (nonatomic,strong) UIView *coverView;
 @property (nonatomic,strong) UIView *alertView;
-@property(nonatomic,strong)NSString *title;
+@property(nonatomic,strong)NSMutableAttributedString *title;
 @property(nonatomic,strong)NSString *message;
 @property(nonatomic,strong)NSArray *buttonTitles;
 @property(nonatomic,strong)NSArray *buttonColors;
@@ -47,20 +47,25 @@
     self.alertView = [[UIView alloc]init];
     [self addSubview:_alertView];
     [_alertView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(15);
-        make.right.mas_equalTo(-15);
-//        make.center.equalTo(self);
-        make.top.mas_equalTo(35);
+        make.left.mas_equalTo(LENGTH_SIZE(32));
+        make.right.mas_equalTo(LENGTH_SIZE(-32));
+        if (SCREEN_WIDTH == 320) {
+            make.centerY.equalTo(self).offset(-30);
+        }else{
+            make.center.equalTo(self);
+        }
+//        make.top.mas_equalTo(35);
     }];
     [_alertView setBackgroundColor:[UIColor whiteColor]];
+    _alertView.clipsToBounds = YES;
+    
     
     UIButton *deleteBt = [[UIButton alloc] init];
     [self.alertView addSubview:deleteBt];
     [deleteBt mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(8);
-        make.top.mas_equalTo(15);
-        make.height.mas_equalTo(10);
-        make.width.mas_equalTo(10);
+        make.top.mas_equalTo(LENGTH_SIZE(10));
+        make.right.mas_equalTo(LENGTH_SIZE(-10));
+        make.height.width.mas_equalTo(LENGTH_SIZE(18));
     }];
     [deleteBt setBackgroundImage:[UIImage imageNamed:@"closeButton"] forState:UIControlStateNormal];
     [deleteBt addTarget:self action:@selector(tapDismissBT:) forControlEvents:UIControlEventTouchUpInside];
@@ -68,91 +73,91 @@
     UILabel *HeadTitleLable = [[UILabel alloc] init];
     [self.alertView addSubview:HeadTitleLable];
     [HeadTitleLable mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(deleteBt.mas_right).offset(8);
-        make.right.mas_equalTo(0);
-        make.top.mas_equalTo(0);
-        make.height.mas_equalTo(40);
+        make.left.right.mas_equalTo(0);
+        make.top.mas_equalTo(LENGTH_SIZE(24));
     }];
     HeadTitleLable.text = @"请输入提现密码";
-    HeadTitleLable.font = [UIFont systemFontOfSize:16];
+    HeadTitleLable.textAlignment = NSTextAlignmentCenter;
+    HeadTitleLable.font = [UIFont boldSystemFontOfSize:FontSize(18)];
+    HeadTitleLable.textColor = [UIColor colorWithHexString:@"#333333"];
     
     
-    UIView *v = [[UIView alloc]init];
-    [self.alertView addSubview:v];
-    [v mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(0);
-        make.right.mas_equalTo(0);
-        make.top.mas_equalTo(40);
-        make.height.mas_equalTo(0.5);
-    }];
-    v.backgroundColor = [UIColor baseColor];
+//    UIView *v = [[UIView alloc]init];
+//    [self.alertView addSubview:v];
+//    [v mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.mas_equalTo(0);
+//        make.right.mas_equalTo(0);
+//        make.top.mas_equalTo(40);
+//        make.height.mas_equalTo(0);
+//    }];
+//    v.backgroundColor = [UIColor baseColor];
     
     UILabel *labelTitle = [[UILabel alloc] init];
     [_alertView addSubview:labelTitle];
     [labelTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(v.mas_bottom).offset(21);
-        make.left.mas_equalTo(15);
-        make.right.mas_equalTo(-15);
+        make.top.equalTo(HeadTitleLable.mas_bottom).offset(LENGTH_SIZE(8));
+        make.left.mas_equalTo(LENGTH_SIZE(28));
+        make.right.mas_equalTo(LENGTH_SIZE(-28));
     }];
     
-    labelTitle.text = _title;
     labelTitle.textAlignment = NSTextAlignmentCenter;
-    labelTitle.font = [UIFont systemFontOfSize:16];
-    labelTitle.textColor = [UIColor colorWithHexString:@"#1B1B1B"];
+    labelTitle.font = FONT_SIZE(15);
+    labelTitle.textColor = [UIColor colorWithHexString:@"#999999"];
     labelTitle.numberOfLines = 0;
-    
-    UILabel *labelMessageTitle = [[UILabel alloc] init];
-    [_alertView addSubview:labelMessageTitle];
-    [labelMessageTitle mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(labelTitle.mas_bottom).offset(0);
-        make.left.mas_equalTo(15);
-        make.right.mas_equalTo(-15);
-    }];
-    
-    labelMessageTitle.text = _message;
-    labelMessageTitle.textAlignment = NSTextAlignmentCenter;
-    labelMessageTitle.font = [UIFont boldSystemFontOfSize:19];
-    labelMessageTitle.textColor = [UIColor colorWithHexString:@"#1B1B1B"];
-    labelMessageTitle.numberOfLines = 0;
-    
-    
-    UIView *line0 = [[UIView alloc]init];
-    [_alertView addSubview:line0];
-    [line0 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(labelMessageTitle.mas_bottom).offset(10);
-        make.left.mas_equalTo(0);
-        make.right.mas_equalTo(0);
-        make.height.mas_equalTo(0.5);
-    }];
-    
-    line0.backgroundColor = [UIColor colorWithHexString:@"#EEEEEE"];
+    labelTitle.attributedText = _title;
+
+//    UILabel *labelMessageTitle = [[UILabel alloc] init];
+//    [_alertView addSubview:labelMessageTitle];
+//    [labelMessageTitle mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(labelTitle.mas_bottom).offset(0);
+//        make.left.mas_equalTo(15);
+//        make.right.mas_equalTo(-15);
+//    }];
+//
+//    labelMessageTitle.text = _message;
+//    labelMessageTitle.textAlignment = NSTextAlignmentCenter;
+//    labelMessageTitle.font = [UIFont boldSystemFontOfSize:19];
+//    labelMessageTitle.textColor = [UIColor colorWithHexString:@"#1B1B1B"];
+//    labelMessageTitle.numberOfLines = 0;
     
     
-    UIView *messageContentView = [[UIView alloc]init];
-    [_alertView addSubview:messageContentView];
-    [messageContentView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(labelTitle.mas_bottom).offset(10);
-        make.left.mas_equalTo(15);
-        make.right.mas_equalTo(-15);
-    }];
+//    UIView *line0 = [[UIView alloc]init];
+//    [_alertView addSubview:line0];
+//    [line0 mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(labelMessageTitle.mas_bottom).offset(10);
+//        make.left.mas_equalTo(0);
+//        make.right.mas_equalTo(0);
+//        make.height.mas_equalTo(0.5);
+//    }];
+//
+//    line0.backgroundColor = [UIColor colorWithHexString:@"#EEEEEE"];
+//
+    
+//    UIView *messageContentView = [[UIView alloc]init];
+//    [_alertView addSubview:messageContentView];
+//    [messageContentView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(labelTitle.mas_bottom).offset(10);
+//        make.left.mas_equalTo(15);
+//        make.right.mas_equalTo(-15);
+//    }];
     
     
     UITextField *textField = [[UITextField alloc]init];
     [_alertView addSubview:textField];
     [textField mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(line0.mas_bottom).offset(13);
-        make.left.mas_equalTo(10);
-        make.right.mas_equalTo(-10);
-        make.bottom.mas_equalTo(-13);
-        make.height.mas_equalTo(48);
+        make.top.equalTo(labelTitle.mas_bottom).offset(LENGTH_SIZE(18));
+        make.left.mas_equalTo(LENGTH_SIZE(24));
+        make.right.mas_equalTo(LENGTH_SIZE(-24));
+        make.bottom.mas_equalTo(LENGTH_SIZE(-30));
+        make.height.mas_equalTo(LENGTH_SIZE(44));
     }];
     [textField addTarget:self action:@selector(textFieldChanged:) forControlEvents:UIControlEventEditingChanged];
     textField.layer.masksToBounds = YES;
     textField.layer.cornerRadius = 5.0;
 //    textField.placeholder = _message;
-    textField.layer.borderWidth = 0.5;
-    textField.layer.borderColor = [UIColor colorWithHexString:@"#AAAAAA"].CGColor;
-    textField.font = [UIFont systemFontOfSize:16];
+    textField.layer.borderWidth = 1;
+    textField.layer.borderColor = [UIColor colorWithHexString:@"#E0E0E0"].CGColor;
+    textField.font = FONT_SIZE(16);
     textField.keyboardType = UIKeyboardTypeDecimalPad;
     textField.textColor = [UIColor clearColor];
     textField.tintColor = [UIColor clearColor];
@@ -176,11 +181,11 @@
     NSMutableArray *viewarray = [NSMutableArray array];
     for (int i = 0; i<7; i++) {
         UIView *view = [[UIView alloc]init];
-        view.backgroundColor = [UIColor colorWithHexString:@"#AAAAAA"];
+        view.backgroundColor = [UIColor colorWithHexString:@"#E0E0E0"];
         [viewarray addObject:view];
         [textField addSubview:view];
     }
-    [viewarray mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedSpacing:(SCREEN_WIDTH-50)/6-1 leadSpacing:0 tailSpacing:0];
+    [viewarray mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedSpacing:(SCREEN_WIDTH-LENGTH_SIZE(56*2))/6-1 leadSpacing:0 tailSpacing:0];
     [viewarray mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(0);
         make.bottom.mas_equalTo(0);
@@ -202,45 +207,48 @@
     
     
     
-    CGFloat spacing = 10.0;
-    CGFloat marginleft = 20.0;
+
     
-    UIView *line = [[UIView alloc]init];
-    [_alertView addSubview:line];
-    [line mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(0);
-        make.right.mas_equalTo(0);
-        make.height.mas_equalTo(1);
-        make.bottom.mas_equalTo(-42);
-    }];
-    line.backgroundColor = [UIColor clearColor];
+//    UIView *line = [[UIView alloc]init];
+//    [_alertView addSubview:line];
+//    [line mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.mas_equalTo(0);
+//        make.right.mas_equalTo(0);
+//        make.height.mas_equalTo(1);
+//        make.bottom.mas_equalTo(-42);
+//    }];
+//    line.backgroundColor = [UIColor clearColor];
     
-    CGFloat buttonWidth = (self.frame.size.width - marginleft*2 - 30 - (_buttonTitles.count - 1)*spacing)/_buttonTitles.count;
-    CGFloat leadingX = 0.0;
-    NSInteger i = 0;
-    
-    
-    for (NSString *btnTitle in _buttonTitles) {
-        leadingX = buttonWidth * i + spacing *i + marginleft;
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_alertView addSubview:button];
-        [button mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.mas_equalTo(leadingX);
-            make.top.equalTo(textField.mas_bottom).offset(0);
-            make.width.mas_equalTo(buttonWidth);
-            make.height.mas_equalTo(42);
-        }];
-        [button setTitle:btnTitle forState:UIControlStateNormal];
-        button.titleLabel.font = [UIFont systemFontOfSize:15];
-        if (_buttonColors && _buttonColors.count > i) {
-            [button setTitleColor:[_buttonColors objectAtIndex:i] forState:UIControlStateNormal];
-        }
-        button.layer.cornerRadius = 3.0;
-        [button addTarget:self action:@selector(btnTap:) forControlEvents:UIControlEventTouchUpInside];
-        button.tag = i;
-        
-        i++;
-    }
+//    CGFloat spacing = 10.0;
+//    CGFloat marginleft = 20.0;
+//    CGFloat buttonWidth = (self.frame.size.width - marginleft*2 - 30 - (_buttonTitles.count - 1)*spacing)/_buttonTitles.count;
+//    CGFloat leadingX = 0.0;
+//    NSInteger i = 0;
+//
+//
+//    for (NSString *btnTitle in _buttonTitles) {
+//        leadingX = buttonWidth * i + spacing *i + marginleft;
+//        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+//        [_alertView addSubview:button];
+//        [button mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.left.mas_equalTo(leadingX);
+//            make.top.equalTo(textField.mas_bottom).offset(0);
+//            make.width.mas_equalTo(buttonWidth);
+//            make.height.mas_equalTo(42);
+//        }];
+//        [button setTitle:btnTitle forState:UIControlStateNormal];
+//        button.titleLabel.font = [UIFont systemFontOfSize:15];
+//        if (_buttonColors && _buttonColors.count > i) {
+//            [button setTitleColor:[_buttonColors objectAtIndex:i] forState:UIControlStateNormal];
+//        }
+//        button.layer.cornerRadius = 3.0;
+//        [button addTarget:self action:@selector(btnTap:) forControlEvents:UIControlEventTouchUpInside];
+//        button.tag = i;
+//
+//        i++;
+//    }
+        _alertView.layer.cornerRadius = 6;
+
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapDismiss:)];
     [_coverView addGestureRecognizer:tap];
 }
@@ -264,7 +272,7 @@
     }
 }
 
-- (id)initWithTitle:(NSString *)title message:(NSString *)message buttonTitles:(NSArray *)buttonTitles buttonsColor:(NSArray *)buttonColors{
+- (id)initWithTitle:(NSMutableAttributedString *)title message:(NSString *)message buttonTitles:(NSArray *)buttonTitles buttonsColor:(NSArray *)buttonColors{
     self = [super initWithFrame:[[UIScreen mainScreen]bounds]];
     if (self) {
         self.title = title;
@@ -354,7 +362,7 @@
 
 @end
 @implementation GJAlertWithDrawPassword
-- (id)initWithTitle:(NSString *)title message:(NSString *)message buttonTitles:(NSArray *)buttonTitles buttonsColor:(NSArray *)buttonColors buttonClick:(void(^)(NSInteger buttonIndex , NSString * string))block{
+- (id)initWithTitle:(NSMutableAttributedString *)title message:(NSString *)message buttonTitles:(NSArray *)buttonTitles buttonsColor:(NSArray *)buttonColors buttonClick:(void(^)(NSInteger buttonIndex , NSString * string))block{
     self = [super init];
     if (self) {
         self.gjAlertView = [[GJAlertWithDrawViewPassword alloc] initWithTitle:title message:message buttonTitles:buttonTitles buttonsColor:buttonColors];

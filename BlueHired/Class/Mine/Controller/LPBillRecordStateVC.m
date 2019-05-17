@@ -94,9 +94,9 @@
 
         }
         
-        _text3.text = [NSString stringWithFormat:@"¥%@",_modelstate.money];
-        _text5.text = [NSString stringWithFormat:@"%@",_modelstate.bankName];
-        _text4.text = [NSString stringWithFormat:@"尾号%@",_modelstate.bankNum];
+        _text3.text = [NSString stringWithFormat:@"¥%@",[LPTools isNullToString:_modelstate.money]];
+        _text5.text = [NSString stringWithFormat:@"%@ ",[LPTools isNullToString:_modelstate.bankName]];
+        _text4.text = [NSString stringWithFormat:@"尾号%@",[LPTools isNullToString:_modelstate.bankNum]];
 
     }
     else
@@ -155,8 +155,13 @@
     [NetApiManager requestQueryBankcardwithWithdrawreCordWithParam:url WithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            self.modelstate = [LPDrawalStateModel mj_objectWithKeyValues:responseObject[@"data"]];
-            [self initView];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.modelstate = [LPDrawalStateModel mj_objectWithKeyValues:responseObject[@"data"]];
+                [self initView];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
+
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

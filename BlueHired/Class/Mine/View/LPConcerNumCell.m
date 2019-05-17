@@ -79,20 +79,25 @@
     [NetApiManager requestSetUserConcernWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            if (!ISNIL(responseObject[@"data"])) {
-                if (self.Type == 1) {
-                    self.model.focusStatus = [responseObject[@"data"] integerValue]==0?@"1":@"0";
-                }else if (self.Type == 2){
-                    if ([responseObject[@"data"] integerValue]==0) {        //已关注
-                        self.model.isDelete = NO;
-                    }else{
-                        self.model.isDelete = YES;
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if (!ISNIL(responseObject[@"data"])) {
+                    if (self.Type == 1) {
+                        self.model.focusStatus = [responseObject[@"data"] integerValue]==0?@"1":@"0";
+                    }else if (self.Type == 2){
+                        if ([responseObject[@"data"] integerValue]==0) {        //已关注
+                            self.model.isDelete = NO;
+                        }else{
+                            self.model.isDelete = YES;
+                        }
+                    }
+                    if (self.Block) {
+                        self.Block();
                     }
                 }
-                if (self.Block) {
-                    self.Block();
-                }
-             }
+            }else{
+                [[UIWindow visibleViewController].view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
+           
          }else{
             [[UIWindow visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

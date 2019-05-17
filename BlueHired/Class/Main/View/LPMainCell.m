@@ -61,34 +61,34 @@
     
     self.applyNumberLabel.text = [NSString stringWithFormat:@"已报名:%@人",model.applyNumber ? model.applyNumber : @"0"];
     
-    if (kUserDefaultsValue(USERDATA).integerValue == 1 ||
-        kUserDefaultsValue(USERDATA).integerValue == 2 ||
-        kUserDefaultsValue(USERDATA).integerValue == 6 ) {
-        self.ReMoneyLabel.hidden = NO;
-        self.ReturnBt.hidden = YES;
-        
-        if (model.cooperateMoney == nil || model.cooperateMoney.floatValue == 0.0) {
-            self.ReMoneyLabel.text = [NSString stringWithFormat:@"管理费:%.1f元/月",model.manageMoney.floatValue];
-        }else{
-            self.ReMoneyLabel.text = [NSString stringWithFormat:@"合作价:%.1f元/小时",model.cooperateMoney.floatValue];
-        }
-        
-        if (model.authority !=nil &&model.workWatchStatus != nil &&
-            kUserDefaultsValue(USERDATA).integerValue != 6 ) {
-            if (model.authority.integerValue == 0 && model.dismountType.integerValue == 0) {
-                if (model.workWatchStatus.integerValue == 0) {
-                    [self.IssueBt setTitle:@"发布招聘" forState:UIControlStateNormal];
-                }else{
-                    [self.IssueBt setTitle:@"取消发布" forState:UIControlStateNormal];
-                }
-                self.IssueBt.hidden = NO;
-            }else{
-                self.IssueBt.hidden = YES;
-            }
-        }else{
-            self.IssueBt.hidden = YES;
-        }
-    }else{
+//    if (kUserDefaultsValue(USERDATA).integerValue == 1 ||
+//        kUserDefaultsValue(USERDATA).integerValue == 2 ||
+//        kUserDefaultsValue(USERDATA).integerValue == 6 ) {
+//        self.ReMoneyLabel.hidden = NO;
+//        self.ReturnBt.hidden = YES;
+//
+//        if (model.cooperateMoney == nil || model.cooperateMoney.floatValue == 0.0) {
+//            self.ReMoneyLabel.text = [NSString stringWithFormat:@"管理费:%.1f元/月",model.manageMoney.floatValue];
+//        }else{
+//            self.ReMoneyLabel.text = [NSString stringWithFormat:@"合作价:%.1f元/小时",model.cooperateMoney.floatValue];
+//        }
+//
+//        if (model.authority !=nil &&model.workWatchStatus != nil &&
+//            kUserDefaultsValue(USERDATA).integerValue != 6 ) {
+//            if (model.authority.integerValue == 0 && model.dismountType.integerValue == 0) {
+//                if (model.workWatchStatus.integerValue == 0) {
+//                    [self.IssueBt setTitle:@"发布招聘" forState:UIControlStateNormal];
+//                }else{
+//                    [self.IssueBt setTitle:@"取消发布" forState:UIControlStateNormal];
+//                }
+//                self.IssueBt.hidden = NO;
+//            }else{
+//                self.IssueBt.hidden = YES;
+//            }
+//        }else{
+//            self.IssueBt.hidden = YES;
+//        }
+//    }else{
         self.IssueBt.hidden = YES;
         self.ReMoneyLabel.text = @"";
         self.ReMoneyLabel.hidden = YES;
@@ -101,7 +101,7 @@
         }
 
 
-    }
+//    }
     
 }
 

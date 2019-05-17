@@ -18,7 +18,7 @@ target 'BlueHired' do
     pod 'Masonry'
     pod 'MBProgressHUD'
     pod 'IQKeyboardManager'
-    pod 'SDCycleScrollView','~> 1.75'
+#    pod 'SDCycleScrollView','~> 1.75'
     pod 'FMDB'
     pod 'FSCalendar'
     pod 'SCIndexView'

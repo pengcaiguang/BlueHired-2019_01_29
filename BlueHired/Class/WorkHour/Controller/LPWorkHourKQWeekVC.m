@@ -139,7 +139,7 @@
     NSString *str2 =self.DataList[self.SelectRow];
         NSString *str1 = [NSString stringWithFormat:@"是否将考勤周期修改成 %@ ?",str2];
         NSMutableAttributedString *str = [[NSMutableAttributedString alloc]initWithString:str1];
-        //设置：在3~length-3个单位长度内的内容显示成橙色
+        //设置：在3~length-3个单位长度内的内容显示色
         [str addAttribute:NSForegroundColorAttributeName value:[UIColor baseColor] range:[str1 rangeOfString:str2]];
         GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:str message:nil IsShowhead:YES textAlignment:0 buttonTitles:@[@"否",@"是"] buttonsColor:@[[UIColor blackColor],[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
             if (buttonIndex) {
@@ -164,7 +164,11 @@
     [NetApiManager requestQueryGetHoursWorkYset:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            self.model = [LPWorkHourYsetModel mj_objectWithKeyValues:responseObject];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.model = [LPWorkHourYsetModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

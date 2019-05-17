@@ -26,7 +26,10 @@ typedef void(^LPMainCellBlock)(void);
 @property (weak, nonatomic) IBOutlet UILabel *maxNumberLabel;
 @property (weak, nonatomic) IBOutlet UILabel *applyNumberLabel;
 
+@property (weak, nonatomic) IBOutlet UILabel *isWorkers;
+
 @property (weak, nonatomic) IBOutlet UILabel *isApplyLabel;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *keyLabel_constraint_right;
 
 @property(nonatomic,strong) LPWorklistDataWorkListModel *model;
 @property(nonatomic,strong) XHStarRateView *starRateView;

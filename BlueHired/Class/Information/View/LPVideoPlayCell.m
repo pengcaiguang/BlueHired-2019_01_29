@@ -222,7 +222,10 @@
     [NetApiManager requestSocialSetlikeWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-           
+            if ([responseObject[@"code"] integerValue] == 0) {
+            }else{
+                [[UIWindow visibleViewController].view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [[UIWindow visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -240,12 +243,14 @@
     [NetApiManager requestSetCollectionWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            if (!ISNIL(responseObject[@"data"])) {
-                if ([responseObject[@"data"] integerValue] == 0) {
-                     [LPTools AlertCollectView:@""];
-                }else if ([responseObject[@"data"] integerValue] == 1) {
- 
-                }
+            if ([responseObject[@"code"] integerValue] == 0) {
+                    if ([responseObject[@"data"] integerValue] == 0) {
+                        [LPTools AlertCollectView:@""];
+                    }else if ([responseObject[@"data"] integerValue] == 1) {
+                        
+                    }
+            }else{
+                [[UIWindow visibleViewController].view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
         }else{
             [[UIWindow visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];

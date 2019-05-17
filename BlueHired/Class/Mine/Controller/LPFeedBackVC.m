@@ -69,12 +69,17 @@ static NSString *TEXT = @"请输入遇到的问题或建议...";
         NSLog(@"%@",responseObject);
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
-                [self.view showLoadingMeg:@"提交成功" time:MESSAGE_SHOW_TIME];
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    [self.navigationController popViewControllerAnimated:YES];
-                });
+                if ([responseObject[@"data"] integerValue] == 1) {
+                    [self.view showLoadingMeg:@"反馈成功" time:MESSAGE_SHOW_TIME];
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        [self.navigationController popViewControllerAnimated:YES];
+                    });
+                }else{
+                    [self.view showLoadingMeg:@"反馈失败" time:MESSAGE_SHOW_TIME];
+                }
+
             }else{
-                [self.view showLoadingMeg:responseObject[@"msg"] ? responseObject[@"msg"] : @"提交失败" time:MESSAGE_SHOW_TIME];
+                [self.view showLoadingMeg:responseObject[@"msg"] ? responseObject[@"msg"] : @"反馈失败" time:MESSAGE_SHOW_TIME];
             }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];

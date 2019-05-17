@@ -10,6 +10,9 @@
 #import "LPQuerySalarylistModel.h"
 #import "LPSalaryDetailVC.h"
 #import "LPSalaryBreakdownCell.h"
+#import "LPBankcardwithDrawModel.h"
+#import "LPSalarycCard2VC.h"
+#import "LPSalarycCardBindPhoneVC.h"
 
 static NSString *LPSalaryBreakdownCellID = @"LPSalaryBreakdownCell";
 
@@ -21,8 +24,11 @@ static NSString *LPSalaryBreakdownCellID = @"LPSalaryBreakdownCell";
 @property(nonatomic,strong) NSMutableArray <UIButton *>*monthButtonArray;
 @property(nonatomic,strong) NSString *currentDateString;
 @property(nonatomic,assign) NSInteger month;
+@property(nonatomic,strong) LPQuerySalarylistDataModel *selectModel;
 
 @property(nonatomic,strong) LPQuerySalarylistModel *model;
+@property(nonatomic,strong) LPBankcardwithDrawModel *Bankmodel;
+@property(nonatomic,assign) NSInteger errorTimes;
 
 @end
 
@@ -32,7 +38,7 @@ static NSString *LPSalaryBreakdownCellID = @"LPSalaryBreakdownCell";
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];
-    self.navigationItem.title = @"工资列表";
+    self.navigationItem.title = @"工资领取";
     
     NSDate *currentDate = [NSDate date];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -44,6 +50,17 @@ static NSString *LPSalaryBreakdownCellID = @"LPSalaryBreakdownCell";
     
     [self setupUI];
     [self requestQuerySalarylist];
+    
+    NSComparisonResult sCOM= [[NSDate date] compare:[DataTimeTool dateFromString:@"2018-01" DateFormat:@"yyyy-MM"]];
+    
+    if (sCOM == NSOrderedAscending) {
+        GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"系统时间不对,请前往设置修改时间" message:nil textAlignment:0 buttonTitles:@[@"确定"] buttonsColor:@[[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
+            [self.navigationController popViewControllerAnimated:YES];
+        }];
+        [alert show];
+        return;
+    }
+    
 }
 
 -(void)setupUI{
@@ -53,45 +70,51 @@ static NSString *LPSalaryBreakdownCellID = @"LPSalaryBreakdownCell";
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
         make.top.mas_equalTo(0);
-        make.height.mas_equalTo(48);
+        make.height.mas_equalTo(LENGTH_SIZE(44));
     }];
     bgView.backgroundColor = [UIColor baseColor];
     
-    UIImageView *imgView = [[UIImageView alloc]init];
-    [bgView addSubview:imgView];
-    [imgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(14);
-        make.centerY.equalTo(bgView);
-        make.size.mas_equalTo(CGSizeMake(19, 20));
-    }];
-    imgView.image = [UIImage imageNamed:@"calendar"];
+//    UIImageView *imgView = [[UIImageView alloc]init];
+//    [bgView addSubview:imgView];
+//    [imgView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.mas_equalTo(14);
+//        make.centerY.equalTo(bgView);
+//        make.size.mas_equalTo(CGSizeMake(19, 20));
+//    }];
+//    imgView.image = [UIImage imageNamed:@"calendar"];
     
     self.timeButton = [[UIButton alloc]init];
     [bgView addSubview:self.timeButton];
     [self.timeButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.equalTo(bgView);
     }];
+    self.timeButton.titleLabel.font = FONT_SIZE(16);
     [self.timeButton setTitle:self.currentDateString forState:UIControlStateNormal];
     [self.timeButton addTarget:self action:@selector(chooseMonth) forControlEvents:UIControlEventTouchUpInside];
 
-    UIImageView *leftImgView = [[UIImageView alloc]init];
+    UIButton *leftImgView = [[UIButton alloc]init];
     [bgView addSubview:leftImgView];
     [leftImgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(7, 12));
+        make.size.mas_equalTo(CGSizeMake(LENGTH_SIZE(44), LENGTH_SIZE(44)));
         make.centerY.equalTo(self.timeButton);
         make.right.equalTo(self.timeButton.mas_left).offset(-10);
     }];
-    leftImgView.image = [UIImage imageNamed:@"left_arrow"];
-    
-    UIImageView *rightImgView = [[UIImageView alloc]init];
+//    leftImgView.image = [UIImage imageNamed:@"left"];
+    [leftImgView setImage:[UIImage imageNamed:@"left"] forState:UIControlStateNormal];
+    leftImgView.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+    [leftImgView addTarget:self action:@selector(TouchLeftBt:) forControlEvents:UIControlEventTouchUpInside];
+
+    UIButton *rightImgView = [[UIButton alloc]init];
     [bgView addSubview:rightImgView];
     [rightImgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(7, 12));
+        make.size.mas_equalTo(CGSizeMake(LENGTH_SIZE(44), LENGTH_SIZE(44)));
         make.centerY.equalTo(self.timeButton);
         make.left.equalTo(self.timeButton.mas_right).offset(10);
     }];
-    rightImgView.image = [UIImage imageNamed:@"right_arrow"];
-    
+//    rightImgView.image = [UIImage imageNamed:@"right"];
+    [rightImgView setImage:[UIImage imageNamed:@"right"] forState:UIControlStateNormal];
+    rightImgView.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [rightImgView addTarget:self action:@selector(TouchrightBt:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.view addSubview:self.tableview];
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -99,12 +122,73 @@ static NSString *LPSalaryBreakdownCellID = @"LPSalaryBreakdownCell";
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
         make.bottom.mas_equalTo(0);
-        make.top.mas_equalTo(48);
+        make.top.mas_equalTo(bgView.mas_bottom);
     }];
 }
+
+-(void)TouchLeftBt:(UIButton *)sender{
+    
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSCalendarUnit unit = NSCalendarUnitMonth;//只比较天数差异
+    NSDateComponents *delta = [calendar components:unit fromDate:[DataTimeTool dateFromString:self.currentDateString DateFormat:@"yyyy-MM"] toDate:[DataTimeTool dateFromString:@"2018-01" DateFormat:@"yyyy-MM"] options:0];
+    
+    
+    if (delta.month>=0) {
+        return;
+    }
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM"];
+    NSDate *date = [dateFormatter dateFromString:self.currentDateString];
+    NSDateComponents *comps = [[NSDateComponents alloc] init];
+    [comps setMonth:-1];
+    NSCalendar *calender = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSDate *StartDate = [calender dateByAddingComponents:comps toDate:date options:0];
+    self.currentDateString = [dateFormatter stringFromDate:StartDate];
+    [self.timeButton setTitle:self.currentDateString forState:UIControlStateNormal];
+    [self requestQuerySalarylist];
+
+}
+-(void)TouchrightBt:(UIButton *)sender{
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSCalendarUnit unit = NSCalendarUnitMonth;//只比较天数差异
+    NSDateComponents *delta = [calendar components:unit fromDate:[DataTimeTool dateFromString:self.currentDateString DateFormat:@"yyyy-MM"] toDate:[NSDate date] options:0];
+
+    
+    if (delta.month<=0) {
+        return;
+    }
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM"];
+    NSDate *date = [dateFormatter dateFromString:self.currentDateString];
+    NSDateComponents *comps = [[NSDateComponents alloc] init];
+    [comps setMonth:1];
+    NSCalendar *calender = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSDate *StartDate = [calender dateByAddingComponents:comps toDate:date options:0];
+    self.currentDateString = [dateFormatter stringFromDate:StartDate];
+    [self.timeButton setTitle:self.currentDateString forState:UIControlStateNormal];
+    [self requestQuerySalarylist];
+}
+
 -(void)chooseMonth{
     
-    QFDatePickerView *datePickerView = [[QFDatePickerView  alloc]initDatePackerWithResponse:^(NSString *str) {
+    NSComparisonResult sCOM= [[NSDate date] compare:[DataTimeTool dateFromString:@"2018-01" DateFormat:@"yyyy-MM"]];
+    
+    if (sCOM == NSOrderedAscending) {
+        
+        GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"系统时间不对,请前往设置修改时间" message:nil textAlignment:0 buttonTitles:@[@"确定"] buttonsColor:@[[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
+ 
+            [self.navigationController popViewControllerAnimated:YES];
+            
+        }];
+        [alert show];
+        return;
+    }
+    
+    QFDatePickerView *datePickerView = [[QFDatePickerView  alloc]initDatePackerWith:[DataTimeTool dateFromString:self.currentDateString DateFormat:@"yyyy-MM"]
+                                                                                minDate:[DataTimeTool dateFromString:@"2018-01" DateFormat:@"yyyy-MM"]
+                                                                                maxDate:[NSDate date]
+                                                                               Response:^(NSString *str) {
          NSLog(@"str = %@", str);
         [self.timeButton setTitle:str forState:UIControlStateNormal];
         self.currentDateString = self.timeButton.titleLabel.text;
@@ -137,6 +221,27 @@ static NSString *LPSalaryBreakdownCellID = @"LPSalaryBreakdownCell";
 }
 
 #pragma mark - setter
+- (void)setBankmodel:(LPBankcardwithDrawModel *)Bankmodel{
+    _Bankmodel = Bankmodel;
+    if (Bankmodel.data.type.integerValue == 1) {            //没有绑定
+        GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"您还未添加工资卡，请先添加工资卡，再领取"
+                                                             message:nil
+                                                       textAlignment:NSTextAlignmentCenter
+                                                        buttonTitles:@[@"取消",@"去添加"]
+                                                        buttonsColor:@[[UIColor colorWithHexString:@"#999999"],[UIColor baseColor]]
+                                             buttonsBackgroundColors:@[[UIColor whiteColor]]
+                                                         buttonClick:^(NSInteger buttonIndex) {
+                                                             if (buttonIndex) {
+                                                                 LPSalarycCard2VC *vc = [[LPSalarycCard2VC alloc] init];
+                                                                 [self.navigationController pushViewController:vc animated:YES];
+                                                             }
+        }];
+        [alert show];
+    }else{
+        [self TouchDraw:Bankmodel];
+    }
+}
+
 -(void)setModel:(LPQuerySalarylistModel *)model{
     _model = model;
     if (model.data.count == 0) {
@@ -162,7 +267,7 @@ static NSString *LPSalaryBreakdownCellID = @"LPSalaryBreakdownCell";
             //            make.edges.equalTo(self.view);
             make.left.mas_equalTo(0);
             make.right.mas_equalTo(0);
-            make.top.mas_equalTo(49);
+            make.top.mas_equalTo(LENGTH_SIZE(44));
             make.bottom.mas_equalTo(0);
         }];
         noDataView.hidden = hidden;
@@ -176,29 +281,212 @@ static NSString *LPSalaryBreakdownCellID = @"LPSalaryBreakdownCell";
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     LPSalaryBreakdownCell *cell = [tableView dequeueReusableCellWithIdentifier:LPSalaryBreakdownCellID];
     cell.companyNameLabel.text = self.model.data[indexPath.row].companyName;
+    cell.MoneyLabel.text = [NSString stringWithFormat:@"%.2f元",self.model.data[indexPath.row].actualPay.floatValue];
+    if (self.model.data[indexPath.row].status.integerValue == 1) {
+        cell.DrawBt.hidden = NO;
+        cell.AlreadyLabel.hidden = YES;
+    }else if (self.model.data[indexPath.row].status.integerValue == 2){
+        cell.DrawBt.hidden = YES;
+        cell.AlreadyLabel.hidden = NO;
+    }
+    WEAK_SELF()
+    cell.block = ^(void){
+        [weakSelf requestQueryBankcardwithDraw];
+        weakSelf.selectModel = weakSelf.model.data[indexPath.row];
+    };
+    
     return cell;
 }
+
+-(void)TouchDraw:(LPBankcardwithDrawModel *) m{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm";
+    NSString *string = [dateFormatter stringFromDate:[NSDate date]];
+    if (kUserDefaultsValue(ERRORTIMES)) {
+        NSString *errorString = kUserDefaultsValue(ERRORTIMES);
+        if(errorString.length<17){
+            kUserDefaultsRemove(ERRORTIMES);
+        }else{
+            NSString *d = [errorString substringToIndex:16];
+            NSString *str = [LPTools dateTimeDifferenceWithStartTime:d endTime:string];
+            NSString *t = [errorString substringFromIndex:17];
+            self.errorTimes = [t integerValue];
+            if ([t integerValue] >= 3 && [str integerValue] < 10) {
+                GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"提现密码错误次数过多，请10分钟后再试" message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"确定"] buttonsColor:@[[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
+                }];
+                [alert show];
+                return;
+            }
+            else
+            {
+                kUserDefaultsRemove(ERRORTIMES);
+            }
+        }
+
+    }
+    
+    float money = [self.selectModel.actualPay floatValue];
+    
+    
+    NSString *str1 = [NSString stringWithFormat:@"金额%.2f元将领取至尾号为%@%@，请注意查收",money,m.data.bankNumber,m.data.bankName];
+    NSMutableAttributedString *str = [[NSMutableAttributedString alloc]initWithString:str1];
+    //设置：在3~length-3个单位长度内的内容显示色
+    [str addAttribute:NSForegroundColorAttributeName value:[UIColor baseColor] range:[str1 rangeOfString:[NSString stringWithFormat:@"%.2f",money]]];
+    
+    GJAlertWithDrawPassword *alert = [[GJAlertWithDrawPassword alloc]
+                                      initWithTitle:str
+                                      message:@""
+                                      buttonTitles:@[]
+                                      buttonsColor:@[[UIColor baseColor]]
+                                      buttonClick:^(NSInteger buttonIndex, NSString *string) {
+                                                                            
+                                                NSString *passwordmd5 = [string md5];
+                                                NSString *newPasswordmd5 = [[NSString stringWithFormat:@"%@lanpin123.com",passwordmd5] md5];
+                                          
+                                                NSString *url = [NSString stringWithFormat:@"billrecord/withdraw_deposit_by_salary?drawPwd=%@&id=%@ ",newPasswordmd5,self.selectModel.id];
+                                                [NetApiManager requestQueryBankcardwithDrawDepositWithParam:url WithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
+                                                    NSLog(@"%@",responseObject);
+                                                    if (isSuccess) {
+                                                        if ([responseObject[@"code"] integerValue] ==0)
+                                                        {
+                                                            if ([responseObject[@"data"] integerValue] ==1) {
+                                                                [self requestQuerySalarylist];
+                                                            }else{
+                                                                [self.view showLoadingMeg:@"领取失败,请稍后再试" time:MESSAGE_SHOW_TIME];
+                                                            }
+                                                        }
+                                                        else
+                                                        {
+                                                            if ([responseObject[@"code"] integerValue] == 20027) {
+                                                                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                                                                dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm";
+                                                                NSString *string = [dateFormatter stringFromDate:[NSDate date]];
+                                                                
+                                                                if (kUserDefaultsValue(ERRORTIMES)) {
+                                                                    NSString *errorString = kUserDefaultsValue(ERRORTIMES);
+                                                                    NSString *d = [errorString substringToIndex:16];
+                                                                    NSString *t = [errorString substringFromIndex:17];
+                                                                    NSString *str = [LPTools dateTimeDifferenceWithStartTime:d endTime:string];
+                                                                    
+                                                                    self.errorTimes = [t integerValue];
+                                                                    if ([t integerValue] >= 3&& [str integerValue] < 10) {
+                                                                        GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"提现密码错误次数过多，请10分钟后再试" message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"确定"] buttonsColor:@[[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
+                                                                            [self.navigationController popViewControllerAnimated:YES];
+                                                                        }];
+                                                                        [alert show];
+                                                                    }else{
+                                                                        GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:[NSString stringWithFormat:@"密码错误，剩余%ld次机会",2-self.errorTimes]
+                                                                                                                             message:nil
+                                                                                                                       textAlignment:NSTextAlignmentCenter
+                                                                                                                        buttonTitles:@[@"忘记密码",@"重新输入"]
+                                                                                                                        buttonsColor:@[[UIColor colorWithHexString:@"#999999"],[UIColor baseColor]]
+                                                                                                             buttonsBackgroundColors:@[[UIColor whiteColor]]
+                                                                                                                         buttonClick:^(NSInteger buttonIndex) {
+                                                                                                                             if (buttonIndex == 0) {
+                                                                                                                                 LPSalarycCardBindPhoneVC *vc = [[LPSalarycCardBindPhoneVC alloc]init];
+                                                                                                                                 vc.type = 1;
+                                                                                                                                 vc.Phone = m.data.phone;
+                                                                                                                                 [self.navigationController pushViewController:vc animated:YES];
+                                                                                                                             }else if (buttonIndex == 1){
+                                                                                                                                         [self TouchDraw:self.Bankmodel];
+                                                                                                                             }
+                                                                                                                             //                               [self.navigationController popViewControllerAnimated:YES];
+                                                                                                                         }];
+                                                                        
+                                                                        [alert show];
+                                                                        
+                                                                        self.errorTimes += 1;
+                                                                        NSString *str = [NSString stringWithFormat:@"%@-%ld",string,self.errorTimes];
+                                                                        kUserDefaultsSave(str, ERRORTIMES);
+                                                                    }
+                                                                }else{
+                                                                    if (self.errorTimes >2) {
+                                                                        self.errorTimes = 0;
+                                                                    }
+                                                                    
+                                                                    GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:[NSString stringWithFormat:@"密码错误，剩余%ld次机会",2-self.errorTimes]
+                                                                                                                         message:nil
+                                                                                                                   textAlignment:NSTextAlignmentCenter
+                                                                                                                    buttonTitles:@[@"忘记密码",@"重新输入"]
+                                                                                                                    buttonsColor:@[[UIColor colorWithHexString:@"#999999"],[UIColor baseColor]]
+                                                                                                         buttonsBackgroundColors:@[[UIColor whiteColor]]
+                                                                                                                     buttonClick:^(NSInteger buttonIndex) {
+                                                                                                                         if (buttonIndex == 0) {
+                                                                                                                             LPSalarycCardBindPhoneVC *vc = [[LPSalarycCardBindPhoneVC alloc]init];
+                                                                                                                             vc.type = 1;
+                                                                                                                             vc.Phone = m.data.phone;
+                                                                                                                             [self.navigationController pushViewController:vc animated:YES];
+                                                                                                                         }else if (buttonIndex == 1){
+                                                                                                                             [self TouchDraw:self.Bankmodel];
+                                                                                                                         }
+                                                                                                                     }];
+                                                                    
+                                                                    [alert show];
+                                                                    self.errorTimes += 1;
+                                                                    NSString *str = [NSString stringWithFormat:@"%@-%ld",string,self.errorTimes];
+                                                                    kUserDefaultsSave(str, ERRORTIMES);
+                                                                }
+                                                            }else{
+                                                                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+                                                            }
+                                                            
+                                                            
+                                                            //                   [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+                                                        }
+                                                        
+                                                    }else{
+                                                        [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+                                                    }
+                                                }];
+                                      }];
+    [alert show];
+    
+    
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     LPSalaryDetailVC *vc = [[LPSalaryDetailVC alloc]init];
     vc.model = self.model.data[indexPath.row];
+    vc.currentDateString = self.currentDateString;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - request
 -(void)requestQuerySalarylist{
     NSDictionary *dic = @{
-                          @"month":self.currentDateString
+                          @"month":self.currentDateString,
+                          @"versionType":@"2.3"
                           };
     [NetApiManager requestQuerySalarylistWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            self.model = [LPQuerySalarylistModel mj_objectWithKeyValues:responseObject];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.model = [LPQuerySalarylistModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
     }];
 }
+
+-(void)requestQueryBankcardwithDraw{
+    [NetApiManager requestQueryBankcardwithDrawWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.Bankmodel = [LPBankcardwithDrawModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+
 #pragma mark lazy
 - (UITableView *)tableview{
     if (!_tableview) {
@@ -209,6 +497,7 @@ static NSString *LPSalaryBreakdownCellID = @"LPSalaryBreakdownCell";
         _tableview.rowHeight = UITableViewAutomaticDimension;
         _tableview.estimatedRowHeight = 44;
         _tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _tableview.backgroundColor = [UIColor colorWithHexString:@"#F5F5F5"];
         _tableview.separatorColor = [UIColor colorWithHexString:@"#F1F1F1"];
         [_tableview registerNib:[UINib nibWithNibName:LPSalaryBreakdownCellID bundle:nil] forCellReuseIdentifier:LPSalaryBreakdownCellID];
 
@@ -270,11 +559,9 @@ static NSString *LPSalaryBreakdownCellID = @"LPSalaryBreakdownCell";
         self.monthButtonArray[self.month-1].backgroundColor = [UIColor baseColor];
     }
     return _monthView;
-    
-    
-  
-    
 }
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

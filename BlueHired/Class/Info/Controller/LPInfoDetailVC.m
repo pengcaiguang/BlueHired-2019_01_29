@@ -175,8 +175,12 @@
     [NetApiManager requestQueryInfodetailWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            self.DetailModel = [LPInfoDetailModel mj_objectWithKeyValues:responseObject[@"data"]];
-            [self setupUI];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.DetailModel = [LPInfoDetailModel mj_objectWithKeyValues:responseObject[@"data"]];
+                [self setupUI];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -187,7 +191,11 @@
     [NetApiManager requestQueryBankcardwithDrawWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            self.BankcardModel = [LPBankcardwithDrawModel mj_objectWithKeyValues:responseObject];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.BankcardModel = [LPBankcardwithDrawModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -206,14 +214,19 @@
     [NetApiManager requestQueryAccept_invite:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            if ([responseObject[@"code"] integerValue] == 0 && [responseObject[@"data"] integerValue] == 1) {
-                [self.view showLoadingMeg:@"操作成功" time:2.0];
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    LPInfoVC  *vc = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
-                    vc.isReloadData = YES;
-                    [self.navigationController popToViewController:vc animated:YES];
-//                    [self.navigationController popViewControllerAnimated:YES];
-                });
+            if ([responseObject[@"code"] integerValue] == 0  ) {
+                if ([responseObject[@"data"] integerValue] == 1) {
+                    [self.view showLoadingMeg:@"操作成功" time:2.0];
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        LPInfoVC  *vc = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
+                        vc.isReloadData = YES;
+                        [self.navigationController popToViewController:vc animated:YES];
+                        //                    [self.navigationController popViewControllerAnimated:YES];
+                    });
+                }else{
+                    [self.view showLoadingMeg:@"操作失败" time:2.0];
+                }
+           
             }else{
                 [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }

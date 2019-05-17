@@ -358,11 +358,13 @@
     [NetApiManager requestSignoutWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-//            kUserDefaultsRemove(LOGINID);
-//            kUserDefaultsRemove(kLoginStatus);
-//            [self.navigationController popViewControllerAnimated:YES];
+            if ([responseObject[@"code"] integerValue] == 0) {
+ 
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
-//            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
     }];
 }

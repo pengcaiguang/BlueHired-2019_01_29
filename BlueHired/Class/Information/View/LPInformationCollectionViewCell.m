@@ -241,8 +241,11 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
         [self.tableview.mj_header endRefreshing];
         [self.tableview.mj_footer endRefreshing];
         if (isSuccess) {
-            self.model = [LPEssaylistModel mj_objectWithKeyValues:responseObject];
-            
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.model = [LPEssaylistModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [[UIWindow visibleViewController].view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [[UIWindow visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -260,8 +263,11 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
         [self.tableview.mj_header endRefreshing];
         [self.tableview.mj_footer endRefreshing];
         if (isSuccess) {
-            self.model = [LPEssaylistModel mj_objectWithKeyValues:responseObject];
-            
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.model = [LPEssaylistModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [[UIWindow visibleViewController].view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [[UIWindow visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

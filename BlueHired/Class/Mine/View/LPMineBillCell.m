@@ -9,6 +9,13 @@
 #import "LPMineBillCell.h"
 #import "LPBillRecordVC.h"
 #import "LPWithDrawalVC.h"
+#import "LPBankcardwithDrawModel.h"
+#import "LPSalarycCard2VC.h"
+
+@interface LPMineBillCell()
+@property(nonatomic,strong) LPBankcardwithDrawModel *Bankmodel;
+
+@end
 
 @implementation LPMineBillCell
 
@@ -67,13 +74,59 @@
             [self initSetSecretVC];
             return;
         }
-        
+        self.showMoneyButton.enabled = NO;
+        [self requestQueryBankcardwithDraw];
+       
+    }
+}
+
+
+- (void)setBankmodel:(LPBankcardwithDrawModel *)Bankmodel{
+    _Bankmodel = Bankmodel;
+    
+    if (Bankmodel.data.type.integerValue == 1) {        //添加银行卡
+        GJAlertMessage *alert = [[GJAlertMessage alloc]
+                                 initWithTitle:@"您还未绑定工资卡，请先绑定再提现"
+                                 message:nil
+                                 textAlignment:NSTextAlignmentCenter
+                                 buttonTitles:@[@"取消",@"去绑定"]
+                                 buttonsColor:@[[UIColor colorWithHexString:@"#999999"],[UIColor baseColor]]
+                                 buttonsBackgroundColors:@[[UIColor whiteColor],[UIColor whiteColor]]
+                                 buttonClick:^(NSInteger buttonIndex) {
+                                     if (buttonIndex) {
+                                         LPSalarycCard2VC *vc = [[LPSalarycCard2VC alloc] init];
+                                         vc.hidesBottomBarWhenPushed = YES;
+                                         [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+                                     }
+                                 }];
+        [alert show];
+    }else{
         LPWithDrawalVC *vc = [[LPWithDrawalVC alloc]init];
         vc.hidesBottomBarWhenPushed = YES;
         vc.balance = self.userMaterialModel.data.money;
         [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
     }
+    
 }
+
+#pragma mark - request
+-(void)requestQueryBankcardwithDraw{
+    [NetApiManager requestQueryBankcardwithDrawWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        self.showMoneyButton.enabled = YES;
+        if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.Bankmodel = [LPBankcardwithDrawModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [[UIWindow visibleViewController].view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
+        }else{
+            [[UIWindow visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+
+
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];

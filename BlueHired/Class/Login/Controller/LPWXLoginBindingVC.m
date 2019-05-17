@@ -426,15 +426,20 @@
     [NetApiManager requestQueryWXSetPhone:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            if ([responseObject[@"data"] integerValue] > 0) {
-                [self.view showLoadingMeg:@"绑定成功" time:MESSAGE_SHOW_TIME];
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    [self.navigationController popViewControllerAnimated:YES];
-                    [self.navigationController popViewControllerAnimated:YES];
-                });
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if ([responseObject[@"data"] integerValue] > 0) {
+                    [self.view showLoadingMeg:@"绑定成功" time:MESSAGE_SHOW_TIME];
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        [[UIWindow visibleViewController].navigationController popViewControllerAnimated:YES];
+                        [[UIWindow visibleViewController].navigationController popViewControllerAnimated:YES];
+                    });
+                }else{
+                    [self.view showLoadingMeg:@"注册失败" time:MESSAGE_SHOW_TIME];
+                }
             }else{
-                [self.view showLoadingMeg:responseObject[@"msg"] ? responseObject[@"msg"] : @"注册失败" time:MESSAGE_SHOW_TIME];
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
+            
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

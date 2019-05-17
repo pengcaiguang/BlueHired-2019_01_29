@@ -358,7 +358,6 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
                 }
                 [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
-            
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

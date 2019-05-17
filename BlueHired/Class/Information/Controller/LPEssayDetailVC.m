@@ -501,16 +501,16 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == 0) {
-        return self.TableHeadHeight + 102 + [self calculateRowHeight:self.model.data.essayName fontSize:18 Width:SCREEN_WIDTH - 32];
+        return self.TableHeadHeight + 102 + [LPTools calculateRowHeight:self.model.data.essayName fontSize:18 Width:SCREEN_WIDTH - 32];
     }else if (indexPath.section == 1){
         return 110.0;
     }
     else{      //开始手动计算cell高度
         LPCommentListDataModel *m = self.commentListArray[indexPath.row];
-        CGFloat cellHeigh = 93.5 + [self calculateRowHeight:m.commentDetails fontSize:13 Width:SCREEN_WIDTH - 67] ;
+        CGFloat cellHeigh = 93.5 + [LPTools calculateRowHeight:m.commentDetails fontSize:13 Width:SCREEN_WIDTH - 67] ;
         //计算回复高度
         for (int i = 0 ;i < m.commentList.count;i++) {
-            cellHeigh +=[self calculateRowHeight:[NSString stringWithFormat:@"%@:  %@",m.commentList[i].userName,m.commentList[i].commentDetails] fontSize:13 Width:SCREEN_WIDTH-80]+11;
+            cellHeigh +=[LPTools calculateRowHeight:[NSString stringWithFormat:@"%@:  %@",m.commentList[i].userName,m.commentList[i].commentDetails] fontSize:13 Width:SCREEN_WIDTH-80]+11;
         }
         
         return cellHeigh;
@@ -627,9 +627,13 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
     [NetApiManager requestEssayWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            self.model = [LPEssayDetailModel mj_objectWithKeyValues:responseObject];
-            if (self.model.data) {
-                [self requestEssay_Label];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.model = [LPEssayDetailModel mj_objectWithKeyValues:responseObject];
+                if (self.model.data) {
+                    [self requestEssay_Label];
+                }
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
@@ -644,9 +648,13 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
      [NetApiManager requestEssay_LabelWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            self.LabelEssayModel = [LPEssaylistModel mj_objectWithKeyValues:responseObject];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.LabelEssayModel = [LPEssaylistModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
-                        [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+                [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
      }];
 }
@@ -657,8 +665,10 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
                           };
     [NetApiManager requestSetEssayViewWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         [DSBaActivityView hideActiviTy];
-
-        NSLog(@"%@",responseObject);
+        if ([responseObject[@"code"] integerValue] == 0) {
+        }else{
+            [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+        }
     }];
 }
 -(void)requestCommentList{
@@ -671,7 +681,11 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
         NSLog(@"%@",responseObject);
         [self.tableview.mj_footer endRefreshing];
         if (isSuccess) {
-            self.commentListModel = [LPCommentListModel mj_objectWithKeyValues:responseObject];
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.commentListModel = [LPCommentListModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -686,13 +700,17 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
     [NetApiManager requestSetCollectionWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            if (!ISNIL(responseObject[@"data"])) {
-                if ([responseObject[@"data"] integerValue] == 0) {
-                    self.bottomButtonArray[0].selected = YES;
-                    [LPTools AlertCollectView:@""];
-                }else if ([responseObject[@"data"] integerValue] == 1) {
-                    self.bottomButtonArray[0].selected = NO;
-                }
+            if ([responseObject[@"code"] integerValue] == 0) {
+                
+                    if ([responseObject[@"data"] integerValue] == 0) {
+                        self.bottomButtonArray[0].selected = YES;
+                        [LPTools AlertCollectView:@""];
+                    }else if ([responseObject[@"data"] integerValue] == 1) {
+                        self.bottomButtonArray[0].selected = NO;
+                    }
+              
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
@@ -708,22 +726,27 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
     [NetApiManager requestSocialSetlikeWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            if (!ISNIL(responseObject[@"data"])) {
-                if ([responseObject[@"data"] integerValue] == 0) {
-                    self.bottomButtonArray[1].selected = YES;
-                    self.essaylistDataModel.likeStatus = @(1);
-                    self.essaylistDataModel.praiseTotal  =  @(self.essaylistDataModel.praiseTotal.integerValue+1);
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if (!ISNIL(responseObject[@"data"])) {
+                    if ([responseObject[@"data"] integerValue] == 0) {
+                        self.bottomButtonArray[1].selected = YES;
+                        self.essaylistDataModel.likeStatus = @(1);
+                        self.essaylistDataModel.praiseTotal  =  @(self.essaylistDataModel.praiseTotal.integerValue+1);
+                        
+                    }else if ([responseObject[@"data"] integerValue] == 1) {
+                        self.bottomButtonArray[1].selected = NO;
+                        self.essaylistDataModel.likeStatus = @(0);
+                        self.essaylistDataModel.praiseTotal  =  @(self.essaylistDataModel.praiseTotal.integerValue-1);
+                    }
                     
-                }else if ([responseObject[@"data"] integerValue] == 1) {
-                    self.bottomButtonArray[1].selected = NO;
-                    self.essaylistDataModel.likeStatus = @(0);
-                    self.essaylistDataModel.praiseTotal  =  @(self.essaylistDataModel.praiseTotal.integerValue-1);
-                 }
-                
-                if (self.Supertableview) {
-//                    [self.Supertableview reloadData];
+                    if (self.Supertableview) {
+                        //                    [self.Supertableview reloadData];
+                    }
                 }
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
+
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
@@ -868,16 +891,7 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
     }
 }
 
-
-- (CGFloat)calculateRowHeight:(NSString *)string fontSize:(NSInteger)fontSize Width:(CGFloat) W
- {
-     NSDictionary *dic = @{NSFontAttributeName:[UIFont systemFontOfSize:fontSize]};
-     /*计算高度要先指定宽度*/
-     CGRect rect = [string boundingRectWithSize:CGSizeMake(W, 0) options:NSStringDrawingUsesLineFragmentOrigin |
-                    NSStringDrawingUsesFontLeading attributes:dic context:nil];
-     return rect.size.height;
-    
-}
+ 
 
 
 - (void)didReceiveMemoryWarning {
