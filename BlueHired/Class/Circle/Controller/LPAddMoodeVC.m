@@ -731,7 +731,7 @@ static const CGFloat kPhotoViewMargin = 13.0;
     
     [formatter setTimeStyle:NSDateFormatterShortStyle];
     
-    [formatter setDateFormat:@"YYYY-MM-dd HH:mm:ss SSS"]; // ----------设置你想要的格式,hh与HH的区别:分别表示12小时制,24小时制
+    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss SSS"]; // ----------设置你想要的格式,hh与HH的区别:分别表示12小时制,24小时制
     
     //设置时区,这个对于时间的处理有时很重要
     

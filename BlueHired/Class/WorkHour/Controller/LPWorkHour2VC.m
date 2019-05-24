@@ -115,9 +115,13 @@ static NSString *LPWorkHourTallyBookCellID = @"LPWorkHourTallyBookCell";
         [self requestQueryActivityadvert];
     }
      self.navigationController.navigationBar.hidden = YES;
-     
- 
+    
 }
+
+- (UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}
+
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];

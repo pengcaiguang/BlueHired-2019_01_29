@@ -34,7 +34,7 @@ static NSString *LPTypeWorkHourCellID = @"LPTypeWorkHourCell";
     [super viewDidLoad];
     NSDate *currentDate = [NSDate date];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"YYYY-MM"];
+    [dateFormatter setDateFormat:@"yyyy-MM"];
     self.currentDateString = [dateFormatter stringFromDate:currentDate];
     
     self.ViewscrollView = [[UIScrollView alloc] init];

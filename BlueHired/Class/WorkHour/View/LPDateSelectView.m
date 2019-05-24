@@ -54,7 +54,7 @@
     _selectArray = selectArray;
 //    NSDate *currentDate = [NSDate date];
 //    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-//    [dateFormatter setDateFormat:@"YYYY-MM"];
+//    [dateFormatter setDateFormat:@"yyyy-MM"];
 //    NSString *string = [dateFormatter stringFromDate:currentDate];
     self.selectDateArray = [NSMutableArray array];
     for (NSString *str in selectArray) {

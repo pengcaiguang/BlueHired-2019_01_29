@@ -28,6 +28,7 @@
 #import "LPWinningResultsVC.h"
 #import "LPIntegralDrawDatelis.h"
 #import "LPIntegralDrawVC.h"
+#import "LPSalaryBreakdownVC.h"
 
 static NSString *LPMineCellID = @"LPMine2Cell";
 static NSString *LPMineBillCellID = @"LPMineBillCell";
@@ -40,6 +41,7 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
 @property(nonatomic,strong) LPUserMaterialModel *userMaterialModel;
 @property(nonatomic,assign) BOOL signin;
 @property(nonatomic,strong) UIButton *MessageBt;
+@property(nonatomic,strong) NSArray *RecordArr;
 
 @end
 
@@ -59,10 +61,10 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
         if ([DeviceUtils deviceType] == IPhone_X) {
-            make.height.mas_equalTo(210+24);
+            make.height.mas_equalTo(LENGTH_SIZE(200)+10+24);
             make.top.mas_equalTo(0);
         }else{
-            make.height.mas_equalTo(210);
+            make.height.mas_equalTo(LENGTH_SIZE(200)+10);
             make.top.mas_equalTo(0);
         }
 //        make.bottom.mas_equalTo(0);
@@ -78,6 +80,9 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
         make.right.mas_equalTo(-10);
         make.bottom.mas_equalTo(0);
     }];
+    
+    NSLog(@"%@",[NSString isIdentityCard:@"350823199402161018"]?@"1":@"0");
+
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -89,16 +94,20 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
          [self requestUserMaterial];
         [self requestQueryInfounreadNum];
- });
+        [self requestQueryGetBillRecordList];
+
+        });
         
         [self requestSelectCurIsSign];
         self.tableview.mj_header = [HZNormalHeader headerWithRefreshingBlock:^{
             [self requestQueryInfounreadNum];
             [self requestUserMaterial];
             [self requestSelectCurIsSign];
+            [self requestQueryGetBillRecordList];
         }];
     }else{
         self.tableview.mj_header = nil;
+        self.RecordArr = [NSArray new];
         self.userMaterialModel = nil;
     }
 }
@@ -144,30 +153,54 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
     if (tableView == self.Headtableview) {
         return 1;
     }
+    if (self.RecordArr.count) {
+        return 4;
+    }
     return 3;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (tableView == self.Headtableview) {
-        return [DeviceUtils deviceType] == IPhone_X ? 224.0 : 200.0;
+        return [DeviceUtils deviceType] == IPhone_X ? LENGTH_SIZE(200.0) +24.0 : LENGTH_SIZE(200.0);
     }else{
-        if (indexPath.section == 0) {
-            return 117;
-        }else if (indexPath.section == 1) {
-//            if (kUserDefaultsValue(USERDATA).integerValue == 1 || kUserDefaultsValue(USERDATA).integerValue == 2){
-//                return 86;
-//            }else{
-                return 172;
-//            }
+        if (self.RecordArr.count) {
+            if (indexPath.section == 0) {
+                return LENGTH_SIZE(117);
+            }else if (indexPath.section == 1) {
+                return LENGTH_SIZE(40);
+            }else if (indexPath.section == 2){
+                return LENGTH_SIZE(172);
+            }else{
+                return LENGTH_SIZE(50);
+            }
         }else{
-            return 50;
+            if (indexPath.section == 0) {
+                return LENGTH_SIZE(117);
+            }else if (indexPath.section == 1) {
+                //            if (kUserDefaultsValue(USERDATA).integerValue == 1 || kUserDefaultsValue(USERDATA).integerValue == 2){
+                //                return 86;
+                //            }else{
+                return LENGTH_SIZE(172);
+                //            }
+            }else{
+                return LENGTH_SIZE(50);
+            }
         }
+        
     }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if (tableView == self.Headtableview) {
         return 1;
+    }
+    
+    if (self.RecordArr.count) {
+        if (section == 0 || section == 1|| section == 2) {
+            return 1;
+        }else{
+            return 6;
+        }
     }
     
     if (section == 0 || section == 1) {
@@ -192,91 +225,99 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
 
 // 重新绘制cell边框
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (tableView == self.tableview && indexPath.section == 2) {
-        if ([cell respondsToSelector:@selector(tintColor)]) {
-            // 圆角弧度半径
-            CGFloat cornerRadius = 4.f;
-            // 设置cell的背景色为透明，如果不设置这个的话，则原来的背景色不会被覆盖
-            cell.backgroundColor = UIColor.clearColor;
-            
-            // 创建一个shapeLayer
-            CAShapeLayer *layer = [[CAShapeLayer alloc] init];
-            CAShapeLayer *backgroundLayer = [[CAShapeLayer alloc] init]; //显示选中
-            // 创建一个可变的图像Path句柄，该路径用于保存绘图信息
-            CGMutablePathRef pathRef = CGPathCreateMutable();
-            // 获取cell的size
-            CGRect bounds = CGRectInset(cell.bounds, 0, 0);
-            
-            // CGRectGetMinY：返回对象顶点坐标
-            // CGRectGetMaxY：返回对象底点坐标
-            // CGRectGetMinX：返回对象左边缘坐标
-            // CGRectGetMaxX：返回对象右边缘坐标
-            
-            // 这里要判断分组列表中的第一行，每组section的第一行，每组section的中间行
-            BOOL addLine = NO;
-            // CGPathAddRoundedRect(pathRef, nil, bounds, cornerRadius, cornerRadius);
-            if (indexPath.row == 0) {
-                // 初始起点为cell的左下角坐标
-                CGPathMoveToPoint(pathRef, nil, CGRectGetMinX(bounds), CGRectGetMaxY(bounds));
-                // 起始坐标为左下角，设为p1，（CGRectGetMinX(bounds), CGRectGetMinY(bounds)）为左上角的点，设为p1(x1,y1)，(CGRectGetMidX(bounds), CGRectGetMinY(bounds))为顶部中点的点，设为p2(x2,y2)。然后连接p1和p2为一条直线l1，连接初始点p到p1成一条直线l，则在两条直线相交处绘制弧度为r的圆角。
-                CGPathAddArcToPoint(pathRef, nil, CGRectGetMinX(bounds), CGRectGetMinY(bounds), CGRectGetMidX(bounds), CGRectGetMinY(bounds), cornerRadius);
-                CGPathAddArcToPoint(pathRef, nil, CGRectGetMaxX(bounds), CGRectGetMinY(bounds), CGRectGetMaxX(bounds), CGRectGetMidY(bounds), cornerRadius);
-                // 终点坐标为右下角坐标点，把绘图信息都放到路径中去,根据这些路径就构成了一块区域了
-                CGPathAddLineToPoint(pathRef, nil, CGRectGetMaxX(bounds), CGRectGetMaxY(bounds));
-                addLine = YES;
-            } else if (indexPath.row == [tableView numberOfRowsInSection:indexPath.section]-1) {
-                // 初始起点为cell的左上角坐标
-                CGPathMoveToPoint(pathRef, nil, CGRectGetMinX(bounds), CGRectGetMinY(bounds));
-                CGPathAddArcToPoint(pathRef, nil, CGRectGetMinX(bounds), CGRectGetMaxY(bounds), CGRectGetMidX(bounds), CGRectGetMaxY(bounds), cornerRadius);
-                CGPathAddArcToPoint(pathRef, nil, CGRectGetMaxX(bounds), CGRectGetMaxY(bounds), CGRectGetMaxX(bounds), CGRectGetMidY(bounds), cornerRadius);
-                // 添加一条直线，终点坐标为右下角坐标点并放到路径中去
-                CGPathAddLineToPoint(pathRef, nil, CGRectGetMaxX(bounds), CGRectGetMinY(bounds));
-            } else {
-                // 添加cell的rectangle信息到path中（不包括圆角）
-                CGPathAddRect(pathRef, nil, bounds);
-                addLine = YES;
-            }
-            // 把已经绘制好的可变图像路径赋值给图层，然后图层根据这图像path进行图像渲染render
-            layer.path = pathRef;
-            backgroundLayer.path = pathRef;
-            // 注意：但凡通过Quartz2D中带有creat/copy/retain方法创建出来的值都必须要释放
-            CFRelease(pathRef);
-            // 按照shape layer的path填充颜色，类似于渲染render
-            // layer.fillColor = [UIColor colorWithWhite:1.f alpha:0.8f].CGColor;
-            layer.fillColor = [UIColor whiteColor].CGColor;
-            // 添加分隔线图层
-            if (addLine == YES) {
-                CALayer *lineLayer = [[CALayer alloc] init];
-                CGFloat lineHeight = (1.f / [UIScreen mainScreen].scale);
-                lineLayer.frame = CGRectMake(CGRectGetMinX(bounds), bounds.size.height-lineHeight, bounds.size.width, lineHeight);
-                // 分隔线颜色取自于原来tableview的分隔线颜色
-                lineLayer.backgroundColor = tableView.separatorColor.CGColor;
-                [layer addSublayer:lineLayer];
-            }
-            
-            // view大小与cell一致
-            UIView *roundView = [[UIView alloc] initWithFrame:bounds];
-            // 添加自定义圆角后的图层到roundView中
-            [roundView.layer insertSublayer:layer atIndex:0];
-            roundView.backgroundColor = UIColor.clearColor;
-            //cell的背景view
-            //cell.selectedBackgroundView = roundView;
-            cell.backgroundView = roundView;
-            
-            //以上方法存在缺陷当点击cell时还是出现cell方形效果，因此还需要添加以下方法
-            UIView *selectedBackgroundView = [[UIView alloc] initWithFrame:bounds];
-            backgroundLayer.fillColor = tableView.separatorColor.CGColor;
-            [selectedBackgroundView.layer insertSublayer:backgroundLayer atIndex:0];
-            selectedBackgroundView.backgroundColor = UIColor.clearColor;
-            cell.selectedBackgroundView = selectedBackgroundView;
-            
+    if (self.RecordArr.count) {
+        if (tableView == self.tableview &&( indexPath.section == 3 )) {
+            [self CustomtableView:tableView willDisplay:cell IndexPath:indexPath];
+        }
+    }else{
+        if (tableView == self.tableview && indexPath.section == 2) {
+            [self CustomtableView:tableView willDisplay:cell IndexPath:indexPath];
         }
     }
     
-    
-    // }
-    
 }
+
+-(void)CustomtableView:(UITableView *)tableView willDisplay:(UITableViewCell *)cell IndexPath:(NSIndexPath *)indexPath{
+    if ([cell respondsToSelector:@selector(tintColor)]) {
+        // 圆角弧度半径
+        CGFloat cornerRadius = 4.f;
+        // 设置cell的背景色为透明，如果不设置这个的话，则原来的背景色不会被覆盖
+        cell.backgroundColor = UIColor.clearColor;
+        
+        // 创建一个shapeLayer
+        CAShapeLayer *layer = [[CAShapeLayer alloc] init];
+        CAShapeLayer *backgroundLayer = [[CAShapeLayer alloc] init]; //显示选中
+        // 创建一个可变的图像Path句柄，该路径用于保存绘图信息
+        CGMutablePathRef pathRef = CGPathCreateMutable();
+        // 获取cell的size
+        CGRect bounds = CGRectInset(cell.bounds, 0, 0);
+        
+        // CGRectGetMinY：返回对象顶点坐标
+        // CGRectGetMaxY：返回对象底点坐标
+        // CGRectGetMinX：返回对象左边缘坐标
+        // CGRectGetMaxX：返回对象右边缘坐标
+        
+        // 这里要判断分组列表中的第一行，每组section的第一行，每组section的中间行
+        BOOL addLine = NO;
+        // CGPathAddRoundedRect(pathRef, nil, bounds, cornerRadius, cornerRadius);
+        if (indexPath.row == 0) {
+            // 初始起点为cell的左下角坐标
+            CGPathMoveToPoint(pathRef, nil, CGRectGetMinX(bounds), CGRectGetMaxY(bounds));
+            // 起始坐标为左下角，设为p1，（CGRectGetMinX(bounds), CGRectGetMinY(bounds)）为左上角的点，设为p1(x1,y1)，(CGRectGetMidX(bounds), CGRectGetMinY(bounds))为顶部中点的点，设为p2(x2,y2)。然后连接p1和p2为一条直线l1，连接初始点p到p1成一条直线l，则在两条直线相交处绘制弧度为r的圆角。
+            CGPathAddArcToPoint(pathRef, nil, CGRectGetMinX(bounds), CGRectGetMinY(bounds), CGRectGetMidX(bounds), CGRectGetMinY(bounds), cornerRadius);
+            CGPathAddArcToPoint(pathRef, nil, CGRectGetMaxX(bounds), CGRectGetMinY(bounds), CGRectGetMaxX(bounds), CGRectGetMidY(bounds), cornerRadius);
+            // 终点坐标为右下角坐标点，把绘图信息都放到路径中去,根据这些路径就构成了一块区域了
+            CGPathAddLineToPoint(pathRef, nil, CGRectGetMaxX(bounds), CGRectGetMaxY(bounds));
+            addLine = YES;
+        } else if (indexPath.row == [tableView numberOfRowsInSection:indexPath.section]-1) {
+            // 初始起点为cell的左上角坐标
+            CGPathMoveToPoint(pathRef, nil, CGRectGetMinX(bounds), CGRectGetMinY(bounds));
+            CGPathAddArcToPoint(pathRef, nil, CGRectGetMinX(bounds), CGRectGetMaxY(bounds), CGRectGetMidX(bounds), CGRectGetMaxY(bounds), cornerRadius);
+            CGPathAddArcToPoint(pathRef, nil, CGRectGetMaxX(bounds), CGRectGetMaxY(bounds), CGRectGetMaxX(bounds), CGRectGetMidY(bounds), cornerRadius);
+            // 添加一条直线，终点坐标为右下角坐标点并放到路径中去
+            CGPathAddLineToPoint(pathRef, nil, CGRectGetMaxX(bounds), CGRectGetMinY(bounds));
+        } else {
+            // 添加cell的rectangle信息到path中（不包括圆角）
+            CGPathAddRect(pathRef, nil, bounds);
+            addLine = YES;
+        }
+        // 把已经绘制好的可变图像路径赋值给图层，然后图层根据这图像path进行图像渲染render
+        layer.path = pathRef;
+        backgroundLayer.path = pathRef;
+        // 注意：但凡通过Quartz2D中带有creat/copy/retain方法创建出来的值都必须要释放
+        CFRelease(pathRef);
+        // 按照shape layer的path填充颜色，类似于渲染render
+        // layer.fillColor = [UIColor colorWithWhite:1.f alpha:0.8f].CGColor;
+        layer.fillColor = [UIColor whiteColor].CGColor;
+        // 添加分隔线图层
+        if (addLine == YES) {
+            CALayer *lineLayer = [[CALayer alloc] init];
+            CGFloat lineHeight = (1.f / [UIScreen mainScreen].scale);
+            lineLayer.frame = CGRectMake(CGRectGetMinX(bounds), bounds.size.height-lineHeight, bounds.size.width, lineHeight);
+            // 分隔线颜色取自于原来tableview的分隔线颜色
+            lineLayer.backgroundColor = tableView.separatorColor.CGColor;
+            [layer addSublayer:lineLayer];
+        }
+        
+        // view大小与cell一致
+        UIView *roundView = [[UIView alloc] initWithFrame:bounds];
+        // 添加自定义圆角后的图层到roundView中
+        [roundView.layer insertSublayer:layer atIndex:0];
+        roundView.backgroundColor = UIColor.clearColor;
+        //cell的背景view
+        //cell.selectedBackgroundView = roundView;
+        cell.backgroundView = roundView;
+        
+        //以上方法存在缺陷当点击cell时还是出现cell方形效果，因此还需要添加以下方法
+        UIView *selectedBackgroundView = [[UIView alloc] initWithFrame:bounds];
+        backgroundLayer.fillColor = tableView.separatorColor.CGColor;
+        [selectedBackgroundView.layer insertSublayer:backgroundLayer atIndex:0];
+        selectedBackgroundView.backgroundColor = UIColor.clearColor;
+        cell.selectedBackgroundView = selectedBackgroundView;
+        
+    }
+}
+
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
    
@@ -290,74 +331,70 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
         self.MessageBt = cell.MessageButton;
         return cell;
     }
-//    if (indexPath.section == 0) {
-//        LPMineCell *cell = [tableView dequeueReusableCellWithIdentifier:LPMineCellID];
-//        if(cell == nil){
-//            cell = [[LPMineCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:LPMineCellID];
-//        }
-//        cell.userMaterialModel = self.userMaterialModel;
-//        cell.signin = self.signin;
-//        return cell;
-//    }
-    if (indexPath.section == 0) {
-        LPMineBillCell *cell = [tableView dequeueReusableCellWithIdentifier:LPMineBillCellID];
-        if(cell == nil){
-            cell = [[LPMineBillCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:LPMineBillCellID];
+ 
+    if (self.RecordArr.count) {
+        if (indexPath.section == 0) {
+            LPMineBillCell *cell = [tableView dequeueReusableCellWithIdentifier:LPMineBillCellID];
+            if(cell == nil){
+                cell = [[LPMineBillCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:LPMineBillCellID];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.userMaterialModel = self.userMaterialModel;
+            return cell;
         }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.userMaterialModel = self.userMaterialModel;
-        return cell;
-    }
-    if (indexPath.section == 1) {
-        LPMineCardCell *cell = [tableView dequeueReusableCellWithIdentifier:LPMineCardCellID];
-        if(cell == nil){
-            cell = [[LPMineCardCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:LPMineCardCellID];
+        if (indexPath.section == 1) {
+            static NSString *rid=@"Rcell";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:rid];
+            if(cell == nil){
+                cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rid];
+            }
+            cell.layer.cornerRadius = 4.0;
+            cell.layer.masksToBounds = YES;
+            
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            cell.textLabel.textColor = [UIColor baseColor];
+            cell.textLabel.font = FONT_SIZE(14);
+            cell.imageView.contentMode=UIViewContentModeScaleAspectFit;
+            
+            cell.imageView.image = [UIImage imageNamed:@"notice"];
+            cell.textLabel.text = [NSString stringWithFormat:@"%@工资已到账，待领取 >>",self.RecordArr[0]];
+            
+            //调整cell.imageView大小
+            CGSize itemSize = CGSizeMake(LENGTH_SIZE(27), LENGTH_SIZE(27));//希望显示的大小
+            UIGraphicsBeginImageContextWithOptions(itemSize, NO, UIScreen.mainScreen.scale);
+            CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
+            [cell.imageView.image drawInRect:imageRect];
+            cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
+            UIGraphicsEndImageContext();
+
+            return cell;
         }
-        cell.indexPath = indexPath;
-        cell.userMaterialModel = self.userMaterialModel;
-        [cell awakeFromNib];
-        return cell;
-    }
-    
-    static NSString *rid=@"cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:rid];
-    if(cell == nil){
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rid];
-    }
-    cell.textLabel.text = [NSString stringWithFormat:@"%ld",indexPath.row];
-    
-    if (indexPath.section == 2) {
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.textLabel.textColor = [UIColor colorWithHexString:@"#3A3A3A"];
-        cell.textLabel.font = [UIFont systemFontOfSize:16];
-        cell.imageView.contentMode=UIViewContentModeScaleAspectFit;
         
-//        if (kUserDefaultsValue(USERDATA).integerValue == 4 ||
-//            kUserDefaultsValue(USERDATA).integerValue == 3 ||
-//            kUserDefaultsValue(USERDATA).integerValue >= 8){
-//            if (indexPath.row == 0) {
-//                cell.imageView.image = [UIImage imageNamed:@"salaryCard_img"];
-//                cell.textLabel.text = @"工资卡管理";
-//            }else if (indexPath.row == 1) {
-//                cell.imageView.image = [UIImage imageNamed:@"assistant_img"];
-//                cell.textLabel.text = @"归属员工管理";
-//            }else if (indexPath.row == 2) {
-//                cell.imageView.image = [UIImage imageNamed:@"changePassword_img"];
-//                cell.textLabel.text = @"账号管理";
-//            }else if (indexPath.row == 3) {
-//                cell.imageView.image = [UIImage imageNamed:@"ActivityCenterImage"];
-//                cell.textLabel.text = @"活动中心";
-//            }else if (indexPath.row == 4) {
-//                cell.imageView.image = [UIImage imageNamed:@"c_integral"];
-//                cell.textLabel.text = @"幸运积分";
-//            }else if (indexPath.row == 5) {
-//                cell.imageView.image = [UIImage imageNamed:@"collectionCenter_img"];
-//                cell.textLabel.text = @"收藏中心";
-//            }else if (indexPath.row == 6){
-//                cell.imageView.image = [UIImage imageNamed:@"customerService_img"];
-//                cell.textLabel.text = @"专属客服";
-//            }
-//        }else{
+        if (indexPath.section == 2) {
+            LPMineCardCell *cell = [tableView dequeueReusableCellWithIdentifier:LPMineCardCellID];
+            if(cell == nil){
+                cell = [[LPMineCardCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:LPMineCardCellID];
+            }
+            cell.indexPath = indexPath;
+            cell.userMaterialModel = self.userMaterialModel;
+            [cell awakeFromNib];
+            return cell;
+        }
+        
+        static NSString *rid=@"cell";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:rid];
+        if(cell == nil){
+            cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rid];
+        }
+        cell.textLabel.text = [NSString stringWithFormat:@"%ld",indexPath.row];
+        
+        if (indexPath.section == 3) {
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.textLabel.textColor = [UIColor colorWithHexString:@"#3A3A3A"];
+            cell.textLabel.font = FONT_SIZE(14);
+            cell.imageView.contentMode=UIViewContentModeScaleAspectFit;
+            
+            
             if (indexPath.row == 0) {
                 cell.imageView.image = [UIImage imageNamed:@"salaryCard_img"];
                 cell.textLabel.text = @"工资卡管理";
@@ -377,23 +414,96 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
                 cell.imageView.image = [UIImage imageNamed:@"customerService_img"];
                 cell.textLabel.text = @"专属客服";
             }
-//        }
+            //调整cell.imageView大小
+            CGSize itemSize = CGSizeMake(LENGTH_SIZE(20), LENGTH_SIZE(20));//希望显示的大小
+            UIGraphicsBeginImageContextWithOptions(itemSize, NO, UIScreen.mainScreen.scale);
+            CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
+            [cell.imageView.image drawInRect:imageRect];
+            cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
+            UIGraphicsEndImageContext();
+            
+        }
         
+        
+        return cell;
+    }else{
+        if (indexPath.section == 0) {
+            LPMineBillCell *cell = [tableView dequeueReusableCellWithIdentifier:LPMineBillCellID];
+            if(cell == nil){
+                cell = [[LPMineBillCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:LPMineBillCellID];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.userMaterialModel = self.userMaterialModel;
+            return cell;
+        }
+        if (indexPath.section == 1) {
+            LPMineCardCell *cell = [tableView dequeueReusableCellWithIdentifier:LPMineCardCellID];
+            if(cell == nil){
+                cell = [[LPMineCardCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:LPMineCardCellID];
+            }
+            cell.indexPath = indexPath;
+            cell.userMaterialModel = self.userMaterialModel;
+            [cell awakeFromNib];
+            return cell;
+        }
+        
+        static NSString *rid=@"cell";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:rid];
+        if(cell == nil){
+            cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rid];
+        }
+        cell.textLabel.text = [NSString stringWithFormat:@"%ld",indexPath.row];
+        
+        if (indexPath.section == 2) {
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.textLabel.textColor = [UIColor colorWithHexString:@"#3A3A3A"];
+            cell.textLabel.font = [UIFont systemFontOfSize:16];
+            cell.imageView.contentMode=UIViewContentModeScaleAspectFit;
+            
+            
+            if (indexPath.row == 0) {
+                cell.imageView.image = [UIImage imageNamed:@"salaryCard_img"];
+                cell.textLabel.text = @"工资卡管理";
+            }else if (indexPath.row == 1) {
+                cell.imageView.image = [UIImage imageNamed:@"changePassword_img"];
+                cell.textLabel.text = @"账号管理";
+            }else if (indexPath.row == 2) {
+                cell.imageView.image = [UIImage imageNamed:@"ActivityCenterImage"];
+                cell.textLabel.text = @"活动中心";
+            }else if (indexPath.row == 3) {
+                cell.imageView.image = [UIImage imageNamed:@"c_integral"];
+                cell.textLabel.text = @"幸运积分";
+            }else if (indexPath.row == 4) {
+                cell.imageView.image = [UIImage imageNamed:@"collectionCenter_img"];
+                cell.textLabel.text = @"收藏中心";
+            }else if (indexPath.row == 5){
+                cell.imageView.image = [UIImage imageNamed:@"customerService_img"];
+                cell.textLabel.text = @"专属客服";
+            }
+            
+        }
+        
+        
+        return cell;
     }
     
-    
-    return cell;
+   
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+ 
+    if (AlreadyLogin && self.RecordArr.count && indexPath.section == 1 && indexPath.row == 0) {
+        LPSalaryBreakdownVC *vc = [[LPSalaryBreakdownVC alloc]init];
+        vc.hidesBottomBarWhenPushed = YES;
+        vc.RecordDate = self.RecordArr[0];
+        [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+    }
     
-//    LPInfoVC *vc = [[LPInfoVC alloc]init];
-//    vc.hidesBottomBarWhenPushed = YES;
-//    [self.navigationController pushViewController:vc animated:YES];
-//    return;
-//    [LoginUtils validationLogin:self]
-    if ( AlreadyLogin || (indexPath.section == 2 && indexPath.row == 2)) {
-        if (indexPath.section == 2) {
+    if ( AlreadyLogin ||
+        (indexPath.section == 2 && indexPath.row == 2 && self.RecordArr.count == 0) ||
+        (indexPath.section == 3 && indexPath.row == 2 && self.RecordArr.count)) {
+        
+        if (indexPath.section == 2 || indexPath.section == 3) {
 //            if (kUserDefaultsValue(USERDATA).integerValue == 4 ||
 //                kUserDefaultsValue(USERDATA).integerValue == 3 ||
 //                kUserDefaultsValue(USERDATA).integerValue >= 8) {
@@ -549,7 +659,6 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
                     [LPTools UserDefaulatsRemove];
                 }
                 [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
-
              }
         }else{
 //            [LPTools UserDefaulatsRemove];
@@ -619,6 +728,26 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
 }
 
 
+
+
+-(void)requestQueryGetBillRecordList{
+    [NetApiManager requestQueryGetBillRecordList:nil withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                 self.RecordArr = [responseObject[@"data"] mj_JSONObject];
+                [self.tableview reloadData];
+            }else{
+                if ([responseObject[@"code"] integerValue] == 10002) {
+                    [LPTools UserDefaulatsRemove];
+                }
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
 #pragma mark lazy
 - (UITableView *)tableview{
     if (!_tableview) {
@@ -643,7 +772,7 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
             [self requestUserMaterial];
             [self requestSelectCurIsSign];
             [self requestQueryInfounreadNum];
-
+            [self requestQueryGetBillRecordList];
         }];
     }
     return _tableview;

@@ -164,7 +164,7 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
             if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:urlsting]]) {
                 UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
                 pasteboard.string = @"蓝聘网络科技";
-                 [self.view showLoadingMeg:@"蓝聘：点击搜索按钮，粘贴文本进行搜索" time:2];
+                 [self.view showLoadingMeg:@"蓝聘：点击搜索按钮，粘贴文本进行搜索" time:MESSAGE_SHOW_TIME];
                  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlsting]];
                 });
@@ -195,7 +195,7 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
             if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:urlsting]]) {
                 UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
                 pasteboard.string = @"蓝聘网络科技";
-                [self.view showLoadingMeg:@"蓝聘：点击搜索按钮，粘贴文本进行搜索" time:2];
+                [self.view showLoadingMeg:@"蓝聘：点击搜索按钮，粘贴文本进行搜索" time:MESSAGE_SHOW_TIME];
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlsting]];
                 });
@@ -308,7 +308,7 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
 -(UIView *)alertView{
     if (!_alertView) {
         _alertView = [[UIView alloc]init];
-        _alertView.frame = CGRectMake(13, SCREEN_HEIGHT/3, SCREEN_WIDTH-26, 300);
+        _alertView.frame = CGRectMake(13, (SCREEN_HEIGHT-300)/2.0, SCREEN_WIDTH-26, 300);
         _alertView.backgroundColor = [UIColor whiteColor];
         _alertView.alpha = 0;
         _alertView.layer.masksToBounds = YES;

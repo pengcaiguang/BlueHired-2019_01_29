@@ -71,21 +71,21 @@
     
     for (int i = 0; i < imgArray.count; i++) {
         UIView *bgView = [[UIView alloc]init];
-        bgView.frame = CGRectMake(i%4 * (SCREEN_WIDTH-20)/4, floor(i/4)*86, (SCREEN_WIDTH-20)/4, 86);
+        bgView.frame = CGRectMake(i%4 * (SCREEN_WIDTH-LENGTH_SIZE(20) )/4, floor(i/4)*LENGTH_SIZE(86), (SCREEN_WIDTH-LENGTH_SIZE(20))/4, LENGTH_SIZE(86));
 //        bgView.backgroundColor = randomColor;
         bgView.userInteractionEnabled = YES;
         bgView.tag = i;
         UIImageView *imageView = [[UIImageView alloc]init];
-        imageView.frame = CGRectMake(((SCREEN_WIDTH-20)/4-26)/2, 16, 26, 26);
+        imageView.frame = CGRectMake(((SCREEN_WIDTH-LENGTH_SIZE(20))/4-LENGTH_SIZE(26))/2, LENGTH_SIZE(16), LENGTH_SIZE(26), LENGTH_SIZE(26));
 //        imageView.backgroundColor = randomColor;
         imageView.image = [UIImage imageNamed:imgArray[i]];
         [bgView addSubview:imageView];
         
         UILabel *label = [[UILabel alloc]init];
-        label.frame = CGRectMake(0, 50, (SCREEN_WIDTH-20)/4, 20);
+        label.frame = CGRectMake(0, LENGTH_SIZE(50), (SCREEN_WIDTH-LENGTH_SIZE(20))/4, LENGTH_SIZE(20));
 //        label.backgroundColor = randomColor;
         label.textColor = [UIColor colorWithHexString:@"#343434"];
-        label.font = [UIFont systemFontOfSize:13];
+        label.font = FONT_SIZE(13);
         label.text = titleArray[i];
         label.textAlignment = NSTextAlignmentCenter;
         [bgView addSubview:label];

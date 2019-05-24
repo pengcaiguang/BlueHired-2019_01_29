@@ -48,10 +48,11 @@
     [_alertView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(15);
         make.right.mas_equalTo(-15);
-//        make.center.equalTo(self);
-        make.top.mas_equalTo(35);
+        make.centerY.mas_offset(-100);
+//        make.top.mas_equalTo(35);
     }];
     [_alertView setBackgroundColor:[UIColor whiteColor]];
+    _alertView.layer.cornerRadius = 6;
     
     UIButton *deleteBt = [[UIButton alloc] init];
     [self.alertView addSubview:deleteBt];

@@ -89,6 +89,11 @@
 
 -(void)setModel:(LPBankcardwithDrawModel *)model{
     _model = model;
+    if (model.data) {
+        [self initDrawlView];
+    }
+//    [self initDrawlView];
+    
 //    if (model.data.type.integerValue == 1) {
 //        self.addCardButton.hidden = NO;
 //        self.DrawalView.hidden = YES;
@@ -99,6 +104,7 @@
 //        self.DrawalView.hidden = NO;
 //        [self initDrawlView];
 //    }
+    
 }
 -(void)initDrawlView
 {
@@ -267,8 +273,6 @@
                    }else{
                         [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
                    }
-                   
-                   
 //                   [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
                }
 
@@ -285,9 +289,6 @@
 - (IBAction)SuccessTouch:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
 }
-
-
-
 
 #pragma mark - request
 -(void)requestQueryBankcardwithDraw{

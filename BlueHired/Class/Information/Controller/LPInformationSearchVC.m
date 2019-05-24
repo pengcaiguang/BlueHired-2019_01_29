@@ -106,7 +106,8 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
 }
 
 -(void)setSearchView{
-    LPSearchBar *searchBar = [self addSearchBarWithFrame:CGRectMake(0, 0, SCREEN_WIDTH - 2 * 44 - 0 * 15 - 44 - 5, 44)];
+//    LPSearchBar *searchBar = [self addSearchBarWithFrame:CGRectMake(0, 0, SCREEN_WIDTH - 2 * 44 - 0 * 15 - 44 - 5, 44)];
+    LPSearchBar *searchBar = [self addSearchBarWithFrame:CGRectMake(0, 0, SCREEN_WIDTH - 52  - 47 - 20*2- 5*2, 44)];
     [searchBar becomeFirstResponder];
     self.SearchBar = searchBar;
 
@@ -155,8 +156,8 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
 //    button.layer.cornerRadius = 14;
 //    [button setBackgroundImage:[UIImage imageNamed:@"search_btn_bgView"] forState:UIControlStateNormal];
     [button addTarget:self action:@selector(touchSearchButton) forControlEvents:UIControlEventTouchUpInside];
-
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:button];
+//    button.backgroundColor = [UIColor redColor];
 }
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
@@ -470,7 +471,7 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
     if (tableView == self.tableview) {
         return 30;
     }
-    return 1.0;
+    return 0.0;
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
@@ -551,6 +552,15 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:rid];
         if(cell == nil){
             cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rid];
+            UIView *LineV = [[UIView alloc] init];
+            [cell.contentView addSubview:LineV];
+            [LineV mas_makeConstraints:^(MASConstraintMaker *make){
+                make.left.mas_offset(12);
+                make.right.bottom.mas_offset(0);
+                make.height.mas_offset(1);
+            }];
+            LineV.backgroundColor = [UIColor colorWithHexString:@"#F5F5F5"];
+            
         }
         cell.textLabel.font = [UIFont systemFontOfSize:14];
         cell.textLabel.textColor = [UIColor colorWithHexString:@"#666666"];
@@ -889,7 +899,7 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
         _tableview.tableFooterView = [[UIView alloc]init];
         _tableview.rowHeight = UITableViewAutomaticDimension;
         _tableview.estimatedRowHeight = 44;
-        _tableview.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+        _tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableview.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
     }
     return _tableview;

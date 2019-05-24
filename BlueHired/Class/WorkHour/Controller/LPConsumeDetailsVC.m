@@ -315,7 +315,7 @@ static NSString *TEXT = @"可以备注您消费的原因，最多30字!";
 
 - (IBAction)SaveTouch:(UIButton *)sender {
     if (self.TextField.text.floatValue == 0.0) {
-        [self.view showLoadingMeg:@"请输入消费金额" time:2.0];
+        [self.view showLoadingMeg:@"请输入消费金额" time:MESSAGE_SHOW_TIME];
         return;
     }
     [self requestQueryUpdateAccount];

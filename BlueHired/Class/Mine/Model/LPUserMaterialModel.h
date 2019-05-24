@@ -41,5 +41,8 @@
 @property (nonatomic, copy) NSString *identity;
 @property (nonatomic, copy) NSString *attentionNum;
 @property (nonatomic, copy) NSString *isUserProblem;
+@property (nonatomic, copy) NSString *emValue;
+@property (nonatomic, copy) NSString *upEmValue;
+@property (nonatomic, copy) NSString *downEmValue;
 
 @end

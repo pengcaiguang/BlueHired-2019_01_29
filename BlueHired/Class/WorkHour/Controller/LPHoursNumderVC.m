@@ -140,7 +140,7 @@
 
 - (IBAction)SaveTouch:(UIButton *)sender {
     if (self.TextFirld.text.integerValue == 0) {
-        [self.view showLoadingMeg:@"请输入工作小时数" time:2.0];
+        [self.view showLoadingMeg:@"请输入工作小时数" time:MESSAGE_SHOW_TIME];
         return;
     }
     [self requestQueryUpdateMonthHours];

@@ -31,6 +31,7 @@
     self.navigationItem.title = @"邀请奖励";
     [self requestGetRegister];
 }
+
 -(void)setModel:(LPRegisterModel *)model{
     _model = model;
     self.BUserNumLabel.text = [NSString stringWithFormat:@"%@人",model.data.BUserNum];
@@ -40,8 +41,8 @@
 
     self.sumAmountLabel.text = [NSString stringWithFormat:@"%ld元",model.data.sumNum.integerValue*20];
     self.unAmountLabel.text = [NSString stringWithFormat:@"%ld元",(model.data.sumNum.integerValue-model.data.fullMonthNum.integerValue) * 20];
-
 }
+
 - (IBAction)touchDetailButton:(UIButton *)sender {
     LPRegisterDetailVC *vc = [[LPRegisterDetailVC alloc]init];
     [self.navigationController pushViewController:vc animated:YES];

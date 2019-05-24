@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UIButton *showMoneyButton;
 @property (weak, nonatomic) IBOutlet UIView *backView2;
 @property(nonatomic,strong) LPUserMaterialModel *userMaterialModel;
+@property (weak, nonatomic) IBOutlet UILabel *RecordLabel;
 
 @end
 

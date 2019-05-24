@@ -34,7 +34,7 @@ static NSString *LPTLendAuditCellID = @"LPBonusDetailCell";
     self.navigationItem.title = @"业绩详情";
     NSDate *currentDate = [NSDate date];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"YYYY-MM"];
+    [dateFormatter setDateFormat:@"yyyy-MM"];
     self.currentDateString = [dateFormatter stringFromDate:currentDate];
     [dateFormatter setDateFormat:@"MM"];
     self.month = [dateFormatter stringFromDate:currentDate].integerValue;

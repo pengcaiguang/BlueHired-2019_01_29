@@ -127,7 +127,7 @@
 
 - (IBAction)SaveTouch:(UIButton *)sender {
         if ([self.TextField.text isEqualToString:@""]) {
-            [self.view showLoadingMeg:@"请设置企业底薪" time:2.0];
+            [self.view showLoadingMeg:@"请设置企业底薪" time:MESSAGE_SHOW_TIME];
             return;
         }
         [self requestQueryUpdateBaseSalary];

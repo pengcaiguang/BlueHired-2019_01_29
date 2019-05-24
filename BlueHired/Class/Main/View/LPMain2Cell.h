@@ -31,6 +31,8 @@ typedef void(^LPMainCellBlock)(void);
 @property (weak, nonatomic) IBOutlet UILabel *isApplyLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *keyLabel_constraint_right;
 
+
+
 @property(nonatomic,strong) LPWorklistDataWorkListModel *model;
 @property(nonatomic,strong) XHStarRateView *starRateView;
 @property (nonatomic,copy) LPMainCellBlock block;

@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface LPSalaryBreakdownVC : LPBaseViewController
-
+@property (nonatomic,strong) NSString *RecordDate;
 @end

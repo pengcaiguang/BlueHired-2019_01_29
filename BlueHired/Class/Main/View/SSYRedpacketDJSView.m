@@ -215,7 +215,7 @@
                 if (AlreadyLogin) {
                     [self requestQueryGetRedPacket];
                 }else{
-                    [[UIWindow visibleViewController].view showLoadingMeg:@"拆红包，请先进行登录！" time:2];
+                    [[UIWindow visibleViewController].view showLoadingMeg:@"拆红包，请先进行登录！" time:MESSAGE_SHOW_TIME];
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                         LPLoginVC *vc = [[LPLoginVC alloc]init];
                         vc.hidesBottomBarWhenPushed = YES;

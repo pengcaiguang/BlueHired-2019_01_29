@@ -480,7 +480,7 @@
         {
             // 无权限
             [LPTools AlertMessageView:@"您没有开启相册访问权限,请您去手机设置页面开启"];
-            //                 [[UIWindow visibleViewController].view showLoadingMeg:@"您没有开启相册访问权限,请您去手机设置页面开启" time:2.0];
+            //                 [[UIWindow visibleViewController].view showLoadingMeg:@"您没有开启相册访问权限,请您去手机设置页面开启" time:MESSAGE_SHOW_TIME];
             return;
         }
         
@@ -493,7 +493,7 @@
 - (void) savedPhotoImage:(UIImage*)image didFinishSavingWithError: (NSError *)error contextInfo: (void *)contextInfo {
     if (error) {
         NSLog(@"保存图片出错%@", error.localizedDescription);
-        [[UIWindow visibleViewController].view showLoadingMeg:@"保存图片失败,请稍后再试" time:2.0];
+        [[UIWindow visibleViewController].view showLoadingMeg:@"保存图片失败,请稍后再试" time:MESSAGE_SHOW_TIME];
         [LPTools AlertMessageView:@"保存图片失败,请稍后再试"];
     }
     else {

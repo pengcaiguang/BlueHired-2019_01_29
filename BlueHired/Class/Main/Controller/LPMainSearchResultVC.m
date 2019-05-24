@@ -140,7 +140,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         _tableview.rowHeight = UITableViewAutomaticDimension;
         _tableview.estimatedRowHeight = 100;
 
-        _tableview.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+        _tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableview.separatorColor = [UIColor colorWithHexString:@"#E6E6E6"];
         _tableview.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
         [_tableview registerNib:[UINib nibWithNibName:LPMainCellID bundle:nil] forCellReuseIdentifier:LPMainCellID];

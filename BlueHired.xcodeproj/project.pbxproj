@@ -189,6 +189,7 @@
 		889C4B9D21708B6100C153ED /* LPBillRecordStateVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 889C4B9B21708B6100C153ED /* LPBillRecordStateVC.m */; };
 		889C4B9E21708B6100C153ED /* LPBillRecordStateVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 889C4B9C21708B6100C153ED /* LPBillRecordStateVC.xib */; };
 		889C4BA1217094A500C153ED /* LPDrawalStateModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 889C4BA0217094A500C153ED /* LPDrawalStateModel.m */; };
+		889CC8562294E604009BF022 /* NSLayoutConstraint+BSIBDesignable.m in Sources */ = {isa = PBXBuildFile; fileRef = 889CC8552294E603009BF022 /* NSLayoutConstraint+BSIBDesignable.m */; };
 		889E1F8A2183EEED0045D247 /* LPFirmCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 889E1F882183EEED0045D247 /* LPFirmCell.m */; };
 		889E1F8B2183EEED0045D247 /* LPFirmCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 889E1F892183EEED0045D247 /* LPFirmCell.xib */; };
 		889E1F8F2183EF710045D247 /* LPEntryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 889E1F8D2183EF710045D247 /* LPEntryCell.m */; };
@@ -279,6 +280,8 @@
 		88B1AE042228C01800EAF366 /* LPWorkHourBaseSalaryVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 88B1AE022228C01800EAF366 /* LPWorkHourBaseSalaryVC.xib */; };
 		88B1AE08222913E800EAF366 /* LPWorkHourKQWeekVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 88B1AE06222913E800EAF366 /* LPWorkHourKQWeekVC.m */; };
 		88B1AE09222913E800EAF366 /* LPWorkHourKQWeekVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 88B1AE07222913E800EAF366 /* LPWorkHourKQWeekVC.xib */; };
+		88B23BC722928E03004F1BAD /* LPUndergoWebVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 88B23BC522928E02004F1BAD /* LPUndergoWebVC.m */; };
+		88B23BC822928E03004F1BAD /* LPUndergoWebVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 88B23BC622928E02004F1BAD /* LPUndergoWebVC.xib */; };
 		88B5587721C72E8100AED96E /* KJMarqueeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 88B5587621C72E8100AED96E /* KJMarqueeLabel.m */; };
 		88B7B9892187E67D00C12932 /* LPBonusDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 88B7B9872187E67D00C12932 /* LPBonusDetailVC.m */; };
 		88B7B98A2187E67D00C12932 /* LPBonusDetailVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 88B7B9882187E67D00C12932 /* LPBonusDetailVC.xib */; };
@@ -1094,6 +1097,8 @@
 		889C4B9C21708B6100C153ED /* LPBillRecordStateVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPBillRecordStateVC.xib; sourceTree = "<group>"; };
 		889C4B9F217094A500C153ED /* LPDrawalStateModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPDrawalStateModel.h; sourceTree = "<group>"; };
 		889C4BA0217094A500C153ED /* LPDrawalStateModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPDrawalStateModel.m; sourceTree = "<group>"; };
+		889CC8542294E603009BF022 /* NSLayoutConstraint+BSIBDesignable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSLayoutConstraint+BSIBDesignable.h"; sourceTree = "<group>"; };
+		889CC8552294E603009BF022 /* NSLayoutConstraint+BSIBDesignable.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSLayoutConstraint+BSIBDesignable.m"; sourceTree = "<group>"; };
 		889E1F872183EEED0045D247 /* LPFirmCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPFirmCell.h; sourceTree = "<group>"; };
 		889E1F882183EEED0045D247 /* LPFirmCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPFirmCell.m; sourceTree = "<group>"; };
 		889E1F892183EEED0045D247 /* LPFirmCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPFirmCell.xib; sourceTree = "<group>"; };
@@ -1249,6 +1254,9 @@
 		88B1AE05222913E800EAF366 /* LPWorkHourKQWeekVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPWorkHourKQWeekVC.h; sourceTree = "<group>"; };
 		88B1AE06222913E800EAF366 /* LPWorkHourKQWeekVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPWorkHourKQWeekVC.m; sourceTree = "<group>"; };
 		88B1AE07222913E800EAF366 /* LPWorkHourKQWeekVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPWorkHourKQWeekVC.xib; sourceTree = "<group>"; };
+		88B23BC422928E02004F1BAD /* LPUndergoWebVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPUndergoWebVC.h; sourceTree = "<group>"; };
+		88B23BC522928E02004F1BAD /* LPUndergoWebVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPUndergoWebVC.m; sourceTree = "<group>"; };
+		88B23BC622928E02004F1BAD /* LPUndergoWebVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPUndergoWebVC.xib; sourceTree = "<group>"; };
 		88B5587521C72E8100AED96E /* KJMarqueeLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KJMarqueeLabel.h; sourceTree = "<group>"; };
 		88B5587621C72E8100AED96E /* KJMarqueeLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KJMarqueeLabel.m; sourceTree = "<group>"; };
 		88B7B9862187E67D00C12932 /* LPBonusDetailVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPBonusDetailVC.h; sourceTree = "<group>"; };
@@ -2369,6 +2377,8 @@
 				8825AF0E2238E6CE00D47ACD /* CustomDataPickView.m */,
 				88BEA6912251B99A0028DDC2 /* UILabel+Copy.h */,
 				88BEA6922251B99A0028DDC2 /* UILabel+Copy.m */,
+				889CC8542294E603009BF022 /* NSLayoutConstraint+BSIBDesignable.h */,
+				889CC8552294E603009BF022 /* NSLayoutConstraint+BSIBDesignable.m */,
 			);
 			path = lib;
 			sourceTree = "<group>";
@@ -3875,6 +3885,9 @@
 				88B8C62B227180AD00313854 /* LPSecurityQuestionVC.h */,
 				88B8C62C227180AD00313854 /* LPSecurityQuestionVC.m */,
 				88B8C62D227180AD00313854 /* LPSecurityQuestionVC.xib */,
+				88B23BC422928E02004F1BAD /* LPUndergoWebVC.h */,
+				88B23BC522928E02004F1BAD /* LPUndergoWebVC.m */,
+				88B23BC622928E02004F1BAD /* LPUndergoWebVC.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -4625,6 +4638,7 @@
 				88DB4C6C21A2862100A222BF /* LPBlackUserVC.xib in Resources */,
 				DCB25EA52150F4A200ED2FC4 /* LPMoodDetailHeaderCell.xib in Resources */,
 				88CAA9C1219AF7740088D8E9 /* LPLendCell.xib in Resources */,
+				88B23BC822928E03004F1BAD /* LPUndergoWebVC.xib in Resources */,
 				884471AA2177064900ECC047 /* README.txt in Resources */,
 				88CB128E219D706B00EFED06 /* 组1.png in Resources */,
 				88CCFAD721E2FA5F00C1B6FE /* Untitled-0.png in Resources */,
@@ -4950,6 +4964,7 @@
 				88ADC51021DF094500405699 /* MenuVIew.m in Sources */,
 				DC47E155215E1281003CF466 /* LPSalaryBreakdownCell.m in Sources */,
 				8895F950223794C700215EEF /* LPLeaveEditorVC.m in Sources */,
+				88B23BC722928E03004F1BAD /* LPUndergoWebVC.m in Sources */,
 				88AEA2D621D3267A0073C99C /* WHActivityView.m in Sources */,
 				882594D02236622900D24216 /* LPAddSubsidiesVC.m in Sources */,
 				88EADA40228573850000299B /* TAPageControl.m in Sources */,
@@ -5203,6 +5218,7 @@
 				88B8037521D0CA0E00FB4D25 /* JXPagerListRefreshView.m in Sources */,
 				8895D6EA21CCE58B00AF01AE /* LZImageBrowserTranslation.m in Sources */,
 				88DB4C7321A28A5B00A222BF /* LPUserBlackCell.m in Sources */,
+				889CC8562294E604009BF022 /* NSLayoutConstraint+BSIBDesignable.m in Sources */,
 				DCE2C2322148B52400BCB9F4 /* LPCalendarCell.m in Sources */,
 				888A1ABC218461B000A40F4A /* LPFirmDetailsModel.m in Sources */,
 				DC30E19821391303000C7A91 /* LPMainSearchResultVC.m in Sources */,

@@ -237,11 +237,14 @@ static NSString *LPInfoCellID = @"LPInfoCell";
     [NetApiManager requestDelInfosWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            [self.selectArray removeAllObjects];
+           
             if ([responseObject[@"code"] integerValue] == 0) {
                 if ([responseObject[@"data"] integerValue] == 1) {
-                    self.page = 1;
-                    [self requestQueryInfolist];
+//                    self.page = 1;
+//                    [self requestQueryInfolist];
+                    [self.listArray removeObjectsInArray:self.selectArray];
+                    [self.tableview reloadData];
+                    [self.selectArray removeAllObjects];
                     [[UIWindow visibleViewController].view showLoadingMeg:@"删除成功" time:MESSAGE_SHOW_TIME];
                 }else{
                     [[UIWindow visibleViewController].view showLoadingMeg:@"删除失败" time:MESSAGE_SHOW_TIME];

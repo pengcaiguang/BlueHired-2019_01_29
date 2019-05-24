@@ -49,7 +49,7 @@ static NSString *LPTLendAuditCellID = @"LPStoreBalanceCell";
     
     NSDate *currentDate = [NSDate date];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"YYYY-MM"];
+    [dateFormatter setDateFormat:@"yyyy-MM"];
     self.currentDateString = [dateFormatter stringFromDate:currentDate];
     [dateFormatter setDateFormat:@"MM"];
     self.month = [dateFormatter stringFromDate:currentDate].integerValue;

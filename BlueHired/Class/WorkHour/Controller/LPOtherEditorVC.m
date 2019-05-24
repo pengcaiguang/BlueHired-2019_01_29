@@ -254,13 +254,13 @@
 //        self.ClassType == 2 ||
 //        self.ClassType == 6  )) {
 //        if (self.ClassType == 1) {
-//            [self.view showLoadingMeg:@"请输入企业底薪" time:2.0];
+//            [self.view showLoadingMeg:@"请输入企业底薪" time:MESSAGE_SHOW_TIME];
 //        }else if (self.ClassType == 2){
-//            [self.view showLoadingMeg:@"请输入加班工资" time:2.0];
+//            [self.view showLoadingMeg:@"请输入加班工资" time:MESSAGE_SHOW_TIME];
 //        }else if (self.ClassType == 6){
-//            [self.view showLoadingMeg:@"请输入工作工资" time:2.0];
+//            [self.view showLoadingMeg:@"请输入工作工资" time:MESSAGE_SHOW_TIME];
 //        }else if (self.ClassType == 7){
-//            [self.view showLoadingMeg:@"请输入计件工资" time:2.0];
+//            [self.view showLoadingMeg:@"请输入计件工资" time:MESSAGE_SHOW_TIME];
 //        }
 //        return;
 //    }
@@ -268,29 +268,29 @@
     if (self.WorkHourType == 1  || self.WorkHourType == 2) {
         if (self.MoneyTF.text.floatValue == 0.0) {
             if (self.ClassType == 1&& !self.TopViewSwitch.on) {
-                [self.view showLoadingMeg:@"请输入企业底薪" time:2.0];
+                [self.view showLoadingMeg:@"请输入企业底薪" time:MESSAGE_SHOW_TIME];
                 return;
             }
             if (self.ClassType == 2&& !self.TopViewSwitch.on) {
-                [self.view showLoadingMeg:@"请输入加班工资" time:2.0];
+                [self.view showLoadingMeg:@"请输入加班工资" time:MESSAGE_SHOW_TIME];
                 return;
             }
         }
     }else if (self.WorkHourType == 3) {
         if (self.MoneyTF.text.floatValue == 0.0 && !self.TopViewSwitch.on) {
             if (self.ClassType == 6) {
-                [self.view showLoadingMeg:@"请输入工作工资" time:2.0];
+                [self.view showLoadingMeg:@"请输入工作工资" time:MESSAGE_SHOW_TIME];
                 return;
             }
         }
     }else if (self.WorkHourType == 4){
         if (self.MoneyTF.text.floatValue == 0.0 && !self.TopViewSwitch.on) {
             if (self.ClassType == 1) {
-                [self.view showLoadingMeg:@"请输入企业底薪" time:2.0];
+                [self.view showLoadingMeg:@"请输入企业底薪" time:MESSAGE_SHOW_TIME];
                 return;
             }
             if (self.ClassType == 7) {
-                [self.view showLoadingMeg:@"请输入计件工资" time:2.0];
+                [self.view showLoadingMeg:@"请输入计件工资" time:MESSAGE_SHOW_TIME];
                 return;
             }
         }

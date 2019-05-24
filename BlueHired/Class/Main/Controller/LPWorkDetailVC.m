@@ -927,7 +927,16 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         LPMain2Cell *cell = [tableView dequeueReusableCellWithIdentifier:LPMainCellID];
         if(cell == nil){
             cell = [[LPMain2Cell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:LPMainCellID];
+            UIView *LineV = [[UIView alloc] init];
+            [cell.contentView addSubview:LineV];
+            [LineV mas_makeConstraints:^(MASConstraintMaker *make){
+                make.left.bottom.right.mas_offset(0);
+                make.height.mas_offset(4);
+            }];
+            LineV.backgroundColor = [UIColor redColor];
         }
+        tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+
         cell.model = self.RecommendList[indexPath.row];
         //    WEAK_SELF()
         //    cell.block = ^(void) {

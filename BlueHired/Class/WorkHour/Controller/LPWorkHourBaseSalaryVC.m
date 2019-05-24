@@ -197,21 +197,21 @@
         self.UnitTextField3.text = [NSString stringWithFormat:@"%.2f",self.SalaryUnitTextField.text.floatValue*self.CountTextField3.text.floatValue];
     }else if (textField == self.UnitTextField1){
         if (self.SalaryUnitTextField.text.floatValue == 0.0) {
-            [self.view showLoadingMeg:@"请设置工资单价" time:2.0];
+            [self.view showLoadingMeg:@"请设置工资单价" time:MESSAGE_SHOW_TIME];
             textField.text = @"0.0";
             return;
         }
         self.CountTextField1.text = [NSString stringWithFormat:@"%.2f",self.UnitTextField1.text.floatValue/self.SalaryUnitTextField.text.floatValue];
     }else if (textField == self.UnitTextField2){
         if (self.SalaryUnitTextField.text.floatValue == 0.0) {
-            [self.view showLoadingMeg:@"请设置工资单价" time:2.0];
+            [self.view showLoadingMeg:@"请设置工资单价" time:MESSAGE_SHOW_TIME];
             textField.text = @"0.0";
             return;
         }
         self.CountTextField2.text = [NSString stringWithFormat:@"%.2f",self.UnitTextField2.text.floatValue/self.SalaryUnitTextField.text.floatValue];
     }else if (textField == self.UnitTextField3){
         if (self.SalaryUnitTextField.text.floatValue == 0.0) {
-            [self.view showLoadingMeg:@"请设置工资单价" time:2.0];
+            [self.view showLoadingMeg:@"请设置工资单价" time:MESSAGE_SHOW_TIME];
             textField.text = @"0.0";
             return;
         }
@@ -309,30 +309,30 @@
 
 - (IBAction)SaveTouch:(UIButton *)sender {
     if (self.SalaryUnitTextField.text.floatValue == 0.0) {
-        [self.view showLoadingMeg:@"请设置工资单价" time:2.0];
+        [self.view showLoadingMeg:@"请设置工资单价" time:MESSAGE_SHOW_TIME];
          return;
     }
     if (self.BaseSalaryTextField.text.floatValue == 0.0) {
-        [self.view showLoadingMeg:@"请设置企业底薪" time:2.0];
+        [self.view showLoadingMeg:@"请设置企业底薪" time:MESSAGE_SHOW_TIME];
         return;
     }
     if (self.setdate.currentTitle.length== 0 && self.WorkHourType == 1) {
-        [self.view showLoadingMeg:@"请设置生效日期" time:2.0];
+        [self.view showLoadingMeg:@"请设置生效日期" time:MESSAGE_SHOW_TIME];
         return;
     }
     
     if (self.UnitTextField1.text.floatValue == 0.0) {
-        [self.view showLoadingMeg:@"请设置正常加班单价" time:2.0];
+        [self.view showLoadingMeg:@"请设置正常加班单价" time:MESSAGE_SHOW_TIME];
         return;
     }
     
     if (self.UnitTextField2.text.floatValue == 0.0) {
-        [self.view showLoadingMeg:@"请设置周末加班单价" time:2.0];
+        [self.view showLoadingMeg:@"请设置周末加班单价" time:MESSAGE_SHOW_TIME];
         return;
     }
     
     if (self.UnitTextField3.text.floatValue == 0.0) {
-        [self.view showLoadingMeg:@"请设置节假日加班单价" time:2.0];
+        [self.view showLoadingMeg:@"请设置节假日加班单价" time:MESSAGE_SHOW_TIME];
         return;
     }
     

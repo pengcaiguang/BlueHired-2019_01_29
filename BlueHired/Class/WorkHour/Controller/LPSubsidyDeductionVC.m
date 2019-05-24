@@ -128,7 +128,7 @@ static NSString *LPSubsidyDeductionCellID = @"LPSubsidyDeductionCell";
                                                                    NSString  *TypeName = [str componentsSeparatedByString:@"-"][0];
                                                                    if ([TypeName isEqualToString:string]) {
                                                                        IsBaoHan = YES;
-                                                                       [self.view showLoadingMeg:@"该类型已经存在,请重新选择" time:2.0];
+                                                                       [self.view showLoadingMeg:@"该类型已经存在,请重新选择" time:MESSAGE_SHOW_TIME];
                                                                        break;
                                                                    }
                                                                }
@@ -180,7 +180,7 @@ static NSString *LPSubsidyDeductionCellID = @"LPSubsidyDeductionCell";
         NSString  *TypeName = [str componentsSeparatedByString:@"-"][0];
         if ([TypeName isEqualToString:self.titleArray[indexPath.row]]) {
             IsBaoHan = YES;
-            [self.view showLoadingMeg:@"该类型已经存在,请重新选择" time:2.0];
+            [self.view showLoadingMeg:@"该类型已经存在,请重新选择" time:MESSAGE_SHOW_TIME];
             break;
         }
     }

@@ -38,6 +38,7 @@
     [btn sizeToFit];
     [btn addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
     self.NBackBT = btn;
+    
     return [[UIBarButtonItem alloc] initWithCustomView:btn];
 }
 

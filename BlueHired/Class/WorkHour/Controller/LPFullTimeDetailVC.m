@@ -54,7 +54,7 @@ static NSString *LPSalaryStatisticsCellID = @"LPSalaryStatisticsCell";
     self.navigationItem.title = @"工时详情";
     NSDate *currentDate = [NSDate date];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"YYYY-MM"];
+    [dateFormatter setDateFormat:@"yyyy-MM"];
     self.currentDateString = [dateFormatter stringFromDate:currentDate];
     
     [dateFormatter setDateFormat:@"MM"];

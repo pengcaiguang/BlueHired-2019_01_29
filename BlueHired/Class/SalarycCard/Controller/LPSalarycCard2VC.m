@@ -815,7 +815,7 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
                     weakSelf.model.data.userName = IdentityName;
                     [weakSelf TouchNextBt:nil];
                 }else{
-                    [weakSelf.view showLoadingMeg:@"扫描失败，请重新扫描！" time:2.0];
+                    [weakSelf.view showLoadingMeg:@"扫描失败，请重新扫描！" time:MESSAGE_SHOW_TIME];
                 }
             }else{
                 NSString *strBank = [result[@"result"][@"bank_card_number"] stringByReplacingOccurrencesOfString:@" " withString:@""];
@@ -847,10 +847,10 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
 
                             [weakSelf TouchNextBt:nil];
                         }else{
-                            [weakSelf.view showLoadingMeg:@"工资卡必须为借记卡！" time:2.0];
+                            [weakSelf.view showLoadingMeg:@"工资卡必须为借记卡！" time:MESSAGE_SHOW_TIME];
                         }
                     }else{
-                        [weakSelf.view showLoadingMeg:@"扫描失败，请重新扫描！" time:2.0];
+                        [weakSelf.view showLoadingMeg:@"扫描失败，请重新扫描！" time:MESSAGE_SHOW_TIME];
                     }
             }
         }];
@@ -861,12 +861,12 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
 //        NSString *msg = [NSString stringWithFormat:@"%li:%@", (long)[error code], [error localizedDescription]];
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             [weakSelf.navigationController popViewControllerAnimated:YES];
-//            [weakSelf.view showLoadingMeg:msg time:2.0];
+//            [weakSelf.view showLoadingMeg:msg time:MESSAGE_SHOW_TIME];
             
             if (error.code == 283602) {
-                [weakSelf.view showLoadingMeg:@"手机时间与当前时间不符，请手动校准后重试！" time:2.0];
+                [weakSelf.view showLoadingMeg:@"手机时间与当前时间不符，请手动校准后重试！" time:MESSAGE_SHOW_TIME];
             }else{
-                [weakSelf.view showLoadingMeg:@"扫描失败，请重新扫描！" time:2.0];
+                [weakSelf.view showLoadingMeg:@"扫描失败，请重新扫描！" time:MESSAGE_SHOW_TIME];
             }
             
         }];
@@ -1181,7 +1181,7 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
                             });
                             return ;
                     }else{
-//                        [self.view showLoadingMeg:responseObject[@"data"][@"res_msg"] time:2];
+//                        [self.view showLoadingMeg:responseObject[@"data"][@"res_msg"] time:MESSAGE_SHOW_TIME];
                         if ([responseObject[@"data"][@"res_error_num"] integerValue]) {
                             GJAlertMessage *alert = [[GJAlertMessage alloc] initWithTitle:[NSString stringWithFormat:@"您今日还剩%ld次绑定机会，请仔细核对您的信息！(%@)",(long)[responseObject[@"data"][@"res_error_num"] integerValue],responseObject[@"data"][@"res_msg"]]
                                                                                   message:nil
@@ -1392,7 +1392,7 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
                             weakSelf.model.data.userName = IdentityName;
                             [weakSelf TouchNextBt:nil];
                         }else{
-                            [weakSelf.view showLoadingMeg:@"扫描失败，请重新扫描！" time:2.0];
+                            [weakSelf.view showLoadingMeg:@"扫描失败，请重新扫描！" time:MESSAGE_SHOW_TIME];
                         }
                     }else{
                         NSString *strBank = [responseObject[@"data"][@"result"][@"bank_card_number"] stringByReplacingOccurrencesOfString:@" " withString:@""];
@@ -1424,10 +1424,10 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
                                 
                                 [weakSelf TouchNextBt:nil];
                             }else{
-                                [weakSelf.view showLoadingMeg:@"工资卡必须为借记卡！" time:2.0];
+                                [weakSelf.view showLoadingMeg:@"工资卡必须为借记卡！" time:MESSAGE_SHOW_TIME];
                             }
                         }else{
-                            [weakSelf.view showLoadingMeg:@"扫描失败，请重新扫描！" time:2.0];
+                            [weakSelf.view showLoadingMeg:@"扫描失败，请重新扫描！" time:MESSAGE_SHOW_TIME];
                         }
                     }
                 }else{

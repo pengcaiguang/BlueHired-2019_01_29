@@ -92,7 +92,7 @@ static NSString *LPLeaveDetailsCellID = @"LPLeaveDetailsCell";
 -(void)TouchLeftButton{
     NSArray *dateArr = [self.KQDateString componentsSeparatedByString:@"#"];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"YYYY.MM.dd"];
+    [dateFormatter setDateFormat:@"yyyy.MM.dd"];
     NSDate *date = [dateFormatter dateFromString:dateArr[0]];
     NSDateComponents *comps = [[NSDateComponents alloc] init];
     [comps setMonth:-1];
@@ -112,7 +112,7 @@ static NSString *LPLeaveDetailsCellID = @"LPLeaveDetailsCell";
 -(void)TouchRightButton{
     NSArray *dateArr = [self.KQDateString componentsSeparatedByString:@"#"];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"YYYY.MM.dd"];
+    [dateFormatter setDateFormat:@"yyyy.MM.dd"];
     NSDate *date = [dateFormatter dateFromString:dateArr[0]];
     NSDateComponents *comps = [[NSDateComponents alloc] init];
     [comps setMonth:1];

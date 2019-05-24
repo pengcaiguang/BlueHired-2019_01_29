@@ -251,12 +251,12 @@
 - (void) savedPhotoImage:(UIImage*)image didFinishSavingWithError: (NSError *)error contextInfo: (void *)contextInfo {
     if (error) {
         NSLog(@"保存图片出错%@", error.localizedDescription);
-        //        [[UIWindow visibleViewController].view showLoadingMeg:@"保存图片失败,请稍后再试" time:2.0];
-        [LPTools AlertMessageView:@"保存图片失败,请检查是否开启相册访问权限" dismiss:1.0];
+        //        [[UIWindow visibleViewController].view showLoadingMeg:@"保存图片失败,请稍后再试" time:MESSAGE_SHOW_TIME];
+        [LPTools AlertMessageView:@"保存图片失败,请检查是否开启相册访问权限" dismiss:MESSAGE_SHOW_TIME];
     }
     else {
         NSLog(@"保存图片成功");
-        [LPTools AlertMessageView:@"保存图片成功" dismiss:1.0];
+        [LPTools AlertMessageView:@"保存图片成功" dismiss:MESSAGE_SHOW_TIME];
     }
 }
 

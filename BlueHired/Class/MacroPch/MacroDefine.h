@@ -41,9 +41,9 @@
 //#define BaseRequestCookie  @"ceshi.lanpin123.com"
 
 
-//#define BaseRequestURL  @"http://192.168.0.169:8081/lifetime/"        //胡经理
-//#define BaseRequestWeiXiURL  @"http://192.168.0.169/"
-//#define BaseRequestCookie  @"192.168.0.169"
+//#define BaseRequestURL  @"http://192.168.0.167:8080/lifetime/"        //胡经理
+//#define BaseRequestWeiXiURL  @"http://192.168.0.167/"
+//#define BaseRequestCookie  @"192.168.0.167"
 
 #define QiNiuBaseUrl @"http://pic.lanpin123.com/"
 
@@ -104,7 +104,7 @@
 /**
  * 信息提示显示时间 单位为秒
  */
-#define  MESSAGE_SHOW_TIME       1
+#define  MESSAGE_SHOW_TIME       2.0
 
 #define TimeOutIntervalSet       60
 

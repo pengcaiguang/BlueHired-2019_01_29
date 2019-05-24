@@ -489,6 +489,11 @@ typedef void (^UploadImageTempBlock)(BOOL sussess,NSMutableArray *array);
 + (void)requestQueryAddLendApi:(NSString *)urlString
                      withParam:(id)paramer
                     withHandle:(response)responseHandle;
+
+//是否需要驻厂电话审核。  1 为 需要   2为不需要驻厂电话号码
++ (void)requestQueryLendMoneyType:(id)paramer
+                       withHandle:(response)responseHandle;
+
 //获取点赞列表
 + (void)requestQueryPraiseList:(id)paramer
                     withHandle:(response)responseHandle;
@@ -631,6 +636,10 @@ typedef void (^UploadImageTempBlock)(BOOL sussess,NSMutableArray *array);
 //查询客服电话 get请求
 + (void)requestQueryGetCustomerTel:(id)paramer
                         withHandle:(response)responseHandle;
+
+//工资领取消息
++ (void)requestQueryGetBillRecordList:(id)paramer
+                           withHandle:(response)responseHandle;
 @end
 
 

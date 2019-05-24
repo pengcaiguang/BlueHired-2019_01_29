@@ -462,7 +462,7 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
                     if (responseObject[@"data"][@"res_code"]) {
                         if ([responseObject[@"data"][@"res_code"] integerValue] == 0) {
                             if (responseObject[@"data"][@"res_msg"]) {
-                                [self.view showLoadingMeg:responseObject[@"data"][@"res_msg"] time:2];
+                                [self.view showLoadingMeg:responseObject[@"data"][@"res_msg"] time:MESSAGE_SHOW_TIME];
                                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                                     //                                [self.navigationController popViewControllerAnimated:YES];
                                     self.SucceedView.hidden = NO;

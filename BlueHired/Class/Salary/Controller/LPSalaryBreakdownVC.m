@@ -41,8 +41,16 @@ static NSString *LPSalaryBreakdownCellID = @"LPSalaryBreakdownCell";
     self.navigationItem.title = @"工资领取";
     
     NSDate *currentDate = [NSDate date];
+
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"YYYY-MM"];
+    
+    if (self.RecordDate) {
+        [dateFormatter setDateFormat:@"yyyy年MM月"];
+       currentDate = [dateFormatter dateFromString:self.RecordDate];
+    }
+    
+    
+    [dateFormatter setDateFormat:@"yyyy-MM"];
     self.currentDateString = [dateFormatter stringFromDate:currentDate];
     
     [dateFormatter setDateFormat:@"MM"];
@@ -282,13 +290,21 @@ static NSString *LPSalaryBreakdownCellID = @"LPSalaryBreakdownCell";
     LPSalaryBreakdownCell *cell = [tableView dequeueReusableCellWithIdentifier:LPSalaryBreakdownCellID];
     cell.companyNameLabel.text = self.model.data[indexPath.row].companyName;
     cell.MoneyLabel.text = [NSString stringWithFormat:@"%.2f元",self.model.data[indexPath.row].actualPay.floatValue];
-    if (self.model.data[indexPath.row].status.integerValue == 1) {
+    if (self.model.data[indexPath.row].status.integerValue == 1 ) {
         cell.DrawBt.hidden = NO;
         cell.AlreadyLabel.hidden = YES;
     }else if (self.model.data[indexPath.row].status.integerValue == 2){
         cell.DrawBt.hidden = YES;
         cell.AlreadyLabel.hidden = NO;
+        cell.AlreadyLabel.text  = @"本月已领取";
     }
+    
+    if (self.model.data[indexPath.row].actualPay.floatValue <= 0.0) {
+        cell.DrawBt.hidden = YES;
+        cell.AlreadyLabel.hidden = NO;
+        cell.AlreadyLabel.text  = @"不可领取";
+    }
+    
     WEAK_SELF()
     cell.block = ^(void){
         [weakSelf requestQueryBankcardwithDraw];

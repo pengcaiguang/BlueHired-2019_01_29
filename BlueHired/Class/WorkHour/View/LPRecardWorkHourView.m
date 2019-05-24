@@ -584,23 +584,23 @@ static NSString *TEXT2 = @"可以备注您请假的原因，最多30字!";
    if ([self.OverButton.currentTitleColor isEqual:[UIColor baseColor]]) {      //加班
        if (self.WorkHourType == 2) {
            if (self.SalaryTF.text.floatValue==0.0) {
-               [[UIApplication sharedApplication].keyWindow showLoadingMeg:@"请选择本月工作小时数" time:2.0];
+               [[UIApplication sharedApplication].keyWindow showLoadingMeg:@"请选择本月工作小时数" time:MESSAGE_SHOW_TIME];
                return;
            }
        }else{
            if (self.SalaryButton.currentTitle.length==0) {
-               [[UIApplication sharedApplication].keyWindow showLoadingMeg:@"请选择加班工资倍数" time:2.0];
+               [[UIApplication sharedApplication].keyWindow showLoadingMeg:@"请选择加班工资倍数" time:MESSAGE_SHOW_TIME];
                return;
            }
        }
 
 //       if (self.OverTypeButton.currentTitle.length==0) {
-//           [[UIApplication sharedApplication].keyWindow showLoadingMeg:@"请选择加班班次" time:2.0];
+//           [[UIApplication sharedApplication].keyWindow showLoadingMeg:@"请选择加班班次" time:MESSAGE_SHOW_TIME];
 //           return;
 //       }
    }else{
        if (self.LeaveTextField.text.floatValue==0.0) {
-           [[UIApplication sharedApplication].keyWindow showLoadingMeg:@"请输入请假单价" time:2.0];
+           [[UIApplication sharedApplication].keyWindow showLoadingMeg:@"请输入请假单价" time:MESSAGE_SHOW_TIME];
             return;
        }
    }

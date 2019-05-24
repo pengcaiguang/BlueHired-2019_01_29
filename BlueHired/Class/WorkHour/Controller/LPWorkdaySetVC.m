@@ -150,7 +150,7 @@
 
 - (IBAction)SaveTouch:(UIButton *)sender {
     if (self.setdate.currentTitle.length == 0) {
-        [self.view showLoadingMeg:@"请选择工作日生效时间" time:2.0];
+        [self.view showLoadingMeg:@"请选择工作日生效时间" time:MESSAGE_SHOW_TIME];
         return;
     }
     NSMutableArray *WeekArr = [[NSMutableArray alloc] init];
@@ -162,7 +162,7 @@
     }
     
     if (WeekArr.count==0) {
-        [self.view showLoadingMeg:@"请选择您的正常工作日" time:2.0];
+        [self.view showLoadingMeg:@"请选择您的正常工作日" time:MESSAGE_SHOW_TIME];
         return;
     }
     

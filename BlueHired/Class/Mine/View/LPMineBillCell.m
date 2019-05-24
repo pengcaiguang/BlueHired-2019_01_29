@@ -11,6 +11,7 @@
 #import "LPWithDrawalVC.h"
 #import "LPBankcardwithDrawModel.h"
 #import "LPSalarycCard2VC.h"
+#import "LPUndergoWebVC.h"
 
 @interface LPMineBillCell()
 @property(nonatomic,strong) LPBankcardwithDrawModel *Bankmodel;
@@ -29,6 +30,12 @@
     self.showMoneyButton.layer.borderColor = [UIColor baseColor].CGColor;
     [self.showMoneyButton setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
     self.showMoneyButton.layer.borderWidth = 1;
+
+    self.moneyLabel.font = FONT_SIZE(14);
+    self.scoreLabel.font = FONT_SIZE(13);
+    self.RecordLabel.font = FONT_SIZE(13);
+    self.showMoneyButton.titleLabel.font = FONT_SIZE(14);
+
     
 }
 
@@ -79,6 +86,17 @@
        
     }
 }
+
+- (IBAction)TouchScore:(id)sender {
+    if ([LoginUtils validationLogin:[UIWindow visibleViewController]]) {
+        LPUndergoWebVC *vc = [[LPUndergoWebVC alloc]init];
+        vc.type = 2;
+        vc.hidesBottomBarWhenPushed = YES;
+        [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+    }
+}
+
+
 
 
 - (void)setBankmodel:(LPBankcardwithDrawModel *)Bankmodel{

@@ -225,6 +225,7 @@
         for (NSInteger i = 1 ; i <= maxDateMonth.integerValue; i++) {
             NSString *monthStr = [NSString stringWithFormat:@"%02ld月",(long)i];
             [monthArray addObject:monthStr];
+            currentMonth = maxDateMonth.integerValue;
         }
     } else {
         for (NSInteger i = 1 ; i <= 12; i++) {

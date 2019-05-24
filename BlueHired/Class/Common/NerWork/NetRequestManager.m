@@ -150,9 +150,7 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
                             
                             [LPUserDefaults  saveObject:userMaterialModel byFileName:USERINFO];
                         }
-                        
-                        
-                        
+
                         kUserDefaultsSave(cookie, COOKIES);
                     }
                    
@@ -168,10 +166,8 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
                 NSString * errorStr = [self returnStringWithError:error];
                 //打开可统一提示错误信息(考虑有的场景可能不需要,由自己去选择是否显示错误信息),
                 //错误信息已经过处理为NSString,可直接用于展示
-                //            [kKeyWindow showLoadingMeg:errorStr time:MESSAGESHOWTIME];
                 requestEnty.responseHandle(NO,errorStr);
                 if ([self getWithURL:requestEnty]) {
-//                    [self performSelector:@selector() withObject:nil afterDelay:0.1];
 
                     requestEnty.responseHandle(YES, [self getWithURL:requestEnty]);
                 }
@@ -265,12 +261,10 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
                  NSString * errorStr = [self returnStringWithError:error];
                  //打开可统一提示错误信息(考虑有的场景可能不需要,由自己去选择是否显示错误信息),
                  //错误信息已经过处理为NSString,可直接用于展示
-                 //            [kKeyWindow showLoadingMeg:errorStr time:MESSAGESHOWTIME];
-                 [NetRequestManager HiddView];
+                  [NetRequestManager HiddView];
 
                  requestEnty.responseHandle(NO,errorStr);
                  if ([self getWithURL:requestEnty]) {
-
                      requestEnty.responseHandle(YES, [self getWithURL:requestEnty]);
                  }
              }];

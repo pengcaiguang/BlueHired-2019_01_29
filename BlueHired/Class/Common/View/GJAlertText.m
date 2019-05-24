@@ -270,7 +270,7 @@
 }
 - (void)btnTap:(UIButton *)button{
     if (button.tag && self.textFieldString.length==0) {
-        [[UIApplication sharedApplication].keyWindow showLoadingMeg:self.NilTitle time:1.0];
+        [[UIApplication sharedApplication].keyWindow showLoadingMeg:self.NilTitle time:MESSAGE_SHOW_TIME];
         return;
     }
     

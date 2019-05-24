@@ -198,7 +198,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     if (tableView == self.tableview) {
         return 30;
     }
-    return 1.0;
+    return 0.0;
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
@@ -296,7 +296,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         _Resulttableview.rowHeight = UITableViewAutomaticDimension;
         _Resulttableview.estimatedRowHeight = 100;
         
-        _Resulttableview.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+        _Resulttableview.separatorStyle = UITableViewCellSeparatorStyleNone;
         _Resulttableview.separatorColor = [UIColor colorWithHexString:@"#E6E6E6"];
         _Resulttableview.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
         [_Resulttableview registerNib:[UINib nibWithNibName:LPMainCellID bundle:nil] forCellReuseIdentifier:LPMainCellID];

@@ -190,15 +190,15 @@
     if (self.ClassType == 0) {
         if (self.View2.hidden == NO) {              //班次补贴
             if (self.selectSubsidyBt.currentTitle.length==0) {
-                [self.view showLoadingMeg:@"请选择补贴类型" time:2.0];
+                [self.view showLoadingMeg:@"请选择补贴类型" time:MESSAGE_SHOW_TIME];
                 return;
             }
 //            if (self.TextField1.text.floatValue==0.0) {
-//                [self.view showLoadingMeg:@"请输入补贴金额" time:2.0];
+//                [self.view showLoadingMeg:@"请输入补贴金额" time:MESSAGE_SHOW_TIME];
 //                return;
 //            }
 //            if (self.TextField2.text.floatValue==0.0) {
-//                [self.view showLoadingMeg:@"请输入本月天数" time:2.0];
+//                [self.view showLoadingMeg:@"请输入本月天数" time:MESSAGE_SHOW_TIME];
 //                return;
 //            }
             
@@ -209,11 +209,11 @@
             
         }else{
             if (self.selectSubsidyBt2.currentTitle.length==0) {
-                [self.view showLoadingMeg:@"请选择补贴类型" time:2.0];
+                [self.view showLoadingMeg:@"请选择补贴类型" time:MESSAGE_SHOW_TIME];
                 return;
             }
 //            if (self.TextField3.text.floatValue==0.0) {
-//                [self.view showLoadingMeg:@"请输入补贴金额" time:2.0];
+//                [self.view showLoadingMeg:@"请输入补贴金额" time:MESSAGE_SHOW_TIME];
 //                return;
 //            }
             
@@ -223,11 +223,11 @@
         }
     }else{
         if (self.selectSubsidyBt2.currentTitle.length==0) {
-            [self.view showLoadingMeg:@"请选择扣款类型" time:2.0];
+            [self.view showLoadingMeg:@"请选择扣款类型" time:MESSAGE_SHOW_TIME];
             return;
         }
 //        if (self.TextField3.text.floatValue==0.0) {
-//            [self.view showLoadingMeg:@"请输入金额" time:2.0];
+//            [self.view showLoadingMeg:@"请输入金额" time:MESSAGE_SHOW_TIME];
 //            return;
 //        }
         

@@ -121,11 +121,11 @@ static NSString *TEXT = @"可以备注您请假的原因，最多30字!";
 }
 - (IBAction)SaveTouch:(id)sender {
     if (self.Money1.text.floatValue == 0.0) {
-        [self.view showLoadingMeg:@"请输入请假单价" time:2.0];
+        [self.view showLoadingMeg:@"请输入请假单价" time:MESSAGE_SHOW_TIME];
         return;
     }
     if (self.Money2.text.floatValue == 0.0) {
-        [self.view showLoadingMeg:@"请输入请假时间" time:2.0];
+        [self.view showLoadingMeg:@"请输入请假时间" time:MESSAGE_SHOW_TIME];
         return;
     }
     [self requestQueryGetOvertime];

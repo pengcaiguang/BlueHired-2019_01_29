@@ -50,6 +50,10 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
 @property (weak, nonatomic) IBOutlet UIView *LendImageView;
 @property (weak, nonatomic) IBOutlet UIButton *ImageBT;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *LayoutConstraint_Height;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *LayoutConstraint_Label_Height;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *LayoutConstraint_Label_Top;
+
 @property (nonatomic,strong) LPQueryCheckrecordModel *model;
 @property (nonatomic,strong) LPLendMechanismModel *MechanismModel;
 @property(nonatomic,strong) NSMutableArray <LPLendMechanismDataModel *>*listArray;
@@ -58,6 +62,8 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
 
 @property(nonatomic,assign) NSInteger selectCell;
 @property (nonatomic,strong) LPUserProblemModel *Pmodel;
+
+@property(nonatomic,assign) NSInteger isShowPhone;
 
 @end
 
@@ -117,7 +123,7 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
     [self requestQueryLendMoneyMechanism];
 //     [self requestQueryIsLend];
     [self requestQueryLendApi];
-
+    [self requestQueryLendMoneyType];
 //    [self requestQueryGetUserProdlemList];
 
 }
@@ -324,6 +330,11 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
     
     self.PhoneTextField.text = [self.PhoneTextField.text stringByReplacingOccurrencesOfString:@" " withString:@""];
 
+    if (self.CompanyTextField.text.length <= 0) {
+        [self.view showLoadingMeg:@"请选择企业！" time:MESSAGE_SHOW_TIME];
+        return;
+    }
+    
     if (self.lendTextField.text.floatValue==0.0) {
         [self.view showLoadingMeg:@"请输入借支金额" time:MESSAGE_SHOW_TIME];
         return;
@@ -333,14 +344,16 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
         [self.view showLoadingMeg:@"输入的金额应不大于借支额度" time:MESSAGE_SHOW_TIME];
         return;
     }
-//    if (self.PhoneTextField.text.length <= 0 || ![NSString isMobilePhoneNumber:self.PhoneTextField.text]) {
-//        [self.view showLoadingMeg:@"请输入正确的手机号" time:MESSAGE_SHOW_TIME];
-//        return;
-//    }
-    if (self.CompanyTextField.text.length <= 0) {
-        [self.view showLoadingMeg:@"请选择企业！" time:MESSAGE_SHOW_TIME];
-        return;
+    
+    if (self.isShowPhone == 1) {
+        if (self.PhoneTextField.text.length <= 0 || ![NSString isMobilePhoneNumber:self.PhoneTextField.text]) {
+            [self.view showLoadingMeg:@"请输入正确的手机号" time:MESSAGE_SHOW_TIME];
+            return;
+        }
     }
+   
+    
+
     [self requestQueryAddLendApi];
     
 }
@@ -541,7 +554,6 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
                 self.model = [LPQueryCheckrecordModel mj_objectWithKeyValues:responseObject];
-
             }else{
                 [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
@@ -707,7 +719,7 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
     }
 }
 
-#pragma mark - request
+
 -(void)requestQueryGetUserProdlemList{
     
     NSDictionary *dic = @{};
@@ -725,6 +737,36 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
     }];
 }
 
+
+-(void)requestQueryLendMoneyType{
+    
+    NSDictionary *dic = @{};
+    WEAK_SELF()
+    [NetApiManager requestQueryLendMoneyType:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                weakSelf.isShowPhone = [responseObject[@"data"] integerValue];
+                if ([responseObject[@"data"] integerValue] == 1) {
+                    weakSelf.LayoutConstraint_Label_Height.constant = 15;
+                    weakSelf.LayoutConstraint_Height.constant = 40;
+                    weakSelf.LayoutConstraint_Label_Top.constant = 34;
+                }else if ([responseObject[@"data"] integerValue] == 2){
+                    weakSelf.LayoutConstraint_Label_Height.constant = 0;
+                    weakSelf.LayoutConstraint_Height.constant = 0;
+                    weakSelf.LayoutConstraint_Label_Top.constant = 0;
+
+                }else{
+                    [weakSelf.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+                }
+            }else{
+                [weakSelf.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
+        }else{
+            [weakSelf.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
 
 #pragma mark lazy
 - (UITableView *)tableview{

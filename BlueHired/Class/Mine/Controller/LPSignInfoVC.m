@@ -52,7 +52,7 @@
 
     NSDate *currentDate = [NSDate date];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"YYYY-MM-dd"];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     self.currentDateString = [dateFormatter stringFromDate:currentDate];
     
     

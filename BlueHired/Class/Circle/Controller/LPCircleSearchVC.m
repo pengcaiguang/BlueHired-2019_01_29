@@ -164,7 +164,7 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
             NSLog(@"locError:{%ld - %@};", (long)error.code, error.localizedDescription);
              if (error.code == AMapLocationErrorLocateFailed)
             {
-                [self.view showLoadingMeg:@"定位失败,请手动搜索" time:2.0];
+                [self.view showLoadingMeg:@"定位失败,请手动搜索" time:MESSAGE_SHOW_TIME];
                 return;
             }
         }

@@ -533,16 +533,23 @@ static NSString *LPCollectionVideoCellID = @"LPCollectionVideoCell";
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
                 if ([responseObject[@"data"] integerValue] == 1) {
-                    [self.selectArray removeAllObjects];
-                    self.page = 1;
                     if (self.index == 0) {
-                        [self requestGetEssayCollection];
+//                        [self requestGetEssayCollection];
+                        [self.essayListArray removeObjectsInArray:self.selectArray];
                     }else if (self.index == 1){
-                        //                [self requestGetWorkCollection];
-                        [self requestGetVideoCollection];
+//                        [self requestGetVideoCollection];
+                        [self.VideoListArray removeObjectsInArray:self.selectArray];
+
                     }else if (self.index == 2){
-                        [self requestGetVideoCollection];
+//                        [self requestGetVideoCollection];
+                        [self.VideoListArray removeObjectsInArray:self.selectArray];
+
                     }
+                    
+                    
+                    [self.selectArray removeAllObjects];
+                    [self.tableview reloadData];
+                    
                     [[UIWindow visibleViewController].view showLoadingMeg:@"删除成功" time:MESSAGE_SHOW_TIME];
                 }else{
                     [[UIWindow visibleViewController].view showLoadingMeg:@"删除失败,请稍后再试" time:MESSAGE_SHOW_TIME];

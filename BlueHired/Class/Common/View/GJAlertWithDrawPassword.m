@@ -49,12 +49,14 @@
     [_alertView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(LENGTH_SIZE(32));
         make.right.mas_equalTo(LENGTH_SIZE(-32));
-        if (SCREEN_WIDTH == 320) {
-            make.centerY.equalTo(self).offset(-30);
-        }else{
-            make.center.equalTo(self);
-        }
-//        make.top.mas_equalTo(35);
+//        if (SCREEN_WIDTH == 320) {
+//            make.centerY.equalTo(self).offset(-30);
+//        }else{
+//            make.center.equalTo(self);
+//        }
+//        make.top.mas_equalTo(LENGTH_SIZE(32));
+        
+        make.centerY.equalTo(self).offset(LENGTH_SIZE(-100));
     }];
     [_alertView setBackgroundColor:[UIColor whiteColor]];
     _alertView.clipsToBounds = YES;

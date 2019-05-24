@@ -216,7 +216,7 @@
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0  ) {
                 if ([responseObject[@"data"] integerValue] == 1) {
-                    [self.view showLoadingMeg:@"操作成功" time:2.0];
+                    [self.view showLoadingMeg:@"操作成功" time:MESSAGE_SHOW_TIME];
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                         LPInfoVC  *vc = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
                         vc.isReloadData = YES;
@@ -224,7 +224,7 @@
                         //                    [self.navigationController popViewControllerAnimated:YES];
                     });
                 }else{
-                    [self.view showLoadingMeg:@"操作失败" time:2.0];
+                    [self.view showLoadingMeg:@"操作失败" time:MESSAGE_SHOW_TIME];
                 }
            
             }else{
