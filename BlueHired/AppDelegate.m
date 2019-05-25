@@ -47,7 +47,8 @@ static NSString *AMapKey = @"0f4330993390e62d08cd4964e1f94a06";
 //百度Ocr
 static NSString *OCRAk = @"afnwBt8L3Th1ZDyEkmNL7QKd";
 static NSString *OCRSK = @"AuzzqkelToqzXjsaKI4n2L6U9QaH92Vs";
-
+//百度地图key
+static NSString *BaiduMapKey = @"Is1tZn8s2L4SvALlxeBjef5Rzi3a7luV";
 
 BMKMapManager* _mapManager;
 static AFHTTPSessionManager * afHttpSessionMgr = NULL;
@@ -73,8 +74,8 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
 //    [[AipOcrService shardService] authWithAK:OCRAk andSK:OCRSK];
 //    #endif
 
-    [[BMKLocationAuth sharedInstance] checkPermisionWithKey:@"Is1tZn8s2L4SvALlxeBjef5Rzi3a7luV" authDelegate:self];
-    BOOL ret = [_mapManager start:@"Is1tZn8s2L4SvALlxeBjef5Rzi3a7luV" generalDelegate:self];
+    [[BMKLocationAuth sharedInstance] checkPermisionWithKey:BaiduMapKey authDelegate:self];
+    BOOL ret = [_mapManager start:BaiduMapKey generalDelegate:self];
     if (!ret) {
         NSLog(@"manager start failed!");
     }
@@ -207,18 +208,15 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
 }
 
 
-- (void)application:(UIApplication *)application
-didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-    
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     /// Required - 注册 DeviceToken
     [JPUSHService registerDeviceToken:deviceToken];
 }
 - (void)application:(UIApplication *)application
-didReceiveRemoteNotification:(NSDictionary *)userInfo {
+ didReceiveRemoteNotification:(NSDictionary *)userInfo {
     [JPUSHService handleRemoteNotification:userInfo];
     NSLog(@"iOS6及以下系统，收到通知:%@", [self logDic:userInfo]);
-//    [rootViewController addNotificationCount];
-}
+ }
 
 - (void)application:(UIApplication *)application
 didReceiveRemoteNotification:(NSDictionary *)userInfo
@@ -228,8 +226,7 @@ fetchCompletionHandler:
     NSLog(@"iOS7及以上系统，收到通知:%@", [self logDic:userInfo]);
     
     if ([[UIDevice currentDevice].systemVersion floatValue]<10.0 || application.applicationState>0) {
-//        [rootViewController addNotificationCount];
-    }
+     }
     
     completionHandler(UIBackgroundFetchResultNewData);
 }
@@ -392,8 +389,7 @@ fetchCompletionHandler:
     if([response.notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) {
         [JPUSHService handleRemoteNotification:userInfo];
         NSLog(@"iOS10 收到远程通知:%@", [self logDic:userInfo]);
-//        [rootViewController addNotificationCount];
-        NSString *type = [LPTools isNullToString:userInfo[@"type"]];
+         NSString *type = [LPTools isNullToString:userInfo[@"type"]];
         if(type.integerValue == 1 && AlreadyLogin){             //工时记录
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 LPWorkHour2VC *vc = [[LPWorkHour2VC alloc]init];

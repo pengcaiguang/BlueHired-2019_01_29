@@ -735,7 +735,18 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
                 }
             }
             self.cardTextField.text = [RSAEncryptor decryptString:self.model.data.bankNumber privateKey:RSAPrivateKey];
+            
+//            NSString *Bname = self.model.data.bankName;
+//            if ([Bname containsString:@"建设"]) {
+//                self.model.data.bankName = @"中国建设银行";
+//            }else if ([Bname containsString:@"招商"]){
+//                self.model.data.bankName = @"招商银行";
+//            }else if ([Bname containsString:@"兴业"]){
+//                self.model.data.bankName = @"兴业银行";
+//            }
             self.BankNameField.text = self.model.data.bankName;
+
+            
             self.phoneTextField.text = self.model.data.openBankAddr;
             [self.TextFieldViewNext2Bt setTitle:@"确定换绑" forState:UIControlStateNormal];
             self.TextFieldViewNext2Bt.hidden = NO;
@@ -1224,14 +1235,14 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
                 GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:responseObject[@"msg"]
                                                                      message:nil
                                                                textAlignment:NSTextAlignmentCenter
-                                                                buttonTitles:@[@"取消",@"提交"]
-                                                                buttonsColor:@[[UIColor blackColor],[UIColor baseColor]]
+                                                                buttonTitles:@[@"确定"]
+                                                                buttonsColor:@[[UIColor blackColor]]
                                                      buttonsBackgroundColors:@[[UIColor whiteColor]]
                                                                  buttonClick:^(NSInteger buttonIndex) {
-                    if (buttonIndex) {
-                        self.IntStep++;
-                        [self UpdateHeadViewColor];
-                    }
+//                    if (buttonIndex) {
+//                        self.IntStep++;
+//                        [self UpdateHeadViewColor];
+//                    }
                 }];
                 [alert show];
             }else{

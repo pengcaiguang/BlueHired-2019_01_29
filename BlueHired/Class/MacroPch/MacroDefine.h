@@ -24,13 +24,13 @@
 //http://ceshi.lanpin123.com/lifetime/comment/get_comment_list?id=38&page=1&type=1
 //#define BaseRequestURL  @"http://192.168.0.152:8080/lifetime/"
 
-#define BaseRequestURL  @"http://192.168.0.108:8080/lifetime/"
-#define BaseRequestWeiXiURL  @"http://192.168.0.108:8080/"
-#define BaseRequestCookie  @"192.168.0.108"
+//#define BaseRequestURL  @"http://192.168.0.108:8080/lifetime/"
+//#define BaseRequestWeiXiURL  @"http://192.168.0.108:8080/"
+//#define BaseRequestCookie  @"192.168.0.108"
 
-//#define BaseRequestURL  @"http://www.lanpin123.com/lifetime/"
-//#define BaseRequestWeiXiURL  @"http://www.lanpin123.com/"
-//#define BaseRequestCookie  @"www.lanpin123.com"
+#define BaseRequestURL  @"http://www.lanpin123.com/lifetime/"
+#define BaseRequestWeiXiURL  @"http://www.lanpin123.com/"
+#define BaseRequestCookie  @"www.lanpin123.com"
 
 //#define BaseRequestURL  @"http://47.106.208.91:8180/lifetime/"
 //#define BaseRequestWeiXiURL  @"http://47.106.208.91/"
