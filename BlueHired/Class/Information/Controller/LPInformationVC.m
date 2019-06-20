@@ -59,9 +59,6 @@ static NSString *LPInformationVideoCollectionViewCellID = @"LPInfoMationVideoCel
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.navigationController.navigationBar.translucent = NO;
-    self.navigationController.navigationBar.barTintColor = [UIColor baseColor];
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:[UIColor baseColor]] forBarMetrics:UIBarMetricsDefault];
 
     self.labelArray = [NSMutableArray array];
     
@@ -114,6 +111,12 @@ static NSString *LPInformationVideoCollectionViewCellID = @"LPInfoMationVideoCel
  }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    self.navigationController.navigationBar.translucent = NO;
+    self.navigationController.navigationBar.barTintColor = [UIColor baseColor];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:[UIColor baseColor]] forBarMetrics:UIBarMetricsDefault];
+    
+    
+    
     if (self.VideoTypeModel.data.count <= 0) {
         [self requestQueryGetVideoTypeList];
     }
@@ -157,9 +160,9 @@ static NSString *LPInformationVideoCollectionViewCellID = @"LPInfoMationVideoCel
     }else{
         self.IsBackVideo = NO;
     }
-    
-    
 }
+
+
 - (UIStatusBarStyle)preferredStatusBarStyle{
     return UIStatusBarStyleLightContent;
 }

@@ -31,9 +31,9 @@
     if (_isfirst) {
         NSURL *url;
         if ([kUserDefaultsValue(LOGINID) integerValue]) {
-            url = [NSURL URLWithString:[NSString stringWithFormat:@"%@bluehired/activity.html?sign=%ld&id=%@",BaseRequestWeiXiURL,[kUserDefaultsValue(LOGINID) integerValue],self.Model.id]];
+            url = [NSURL URLWithString:[NSString stringWithFormat:@"%@resident/#/activity?sign=%ld&id=%@",BaseRequestWeiXiURL,[kUserDefaultsValue(LOGINID) integerValue],self.Model.id]];
         }else{
-            url =  [NSURL URLWithString:[NSString stringWithFormat:@"%@bluehired/activity.html?id=%@",BaseRequestWeiXiURL,self.Model.id]];
+            url =  [NSURL URLWithString:[NSString stringWithFormat:@"%@resident/#/activity?id=%@",BaseRequestWeiXiURL,self.Model.id]];
         }
         NSURLRequest *request = [NSURLRequest requestWithURL:url];
         [webview loadRequest:request];
@@ -66,9 +66,9 @@
     
     NSURL *url;
     if ([kUserDefaultsValue(LOGINID) integerValue]) {
-          url = [NSURL URLWithString:[NSString stringWithFormat:@"%@bluehired/activity.html?sign=%ld&id=%@",BaseRequestWeiXiURL,[kUserDefaultsValue(LOGINID) integerValue],self.Model.id]];
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@resident/#/activity?sign=%ld&id=%@",BaseRequestWeiXiURL,[kUserDefaultsValue(LOGINID) integerValue],self.Model.id]];
     }else{
-         url =  [NSURL URLWithString:[NSString stringWithFormat:@"%@bluehired/activity.html?id=%@",BaseRequestWeiXiURL,self.Model.id]];
+        url =  [NSURL URLWithString:[NSString stringWithFormat:@"%@resident/#/activity?id=%@",BaseRequestWeiXiURL,self.Model.id]];
     }
 
     NSURLRequest *request = [NSURLRequest requestWithURL:url];

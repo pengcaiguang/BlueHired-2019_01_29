@@ -30,7 +30,8 @@
 @property (nonatomic, copy) NSString *toUserId;
 @property (nonatomic, copy) NSString *toUserIdentity;
 @property (nonatomic, copy) NSString *toUserName;
-@property (nonatomic, copy) NSArray  <LPCommentListDataModel *>*commentList;
+//@property (nonatomic, copy) NSArray  <LPCommentListDataModel *>*commentList;
+@property (nonatomic, strong) NSMutableArray  <LPCommentListDataModel *>*commentModelList;
 
 
 @end

@@ -37,6 +37,7 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
 
 @property(nonatomic,assign) NSInteger commentType;
 @property(nonatomic,strong) NSNumber *commentId;
+@property(nonatomic,strong) LPCommentListDataModel *commentUserModel;
 
 @end
 
@@ -79,17 +80,6 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
 
 }
 -(void)setBottomView{
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrameNotify:) name:UIKeyboardWillChangeFrameNotification object:nil];
-    //监听键盘，键盘出现
-    [[NSNotificationCenter defaultCenter]addObserver:self
-                                            selector:@selector(keyboardWillShow:)
-                                                name:UIKeyboardWillShowNotification object:nil];
-    //监听键盘隐藏
-    [[NSNotificationCenter defaultCenter]addObserver:self
-                                            selector:@selector(keybaordWillHide:)
-                                                name:UIKeyboardWillHideNotification object:nil];
-    
     self.bottomBgView = [[UIView alloc]init];
     [self.view addSubview:self.bottomBgView];
     [self.bottomBgView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -156,7 +146,7 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     self.commentTextField.placeholder = @"评一下";
     self.commentTextField.returnKeyType = UIReturnKeySend;
     self.commentTextField.enablesReturnKeyAutomatically =YES;
-    [self.commentTextField addTarget:self action:@selector(textFieldChanged:) forControlEvents:UIControlEventEditingChanged];
+//    [self.commentTextField addTarget:self action:@selector(textFieldChanged:) forControlEvents:UIControlEventEditingChanged];
     
     UIButton *button = [[UIButton alloc]init];
     [self.bottomBgView addSubview:button];
@@ -195,77 +185,9 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     self.sendButton.hidden = YES;
     self.sendButton.enabled = NO;
     self.sendButton.backgroundColor = [UIColor lightGrayColor];
-    [self.sendButton addTarget:self action:@selector(touchSendButton:) forControlEvents:UIControlEventTouchUpInside];
+//    [self.sendButton addTarget:self action:@selector(touchSendButton:) forControlEvents:UIControlEventTouchUpInside];
 }
-/**
- *  当键盘改变了frame(位置和尺寸)的时候调用
- */
--(void)keyboardWillChangeFrameNotify:(NSNotification*)notify {
-    // 0.取出键盘动画的时间
-    CGFloat duration = [notify.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    // 1.取得键盘最后的frame
-    CGRect keyboardFrame = [notify.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    // 2.计算控制器的view需要平移的距离
-    CGFloat transformY = keyboardFrame.origin.y - SCREEN_HEIGHT;
-    
-    // 3.执行动画
-    [UIView animateWithDuration:duration animations:^{
-        [self.BacksearchView mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.left.mas_equalTo(10);
-            make.height.mas_equalTo(48);
-            if (transformY < 0) {
-                make.right.mas_equalTo(-10);
-                make.bottom.mas_equalTo(transformY);
-            }else{
-//                make.right.mas_equalTo(self.bottomBgView.mas_left).offset(-5);
-                make.right.mas_equalTo(-40);
-//                make.bottom.mas_equalTo(0);
-                if (@available(iOS 11.0, *)) {
-                    make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
-                } else {
-                    make.bottom.mas_equalTo(0);
-                }
-            }
-            
-        }];
-        [self.searchBgView.superview layoutIfNeeded];
-        
-        [self.bottomBgView mas_remakeConstraints:^(MASConstraintMaker *make) {
-//            make.bottom.mas_equalTo(0);
-            if (@available(iOS 11.0, *)) {
-                make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
-            } else {
-                make.bottom.mas_equalTo(0);
-            }
-            make.height.mas_equalTo(48);
-            make.left.equalTo(self.searchBgView.mas_right).mas_offset(5);
-            if (transformY == 0) {
-                make.right.mas_equalTo(0);
-            }
-        }];
-        [self.bottomBgView.superview layoutIfNeeded];
-        
-        //        [self.bottomBgView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        //            make.left.mas_equalTo(0);
-        //            make.right.mas_equalTo(0);
-        //            make.bottom.mas_equalTo(transformY);
-        //            make.height.mas_equalTo(49);
-        //        }];
-        //        [self.bottomBgView.superview layoutIfNeeded];
-    }];
-}
--(void)keyboardWillShow:(NSNotification *)sender{
-    //    for (UIButton *button in self.bottomButtonArray) {
-    //        button.hidden = YES;
-    //    }
-    //    self.sendButton.hidden = NO;
-}
--(void)keybaordWillHide:(NSNotification *)sender{
-    //    for (UIButton *button in self.bottomButtonArray) {
-    //        button.hidden = NO;
-    //    }
-    //    self.sendButton.hidden = YES;
-}
+
 - (void)preventFlicker:(UIButton *)button {
     button.highlighted = NO;
 }
@@ -289,6 +211,7 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     }
     self.commentType = 2;
     self.commentId = self.moodListDataModel.id;
+    self.commentUserModel = nil;
 //    [self.tableview reloadSections:[[NSIndexSet alloc]initWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
         [self.tableview reloadData];
 }
@@ -315,36 +238,79 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     }
 }
 
-#pragma mark - target
--(void)touchSendButton:(UIButton *)button{
-    if (self.commentTextField.text.length > 0) {
-        [self requestCommentAddcomment];
-    }
-}
-
 #pragma mark - textfield
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
-    return [LoginUtils validationLogin:self];
-}
--(BOOL)textFieldShouldReturn:(UITextField *)textField{
-    [self requestCommentAddcomment];
-    return YES;
-}
--(void)textFieldChanged:(UITextField *)textField{
-    if (textField.text.length > 0) {
-        self.sendButton.enabled = YES;
-        self.sendButton.backgroundColor = [UIColor baseColor];
-    }else{
-        self.sendButton.enabled = NO;
-        self.sendButton.backgroundColor = [UIColor lightGrayColor];
+ 
+    if ([LoginUtils validationLogin:self]) {
+        self.commentId = self.moodListDataModel.id;
+        self.commentType = 2;
+        self.commentUserModel = nil;
+        
+        [XHInputView showWithStyle:InputViewStyleLarge configurationBlock:^(XHInputView *inputView) {
+            /** 请在此block中设置inputView属性 */
+            
+            /** 代理 */
+            
+            /** 占位符文字 */
+            inputView.placeholder = @"评一下";
+            /** 设置最大输入字数 */
+            inputView.maxCount = 300;
+            /** 输入框颜色 */
+            inputView.textViewBackgroundColor = [UIColor groupTableViewBackgroundColor];
+           
+            /** 更多属性设置,详见XHInputView.h文件 */
+            
+        } sendBlock:^BOOL(NSString *text) {
+            if(text.length){
+                [self requestCommentAddcomment:text];
+                return YES;//return YES,收起键盘
+            }else{
+//                NSLog(@"显示提示框-请输入要评论的的内容");
+                [self.view showLoadingMeg:@"请输入评价内容" time:MESSAGE_SHOW_TIME];
+                return NO;//return NO,不收键盘
+            }
+        }];
     }
+    
+    
+    return NO;
 }
+
 #pragma mark - LPEssayDetailCommentCellDelegate
 -(void)touchReplyButton:(LPCommentListDataModel *)model{
     NSLog(@"回复");
     self.commentId = model.id;
     self.commentType = 3;
-    [self.commentTextField becomeFirstResponder];
+    self.commentUserModel = model;
+//    [self.commentTextField becomeFirstResponder];
+    
+    [XHInputView showWithStyle:InputViewStyleLarge configurationBlock:^(XHInputView *inputView) {
+        /** 请在此block中设置inputView属性 */
+        
+        /** 代理 */
+        
+        /** 占位符文字 */
+        inputView.placeholder = [NSString stringWithFormat:@"回复 %@:",model.userName];
+        /** 设置最大输入字数 */
+        inputView.maxCount = 300;
+        /** 输入框颜色 */
+        inputView.textViewBackgroundColor = [UIColor groupTableViewBackgroundColor];
+        
+        /** 更多属性设置,详见XHInputView.h文件 */
+        
+    } sendBlock:^BOOL(NSString *text) {
+        if(text.length){
+            [self requestCommentAddcomment:text];
+            return YES;//return YES,收起键盘
+        }else{
+            //                NSLog(@"显示提示框-请输入要评论的的内容");
+            [self.view showLoadingMeg:@"请输入评价内容" time:MESSAGE_SHOW_TIME];
+            return NO;//return NO,不收键盘
+        }
+    }];
+
+    
+    
 }
 
 #pragma mark - TableViewDelegate & Datasource
@@ -397,23 +363,51 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
                 }
             }
         };
+        
+        
         return cell;
     }else{
         LPEssayDetailCommentCell *cell = [tableView dequeueReusableCellWithIdentifier:LPEssayDetailCommentCellID];
         cell.model = self.commentListArray[indexPath.row];
         cell.delegate = self;
-        
+        cell.SuperTableView = tableView;
         WEAK_SELF();
         cell.DeleteBlock = ^(NSString *CommId){
             [weakSelf requestQueryDeleteComment:CommId];
+        };
+        cell.AddBlock = ^(LPCommentListDataModel *model){
+            LPMoodCommentListDataModel *CommentModel = [LPMoodCommentListDataModel mj_objectWithKeyValues:[model mj_JSONObject]];
+ 
+            for (NSInteger i = 0 ;i<weakSelf.moodListDataModel.commentModelList.count;i++ ) {
+                LPMoodCommentListDataModel *m = weakSelf.moodListDataModel.commentModelList[i];
+                if ((m.commentType.integerValue == 2 && m.id == CommentModel.commentId) ||
+                    (m.commentType.integerValue == 3 && m.commentId == CommentModel.commentId)) {
+                    [weakSelf.moodListDataModel.commentModelList insertObject:CommentModel atIndex:i];
+                    break;
+                }
+            }
+            
+            for (int i = 0 ;i <weakSelf.moodListArray.count;i++) {
+                LPMoodListDataModel *com = weakSelf.moodListArray[i];
+                if (com.id == weakSelf.moodListDataModel.id) {
+                    weakSelf.moodListArray[i] = weakSelf.moodListDataModel;
+                    break;
+                }
+            }
+            
+            if (weakSelf.SuperTableView) {
+                [weakSelf.SuperTableView reloadData];
+            }
+            
+            
         };
   
         return cell;
     }
 }
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-}
+//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+//}
 
 #pragma mark - request
 -(void)requestSetMoodView{
@@ -472,7 +466,8 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     NSDictionary *dic = @{
                           @"type":@(2),
                           @"page":@(self.page),
-                          @"id":self.moodListDataModel.id
+                          @"id":self.moodListDataModel.id,
+                          @"versionType":@"2.3"
                           };
     [NetApiManager requestCommentListWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
@@ -548,36 +543,18 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
         }
     } IsShowActiviTy:YES];
 }
--(void)requestCommentAddcomment{
-    
-    
-//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-//    dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm";
-//    NSString *string = [dateFormatter stringFromDate:[NSDate date]];
-//    
-//    if (kUserDefaultsValue(@"ERRORMOOD")) {
-//        NSString *errorString = kUserDefaultsValue(@"ERRORMOOD");
-//         NSString *str = [LPTools dateTimeDifferenceWithStartTime:errorString endTime:string];
-//         if ([str integerValue] < 1) {
-//            GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"请勿频繁操作" message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"确定"] buttonsColor:@[[UIColor whiteColor]] buttonsBackgroundColors:@[[UIColor baseColor]] buttonClick:^(NSInteger buttonIndex) {
-//            }];
-//            [alert show];
-//            return;
-//        }
-//    }
-//    kUserDefaultsSave(string, @"ERRORMOOD");
-
-    [self.commentTextField resignFirstResponder];
+-(void)requestCommentAddcomment:(NSString *) commentText{
 
     LPUserMaterialModel *user = [LPUserDefaults getObjectByFileName:USERINFO];
     NSDictionary *dic = @{
-                          @"commentDetails": self.commentTextField.text,
+                          @"commentDetails": commentText,
                           @"commentType": @(self.commentType),
                           @"commentId": self.commentId,
                           @"userName": user.data.user_name,
                           @"userId": kUserDefaultsValue(LOGINID),
                           @"userUrl": user.data.user_url,
-                          @"versionType":@"2.1"
+                          @"versionType":@"2.1",
+                          @"replyUserId":self.commentUserModel?@(self.commentUserModel.userId.integerValue):@""
                           };
     [NetApiManager requestCommentAddcommentWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
@@ -601,28 +578,40 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
                 }
                 
                 //评价圈子列表里面的评论列表
-                if (self.moodListDataModel.commentModelList.count<5) {
-                    LPMoodCommentListDataModel *CommentModel = [[LPMoodCommentListDataModel alloc] init];
-                    CommentModel.userId =kUserDefaultsValue(LOGINID);
-                    CommentModel.userName = user.data.user_name;
+//                if (self.moodListDataModel.commentModelList.count<5) {
+                    LPMoodCommentListDataModel *CommentModel = [LPMoodCommentListDataModel mj_objectWithKeyValues:dic];
+   
                     CommentModel.identity = kUserDefaultsValue(USERIDENTIY);
                     CommentModel.id = [LPTools isNullToString:DataList[1]];
-                    CommentModel.commentDetails = self.commentTextField.text;
+                    CommentModel.time = [NSString stringWithFormat:@"%ld",(long)[NSString getNowTimestamp]];
+                    CommentModel.grading = user.data.grading;
                     if (self.commentType == 2) {
-                        
+                        [self.moodListDataModel.commentModelList insertObject:CommentModel atIndex:0];
                     }else if (self.commentType == 3){
                         for (LPCommentListDataModel *model in self.commentListArray) {
-                            if (model.id == self.commentId) {
+                            if (model.id.integerValue == self.commentId.integerValue) {
                                 CommentModel.toUserId = model.userId;
                                 CommentModel.toUserName = model.userName;
                                 CommentModel.toUserIdentity = model.identity;
+
                                 break;
                             }
                         }
+                        
+                        for (NSInteger i = 0 ;i<self.moodListDataModel.commentModelList.count;i++ ) {
+                            LPMoodCommentListDataModel *m = self.moodListDataModel.commentModelList[i];
+                            if ((m.commentType.integerValue == 2 && m.id.integerValue == CommentModel.commentId.integerValue) ||
+                                (m.commentType.integerValue == 3 && m.commentId.integerValue == CommentModel.commentId.integerValue)) {
+                                [self.moodListDataModel.commentModelList insertObject:CommentModel atIndex:i];
+                                break;
+                            }
+                        }
+//                                [self.moodListDataModel.commentModelList insertObject:CommentModel atIndex:0];
+ 
+ 
                     }
                     
-                    [self.moodListDataModel.commentModelList insertObject:CommentModel atIndex:self.moodListDataModel.commentModelList.count];
-                    for (int i = 0 ;i <self.moodListArray.count;i++) {
+                     for (int i = 0 ;i <self.moodListArray.count;i++) {
                         LPMoodListDataModel *com = self.moodListArray[i];
                         if (com.id == self.moodListDataModel.id) {
                             self.moodListArray[i] = self.moodListDataModel;
@@ -633,11 +622,9 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
                     if (self.SuperTableView) {
                         [self.SuperTableView reloadData];
                     }
-                }
+//                }
                 
                 m.time = @([NSString getNowTimestamp]);
-                m.commentId = nil;
-                m.commentType = nil;
                 m.grading = user.data.grading;
                 if (self.commentType == 2) {
                     [self.commentListArray insertObject:m atIndex:0];
@@ -648,21 +635,30 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
                     }
                 }else if (self.commentType == 3){
                     for (LPCommentListDataModel *model in self.commentListArray) {
-                        if (model.id == self.commentId) {
-                            NSMutableArray *array = [[NSMutableArray alloc] initWithArray:model.commentList];
-                            [array addObject:m];
-                            model.commentList = [array copy];
+                        if (model.id.integerValue == self.commentId.integerValue) {
+                            m.toUserId = self.commentUserModel.userId;
+                            m.toUserName = self.commentUserModel.userName;
+                            m.toUserIdentity = self.commentUserModel.identity;
+                            if (model.commentModelList.count == 0) {
+                                model.commentModelList = [[NSMutableArray alloc] init];
+                            }
+                            [model.commentModelList addObject:m];
                             break;
                         }
                     }
                 }
                 [self.tableview reloadData];
                 self.moodListDataModel.commentTotal = self.model.data.commentTotal;
-                
+                [self.tableview layoutIfNeeded];
+                if (self.commentType == 2) {
+                    NSIndexPath * dayOne = [NSIndexPath indexPathForRow:0 inSection:1];
+                    [self.tableview scrollToRowAtIndexPath:dayOne atScrollPosition:UITableViewScrollPositionTop animated:YES];
+                }
 
-                self.commentTextField.text = nil;
-                [self.commentTextField resignFirstResponder];
+
+           
                 self.commentId = self.moodListDataModel.id;
+                self.commentUserModel = nil;
                 self.commentType = 2;
                 
             }else{
@@ -713,21 +709,7 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
                 if ([responseObject[@"data"] integerValue] == 1) {
-                    //                [self.navigationController popViewControllerAnimated:YES];
-                    
-                    //                if (self.Type == 1) {
-                    //                    LPCircleVC *vc = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
-                    //                    vc.isSenderBack = 3;
-                    //                    [self.moodListArray removeObject:self.moodListDataModel];
-                    //
-                    //                    [self.navigationController popToViewController:vc animated:YES];
-                    ////                    [self.navigationController popViewControllerAnimated:YES];
-                    //                }else if (self.Type == 2){
-                    //                    LPReportVC *vc = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
-                    //                    vc.isSenderBack = 3;
-                    //                     [self.navigationController popToViewController:vc animated:YES];
-                    ////                    [self.navigationController popViewControllerAnimated:YES];
-                    //                }else{
+                   
                     if (self.moodListArray.count) {
                         [self.moodListArray removeObject:self.moodListDataModel];
                     }
@@ -754,7 +736,7 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
 
 -(void)requestQueryDeleteComment:(NSString *) CommentId{
     
-    NSString * appendURLString = [NSString stringWithFormat:@"comment/update_comment?id=%@&moodId=%@",CommentId,self.moodListDataModel.id];
+    NSString * appendURLString = [NSString stringWithFormat:@"comment/update_comment?id=%@&moodId=%@&versionType=2.3",CommentId,self.moodListDataModel.id];
     
     [NetApiManager requestQueryDeleteComment:nil URLString:appendURLString withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
@@ -781,11 +763,9 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
                             break;
                         }
                         BOOL isDelete = NO;
-                        for (LPCommentListDataModel *m in model.commentList) {
+                        for (LPCommentListDataModel *m in model.commentModelList) {
                             if (m.id.integerValue == CommentId.integerValue) {
-                                NSMutableArray *arr = [[NSMutableArray alloc] initWithArray:model.commentList];
-                                [arr removeObject:m];
-                                model.commentList = [arr copy];
+                                [model.commentModelList removeObject:m];
                                 isDelete = YES;
                                 break;
                              }

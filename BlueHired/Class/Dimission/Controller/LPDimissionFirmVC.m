@@ -140,11 +140,20 @@ static NSString *NORMALSTRING = @"请输入离职原因及想要离职的日期"
         NSLog(@"%@",responseObject);
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
-                if (self.type == 1) {
-                    [self.view showLoadingMeg:@"提交成功" time:MESSAGE_SHOW_TIME];
+                if ([responseObject[@"data"] integerValue] > 0) {
+                    if (self.type == 1 ) {
+                        [self.view showLoadingMeg:@"添加离职通知成功！" time:MESSAGE_SHOW_TIME];
+                    }else{
+                        [self.view showLoadingMeg:@"取消离职通知成功！" time:MESSAGE_SHOW_TIME];
+                    }
                 }else{
-                    [self.view showLoadingMeg:@"取消成功" time:MESSAGE_SHOW_TIME];
+                    if (self.type == 1 ) {
+                        [self.view showLoadingMeg:@"添加离职通知失败！" time:MESSAGE_SHOW_TIME];
+                    }else{
+                        [self.view showLoadingMeg:@"取消离职通知失败！" time:MESSAGE_SHOW_TIME];
+                    }
                 }
+                
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     [self.navigationController popViewControllerAnimated:YES];
                 });

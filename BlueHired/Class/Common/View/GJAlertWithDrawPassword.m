@@ -150,7 +150,7 @@
         make.top.equalTo(labelTitle.mas_bottom).offset(LENGTH_SIZE(18));
         make.left.mas_equalTo(LENGTH_SIZE(24));
         make.right.mas_equalTo(LENGTH_SIZE(-24));
-        make.bottom.mas_equalTo(LENGTH_SIZE(-30));
+        make.bottom.mas_equalTo(LENGTH_SIZE(-55));
         make.height.mas_equalTo(LENGTH_SIZE(44));
     }];
     [textField addTarget:self action:@selector(textFieldChanged:) forControlEvents:UIControlEventEditingChanged];
@@ -193,6 +193,19 @@
         make.bottom.mas_equalTo(0);
         make.width.mas_equalTo(1);
     }];
+    
+    
+    UIButton *ForgetBt = [[UIButton alloc] init];
+    [_alertView addSubview:ForgetBt];
+    [ForgetBt mas_makeConstraints:^(MASConstraintMaker *make){
+        make.centerX.equalTo(self.alertView);
+        make.top.equalTo(textField.mas_bottom).offset(LENGTH_SIZE(10));
+    }];
+    ForgetBt.titleLabel.font = FONT_SIZE(15);
+    [ForgetBt setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
+    [ForgetBt setTitle:@"忘记密码？" forState:UIControlStateNormal];
+    [ForgetBt addTarget:self action:@selector(btnTap:) forControlEvents:UIControlEventTouchUpInside];
+    
     
     //    UILabel *labelMessage = [[UILabel alloc]init];
     //    [_alertView addSubview:labelMessage];

@@ -121,7 +121,8 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
     
     NSLog(@"获取微信安装地址 = %@",[WXApi getWXAppInstallUrl]);
     
-
+    // 启动图片延时: 1秒
+    [NSThread sleepForTimeInterval:1];
     return YES;
 }
 -(void)showTabVc:(NSInteger)tabIndex{

@@ -20,7 +20,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor colorWithHexString:@"f5f5f5"];
-    self.navigationItem.title = @"工资领取";
+    self.navigationItem.title = @"工资明细";
     
     UIView *view = [[UIView alloc] init];
     [self.view addSubview:view];

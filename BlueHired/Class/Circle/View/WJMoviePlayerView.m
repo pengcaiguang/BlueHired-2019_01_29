@@ -343,6 +343,9 @@
     self.fail = fail;
     NSString *name = [[NSFileManager defaultManager] displayNameAtPath:URL.path];
     NSString *filePath = [[[self class] filePath] stringByAppendingPathComponent:name];
+    if (![filePath containsString:@".mp4"]) {
+        filePath = [NSString stringWithFormat:@"%@.mp4",filePath];
+    }
     BOOL fileExists = [[NSFileManager defaultManager] fileExistsAtPath:filePath];
     if (fileExists) {
         if (self.success) self.success([NSURL fileURLWithPath:filePath]);
@@ -366,6 +369,9 @@
 didFinishDownloadingToURL:(NSURL *)location {
     NSString *name = [[NSFileManager defaultManager] displayNameAtPath:downloadTask.currentRequest.URL.path];
     NSString *filePath = [[[self class] filePath] stringByAppendingPathComponent:name];
+    if (![filePath containsString:@".mp4"]) {
+        filePath = [NSString stringWithFormat:@"%@.mp4",filePath];
+    }
     [[NSFileManager defaultManager] moveItemAtPath:location.path toPath:filePath error:nil];
 }
 
@@ -382,6 +388,9 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite {
 didCompleteWithError:(nullable NSError *)error {
     NSString *name = [[NSFileManager defaultManager] displayNameAtPath:task.currentRequest.URL.path];
     NSString *filePath = [[[self class] filePath] stringByAppendingPathComponent:name];
+    if (![filePath containsString:@".mp4"]) {
+        filePath = [NSString stringWithFormat:@"%@.mp4",filePath];
+    }
     BOOL isExists = [[NSFileManager defaultManager] fileExistsAtPath:filePath];
     dispatch_async(dispatch_get_main_queue(), ^{
         if (isExists) {

@@ -75,12 +75,10 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.navigationController.navigationBar.translucent = NO;
-    self.navigationController.navigationBar.barTintColor = [UIColor baseColor];
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:[UIColor baseColor]] forBarMetrics:UIBarMetricsDefault];
+
 
     [self setLeftButton];
-    [self setSearchView];
+    
     [self.view addSubview:self.tableview];
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
@@ -89,9 +87,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 //    self.listArray = [NSMutableArray array];
 //    [self request];
 //    [self requestMechanismlist];
-    _myTimer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(changeScrollContentOffSetY) userInfo:nil repeats:YES];
-    
-    [[NSRunLoop currentRunLoop] addTimer:_myTimer forMode:NSRunLoopCommonModes];
+
  
     if (![[NSUserDefaults standardUserDefaults] boolForKey:OPERATIONFORKEY]) {
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:OPERATIONFORKEY];
@@ -150,11 +146,17 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    self.navigationController.navigationBar.translucent = NO;
+    self.navigationController.navigationBar.barTintColor = [UIColor baseColor];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:[UIColor baseColor]] forBarMetrics:UIBarMetricsDefault];
+    [self setSearchView];
     [self.tableview reloadData];
+    
+    _myTimer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(changeScrollContentOffSetY) userInfo:nil repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:_myTimer forMode:NSRunLoopCommonModes];
  }
 
--(void)viewWillDisappear:(BOOL)animated
-{
+-(void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     if (self.sortAlertView.touchButton.selected) {
         [self.sortAlertView close];
@@ -280,6 +282,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
             label.textColor = [UIColor baseColor];
             label.font = [UIFont systemFontOfSize:13];
             label.textAlignment = NSTextAlignmentLeft;
+//            label.backgroundColor = [UIColor redColor];
         }
         self.RecommendScrollView.contentSize = CGSizeMake(0, self.model.data.workBarsList.count*36);
         
@@ -820,7 +823,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     if (!_ButtonView) {
         _ButtonView = [[UIView alloc] initWithFrame:CGRectMake(13, 225, SCREEN_WIDTH-26, 42)];
         _ButtonView.tag = 1000;
-        NSArray *arr = @[@"推荐好厂",@"高额返费",@"好评企业",@"可借支"];
+        NSArray *arr = @[@"推荐好厂",@"高薪企业",@"好评企业",@"可借支"];
         self.ButtonArr = [[NSMutableArray alloc] init];
         for (int i = 0; i<arr.count; i++) {
             UIButton *Bt = [[UIButton alloc] init];
@@ -869,7 +872,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         self.orderType = @"";
     }else if ([sender.currentTitle isEqualToString:@"推荐好厂"]){
         self.orderType = @"7";
-    }else if ([sender.currentTitle isEqualToString:@"高额返费"]){
+    }else if ([sender.currentTitle isEqualToString:@"高薪企业"]){
         self.orderType = @"8";
     }else if ([sender.currentTitle isEqualToString:@"好评企业"]){
         self.orderType = @"2";

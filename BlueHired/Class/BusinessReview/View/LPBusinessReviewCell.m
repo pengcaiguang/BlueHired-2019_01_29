@@ -13,6 +13,10 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
+    self.mechanismLogoImgView.layer.cornerRadius = 6;
+    self.mechanismLogoImgView.layer.borderWidth = 0.5;
+    self.mechanismLogoImgView.layer.borderColor = [UIColor colorWithHexString:@"#E0E0E0"].CGColor;
+    
 }
 //@property (weak, nonatomic) IBOutlet UIImageView *mechanismLogoImgView;
 //@property (weak, nonatomic) IBOutlet UILabel *mechanismNameLabel;

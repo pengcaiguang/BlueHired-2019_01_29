@@ -204,7 +204,8 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
  
     NSDictionary *dic = @{
                           @"page":@(self.page),
-                          @"type":@(type)
+                          @"type":@(type),
+                          @"versionType":@"2.3"
                           };
     [NetApiManager requestMoodListWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);

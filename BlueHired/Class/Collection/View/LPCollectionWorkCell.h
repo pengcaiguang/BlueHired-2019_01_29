@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "LPWorkCollectionModel.h"
+#import "XHStarRateView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 typedef void(^LPCollectionWorkCellBlock)(LPWorkCollectionDataModel *model);
@@ -21,13 +22,20 @@ typedef void(^LPCollectionWorkCellBlock)(LPWorkCollectionDataModel *model);
 @property (weak, nonatomic) IBOutlet UILabel *keyLabel;
 @property (weak, nonatomic) IBOutlet UILabel *postNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *isApplyLabel;
+@property (strong, nonatomic) IBOutlet UIView *mechanismScoreView;
+@property (weak, nonatomic) IBOutlet UIButton *reMoneyLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *reMoneyImage;
 
 @property (weak, nonatomic) IBOutlet UILabel *workTypeNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *applyNumberLabel;
+@property (weak, nonatomic) IBOutlet UILabel *isWorkers;
 
 @property (weak, nonatomic) IBOutlet UIButton *selectButton;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *label_contraint_width;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *keyLabel_constraint_right;
+
+@property(nonatomic,strong) XHStarRateView *starRateView;
 
 
 @property(nonatomic,strong) LPWorkCollectionDataModel *model;

@@ -50,11 +50,10 @@
 -(void)viewWillAppear:(BOOL)animated{
     if (_isfirst) {
         NSURL *url;
-        
         if (self.type == 1) {
-            url = [NSURL URLWithString:[NSString stringWithFormat:@"%@bluehired/resident/#/sufferexplain",BaseRequestWeiXiURL]];
+            url = [NSURL URLWithString:[NSString stringWithFormat:@"%@resident/#/sufferexplain",BaseRequestWeiXiURL]];
         }else if (self.type == 2){
-            url = [NSURL URLWithString:[NSString stringWithFormat:@"%@bluehired/resident/#/scoreexplain",BaseRequestWeiXiURL]];
+            url = [NSURL URLWithString:[NSString stringWithFormat:@"%@resident/#/scoreexplain",BaseRequestWeiXiURL]];
         }
         NSURLRequest *request = [NSURLRequest requestWithURL:url];
         [webview loadRequest:request];

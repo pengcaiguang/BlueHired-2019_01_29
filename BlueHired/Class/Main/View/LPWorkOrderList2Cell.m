@@ -42,7 +42,8 @@
     self.maxNumberLabel.text = [NSString stringWithFormat:@"%@",model.workTypeName];
     self.applyNumberLabel.text = [NSString stringWithFormat:@"招%@人 / 已报名:%@人",model.maxNumber,model.applyNumber ? model.applyNumber : @"0"];
 
-    if (model.status.integerValue == 1) {
+    if (model.recruitStatus.integerValue == 1) {
+        self.applyNumberLabel.text = [NSString stringWithFormat:@"招%@人",model.maxNumber];
         self.isWorkers.hidden = NO;
     }else{
         self.isWorkers.hidden = YES;
@@ -50,7 +51,7 @@
     
     self.isApplyLabel.hidden = YES;
  
-    
+            self.ShareButton.hidden = YES;
     if ([model.status integerValue] == 1 ) {//1 通过
         self.statusLabel.text = @"入职状态：面试通过";
         [self.selectButton setTitle:@"放弃入职" forState:UIControlStateNormal];
@@ -86,6 +87,8 @@
         [self.selectButton setTitle:@"取消报名" forState:UIControlStateNormal];
         [self.selectButton setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
         self.selectButton.layer.borderColor = [UIColor baseColor].CGColor;
+        self.ShareButton.hidden = NO;
+        
     }
   
     NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:self.statusLabel.text];
@@ -99,18 +102,37 @@
     
     self.statusLabel.attributedText = string;
     
-    self.interviewTimeLabel.text = [NSString stringWithFormat:@"面试时间：%@",model.interviewTime];
-    self.recruitAddressLabel.text = [NSString stringWithFormat:@"面试地点：%@",model.recruitAddress];
+    self.interviewTimeLabel.text = [NSString stringWithFormat:@"面试时间：%@",[LPTools isNullToString:model.interviewTime]];
+    self.recruitAddressLabel.text = [NSString stringWithFormat:@"面试地点：%@",[LPTools isNullToString:model.recruitAddress]];
 
     if (model.teacherList.count == 0) {
-        self.teacherNameLabel.text = [NSString stringWithFormat:@"驻场老师：-"];
-        self.teacherTelLabel.text = [NSString stringWithFormat:@"驻场老师：-"];
+        self.teacherNameLabel.text = [NSString stringWithFormat:@"驻厂老师：-"];
+        self.teacherTelLabel.text = [NSString stringWithFormat:@"驻厂老师：-"];
+        self.LayoutConstrain_BG_Height.constant = 130-23.0*2;
+        self.teacherNameLabel.hidden = YES;
+        self.teacherTelLabel.hidden = YES;
+
     }else if (model.teacherList.count == 1){
-        self.teacherNameLabel.text = [NSString stringWithFormat:@"驻厂老师：%@  %@",model.teacherList[0].teacherName,model.teacherList[0].teacherTel];
-        self.teacherTelLabel.text = [NSString stringWithFormat:@"驻场老师：-"];
+        self.teacherNameLabel.text = [NSString stringWithFormat:@"驻厂老师：%@  %@",
+                                      [LPTools isNullToString:model.teacherList[0].teacherName],
+                                      [LPTools isNullToString:model.teacherList[0].teacherTel]];
+        self.teacherTelLabel.text = [NSString stringWithFormat:@"驻厂老师：-"];
+        self.LayoutConstrain_BG_Height.constant = 130-23.0;
+        self.teacherNameLabel.hidden = NO;
+        self.teacherTelLabel.hidden = YES;
+        
     }else if (model.teacherList.count >1){
-        self.teacherNameLabel.text = [NSString stringWithFormat:@"驻厂老师：%@  %@",model.teacherList[0].teacherName,model.teacherList[0].teacherTel];
-        self.teacherTelLabel.text = [NSString stringWithFormat:@"驻厂老师：%@  %@",model.teacherList[1].teacherName,model.teacherList[1].teacherTel];
+        self.teacherNameLabel.text = [NSString stringWithFormat:@"驻厂老师：%@  %@",
+                                      [LPTools isNullToString:model.teacherList[0].teacherName],
+                                      [LPTools isNullToString:model.teacherList[0].teacherTel]];
+        self.teacherTelLabel.text = [NSString stringWithFormat:@"驻厂老师：%@  %@",
+                                     [LPTools isNullToString:model.teacherList[1].teacherName],
+                                     [LPTools isNullToString:model.teacherList[1].teacherTel]];
+        
+        self.LayoutConstrain_BG_Height.constant = 130;
+        self.teacherNameLabel.hidden = NO;
+        self.teacherTelLabel.hidden = NO;
+        
     }
     
     
@@ -127,9 +149,9 @@
     
     CLLocationCoordinate2D pt2 = {[XNumber doubleValue],[YNumber doubleValue]};
     
-    BMKLocationCoordinateType srctype = BMKLocationCoordinateTypeWGS84;
-    BMKLocationCoordinateType destype = BMKLocationCoordinateTypeBMK09MC;
-    CLLocationCoordinate2D cood=[BMKLocationManager BMKLocationCoordinateConvert:pt2 SrcType:destype DesType:srctype];
+//    BMKLocationCoordinateType srctype = BMKLocationCoordinateTypeWGS84;
+//    BMKLocationCoordinateType destype = BMKLocationCoordinateTypeBMK09MC;
+//    CLLocationCoordinate2D cood=[BMKLocationManager BMKLocationCoordinateConvert:pt2 SrcType:destype DesType:srctype];
     
     self.coordinate = [self GCJ02FromBD09:pt2];
     
@@ -154,18 +176,18 @@
 }
 
 - (IBAction)Touchshare:(id)sender {
-    NSString *url = [NSString stringWithFormat:@"%@bluehired/recruitmentlist_detail.html?id=%@",BaseRequestWeiXiURL,self.model.mechanismId];
-    
+    NSString *url = [NSString stringWithFormat:@"%@referral?interviewId=%ld&id=%ld",
+                     BaseRequestWeiXiURL,
+                     self.model.id.integerValue,
+                     kUserDefaultsValue(LOGINID).integerValue];
     NSString *encodedUrl = [NSString stringWithString:[url stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    [LPTools ClickShare:encodedUrl Title:_model.mechanismName];
+    [LPTools ClickShare:encodedUrl Title:[NSString stringWithFormat:@"您的好友在蓝聘报名了%@，快来替他点赞加油，帮他获取更多返费吧！",_model.mechanismName]];
 }
 
 
 
 -(void)ToNavMap
 {
-    
-    
     //系统版本高于8.0，使用UIAlertController
     
     UIAlertController * alertController = [UIAlertController alertControllerWithTitle:@"导航到设备" message:nil preferredStyle:UIAlertControllerStyleActionSheet];

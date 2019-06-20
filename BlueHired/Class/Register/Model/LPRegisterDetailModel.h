@@ -36,5 +36,8 @@
 @property (nonatomic, copy) NSNumber *upUserId;
 @property (nonatomic, copy) NSNumber *userId;
 @property (nonatomic, copy) NSString *userName;
+@property (nonatomic, copy) NSString *remark;
+@property (nonatomic, copy) NSString *userTel;
+@property (nonatomic, copy) NSString *status;
 
 @end

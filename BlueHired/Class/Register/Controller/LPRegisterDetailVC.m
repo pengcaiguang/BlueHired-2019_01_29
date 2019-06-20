@@ -28,6 +28,12 @@ static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
 @property(nonatomic,strong) LPRegisterDetailModel *model;
 @property(nonatomic,strong) NSMutableArray <LPRegisterDetailDataListModel *>*listArray;
 
+@property(nonatomic,strong) UILabel *monthLabel;
+@property(nonatomic,strong) UILabel *moneyLabel;
+@property(nonatomic,strong) CustomIOSAlertView *CustomAlert;
+@property(nonatomic,strong) UITextField *AlertTF;
+@property(nonatomic,strong) LPRegisterDetailDataListModel *selectmodel;
+
 
 @end
 
@@ -36,7 +42,12 @@ static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.navigationItem.title = @"邀请入职奖励详情";
+    if (self.Type == 1) {
+        self.navigationItem.title = @"邀请入职奖励";
+    }else if (self.Type == 2){
+        self.navigationItem.title = @"邀请注册奖励";
+    }
+    
     NSDate *currentDate = [NSDate date];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM"];
@@ -50,24 +61,28 @@ static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
     [self requestGetOnWork];
 }
 -(void)setupUI{
+    
+    self.view.backgroundColor = [UIColor colorWithHexString:@"f5f5f5"];
+
+    
     UIView *bgView = [[UIView alloc]init];
     [self.view addSubview:bgView];
     [bgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
         make.top.mas_equalTo(0);
-        make.height.mas_equalTo(48);
+        make.height.mas_equalTo(LENGTH_SIZE(44));
     }];
     bgView.backgroundColor = [UIColor baseColor];
     
-    UIImageView *imgView = [[UIImageView alloc]init];
-    [bgView addSubview:imgView];
-    [imgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(14);
-        make.centerY.equalTo(bgView);
-        make.size.mas_equalTo(CGSizeMake(19, 20));
-    }];
-    imgView.image = [UIImage imageNamed:@"calendar"];
+//    UIImageView *imgView = [[UIImageView alloc]init];
+//    [bgView addSubview:imgView];
+//    [imgView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.mas_equalTo(14);
+//        make.centerY.equalTo(bgView);
+//        make.size.mas_equalTo(CGSizeMake(0, 20));
+//    }];
+//    imgView.image = [UIImage imageNamed:@"calendar"];
     
     self.timeButton = [[UIButton alloc]init];
     [bgView addSubview:self.timeButton];
@@ -77,106 +92,151 @@ static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
     [self.timeButton setTitle:self.currentDateString forState:UIControlStateNormal];
     [self.timeButton addTarget:self action:@selector(chooseMonth) forControlEvents:UIControlEventTouchUpInside];
     
-    UIImageView *leftImgView = [[UIImageView alloc]init];
+    UIButton *leftImgView = [[UIButton alloc]init];
     [bgView addSubview:leftImgView];
     [leftImgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(7, 12));
+        make.size.mas_equalTo(CGSizeMake(LENGTH_SIZE(44), LENGTH_SIZE(44)));
         make.centerY.equalTo(self.timeButton);
         make.right.equalTo(self.timeButton.mas_left).offset(-10);
     }];
-    leftImgView.image = [UIImage imageNamed:@"left_arrow"];
+    [leftImgView setImage:[UIImage imageNamed:@"left"] forState:UIControlStateNormal];
+    leftImgView.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+    [leftImgView addTarget:self action:@selector(TouchLeftBt:) forControlEvents:UIControlEventTouchUpInside];
     
-    UIImageView *rightImgView = [[UIImageView alloc]init];
+    UIButton *rightImgView = [[UIButton alloc]init];
     [bgView addSubview:rightImgView];
     [rightImgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(7, 12));
+        make.size.mas_equalTo(CGSizeMake(LENGTH_SIZE(44), LENGTH_SIZE(44)));
         make.centerY.equalTo(self.timeButton);
         make.left.equalTo(self.timeButton.mas_right).offset(10);
     }];
-    rightImgView.image = [UIImage imageNamed:@"right_arrow"];
+    [rightImgView setImage:[UIImage imageNamed:@"right"] forState:UIControlStateNormal];
+    rightImgView.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [rightImgView addTarget:self action:@selector(TouchrightBt:) forControlEvents:UIControlEventTouchUpInside];
     
     
-    UIView *titleView = [[UIView alloc]init];
-    [self.view addSubview:titleView];
-    [titleView mas_makeConstraints:^(MASConstraintMaker *make) {
+    UIView *headView = [[UIView alloc] init];
+    [self.view addSubview:headView];
+    [headView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
         make.top.equalTo(bgView.mas_bottom).offset(0);
-        make.height.mas_equalTo(30);
+        make.height.mas_equalTo(LENGTH_SIZE(60));
     }];
+    headView.backgroundColor = [UIColor whiteColor];
     
-    NSMutableArray  *arr = [NSMutableArray array];
-    NSArray *a = @[@"姓名",@"类别",@"奖励"];
-    for (int i = 0; i<3; i++) {
-        UILabel *label = [[UILabel alloc]init];
-        [titleView addSubview:label];
-        label.text = a[i];
-        label.font = [UIFont systemFontOfSize:14];
-        label.textColor = [UIColor colorWithHexString:@"#1B1B1B"];
-        if (i == 0) {
-            label.textAlignment = NSTextAlignmentLeft;
-        }else if (i == 1){
-            label.textAlignment = NSTextAlignmentCenter;
-        }else if (i == 2){
-            label.textAlignment = NSTextAlignmentRight;
-        }
-        [arr addObject:label];
-    }
-    [arr mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedSpacing:10 leadSpacing:13 tailSpacing:13];
-    [arr mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.mas_equalTo(30);
-        make.top.mas_equalTo(0);
+    UILabel *MonthLabel = [[UILabel alloc] init];
+    self.monthLabel = MonthLabel;
+    [headView addSubview:MonthLabel];
+    [MonthLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_offset(0);
+        make.left.mas_equalTo(LENGTH_SIZE(13));
+        make.height.mas_equalTo(LENGTH_SIZE(60));
     }];
+    MonthLabel.textColor = [UIColor colorWithHexString:@"#333333"];
+    MonthLabel.font = [UIFont boldSystemFontOfSize:FontSize(16)];
+    
+    
+    UILabel *MoneyLabel = [[UILabel alloc] init];
+    self.moneyLabel = MoneyLabel;
+    [headView addSubview:MoneyLabel];
+    [MoneyLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_offset(0);
+        make.right.mas_equalTo(LENGTH_SIZE(-13));
+        make.height.mas_equalTo(LENGTH_SIZE(60));
+    }];
+    MoneyLabel.textColor = [UIColor baseColor];
+    MoneyLabel.font = [UIFont boldSystemFontOfSize:FontSize(16)];
     
     
     [self.view addSubview:self.tableview];
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
-        //        make.edges.equalTo(self.view);
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
-        make.bottom.mas_equalTo(-96);
-        make.top.equalTo(titleView.mas_bottom).offset(0);
+        make.bottom.mas_equalTo(0);
+        make.top.equalTo(headView.mas_bottom).offset(LENGTH_SIZE(10));
     }];
-    self.bottomButtonArray = [NSMutableArray array];
-    NSArray *titleArray = @[@"已到账邀请奖励0元",@"未到账邀请奖励0元"];
-    for (int i =0; i<titleArray.count; i++) {
-        UIButton *button = [[UIButton alloc]init];
-        [self.view addSubview:button];
-        [button setTitle:titleArray[i] forState:UIControlStateNormal];
-        button.titleLabel.font = [UIFont systemFontOfSize:16];
-        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        button.tag = i;
-        if (i == 0) {
-            button.backgroundColor = [UIColor baseColor];
-            [button mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.mas_equalTo(0);
-                make.right.mas_equalTo(0);
-                make.bottom.mas_equalTo(-48);
-                make.height.mas_equalTo(48);
-            }];
-//            [button addTarget:self action:@selector(touchBottomButton:) forControlEvents:UIControlEventTouchUpInside];
-        }else{
-            button.backgroundColor = [UIColor colorWithHexString:@"#BBBBBB"];
-            [button mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.mas_equalTo(0);
-                make.right.mas_equalTo(0);
-                make.bottom.mas_equalTo(0);
-                make.height.mas_equalTo(48);
-            }];
-        }
-        [self.bottomButtonArray addObject:button];
+
+}
+
+
+-(void)TouchLeftBt:(UIButton *)sender{
+    
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSCalendarUnit unit = NSCalendarUnitMonth;//只比较天数差异
+    NSDateComponents *delta = [calendar components:unit fromDate:[DataTimeTool dateFromString:self.currentDateString DateFormat:@"yyyy-MM"] toDate:[DataTimeTool dateFromString:@"2018-01" DateFormat:@"yyyy-MM"] options:0];
+    
+    
+    if (delta.month>=0) {
+        return;
     }
-//    [self.bottomButtonArray mas_distributeViewsAlongAxis:MASAxisTypeVertical withFixedSpacing:0 leadSpacing:-96 tailSpacing:0];
-//    [self.bottomButtonArray mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.height.mas_equalTo(48);
-//        make.bottom.mas_equalTo(0);
-//        make.left.mas_equalTo(0);
-//    }];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM"];
+    NSDate *date = [dateFormatter dateFromString:self.currentDateString];
+    NSDateComponents *comps = [[NSDateComponents alloc] init];
+    [comps setMonth:-1];
+    NSCalendar *calender = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSDate *StartDate = [calender dateByAddingComponents:comps toDate:date options:0];
+    self.currentDateString = [dateFormatter stringFromDate:StartDate];
+    [self.timeButton setTitle:self.currentDateString forState:UIControlStateNormal];
+    self.page = 1;
+    [self requestGetOnWork];
+
+    
 }
+-(void)TouchrightBt:(UIButton *)sender{
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSCalendarUnit unit = NSCalendarUnitMonth;//只比较天数差异
+    NSDateComponents *delta = [calendar components:unit fromDate:[DataTimeTool dateFromString:self.currentDateString DateFormat:@"yyyy-MM"] toDate:[NSDate date] options:0];
+    
+    
+    if (delta.month<=0) {
+        return;
+    }
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM"];
+    NSDate *date = [dateFormatter dateFromString:self.currentDateString];
+    NSDateComponents *comps = [[NSDateComponents alloc] init];
+    [comps setMonth:1];
+    NSCalendar *calender = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSDate *StartDate = [calender dateByAddingComponents:comps toDate:date options:0];
+    self.currentDateString = [dateFormatter stringFromDate:StartDate];
+    [self.timeButton setTitle:self.currentDateString forState:UIControlStateNormal];
+    self.page = 1;
+    [self requestGetOnWork];
+}
+
+
 -(void)chooseMonth{
-    self.monthView.hidden = !self.monthView.isHidden;
-    self.monthBackView.hidden = !self.monthBackView.isHidden;
+    NSComparisonResult sCOM= [[NSDate date] compare:[DataTimeTool dateFromString:@"2018-01" DateFormat:@"yyyy-MM"]];
+    
+    if (sCOM == NSOrderedAscending) {
+        
+        GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"系统时间不对,请前往设置修改时间" message:nil textAlignment:0 buttonTitles:@[@"确定"] buttonsColor:@[[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
+            
+            [self.navigationController popViewControllerAnimated:YES];
+            
+        }];
+        [alert show];
+        return;
+    }
+    
+    QFDatePickerView *datePickerView = [[QFDatePickerView  alloc]initDatePackerWith:[DataTimeTool dateFromString:self.currentDateString DateFormat:@"yyyy-MM"]
+                                                                            minDate:[DataTimeTool dateFromString:@"2018-01" DateFormat:@"yyyy-MM"]
+                                                                            maxDate:[NSDate date]
+                                                                           Response:^(NSString *str) {
+                                                                               NSLog(@"str = %@", str);
+                                                                               [self.timeButton setTitle:str forState:UIControlStateNormal];
+                                                                               self.currentDateString = self.timeButton.titleLabel.text;
+                                                                               self.page = 1;
+                                                                               [self requestGetOnWork];
+                                                                           }];
+    
+    [datePickerView show];
+    
 }
+
 -(void)monthViewHidden{
     self.monthView.hidden = YES;
     self.monthBackView.hidden = YES;
@@ -199,11 +259,49 @@ static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
     [self requestGetOnWork];
     
 }
+
+
+
+-(void)textFieldChanged:(UITextField *)textField{
+    //
+    
+    /**
+     *  最大输入长度,中英文字符都按一个字符计算
+     */
+    int kMaxLength = 10;
+    NSString *toBeString = textField.text;
+    // 获取键盘输入模式
+    NSString *lang = [[UITextInputMode currentInputMode] primaryLanguage];
+    // 中文输入的时候,可能有markedText(高亮选择的文字),需要判断这种状态
+    // zh-Hans表示简体中文输入, 包括简体拼音，健体五笔，简体手写
+    if ([lang isEqualToString:@"zh-Hans"]) {
+        UITextRange *selectedRange = [textField markedTextRange];
+        //获取高亮选择部分
+        UITextPosition *position = [textField positionFromPosition:selectedRange.start offset:0];
+        // 没有高亮选择的字，表明输入结束,则对已输入的文字进行字数统计和限制
+        if (!position) {
+            if (toBeString.length > kMaxLength) {
+                // 截取子串
+                textField.text = [toBeString substringToIndex:kMaxLength];
+            }
+        } else { // 有高亮选择的字符串，则暂不对文字进行统计和限制
+        }
+    } else {
+        // 中文输入法以外的直接对其统计限制即可，不考虑其他语种情况
+        if (toBeString.length > kMaxLength) {
+            // 截取子串
+            textField.text = [toBeString substringToIndex:kMaxLength];
+        }
+    }
+}
+
+
 -(void)setModel:(LPRegisterDetailModel *)model{
     _model = model;
-    [self.bottomButtonArray[0] setTitle:[NSString stringWithFormat:@"已到账邀请奖励%@元",model.data.totalMoney ? model.data.totalMoney : @"0"] forState:UIControlStateNormal];
-    [self.bottomButtonArray[1] setTitle:[NSString stringWithFormat:@"未到账邀请奖励%@元",model.data.remainderMoney ? model.data.remainderMoney : @"0"] forState:UIControlStateNormal];
 
+    self.monthLabel.text = [DataTimeTool getDataTime:self.currentDateString DateFormat:@"yyyy年MM月"];
+    self.moneyLabel.text = [NSString stringWithFormat:@"到账总计：%.2f元",model.data.totalMoney.floatValue];
+    
     if ([self.model.code integerValue] == 0) {
         
         if (self.page == 1) {
@@ -212,6 +310,9 @@ static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
         if (self.model.data.relationList.count > 0) {
             self.page += 1;
             [self.listArray addObjectsFromArray:self.model.data.relationList];
+            if (self.model.data.relationList.count<20) {
+                [self.tableview.mj_footer endRefreshingWithNoMoreData];
+            }
         }else{
             [self.tableview.mj_footer endRefreshingWithNoMoreData];
         }
@@ -272,22 +373,97 @@ static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
     return self.listArray.count;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (self.Type == 1) {
+        return 48;
+    }
+    return 66;
+}
+
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     LPRegisterDetailCell *cell = [tableView dequeueReusableCellWithIdentifier:LPRegisterDetailCellID];
+    cell.Type = self.Type;
     cell.model = self.listArray[indexPath.row];
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (self.Type == 2) {
+        self.selectmodel = self.listArray[indexPath.row];
+        CustomIOSAlertView *alertview = [[CustomIOSAlertView alloc] init];
+        self.CustomAlert = alertview;
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0,  LENGTH_SIZE(300), LENGTH_SIZE(177))];
+        view.backgroundColor = [UIColor whiteColor];
+        UILabel *title = [[UILabel alloc] init];
+        [view addSubview:title];
+        [title mas_makeConstraints:^(MASConstraintMaker *make){
+            make.top.mas_offset(LENGTH_SIZE(22));
+            make.left.right.mas_offset(0);
+        }];
+        title.textColor = [UIColor colorWithHexString:@"#333333"];
+        title.font = [UIFont boldSystemFontOfSize:18];
+        title.text = @"编辑备注";
+        title.textAlignment = NSTextAlignmentCenter;
+        
+        UITextField *TF = [[UITextField alloc] init];
+        self.AlertTF = TF;
+        [view addSubview:TF];
+        [TF mas_makeConstraints:^(MASConstraintMaker *make){
+            make.top.mas_offset(LENGTH_SIZE(65));
+            make.left.mas_offset(LENGTH_SIZE(20));
+            make.right.mas_offset(LENGTH_SIZE(-20));
+            make.height.mas_offset(LENGTH_SIZE(36));
+        }];
+        TF.layer.borderColor = [UIColor colorWithHexString:@"#E0E0E0"].CGColor;
+        TF.layer.borderWidth = 1;
+        TF.layer.cornerRadius = 6;
+        TF.placeholder = @"请输入备注";
+        [TF addTarget:self action:@selector(textFieldChanged:) forControlEvents:UIControlEventEditingChanged];
+
+        UIButton *button = [[UIButton alloc] init];
+        [view addSubview:button];
+        [button mas_makeConstraints:^(MASConstraintMaker *make){
+            make.top.equalTo(TF.mas_bottom).offset(LENGTH_SIZE(15));
+            make.left.mas_offset(LENGTH_SIZE(20));
+            make.right.mas_offset(LENGTH_SIZE(-20));
+            make.height.mas_offset(LENGTH_SIZE(40));
+        }];
+        button.layer.cornerRadius = 6;
+        button.backgroundColor = [UIColor baseColor];
+        [button setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
+        [button setTitle:@"保  存" forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(Touchremark:) forControlEvents:UIControlEventTouchUpInside];
+        
+        alertview.containerView = view;
+        alertview.buttonTitles=@[];
+        [alertview setUseMotionEffects:true];
+        [alertview setCloseOnTouchUpOutside:true];
+        [alertview show];
+    }
 }
+
+-(void)Touchremark:(UIButton *)sender{
+    [self.CustomAlert close];
+    [self requestUpdateRelationReg:self.selectmodel.id remark:self.AlertTF.text];
+}
+
 
 #pragma mark - request
 
 -(void)requestGetOnWork{
-    NSDictionary *dic = @{
-                          @"page":@(self.page),
-                          @"time":self.currentDateString
-                          };
+    NSDictionary *dic;
+    
+    if (self.Type == 1) {
+        dic = @{@"page":@(self.page),
+                @"time":self.currentDateString
+                };
+    }else if (self.Type == 2){
+        dic = @{@"page":@(self.page),
+                @"time":self.currentDateString,
+                @"type":@"1"
+                };
+    }
+    
     [NetApiManager requestGetOnWorkWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         [self.tableview.mj_header endRefreshing];
@@ -303,6 +479,35 @@ static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
         }
     }];
 }
+
+
+
+-(void)requestUpdateRelationReg:(NSString *)Modelid remark:(NSString *) remark{
+ 
+ 
+    NSString *url = [NSString stringWithFormat:@"invite/update_relation_reg?id=%@&remark=%@",Modelid,remark];
+    [NetApiManager requestUpdateRelationReg:nil URLString:url withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if ([responseObject[@"data"] integerValue] == 1) {
+                    self.selectmodel.remark = remark;
+                    [self.tableview reloadData];
+                    [self.view showLoadingMeg:@"更新备注成功" time:MESSAGE_SHOW_TIME];
+                }else{
+                    [self.view showLoadingMeg:@"更新备注失败，请稍后在试" time:MESSAGE_SHOW_TIME];
+                }
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+
+
+
 #pragma mark lazy
 - (UITableView *)tableview{
     if (!_tableview) {
@@ -311,9 +516,11 @@ static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
         _tableview.dataSource = self;
         _tableview.tableFooterView = [[UIView alloc]init];
         _tableview.rowHeight = UITableViewAutomaticDimension;
-        _tableview.estimatedRowHeight = 44;
+        _tableview.estimatedRowHeight = 0;
         _tableview.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         _tableview.separatorColor = [UIColor colorWithHexString:@"#F1F1F1"];
+        _tableview.backgroundColor = [UIColor colorWithHexString:@"f5f5f5"];
+
         [_tableview registerNib:[UINib nibWithNibName:LPRegisterDetailCellID bundle:nil] forCellReuseIdentifier:LPRegisterDetailCellID];
         _tableview.mj_header = [HZNormalHeader headerWithRefreshingBlock:^{
             self.page = 1;

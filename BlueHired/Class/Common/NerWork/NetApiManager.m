@@ -871,6 +871,21 @@ static QNUploadManager *upManager = NULL;
                                                  IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
+
+//邀请注册奖励列表添加备注
++ (void)requestUpdateRelationReg:(id)paramer
+                       URLString:(NSString *)URLString
+                       withHandle:(response)responseHandle{
+    NSString * appendURLString = URLString;
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+
 //查询绑定银行卡
 + (void)requestSelectBindbankcardWithParam:(id)paramer
                                 withHandle:(response)responseHandle{
@@ -2251,6 +2266,28 @@ static QNUploadManager *upManager = NULL;
     [NetRequestManager requestWithEnty:enty];
 }
 
+//获取企业岗位
++ (void)requestQueryGetMechanismTypeList:(id)paramer
+                           withHandle:(response)responseHandle{
+    NSString * appendURLString = @"mechanismcomment/get_mechanism_type_list";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
 
+//获取电话号码
++ (void)requestQueryGetUserConcernTel:(id)paramer
+                              withHandle:(response)responseHandle{
+    NSString * appendURLString = @"userConcern/get_user_concern_tel_list";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
 
 @end

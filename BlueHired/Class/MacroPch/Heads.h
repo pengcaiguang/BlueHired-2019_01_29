@@ -17,6 +17,7 @@
 #import "MJExtension.h"
 #import "AFNetworking.h"
 #import <SDWebImage/UIImageView+WebCache.h>
+#import <SDWebImage/FLAnimatedImageView+WebCache.h>
 #import "FSCalendar.h"
 
 #import "UIColor+Color.h"
@@ -75,5 +76,7 @@
 #import "LPUserProblemModel.h"
 #import "LPSetSecretVC.h"
 #import "LPChangePhoneVC.h"
+#import "XHInputView.h"
+#import "UILabel+YBAttributeTextTapAction.h"
 
 #endif /* Heads_h */

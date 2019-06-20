@@ -99,7 +99,7 @@
     NSString *st = dic[@"identity"];
     
 //    NSString *strutl = [NSString stringWithFormat:@"%@bluehired/login.html?identity=%@",BaseRequestURL,st];
-    NSString *strutl = [NSString stringWithFormat:@"%@bluehired/login.html?identity=%@",BaseRequestWeiXiURL,st];
+    NSString *strutl = [NSString stringWithFormat:@"%@resident/bluehired/login.html?identity=%@",BaseRequestWeiXiURL,st];
 
     //1. 实例化二维码滤镜
     CIFilter *filter = [CIFilter filterWithName:@"CIQRCodeGenerator"];

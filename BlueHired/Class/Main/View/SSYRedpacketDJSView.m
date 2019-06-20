@@ -140,7 +140,7 @@
         }];
         
         label.font = [UIFont systemFontOfSize:23];
-        label.text = @"20.00";
+        label.text = @"0.00";
         label.textColor = [UIColor colorWithRed:255/255.0 green:198/255.0 blue:1/255.0 alpha:1.0];
         
         
@@ -178,7 +178,7 @@
     
     NSString *st = dic[@"userName"];
     
-    NSString *url = [NSString stringWithFormat:@"%@bluehired/redpacket.html?nickname=%@&money=%.2f",BaseRequestWeiXiURL,st,self.redMoney];
+    NSString *url = [NSString stringWithFormat:@"%@resident/#/redpacket?nickname=%@&money=%.2f",BaseRequestWeiXiURL,st,self.redMoney];
     
     NSString *encodedUrl = [NSString stringWithString:[url stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     [LPTools ClickShare:encodedUrl Title:@"蓝聘又开始下红包雨了，快来抢啊！"];
@@ -474,7 +474,7 @@ static int coinCount = 0;
     
     NSString *st = dic[@"userName"];
     
-    NSString *url = [NSString stringWithFormat:@"%@bluehired/redpacket.html?nickname=%@&money=%.2f",BaseRequestWeiXiURL,st,self.redMoney];
+    NSString *url = [NSString stringWithFormat:@"%@resident/bluehired/redpacket.html?nickname=%@&money=%.2f",BaseRequestWeiXiURL,st,self.redMoney];
     
     NSString *encodedUrl = [NSString stringWithString:[url stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     

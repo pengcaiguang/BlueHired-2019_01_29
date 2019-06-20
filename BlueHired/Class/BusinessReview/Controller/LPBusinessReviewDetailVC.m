@@ -18,13 +18,16 @@ static NSString *LPBusinessReviewDetailSalaryCellID = @"LPBusinessReviewDetailSa
 
 @interface LPBusinessReviewDetailVC ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, strong)UITableView *tableview;
-@property(nonatomic,strong) NSMutableArray <UILabel *>*screeningLabelArray;
+@property(nonatomic,strong) NSMutableArray <UIButton *>*screeningLabelArray;
 
 @property(nonatomic,assign) NSInteger page;
 @property(nonatomic,assign) NSInteger selectType;
 @property(nonatomic,strong) LPMechanismcommentDetailModel *model;
 @property(nonatomic,strong) NSMutableArray <LPMechanismcommentDetailDataModel *>*listArray;
 @property(nonatomic,assign) NSInteger bottomSelectType;
+
+@property(nonatomic,strong) UIView *ButtonView;
+
 
 @end
 
@@ -39,16 +42,19 @@ static NSString *LPBusinessReviewDetailSalaryCellID = @"LPBusinessReviewDetailSa
     self.page = 1;
     
     [self setTitleView];
-    [self setBottomView];
     [self.view addSubview:self.tableview];
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
         //        make.edges.equalTo(self.view);
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
-        make.top.mas_equalTo(89);
-        make.bottom.mas_equalTo(-49);
+        make.top.mas_equalTo(LENGTH_SIZE(44));
+        make.bottom.mas_equalTo(LENGTH_SIZE(-49));
     }];
+    [self setBottomView];
+
     [self requestMechanismcommentDeatil];
+    [self requestCheckIsmechanism];
+
 }
 
 -(void)setTitleView{
@@ -58,61 +64,67 @@ static NSString *LPBusinessReviewDetailSalaryCellID = @"LPBusinessReviewDetailSa
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
         make.top.mas_equalTo(0);
-        make.height.mas_equalTo(89);
+        make.height.mas_equalTo(LENGTH_SIZE(44));
     }];
-    NSArray *imgArray = @[@"businessReview_all",@"businessReview_img",@"businessReview_review",@"businessReview_wage"];
+//    NSArray *imgArray = @[@"businessReview_all",@"businessReview_img",@"businessReview_review",@"businessReview_wage"];
     NSArray *titleArray = @[@"查看全部",@"只看有图",@"只看评论",@"只看工资"];
     
-    for (int i = 0; i < imgArray.count; i++) {
-        UIView *bgView = [[UIView alloc]init];
-        bgView.frame = CGRectMake(i%4 * SCREEN_WIDTH/4, floor(i/4)*86, SCREEN_WIDTH/4, 86);
-        //        bgView.backgroundColor = randomColor;
-        bgView.userInteractionEnabled = YES;
-        bgView.tag = i;
-        UIImageView *imageView = [[UIImageView alloc]init];
-        imageView.frame = CGRectMake((SCREEN_WIDTH/4-37)/2, 15, 37, 37);
-        //        imageView.backgroundColor = randomColor;
-        imageView.image = [UIImage imageNamed:imgArray[i]];
-        [bgView addSubview:imageView];
+    for (int i = 0; i < titleArray.count; i++) {
+        UIButton *bt = [[UIButton alloc]init];
+        bt.frame = CGRectMake(0, 60, SCREEN_WIDTH/4, 20);
+        [bt setTitleColor:[UIColor colorWithHexString:@"#666666"] forState:UIControlStateNormal];
+        [bt setTitleColor:[UIColor baseColor] forState:UIControlStateSelected];
+        [bt setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"#F2F1F0"]] forState:UIControlStateNormal];
+        [bt setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"#E4F4FF"]] forState:UIControlStateSelected];
+        bt.titleLabel.font = [UIFont systemFontOfSize:FontSize(14)];
+        [bt setTitle:titleArray[i] forState:UIControlStateNormal];
+        bt.layer.cornerRadius = 4;
+        bt.clipsToBounds = YES;
+        bt.tag = i;
         
-        UILabel *label = [[UILabel alloc]init];
-        label.frame = CGRectMake(0, 60, SCREEN_WIDTH/4, 20);
-        //        label.backgroundColor = randomColor;
-        label.textColor = [UIColor colorWithHexString:@"#343434"];
-        label.font = [UIFont systemFontOfSize:12];
-        label.text = titleArray[i];
-        label.textAlignment = NSTextAlignmentCenter;
-        [bgView addSubview:label];
-        [self.screeningLabelArray addObject:label];
-        [titleBgView addSubview:bgView];
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(touchBgView:)];
-        [bgView addGestureRecognizer:tap];
+        [self.screeningLabelArray addObject:bt];
+        [titleBgView addSubview:bt];
+        [bt addTarget:self action:@selector(touchBgView:) forControlEvents:UIControlEventTouchUpInside];
+//        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(touchBgView:)];
     }
-    self.screeningLabelArray[0].textColor = [UIColor baseColor];
+    [self.screeningLabelArray mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedSpacing:8 leadSpacing:13 tailSpacing:13];
+    [self.screeningLabelArray mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(LENGTH_SIZE(8));
+        make.bottom.mas_equalTo(LENGTH_SIZE(-8));
+    }];
+    
+    self.screeningLabelArray[0].selected = YES;
 }
 -(void)setBottomView{
     UIView *bgView = [[UIView alloc]init];
+    self.ButtonView = bgView;
     [self.view addSubview:bgView];
     [bgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
-        make.bottom.mas_equalTo(0);
-        make.height.mas_equalTo(49);
+        if (@available(iOS 11.0, *)) {
+            make.bottom.mas_equalTo(self.view.mas_safeAreaLayoutGuideBottom);
+        } else {
+            make.bottom.mas_equalTo(0);
+        }
+        make.height.mas_equalTo(LENGTH_SIZE(49));
     }];
+    bgView.hidden = YES;
+    
     NSMutableArray *bottomButtonArray = [NSMutableArray array];
-    NSArray *titleArray = @[@"我来点评",@"晒个工资"];
+    NSArray *titleArray = @[@"晒个工资",@"我来点评"];
     for (int i =0; i<titleArray.count; i++) {
         UIButton *button = [[UIButton alloc]init];
         [bgView addSubview:button];
         [button setTitle:titleArray[i] forState:UIControlStateNormal];
         [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         if (i == 0) {
-            button.backgroundColor = [UIColor colorWithHexString:@"#FF6666"];
+            button.backgroundColor = [UIColor colorWithHexString:@"#FFC24B"];
         }else{
             button.backgroundColor = [UIColor baseColor];
 
         }
-        button.titleLabel.font = [UIFont systemFontOfSize:16];
+        button.titleLabel.font = [UIFont systemFontOfSize:FontSize(17)];
         button.tag = i;
         [button addTarget:self action:@selector(touchBottomButton:) forControlEvents:UIControlEventTouchUpInside];
         [bottomButtonArray addObject:button];
@@ -125,12 +137,12 @@ static NSString *LPBusinessReviewDetailSalaryCellID = @"LPBusinessReviewDetailSa
     
 }
 #pragma mark - selector
--(void)touchBgView:(UITapGestureRecognizer *)tap{
-    NSInteger index = [tap view].tag;
-    for (UILabel *label in self.screeningLabelArray) {
-        label.textColor = [UIColor colorWithHexString:@"#343434"];
+-(void)touchBgView:(UIButton *)tap{
+    NSInteger index = tap.tag;
+    for (UIButton *label in self.screeningLabelArray) {
+        label.selected = NO;
     }
-    self.screeningLabelArray[index].textColor = [UIColor baseColor];
+    self.screeningLabelArray[index].selected = YES;
     if (index == 0) {
         self.selectType = 0;
     }else if (index == 1){
@@ -146,7 +158,19 @@ static NSString *LPBusinessReviewDetailSalaryCellID = @"LPBusinessReviewDetailSa
 -(void)touchBottomButton:(UIButton *)button{
     if ([LoginUtils validationLogin:self]) {
         self.bottomSelectType = button.tag +1;
-        [self requestCheckIsmechanism];
+        
+        if (self.bottomSelectType == 2) {
+            LPbusinessMyReviewViewController *my =[[LPbusinessMyReviewViewController alloc] init];
+            my.mechanismlistDataModel = self.mechanismlistDataModel;
+            [self.navigationController pushViewController:my animated:YES];
+        }
+        else if (self.bottomSelectType == 1)
+        {
+            LPBusinessReviewWageVC *wage = [[LPBusinessReviewWageVC alloc] init];
+            wage.mechanismlistDataModel = self.mechanismlistDataModel;
+            [self.navigationController pushViewController:wage animated:YES];
+        }
+        
     }
 }
 
@@ -165,8 +189,10 @@ static NSString *LPBusinessReviewDetailSalaryCellID = @"LPBusinessReviewDetailSa
             [self.tableview.mj_footer endRefreshingWithNoMoreData];
         }
         if (self.listArray.count == 0) {
+            self.tableview.mj_footer.alpha = 0;
             [self addNodataViewHidden:NO];
         }else{
+            self.tableview.mj_footer.alpha = 1;
             [self addNodataViewHidden:YES];
         }
     }else{
@@ -189,8 +215,8 @@ static NSString *LPBusinessReviewDetailSalaryCellID = @"LPBusinessReviewDetailSa
 //            make.edges.equalTo(self.view);
             make.left.mas_equalTo(0);
             make.right.mas_equalTo(0);
-            make.top.mas_equalTo(89);
-            make.bottom.mas_equalTo(-49);
+            make.top.mas_equalTo(LENGTH_SIZE(44));
+            make.bottom.mas_equalTo(LENGTH_SIZE(-49));
         }];
         noDataView.hidden = hidden;
     }
@@ -206,14 +232,18 @@ static NSString *LPBusinessReviewDetailSalaryCellID = @"LPBusinessReviewDetailSa
     
     if (model.type.integerValue == 1) {
        CGFloat ImageHeight = [self calculateImageHeight:model.commentUrl];
-        CGFloat DetailsHeight = [LPTools calculateRowHeight:model.commentContent fontSize:15 Width:SCREEN_WIDTH - 26];
-        if (DetailsHeight>90) {
-            return 118+ ImageHeight + (model.IsAllShow?DetailsHeight:90.0)+28;
+        CGFloat DetailsHeight = [LPTools calculateRowHeight:model.commentContent fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(70)];
+        NSLog(@"行高 = %f",[UIFont systemFontOfSize:FontSize(14)].lineHeight);
+        
+        CGFloat LineHeight = [UIFont systemFontOfSize:FontSize(14)].lineHeight;
+        NSInteger LineCount = ceilf( DetailsHeight /ceilf(LineHeight));
+        if (LineCount>5) {
+            return LENGTH_SIZE(106)+ ImageHeight + (model.IsAllShow?DetailsHeight:LineHeight*5)+LENGTH_SIZE(30) + LENGTH_SIZE(17);
         }else{
-            return 118+ ImageHeight + DetailsHeight+8;
+            return LENGTH_SIZE(106)+ ImageHeight + DetailsHeight+LENGTH_SIZE(17);
         }
     }
-    return 120.5;
+    return LENGTH_SIZE(200);
 }
 
 
@@ -262,25 +292,32 @@ static NSString *LPBusinessReviewDetailSalaryCellID = @"LPBusinessReviewDetailSa
     NSDictionary *dic = @{
                           @"mechanismName":self.mechanismlistDataModel.mechanismName,
                           @"mechanismId":self.mechanismlistDataModel.id,
-                          @"type":@(self.bottomSelectType)
+                          @"type":@"-1"
                           };
     [NetApiManager requestCheckIsmechanismWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
-                if (self.bottomSelectType == 1) {
-                    LPbusinessMyReviewViewController *my =[[LPbusinessMyReviewViewController alloc] init];
-                    my.mechanismlistDataModel = self.mechanismlistDataModel;
-                    [self.navigationController pushViewController:my animated:YES];
-                }
-                else if (self.bottomSelectType == 2)
-                {
-                    LPBusinessReviewWageVC *wage = [[LPBusinessReviewWageVC alloc] init];
-                    wage.mechanismlistDataModel = self.mechanismlistDataModel;
-                    [self.navigationController pushViewController:wage animated:YES];
-                }
+ 
+                self.ButtonView.hidden = NO;
+                [self.tableview mas_updateConstraints:^(MASConstraintMaker *make) {
+                    if (@available(iOS 11.0, *)) {
+                        make.bottom.mas_equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(LENGTH_SIZE(-49));
+                    } else {
+                        make.bottom.mas_equalTo(LENGTH_SIZE(-49));
+                    }
+                }];
+                
             }else{
-                [self.view showLoadingMeg:responseObject[@"msg"] ? responseObject[@"msg"] : @"连接错误" time:MESSAGE_SHOW_TIME];
+                self.ButtonView.hidden = YES;
+                [self.tableview mas_updateConstraints:^(MASConstraintMaker *make) {
+                   
+                    make.bottom.mas_equalTo(0);
+                   
+                }];
+                if ([responseObject[@"code"] integerValue] != 20020) {
+                    [self.view showLoadingMeg:responseObject[@"msg"] ? responseObject[@"msg"] : @"连接错误" time:MESSAGE_SHOW_TIME];
+                }
             }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
@@ -301,9 +338,6 @@ static NSString *LPBusinessReviewDetailSalaryCellID = @"LPBusinessReviewDetailSa
         [_tableview registerNib:[UINib nibWithNibName:LPBusinessReviewDetailCellID bundle:nil] forCellReuseIdentifier:LPBusinessReviewDetailCellID];
         [_tableview registerNib:[UINib nibWithNibName:LPBusinessReviewDetailSalaryCellID bundle:nil] forCellReuseIdentifier:LPBusinessReviewDetailSalaryCellID];
 
-        
-        
-        
         _tableview.mj_header = [HZNormalHeader headerWithRefreshingBlock:^{
             self.page = 1;
             [self requestMechanismcommentDeatil];
@@ -324,17 +358,17 @@ static NSString *LPBusinessReviewDetailSalaryCellID = @"LPBusinessReviewDetailSa
 - (CGFloat)calculateImageHeight:(NSString *)string
 {
     if (kStringIsEmpty(string)) {
-        return -10;
+        return  0;
     }
-    CGFloat imgw = (SCREEN_WIDTH-28 - 10)/3;
+    CGFloat imgw = (SCREEN_WIDTH- LENGTH_SIZE(57) - LENGTH_SIZE(13))/3;
     NSArray *imageArray = [string componentsSeparatedByString:@";"];
     if (imageArray.count ==1)
     {
-        return 260;
+        return LENGTH_SIZE(260) +LENGTH_SIZE(14);
     }
     else
     {
-        return ceil(imageArray.count/3.0)*imgw + floor(imageArray.count/3)*5;
+        return ceil(imageArray.count/3.0)*imgw + floor(imageArray.count/3)*LENGTH_SIZE(6) +LENGTH_SIZE(14);
     }
 }
 

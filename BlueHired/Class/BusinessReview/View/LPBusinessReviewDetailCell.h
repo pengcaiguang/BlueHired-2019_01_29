@@ -22,6 +22,9 @@ typedef void(^LPBusinessReviewDetailCellBlock)(void);
 @property (weak, nonatomic) IBOutlet UILabel *foodEnvironScoreLabel;
 @property (weak, nonatomic) IBOutlet UILabel *manageEnvironScoreLabel;
 @property (weak, nonatomic) IBOutlet UILabel *moneyEnvironScoreLabel;
+@property (weak, nonatomic) IBOutlet UILabel *perScoreLabel;
+
+
 @property (weak, nonatomic) IBOutlet UIView *imageBgView;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *imageBgView_constraint_height;

@@ -44,20 +44,31 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
 }
 -(void)setupUI{
     if (self.type == 1 || self.type == 2 || self.type == 4) {
-        self.navigationItem.title = @"手机号验证";
+        self.navigationItem.title = @"身份验证";
     }else if (self.type == 3){
         self.navigationItem.title = @"绑定新手机号";
     }
     self.view.backgroundColor = [UIColor colorWithHexString:@"#FFFFFF"];
     //    [self.navigationController setNavigationBarHidden:YES animated:YES];
     
+    UILabel *TitleLabel = [[UILabel alloc] init];
+    [self.view addSubview:TitleLabel];
+    [TitleLabel mas_makeConstraints:^(MASConstraintMaker *make){
+        make.top.left.right.mas_offset(0);
+        make.height.mas_offset(self.type == 3?0:30);
+    }];
+    TitleLabel.backgroundColor = [UIColor colorWithHexString:@"#F8C988"];
+    TitleLabel.textColor = [UIColor colorWithHexString:@"#FFA82E"];
+    TitleLabel.font = [UIFont systemFontOfSize:13];
+    TitleLabel.textAlignment = NSTextAlignmentCenter;
+    TitleLabel.text = @"请先通过输入当前手机号进行身份验证，再修改绑定";
     
     UIView *phoneBgView = [[UIView alloc]init];
     [self.view addSubview:phoneBgView];
     [phoneBgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(14);
         make.right.mas_equalTo(-14);
-        make.top.mas_equalTo(14);
+        make.top.equalTo(TitleLabel.mas_bottom).offset(14);
         make.height.mas_equalTo(48);
     }];
     phoneBgView.backgroundColor = [UIColor whiteColor];
@@ -203,18 +214,18 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
      }];
     [OthenBt setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
     OthenBt.titleLabel.font = [UIFont systemFontOfSize:14];
-    OthenBt.hidden = NO;
-    if (self.type == 1 ) {
-        if (self.userData.data.isUserProblem.integerValue == 0) {
-            [OthenBt setTitle:@"当前手机号已丢失，请联系客服 >>" forState:UIControlStateNormal];
-        }else{
-            [OthenBt setTitle:@"当前手机号已丢失，回答密保问题修改绑定 >>" forState:UIControlStateNormal];
-        }
-    }else if (self.type == 2 || self.type == 4){
-        [OthenBt setTitle:@"当前手机号已丢失，回答密保问题修改绑定 >>" forState:UIControlStateNormal];
-    }else if (self.type == 3){
-        OthenBt.hidden = YES;
-    }
+    OthenBt.hidden = YES;
+//    if (self.type == 1 ) {
+//        if (self.userData.data.isUserProblem.integerValue == 0) {
+//            [OthenBt setTitle:@"当前手机号已丢失，请联系客服 >>" forState:UIControlStateNormal];
+//        }else{
+//            [OthenBt setTitle:@"当前手机号已丢失，回答密保问题修改绑定 >>" forState:UIControlStateNormal];
+//        }
+//    }else if (self.type == 2 || self.type == 4){
+//        [OthenBt setTitle:@"当前手机号已丢失，回答密保问题修改绑定 >>" forState:UIControlStateNormal];
+//    }else if (self.type == 3){
+//        OthenBt.hidden = YES;
+//    }
     [OthenBt addTarget:self action:@selector(touchOthenBt:) forControlEvents:UIControlEventTouchUpInside];
 
     
@@ -252,8 +263,13 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
     
     if (self.type == 3) {
         label.hidden = NO;
+        verificationCodeBgView.hidden = NO;
+        [loginButton setTitle:@"确定" forState:UIControlStateNormal];
+
     }else{
         label.hidden = YES;
+        verificationCodeBgView.hidden = YES;
+        [loginButton setTitle:@"下一步" forState:UIControlStateNormal];
     }
     
 }
@@ -296,18 +312,18 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
 
 -(void)touchOthenBt:(UIButton *)button{
     if (self.type == 1) {
-        if (self.userData.data.isUserProblem.integerValue == 0) {
-            button.enabled = NO;
-            [self requestQueryGetCustomerTel];
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                button.enabled = YES;
-            });
-        }else{
+//        if (self.userData.data.isUserProblem.integerValue == 0) {
+//            button.enabled = NO;
+//            [self requestQueryGetCustomerTel];
+//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//                button.enabled = YES;
+//            });
+//        }else{
             LPSecurityQuestionVC *vc = [[LPSecurityQuestionVC alloc] init];
             vc.type = self.type;
             vc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:vc animated:YES];
-        }
+//        }
 
     }else if (self.type == 2 || self.type == 4) {
         LPSecurityQuestionVC *vc = [[LPSecurityQuestionVC alloc] init];
@@ -337,14 +353,17 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
         [self.view showLoadingMeg:@"请输入正确的手机号" time:MESSAGE_SHOW_TIME];
         return;
     }
-    if (self.verificationCodeTextField.text.length <= 0) {
-        [self.view showLoadingMeg:@"请输入验证码" time:MESSAGE_SHOW_TIME];
-        return;
+    if (self.type == 3) {
+        if (self.verificationCodeTextField.text.length <= 0) {
+            [self.view showLoadingMeg:@"请输入验证码" time:MESSAGE_SHOW_TIME];
+            return;
+        }
+        if (!self.token) {
+            [self.view showLoadingMeg:@"请输入正确的验证码" time:MESSAGE_SHOW_TIME];
+            return;
+        }
     }
-    if (!self.token) {
-        [self.view showLoadingMeg:@"请输入正确的验证码" time:MESSAGE_SHOW_TIME];
-        return;
-    }
+
 
 //    [self requestMateCode];
     [self requestUpdateUsertel];
@@ -403,13 +422,11 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
     
     NSString * url;
     if (self.type == 1||self.type == 2 ||self.type == 4) {
-        url =[NSString stringWithFormat:@"userMaterial/get_tel_old?oldUserTel=%@&i=2&code=%@&token=%@",
-              self.phoneTextField.text,
-              self.verificationCodeTextField.text,
-              self.token];
+        url =[NSString stringWithFormat:@"userMaterial/get_tel_old?oldUserTel=%@&i=2&versionType=2.3",
+              self.phoneTextField.text];
     }else{
 //        url =[NSString stringWithFormat:@"userMaterial/update_usertel?newUserTel=%@&type=%ld",self.phoneTextField.text,(long)self.Newtype];
-        url =[NSString stringWithFormat:@"userMaterial/update_tel_new?newUserTel=%@&type=%ld&i=2&code=%@&token=%@",
+        url =[NSString stringWithFormat:@"userMaterial/update_tel_new?newUserTel=%@&type=%ld&i=2&code=%@&token=%@&versionType=2.3",
               self.phoneTextField.text,(long)self.Newtype,
               self.verificationCodeTextField.text,
               self.token];
@@ -547,6 +564,7 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
     NSDictionary *dic = @{
                           @"i":@(2),
                           @"phone":self.phoneTextField.text,
+                          @"versionType":@"2.3"
                           };
     [NetApiManager requestSendCodeWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);

@@ -14,6 +14,7 @@
 #import "LPInformationSearchVC.h"
 
 NS_ASSUME_NONNULL_BEGIN
+typedef void (^VideoCollectionBlock)(void);
 
 @interface LPVideoVC : LPBaseViewController
 @property(nonatomic,strong) NSMutableArray <LPVideoListDataModel *>*listArray;
@@ -24,8 +25,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic,assign) LPInformationSearchVC *KeySuperVC;
 @property(nonatomic,strong) NSString *key;
 @property(nonatomic,assign) NSInteger Type;
-@property (nonatomic, assign) BOOL isReloadData;
-@property (nonatomic,strong) LPVideoTypeModel *TypeModel;
+@property(nonatomic,assign) BOOL isReloadData;
+@property(nonatomic,strong) LPVideoTypeModel *TypeModel;
+
+@property(nonatomic,strong) VideoCollectionBlock LPCollectionBlock;
 
 @end
 

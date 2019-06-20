@@ -10,15 +10,17 @@
 #import "LPVideoListModel.h"
 #import "GKDYVideoPlayer.h"
 #import "LPInformationVC.h"
-#import "LPInformationSearchResultVC.h"
+#import "LPInformationSearchVC.h"
 #import "LPVideoTypeModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 typedef void(^LPVideoPlayCellDicBlock)(void);
+typedef void(^LPVideoCollectionBlock)(void);
+
 
 @interface LPVideoPlayCell : UICollectionViewCell
 @property(nonatomic,assign) LPInformationVC *superVC;
-@property(nonatomic,assign) LPInformationSearchResultVC *KeySuperVC;
+@property(nonatomic,assign) LPInformationSearchVC *KeySuperVC;
 @property(nonatomic,assign) NSInteger Type;
 
 @property (nonatomic,strong) LPVideoListDataModel *model;
@@ -26,11 +28,11 @@ typedef void(^LPVideoPlayCellDicBlock)(void);
 @property (nonatomic,assign) NSInteger Row;
 @property (nonatomic,copy) LPVideoPlayCellDicBlock BlockMessage;
 
-@property (nonatomic, strong) GKDYVideoPlayer *player;
-@property (nonatomic, strong) UIImageView *coverImgView;
-@property (nonatomic, strong) UIImageView *PlayImage;
+@property (nonatomic,strong) GKDYVideoPlayer *player;
+@property (nonatomic,strong) UIImageView *coverImgView;
+@property (nonatomic,strong) UIImageView *PlayImage;
 @property (nonatomic,strong) LPVideoTypeModel *TypeModel;
-
+@property (nonatomic,strong) LPVideoCollectionBlock CollectionBlock;
 
 -(void)ReloadComment:(LPVideoListDataModel *) model;
 

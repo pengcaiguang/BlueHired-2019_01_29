@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UILabel *moneyEnvironScoreLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *commentUrlImg;
 @property (weak, nonatomic) IBOutlet UIView *lineView;
+@property (weak, nonatomic) IBOutlet UIView *BGView;
 
 @property(nonatomic,strong) LPMechanismcommentDetailDataModel *model;
 

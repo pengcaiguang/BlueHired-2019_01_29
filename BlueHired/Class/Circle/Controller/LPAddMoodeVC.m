@@ -21,7 +21,7 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
 static NSString *placeholder = @"请输入内容\n      温馨提示:禁止发送“色情低俗”、“政治敏感”、“违法暴力”、“虚假广告”等相关内容.一经发现,我们将严肃处理.";
 static const CGFloat kPhotoViewMargin = 13.0;
 
-@interface LPAddMoodeVC ()<UIScrollViewDelegate,HXPhotoViewDelegate,UITextViewDelegate,UITableViewDelegate,UITableViewDataSource,LPCircleSearchDelegate>
+@interface LPAddMoodeVC ()<UIScrollViewDelegate,HXPhotoViewDelegate,UITextViewDelegate,UITableViewDelegate,UITableViewDataSource,LPCircleSearchDelegate,AMapSearchDelegate>
 @property (strong, nonatomic) HXPhotoManager *manager;
 @property (weak, nonatomic) HXPhotoView *photoView;
 @property (strong, nonatomic) UIScrollView *scrollView;
@@ -40,8 +40,8 @@ static const CGFloat kPhotoViewMargin = 13.0;
 @property(nonatomic,strong) NSArray <UIImage *>*imageArray;
 @property(nonatomic,strong) NSString *VideoURL;
 
-@property(nonatomic, strong) BMKLocationManager *locationManager;
-@property(nonatomic, copy) BMKLocatingCompletionBlock completionBlock;
+//@property(nonatomic, strong) BMKLocationManager *locationManager;
+//@property(nonatomic, copy) BMKLocatingCompletionBlock completionBlock;
 
 @property(nonatomic,strong) NSString *moodDetails;
 @property(nonatomic,strong) NSString *moodTypeId;
@@ -49,7 +49,9 @@ static const CGFloat kPhotoViewMargin = 13.0;
 @property(nonatomic,strong) NSArray *imageUrlArray;
 @property(nonatomic,strong) UIView *bgView;
 
-
+@property (nonatomic,strong) AMapSearchAPI *search;
+@property (nonatomic,strong) AMapLocationManager *locationManager;
+@property (nonatomic,copy) AMapLocationReGeocode *searchcity;
 
 @end
 
@@ -64,7 +66,7 @@ static const CGFloat kPhotoViewMargin = 13.0;
     [self setupUI];
 //    [self requestMoodType];
 
-    [self initBlock];
+//    [self initBlock];
 //    [self initLocation];
     self.moodMap = @"保密";
     
@@ -79,76 +81,104 @@ static const CGFloat kPhotoViewMargin = 13.0;
     self.LocationTableView.hidden = YES;
     self.bgView.hidden = YES;
     
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.locationManager requestLocationWithReGeocode:YES withNetworkState:YES completionBlock:self.completionBlock];
+    [self configLocationManager];
 
-    });
 }
 
 
--(void)initLocation
-{
-    _locationManager = [[BMKLocationManager alloc] init];
-     _locationManager.delegate = self;
-     _locationManager.coordinateType = BMKLocationCoordinateTypeBMK09LL;
-    _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    _locationManager.activityType = CLActivityTypeAutomotiveNavigation;
-    _locationManager.pausesLocationUpdatesAutomatically = NO;
-    _locationManager.allowsBackgroundLocationUpdates = NO;// YES的话是可以进行后台定位的，但需要项目配置，否则会报错，具体参考开发文档
-    _locationManager.locationTimeout = 10;
-    _locationManager.reGeocodeTimeout = 10;
-  
-}
 
-
--(void)initBlock
+#pragma mark lazy 定位.
+- (void)configLocationManager
 {
-    WEAK_SELF()
-     self.completionBlock = ^(BMKLocation *location, BMKLocationNetworkState state, NSError *error)
-    {
+    self.locationManager = [[AMapLocationManager alloc] init];
+    // 带逆地理信息的一次定位（返回坐标和地址信息）
+    [self.locationManager setDesiredAccuracy:kCLLocationAccuracyHundredMeters];
+    //   定位超时时间，最低2s，此处设置为2s
+    self.locationManager.locationTimeout =2;
+    //   逆地理请求超时时间，最低2s，此处设置为2s
+    self.locationManager.reGeocodeTimeout = 2;
+    [self.locationManager requestLocationWithReGeocode:YES completionBlock:^(CLLocation *location, AMapLocationReGeocode *regeocode, NSError *error) {
+        
         if (error)
         {
             NSLog(@"locError:{%ld - %@};", (long)error.code, error.localizedDescription);
-        }
-        
-        if (location.location) {//得到定位信息，添加annotation
- 
-             NSArray *array = [location.rgcData poiList];
-            
-            [weakSelf.MapArray removeAllObjects];
-             LPMapLoctionModel *m1 = [[LPMapLoctionModel alloc] init];
-            m1.AddName = @"保密";
-            m1.IsSelect = YES;
-             LPMapLoctionModel *m2 = [[LPMapLoctionModel alloc] init];
-            m2.AddName = location.rgcData.city;
-            m2.IsSelect = NO;
-
-            [weakSelf.MapArray addObject:m1];
-            [weakSelf.MapArray addObject:m2];
-            for (int i = 0; i < array.count; i++) {
-                BMKLocationPoi * poi = array[i];
-                LPMapLoctionModel *m = [[LPMapLoctionModel alloc] init];
-                m.AddName = poi.name;
-                m.AddDetail = [NSString stringWithFormat:@"%@%@%@%@%@",location.rgcData.country,location.rgcData.province,location.rgcData.city,location.rgcData.district,location.rgcData.street];
-                m.rgcData = location.rgcData;
-                m.IsSelect = NO;
-                  [weakSelf.MapArray addObject:m];
+            if (error.code == AMapLocationErrorLocateFailed)
+            {
+                [self.view showLoadingMeg:@"定位失败,请手动搜索" time:MESSAGE_SHOW_TIME];
+                return;
             }
-            
-            [weakSelf.LocationTableView reloadData];
- 
         }
         
-        if (location.rgcData) {
-            NSLog(@"rgc = %@",[location.rgcData description]);
+        NSLog(@"location:%@", location);
+        self.searchcity = regeocode;
+        NSString *str =@"";
+        if (![[LPTools isNullToString:regeocode.city] isEqualToString:@""]) {
+            NSString *citystr = [regeocode.city substringFromIndex:regeocode.city.length-1];
+            if ([citystr isEqualToString:@"市"]) {
+                str= [NSString stringWithFormat:@"%@·%@",[LPTools isNullToString:[regeocode.city substringToIndex:regeocode.city.length-1]],regeocode.POIName];
+            }else{
+                str= [NSString stringWithFormat:@"%@·%@",[LPTools isNullToString:regeocode.city],regeocode.POIName];
+            }
+        }else{
+            str = regeocode.POIName;
         }
         
-        NSLog(@"netstate = %d",state);
-    };
-    
-    
+        self.moodMap = str;
+        [self.selectButton2 setTitle:str forState:UIControlStateNormal];
+    }];
+
 }
+
+
+
+//
+//-(void)initBlock
+//{
+//    WEAK_SELF()
+//     self.completionBlock = ^(BMKLocation *location, BMKLocationNetworkState state, NSError *error)
+//    {
+//        if (error)
+//        {
+//            NSLog(@"locError:{%ld - %@};", (long)error.code, error.localizedDescription);
+//        }
+//
+//        if (location.location) {//得到定位信息，添加annotation
+//
+//             NSArray *array = [location.rgcData poiList];
+//
+//            [weakSelf.MapArray removeAllObjects];
+//             LPMapLoctionModel *m1 = [[LPMapLoctionModel alloc] init];
+//            m1.AddName = @"保密";
+//            m1.IsSelect = YES;
+//             LPMapLoctionModel *m2 = [[LPMapLoctionModel alloc] init];
+//            m2.AddName = location.rgcData.city;
+//            m2.IsSelect = NO;
+//
+//            [weakSelf.MapArray addObject:m1];
+//            [weakSelf.MapArray addObject:m2];
+//            for (int i = 0; i < array.count; i++) {
+//                BMKLocationPoi * poi = array[i];
+//                LPMapLoctionModel *m = [[LPMapLoctionModel alloc] init];
+//                m.AddName = poi.name;
+//                m.AddDetail = [NSString stringWithFormat:@"%@%@%@%@%@",location.rgcData.country,location.rgcData.province,location.rgcData.city,location.rgcData.district,location.rgcData.street];
+//                m.rgcData = location.rgcData;
+//                m.IsSelect = NO;
+//                  [weakSelf.MapArray addObject:m];
+//            }
+//
+//            [weakSelf.LocationTableView reloadData];
+//
+//        }
+//
+//        if (location.rgcData) {
+//            NSLog(@"rgc = %@",[location.rgcData description]);
+//        }
+//
+//        NSLog(@"netstate = %d",state);
+//    };
+//
+//
+//}
 
 -(void)setupUI{
     self.automaticallyAdjustsScrollViewInsets = YES;
@@ -333,7 +363,7 @@ static const CGFloat kPhotoViewMargin = 13.0;
     }];
     label2.textColor = [UIColor colorWithHexString:@"#1B1B1B"];
     label2.font = [UIFont systemFontOfSize:16];
-    label2.text = @"添加图片";
+    label2.text = @"添加图片/视频";
     
     
     CGFloat width = scrollView.frame.size.width;
@@ -341,6 +371,8 @@ static const CGFloat kPhotoViewMargin = 13.0;
     photoView.lineCount = 3;
     photoView.delegate = self;
     //    photoView.showAddCell = NO;
+    photoView.addImageName = @"upload";
+
     photoView.backgroundColor = [UIColor whiteColor];
     [scrollView addSubview:photoView];
     self.photoView = photoView;
@@ -381,20 +413,13 @@ static const CGFloat kPhotoViewMargin = 13.0;
     }];
 }
 -(void)photoView:(HXPhotoView *)photoView changeComplete:(NSArray<HXPhotoModel *> *)allList photos:(NSArray<HXPhotoModel *> *)photos videos:(NSArray<HXPhotoModel *> *)videos original:(BOOL)isOriginal{
-//    [self.toolManager writeSelectModelListToTempPathWithList:allList requestType:HXDatePhotoToolManagerRequestTypeOriginal success:^(NSArray<NSURL *> *allURL, NSArray<NSURL *> *photoURL, NSArray<NSURL *> *videoURL)  {
-//        if (photoURL.count > 0) {
-//            NSMutableArray *Image = [[NSMutableArray alloc] init];
-//
-//            self.imageArray = imageList;
-//        }
-//    } failed:^{
-//
-//    }];
+ 
     NSSLog(@"所有:%ld - 照片:%ld - 视频:%ld       ",allList.count,photos.count,videos.count);
     if (photos.count) {
         self.sendButton.enabled = NO;
         [self.toolManager getSelectedImageList:photos requestType:HXDatePhotoToolManagerRequestTypeOriginal success:^(NSArray<UIImage *> *imageList) {
             self.sendButton.enabled = YES;
+            self.imageArray = nil;
             if (imageList.count > 0) {
                 self.imageArray = imageList;
             }

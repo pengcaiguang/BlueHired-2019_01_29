@@ -52,7 +52,7 @@
     _imageBrowserModel.bigScrollView = self.subScrollView;
     _imageBrowserModel.bigImageView = self.subImageView;
     __weak typeof (self)ws = self;
-    [self.subImageView sd_setImageWithURL:[NSURL URLWithString:_imageBrowserModel.urlStr] placeholderImage:_imageBrowserModel.smallImageView.image completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+    [self.subImageView sd_setImageWithURL:[NSURL URLWithString:[_imageBrowserModel.urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholderImage:_imageBrowserModel.smallImageView.image completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
         if (!error) {
             [ws updateSubScrollViewSubImageView];
         }else{

@@ -25,7 +25,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    self.navigationItem.title = @"工资卡绑定";
+    self.navigationItem.title = @"修改提现密码";
     self.textField.delegate = self;
 //    self.phoneLabel.text = [NSString stringWithFormat:@"%@",kUserDefaultsValue(@"PHONEUSERSAVE")];
     self.phoneLabel.text = [NSString stringWithFormat:@"%@",self.Phone];

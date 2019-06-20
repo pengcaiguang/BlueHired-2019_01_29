@@ -19,7 +19,6 @@
     _model = model;
     self.userName.text = [LPTools isNullToString:model.defriendUserName];
     [self.userImage sd_setImageWithURL:[NSURL URLWithString:model.defriendUserUrl] placeholderImage:[UIImage imageNamed:@"Head_image"]];
-    
 }
 
 - (IBAction)touchDelete:(id)sender {

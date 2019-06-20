@@ -29,10 +29,7 @@
 -(void)setupUI{
     self.navigationItem.title = @"密码修改";
     self.view.backgroundColor = [UIColor colorWithHexString:@"#FFFBFBFB"];
-    //    [self.navigationController setNavigationBarHidden:YES animated:YES];
-    
-    
-    
+ 
     UIView *phoneBgView = [[UIView alloc]init];
     [self.view addSubview:phoneBgView];
     phoneBgView.backgroundColor = [UIColor whiteColor];

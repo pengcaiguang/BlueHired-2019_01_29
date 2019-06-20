@@ -263,6 +263,8 @@
     cell.model = self.dataList[indexPath.item];
     cell.showDeleteNetworkPhotoAlert = self.showDeleteNetworkPhotoAlert;
     cell.hideDeleteButton = self.hideDeleteButton;
+    cell.contentView.layer.cornerRadius = 4;
+    cell.contentView.clipsToBounds = YES;
     return cell;
 }
  

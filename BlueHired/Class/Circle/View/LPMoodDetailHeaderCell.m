@@ -26,8 +26,8 @@
     self.userUrlImgView.layer.cornerRadius = 20.0;
     self.userConcernButton.layer.masksToBounds = YES;
     self.userConcernButton.layer.cornerRadius = 10.0;
-    [self.userConcernButton setTitle:@"关注" forState:UIControlStateNormal];
-    [self.userConcernButton setTitle:@"已关注" forState:UIControlStateSelected];
+    [self.userConcernButton setTitle:@" 关注" forState:UIControlStateNormal];
+    [self.userConcernButton setTitle:@" 已关注" forState:UIControlStateSelected];
     [self.userConcernButton setImage:[UIImage imageNamed:@"user_concern_normal"] forState:UIControlStateNormal];
     [self.userConcernButton setImage:[UIImage imageNamed:@"user_concern_selected"] forState:UIControlStateSelected];
     [self.userConcernButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -137,7 +137,7 @@
             }
             
             
-            [imageView yy_setImageWithURL:[NSURL URLWithString:imageStr]
+            [imageView yy_setImageWithURL:[NSURL URLWithString:[imageStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
                               placeholder:[UIImage imageNamed:@"NoImage"]
                                   options:YYWebImageOptionProgressiveBlur | YYWebImageOptionShowNetworkActivity | YYWebImageOptionSetImageWithFadeAnimation
                                  progress:^(NSInteger receivedSize, NSInteger expectedSize) {
@@ -177,27 +177,29 @@
     
     if ([model.data.userId integerValue] ==[kUserDefaultsValue(LOGINID) integerValue])
     {
+        self.isUserConcern = NO;
         [self.userConcernButton setTitle:@"删除" forState:UIControlStateNormal];
         [self.userConcernButton setImage:nil forState:UIControlStateNormal];
-        CGRect rect = [@"已关注" getStringSize:CGSizeMake(MAXFLOAT, MAXFLOAT) font:[UIFont systemFontOfSize:12]];
+        CGRect rect = [@" 已关注" getStringSize:CGSizeMake(MAXFLOAT, MAXFLOAT) font:[UIFont systemFontOfSize:12]];
         self.userConcern_constraint_width.constant = rect.size.width + 15;
         self.userConcernButton.backgroundColor = [UIColor colorWithHexString:@"#F2F2F2"];
-        [self.userConcernButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [self.userConcernButton setTitleColor:[UIColor colorWithHexString:@"#939393"] forState:UIControlStateNormal];
+     
 
     }
     else
     {
+        [self.userConcernButton setTitle:@" 关注" forState:UIControlStateNormal];
+        [self.userConcernButton setImage:[UIImage imageNamed:@"user_concern_normal"] forState:UIControlStateNormal];
         [self.userConcernButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 
-        if (model.data.isConcern) {
-            if ([model.data.isConcern integerValue] == 0) {
-                self.isUserConcern = YES;
-            }else{
-                self.isUserConcern = NO;
-            }
+     
+        if ([model.data.isConcern integerValue] == 0) {
+            self.isUserConcern = YES;
         }else{
             self.isUserConcern = NO;
         }
+       
     }
     
 
@@ -207,12 +209,12 @@
 -(void)setIsUserConcern:(BOOL)isUserConcern{
     _isUserConcern = isUserConcern;
     if (isUserConcern) {
-        CGRect rect = [@"已关注" getStringSize:CGSizeMake(MAXFLOAT, MAXFLOAT) font:[UIFont systemFontOfSize:12]];
+        CGRect rect = [@" 已关注" getStringSize:CGSizeMake(MAXFLOAT, MAXFLOAT) font:[UIFont systemFontOfSize:12]];
         self.userConcern_constraint_width.constant = rect.size.width + 10 + 15;
         self.userConcernButton.selected = YES;
         self.userConcernButton.backgroundColor = [UIColor colorWithHexString:@"#F2F2F2"];
     }else{
-        CGRect rect = [@"关注" getStringSize:CGSizeMake(MAXFLOAT, MAXFLOAT) font:[UIFont systemFontOfSize:12]];
+        CGRect rect = [@" 关注" getStringSize:CGSizeMake(MAXFLOAT, MAXFLOAT) font:[UIFont systemFontOfSize:12]];
         self.userConcern_constraint_width.constant = rect.size.width + 10 + 15;
         self.userConcernButton.selected = NO;
         self.userConcernButton.backgroundColor = [UIColor baseColor];

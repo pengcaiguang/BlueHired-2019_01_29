@@ -45,7 +45,7 @@
           }else{
             imageStr = [NSString stringWithFormat:@"%@?imageView2/3/w/100/h/100/q/100",imageStr];
          }
-        [self.MoodImage yy_setImageWithURL:[NSURL URLWithString:imageStr]
+        [self.MoodImage yy_setImageWithURL:[NSURL URLWithString:[imageStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
                                placeholder:[UIImage imageNamed:@"NoImage"]
                                    options:YYWebImageOptionProgressiveBlur | YYWebImageOptionShowNetworkActivity | YYWebImageOptionSetImageWithFadeAnimation
                                   progress:^(NSInteger receivedSize, NSInteger expectedSize) {

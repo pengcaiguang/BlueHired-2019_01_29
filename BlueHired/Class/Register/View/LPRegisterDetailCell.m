@@ -17,13 +17,47 @@
 
 -(void)setModel:(LPRegisterDetailDataListModel *)model{
     _model = model;
-    self.userNameLabel.text = model.userName;
-    if (model.type.integerValue == 0) {
-        self.typeLabel.text = @"直接邀请";
+
+    
+    if (self.Type == 1) {
+        self.LayoutConstraint_Label_Top.constant = 15;
+        self.remarkiamge.hidden = YES;
+        self.remarkLabel.text = @"";
+        
+        self.userNameLabel.text = [NSString stringWithFormat:@"%@ ",[LPTools isNullToString:model.userName]];
+        if (model.type.integerValue == 0) {
+            self.typeLabel.text = @"直接邀请";
+        }else{
+            self.typeLabel.text = @"间接邀请";
+        }
+        if(model.delStatus.integerValue == 0){
+            self.relationMoneyLabel.text = [NSString stringWithFormat:@"未到账：%.2f元",model.relationMoney.floatValue];
+            self.relationMoneyLabel.textColor = [UIColor colorWithHexString:@"#FF5353"];
+            self.relationMoneyLabel.font = [UIFont systemFontOfSize:FontSize(15)];
+        }else{
+            self.relationMoneyLabel.text = [NSString stringWithFormat:@"%.2f元",model.relationMoney.floatValue];
+            self.relationMoneyLabel.textColor = [UIColor baseColor];
+            self.relationMoneyLabel.font = [UIFont boldSystemFontOfSize:FontSize(15)];
+        }
     }else{
-        self.typeLabel.text = @"间接邀请";
+        self.LayoutConstraint_Label_Top.constant = 13;
+        self.remarkiamge.hidden = NO;
+        self.remarkLabel.text = [NSString stringWithFormat:@"备注：%@",[LPTools isNullToString:model.remark]];
+        
+        self.userNameLabel.text = [NSString stringWithFormat:@"%@ ",[LPTools isNullToString:model.userName]];
+ 
+        self.typeLabel.text = model.userTel;
+  
+        if(model.status.integerValue != 2){
+            self.relationMoneyLabel.text = [NSString stringWithFormat:@"未到账：%.2f元",model.relationMoney.floatValue];
+            self.relationMoneyLabel.textColor = [UIColor colorWithHexString:@"#FF5353"];
+            self.relationMoneyLabel.font = [UIFont systemFontOfSize:FontSize(15)];
+        }else{
+            self.relationMoneyLabel.text = [NSString stringWithFormat:@"%.2f元",model.relationMoney.floatValue];
+            self.relationMoneyLabel.textColor = [UIColor baseColor];
+            self.relationMoneyLabel.font = [UIFont boldSystemFontOfSize:FontSize(15)];
+        }
     }
-    self.relationMoneyLabel.text = [NSString stringWithFormat:@"%@元",model.relationMoney];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

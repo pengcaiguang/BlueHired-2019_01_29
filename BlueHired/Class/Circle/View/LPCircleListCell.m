@@ -13,25 +13,26 @@
 #import <AVFoundation/AVCaptureDevice.h>
 #import <AVFoundation/AVMediaFormat.h>
 #import <Photos/PHPhotoLibrary.h>
-#import "UILabel+YBAttributeTextTapAction.h"
 #import "LPPraiseListVC.h"
 #import "UIImageView+AFNetworking.h"
 #import "MenuVIew.h"
 #import <UIView+SDAutoLayout.h>
 #import "LPMoodDetailVC.h"
+#import "LPCommentListModel.h"
 
 //弹框监听
 NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLineCellOperationButtonClickedNotification";
 
 
 #define TextFont 13
-@interface LPCircleListCell ()<UIScrollViewDelegate>
+@interface LPCircleListCell ()<UIScrollViewDelegate,YBAttributeTapActionDelegate>
 {
     MenuVIew *_operationMenu;
     
 
 }
 @property(nonatomic,strong)LZImageBrowserManger *imageBrowserManger;
+@property(nonatomic,assign) BOOL TapAction;
 
 @end
 @implementation LPCircleListCell
@@ -75,10 +76,45 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
 //            [weakSelf.delegate didClickLikeButtonInCell:weakSelf];
         }
     }];
+ 
     [_operationMenu setCommentButtonClickedOperation:^{
-        if ([weakSelf.delegate respondsToSelector:@selector(didClickcCommentButtonInCell:with:)]) {
-                        [weakSelf.delegate didClickcCommentButtonInCell:weakSelf with:weakSelf.indexPath];
+//        if ([weakSelf.delegate respondsToSelector:@selector(didClickcCommentButtonInCell:with:)]) {
+//                        [weakSelf.delegate didClickcCommentButtonInCell:weakSelf with:weakSelf.indexPath];
+//        }
+        if (!AlreadyLogin) {
+            [LPTools AlertMessageCommentLoginView];
+            return ;
         }
+            
+        [XHInputView showWithStyle:InputViewStyleLarge configurationBlock:^(XHInputView *inputView) {
+            /** 请在此block中设置inputView属性 */
+            /** 代理 */
+            //        inputView.delegate = self;
+            
+            /** 占位符文字 */
+            inputView.placeholder = @"请输入评论...";
+            /** 设置最大输入字数 */
+            inputView.maxCount = 300;
+            /** 输入框颜色 */
+            inputView.textViewBackgroundColor = [UIColor groupTableViewBackgroundColor];
+            
+            /** 更多属性设置,详见XHInputView.h文件 */
+            
+        } sendBlock:^BOOL(NSString *text) {
+            if(text.length){
+                [weakSelf requestCommentAddcomment:text
+                                       CommentType:2
+                                         CommentId:[NSString stringWithFormat:@"%@",weakSelf.model.id]
+                                  selectCommentRow:0
+                                       ReplyUserId:@""];
+                return YES;//return YES,收起键盘
+            }else{
+                NSLog(@"显示提示框-请输入要评论的的内容");
+                return NO;//return NO,不收键盘
+            }
+        }];
+        
+        
     }];
     [_operationButton addTarget:self action:@selector(operationButtonClicked) forControlEvents:UIControlEventTouchUpInside];
     
@@ -97,6 +133,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
     /**
      *判断如果点击的是tableView的cell，就把手势给关闭了 不是点击cell手势开启
      **/
+    NSLog(@"ouch.view class %@",[touch.view class]);
     if ([NSStringFromClass([touch.view class]) isEqualToString:@"UITableViewCellContentView"]) {
         return NO;
     }
@@ -173,6 +210,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
                 return ;
             }
             LPReportContentVC *vc = [[LPReportContentVC alloc] init];
+            vc.hidesBottomBarWhenPushed = YES;
             vc.MoodModel = self.model;
             [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
         }
@@ -297,18 +335,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
     for (UIView *view in self.imageBgView.subviews) {
         [view removeFromSuperview];
     }
-    
-//    YYImageCache *cache = [YYWebImageManager sharedManager].cache;
-    
-//    float tmpSizedisk =  cache.diskCache.totalCost / 1024 /1024;
-//    float tmpSizememory =  cache.memoryCache.totalCost / 1024 /1024;
-//    NSLog(@"yywebimage disk缓存 = %.2f   memory缓存= %.2f",tmpSizedisk,tmpSizememory);
  
-//    NSString *clearCacheName = tmpSize >= 300 ? [NSString stringWithFormat:@"清理缓存(%.2f M)",tmpSize] : [NSString stringWithFormat:@"清理缓存(%.2f K)",tmpSize * 1024];
-//    [cache.memoryCache removeAllObjects];
-//    [cache.diskCache removeAllObjects];
-//    NSLog(@"%l@",[NSString stringWithFormat:@"已%@",clearCacheName]);
-//    self.imageBgView.backgroundColor = [UIColor redColor];
     if (kStringIsEmpty(model.moodUrl)) {
         self.imageBgView.hidden = YES;
         self.imageBgView_constraint_height.constant = 0;
@@ -323,12 +350,12 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
             imageView.frame = imageArray.count ==1?CGRectMake(0,0,imageHeight,imageHeight): CGRectMake((imgw + 5)* (i%3), floor(i/3)*(imgw + 5), imgw, imgw);
             imageView.contentMode = UIViewContentModeScaleAspectFill;
             imageView.clipsToBounds = YES;
-//            [imageView sd_setImageWithURL:[NSURL URLWithString:imageArray[i]] placeholderImage:[UIImage imageNamed:@"NoImage"]];
-//            [imageView setImageWithURL:[NSURL URLWithString:imageArray[i]] placeholderImage:[UIImage imageNamed:@"NoImage"]];
+ 
             NSInteger  downWidth= imageView.frame.size.width +100;
             NSString *imageStr;
             if (imageArray.count ==1) {
                 imageStr = [NSString stringWithFormat:@"%@",imageArray[i]];
+
                 if ([imageStr containsString:@".mp4"]) {
                     imageStr =[NSString stringWithFormat:@"%@?vframe/png/offset/0.001",imageStr];
                 }
@@ -344,11 +371,14 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
                     make.center.equalTo(imageView);
                 }];
             }
-                [imageView yy_setImageWithURL:[NSURL URLWithString:imageStr]
+            
+       
+            
+                [imageView yy_setImageWithURL:[NSURL URLWithString:[imageStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
                                   placeholder:[UIImage imageNamed:@"NoImage"]
                                       options:YYWebImageOptionProgressiveBlur | YYWebImageOptionShowNetworkActivity | YYWebImageOptionSetImageWithFadeAnimation
                                      progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-                                         
+                                         NSLog(@"接收的当前接收大小%ld  总大小%ld",(long)receivedSize,expectedSize);
                                      }
                                     transform:^UIImage *(UIImage *image, NSURL *url) {
                                         return  image  ;
@@ -358,22 +388,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
                                            
                                        }
                                    }];
-                
-       
-
- 
-            
-            
-//            YYImageCache *cache = [YYWebImageManager sharedManager].cache;
-            
-            // 获取缓存大小
-           
-  
-            
-            
-//            [imageView sd_setImageWithURL:[NSURL URLWithString:@"http://pic.lanpin123.com/FvBM9Jbct2cK0JGNuL0N-P-pieMv"] placeholderImage:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-//
-//            }];
+     
             
             [self.imageBgView addSubview:imageView];
             
@@ -437,19 +452,11 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
         label.lineBreakMode = NSLineBreakByCharWrapping;
         label.text =[PraiseStr stringByReplacingOccurrencesOfString:@"\n" withString:@""];
         
-//        NSArray *PraiseLabelarray = [self getSeparatedLinesFromPraiseLabel:label];
-        if (model.praiseList.count>10) {
+         if (model.praiseList.count>10) {
             NSString *PingStr = [NSString stringWithFormat:@"等%lu人觉得很赞",(unsigned long)model.praiseList.count];
-//            NSString *line3PraiseStr = PraiseLabelarray[2];
-//            NSString *line3PraiseContent = [NSString stringWithFormat:@"%@%@",line3PraiseStr,PingStr];
-//
+ 
             NSString *LabelShowText;
-//            CGSize size =[line3PraiseContent sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13]}];
-//            while (size.width>SCREEN_WIDTH-73-14) {
-//                line3PraiseStr = [line3PraiseStr substringToIndex:line3PraiseStr.length-1];
-//                line3PraiseContent =[NSString stringWithFormat:@"%@%@",line3PraiseStr,PingStr];
-//                size =[line3PraiseContent sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13]}];
-//            }
+ 
             LabelShowText = [NSString stringWithFormat:@"%@%@", PraiseStr, PingStr];
 
             NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:LabelShowText];
@@ -477,7 +484,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
                 [ClickedArray addObject:Pmodel.userName];
             }
             WEAK_SELF()
-            [label yb_addAttributeTapActionWithStrings:@[LabelShowText] tapClicked:^(NSString *string, NSRange range, NSInteger index) {
+            [label yb_addAttributeTapActionWithStrings:@[LabelShowText] tapClicked:^(UILabel *label,NSString *string, NSRange range, NSInteger index) {
                 NSLog(@"string = %@  index = %ld ",string,(long)index );
                 LPPraiseListVC *vc = [[LPPraiseListVC alloc] init];
                 vc.hidesBottomBarWhenPushed = YES;
@@ -516,7 +523,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
                 [ClickedArray addObject:Pmodel.userName];
             }
             WEAK_SELF()
-            [label yb_addAttributeTapActionWithStrings:@[PraiseStr] tapClicked:^(NSString *string, NSRange range, NSInteger index) {
+            [label yb_addAttributeTapActionWithStrings:@[PraiseStr] tapClicked:^(UILabel *label,NSString *string, NSRange range, NSInteger index) {
                 LPPraiseListVC *vc = [[LPPraiseListVC alloc] init];
                 vc.hidesBottomBarWhenPushed = YES;
                 vc.Moodmodel = weakSelf.model;
@@ -529,9 +536,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
             CommentViewHeight += [self hideLabelLayoutHeight:PraiseStr withTextFontSize:13] +7;
 
         }
-//        UITapGestureRecognizer *TapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(TouchUpInsidePraise:)];
-//        TapGesture.delegate = self;
-//        [label addGestureRecognizer:TapGesture];
+ 
         
      }else{
         
@@ -611,6 +616,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
             commentLabel.numberOfLines = 0;
             commentLabel.font = [UIFont systemFontOfSize:TextFont];//这个很重要,必须写在富文本下面
             [self.CommentView addSubview:commentLabel];
+            
             if (label) {
                 [commentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
                     if (i==0) {
@@ -632,6 +638,11 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
                     make.right.mas_equalTo(-7);
                 }];
             }
+            
+            
+
+
+            
             NSArray *ClickArray;
             if (CModel.toUserName) {        //回复
                 ClickArray = @[CModel.userName,CModel.toUserName];
@@ -639,39 +650,49 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
                 ClickArray = @[CModel.userName];
             }
             
-            [commentLabel yb_addAttributeTapActionWithStrings:ClickArray tapClicked:^(NSString *string, NSRange range, NSInteger index) {
-                NSLog(@"%@ %ld",string,(long)commentLabel.tag);
-                
-                NSInteger ControllerCount = 0 ;
-                 for (RTContainerController *v in [UIWindow visibleViewController].navigationController.viewControllers) {
-                    if ([v.contentViewController isKindOfClass:[LPReportVC class]]) {
-                        ControllerCount +=1;
-                    }
-                }
-                if (ControllerCount >= 3) {
-                    [LPTools AlertMessageView:@"当前页面跳转过深，请回退！"];
-                    return;
-                }
-                
-                LPMoodListDataModel *Moodmodel = [[LPMoodListDataModel alloc] init];
-                LPMoodCommentListDataModel *CModel = weakSelf.model.commentModelList[commentLabel.tag -1000];
-                     if (index == 0) {
-                        Moodmodel.userId = @(CModel.userId.integerValue);
-                        Moodmodel.userName = CModel.userName;
-                        Moodmodel.identity = CModel.identity;
-                    }else{
-                        Moodmodel.userId = @(CModel.toUserId.integerValue);
-                        Moodmodel.userName = CModel.toUserName;
-                        Moodmodel.identity = CModel.toUserIdentity;
-                    }
-                LPReportVC *vc = [[LPReportVC alloc] init];
-                vc.hidesBottomBarWhenPushed = YES;
-                vc.MoodModel = Moodmodel;
-                vc.SupermoodListArray = self.moodListArray;
-                vc.SuperTableView = self.SuperTableView;
-                [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
-                
-            }];
+            [commentLabel yb_addAttributeTapActionWithStrings:ClickArray delegate:self];
+ 
+            
+            UITapGestureRecognizer *TapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(TouchUpInsidecommentLabel:)];
+            //            TapGestureRecognizer.delegate = self;
+            TapGestureRecognizer.cancelsTouchesInView = NO;
+            //            commentLabel.userInteractionEnabled = YES;
+            [commentLabel addGestureRecognizer:TapGestureRecognizer];
+
+            
+//            [commentLabel yb_addAttributeTapActionWithStrings:ClickArray tapClicked:^(NSString *string, NSRange range, NSInteger index) {
+//                NSLog(@"%@ %ld",string,(long)commentLabel.tag);
+//
+//                NSInteger ControllerCount = 0 ;
+//                 for (RTContainerController *v in [UIWindow visibleViewController].navigationController.viewControllers) {
+//                    if ([v.contentViewController isKindOfClass:[LPReportVC class]]) {
+//                        ControllerCount +=1;
+//                    }
+//                }
+//                if (ControllerCount >= 3) {
+//                    [LPTools AlertMessageView:@"当前页面跳转过深，请回退！"];
+//                    return;
+//                }
+//
+//                LPMoodListDataModel *Moodmodel = [[LPMoodListDataModel alloc] init];
+//                LPMoodCommentListDataModel *CModel = weakSelf.model.commentModelList[commentLabel.tag -1000];
+//                     if (index == 0) {
+//                        Moodmodel.userId = @(CModel.userId.integerValue);
+//                        Moodmodel.userName = CModel.userName;
+//                        Moodmodel.identity = CModel.identity;
+//                    }else{
+//                        Moodmodel.userId = @(CModel.toUserId.integerValue);
+//                        Moodmodel.userName = CModel.toUserName;
+//                        Moodmodel.identity = CModel.toUserIdentity;
+//                    }
+//                LPReportVC *vc = [[LPReportVC alloc] init];
+//                vc.hidesBottomBarWhenPushed = YES;
+//                vc.MoodModel = Moodmodel;
+//                vc.SupermoodListArray = self.moodListArray;
+//                vc.SuperTableView = self.SuperTableView;
+//                [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+//
+//            }];
             TopComment = commentLabel;
             commentLabel.enabledTapEffect = NO;
 
@@ -700,7 +721,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
             }];
             CommentAllImage.image = [UIImage imageNamed:@"CommentAllImage"];
             CommentViewHeight += 23;
-            [commentAllLabel yb_addAttributeTapActionWithStrings:@[@"查看所有评论"] tapClicked:^(NSString *string, NSRange range, NSInteger index) {
+            [commentAllLabel yb_addAttributeTapActionWithStrings:@[@"查看所有评论"] tapClicked:^(UILabel *label,NSString *string, NSRange range, NSInteger index) {
                 LPMoodDetailVC *vc = [[LPMoodDetailVC alloc]init];
                  vc.hidesBottomBarWhenPushed = YES;
                 vc.moodListDataModel = model;
@@ -728,8 +749,93 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
      }else{
          self.TriangleView.hidden = YES;
      }
+}
+
+
+#pragma mark - YBAttributeTapActionDelegate
+- (void)yb_tapAttributeInLabel:(UILabel *)label string:(NSString *)string range:(NSRange)range index:(NSInteger)index{
+    NSLog(@"%@",string);
+//    [XHInputView bgViewClick];
+    self.TapAction = YES;
+            NSInteger ControllerCount = 0 ;
+             for (RTContainerController *v in [UIWindow visibleViewController].navigationController.viewControllers) {
+                if ([v.contentViewController isKindOfClass:[LPReportVC class]]) {
+                    ControllerCount +=1;
+                }
+            }
+            if (ControllerCount >= 3) {
+                [LPTools AlertMessageView:@"当前页面跳转过深，请回退！"];
+                return;
+            }
+
+            LPMoodListDataModel *Moodmodel = [[LPMoodListDataModel alloc] init];
+            LPMoodCommentListDataModel *CModel = self.model.commentModelList[label.tag -1000];
+                 if (index == 0) {
+                    Moodmodel.userId = @(CModel.userId.integerValue);
+                    Moodmodel.userName = CModel.userName;
+                    Moodmodel.identity = CModel.identity;
+                }else{
+                    Moodmodel.userId = @(CModel.toUserId.integerValue);
+                    Moodmodel.userName = CModel.toUserName;
+                    Moodmodel.identity = CModel.toUserIdentity;
+                }
+            LPReportVC *vc = [[LPReportVC alloc] init];
+            vc.hidesBottomBarWhenPushed = YES;
+            vc.MoodModel = Moodmodel;
+            vc.SupermoodListArray = self.moodListArray;
+            vc.SuperTableView = self.SuperTableView;
+            [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+}
+
+
+
+
+-(void)TouchUpInsidecommentLabel:(UITapGestureRecognizer *)recognizer{
+    UITapGestureRecognizer *singleTap = (UITapGestureRecognizer *)recognizer;
+    UILabel *commentLabel = (UILabel *)[singleTap view];
     
+    self.TapAction = NO;
+    LPMoodCommentListDataModel   *CModel = self.model.commentModelList[commentLabel.tag - 1000];
     
+    commentLabel.backgroundColor = [UIColor colorWithHexString:@"#d1d1d1"];
+    WEAK_SELF()
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        commentLabel.backgroundColor = [UIColor clearColor];
+        if (weakSelf.TapAction == NO) {
+         
+            if (!AlreadyLogin) {
+                [LPTools AlertMessageCommentLoginView];
+                return ;
+            }
+            
+                [XHInputView showWithStyle:InputViewStyleLarge configurationBlock:^(XHInputView *inputView) {
+                    
+                    /** 占位符文字 */
+                    inputView.placeholder = [NSString stringWithFormat:@"回复 %@:",CModel.userName];
+                    /** 设置最大输入字数 */
+                    inputView.maxCount = 300;
+                    /** 输入框颜色 */
+                    inputView.textViewBackgroundColor = [UIColor groupTableViewBackgroundColor];
+                    
+                } sendBlock:^BOOL(NSString *text) {
+                    if(text.length){
+                        [weakSelf requestCommentAddcomment:text
+                                               CommentType:3
+                                                 CommentId:CModel.commentType.integerValue==2? CModel.id:CModel.commentId
+                                          selectCommentRow:commentLabel.tag - 1000
+                                               ReplyUserId:CModel.userId];
+                        return YES;//return YES,收起键盘
+                    }else{
+                        NSLog(@"显示提示框-请输入要评论的的内容");
+                        return NO;//return NO,不收键盘
+                    }
+                }];
+
+            
+        }
+        
+    });
+
 }
 
 
@@ -752,125 +858,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
     }
     _imageBrowserManger.selectPage = singleTap.view.tag;
     [_imageBrowserManger showImageBrowser];
-//
-//    if (self.viewController) {
-//        if ([self.viewController isKindOfClass:[UIViewController class]]) {
-//            UITableView* tableView = self.tableView;
-//            UIWindow* window = [UIApplication sharedApplication].keyWindow;
-//
-//            CGRect rectInbg = [self.imageBgView convertRect:[singleTap view].frame toView:self];
-//
-//            // convert rect to self(cell)
-//            CGRect rectInCell = [self.contentView convertRect:rectInbg toView:self];
-//
-//            // convert rect to tableview
-//            CGRect rectInTableView = [self convertRect:rectInCell toView:tableView];//self.superview
-//
-//            // convert rect to window
-//            self.imageRect  = [tableView convertRect:rectInTableView toView:window];
-//        }
-//    }
-//    self.scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
-//    self.scrollView.backgroundColor = [UIColor blackColor];
-//    self.scrollView.alpha = 0;
-//    [[UIApplication sharedApplication].keyWindow addSubview:self.scrollView];
-//
-//    self.touchImage = [UIImageView new];
-//    self.touchImage.frame = self.imageRect;
-//    self.touchImage.contentMode = UIViewContentModeScaleAspectFit;
-//    NSString *imageStr = self.imageArray[[singleTap view].tag];
-//    NSURL *imageUrl = [NSURL URLWithString:imageStr];
-////    [self.touchImage sd_setImageWithURL:imageUrl  placeholderImage:[UIImage imageNamed:@"NoImage"]];
-//    [self.touchImage yy_setImageWithURL:imageUrl
-//                      placeholder:[UIImage imageNamed:@"NoImage"]
-//                          options:  YYWebImageOptionShowNetworkActivity |
-//     YYWebImageOptionIgnoreImageDecoding |
-//     YYWebImageOptionIgnoreAnimatedImage
-//                         progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-//
-//                         }
-//                        transform:nil
-//                       completion:^(UIImage *image, NSURL *url, YYWebImageFromType from, YYWebImageStage stage, NSError *error) {
-//                           if (stage == YYWebImageStageFinished) {
-//
-//                           }
-//                       }];
-//
-//    [[UIApplication sharedApplication].keyWindow addSubview:self.touchImage];
-//
-//    [UIView animateWithDuration:0.5 animations:^{
-//        self.touchImage.contentMode = UIViewContentModeScaleAspectFit;
-//        self.touchImage.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-//        self.scrollView.alpha = 1;
-//    } completion:^(BOOL finished){
-//        self.touchImage.hidden = YES;
-//
-//        self.scrollView.delegate                       = self;
-//        self.scrollView.bounces                        = YES;
-//        self.scrollView.pagingEnabled                  = YES;
-//        self.scrollView.showsHorizontalScrollIndicator = FALSE;
-//        self.scrollView.contentSize                    = CGSizeMake(SCREEN_WIDTH * self.imageArray.count, 0);
-//        for (int i = 0; i < self.imageArray.count; ++i) {
-//            UIImageView *imageView= [[UIImageView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH * i, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
-//            UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-//            //            activityIndicator.frame = CGRectMake(0, 0, 100, 100);
-//            activityIndicator.center = imageView.center;
-//            [imageView addSubview:activityIndicator];
-//            NSString *imageStr = self.imageArray[i];
-//            NSURL *imageUrl = [NSURL URLWithString:imageStr];
-////            [imageView sd_setImageWithURL:imageUrl  placeholderImage:[UIImage imageNamed:@"NoImage"]];
-//            [imageView yy_setImageWithURL:imageUrl
-//                              placeholder:[UIImage imageNamed:@"NoImage"]
-//                                  options:  YYWebImageOptionShowNetworkActivity |
-//                                            YYWebImageOptionIgnoreImageDecoding |
-//                                            YYWebImageOptionIgnoreAnimatedImage
-//                                 progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-//
-//                                 }
-//                                transform:nil
-//                               completion:^(UIImage *image, NSURL *url, YYWebImageFromType from, YYWebImageStage stage, NSError *error) {
-//                                   if (stage == YYWebImageStageFinished) {
-//
-//                                   }
-//                               }];
-//            imageView.tag = i;
-//            imageView.contentMode = UIViewContentModeScaleAspectFit;
-//            imageView.userInteractionEnabled = YES;
-//
-//            UIView *v = [[UIView alloc] initWithFrame:imageView.frame];
-//            v.clipsToBounds = YES;
-//            imageView.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-//            imageView.tag = 100;
-//            [v addSubview:imageView];
-//
-//            UIButton *DownBt = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - 60, SCREEN_HEIGHT - 150, 40, 40)];
-//            [DownBt setImage:[UIImage imageNamed:@"xiazai"] forState:UIControlStateNormal];
-//            [DownBt addTarget:self action:@selector(DownLoadImage:) forControlEvents:UIControlEventTouchUpInside];
-//            [v addSubview:DownBt];
-//
-//            [self.scrollView addSubview:v];
-//
-//            NSLog(@"%.f  %.f",imageView.frame.size.width,imageView.frame.size.height);
-//            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeImageScroll)];
-//            UIPinchGestureRecognizer *pinchGestureRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchView:)];
-//            UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panView:)];
-//            panGestureRecognizer.delegate = self;
-//            [imageView addGestureRecognizer:panGestureRecognizer];
-//            [imageView addGestureRecognizer:pinchGestureRecognizer];
-//             [imageView addGestureRecognizer:tap];
-//        }
-//        [self.scrollView setContentOffset:CGPointMake(SCREEN_WIDTH * [singleTap view].tag , 0)];
-//
-//        if (self.imageArray.count > 1) {
-//            self.pageControl = [[UIPageControl alloc]initWithFrame:CGRectMake(0, 0, 0, 40)];
-//            self.pageControl.center = CGPointMake(SCREEN_WIDTH/2, SCREEN_HEIGHT - 50);
-//            self.pageControl.numberOfPages = self.imageArray.count;
-//            self.pageControl.currentPage = [singleTap view].tag;
-//            self.pageControl.tintColor = [UIColor lightGrayColor];
-//            self.pageControl.currentPageIndicatorTintColor = [UIColor whiteColor];
-//            [[UIApplication sharedApplication].keyWindow addSubview:self.pageControl];
-//        }
-//    }];
+ 
     
 }
 - (UIViewController *)viewController
@@ -923,7 +911,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
-    NSLog(@"%f",scrollView.contentOffset.x);
+    
     int index = fabs(scrollView.contentOffset.x) / scrollView.frame.size.width;
     NSString *imageStr = self.imageArray[index];
     NSURL *imageUrl = [NSURL URLWithString:imageStr];
@@ -973,7 +961,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
     // Configure the view for the selected state
 }
 
-
+#pragma mark - request
 
 -(void)requestQueryDefriendPullBlack{
     NSDictionary *dic = @{@"identity":[LPTools isNullToString:self.model.identity],
@@ -1065,7 +1053,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
 
 -(void)requestQueryDeleteComment:(NSString *) CommentId{
  
-    NSString * appendURLString = [NSString stringWithFormat:@"comment/update_comment?id=%@&moodId=%@",CommentId,self.model.id];
+    NSString * appendURLString = [NSString stringWithFormat:@"comment/update_comment?id=%@&moodId=%@&versionType=2.3",CommentId,self.model.id];
     
     [NetApiManager requestQueryDeleteComment:nil URLString:appendURLString withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
@@ -1102,6 +1090,88 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
     }];
 }
 
+
+-(void)requestCommentAddcomment:(NSString *) commentText
+                    CommentType:(NSInteger) commentType
+                      CommentId:(NSString *)commentId
+               selectCommentRow:(NSInteger) CommentRow
+                    ReplyUserId:(NSString *) ReplyUserId{
+    
+    LPUserMaterialModel *user = [LPUserDefaults getObjectByFileName:USERINFO];
+    NSDictionary *dic = @{@"commentDetails": commentText,
+                          @"commentType": @(commentType),
+                          @"commentId": commentId,
+                          @"userName": user.data.user_name,
+                          @"userId": kUserDefaultsValue(LOGINID),
+                          @"userUrl": user.data.user_url,
+                          @"versionType":@"2.1",
+                          @"replyUserId":ReplyUserId
+                          };
+    [NetApiManager requestCommentAddcommentWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                NSString *StrData = [LPTools isNullToString:responseObject[@"data"]];
+                NSArray *DataList = [StrData componentsSeparatedByString:@"-"];
+                
+                LPCommentListDataModel *m = [LPCommentListDataModel mj_objectWithKeyValues:dic];
+                if (DataList.count>=2) {
+                    if ([DataList[0] integerValue] ==1) {
+                        [LPTools AlertTopCommentView:@""];
+                    }else{
+                        
+                    }
+                    m.id = @([[LPTools isNullToString:DataList[1]] integerValue]);
+                }
+                
+                //评价圈子列表里面的评论列表
+ 
+                LPMoodCommentListDataModel *CommentModel = [LPMoodCommentListDataModel mj_objectWithKeyValues:dic];
+              
+                CommentModel.identity = kUserDefaultsValue(USERIDENTIY);
+                CommentModel.id = [LPTools isNullToString:DataList[1]];
+
+                if (commentType == 2) {
+                    [self.model.commentModelList insertObject:CommentModel atIndex:0];
+                }else if (commentType == 3){
+                    LPMoodCommentListDataModel *m = self.model.commentModelList[CommentRow];
+                    CommentModel.toUserId = m.userId;
+                    CommentModel.toUserName = m.userName;
+                    CommentModel.toUserIdentity = m.identity;
+//                    [self.model.commentModelList insertObject:CommentModel atIndex:CommentRow+1];
+                    for (NSInteger i = 0 ;i<self.model.commentModelList.count;i++ ) {
+                        LPMoodCommentListDataModel *m = self.model.commentModelList[i];
+                        if ((m.commentType.integerValue == 2 && m.id == CommentModel.commentId) ||
+                            (m.commentType.integerValue == 3 && m.commentId == CommentModel.commentId)) {
+                            [self.model.commentModelList insertObject:CommentModel atIndex:i];
+                            break;
+                        }
+                    }
+                    
+                }
+
+            
+            if (self.SuperTableView) {
+                [self.SuperTableView reloadData];
+            }
+            
+            if (self.PraiseBlock) {
+                self.PraiseBlock();
+            }
+ 
+            }else{
+                if ([responseObject[@"code"] integerValue] == 10045) {
+                    [LPTools AlertMessageView:responseObject[@"msg"]];
+                }else{
+                    [[UIWindow  visibleViewController].view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+                }
+            }
+            
+        }else{
+            [[UIWindow  visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
 
 
 - (NSArray *)getSeparatedLinesFromLabel:(UILabel *)label
@@ -1147,40 +1217,6 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
     return linesArray;
 }
 
-- (NSArray *)getSeparatedLinesFromPraiseLabel:(UILabel *)label
-{
-    NSMutableParagraphStyle *paraStyle01 = [[NSMutableParagraphStyle alloc] init];  paraStyle01.lineBreakMode = NSLineBreakByCharWrapping;
-    NSDictionary *attributes = @{ NSParagraphStyleAttributeName:paraStyle01,
-                                  };
-    NSString *text = [label text];
-    UIFont   *font = [UIFont systemFontOfSize:13];
-    CGRect    rect = [label frame];
-    CTFontRef myFont = CTFontCreateWithName((__bridge CFStringRef)([font fontName]), [font pointSize], NULL);
-    NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:text attributes:attributes ];
-    [attStr addAttribute:(NSString *)kCTFontAttributeName value:(__bridge id)myFont range:NSMakeRange(0, attStr.length)];
-
-    CTFramesetterRef frameSetter = CTFramesetterCreateWithAttributedString((__bridge CFAttributedStringRef)attStr);
-    
-    CGMutablePathRef path = CGPathCreateMutable();
-    //    CGPathAddRect(path, NULL, CGRectMake(0,0,rect.size.width,100000));
-    CGPathAddRect(path, NULL, CGRectMake(0,0,SCREEN_WIDTH-73-14,100000));
-    
-    CTFrameRef frame = CTFramesetterCreateFrame(frameSetter, CFRangeMake(0, 0), path, NULL);
-    
-    NSArray *lines = (__bridge NSArray *)CTFrameGetLines(frame);
-    NSMutableArray *linesArray = [[NSMutableArray alloc]init];
-    
-    for (id line in lines)
-    {
-        CTLineRef lineRef = (__bridge CTLineRef )line;
-        CFRange lineRange = CTLineGetStringRange(lineRef);
-        NSRange range = NSMakeRange(lineRange.location, lineRange.length);
-        
-        NSString *lineString = [text substringWithRange:range];
-        [linesArray addObject:lineString];
-    }
-    return linesArray;
-}
 
 //image是要保存的图片
 - (void) saveImage:(UIImage *)image{
@@ -1233,6 +1269,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
         _operationMenu.show = NO;
     }
 }
+
 
 
 - (NSInteger)hideLabelLayoutHeight:(NSString *)content withTextFontSize:(CGFloat)mFontSize

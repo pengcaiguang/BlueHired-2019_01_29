@@ -459,6 +459,19 @@
         return [self.pickerArray count];
     }
 }
+
+//// UIPickerView中指定列的宽度
+//-(CGFloat)pickerView:(UIPickerView *)pickerView
+//   widthForComponent:(NSInteger)component
+//{
+//    if (self.selectIndex == 4 || self.selectIndex == 7) {
+//        return SCREEN_WIDTH/2.0;
+//     }else{
+//        return SCREEN_WIDTH;
+//    }
+//}
+
+
 - (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view{
     if (!view){
         view = [[UIView alloc]init];
@@ -466,16 +479,10 @@
     if (self.selectIndex == 4 || self.selectIndex == 7) {
         UILabel *text = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width/2, 20)];
         text.textAlignment = NSTextAlignmentCenter;
-//        NSMutableArray *a = [NSMutableArray array];
-//        for (NSDictionary *dic in self.p1Array) {
-//            [a addObject:[dic allKeys][0]];
-//        }
+ 
         if (component == 0) {
-//            text.text = a[row];
             text.text = self.TypeList.data[row].mechanismTypeName;
         }else{
-//            NSArray *arr = [(NSDictionary *)self.p1Array[self.select1] allValues][0];
-//            text.text = arr[row];
             text.text = self.TypeList.data[self.select1].workTypeList[row].workTypeName;
         }
         [view addSubview:text];

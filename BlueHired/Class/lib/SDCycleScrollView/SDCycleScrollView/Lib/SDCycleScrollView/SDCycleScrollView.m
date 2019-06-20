@@ -584,6 +584,7 @@ NSString * const ID = @"SDCycleScrollViewCell";
     }
     
     NSString *imagePath = self.imagePathsGroup[itemIndex];
+ 
     
     if (!self.onlyDisplayText && [imagePath isKindOfClass:[NSString class]]) {
         if ([imagePath hasPrefix:@"http"]) {
@@ -596,7 +597,7 @@ NSString * const ID = @"SDCycleScrollViewCell";
             cell.imageView.image = image;
         }
         [cell.imageView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-        if ([imagePath containsString:@".mp4"]) {
+        if ([imagePath containsString:@"vframe/png/offset/0.001"]) {
             UIImageView *palyBTImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PlayImage"]];
             [cell.imageView addSubview:palyBTImage];
             [palyBTImage mas_makeConstraints:^(MASConstraintMaker *make){

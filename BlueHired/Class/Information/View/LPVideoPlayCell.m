@@ -176,7 +176,7 @@
 //分享
 -(void)touchShare{
 //    [self WeiXinOrQQAlertView];
-    NSString *url = [NSString stringWithFormat:@"%@bluehired/video.html?videoCover=%@&videoTitle=%@",BaseRequestWeiXiURL,self.model.videoImage,self.model.videoName];
+    NSString *url = [NSString stringWithFormat:@"%@resident/#/video?videoCover=%@&videoTitle=%@",BaseRequestWeiXiURL,self.model.videoImage,self.model.videoName];
     NSString *encodedUrl = [NSString stringWithString:[url stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     [LPTools ClickShare:encodedUrl Title:self.model.videoName];
 }
@@ -247,7 +247,9 @@
                     if ([responseObject[@"data"] integerValue] == 0) {
                         [LPTools AlertCollectView:@""];
                     }else if ([responseObject[@"data"] integerValue] == 1) {
-                        
+                        if (self.CollectionBlock) {
+                            self.CollectionBlock();
+                        }
                     }
             }else{
                 [[UIWindow visibleViewController].view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
@@ -312,7 +314,7 @@
 {
     
 //    http://192.168.0.152:8020/bluehired/video.html?videoCover=132****0678&videoTitle=0.85
-    NSString *url = [NSString stringWithFormat:@"%@bluehired/video.html?videoCover=%@&videoTitle=%@",BaseRequestWeiXiURL,self.model.videoImage,self.model.videoName];
+    NSString *url = [NSString stringWithFormat:@"%@resident/bluehired/video.html?videoCover=%@&videoTitle=%@",BaseRequestWeiXiURL,self.model.videoImage,self.model.videoName];
     NSString *encodedUrl = [NSString stringWithString:[url stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     if (sender.tag == 1)
     {

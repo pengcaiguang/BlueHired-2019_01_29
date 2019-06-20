@@ -17,6 +17,8 @@ static const CGFloat kPhotoViewMargin = 13.0;
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 @property (weak, nonatomic) IBOutlet UIButton *button;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *LayoutConstraint_Button_top;
+
 @property (weak, nonatomic) HXPhotoView *photoView;
 
 @property (strong, nonatomic) HXPhotoManager *manager;
@@ -34,15 +36,17 @@ static const CGFloat kPhotoViewMargin = 13.0;
     [super viewDidLoad];
     self.navigationItem.title = @"写点评";
     [self setTextFieldView];
+    self.scrollView.bounces = NO;
 
-    _textView.layer.borderColor = [UIColor blackColor].CGColor;
+    
+    _textView.layer.borderColor = [UIColor colorWithHexString:@"#E0E0E0"].CGColor;
     _textView.layer.borderWidth = 0.5;
-    _textView.textColor = [UIColor lightGrayColor];
+    _textView.textColor = [UIColor colorWithHexString:@"#CCCCCC"];
     _textView.text = TEXT;
     _textView.delegate = self;
     _textView.inputAccessoryView = self.ToolTextView;
 
-    _button.layer.cornerRadius = 20;
+    _button.layer.cornerRadius = 6;
 //    self.view.layer.contentsRect
     
     UILabel* label2 = [self.scrollView viewWithTag:1004];
@@ -50,46 +54,51 @@ static const CGFloat kPhotoViewMargin = 13.0;
     HXPhotoView *photoView = [HXPhotoView photoManager:self.manager];
     photoView.lineCount = 3;
     photoView.delegate = self;
+    photoView.addImageName = @"upload";
     //    photoView.showAddCell = NO;
     photoView.backgroundColor = [UIColor whiteColor];
     [self.scrollView addSubview:photoView];
     self.photoView = photoView;
     [photoView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(13);
-        make.right.mas_equalTo(-13);
-        make.top.equalTo(label2.mas_bottom).offset(20);
-        make.width.mas_equalTo(SCREEN_WIDTH - kPhotoViewMargin * 2);
+        make.left.mas_equalTo(floorf(LENGTH_SIZE(13)));
+        make.right.mas_equalTo(floorf(LENGTH_SIZE(-13)));
+        make.top.equalTo(label2.mas_bottom).offset(LENGTH_SIZE(25));
+//        make.width.mas_equalTo(SCREEN_WIDTH - LENGTH_SIZE(kPhotoViewMargin * 2));
+
     }];
     [self.photoView refreshView];
     
 
 }
 
-- (void)viewDidAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
     
     UIView *view = [self.scrollView viewWithTag:2000];
-    
     if (view == nil) {
         for (int i =0 ; i < 5; i++) {
-
             UIView *view = [self.scrollView viewWithTag:i+1000];
             CGFloat viewY = view.frame.origin.y;
-            
-            XHStarRateView *starRateView = [[XHStarRateView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - 200, viewY, 140, 21)];
+            XHStarRateView *starRateView = [[XHStarRateView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - LENGTH_SIZE(120+57),
+                                                                                            viewY+LENGTH_SIZE(1),
+                                                                                            LENGTH_SIZE(120),
+                                                                                            LENGTH_SIZE(18))];
             starRateView.isAnimation = YES;
             starRateView.rateStyle = HalfStar;
             starRateView.tag = 2000+i;
             starRateView.delegate = self;
             [self.scrollView addSubview:starRateView];
-            
+
             UILabel *label = [[UILabel alloc ]initWithFrame:CGRectMake(starRateView.frame.size.width+starRateView.frame.origin.x,
                                                                        viewY,
-                                                                       50,
-                                                                       21)];
-            label.textColor = [UIColor redColor];
+                                                                       LENGTH_SIZE(57),
+                                                                       LENGTH_SIZE(21))];
+            label.textColor = [UIColor colorWithHexString:@"#FABF48"];
             label.text = @"0.0分";
+            label.font = [UIFont boldSystemFontOfSize:FontSize(14)];
             label.tag = 3000+i;
+            label.textAlignment = NSTextAlignmentCenter;
             [self.scrollView addSubview:label];
         }
     }
@@ -149,7 +158,7 @@ static const CGFloat kPhotoViewMargin = 13.0;
 
 
 -(BOOL)textViewShouldBeginEditing:(UITextView *)textView{
-    if ([textView.textColor isEqual:[UIColor lightGrayColor]]) {
+    if ([textView.textColor isEqual:[UIColor colorWithHexString:@"#CCCCCC"]]) {
         textView.text = @"";
         textView.textColor = [UIColor blackColor];
     }
@@ -157,7 +166,7 @@ static const CGFloat kPhotoViewMargin = 13.0;
 }
 -(void)textViewDidEndEditing:(UITextView *)textView{
     if (textView.text.length <= 0) {
-        textView.textColor = [UIColor lightGrayColor];
+        textView.textColor = [UIColor colorWithHexString:@"#CCCCCC"];
         textView.text = TEXT;
     }
 }
@@ -165,17 +174,15 @@ static const CGFloat kPhotoViewMargin = 13.0;
 
 #pragma mark - HXPhotoViewDelegate
 - (void)photoView:(HXPhotoView *)photoView updateFrame:(CGRect)frame{
-    NSSLog(@"%@",NSStringFromCGRect(frame));
-    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, CGRectGetMaxY(frame) + kPhotoViewMargin + 92);
-    [self.button mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(13);
-        make.right.mas_equalTo(-13);
-        make.top.mas_equalTo(CGRectGetMaxY(photoView.frame)+44);
-        make.height.mas_equalTo(48);
-    }];
+    NSSLog(@"%@  %f",NSStringFromCGRect(frame),CGRectGetMaxY(photoView.frame));
+    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, CGRectGetMaxY(frame) + LENGTH_SIZE(30 + 48 + 27));
+    self.LayoutConstraint_Button_top.constant = CGRectGetMaxY(photoView.frame)+LENGTH_SIZE(30);
+ 
 }
+
 -(void)photoView:(HXPhotoView *)photoView changeComplete:(NSArray<HXPhotoModel *> *)allList photos:(NSArray<HXPhotoModel *> *)photos videos:(NSArray<HXPhotoModel *> *)videos original:(BOOL)isOriginal{
     [self.toolManager getSelectedImageList:allList requestType:HXDatePhotoToolManagerRequestTypeOriginal success:^(NSArray<UIImage *> *imageList) {
+        self.imageArray = nil;
         if (imageList.count > 0) {
             self.imageArray = imageList;
         }
@@ -219,7 +226,7 @@ static const CGFloat kPhotoViewMargin = 13.0;
 - (IBAction)TouchBt:(id)sender
 {    
     NSString *string = self.textView.text;
-    if (string.length < 1 || [self.textView.textColor isEqual:[UIColor lightGrayColor]])
+    if (string.length < 1 || [self.textView.textColor isEqual:[UIColor colorWithHexString:@"#CCCCCC"]])
     {
         [self.view showLoadingMeg:@"请输入点评内容！" time:MESSAGE_SHOW_TIME];
         return;
@@ -235,6 +242,37 @@ static const CGFloat kPhotoViewMargin = 13.0;
         [self.view showLoadingMeg:@"点评内容字数不得高于150！" time:MESSAGE_SHOW_TIME];
         return;
     }
+    
+    
+    UILabel *Label0 = (UILabel *)[self.scrollView viewWithTag:3000];
+    UILabel *Label1 = (UILabel *)[self.scrollView viewWithTag:3001];
+    UILabel *Label2 = (UILabel *)[self.scrollView viewWithTag:3002];
+    UILabel *Label3 = (UILabel *)[self.scrollView viewWithTag:3003];
+    UILabel *Label4 = (UILabel *)[self.scrollView viewWithTag:3004];
+    
+    
+    if ([Label0.text isEqualToString:@"0.0分"]) {
+        [self.view showLoadingMeg:@"请您对工作环境进行打分" time:MESSAGE_SHOW_TIME];
+        return;
+    }
+    if ([Label1.text isEqualToString:@"0.0分"]) {
+        [self.view showLoadingMeg:@"请您对餐饮环境进行打分" time:MESSAGE_SHOW_TIME];
+        return;
+    }
+    if ([Label2.text isEqualToString:@"0.0分"]) {
+        [self.view showLoadingMeg:@"请您对薪资福利进行打分" time:MESSAGE_SHOW_TIME];
+        return;
+    }
+    if ([Label3.text isEqualToString:@"0.0分"]) {
+        [self.view showLoadingMeg:@"请您对企业管理进行打分" time:MESSAGE_SHOW_TIME];
+        return;
+    }
+    if ([Label4.text isEqualToString:@"0.0分"]) {
+        [self.view showLoadingMeg:@"请您对住宿环境进行打分" time:MESSAGE_SHOW_TIME];
+        return;
+    }
+    
+    
     
     if (kArrayIsEmpty(self.imageArray)) {
         [self requestAddMood];
@@ -294,7 +332,7 @@ static const CGFloat kPhotoViewMargin = 13.0;
                     [LPTools AlertBusinessView:@""];
                     [self.navigationController popViewControllerAnimated:YES];
                 }else if ([responseObject[@"data"] integerValue] == 1){
-                    [self.view showLoadingMeg:@"提交成功,等待系统审核" time:MESSAGE_SHOW_TIME];
+                    [[UIApplication sharedApplication].keyWindow showLoadingMeg:@"提交成功，等待系统审核！" time:MESSAGE_SHOW_TIME];
                     [self.navigationController popViewControllerAnimated:YES];
                 }else{
                     [self.view showLoadingMeg:@"提交失败,请稍后再试" time:MESSAGE_SHOW_TIME];

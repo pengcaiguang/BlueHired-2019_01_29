@@ -234,6 +234,7 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
         self.videocollectionView.hidden = YES;
     }else if (self.Type == 2){
         self.page = 1;
+        [self.VideolistArray removeAllObjects];
         [self requestQueryGetVideoList];
         self.Resulttableview.hidden = YES;
         self.videocollectionView.hidden = NO;
@@ -414,7 +415,11 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
 
     if (!has) {
         LPNoDataView *noDataView = [[LPNoDataView alloc]initWithFrame:CGRectMake(0, 30, SCREEN_WIDTH, SCREEN_HEIGHT-30-kNavBarHeight-kBottomBarHeight)];
-        [self.Resulttableview addSubview:noDataView];
+        if (self.Type == 1 || self.Type == 3|| self.Type == 4) {
+            [self.Resulttableview addSubview:noDataView];
+        }else if (self.Type == 2){
+            [self.videocollectionView addSubview:noDataView];
+        }
         
         noDataView.hidden = hidden;
     }
@@ -813,12 +818,12 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
     
     //计算ids
     NSString *ids =@"";
-    if (self.listArray.count<=40) {
+    if (self.VideolistArray.count<=40) {
         for (LPVideoListDataModel *m in self.VideolistArray) {
             ids = [NSString stringWithFormat:@"%@%@v,",ids,m.id];
         }
     }else{
-        for (int i = self.VideolistArray.count-40 ; i<self.VideolistArray.count ; i++) {
+        for (NSInteger i = self.VideolistArray.count-40 ; i<self.VideolistArray.count ; i++) {
             LPVideoListDataModel *m = self.VideolistArray[i];
             ids = [NSString stringWithFormat:@"%@%@v,",ids,m.id];
         }
@@ -849,7 +854,8 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
     NSInteger type = 0;
     NSDictionary *dic = @{@"page":@(self.page),
                           @"type":@(type),
-                          @"moodDetails":self.searchWord
+                          @"moodDetails":self.searchWord,
+                          @"versionType":@"2.3"
                           };
     [NetApiManager requestMoodListWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);

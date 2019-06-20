@@ -43,6 +43,7 @@ PODS:
   - FirebaseInstanceID (3.2.1):
     - FirebaseCore (~> 5.1)
     - GoogleUtilities/Environment (~> 5.2)
+  - FLAnimatedImage (1.0.12)
   - FMDB (2.7.2):
     - FMDB/standard (= 2.7.2)
   - FMDB/standard (2.7.2)
@@ -92,9 +93,11 @@ PODS:
   - SDWebImage (4.4.3):
     - SDWebImage/Core (= 4.4.3)
   - SDWebImage/Core (4.4.3)
+  - SDWebImage/GIF (4.4.3):
+    - FLAnimatedImage (~> 1.0)
+    - SDWebImage/Core
   - TXLiteAVSDK_Player (5.3.6004)
   - WechatOpenSDK (1.8.3)
-  - YBAttributeTextTapAction (2.0.6)
   - YYText (1.0.7)
 
 DEPENDENCIES:
@@ -120,9 +123,9 @@ DEPENDENCIES:
   - SCIndexView
   - SDAutoLayout
   - SDWebImage
+  - SDWebImage/GIF
   - TXLiteAVSDK_Player
   - WechatOpenSDK
-  - YBAttributeTextTapAction
   - YYText
 
 SPEC REPOS:
@@ -138,6 +141,7 @@ SPEC REPOS:
     - FirebaseAnalytics
     - FirebaseCore
     - FirebaseInstanceID
+    - FLAnimatedImage
     - FMDB
     - FSCalendar
     - GoogleAppMeasurement
@@ -158,7 +162,6 @@ SPEC REPOS:
     - SDWebImage
     - TXLiteAVSDK_Player
     - WechatOpenSDK
-    - YBAttributeTextTapAction
     - YYText
 
 SPEC CHECKSUMS:
@@ -173,6 +176,7 @@ SPEC CHECKSUMS:
   FirebaseAnalytics: df15839e9c6ca6bd14d2e8ab6b0c672e6c49097e
   FirebaseCore: 27bd80e5bfaaf9552a1f5cacb4c7e8bb925bab22
   FirebaseInstanceID: ea5af6920d0a4a29b40459d055bebe4a6c1333c4
+  FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   FMDB: 6198a90e7b6900cfc046e6bc0ef6ebb7be9236aa
   FSCalendar: a04b09f16f811bc92e82f3cf852a15225233b9d5
   GoogleAppMeasurement: fc4a4c3fe0144db9313cbf443ffe62e6b1d6268c
@@ -193,9 +197,8 @@ SPEC CHECKSUMS:
   SDWebImage: c5594f1a19c48d526d321e548902b56b479cd508
   TXLiteAVSDK_Player: 0ae5dbfa79619f53265d88cc990b1baf7abe1d97
   WechatOpenSDK: 3117412f8aafde4758cac1e8d20b93c67cafcfef
-  YBAttributeTextTapAction: 650ff36251479f8cfc7b5dd8fb62587c538ce502
   YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
 
-PODFILE CHECKSUM: 6ec1fb13c969cb7c883e4d8c8b0042d7a5e32689
+PODFILE CHECKSUM: d6d5f280c5dde034c243f36f10a062103acd4172
 
 COCOAPODS: 1.5.3

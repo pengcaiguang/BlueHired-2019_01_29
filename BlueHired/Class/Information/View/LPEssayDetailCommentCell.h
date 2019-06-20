@@ -16,6 +16,7 @@
 @end
 
 typedef void (^LPEssayDetailCommentCellDeleteCommentBlock)(NSString *CommId);
+typedef void (^LPEssayDetailCommentCellAddCommentBlock)(LPCommentListDataModel *CommentModel);
 
 
 @interface LPEssayDetailCommentCell : UITableViewCell
@@ -27,8 +28,13 @@ typedef void (^LPEssayDetailCommentCellDeleteCommentBlock)(NSString *CommId);
 @property (weak, nonatomic) IBOutlet UIButton *replyButton;
 @property (weak, nonatomic) IBOutlet UIView *replyBgView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *replyBgView_constraint_height;
-@property(nonatomic,strong) LPCommentListDataModel *model;
+@property (nonatomic,strong) LPCommentListDataModel *model;
 @property (nonatomic,copy) LPEssayDetailCommentCellDeleteCommentBlock DeleteBlock;
+@property (nonatomic,copy) LPEssayDetailCommentCellAddCommentBlock AddBlock;
+
+@property(nonatomic,strong) UITableView *SuperTableView;
+
+
 
 @property (nonatomic,assign)id <LPEssayDetailCommentCellDelegate>delegate;
 

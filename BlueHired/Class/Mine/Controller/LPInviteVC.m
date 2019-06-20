@@ -26,9 +26,12 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.navigationItem.title = @"邀请二维码";
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"WechatIMG2"] style:UIBarButtonItemStyleDone target:self action:@selector(touchManagerButton)];
-    [self.navigationItem.rightBarButtonItem setTintColor:[UIColor blackColor]];
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"WechatIMG2"] style:UIBarButtonItemStyleDone target:self action:@selector(touchManagerButton)];
+//    [self.navigationItem.rightBarButtonItem setTintColor:[UIColor blackColor]];
    //    Constant.BASEURL + "bluehired/login.html?identity=" + (id == -1 ? userCookieEntity.getIdentity() : id)
+    
+    
+    
     
     LPUserMaterialModel *user = [LPUserDefaults getObjectByFileName:USERINFO];
 
@@ -39,7 +42,6 @@
      }
     
     
-    
     NSString *str = kUserDefaultsValue(COOKIES);
     NSString *s = [self URLDecodedString:str];
     
@@ -47,8 +49,9 @@
     
     NSString *st = dic[@"identity"];
     
-//    NSString *strutl = [NSString stringWithFormat:@"%@bluehired/login.html?identity=%@",BaseRequestURL,st];
-    NSString *strutl = [NSString stringWithFormat:@"%@bluehired/login.html?identity=%@",BaseRequestWeiXiURL,st];
+    NSString *strutl = [NSString stringWithFormat:@"%@resident/login?identity=%@",BaseRequestWeiXiURL,st];
+//    NSString *strutl = [NSString stringWithFormat:@"http://192.168.0.152:8090/login?identity=%@",st];
+    
     //1. 实例化二维码滤镜
     CIFilter *filter = [CIFilter filterWithName:@"CIQRCodeGenerator"];
     // 2. 恢复滤镜的默认属性
@@ -93,6 +96,9 @@
     [self btnClickShare];
 }
 
+- (IBAction)TouchShrae:(UIButton *)sender {
+    [self share:sender.tag-1000+1];//QQ好友
+}
 
 
 -(void)WeiXinOrQQAlertView
@@ -147,16 +153,11 @@
     //    NSString *strutl = [NSString stringWithFormat:@"%@bluehired/login.html?identity=%@",BaseRequestURL,st];
 //    NSString *strutl = [NSString stringWithFormat:@"%@lanpin_h5/login.html?identity=%@",BaseRequestWeiXiURL,st];
     
-    NSString *url = [NSString stringWithFormat:@"%@bluehired/login.html?identity=%@",BaseRequestWeiXiURL,st];
+    NSString *url = [NSString stringWithFormat:@"%@resident/bluehired/login.html?identity=%@",BaseRequestWeiXiURL,st];
     
     NSString *encodedUrl = [NSString stringWithString:[url stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     
     UIImage *WxImage = [self addImage:self.imageView.image withImage:self.headImageView.image];
-
-    
-
-    
-    
     
     if (sender.tag == 1)
     {
@@ -258,14 +259,14 @@
 }
 
 
--(void)share:(int)type{
+-(void)share:(NSInteger)type{
     NSString *str = kUserDefaultsValue(COOKIES);
     NSString *s = [self URLDecodedString:str];
     
     NSDictionary *dic = [self dictionaryWithJsonString:[s substringFromIndex:5]];
     
     NSString *st = dic[@"identity"];
-    NSString *url = [NSString stringWithFormat:@"%@bluehired/login.html?identity=%@",BaseRequestWeiXiURL,st];
+    NSString *url = [NSString stringWithFormat:@"%@resident/bluehired/login.html?identity=%@",BaseRequestWeiXiURL,st];
     
     NSString *encodedUrl = [NSString stringWithString:[url stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     

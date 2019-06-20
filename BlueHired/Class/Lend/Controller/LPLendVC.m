@@ -507,7 +507,7 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
         if (isSuccess) {
             if (responseObject[@"data"]) {
                 self.userUrl = responseObject[@"data"];
-                [self.ImageBT yy_setImageWithURL:[NSURL URLWithString:self.userUrl] forState:UIControlStateNormal options:YYWebImageOptionProgressive];
+                [self.ImageBT yy_setImageWithURL:[NSURL URLWithString:[self.userUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] forState:UIControlStateNormal options:YYWebImageOptionProgressive];
              }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];

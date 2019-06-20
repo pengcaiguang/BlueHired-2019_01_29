@@ -155,7 +155,7 @@ static NSString *LPTLendAuditCellID = @"LPLendDetailsCell";
                 }else{
                     [weakSelf.contentArr addObject:@""];
                 }
-                [self.ImageButton yy_setImageWithURL:[NSURL URLWithString:weakSelf.Detailmodel.userWorkImage] forState:UIControlStateNormal placeholder:[UIImage imageNamed:@"LendNormalImage"]];
+                [self.ImageButton yy_setImageWithURL:[NSURL URLWithString:[weakSelf.Detailmodel.userWorkImage stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] forState:UIControlStateNormal placeholder:[UIImage imageNamed:@"LendNormalImage"]];
                 [weakSelf.tableview reloadData];
             }else{
                 [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];

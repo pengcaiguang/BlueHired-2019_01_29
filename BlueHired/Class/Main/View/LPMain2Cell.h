@@ -23,6 +23,8 @@ typedef void(^LPMainCellBlock)(void);
 @property (strong, nonatomic) IBOutlet UIView *mechanismScoreView;
 
 @property (weak, nonatomic) IBOutlet UIButton *reMoneyLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *reMoneyImage;
+
 @property (weak, nonatomic) IBOutlet UILabel *maxNumberLabel;
 @property (weak, nonatomic) IBOutlet UILabel *applyNumberLabel;
 

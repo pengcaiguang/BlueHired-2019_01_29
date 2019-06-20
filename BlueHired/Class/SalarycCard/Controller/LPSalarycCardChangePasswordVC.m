@@ -34,6 +34,7 @@
 //    self.times = 0;
     self.errorTimes = 0;
     self.completeButton.hidden = YES;
+    self.completeButton.layer.cornerRadius = 6;
     self.textField.layer.borderWidth = 0.5;
     self.textField.layer.borderColor = [UIColor colorWithHexString:@"#AAAAAA"].CGColor;
     self.textField.font = [UIFont systemFontOfSize:16];
@@ -112,18 +113,11 @@
                 label.text = @"";
             }
             self.msgLabel.text = @"请再次输入新的提现密码";
+            self.completeButton.hidden = NO;
         }
         else if (self.times == 2)
         {
-            if ([self.textField.text isEqualToString:_passNew])
-            {
-                [self requestUpdateNewDrawpwd];
-//                [textField resignFirstResponder];
-            }
-            else
-            {
-                [self.view showLoadingMeg:@"两次密码输入不一致，从重新输入" time:MESSAGE_SHOW_TIME];
-            }
+            
         }
         
     }
@@ -150,7 +144,15 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 - (IBAction)touchCompleteButton:(id)sender {
-    [self requestUpdateDrawpwd];
+//    [self requestUpdateDrawpwd];
+    if ([self.textField.text isEqualToString:_passNew])
+    {
+        [self requestUpdateNewDrawpwd];
+    }
+    else
+    {
+        [self.view showLoadingMeg:@"两次密码输入不一致，从重新输入" time:MESSAGE_SHOW_TIME];
+    }
 }
 
 #pragma mark - request

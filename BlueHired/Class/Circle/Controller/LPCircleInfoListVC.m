@@ -168,9 +168,14 @@ static NSString *LPCircleInfoCellID = @"LPCircleInfoCell";
         NSLog(@"%@",responseObject);
         if (isSuccess) {
 //            self.model = [LPInfoListModel mj_objectWithKeyValues:responseObject];
-            if ([responseObject[@"code"] integerValue] == 0 && [responseObject[@"data"] integerValue] == 1) {
-                self.page = 1;
-                [self requestQueryInfolist];
+            if ([responseObject[@"code"] integerValue] == 0  ) {
+                if ([responseObject[@"data"] integerValue] == 1) {
+                    self.page = 1;
+                    [self requestQueryInfolist];
+                }else{
+                    [[UIWindow visibleViewController].view showLoadingMeg:@"消息清空失败,请稍后再试" time:MESSAGE_SHOW_TIME];
+                }
+               
             }else{
                 [[UIWindow visibleViewController].view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }

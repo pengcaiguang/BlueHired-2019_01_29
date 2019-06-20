@@ -27,7 +27,7 @@
     long long time=[[model.time stringValue] longLongValue];
     NSDate *d = [[NSDate alloc]initWithTimeIntervalSince1970:time/1000.0];
     NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
-    [formatter setDateFormat:@"yyyy/MM/dd"];
+    [formatter setDateFormat:@"yyyy-MM-dd"];
     NSString*timeStr=[formatter stringFromDate:d];
     
     _dateLabel.text = timeStr;
@@ -41,9 +41,7 @@
         if (timeSet/1000.0+60*60*2<[NSString getNowTimestamp]/1000.0 && timeSet >0) {
             _stateLabel.text = @"已完成";
         }
-        
-     }
-    else{
+     }else{
         if ([_model.type integerValue] == 0) {
             _titleLabel.text = [NSString stringWithFormat:@"其他到账: %.2f",_model.money.floatValue];
         }
@@ -65,7 +63,7 @@
         }
         else if ([_model.type integerValue] == 5)
         {
-            _titleLabel.text = [NSString stringWithFormat:@"注册返利到账: %.2f",_model.money.floatValue];
+            _titleLabel.text = [NSString stringWithFormat:@"邀请注册奖励: %.2f",_model.money.floatValue];
         }
         else if ([_model.type integerValue] == 7)
         {
@@ -73,13 +71,13 @@
         }
         else if ([_model.type integerValue] == 8)
         {
-            _titleLabel.text = [NSString stringWithFormat:@"邀请奖励到账: %.2f",_model.money.floatValue];
+            _titleLabel.text = [NSString stringWithFormat:@"邀请入职奖励: %.2f",_model.money.floatValue];
         }
         else if ([_model.type integerValue] == 9)
         {
             _titleLabel.text = [NSString stringWithFormat:@"蓝聘红包: %.2f",_model.money.floatValue];
         }
-        _stateLabel.text = @"已到账";
+        _stateLabel.text = @"已到蓝聘账户";
         
     }
     

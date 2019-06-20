@@ -163,6 +163,36 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
         self.sendButton.enabled = NO;
         self.sendButton.backgroundColor = [UIColor lightGrayColor];
     }
+    
+    /**
+     *  最大输入长度,中英文字符都按一个字符计算
+     */
+    int kMaxLength = 299;
+    NSString *toBeString = textField.text;
+    // 获取键盘输入模式
+    NSString *lang = [[UITextInputMode currentInputMode] primaryLanguage];
+    // 中文输入的时候,可能有markedText(高亮选择的文字),需要判断这种状态
+    // zh-Hans表示简体中文输入, 包括简体拼音，健体五笔，简体手写
+    if ([lang isEqualToString:@"zh-Hans"]) {
+        UITextRange *selectedRange = [textField markedTextRange];
+        //获取高亮选择部分
+        UITextPosition *position = [textField positionFromPosition:selectedRange.start offset:0];
+        // 没有高亮选择的字，表明输入结束,则对已输入的文字进行字数统计和限制
+        if (!position) {
+            if (toBeString.length > kMaxLength) {
+                // 截取子串
+                textField.text = [toBeString substringToIndex:kMaxLength];
+            }
+        } else { // 有高亮选择的字符串，则暂不对文字进行统计和限制
+        }
+    } else {
+        // 中文输入法以外的直接对其统计限制即可，不考虑其他语种情况
+        if (toBeString.length > kMaxLength) {
+            // 截取子串
+            textField.text = [toBeString substringToIndex:kMaxLength];
+        }
+    }
+    
 }
 -(void)touchSendButton{
     if ([LoginUtils validationLogin:self]) {
@@ -231,7 +261,8 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     NSDictionary *dic = @{
                           @"type":@(3),
                           @"page":@(self.page),
-                          @"id":self.commentListDatamodel.id
+                          @"id":self.commentListDatamodel.id,
+                          @"versionType":@"2.3"
                           };
     [NetApiManager requestCommentListWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
@@ -301,10 +332,10 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
                  }
                  [self.tableview reloadData];
                 
-                if (self.commentListDatamodel.commentList.count<=3) {
-                    NSMutableArray *array = [[NSMutableArray alloc] initWithArray:self.commentListDatamodel.commentList];
+                if (self.commentListDatamodel.commentModelList.count<=3) {
+                    NSMutableArray *array = [[NSMutableArray alloc] initWithArray:self.commentListDatamodel.commentModelList];
                     [array addObject:m];
-                    self.commentListDatamodel.commentList = [array copy];
+                    self.commentListDatamodel.commentModelList = [array copy];
                     [self.superTabelView reloadData];
                 }
                 

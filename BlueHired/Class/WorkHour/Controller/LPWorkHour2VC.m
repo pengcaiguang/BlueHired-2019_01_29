@@ -119,7 +119,7 @@ static NSString *LPWorkHourTallyBookCellID = @"LPWorkHourTallyBookCell";
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle{
-    return UIStatusBarStyleLightContent;
+    return UIStatusBarStyleDefault;
 }
 
 
@@ -158,7 +158,7 @@ static NSString *LPWorkHourTallyBookCellID = @"LPWorkHourTallyBookCell";
         make.height.mas_equalTo(kNavBarHeight);
         make.top.mas_equalTo(0);
     }];
-    ConstView.backgroundColor = [UIColor baseColor];
+    ConstView.backgroundColor = [UIColor whiteColor];
     UILabel *TitleLabel = [[UILabel alloc] init];
     self.CustTitleLabel = TitleLabel;
     [ConstView addSubview:TitleLabel];
@@ -167,7 +167,7 @@ static NSString *LPWorkHourTallyBookCellID = @"LPWorkHourTallyBookCell";
         make.bottom.mas_equalTo(0);
         make.centerX.equalTo(ConstView);
     }];
-    TitleLabel.textColor = [UIColor whiteColor];
+    TitleLabel.textColor = [UIColor colorWithHexString:@"#333333"];
     TitleLabel.font = FONT_SIZE(18);
     if (self.WorkHourType == 1) {
         self.CustTitleLabel.text = @"加班记工时模式";
@@ -189,7 +189,7 @@ static NSString *LPWorkHourTallyBookCellID = @"LPWorkHourTallyBookCell";
     }];
     [backBt setImage:[UIImage imageNamed:@"BackBttonImage"] forState:UIControlStateNormal];
     [backBt setTitle:@" 返回" forState:UIControlStateNormal];
-    [backBt setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [backBt setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];
     [backBt sizeToFit];
     [backBt addTarget:self action:@selector(ToBack:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -219,7 +219,7 @@ static NSString *LPWorkHourTallyBookCellID = @"LPWorkHourTallyBookCell";
     }];
     RightBt.titleLabel.font = [UIFont systemFontOfSize: 15.0];
     [RightBt setTitle:@"设置" forState:UIControlStateNormal];
-    [RightBt setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [RightBt setTitleColor:[UIColor colorWithHexString:@"#666666"] forState:UIControlStateNormal];
     [RightBt addTarget:self action:@selector(RightBtTouch:) forControlEvents:UIControlEventTouchUpInside];
     
     
@@ -883,7 +883,7 @@ static NSString *LPWorkHourTallyBookCellID = @"LPWorkHourTallyBookCell";
         make.right.mas_equalTo(-20);
         make.bottom.equalTo(cancelButton.mas_top).offset(-10);
     }];
-    saveButton.backgroundColor = [UIColor baseColor];
+    saveButton.backgroundColor = self.carousColorList[index];
     [saveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [saveButton setTitle:@"是" forState:UIControlStateNormal];
     saveButton.layer.cornerRadius = Screen_Width == 320?15:20;;

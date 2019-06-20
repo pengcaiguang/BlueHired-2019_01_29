@@ -503,22 +503,44 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
                     
                 }
                 
-                GJAlertPassword *alert = [[GJAlertPassword alloc]initWithTitle:@"请输入提现密码，完成身份验证" message:nil buttonTitles:@[@"忘记密码?请点击这里"] buttonsColor:@[[UIColor baseColor]] buttonClick:^(NSInteger buttonIndex, NSString *string) {
-                    NSLog(@"%ld",buttonIndex);
-                    self.passwordString = string;
-                    if (string.length != 6) {
-                        LPSalarycCardBindPhoneVC *vc = [[LPSalarycCardBindPhoneVC alloc]init];
-                        vc.type = 1;
-                        vc.Phone = self.model.data.phone;
-                        [self.navigationController pushViewController:vc animated:YES];
-                    }
-                    else
-                    {
-                        [self requestUpdateDrawpwd];
-                    }
-                    
-                }];
+                
+                NSMutableAttributedString *str = [[NSMutableAttributedString alloc]initWithString:@""];
+                GJAlertWithDrawPassword *alert = [[GJAlertWithDrawPassword alloc] initWithTitle:str
+                                                                                        message:@""
+                                                                                   buttonTitles:@[]
+                                                                                   buttonsColor:@[[UIColor baseColor]]
+                                                                                    buttonClick:^(NSInteger buttonIndex, NSString *string) {
+                                                                                        if (string.length==6) {
+                                                                                            self.passwordString = string;
+                                                                                            [self requestUpdateDrawpwd];
+                                                                                        }else{
+                                                                                            LPSalarycCardBindPhoneVC *vc = [[LPSalarycCardBindPhoneVC alloc]init];
+                                                                                            vc.type = 1;
+                                                                                            vc.Phone = self.model.data.phone;
+                                                                                            [self.navigationController pushViewController:vc animated:YES];
+                                                                                        }
+                                                                                        
+                                                                                    }];
                 [alert show];
+                
+                
+                
+//                GJAlertPassword *alert = [[GJAlertPassword alloc]initWithTitle:@"请输入提现密码，完成身份验证" message:nil buttonTitles:@[@"忘记密码?请点击这里"] buttonsColor:@[[UIColor baseColor]] buttonClick:^(NSInteger buttonIndex, NSString *string) {
+//                    NSLog(@"%ld",buttonIndex);
+//                    self.passwordString = string;
+//                    if (string.length != 6) {
+//                        LPSalarycCardBindPhoneVC *vc = [[LPSalarycCardBindPhoneVC alloc]init];
+//                        vc.type = 1;
+//                        vc.Phone = self.model.data.phone;
+//                        [self.navigationController pushViewController:vc animated:YES];
+//                    }
+//                    else
+//                    {
+//                        [self requestUpdateDrawpwd];
+//                    }
+//
+//                }];
+//                [alert show];
                 return;
             }else if (self.IntStep == 3){
                

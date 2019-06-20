@@ -100,7 +100,7 @@
 
 
 - (IBAction)Touchshare:(id)sender {
-    NSString *url = [NSString stringWithFormat:@"%@bluehired/recruitmentlist_detail.html?id=%@",BaseRequestWeiXiURL,self.model.mechanismId];
+    NSString *url = [NSString stringWithFormat:@"%@resident/bluehired/recruitmentlist_detail.html?id=%@",BaseRequestWeiXiURL,self.model.mechanismId];
     
     NSString *encodedUrl = [NSString stringWithString:[url stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     [LPTools ClickShare:encodedUrl Title:_model.mechanismName];

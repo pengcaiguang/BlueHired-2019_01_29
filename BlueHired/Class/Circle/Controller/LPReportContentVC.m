@@ -14,6 +14,9 @@ static NSString *TEXT = @"请输入内容";
 @interface LPReportContentVC ()<UITextViewDelegate>
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 @property (nonatomic,strong) NSString *BtTag;
+
+@property (nonatomic,strong) UIView *ToolTextView;
+
 @end
 
 @implementation LPReportContentVC
@@ -21,6 +24,8 @@ static NSString *TEXT = @"请输入内容";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @"举报";
+    [self setTextFieldView];
+
     self.BtTag = @"";
     _textView.layer.borderColor = [UIColor colorWithHexString:@"#FFE6E6E6"].CGColor;
     _textView.layer.borderWidth = 0.5;
@@ -28,8 +33,60 @@ static NSString *TEXT = @"请输入内容";
     _textView.textColor = [UIColor lightGrayColor];
     _textView.text = TEXT;
     _textView.delegate = self;
+    _textView.inputAccessoryView = self.ToolTextView;
 
 }
+
+
+
+
+#pragma mark - 编辑view
+-(void)setTextFieldView{
+    //输入框编辑view
+    UIView *ToolTextView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 40)];
+    self.ToolTextView = ToolTextView;
+    ToolTextView.backgroundColor = [UIColor colorWithHexString:@"#E6E6E6"];
+    UIButton *DoneBt = [[UIButton alloc] init];
+    [ToolTextView addSubview:DoneBt];
+    [DoneBt mas_makeConstraints:^(MASConstraintMaker *make){
+        make.top.mas_equalTo(0);
+        make.bottom.mas_equalTo(0);
+        make.right.mas_equalTo(0);
+    }];
+    [DoneBt setTitle:@"确定" forState:UIControlStateNormal];
+    [DoneBt setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
+    DoneBt.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+    DoneBt.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);
+    [DoneBt addTarget:self action:@selector(TouchTextDone:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    UIButton *CancelBt = [[UIButton alloc] init];
+    [ToolTextView addSubview:CancelBt];
+    [CancelBt mas_makeConstraints:^(MASConstraintMaker *make){
+        make.top.mas_equalTo(0);
+        make.bottom.mas_equalTo(0);
+        make.left.mas_equalTo(0);
+        make.right.equalTo(DoneBt.mas_left).offset(0);
+        make.width.equalTo(DoneBt.mas_width);
+    }];
+    [CancelBt setTitle:@"取消" forState:UIControlStateNormal];
+    [CancelBt setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    CancelBt.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    CancelBt.titleEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
+    [CancelBt addTarget:self action:@selector(TouchTextCancel:) forControlEvents:UIControlEventTouchUpInside];
+}
+-(void)TouchTextDone:(UIButton *)sender{
+    [[[UIApplication sharedApplication] keyWindow] endEditing:YES];
+}
+
+-(void)TouchTextCancel:(UIButton *)sender{
+    [[[UIApplication sharedApplication] keyWindow] endEditing:YES];
+}
+
+
+
+
+
 -(BOOL)textViewShouldBeginEditing:(UITextView *)textView{
     if ([textView.textColor isEqual:[UIColor lightGrayColor]]) {
         textView.text = @"";

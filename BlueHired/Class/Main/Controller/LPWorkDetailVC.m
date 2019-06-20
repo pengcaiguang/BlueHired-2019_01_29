@@ -13,6 +13,9 @@
 #import "LPIsApplyOrIsCollectionModel.h"
 #import "LPWorkorderListVC.h"
 #import "LPMain2Cell.h"
+#import "LPBusinessReviewDetailVC.h"
+#import "LPMechanismcommentMechanismlistModel.h"
+
 
 static NSString *LPWorkDetailHeadCellID = @"LPWorkDetailHeadCell";
 static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
@@ -52,9 +55,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = @"招聘详情";
     self.navigationController.navigationBar.hidden = YES;
-
-//    self.navigationController.navigationBar.translucent = NO;
-//    self.navigationController.navigationBar.barTintColor =[UIColor colorWithRed:1 green:0 blue:0 alpha:0];
+ 
     [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
     [self.navigationController.navigationBar setShadowImage:[UIImage new]];
     [self.navigationController.navigationBar setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor clearColor], NSForegroundColorAttributeName, nil]];
@@ -88,9 +89,9 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     [self requestWorkDetail];
-    if (AlreadyLogin) {
+//    if (AlreadyLogin) {
         [self requestIsApplyOrIsCollection];
-    }
+//    }
 }
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
@@ -157,13 +158,15 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         }
         button.titleLabel.font = [UIFont systemFontOfSize:11];
         button.tag = i;
+        button.layer.borderColor = [UIColor colorWithHexString:@"#E0E0E0"].CGColor;
+        button.layer.borderWidth = 0.5;
         [button addTarget:self action:@selector(touchBottomButton:) forControlEvents:UIControlEventTouchUpInside];
         [self.bottomButtonArray addObject:button];
     }
-    [self.bottomButtonArray mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedSpacing:10 leadSpacing:10 tailSpacing:10];
+    [self.bottomButtonArray mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedSpacing:0 leadSpacing:0 tailSpacing:0];
     [self.bottomButtonArray mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(5);
-        make.bottom.mas_equalTo(-5);
+        make.top.mas_equalTo(0);
+        make.bottom.mas_equalTo(-0);
     }];
     
     for (UIButton *button in self.bottomButtonArray) {
@@ -316,21 +319,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         NSLog(@"咨询");
         NSString *name = self.isApplyOrIsCollectionModel.data.teacher.teacherName;
         NSString *number = self.isApplyOrIsCollectionModel.data.teacher.teacherTel;
-
-//        NSString *string = [NSString stringWithFormat:@"姓名：%@ \n联系方式：%@ \n微信搜索驻厂号码即可添加驻厂微信",name,number];
-//        GJAlert2 *alert = [[GJAlert2 alloc]initWithTitle:@"驻厂联系方式" message:string buttonTitles:@[@"复制号码",@"立即拨打"] buttonsColor:@[[UIColor colorWithHexString:@"#666666"],[UIColor colorWithHexString:@"#434343"]] buttonClick:^(NSInteger buttonIndex) {
-//            if (buttonIndex == 0) {
-//                UIPasteboard*pasteboard = [UIPasteboard generalPasteboard];
-//                pasteboard.string = number;
-//                [self.view showLoadingMeg:@"复制成功" time:MESSAGE_SHOW_TIME];
-//            }else{
-//                NSMutableString * str=[[NSMutableString alloc] initWithFormat:@"tel:%@",number];
-//                UIWebView * callWebview = [[UIWebView alloc] init];
-//                [callWebview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:str]]];
-//                [self.view addSubview:callWebview];
-//            }
-//        }];
-//        [alert show];
+ 
         CustomIOSAlertView *alertView = [[CustomIOSAlertView alloc] init];
         self.CustomAlert = alertView;
         
@@ -346,7 +335,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         }];
         titlelabel.textAlignment = NSTextAlignmentCenter;
         titlelabel.font = [UIFont boldSystemFontOfSize:18];
-        titlelabel.text = @"驻场联系方式";
+        titlelabel.text = @"驻厂联系方式";
         
         UILabel *titlelabel2 = [[UILabel alloc] init];
         [view addSubview:titlelabel2];
@@ -356,7 +345,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         }];
         titlelabel2.textAlignment = NSTextAlignmentCenter;
         titlelabel2.font = [UIFont systemFontOfSize:14];
-        titlelabel2.text = @"微信搜索号码即可添加驻场微信";
+        titlelabel2.text = @"微信搜索号码即可添加驻厂微信";
         titlelabel2.textColor = [UIColor colorWithHexString:@"#CCCCCC"];
         
         UIView *SubView = [[UIView alloc] init];
@@ -427,10 +416,11 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     }
     else if (button.tag == 1)
     {
-         NSString *url = [NSString stringWithFormat:@"%@bluehired/recruitmentlist_detail.html?id=%@",BaseRequestWeiXiURL,self.workListModel.id];
+       // http://192.168.0.152:8070/#/recruitdetail?id=29
+        NSString *url = [NSString stringWithFormat:@"%@resident/#/recruitdetail?id=%@",BaseRequestWeiXiURL,self.workListModel.id];
         
         NSString *encodedUrl = [NSString stringWithString:[url stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-        [LPTools ClickShare:encodedUrl Title:_model.data.mechanismName];
+        [LPTools ClickShare:encodedUrl Title:[NSString stringWithFormat:@"您的好友通过蓝聘平台给您推荐了%@，快来看看吧！",_model.data.mechanismName]];
         return;
 
     }
@@ -465,7 +455,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 - (void)preventFlicker:(UIButton *)button {
     button.highlighted = NO;
 }
--(void)applySuccessAlert{
+-(void)applySuccessAlert:(NSString *) interViewID{
     
     NSString *useername = [[LPTools isNullToString:self.isApplyOrIsCollectionModel.data.userName] isEqualToString:@""] ? self.userName: self.isApplyOrIsCollectionModel.data.userName ;
 //
@@ -589,6 +579,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     LeftBt.titleLabel.font = FONT_SIZE(16);
     [LeftBt setTitle:@"分享好友，获取更多高额返费" forState:UIControlStateNormal];
     [LeftBt addTarget:self action:@selector(CustomLeft:) forControlEvents:UIControlEventTouchUpInside];
+    LeftBt.tag = interViewID.integerValue;
     
     UIButton *RightBt = [[UIButton alloc] init];
 //    [view addSubview:RightBt];
@@ -614,10 +605,13 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 
 -(void)CustomLeft:(UIButton *)sender{
     [self.CustomAlert close];
-    NSString *url = [NSString stringWithFormat:@"%@bluehired/recruitmentlist_detail.html?id=%@",BaseRequestWeiXiURL,self.workListModel.id];
+    NSString *url = [NSString stringWithFormat:@"%@referral?interviewId=%ld&id=%ld",
+                     BaseRequestWeiXiURL,
+                     (long)sender.tag,
+                     kUserDefaultsValue(LOGINID).integerValue];
     
     NSString *encodedUrl = [NSString stringWithString:[url stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    [LPTools ClickShare:encodedUrl Title:_model.data.mechanismName];
+    [LPTools ClickShare:encodedUrl Title:[NSString stringWithFormat:@"您的好友在蓝聘报名了%@，快来替他点赞加油，帮他获取更多返费吧！",_model.data.mechanismName]];
     
 }
 -(void)CustomRightBt:(UIButton *)sender{
@@ -639,8 +633,8 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 //    }
     
     if ([model.data.status integerValue] == 1) {// "status": 1,//0正在招工1已经招满
-        [self.signUpButton setTitle:@"停止报名" forState:UIControlStateNormal];
-        self.signUpButton.backgroundColor = [UIColor colorWithHexString:@"#939393"];
+        [self.signUpButton setTitle:@"入职报名" forState:UIControlStateNormal];
+        self.signUpButton.backgroundColor = [UIColor colorWithHexString:@"#CCCCCC"];
         self.signUpButton.enabled = NO;
     }
     
@@ -666,8 +660,8 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 //            }
             
             if ([self.model.data.status integerValue] == 1) {// "status": 1,//0正在招工1已经招满
-                [self.signUpButton setTitle:@"停止报名" forState:UIControlStateNormal];
-                self.signUpButton.backgroundColor = [UIColor colorWithHexString:@"#939393"];
+                [self.signUpButton setTitle:@"入职报名" forState:UIControlStateNormal];
+                self.signUpButton.backgroundColor = [UIColor colorWithHexString:@"#CCCCCC"];
                 self.signUpButton.enabled = NO;
             }else{
                 if ([isApplyOrIsCollectionModel.data.isApply integerValue] == 0  && AlreadyLogin) {
@@ -728,7 +722,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     }else if (section == 1){
         return 6;
     }else if (section == 2){
-        return 2;
+        return 3;
     } else{
         return self.RecommendList.count;
     }
@@ -837,26 +831,26 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         CGFloat KeyHeight = [self calculateKeyHeight:self.model.data.key];
         if (strbackmoney.length>0) {
             CGFloat BackMoneyHeight = [LPTools calculateRowHeight:strbackmoney fontSize:14 Width:SCREEN_WIDTH - 26];
-             return 280 + 153 + 44 +BackMoneyHeight + 20 +KeyHeight;
+             return 280 + 136 + 42 +BackMoneyHeight + 20 +KeyHeight;
         }else{
-            return 280 + 153 + 13 + KeyHeight;
+            return 280 + 136 + 13 + KeyHeight;
         }
     }else if (indexPath.section == 1){
             if (indexPath.row == 0) {
                 CGFloat Height = [LPTools calculateRowHeight:[self removeHTML2:[self.model.data.workDemand stringByDecodingHTMLEntities]] fontSize:14 Width:SCREEN_WIDTH - 28];
-                return 66+Height;
+                return 51+Height;
             }else if (indexPath.row == 1){
                 CGFloat Height = [LPTools calculateRowHeight:[self removeHTML2:[self.model.data.workSalary stringByDecodingHTMLEntities]] fontSize:14 Width:SCREEN_WIDTH - 28];
-                return 66+Height;
+                return 51+Height;
             }else if (indexPath.row == 2){
                 CGFloat Height = [LPTools calculateRowHeight:[self removeHTML2:[self.model.data.eatSleep stringByDecodingHTMLEntities]] fontSize:14 Width:SCREEN_WIDTH - 28];
-                return 66+Height;
+                return 51+Height;
             }else if (indexPath.row == 3){
                 CGFloat Height = [LPTools calculateRowHeight:[self removeHTML2:[self.model.data.workTime stringByDecodingHTMLEntities]] fontSize:14 Width:SCREEN_WIDTH - 28];
-                return 66+Height;
+                return 51+Height;
             }else if (indexPath.row == 4){
                 CGFloat Height = [LPTools calculateRowHeight:[self removeHTML2:[self.model.data.workKnow stringByDecodingHTMLEntities]] fontSize:14 Width:SCREEN_WIDTH - 28];
-                return 66+Height;
+                return 51+Height;
             }else if (indexPath.row == 5){
                 CGFloat Height = [LPTools calculateRowHeight:[self removeHTML2:[self.model.data.remarks stringByDecodingHTMLEntities]] fontSize:14 Width:SCREEN_WIDTH - 28];
                 return 66+Height;
@@ -864,9 +858,12 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     }else if (indexPath.section == 2){
         if (indexPath.row == 0) {
             CGFloat Height = [LPTools calculateRowHeight:[self removeHTML2:[self.model.data.mechanismDetails stringByDecodingHTMLEntities]] fontSize:14 Width:SCREEN_WIDTH - 28];
-            return 66+Height;
+            return 51+Height;
         }else if (indexPath.row == 1){
-            return 44;
+            CGFloat Height = [LPTools calculateRowHeight:[NSString stringWithFormat:@"地址：%@",self.model.data.mechanismAddress] fontSize:14 Width:SCREEN_WIDTH - 28];
+            return 66+Height;
+        }else if (indexPath.row == 2){
+            return 44.0;
         }
     } else{
         return 140.0;
@@ -883,7 +880,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     }else if (indexPath.section == 1){
  
         LPWorkDetailTextCell *cell = [tableView dequeueReusableCellWithIdentifier:LPWorkDetailTextCellID];
-        cell.detailTitleLabel.text = self.textArray[indexPath.row];
+        cell.detailTitleLabel.text = [NSString stringWithFormat:@"%@:",self.textArray[indexPath.row]];
         tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         if (indexPath.row == 0) {
             NSString *string=[self removeHTML2:[self.model.data.workDemand stringByDecodingHTMLEntities]];
@@ -910,16 +907,35 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     }else if (indexPath.section == 2){
         if (indexPath.row == 0) {
             LPWorkDetailTextCell *cell = [tableView dequeueReusableCellWithIdentifier:LPWorkDetailTextCellID];
-            cell.detailTitleLabel.text = @"企业简介";
+            cell.detailTitleLabel.text = @"企业简介:";
             cell.detailLabel.text = [self removeHTML2:[self.model.data.mechanismDetails stringByDecodingHTMLEntities]];
             tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
             return cell;
+        }else if (indexPath.row == 1){
+
+            LPWorkDetailTextCell *cell = [tableView dequeueReusableCellWithIdentifier:LPWorkDetailTextCellID];
+            cell.detailTitleLabel.text = @"企业地址:";
+            cell.detailLabel.text = [NSString stringWithFormat:@"地址：%@",self.model.data.mechanismAddress];
+            tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+            return cell;
         }else{
-            UITableViewCell *cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"cell"];
-            cell.imageView.image = [UIImage imageNamed:@"detail_location"];
-            cell.textLabel.textColor = [UIColor colorWithHexString:@"#444444"];
+            static NSString *rid=@"cell";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:rid];
+            if(cell == nil){
+                cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rid];
+                UIView *LineV = [[UIView alloc] init];
+                [cell.contentView addSubview:LineV];
+                [LineV mas_makeConstraints:^(MASConstraintMaker *make){
+                    make.left.top.mas_offset(0);
+                    make.height.mas_offset(1);
+                    make.width.mas_offset(SCREEN_WIDTH);
+                }];
+                LineV.backgroundColor = [UIColor colorWithHexString:@"#F2F2F2"];
+            }
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.textLabel.textColor = [UIColor baseColor];
             cell.textLabel.font = [UIFont systemFontOfSize:14];
-            cell.textLabel.text = [NSString stringWithFormat:@"地址：%@",self.model.data.mechanismAddress];
+            cell.textLabel.text = @"查看员工对该企业的点评";
             tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
             return cell;
         }
@@ -927,13 +943,6 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         LPMain2Cell *cell = [tableView dequeueReusableCellWithIdentifier:LPMainCellID];
         if(cell == nil){
             cell = [[LPMain2Cell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:LPMainCellID];
-            UIView *LineV = [[UIView alloc] init];
-            [cell.contentView addSubview:LineV];
-            [LineV mas_makeConstraints:^(MASConstraintMaker *make){
-                make.left.bottom.right.mas_offset(0);
-                make.height.mas_offset(4);
-            }];
-            LineV.backgroundColor = [UIColor redColor];
         }
         tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
@@ -953,7 +962,28 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         LPWorkDetailVC *vc = [[LPWorkDetailVC alloc]init];
         vc.hidesBottomBarWhenPushed = YES;
         vc.workListModel = self.RecommendList[indexPath.row];
-        [self.navigationController pushViewController:vc animated:YES];
+        NSMutableArray *naviVCsArr = [[NSMutableArray alloc]initWithArray:self.navigationController.viewControllers];
+        for (UIViewController *vc in naviVCsArr) {
+            if ([vc isKindOfClass:[self class]]) {
+                [naviVCsArr removeObject:vc];
+                break;
+            }
+        }
+        [naviVCsArr addObject:vc];
+        vc.hidesBottomBarWhenPushed = YES;
+        
+        [self.navigationController  setViewControllers:naviVCsArr animated:YES];
+ 
+    }else if (indexPath.section == 2 && indexPath.row == 2){
+        if ([LoginUtils validationLogin:self]) {
+            LPBusinessReviewDetailVC *vc = [[LPBusinessReviewDetailVC alloc] init];
+            LPMechanismcommentMechanismlistDataModel *m = [[LPMechanismcommentMechanismlistDataModel alloc] init];
+            m.id = self.model.data.mechanismId;
+            m.mechanismName = self.model.data.mechanismName;
+            
+            vc.mechanismlistDataModel = m;
+            [self.navigationController pushViewController:vc animated:YES];
+        }
     }
 }
 
@@ -991,6 +1021,9 @@ static NSString *LPMainCellID = @"LPMain2Cell";
                         [LPTools AlertCollectView:@""];
                     }else if ([responseObject[@"data"] integerValue] == 1) {
                         self.bottomButtonArray[0].selected = NO;
+                        if (self.CollectionBlock) {
+                            self.CollectionBlock();
+                        }
                     }
                 }
             }else{
@@ -1038,7 +1071,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
                 if ([responseObject[@"data"] integerValue] >0) {
                     self.workListModel.isApply = @(0);
                     [self requestIsApplyOrIsCollection];
-                    [self applySuccessAlert];
+                    [self applySuccessAlert:responseObject[@"data"]];
                 }else{
                     [self.view showLoadingMeg:@"报名失败,请稍后再试" time:MESSAGE_SHOW_TIME*2];
                 }
@@ -1120,15 +1153,13 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 -(CGFloat)calculateKeyHeight:(NSString *) Key{
     NSArray * tagArr = [Key componentsSeparatedByString:@"|"];
     CGFloat tagBtnX = 0;
-    CGFloat tagBtnY = 0;
+    CGFloat tagBtnY = 17;
     for (int i= 0; i<tagArr.count; i++) {
-        
         CGSize tagTextSize = [tagArr[i] sizeWithFont:[UIFont systemFontOfSize:12] maxSize:CGSizeMake(SCREEN_WIDTH-13-13, 17)];
         if (tagBtnX+tagTextSize.width+14 > SCREEN_WIDTH-13-13) {
             tagBtnX = 0;
             tagBtnY += 17+8;
         }
-        
         tagBtnX = tagBtnX +tagTextSize.width+10 +4;
     }
     return tagBtnY;
@@ -1136,13 +1167,20 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 
 
 - (NSString *)removeHTML2:(NSString *)html{
-    NSArray *components = [html componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
-    NSMutableArray *componentsToKeep = [NSMutableArray array];
-    for (int i = 0; i < [components count]; i = i + 2) {
-        [componentsToKeep addObject:[components objectAtIndex:i]];
-    }
-    NSString *plainText = [componentsToKeep componentsJoinedByString:@"\n"];
-    return plainText;
+//    NSArray *components = [html componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+//    NSMutableArray *componentsToKeep = [NSMutableArray array];
+//    for (int i = 0; i < [components count]; i = i + 2) {
+//        [componentsToKeep addObject:[components objectAtIndex:i]];
+//    }
+//    NSString *plainText = [componentsToKeep componentsJoinedByString:@"\n"];
+//    return plainText;
+    
+    
+    NSAttributedString * attrStr = [[NSAttributedString alloc] initWithData:[html dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
+    NSString *string = [attrStr.string stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\n"]];
+    return string;
+ 
+    
 }
 
 - (void)didReceiveMemoryWarning {

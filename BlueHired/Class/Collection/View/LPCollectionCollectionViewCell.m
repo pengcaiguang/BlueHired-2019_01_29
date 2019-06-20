@@ -57,8 +57,8 @@ static NSString *LPCollectionVideoCellID = @"LPCollectionVideoCell";
     if (index == 0) {
         [self requestGetEssayCollection];
     }else if (index == 1){
-//        [self requestGetWorkCollection];
-        [self requestGetVideoCollection];
+        [self requestGetWorkCollection];
+//        [self requestGetVideoCollection];
     }else if (index == 2){
         [self requestGetVideoCollection];
      }
@@ -67,7 +67,7 @@ static NSString *LPCollectionVideoCellID = @"LPCollectionVideoCell";
 -(void)setSelectStatus:(BOOL)selectStatus{
     _selectStatus = selectStatus;
 
-//    [self.tableview reloadData];
+    [self.tableview reloadData];
 }
 -(void)setSelectAll:(BOOL)selectAll{
     _selectAll = selectAll;
@@ -76,8 +76,8 @@ static NSString *LPCollectionVideoCellID = @"LPCollectionVideoCell";
         if (self.index == 0) {
             self.selectArray = [self.essayListArray mutableCopy];
         }else if (self.index == 1){
-//            self.selectArray = [self.wordListArray mutableCopy];
-            self.selectArray = [self.VideoListArray mutableCopy];
+            self.selectArray = [self.wordListArray mutableCopy];
+//            self.selectArray = [self.VideoListArray mutableCopy];
 
         }else if (self.index == 2){
             self.selectArray = [self.VideoListArray mutableCopy];
@@ -108,6 +108,9 @@ static NSString *LPCollectionVideoCellID = @"LPCollectionVideoCell";
         if (essayCollectionModel.data.count > 0) {
             self.page += 1;
             [self.essayListArray addObjectsFromArray:essayCollectionModel.data];
+            if (essayCollectionModel.data.count < 20 ) {
+                [self.tableview.mj_footer endRefreshingWithNoMoreData];
+            }
         }else{
             if (self.page == 1) {
 //                [self.tableview reloadData];
@@ -142,10 +145,12 @@ static NSString *LPCollectionVideoCellID = @"LPCollectionVideoCell";
         if (workCollectionModel.data.count > 0) {
             self.page += 1;
             [self.wordListArray addObjectsFromArray:workCollectionModel.data];
-//            [self.tableview reloadData];
-        }else{
+            if (workCollectionModel.data.count < 20 ) {
+                [self.tableview.mj_footer endRefreshingWithNoMoreData];
+            }
+         }else{
             if (self.page == 1) {
-//                [self.tableview reloadData];
+ 
             }else{
                 [self.tableview.mj_footer endRefreshingWithNoMoreData];
             }
@@ -179,7 +184,9 @@ static NSString *LPCollectionVideoCellID = @"LPCollectionVideoCell";
         if (VideoCollectionModel.data.count > 0) {
             self.page += 1;
             [self.VideoListArray addObjectsFromArray:VideoCollectionModel.data];
-            //            [self.tableview reloadData];
+            if (VideoCollectionModel.data.count < 20 ) {
+                [self.tableview.mj_footer endRefreshingWithNoMoreData];
+            }
         }else{
             if (self.page == 1) {
                 //                [self.tableview reloadData];
@@ -233,8 +240,8 @@ static NSString *LPCollectionVideoCellID = @"LPCollectionVideoCell";
     if (self.index == 0) {
         return self.essayListArray.count;
     }else if (self.index == 1){
-//        return self.wordListArray.count;
-        return self.VideoListArray.count;
+        return self.wordListArray.count;
+//        return self.VideoListArray.count;
     }else{
         return self.VideoListArray.count;
      }
@@ -275,65 +282,29 @@ static NSString *LPCollectionVideoCellID = @"LPCollectionVideoCell";
         };
         return cell;
     }else if (self.index == 1){
-//        LPCollectionWorkCell *cell = [tableView dequeueReusableCellWithIdentifier:LPCollectionWorkCellID];
-//        cell.model = self.wordListArray[indexPath.row];
-//        cell.selectStatus = self.selectStatus;
-////        cell.selectAll = self.selectAll;
-//        if (self.selectStatus) {
-//            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//        }else{
-//            cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-//        }
-//
-//        if ([self.selectArray containsObject:cell.model]) {
-//            cell.selectButton.selected = YES;
-//        }else{
-//            cell.selectButton.selected = NO;
-//        }
-//
-//        cell.selectBlock = ^(LPWorkCollectionDataModel * _Nonnull model) {
-//            if ([self.selectArray containsObject:model]) {
-//                [self.selectArray removeObject:model];
-//            }else{
-//                [self.selectArray addObject:model];
-//            }
-//
-//            if (self.selectArray.count == self.wordListArray.count) {
-//                self.AllButton.selected = YES;
-//            }
-//            else
-//            {
-//                self.AllButton.selected = NO;
-//            }
-//        };
-//        return cell;
-        
-        
-        
-        
-        LPCollectionVideoCell *cell = [tableView dequeueReusableCellWithIdentifier:LPCollectionVideoCellID];
-        cell.model = self.VideoListArray[indexPath.row];
+        LPCollectionWorkCell *cell = [tableView dequeueReusableCellWithIdentifier:LPCollectionWorkCellID];
+        cell.model = self.wordListArray[indexPath.row];
         cell.selectStatus = self.selectStatus;
-        //        cell.selectAll = self.selectAll;
+//        cell.selectAll = self.selectAll;
         if (self.selectStatus) {
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }else{
             cell.selectionStyle = UITableViewCellSelectionStyleDefault;
         }
-        
+
         if ([self.selectArray containsObject:cell.model]) {
             cell.selectButton.selected = YES;
         }else{
             cell.selectButton.selected = NO;
         }
-        
-        cell.selectBlock = ^(LPVideoCollectionDataModel * _Nonnull model) {
+
+        cell.selectBlock = ^(LPWorkCollectionDataModel * _Nonnull model) {
             if ([self.selectArray containsObject:model]) {
                 [self.selectArray removeObject:model];
             }else{
                 [self.selectArray addObject:model];
             }
-            
+
             if (self.selectArray.count == self.wordListArray.count) {
                 self.AllButton.selected = YES;
             }
@@ -343,7 +314,6 @@ static NSString *LPCollectionVideoCellID = @"LPCollectionVideoCell";
             }
         };
         return cell;
-        
         
     }else{
         LPCollectionVideoCell *cell = [tableView dequeueReusableCellWithIdentifier:LPCollectionVideoCellID];
@@ -378,6 +348,7 @@ static NSString *LPCollectionVideoCellID = @"LPCollectionVideoCell";
             }
         };
         return cell;
+
     }
 }
 
@@ -387,7 +358,7 @@ static NSString *LPCollectionVideoCellID = @"LPCollectionVideoCell";
     if (self.selectStatus) {
         return;
     }
-    
+    WEAK_SELF()
     if (self.index == 0) {
         LPEssayDetailVC *vc = [[LPEssayDetailVC alloc]init];
         vc.hidesBottomBarWhenPushed = YES;
@@ -395,23 +366,23 @@ static NSString *LPCollectionVideoCellID = @"LPCollectionVideoCell";
         vc.essaylistDataModel = [LPEssaylistDataModel mj_objectWithKeyValues:dic];
         [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
         
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            LPCollectionEssayCell *cell = (LPCollectionEssayCell*)[tableView cellForRowAtIndexPath:indexPath];
-            LPEssayCollectionDataModel *model = self.essayListArray[indexPath.row];
-            model.view = @(model.view.integerValue +1);
-            if (model.view.integerValue>10000) {
-                cell.viewLabel.text = [NSString stringWithFormat:@"%.1fw", model.view.integerValue/10000.0] ;
-            }else{
-                cell.viewLabel.text = model.view ? [model.view stringValue] : @"0";
-            }
- 
-        });
+        vc.CollectionBlock = ^(void){
+            [weakSelf.essayListArray removeObjectAtIndex:indexPath.row];
+            [weakSelf.tableview reloadData];
+        };
+   
     }else if (self.index == 1){
-//        LPWorkDetailVC *vc = [[LPWorkDetailVC alloc]init];
-//        vc.hidesBottomBarWhenPushed = YES;
-//        NSDictionary *dic = [self.wordListArray[indexPath.row] mj_JSONObject];
-//        vc.workListModel = [LPWorklistDataWorkListModel mj_objectWithKeyValues:dic];
-//        [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+        LPWorkDetailVC *vc = [[LPWorkDetailVC alloc]init];
+        vc.hidesBottomBarWhenPushed = YES;
+        NSDictionary *dic = [self.wordListArray[indexPath.row] mj_JSONObject];
+        vc.workListModel = [LPWorklistDataWorkListModel mj_objectWithKeyValues:dic];
+        [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+        vc.CollectionBlock = ^(void){
+            [weakSelf.wordListArray removeObjectAtIndex:indexPath.row];
+            [weakSelf.tableview reloadData];
+        };
+       
+    }else if (self.index == 2){
         NSDictionary *dic = [self.VideoListArray[indexPath.row] mj_JSONObject];
         
         LPVideoListDataModel *Model= [LPVideoListDataModel mj_objectWithKeyValues:dic];
@@ -427,22 +398,10 @@ static NSString *LPCollectionVideoCellID = @"LPCollectionVideoCell";
         vc.isReloadData = YES;
         vc.VideoRow  =0 ;
         [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
-    }else if (self.index == 2){
-        NSDictionary *dic = [self.VideoListArray[indexPath.row] mj_JSONObject];
-
-        LPVideoListDataModel *Model= [LPVideoListDataModel mj_objectWithKeyValues:dic];
-        
-        NSMutableArray *arr = [[NSMutableArray alloc] init];
-        [arr addObject:Model];
-        LPVideoVC *vc = [[LPVideoVC alloc] init];
-        vc.hidesBottomBarWhenPushed = YES;
-         vc.listArray = arr;
-        vc.VideoRow = indexPath.row;
-         //        vc.page = self.page;
-        vc.Type = 3;
-        vc.isReloadData = YES;
-        vc.VideoRow  =0 ;
-         [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+        vc.LPCollectionBlock = ^(void){
+            [weakSelf.VideoListArray removeObjectAtIndex:indexPath.row];
+            [weakSelf.tableview reloadData];
+        };
     }
 }
 #pragma mark - request
@@ -534,16 +493,32 @@ static NSString *LPCollectionVideoCellID = @"LPCollectionVideoCell";
             if ([responseObject[@"code"] integerValue] == 0) {
                 if ([responseObject[@"data"] integerValue] == 1) {
                     if (self.index == 0) {
-//                        [self requestGetEssayCollection];
                         [self.essayListArray removeObjectsInArray:self.selectArray];
+//                        if (self.essayListArray.count == 0) {
+//                            self.tableview.mj_footer.alpha = 0;
+//                            [self addNodataViewHidden:NO];
+//                        }else{
+//                            self.tableview.mj_footer.alpha = 1;
+//                            [self addNodataViewHidden:YES];
+//                        }
                     }else if (self.index == 1){
-//                        [self requestGetVideoCollection];
-                        [self.VideoListArray removeObjectsInArray:self.selectArray];
-
+                        [self.wordListArray removeObjectsInArray:self.selectArray];
+//                        if (self.wordListArray.count == 0) {
+//                            self.tableview.mj_footer.alpha = 0;
+//                            [self addNodataViewHidden:NO];
+//                        }else{
+//                            self.tableview.mj_footer.alpha = 1;
+//                            [self addNodataViewHidden:YES];
+//                        }
                     }else if (self.index == 2){
-//                        [self requestGetVideoCollection];
                         [self.VideoListArray removeObjectsInArray:self.selectArray];
-
+//                        if (self.VideoListArray.count == 0) {
+//                            self.tableview.mj_footer.alpha = 0;
+//                            [self addNodataViewHidden:NO];
+//                        }else{
+//                            self.tableview.mj_footer.alpha = 1;
+//                            [self addNodataViewHidden:YES];
+//                        }
                     }
                     
                     
@@ -583,8 +558,8 @@ static NSString *LPCollectionVideoCellID = @"LPCollectionVideoCell";
             if (self.index == 0) {
                 [self requestGetEssayCollection];
             }else if (self.index == 1){
-//                [self requestGetWorkCollection];
-                [self requestGetVideoCollection];
+                [self requestGetWorkCollection];
+//                [self requestGetVideoCollection];
             }else if (self.index == 2){
                 [self requestGetVideoCollection];
             }
@@ -593,8 +568,8 @@ static NSString *LPCollectionVideoCellID = @"LPCollectionVideoCell";
             if (self.index == 0) {
                 [self requestGetEssayCollection];
             }else if (self.index == 1){
-//                [self requestGetWorkCollection];
-                [self requestGetVideoCollection];
+                [self requestGetWorkCollection];
+//                [self requestGetVideoCollection];
             }else if (self.index == 2){
                 [self requestGetVideoCollection];
             }

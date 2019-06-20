@@ -29,6 +29,9 @@
 #import "LPIntegralDrawDatelis.h"
 #import "LPIntegralDrawVC.h"
 #import "LPSalaryBreakdownVC.h"
+#import "LPAddressBookVC.h"
+#import <Contacts/Contacts.h>
+
 
 static NSString *LPMineCellID = @"LPMine2Cell";
 static NSString *LPMineBillCellID = @"LPMineBillCell";
@@ -109,6 +112,9 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
         self.tableview.mj_header = nil;
         self.RecordArr = [NSArray new];
         self.userMaterialModel = nil;
+        [self.MessageBt setTitle:@"" forState:UIControlStateNormal];
+        self.MessageBt.backgroundColor = [UIColor clearColor];
+//        [self.tableview reloadData];
     }
 }
 
@@ -199,7 +205,7 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
         if (section == 0 || section == 1|| section == 2) {
             return 1;
         }else{
-            return 6;
+            return 7;
         }
     }
     
@@ -211,7 +217,7 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
 //            kUserDefaultsValue(USERDATA).integerValue >= 8){
 //            return 7;
 //        }
-        return 6;
+        return 7;
     }
 }
 
@@ -377,6 +383,7 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
             }
             cell.indexPath = indexPath;
             cell.userMaterialModel = self.userMaterialModel;
+            cell.RecordArr = self.RecordArr;
             [cell awakeFromNib];
             return cell;
         }
@@ -401,16 +408,19 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
             }else if (indexPath.row == 1) {
                 cell.imageView.image = [UIImage imageNamed:@"changePassword_img"];
                 cell.textLabel.text = @"账号管理";
-            }else if (indexPath.row == 2) {
+            }else if (indexPath.row == 2){
+                cell.imageView.image = [UIImage imageNamed:@"c_activity"];
+                cell.textLabel.text = @"通讯录好友";
+            }else if (indexPath.row == 3) {
                 cell.imageView.image = [UIImage imageNamed:@"ActivityCenterImage"];
                 cell.textLabel.text = @"活动中心";
-            }else if (indexPath.row == 3) {
+            }else if (indexPath.row == 4) {
                 cell.imageView.image = [UIImage imageNamed:@"c_integral"];
                 cell.textLabel.text = @"幸运积分";
-            }else if (indexPath.row == 4) {
+            }else if (indexPath.row == 5) {
                 cell.imageView.image = [UIImage imageNamed:@"collectionCenter_img"];
                 cell.textLabel.text = @"收藏中心";
-            }else if (indexPath.row == 5){
+            }else if (indexPath.row == 6){
                 cell.imageView.image = [UIImage imageNamed:@"customerService_img"];
                 cell.textLabel.text = @"专属客服";
             }
@@ -423,7 +433,6 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
             UIGraphicsEndImageContext();
             
         }
-        
         
         return cell;
     }else{
@@ -443,6 +452,7 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
             }
             cell.indexPath = indexPath;
             cell.userMaterialModel = self.userMaterialModel;
+            cell.RecordArr = self.RecordArr;
             [cell awakeFromNib];
             return cell;
         }
@@ -457,7 +467,7 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
         if (indexPath.section == 2) {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.textLabel.textColor = [UIColor colorWithHexString:@"#3A3A3A"];
-            cell.textLabel.font = [UIFont systemFontOfSize:16];
+            cell.textLabel.font = FONT_SIZE(14);
             cell.imageView.contentMode=UIViewContentModeScaleAspectFit;
             
             
@@ -467,16 +477,19 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
             }else if (indexPath.row == 1) {
                 cell.imageView.image = [UIImage imageNamed:@"changePassword_img"];
                 cell.textLabel.text = @"账号管理";
-            }else if (indexPath.row == 2) {
+            }else if (indexPath.row == 2){
+                cell.imageView.image = [UIImage imageNamed:@"c_activity"];
+                cell.textLabel.text = @"通讯录好友";
+            }else if (indexPath.row == 3) {
                 cell.imageView.image = [UIImage imageNamed:@"ActivityCenterImage"];
                 cell.textLabel.text = @"活动中心";
-            }else if (indexPath.row == 3) {
+            }else if (indexPath.row == 4) {
                 cell.imageView.image = [UIImage imageNamed:@"c_integral"];
                 cell.textLabel.text = @"幸运积分";
-            }else if (indexPath.row == 4) {
+            }else if (indexPath.row == 5) {
                 cell.imageView.image = [UIImage imageNamed:@"collectionCenter_img"];
                 cell.textLabel.text = @"收藏中心";
-            }else if (indexPath.row == 5){
+            }else if (indexPath.row == 6){
                 cell.imageView.image = [UIImage imageNamed:@"customerService_img"];
                 cell.textLabel.text = @"专属客服";
             }
@@ -500,8 +513,8 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
     }
     
     if ( AlreadyLogin ||
-        (indexPath.section == 2 && indexPath.row == 2 && self.RecordArr.count == 0) ||
-        (indexPath.section == 3 && indexPath.row == 2 && self.RecordArr.count)) {
+        (indexPath.section == 2 && (indexPath.row == 3||indexPath.row == 6) && self.RecordArr.count == 0) ||
+        (indexPath.section == 3 && (indexPath.row == 3||indexPath.row == 6) && self.RecordArr.count)) {
         
         if (indexPath.section == 2 || indexPath.section == 3) {
 //            if (kUserDefaultsValue(USERDATA).integerValue == 4 ||
@@ -575,40 +588,43 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
 //            }else{
             
                 if (indexPath.row == 0) {//工资卡管理
-                    if (self.userMaterialModel.data.isUserProblem.integerValue == 0) {
-                        [self initSetSecretVC];
-                        return;
-                    }
-                    
+//                    if (self.userMaterialModel.data.isUserProblem.integerValue == 0) {
+//                        [self initSetSecretVC];
+//                        return;
+//                    }
+//
                     LPSalarycCardVC *vc = [[LPSalarycCardVC alloc]init];
                     vc.hidesBottomBarWhenPushed = YES;
                     [self.navigationController pushViewController:vc animated:YES];
                 }else if (indexPath.row == 1) {//账号管理
-                    if (self.userMaterialModel.data.isUserProblem.integerValue == 0) {
-                        [self initSetSecretVC];
-                        return;
-                    }
+//                    if (self.userMaterialModel.data.isUserProblem.integerValue == 0) {
+//                        [self initSetSecretVC];
+//                        return;
+//                    }
                     LPAccountManageVC *vc = [[LPAccountManageVC alloc]init];
                     vc.hidesBottomBarWhenPushed = YES;
                     [self.navigationController pushViewController:vc animated:YES];
-                }else if (indexPath.row == 2){//活动中心
+                }else if (indexPath.row == 2){ //通讯录好友
+                    [self  requestContactAuthorAfterSystemVersion9];
+
+                }else if (indexPath.row == 3){//活动中心
 //                    LPChangePasswordVC *vc = [[LPChangePasswordVC alloc]init];
 //                    vc.hidesBottomBarWhenPushed = YES;
 //                    [self.navigationController pushViewController:vc animated:YES];
                     LPActivityVC *vc = [[LPActivityVC alloc] init];
                     vc.hidesBottomBarWhenPushed = YES;
                     [self.navigationController pushViewController:vc animated:YES];
-                }else if (indexPath.row == 3){//幸运积分
-                    if (self.userMaterialModel.data.isUserProblem.integerValue == 0) {
-                        [self initSetSecretVC];
-                        return;
-                    }
+                }else if (indexPath.row == 4){//幸运积分
+//                    if (self.userMaterialModel.data.isUserProblem.integerValue == 0) {
+//                        [self initSetSecretVC];
+//                        return;
+//                    }
                     
                     LPIntegralDrawVC *vc = [[LPIntegralDrawVC alloc]init];
                     vc.hidesBottomBarWhenPushed = YES;
                     [self.navigationController pushViewController:vc animated:YES];
 
-                }else if (indexPath.row == 4){//收藏
+                }else if (indexPath.row == 5){//收藏
                     LPCollectionVC *vc = [[LPCollectionVC alloc] init];
                     vc.hidesBottomBarWhenPushed = YES;
                     [self.navigationController pushViewController:vc animated:YES];
@@ -638,6 +654,69 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
         [LoginUtils validationLogin:self];
     }
 }
+
+//请求通讯录权限
+#pragma mark 请求通讯录权限
+- (void)requestContactAuthorAfterSystemVersion9{
+    
+    CNAuthorizationStatus status = [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts];
+    if (status == CNAuthorizationStatusNotDetermined) {
+        CNContactStore *store = [[CNContactStore alloc] init];
+        [store requestAccessForEntityType:CNEntityTypeContacts completionHandler:^(BOOL granted, NSError*  _Nullable error) {
+            if (error) {
+                NSLog(@"授权失败");
+                [self showAlertViewAboutNotAuthorAccessContact];
+            }else {
+                NSLog(@"成功授权");
+                LPAddressBookVC *vc = [[LPAddressBookVC alloc]init];
+                vc.hidesBottomBarWhenPushed = YES;
+                [self.navigationController pushViewController:vc animated:YES];
+            }
+        }];
+    }
+    else if(status == CNAuthorizationStatusRestricted)
+    {
+        NSLog(@"用户拒绝");
+        [self showAlertViewAboutNotAuthorAccessContact];
+    }
+    else if (status == CNAuthorizationStatusDenied)
+    {
+        NSLog(@"用户拒绝");
+        [self showAlertViewAboutNotAuthorAccessContact];
+    }
+    else if (status == CNAuthorizationStatusAuthorized)//已经授权
+    {
+        LPAddressBookVC *vc = [[LPAddressBookVC alloc]init];
+        vc.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    
+}
+
+//提示没有通讯录权限
+- (void)showAlertViewAboutNotAuthorAccessContact{
+    
+    UIAlertController *alertController = [UIAlertController
+                                          alertControllerWithTitle:@"请授权通讯录权限"
+                                          message:@"请在iPhone的\"设置-隐私-通讯录\"选项中,允许访问你的通讯录"
+                                          preferredStyle: UIAlertControllerStyleAlert];
+    UIAlertAction *CancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        NSLog(@"点击取消");
+    }];
+    
+    
+    UIAlertAction *OKAction = [UIAlertAction actionWithTitle:@"前往" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        // 无权限 引导去开启
+        NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+        if ([[UIApplication sharedApplication]canOpenURL:url]) {
+            [[UIApplication sharedApplication]openURL:url];
+        }
+    }];
+    [alertController addAction:CancelAction];
+    [alertController addAction:OKAction];
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
 
 #pragma mark - request
 -(void)requestUserMaterial{

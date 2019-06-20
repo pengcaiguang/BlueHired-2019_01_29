@@ -265,7 +265,7 @@
         make.bottom.mas_equalTo(0);
     }];
     
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@bluehired/sign.html?sign=%ld",BaseRequestWeiXiURL,(long)[kUserDefaultsValue(LOGINID) integerValue]]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@resident/#/sign?sign=%ld",BaseRequestWeiXiURL,(long)[kUserDefaultsValue(LOGINID) integerValue]]];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [webview loadRequest:request];
     

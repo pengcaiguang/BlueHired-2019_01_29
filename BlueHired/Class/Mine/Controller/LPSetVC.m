@@ -160,6 +160,11 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
         }
         else if (indexPath.row == 1)
         {
+            if ([WXApi isWXAppInstalled]==NO) {
+                [self.view showLoadingMeg:@"无法打开您手机的微信应用，如需关注，请您手动搜索微信公众号“蓝聘网络科技”" time:MESSAGE_SHOW_TIME];
+                return;
+            }
+            
             NSString *urlsting =[[NSString stringWithFormat:@"weixin://"] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
             if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:urlsting]]) {
                 UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];

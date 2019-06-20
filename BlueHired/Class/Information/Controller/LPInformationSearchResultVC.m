@@ -476,7 +476,8 @@ static NSString *LPInformationVideoCollectionViewCellID = @"LPInfoMationVideoCel
     NSInteger type = 0;
     NSDictionary *dic = @{@"page":@(self.page),
                           @"type":@(type),
-                          @"moodDetails":self.string
+                          @"moodDetails":self.string,
+                          @"versionType":@"2.3"
                           };
     [NetApiManager requestMoodListWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);

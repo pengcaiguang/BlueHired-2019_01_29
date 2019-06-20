@@ -180,7 +180,7 @@ static NSString *CityRecently = @"CityRecently";
     
     _pArr         = [[NSMutableArray alloc]init];
     
-    NSArray * reArray = @[@"北京",@"上海",@"广州",@"深圳",@"天津",@"杭州",@"南京",@"成都",@"武汉"];
+    NSArray * reArray = @[@"北京",@"上海",@"广州",@"深圳",@"杭州",@"东莞"];
     AddressProvince * REp     = [AddressProvince provinceWithName:@"热门城市"
                                                            cities:reArray];
     [_pArr addObject:REp];
@@ -255,7 +255,7 @@ static NSString *CityRecently = @"CityRecently";
         NSMutableArray *arr = [NSMutableArray array];
         
         if ([string isEqualToString:@"热门"]) {
-            NSArray * reArray = @[@"北京",@"上海",@"广州",@"深圳",@"天津",@"杭州",@"南京",@"成都",@"武汉"];
+            NSArray * reArray = @[@"北京",@"上海",@"广州",@"深圳",@"杭州",@"东莞"];
             for (NSString *str in reArray) {
                 LPCityModel *m = [self getModel:str from:modelCityArray];
                 [arr addObject:m];

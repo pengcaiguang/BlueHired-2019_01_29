@@ -39,31 +39,27 @@ static NSInteger rowHeight = 40;
     CGRect rect=[self.touchButton convertRect: self.touchButton.bounds toView:window];
     self.tableview.lx_y = CGRectGetMaxY(rect);
     self.bgView.lx_y = self.tableview.lx_bottom;
+    [self.tableview reloadData];
+
     if (hidden) {
         [UIView animateWithDuration:0.3 animations:^{
-
             self.tableview.frame = CGRectMake(0, self.tableview.lx_y, SCREEN_WIDTH, 0 );
-            //    self.tableview.frame.size.height+self.tableview.frame.origin.y
             self.bgView.frame = CGRectMake(0,self.tableview.lx_bottom , SCREEN_WIDTH, SCREEN_HEIGHT);
             self.bgView.alpha = 0;
         } completion:^(BOOL finished) {
             self.bgView.hidden = hidden;
             self.tableview.hidden = hidden;
-            [self.tableview reloadData];
+//            [self.tableview reloadData];
         }];
     }else{
         self.bgView.hidden = hidden;
         self.tableview.hidden = hidden;
         [UIView animateWithDuration:0.3 animations:^{
-//            UIWindow *window=[[[UIApplication sharedApplication] delegate] window];
-//            CGRect rect=[self.touchButton convertRect: self.touchButton.bounds toView:window];
             self.tableview.frame = CGRectMake(0, self.tableview.lx_y, SCREEN_WIDTH, rowHeight*(self.titleArray.count>6?6:self.titleArray.count));
-            //    self.tableview.frame.size.height+self.tableview.frame.origin.y
             self.bgView.frame = CGRectMake(0,self.tableview.lx_bottom , SCREEN_WIDTH, SCREEN_HEIGHT);
             self.bgView.alpha = 0.5;
         } completion:^(BOOL finished) {
-
-            [self.tableview reloadData];
+//            [self.tableview reloadData];
         }];
     }
 
@@ -101,7 +97,7 @@ static NSInteger rowHeight = 40;
         [cell.contentView addSubview:imageViews];
     }
     UIImageView *imageViews = [cell.contentView viewWithTag:100];
-    
+    NSLog(@"第 %ld 行",indexPath.row);
     cell.textLabel.font = [UIFont systemFontOfSize:14];
     cell.textLabel.text = self.titleArray[indexPath.row];
     
@@ -130,7 +126,7 @@ static NSInteger rowHeight = 40;
 #pragma mark lazy
 - (UITableView *)tableview{
     if (!_tableview) {
-        _tableview = [[UITableView alloc]init];
+        _tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 0)];
         _tableview.delegate = self;
         _tableview.dataSource = self;
         _tableview.tableFooterView = [[UIView alloc]init];
@@ -139,7 +135,6 @@ static NSInteger rowHeight = 40;
         _tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableview.layer.borderWidth = 0.5;
         _tableview.layer.borderColor = [UIColor colorWithHexString:@"#929292"].CGColor;
-        
     }
     return _tableview;
 }

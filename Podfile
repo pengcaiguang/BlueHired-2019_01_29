@@ -37,10 +37,10 @@ target 'BlueHired' do
 #    pod 'QFDatePicker'
     pod 'AMapLocation'
     pod 'WechatOpenSDK'
-    pod 'YBAttributeTextTapAction'
+#    pod 'YBAttributeTextTapAction'
     pod 'SDAutoLayout'
     pod 'iCarousel'
-     
+    pod 'SDWebImage/GIF'
     
   target 'BlueHiredTests' do
     inherit! :search_paths

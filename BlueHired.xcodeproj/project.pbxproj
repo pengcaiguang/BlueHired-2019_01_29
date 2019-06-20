@@ -205,6 +205,9 @@
 		889E1FA82184582D0045D247 /* LPFirmDetailsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 889E1FA62184582D0045D247 /* LPFirmDetailsVC.xib */; };
 		889E1FAC218458A70045D247 /* LPLPFirmDetailsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 889E1FAA218458A70045D247 /* LPLPFirmDetailsCell.m */; };
 		889E1FAD218458A70045D247 /* LPLPFirmDetailsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 889E1FAB218458A70045D247 /* LPLPFirmDetailsCell.xib */; };
+		889EAED9229BCE9C0000AC07 /* UILabel+XibScaleAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 889EAED8229BCE9C0000AC07 /* UILabel+XibScaleAdapter.m */; };
+		889EAEDC229BD3BB0000AC07 /* UITextField+XibScaleAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 889EAEDB229BD3BB0000AC07 /* UITextField+XibScaleAdapter.m */; };
+		889EAEDF229BD40E0000AC07 /* UIButton+XibScaleAdapter.m in Sources */ = {isa = PBXBuildFile; fileRef = 889EAEDE229BD40E0000AC07 /* UIButton+XibScaleAdapter.m */; };
 		889ECE28222E0B3E00413F1B /* LPYsetMulListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 889ECE27222E0B3E00413F1B /* LPYsetMulListModel.m */; };
 		889F772921E44EE600788946 /* LPActivityDatelisVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 889F772721E44EE600788946 /* LPActivityDatelisVC.m */; };
 		889F772A21E44EE600788946 /* LPActivityDatelisVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 889F772821E44EE600788946 /* LPActivityDatelisVC.xib */; };
@@ -269,6 +272,7 @@
 		88ADC50921DDD7C700405699 /* province.json in Resources */ = {isa = PBXBuildFile; fileRef = 88ADC50821DDD7C600405699 /* province.json */; };
 		88ADC50C21DDE19800405699 /* AddressModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 88ADC50B21DDE19800405699 /* AddressModel.m */; };
 		88ADC51021DF094500405699 /* MenuVIew.m in Sources */ = {isa = PBXBuildFile; fileRef = 88ADC50F21DF094500405699 /* MenuVIew.m */; };
+		88AE8D5622A8EDAB00A3A946 /* XHInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 88AE8D5522A8EDAA00A3A946 /* XHInputView.m */; };
 		88AEA2D621D3267A0073C99C /* WHActivityView.m in Sources */ = {isa = PBXBuildFile; fileRef = 88AEA2D521D3267A0073C99C /* WHActivityView.m */; };
 		88AF6E39223B4747009E41F3 /* LPByThePieceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 88AF6E37223B4747009E41F3 /* LPByThePieceCell.m */; };
 		88AF6E3A223B4747009E41F3 /* LPByThePieceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 88AF6E38223B4747009E41F3 /* LPByThePieceCell.xib */; };
@@ -336,10 +340,16 @@
 		88B8C62F227180AD00313854 /* LPSecurityQuestionVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 88B8C62D227180AD00313854 /* LPSecurityQuestionVC.xib */; };
 		88B8C632227188CB00313854 /* LPUserProblemModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 88B8C631227188CB00313854 /* LPUserProblemModel.m */; };
 		88BC48882286782800B03424 /* LPMainSearchVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC30E1912138E622000C7A91 /* LPMainSearchVC.m */; };
+		88BC598822ADF02E004EAEF2 /* UILabel+YBAttributeTextTapAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 88BC598722ADF02E004EAEF2 /* UILabel+YBAttributeTextTapAction.m */; };
+		88BC598C22AE3374004EAEF2 /* LPAddressBookVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 88BC598A22AE3374004EAEF2 /* LPAddressBookVC.m */; };
+		88BC598D22AE3374004EAEF2 /* LPAddressBookVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 88BC598B22AE3374004EAEF2 /* LPAddressBookVC.xib */; };
 		88BCB9AD2181BE30003D5A2E /* DSBeiAnimationLoading.m in Sources */ = {isa = PBXBuildFile; fileRef = 88BCB9A82181BE30003D5A2E /* DSBeiAnimationLoading.m */; };
 		88BCB9AE2181BE30003D5A2E /* DSBaActivityView.m in Sources */ = {isa = PBXBuildFile; fileRef = 88BCB9AC2181BE30003D5A2E /* DSBaActivityView.m */; };
 		88BCEF1F222CF89F000C3876 /* LPMonthWageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 88BCEF1E222CF89E000C3876 /* LPMonthWageModel.m */; };
 		88BCEF22222CFA6A000C3876 /* LPOverTimeAccountModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 88BCEF21222CFA69000C3876 /* LPOverTimeAccountModel.m */; };
+		88BD011322AF51AF008F3247 /* LPUserConcernListModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 88BD011222AF51AF008F3247 /* LPUserConcernListModel.m */; };
+		88BD011722AF7CAC008F3247 /* LPAddressBookCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 88BD011522AF7CAC008F3247 /* LPAddressBookCell.m */; };
+		88BD011822AF7CAC008F3247 /* LPAddressBookCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 88BD011622AF7CAC008F3247 /* LPAddressBookCell.xib */; };
 		88BD9AB62182C7B600D7272D /* LPLendAuditVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 88BD9AB42182C7B600D7272D /* LPLendAuditVC.m */; };
 		88BD9AB72182C7B600D7272D /* LPLendAuditVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 88BD9AB52182C7B600D7272D /* LPLendAuditVC.xib */; };
 		88BD9ABB2182E56000D7272D /* LPLendAuditScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 88BD9ABA2182E56000D7272D /* LPLendAuditScreen.m */; };
@@ -1123,6 +1133,12 @@
 		889E1FA9218458A70045D247 /* LPLPFirmDetailsCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPLPFirmDetailsCell.h; sourceTree = "<group>"; };
 		889E1FAA218458A70045D247 /* LPLPFirmDetailsCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPLPFirmDetailsCell.m; sourceTree = "<group>"; };
 		889E1FAB218458A70045D247 /* LPLPFirmDetailsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPLPFirmDetailsCell.xib; sourceTree = "<group>"; };
+		889EAED7229BCE9C0000AC07 /* UILabel+XibScaleAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UILabel+XibScaleAdapter.h"; sourceTree = "<group>"; };
+		889EAED8229BCE9C0000AC07 /* UILabel+XibScaleAdapter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UILabel+XibScaleAdapter.m"; sourceTree = "<group>"; };
+		889EAEDA229BD3BB0000AC07 /* UITextField+XibScaleAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITextField+XibScaleAdapter.h"; sourceTree = "<group>"; };
+		889EAEDB229BD3BB0000AC07 /* UITextField+XibScaleAdapter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITextField+XibScaleAdapter.m"; sourceTree = "<group>"; };
+		889EAEDD229BD40E0000AC07 /* UIButton+XibScaleAdapter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIButton+XibScaleAdapter.h"; sourceTree = "<group>"; };
+		889EAEDE229BD40E0000AC07 /* UIButton+XibScaleAdapter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIButton+XibScaleAdapter.m"; sourceTree = "<group>"; };
 		889ECE26222E0B3E00413F1B /* LPYsetMulListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPYsetMulListModel.h; sourceTree = "<group>"; };
 		889ECE27222E0B3E00413F1B /* LPYsetMulListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPYsetMulListModel.m; sourceTree = "<group>"; };
 		889F772621E44EE600788946 /* LPActivityDatelisVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPActivityDatelisVC.h; sourceTree = "<group>"; };
@@ -1236,6 +1252,9 @@
 		88ADC50B21DDE19800405699 /* AddressModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddressModel.m; sourceTree = "<group>"; };
 		88ADC50E21DF093900405699 /* MenuVIew.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MenuVIew.h; path = "BlueHired/Class/lib/New Group/MenuVIew.h"; sourceTree = SOURCE_ROOT; };
 		88ADC50F21DF094500405699 /* MenuVIew.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuVIew.m; sourceTree = "<group>"; };
+		88AE8D0622A8AFD300A3A946 /* ContactsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ContactsUI.framework; path = System/Library/Frameworks/ContactsUI.framework; sourceTree = SDKROOT; };
+		88AE8D5422A8EDAA00A3A946 /* XHInputView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHInputView.h; sourceTree = "<group>"; };
+		88AE8D5522A8EDAA00A3A946 /* XHInputView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHInputView.m; sourceTree = "<group>"; };
 		88AEA2D421D3267A0073C99C /* WHActivityView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WHActivityView.h; sourceTree = "<group>"; };
 		88AEA2D521D3267A0073C99C /* WHActivityView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WHActivityView.m; sourceTree = "<group>"; };
 		88AF6E36223B4747009E41F3 /* LPByThePieceCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPByThePieceCell.h; sourceTree = "<group>"; };
@@ -1362,6 +1381,11 @@
 		88B8C62D227180AD00313854 /* LPSecurityQuestionVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPSecurityQuestionVC.xib; sourceTree = "<group>"; };
 		88B8C630227188CB00313854 /* LPUserProblemModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPUserProblemModel.h; sourceTree = "<group>"; };
 		88B8C631227188CB00313854 /* LPUserProblemModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPUserProblemModel.m; sourceTree = "<group>"; };
+		88BC598622ADF02E004EAEF2 /* UILabel+YBAttributeTextTapAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+YBAttributeTextTapAction.h"; sourceTree = "<group>"; };
+		88BC598722ADF02E004EAEF2 /* UILabel+YBAttributeTextTapAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+YBAttributeTextTapAction.m"; sourceTree = "<group>"; };
+		88BC598922AE3374004EAEF2 /* LPAddressBookVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPAddressBookVC.h; sourceTree = "<group>"; };
+		88BC598A22AE3374004EAEF2 /* LPAddressBookVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPAddressBookVC.m; sourceTree = "<group>"; wrapsLines = 0; };
+		88BC598B22AE3374004EAEF2 /* LPAddressBookVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPAddressBookVC.xib; sourceTree = "<group>"; };
 		88BCB9A82181BE30003D5A2E /* DSBeiAnimationLoading.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSBeiAnimationLoading.m; sourceTree = "<group>"; };
 		88BCB9AA2181BE30003D5A2E /* DSBaActivityView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSBaActivityView.h; sourceTree = "<group>"; };
 		88BCB9AB2181BE30003D5A2E /* DSBeiAnimationLoading.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSBeiAnimationLoading.h; sourceTree = "<group>"; };
@@ -1370,6 +1394,11 @@
 		88BCEF1E222CF89E000C3876 /* LPMonthWageModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPMonthWageModel.m; sourceTree = "<group>"; };
 		88BCEF20222CFA69000C3876 /* LPOverTimeAccountModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPOverTimeAccountModel.h; sourceTree = "<group>"; };
 		88BCEF21222CFA69000C3876 /* LPOverTimeAccountModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPOverTimeAccountModel.m; sourceTree = "<group>"; };
+		88BD011122AF51AF008F3247 /* LPUserConcernListModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPUserConcernListModel.h; sourceTree = "<group>"; };
+		88BD011222AF51AF008F3247 /* LPUserConcernListModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPUserConcernListModel.m; sourceTree = "<group>"; };
+		88BD011422AF7CAC008F3247 /* LPAddressBookCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPAddressBookCell.h; sourceTree = "<group>"; };
+		88BD011522AF7CAC008F3247 /* LPAddressBookCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPAddressBookCell.m; sourceTree = "<group>"; };
+		88BD011622AF7CAC008F3247 /* LPAddressBookCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPAddressBookCell.xib; sourceTree = "<group>"; };
 		88BD9AB32182C7B600D7272D /* LPLendAuditVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPLendAuditVC.h; sourceTree = "<group>"; };
 		88BD9AB42182C7B600D7272D /* LPLendAuditVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPLendAuditVC.m; sourceTree = "<group>"; };
 		88BD9AB52182C7B600D7272D /* LPLendAuditVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPLendAuditVC.xib; sourceTree = "<group>"; };
@@ -2109,6 +2138,7 @@
 		3A29534E777751FACE05724E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				88AE8D0622A8AFD300A3A946 /* ContactsUI.framework */,
 				88CCF71C21EDC23000210CE3 /* AipBase.framework */,
 				88CCF71D21EDC23100210CE3 /* AipOcrSdk.framework */,
 				88CCF71E21EDC23100210CE3 /* IdcardQuality.framework */,
@@ -2330,6 +2360,8 @@
 		88988DE4216DC75000042589 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				88BC598522ADF02E004EAEF2 /* YBAttributeTextTapAction */,
+				88AE8D5322A8EDAA00A3A946 /* XHInputView */,
 				88EADA25228573850000299B /* SDCycleScrollView */,
 				889A5298225EE5CA00C35736 /* HXPhotoPicker */,
 				88BD9DCD225DDDBF00816825 /* YYWebImage */,
@@ -2379,6 +2411,12 @@
 				88BEA6922251B99A0028DDC2 /* UILabel+Copy.m */,
 				889CC8542294E603009BF022 /* NSLayoutConstraint+BSIBDesignable.h */,
 				889CC8552294E603009BF022 /* NSLayoutConstraint+BSIBDesignable.m */,
+				889EAED7229BCE9C0000AC07 /* UILabel+XibScaleAdapter.h */,
+				889EAED8229BCE9C0000AC07 /* UILabel+XibScaleAdapter.m */,
+				889EAEDA229BD3BB0000AC07 /* UITextField+XibScaleAdapter.h */,
+				889EAEDB229BD3BB0000AC07 /* UITextField+XibScaleAdapter.m */,
+				889EAEDD229BD40E0000AC07 /* UIButton+XibScaleAdapter.h */,
+				889EAEDE229BD40E0000AC07 /* UIButton+XibScaleAdapter.m */,
 			);
 			path = lib;
 			sourceTree = "<group>";
@@ -2581,6 +2619,15 @@
 			path = CircleLib;
 			sourceTree = "<group>";
 		};
+		88AE8D5322A8EDAA00A3A946 /* XHInputView */ = {
+			isa = PBXGroup;
+			children = (
+				88AE8D5422A8EDAA00A3A946 /* XHInputView.h */,
+				88AE8D5522A8EDAA00A3A946 /* XHInputView.m */,
+			);
+			path = XHInputView;
+			sourceTree = "<group>";
+		};
 		88B802EB21D0BA4C00FB4D25 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
@@ -2766,6 +2813,15 @@
 				88B8037121D0CA0D00FB4D25 /* PagingViewController.h */,
 			);
 			path = Example;
+			sourceTree = "<group>";
+		};
+		88BC598522ADF02E004EAEF2 /* YBAttributeTextTapAction */ = {
+			isa = PBXGroup;
+			children = (
+				88BC598622ADF02E004EAEF2 /* UILabel+YBAttributeTextTapAction.h */,
+				88BC598722ADF02E004EAEF2 /* UILabel+YBAttributeTextTapAction.m */,
+			);
+			path = YBAttributeTextTapAction;
 			sourceTree = "<group>";
 		};
 		88BCB9A72181BE30003D5A2E /* LoadingActive */ = {
@@ -2969,13 +3025,13 @@
 		88EADA2A228573850000299B /* SDCycleScrollView */ = {
 			isa = PBXGroup;
 			children = (
-				88EADA2B228573850000299B /* UIView+SDExtension.h */,
-				88EADA2C228573850000299B /* SDCycleScrollView.h */,
-				88EADA2D228573850000299B /* SDCollectionViewCell.h */,
-				88EADA2E228573850000299B /* SDCycleScrollView.m */,
-				88EADA2F228573850000299B /* UIView+SDExtension.m */,
-				88EADA30228573850000299B /* SDCollectionViewCell.m */,
 				88EADA31228573850000299B /* PageControl */,
+				88EADA2D228573850000299B /* SDCollectionViewCell.h */,
+				88EADA30228573850000299B /* SDCollectionViewCell.m */,
+				88EADA2C228573850000299B /* SDCycleScrollView.h */,
+				88EADA2E228573850000299B /* SDCycleScrollView.m */,
+				88EADA2B228573850000299B /* UIView+SDExtension.h */,
+				88EADA2F228573850000299B /* UIView+SDExtension.m */,
 			);
 			path = SDCycleScrollView;
 			sourceTree = "<group>";
@@ -2984,13 +3040,13 @@
 			isa = PBXGroup;
 			children = (
 				88EADA32228573850000299B /* TAAbstractDotView.h */,
-				88EADA33228573850000299B /* TADotView.m */,
-				88EADA34228573850000299B /* TAPageControl.m */,
-				88EADA35228573850000299B /* TAAnimatedDotView.m */,
 				88EADA36228573850000299B /* TAAbstractDotView.m */,
-				88EADA37228573850000299B /* TADotView.h */,
 				88EADA38228573850000299B /* TAAnimatedDotView.h */,
+				88EADA35228573850000299B /* TAAnimatedDotView.m */,
+				88EADA37228573850000299B /* TADotView.h */,
+				88EADA33228573850000299B /* TADotView.m */,
 				88EADA39228573850000299B /* TAPageControl.h */,
+				88EADA34228573850000299B /* TAPageControl.m */,
 			);
 			path = PageControl;
 			sourceTree = "<group>";
@@ -3094,6 +3150,8 @@
 				88D1FA9C2269691D00178BFC /* LPLotteryModel.m */,
 				88B8C630227188CB00313854 /* LPUserProblemModel.h */,
 				88B8C631227188CB00313854 /* LPUserProblemModel.m */,
+				88BD011122AF51AF008F3247 /* LPUserConcernListModel.h */,
+				88BD011222AF51AF008F3247 /* LPUserConcernListModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -3888,6 +3946,9 @@
 				88B23BC422928E02004F1BAD /* LPUndergoWebVC.h */,
 				88B23BC522928E02004F1BAD /* LPUndergoWebVC.m */,
 				88B23BC622928E02004F1BAD /* LPUndergoWebVC.xib */,
+				88BC598922AE3374004EAEF2 /* LPAddressBookVC.h */,
+				88BC598A22AE3374004EAEF2 /* LPAddressBookVC.m */,
+				88BC598B22AE3374004EAEF2 /* LPAddressBookVC.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -4026,6 +4087,9 @@
 				88D1FAA322697B6700178BFC /* LPIntegralDrawCell.h */,
 				88D1FAA422697B6700178BFC /* LPIntegralDrawCell.m */,
 				88D1FAA522697B6700178BFC /* LPIntegralDrawCell.xib */,
+				88BD011422AF7CAC008F3247 /* LPAddressBookCell.h */,
+				88BD011522AF7CAC008F3247 /* LPAddressBookCell.m */,
+				88BD011622AF7CAC008F3247 /* LPAddressBookCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -4526,6 +4590,7 @@
 				88ADC50921DDD7C700405699 /* province.json in Resources */,
 				88CB1291219D706B00EFED06 /* 组9.png in Resources */,
 				88A0F5E5222670AD00AF50EA /* LXCalendarHearder.xib in Resources */,
+				88BD011822AF7CAC008F3247 /* LPAddressBookCell.xib in Resources */,
 				88C3FDCB21807A48003AC177 /* LPRecruitRequireVC.xib in Resources */,
 				DC30E1B021394055000C7A91 /* LPWorkDetailTextCell.xib in Resources */,
 				88CB1290219D706B00EFED06 /* 组8.png in Resources */,
@@ -4625,6 +4690,7 @@
 				8895F9562237B02400215EEF /* LPOtherEditorVC.xib in Resources */,
 				88AF6E3A223B4747009E41F3 /* LPByThePieceCell.xib in Resources */,
 				8895D9B2223A2F2C006737E6 /* LPLabourCostSetVC.xib in Resources */,
+				88BC598D22AE3374004EAEF2 /* LPAddressBookVC.xib in Resources */,
 				DC49D86C213A74B3009BFCB0 /* LPEssayDetailHeadCell.xib in Resources */,
 				889C4B9E21708B6100C153ED /* LPBillRecordStateVC.xib in Resources */,
 				DC4AB9D4215A363C002DFD5C /* LPRegisterVC.xib in Resources */,
@@ -4889,6 +4955,7 @@
 				88A4B54B222A0FCD00C75BF7 /* LPWorkdaySetVC.m in Sources */,
 				889A5307225EE5CB00C35736 /* NSArray+HXExtension.m in Sources */,
 				884471C421770B8300ECC047 /* GetMessageFromWXResp+responseWithTextOrMediaMessage.m in Sources */,
+				88BC598822ADF02E004EAEF2 /* UILabel+YBAttributeTextTapAction.m in Sources */,
 				889E1FAC218458A70045D247 /* LPLPFirmDetailsCell.m in Sources */,
 				DC2295882141230A0002A095 /* GJAlertMessage.m in Sources */,
 				DC7A32CF21379BCA00E09C6C /* LPMineCardCell.m in Sources */,
@@ -4900,6 +4967,7 @@
 				DC73838221341EBD0055DC10 /* LPSearchBar.m in Sources */,
 				889A52FD225EE5CB00C35736 /* HXPhotoConfiguration.m in Sources */,
 				88C59092221E78DF004F6576 /* LPWorkHourHeadCell.m in Sources */,
+				88BD011322AF51AF008F3247 /* LPUserConcernListModel.m in Sources */,
 				88B8C62922714E8800313854 /* LPSetSecretVC.m in Sources */,
 				88A0F5E9222670AD00AF50EA /* NSString+NCDate.m in Sources */,
 				889F773821E45EA500788946 /* QFDatePickerView.m in Sources */,
@@ -4913,6 +4981,7 @@
 				DC4AB9CC215A324F002DFD5C /* LPDimissionFirmVC.m in Sources */,
 				884471C521770B8300ECC047 /* SendMessageToWXReq+requestWithTextOrMediaMessage.m in Sources */,
 				DCDB29DC215F1298008444BA /* LPEssayCollectionModel.m in Sources */,
+				88BC598C22AE3374004EAEF2 /* LPAddressBookVC.m in Sources */,
 				88D1FA8F22695E9C00178BFC /* LPWinningResultsVC.m in Sources */,
 				DCDB29ED215F4720008444BA /* LPFeedBackVC.m in Sources */,
 				88CA7B5C2253314500FABD4E /* LPConcerNumCell.m in Sources */,
@@ -5152,6 +5221,7 @@
 				88BF00A721F9625B00DFE778 /* GJAlertWithDrawPassword.m in Sources */,
 				88EADA3D228573850000299B /* UIView+SDExtension.m in Sources */,
 				88217878217D806B00C662F6 /* WSShowInfoView.m in Sources */,
+				889EAEDC229BD3BB0000AC07 /* UITextField+XibScaleAdapter.m in Sources */,
 				88988DE0216DC71700042589 /* LPBusinessReviewWageVC.m in Sources */,
 				88CCFAE421E35F3C00C1B6FE /* LPMineBillCell.m in Sources */,
 				DC5C3889213640A300B3CF6E /* LPInformationMoreCell.m in Sources */,
@@ -5169,6 +5239,7 @@
 				DC7383AC2134F7B50055DC10 /* LPWorklistModel.m in Sources */,
 				88CCFAE921E433BB00C1B6FE /* LPActivityVC.m in Sources */,
 				889A5314225EE5CB00C35736 /* HXAlbumListViewController.m in Sources */,
+				889EAED9229BCE9C0000AC07 /* UILabel+XibScaleAdapter.m in Sources */,
 				88F9F9902183306C0052DF93 /* LPLendRepulsedetailsVC.m in Sources */,
 				889A5305225EE5CB00C35736 /* NSString+HXExtension.m in Sources */,
 				88F9F987218304200052DF93 /* LPLandAuditModel.m in Sources */,
@@ -5211,6 +5282,7 @@
 				8885D91821DF5F840065D6DA /* LPMain2Cell.m in Sources */,
 				88B8C62E227180AD00313854 /* LPSecurityQuestionVC.m in Sources */,
 				88AB288B2183412F0067F67B /* LPFirmVC.m in Sources */,
+				88AE8D5622A8EDAB00A3A946 /* XHInputView.m in Sources */,
 				DC61FAC921466E900003AA61 /* LPDurationView.m in Sources */,
 				8895D9A92239F6ED006737E6 /* LPWorkHourBaseSalary2VC.m in Sources */,
 				884471B821770B1E00ECC047 /* WXApiManager.m in Sources */,
@@ -5272,6 +5344,7 @@
 				88BCEF1F222CF89F000C3876 /* LPMonthWageModel.m in Sources */,
 				88C708E4218FEB690095FE65 /* GTMNSString+HTML.m in Sources */,
 				889A532C225F48F200C35736 /* WJMoviePlayerView.m in Sources */,
+				88BD011722AF7CAC008F3247 /* LPAddressBookCell.m in Sources */,
 				8825AF0B2238E5BE00D47ACD /* LPHoursNumderVC.m in Sources */,
 				88B036542223C3DA000B939A /* LPWorkHourDetail2VC.m in Sources */,
 				889A5328225EE5CB00C35736 /* HXDatePhotoToolManager.m in Sources */,
@@ -5286,6 +5359,7 @@
 				88B8034921D0BA4D00FB4D25 /* JXCategoryTitleImageView.m in Sources */,
 				88BD9DFC225DDDBF00816825 /* YYSpriteSheetImage.m in Sources */,
 				8895D6E621CCE58B00AF01AE /* LZImageBrowserSubView.m in Sources */,
+				889EAEDF229BD40E0000AC07 /* UIButton+XibScaleAdapter.m in Sources */,
 				88DB4C6B21A2862100A222BF /* LPBlackUserVC.m in Sources */,
 				889A531B225EE5CB00C35736 /* HXCustomCameraController.m in Sources */,
 				DC5C388021362EB300B3CF6E /* LPEssaylistModel.m in Sources */,

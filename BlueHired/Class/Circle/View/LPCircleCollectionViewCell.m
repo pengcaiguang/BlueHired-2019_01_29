@@ -56,34 +56,12 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
 #pragma mark - setdata
 -(void)setIndex:(NSInteger)index{
     _index = index;
-    NSLog(@"index -= %ld",(long)index);
-//    if (index == 0 ) {
-//        if (_moodTypeModel== nil) {
-////            CIRCLETYPELISTCACHEDATE
-//            NSDate *date = [LPUserDefaults getObjectByFileName:[NSString stringWithFormat: @"CIRCLETYPELISTCACHEDATE"]];
-//            id CacheList = [LPUserDefaults getObjectByFileName:[NSString stringWithFormat: @"CIRCLETYPELISTCACHE"]];
-//            NSString *ISLoginstr = [LPUserDefaults getObjectByFileName:[NSString stringWithFormat: @"CIRCLELISTCACHEISLogin"]];
-//            self.moodTypeModel = [LPMoodTypeModel mj_objectWithKeyValues:CacheList];
-//
-//            if ([LPTools compareOneDay:date withAnotherDay:[NSDate date]]<=15 && CacheList) {
-//                if (ISLoginstr.integerValue == 1) {
-//                    [self requestMoodType];
-//                }
-//            }else{
-//                [self requestMoodType];
-//            }
-//        }
-////        self.tableview.tableHeaderView = [[UIView alloc]init];
-//    }else{
-//
-//    }
-    
+ 
     if (self.moodListArray.count == 0 ) {
         //查看缓存
         NSDate *date = [LPUserDefaults getObjectByFileName:[NSString stringWithFormat: @"CIRCLELISTCACHEDATE"]];
         id CacheList = [LPUserDefaults getObjectByFileName:[NSString stringWithFormat: @"CIRCLELISTCACHE"]];
-//        [LPUserDefaults saveObject:@"yes" byFileName:[NSString stringWithFormat:@"CIRCLELISTCACHEISLogin"]];
-        NSString *ISLoginstr = [LPUserDefaults getObjectByFileName:[NSString stringWithFormat: @"CIRCLELISTCACHEISLogin"]];
+         NSString *ISLoginstr = [LPUserDefaults getObjectByFileName:[NSString stringWithFormat: @"CIRCLELISTCACHEISLogin"]];
          if ([LPTools compareOneDay:date withAnotherDay:[NSDate date]]<=15 && CacheList && index == 0) {
              self.page = 1;
              self.moodListModel = [LPMoodListModel mj_objectWithKeyValues:CacheList];
@@ -91,10 +69,8 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
                  self.page = 1;
                  [self requestMoodList];
                  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//                     [self.navigationController popViewControllerAnimated:YES];
-                     [LPUserDefaults saveObject:@"0" byFileName:[NSString stringWithFormat:@"CIRCLELISTCACHEISLogin"]];
-
-                 });
+                      [LPUserDefaults saveObject:@"0" byFileName:[NSString stringWithFormat:@"CIRCLELISTCACHEISLogin"]];
+                  });
              }
          }else{
              self.page = 1;
@@ -108,21 +84,12 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
             [self requestMoodList];
         }
     }
-//    if (index>0) {
-//        self.page = 1;
-//        [self requestMoodList];
-//    }
+ 
 }
 
 - (void)setCircleMessage:(NSInteger)CircleMessage{
     _CircleMessage = CircleMessage;
-//    if (CircleMessage != 0 && self.index == 0) {
-//        self.tableview.tableHeaderView = self.tableHeader2View;
-//        [self.messageBT setTitle:[NSString stringWithFormat:@"  您有%ld条新消息！ ",(long)CircleMessage] forState:UIControlStateNormal];
-//        [self.tableview  reloadData];
-//    }else{
-//        self.tableview.tableHeaderView = [[UIView alloc]init];
-//    }
+ 
     [self.tableview  reloadData];
 
 }
@@ -480,7 +447,8 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
 //    }
     NSDictionary *dic = @{
                           @"page":@(self.page),
-                          @"type":@(type)
+                          @"type":@(type),
+                          @"versionType":@"2.3"
                           };
     [NetApiManager requestMoodListWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);

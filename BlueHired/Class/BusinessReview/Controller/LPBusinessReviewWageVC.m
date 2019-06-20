@@ -10,14 +10,11 @@
 #import "HXPhotoPicker.h"
 #import "LPTools.h"
 #import "LPMechanismModel.h"
+//#import "ZMCusCommentView.h"
 
 
-static const CGFloat kPhotoViewMargin = 13.0;
 
-@interface LPBusinessReviewWageVC ()<UITableViewDelegate,UITableViewDataSource,UIPickerViewDelegate,UIPickerViewDataSource,UIImagePickerControllerDelegate,UINavigationControllerDelegate,HXPhotoViewDelegate,HXAlbumListViewControllerDelegate>
-@property (nonatomic, strong)UITableView *tableview;
-@property(nonatomic,strong) UIView *tableHeaderView;
-
+@interface LPBusinessReviewWageVC ()<UIPickerViewDelegate,UIPickerViewDataSource,UIImagePickerControllerDelegate,UINavigationControllerDelegate,HXPhotoViewDelegate,HXAlbumListViewControllerDelegate,UITextFieldDelegate>
 
 @property(nonatomic,strong) UIView *popView;
 @property(nonatomic,strong) UIView *bgView;
@@ -25,21 +22,11 @@ static const CGFloat kPhotoViewMargin = 13.0;
 
 @property(nonatomic,strong) NSArray *pickerArray;
 
-//@property(nonatomic,strong) NSArray *p1Array;
-@property(nonatomic,strong) NSArray *p2Array;
+
 @property(nonatomic,assign) NSInteger select1;
 
-@property(nonatomic,strong) UILabel *cengzaizhiLabel;
-@property(nonatomic,strong) NSString *cengzaizhi;
 
-@property(nonatomic,strong) UIView *monthView;
-@property(nonatomic,strong) UIView *monthBackView;
-@property(nonatomic,strong) NSMutableArray <UIButton *>*monthButtonArray;
-@property(nonatomic,assign) NSInteger month;
 
-@property(nonatomic,strong) UILabel *xinziLabel;
-@property(nonatomic,strong) UITextField *yinfaTF;
-@property(nonatomic,strong) UITextField *shifaTF;
 
 @property(nonatomic,assign) NSInteger selectIndex;
 
@@ -56,7 +43,15 @@ static const CGFloat kPhotoViewMargin = 13.0;
 
 @property (nonatomic,strong) UIView *ToolTextView;
 
-@property(nonatomic,strong) LPMechanismModel *TypeList;
+@property(nonatomic,strong) NSArray *TypeList;
+
+@property (weak, nonatomic) IBOutlet UILabel *MechanisNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *PostLabel;
+@property (weak, nonatomic) IBOutlet UILabel *MonthLabel;
+@property (weak, nonatomic) IBOutlet UITextField *idealMoneyTF;
+@property (weak, nonatomic) IBOutlet UITextField *salaryMonthTF;
+
+
 
 @end
 
@@ -69,53 +64,30 @@ static const CGFloat kPhotoViewMargin = 13.0;
     self.navigationItem.title = @"晒工资";
     self.userUrl = @"";
     [self setTextFieldView];
+ 
+    self.idealMoneyTF.delegate = self;
+    self.salaryMonthTF.delegate = self;
+    self.idealMoneyTF.inputAccessoryView = self.ToolTextView;
+    self.salaryMonthTF.inputAccessoryView = self.ToolTextView;
 
-    NSDate *currentDate = [NSDate date];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-
-    [dateFormatter setDateFormat:@"MM"];
-    self.month = [dateFormatter stringFromDate:currentDate].integerValue;
+    self.MechanisNameLabel.text = self.mechanismlistDataModel.mechanismName;
+ 
     
-//    self.tableview.backgroundColor = [UIColor redColor];
-    [self.view addSubview:self.tableview];
-    [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.view);
-
-    }];
-    
-    
-    UIImageView *headImgView = [[UIImageView alloc]initWithFrame:CGRectMake(13, 256, SCREEN_WIDTH - kPhotoViewMargin * 2, 100)];
-    headImgView.backgroundColor = [UIColor clearColor];
-    headImgView.layer.borderColor = [UIColor lightGrayColor].CGColor;
-    headImgView.layer.borderWidth = 0.5;
-    headImgView.contentMode = UIViewContentModeScaleAspectFill;
-    headImgView.clipsToBounds = YES;
-    
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake((SCREEN_WIDTH - 130)/2+30,256+ 35, 100, 30)];
-    label.text = @"工资单上传";
-    UIImageView *imageview = [[UIImageView alloc] initWithFrame:CGRectMake((SCREEN_WIDTH - 130)/2,256+ 35, 30, 30)];
-    imageview.image = [UIImage imageNamed:@"NoImage"];
-    [self.view addSubview:label];
-    [self.view addSubview:imageview];
-    [self.view addSubview:headImgView];
-
-    headImgView.layer.masksToBounds = YES;
-    headImgView.userInteractionEnabled = YES;
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tuchHeadImgView)];
-    [headImgView addGestureRecognizer:tap];
-    self.headImgView = headImgView;
-    
-    [self setLogoutButton];
-    
-    
-    
-    _photoView = [HXPhotoView photoManager:self.manager];
-    _photoView.lineCount = 3;
-    _photoView.delegate = self;
+    HXPhotoView *photoView = [HXPhotoView photoManager:self.manager];
+    photoView.lineCount = 1;
+    photoView.delegate = self;
+    photoView.addImageName = @"upload";
     //    photoView.showAddCell = NO;
-    _photoView.backgroundColor = [UIColor whiteColor];
-
-    [self requestUserMaterialSelectMechanism];
+    photoView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:photoView];
+    self.photoView = photoView;
+    [photoView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.mas_equalTo(LENGTH_SIZE(-13));
+        make.top.equalTo(self.salaryMonthTF.mas_bottom).offset(LENGTH_SIZE(16));
+        make.width.height.mas_equalTo(LENGTH_SIZE(114));
+    }];
+    [self.photoView refreshView];
+    [self requestQueryGetMechanismTypeList];
 
     
     
@@ -167,45 +139,87 @@ static const CGFloat kPhotoViewMargin = 13.0;
 
 
 
-
--(void)setLogoutButton{
-    UIButton *button = [[UIButton alloc]init];
-    [self.view addSubview:button];
-    [button mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(14);
-        make.right.mas_equalTo(-14);
-        make.height.mas_equalTo(48);
-        make.bottom.mas_equalTo(-60);
-    }];
-    [button setTitle:@"提交" forState:UIControlStateNormal];
-    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    button.backgroundColor = [UIColor baseColor];
-    button.layer.masksToBounds = YES;
-    button.layer.cornerRadius = 5.0;
-    [button addTarget:self action:@selector(touchLogoutButton) forControlEvents:UIControlEventTouchUpInside];
+#pragma mark - tagter
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    //这里的if时候为了获取删除操作,如果没有次if会造成当达到字数限制后删除键也不能使用的后果.
+    if (range.length == 1 && string.length == 0) {
+        return YES;
+    }
+    NSString * str = [NSString stringWithFormat:@"%@%@",textField.text,string];
+    //匹配以0开头的数字
+    NSPredicate * predicate0 = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",@"^[0][0-9]+$"];
+    //匹配两位小数、整数
+    NSPredicate * predicate1 = [NSPredicate predicateWithFormat:@"SELF MATCHES %@",@"^(([1-9]{1}[0-9]*|[0])\.?[0-9]{0,2})$"];
+    return ![predicate0 evaluateWithObject:str] && [predicate1 evaluateWithObject:str] && str.length <=7? YES : NO;
 }
 
--(void)touchLogoutButton
-{
-    if (self.yinfaTF.text.length == 0)
+
+
+- (IBAction)TouchButtonAlert:(id)sender {
+    [self TouchTextCancel:nil];
+    [self alertView];
+//    [[ZMCusCommentManager shareManager] showCommentWithSourceId:nil];
+
+}
+
+- (IBAction)touchButtonMonth:(id)sender {
+    [self TouchTextCancel:nil];
+    NSComparisonResult sCOM= [[NSDate date] compare:[DataTimeTool dateFromString:@"2018-01" DateFormat:@"yyyy-MM"]];
+    
+    if (sCOM == NSOrderedAscending) {
+        
+        GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"系统时间不对,请前往设置修改时间" message:nil textAlignment:0 buttonTitles:@[@"确定"] buttonsColor:@[[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
+            
+            [self.navigationController popViewControllerAnimated:YES];
+            
+        }];
+        [alert show];
+        return;
+    }
+    
+    QFDatePickerView *datePickerView = [[QFDatePickerView  alloc]initDatePackerWith:[NSDate date]
+                                                                            minDate:[DataTimeTool dateFromString:@"2018-01" DateFormat:@"yyyy-MM"]
+                                                                            maxDate:[NSDate date]
+                                                                           Response:^(NSString *str) {
+                                                                               NSLog(@"str = %@", str);
+                                                                               NSString *Month = [DataTimeTool getDataTime:str DateFormat:@"yyyy年MM月" oldDateFormat:@"yyyy-MM"];
+                                                                               self.MonthLabel.text = Month;
+                                                                               self.MonthLabel.textColor = [UIColor colorWithHexString:@"#333333"];
+                                                                           }];
+    [datePickerView show];
+}
+
+- (IBAction)TouchLogoutButton:(id)sender {
+    
+    if ([self.PostLabel.text isEqualToString:@"请选择岗位"]) {
+        [self.view showLoadingMeg:@"请选择您的岗位" time:MESSAGE_SHOW_TIME];
+        return;
+    }
+    
+    if ([self.MonthLabel.text isEqualToString:@"请选择薪资月份"]) {
+        [self.view showLoadingMeg:@"请选择薪资月份" time:MESSAGE_SHOW_TIME];
+        return;
+    }
+    
+    if (self.idealMoneyTF.text.floatValue == 0)
     {
         [self.view showLoadingMeg:@"请输入应发工资" time:MESSAGE_SHOW_TIME];
         return;
     }
-    if (self.shifaTF.text.length == 0)
+    if (self.salaryMonthTF.text.floatValue == 0)
     {
         [self.view showLoadingMeg:@"请输入实发工资" time:MESSAGE_SHOW_TIME];
         return;
     }
     
-    NSString *str =[self.xinziLabel.text stringByReplacingOccurrencesOfString:@"月份" withString:@""];
     
     NSDictionary *dic = @{
-                          @"idealMoney":[LPTools isNullToString:self.yinfaTF.text],
-                          @"payrollUrl":[LPTools isNullToString:self.userUrl],
-                          @"post":[LPTools isNullToString:self.cengzaizhiLabel.text],
-                          @"realMoney":[LPTools isNullToString:self.shifaTF.text],
-                          @"salaryMonth":[LPTools isNullToString:str],
+                          @"idealMoney":[LPTools isNullToString:self.idealMoneyTF.text],
+                          @"payrollUrl":self.userUrl,
+                          @"post":[LPTools isNullToString:self.PostLabel.text],
+                          @"realMoney":[LPTools isNullToString:self.salaryMonthTF.text],
+                          @"salaryMonth":self.MonthLabel.text,
                           @"mechanismId":self.mechanismlistDataModel.id
                           };
     
@@ -216,11 +230,9 @@ static const CGFloat kPhotoViewMargin = 13.0;
             if ([responseObject[@"code"] integerValue] == 0) {
                 if ([responseObject[@"data"] integerValue]== 1)
                 {
-                    [self.view showLoadingMeg:@"发送成功" time:MESSAGE_SHOW_TIME];
-                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                        [self.navigationController popViewControllerAnimated:YES];
-                    });
-                }else{
+                    [[UIApplication sharedApplication].keyWindow showLoadingMeg:@"提交成功，等待系统审核！" time:MESSAGE_SHOW_TIME];
+                         [self.navigationController popViewControllerAnimated:YES];
+                 }else{
                     [self.view showLoadingMeg:@"发送失败,请稍后再试" time:MESSAGE_SHOW_TIME];
                 }
             }else{
@@ -233,37 +245,8 @@ static const CGFloat kPhotoViewMargin = 13.0;
     }];
 }
 
+
 #pragma mark lazy
-- (UITableView *)tableview{
-    if (!_tableview) {
-        _tableview = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStylePlain];
-        _tableview.delegate = self;
-        _tableview.dataSource = self;
-        _tableview.scrollEnabled = NO;
-//        _tableview.tableFooterView = [[UIView alloc]init];
-//        _tableview.rowHeight = UITableViewAutomaticDimension;
-//        _tableview.estimatedRowHeight = 0.0;
-        _tableview.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-        _tableview.separatorColor = [UIColor colorWithHexString:@"#F1F1F1"];
-        _tableview.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
-//        _tableview.tableHeaderView = self.tableHeaderView;
-        _tableview.separatorStyle = UITableViewCellEditingStyleNone;
-        _tableview.estimatedSectionHeaderHeight = 0;
-        
-    }
-    return _tableview;
-}
-
--(UIView *)tableHeaderView{
-    if (!_tableHeaderView){
-        _tableHeaderView = [[UIView alloc]init];
-        _tableHeaderView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 0);
-        
-    }
-    return _tableHeaderView;
-}
-
-
 - (HXPhotoManager *)manager {
     if (!_manager) {
         _manager = [[HXPhotoManager alloc] initWithType:HXPhotoManagerSelectedTypePhoto];
@@ -289,106 +272,8 @@ static const CGFloat kPhotoViewMargin = 13.0;
     return _toolManager;
 }
 
-#pragma mark - TableViewDelegate & Datasource
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 5;
-}
 
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return  44.0;
-}
-
-
-- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    static NSString *rid=@"cell";
-    //    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:rid];
-    //    if(cell == nil){
-    UITableViewCell *cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rid];
-    //    }
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.textLabel.font = [UIFont systemFontOfSize:16];
-    cell.textLabel.textColor = [UIColor colorWithHexString:@"#434343"];
-    
-    if (indexPath.row == 0) {
-        cell.textLabel.text = @"企业名称：";
-        UITextField *textField = [[UITextField alloc]init];
-        textField.frame = CGRectMake(120, 5, SCREEN_WIDTH-130, 34);
-        textField.text = self.mechanismlistDataModel.mechanismName;
-        textField.textAlignment = NSTextAlignmentRight;
-        textField.textColor = [UIColor colorWithHexString:@"#434343"];
-        textField.enabled = NO;
-//        [textField addTarget:self action:@selector(textFieldChanged:) forControlEvents:UIControlEventEditingChanged];
-//        self.userName = self.userMaterialModel.data.user_name;
-        [cell.contentView addSubview:textField];
-    }else if (indexPath.row == 1){
-        cell.textLabel.text = @"您的岗位：";
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        UILabel *label = [[UILabel alloc]init];
-        label.frame = CGRectMake(110, 5, SCREEN_WIDTH-140, 34);
-        label.textColor = [UIColor colorWithHexString:@"#434343"];
-        label.font = [UIFont systemFontOfSize:16];
-        label.textAlignment = NSTextAlignmentRight;
-        [cell.contentView addSubview:label];
-//        label.text = self.userMaterialModel.data.work_type;
-        self.cengzaizhiLabel = label;
-    }else if (indexPath.row == 2){
-        cell.textLabel.text = @"薪资月份：";
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        UILabel *label = [[UILabel alloc]init];
-        label.frame = CGRectMake(100, 5, SCREEN_WIDTH-140, 34);
-        label.textColor = [UIColor colorWithHexString:@"#434343"];
-        label.font = [UIFont systemFontOfSize:16];
-//        label.text = self.userMaterialModel.data.ideal_money;
-        label.textAlignment = NSTextAlignmentRight;
-        [cell.contentView addSubview:label];
-        self.xinziLabel = label;
-    }else if (indexPath.row == 3){
-        cell.textLabel.text = @"应发工资：";
-        UITextField *textField = [[UITextField alloc]init];
-        textField.frame = CGRectMake(120, 5, SCREEN_WIDTH-140, 34);
-        textField.textAlignment = NSTextAlignmentRight;
-        textField.keyboardType = UIKeyboardTypePhonePad;
-        textField.textColor = [UIColor colorWithHexString:@"#434343"];
-        //        [textField addTarget:self action:@selector(textFieldChanged:) forControlEvents:UIControlEventEditingChanged];
-        //        self.userName = self.userMaterialModel.data.user_name;
-        self.yinfaTF = textField;
-        textField.inputAccessoryView = self.ToolTextView;
-        [cell.contentView addSubview:textField];
-    }else if (indexPath.row == 4){
-        cell.textLabel.text = @"实发工资：";
-        UITextField *textField = [[UITextField alloc]init];
-        textField.frame = CGRectMake(120, 5, SCREEN_WIDTH-140, 34);
-        textField.textAlignment = NSTextAlignmentRight;
-        textField.keyboardType = UIKeyboardTypePhonePad;
-        textField.textColor = [UIColor colorWithHexString:@"#434343"];
-        //        [textField addTarget:self action:@selector(textFieldChanged:) forControlEvents:UIControlEventEditingChanged];
-        //        self.userName = self.userMaterialModel.data.user_name;
-        self.shifaTF = textField;
-        textField.inputAccessoryView = self.ToolTextView;
-
-        [cell.contentView addSubview:textField];
-    }
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 43, SCREEN_WIDTH, 0.5)];
-    view.backgroundColor = [UIColor colorWithHexString:@"#FFC1C1C1"];
-    [cell.contentView addSubview:view];
-    
-    return cell;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (indexPath.row == 1 ) {
-        self.selectIndex = indexPath.row;
-        [self alertView:indexPath.row];
-    }
-    else if (indexPath.row == 2)
-    {
-        [self chooseMonth];
-    }
-}
-
--(void)alertView:(NSInteger)index{
+-(void)alertView{
     self.bgView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
     self.bgView.backgroundColor = [UIColor lightGrayColor];
     self.bgView.alpha = 0;
@@ -401,12 +286,7 @@ static const CGFloat kPhotoViewMargin = 13.0;
     self.popView.backgroundColor = [UIColor whiteColor];
     [[UIApplication sharedApplication].keyWindow addSubview:self.popView];
     
-    UILabel *label = [[UILabel alloc]init];
-    label.frame = CGRectMake(0, 10, SCREEN_WIDTH, 20);
-    label.font = [UIFont systemFontOfSize:16];
-    label.textAlignment = NSTextAlignmentCenter;
-//    [self.popView addSubview:label];
-    
+  
     UIButton *cancelButton = [[UIButton alloc]initWithFrame:CGRectMake(0,  10, SCREEN_WIDTH/2, 20)];
     cancelButton.titleLabel.font = [UIFont systemFontOfSize:18];
     [cancelButton setTitle:@"取消" forState:UIControlStateNormal];
@@ -425,25 +305,15 @@ static const CGFloat kPhotoViewMargin = 13.0;
     confirmButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     confirmButton.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 20);
     [self.popView addSubview:confirmButton];
+    UIPickerView *pickerView = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 30, SCREEN_WIDTH, SCREEN_HEIGHT/3-30)];
+    pickerView.backgroundColor = [UIColor whiteColor];
+    pickerView.delegate = self;
+    pickerView.dataSource = self;
+    [self.popView addSubview:pickerView];
+    self.pickerView = pickerView;
+    [self.pickerView reloadAllComponents];
     
-    if (index == 1 ){
-        
-        label.text = @"您的岗位";
-        UIPickerView *pickerView = [[UIPickerView alloc]initWithFrame:CGRectMake(0, 30, SCREEN_WIDTH, SCREEN_HEIGHT/3-30)];
-        pickerView.backgroundColor = [UIColor whiteColor];
-        pickerView.delegate = self;
-        pickerView.dataSource = self;
-        [self.popView addSubview:pickerView];
-        self.pickerView = pickerView;
-//        self.p1Array = @[@{@"服装厂":@[@"普工",@"服装新手",@"服装大师"]},
-//                         @{@"电子厂":@[@"普工",@"司机",@"叉车工",@"仓管员"]},
-//                         @{@"纺织厂":@[@"普工",@"纺织新手",@"纺织大师"]},
-//                         @{@"鞋厂":@[@"普工",@"运动鞋工",@"休闲鞋工",@"皮鞋工"]},
-//                         @{@"挖掘厂":@[@"普工",@"挖掘大师"]},
-//                         @{@"食品厂":@[@"普工",@"吃货",@"吃货大师"]}];
-        self.cengzaizhi = [NSString stringWithFormat:@"%@-%@",self.TypeList.data[0].mechanismTypeName,self.TypeList.data[0].workTypeList[0].workTypeName ];
-        [self.pickerView reloadAllComponents];
-    }
+    [pickerView selectRow:self.select1 inComponent:0 animated:YES];
     
     [UIView animateWithDuration:0.5 animations:^{
         self.popView.frame = CGRectMake(0, SCREEN_HEIGHT - self.popView.frame.size.height, SCREEN_HEIGHT, SCREEN_HEIGHT/3);
@@ -455,39 +325,24 @@ static const CGFloat kPhotoViewMargin = 13.0;
 
 
 -(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
-        return 2;
+        return 1;
 }
 -(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
-        if (component == 0) {
-            return self.TypeList.data.count;
-        }else{
-            return self.TypeList.data[self.select1].workTypeList.count;
-        }
- 
+    return self.TypeList.count;
 }
 - (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view{
     if (!view){
         view = [[UIView alloc]init];
     }
     
-        UILabel *text = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width/2, 20)];
+        UILabel *text = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 20)];
         text.textAlignment = NSTextAlignmentCenter;
-//        NSMutableArray *a = [NSMutableArray array];
-//        for (NSDictionary *dic in self.p1Array) {
-//            [a addObject:[dic allKeys][0]];
-//        }
-        if (component == 0) {
-//            text.text = a[row];
-            text.text = self.TypeList.data[row].mechanismTypeName;
-        }else{
-//            NSArray *arr = [(NSDictionary *)self.p1Array[self.select1] allValues][0];
-            text.text = self.TypeList.data[self.select1].workTypeList[row].workTypeName;
-        }
+        text.text = self.TypeList[row];
         [view addSubview:text];
   
-    //隐藏上下直线
-    [self.pickerView.subviews objectAtIndex:1].backgroundColor = [UIColor clearColor];
-    [self.pickerView.subviews objectAtIndex:2].backgroundColor = [UIColor clearColor];
+//    //隐藏上下直线
+//    [self.pickerView.subviews objectAtIndex:1].backgroundColor = [UIColor clearColor];
+//    [self.pickerView.subviews objectAtIndex:2].backgroundColor = [UIColor clearColor];
     return view;
 }
 //显示的标题
@@ -503,26 +358,12 @@ static const CGFloat kPhotoViewMargin = 13.0;
     return AttributedString;
 }
 
-//被选择的行
--(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
-        if (component == 0) {
-            self.select1 = [pickerView selectedRowInComponent:0];
-            [pickerView reloadComponent:1];
-        }
-    
-        NSString *s = self.TypeList.data[self.select1].mechanismTypeName;
-
-        NSInteger cityIndex = [pickerView selectedRowInComponent:1];
-        NSString *cityName = self.TypeList.data[self.select1].workTypeList[cityIndex].workTypeName;
-        self.cengzaizhi = [NSString stringWithFormat:@"%@-%@",s,cityName];
-
-}
 
 -(void)confirmBirthday{
-   
-    if(self.selectIndex == 1){
-        self.cengzaizhiLabel.text = self.cengzaizhi;
-    }
+    self.select1 = [self.pickerView selectedRowInComponent:0];
+
+    self.PostLabel.text = self.TypeList[self.select1];
+    self.PostLabel.textColor = [UIColor colorWithHexString:@"#333333"];
     [self removeView];
 }
 
@@ -537,236 +378,22 @@ static const CGFloat kPhotoViewMargin = 13.0;
     }];
 }
 
--(UIView *)monthView{
-    if (!_monthView) {
-        _monthView = [[UIView alloc]init];
-        [self.view addSubview:_monthView];
-        [_monthView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.mas_equalTo(0);
-            make.right.mas_equalTo(0);
-            make.top.mas_equalTo(0);
-            make.bottom.mas_equalTo(200);
-        }];
-        _monthView.backgroundColor = [UIColor blackColor];
-        _monthView.alpha = 0.5;
-        _monthView.userInteractionEnabled = YES;
-        _monthView.hidden = YES;
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(monthViewHidden)];
-        [_monthView addGestureRecognizer:tap];
-        
-        
-        self.monthBackView = [[UIView alloc]init];
-        [self.view addSubview:self.monthBackView];
-        [self.monthBackView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.mas_equalTo(0);
-            make.right.mas_equalTo(0);
-//            make.top.mas_equalTo(48);
-            make.bottom.mas_equalTo(0);
-            make.height.mas_equalTo(200);
-        }];
-        self.monthBackView.hidden = YES;
-        self.monthBackView.backgroundColor = [UIColor whiteColor];
-        
-        self.monthButtonArray = [NSMutableArray array];
-        
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 30)];
-        label.textAlignment = NSTextAlignmentCenter;
-        label.text = @"请选择月份";
-        [self.monthBackView addSubview:label];
-        
-        for (int i = 0; i < 12; i++) {
-            UIView *view = [[UIView alloc]init];
-            view.frame = CGRectMake(i%4 * SCREEN_WIDTH/4, floor(i/4)*51+30, SCREEN_WIDTH/4, 51);
-            view.backgroundColor = [UIColor whiteColor];
-            [self.monthBackView addSubview:view];
+#pragma mark - HXPhotoViewDelegate
+
+-(void)photoView:(HXPhotoView *)photoView changeComplete:(NSArray<HXPhotoModel *> *)allList photos:(NSArray<HXPhotoModel *> *)photos videos:(NSArray<HXPhotoModel *> *)videos original:(BOOL)isOriginal{
+ 
+        [self.toolManager getSelectedImageList:photos requestType:HXDatePhotoToolManagerRequestTypeOriginal success:^(NSArray<UIImage *> *imageList) {
+            self.userUrl= @"";
+            if (imageList.count > 0) {
+                 [self updateHeadImage:imageList[0]];
+             }
+        } failed:^{
             
-            UIButton *button = [[UIButton alloc]init];
-            [view addSubview:button];
-            button.frame = CGRectMake((SCREEN_WIDTH/4-41)/2, 5, 41, 41);
-            button.backgroundColor = [UIColor colorWithHexString:@"#EEEEEE"];
-            [button setTitle:[NSString stringWithFormat:@"%d",i+1] forState:UIControlStateNormal];
-            [button setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
-            [button setTitleColor:[UIColor colorWithHexString:@"#939393"] forState:UIControlStateNormal];
-            button.titleLabel.font = [UIFont systemFontOfSize:16];
-            button.layer.masksToBounds = YES;
-            button.layer.cornerRadius = 20.5;
-            button.tag = i;
-            [self.monthButtonArray addObject:button];
-            [button addTarget:self action:@selector(touchMonthButton:) forControlEvents:UIControlEventTouchUpInside];
-        }
-        self.monthButtonArray[self.month-1].selected = YES;
-        self.monthButtonArray[self.month-1].backgroundColor = [UIColor baseColor];
-        
-    }
-    return _monthView;
-    
-}
-
--(void)chooseMonth{
-    self.monthView.hidden = !self.monthView.isHidden;
-    self.monthBackView.hidden = !self.monthBackView.isHidden;
-}
--(void)monthViewHidden{
-    self.monthView.hidden = YES;
-    self.monthBackView.hidden = YES;
-}
--(void)touchMonthButton:(UIButton *)button{
-
-    _xinziLabel.text = [NSString stringWithFormat:@"%@月份",button.currentTitle];
-
-    for (UIButton *button in self.monthButtonArray) {
-        button.selected = NO;
-        button.backgroundColor = [UIColor colorWithHexString:@"#EEEEEE"];
-    }
-    button.selected = YES;
-    button.backgroundColor = [UIColor baseColor];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.05 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self monthViewHidden];
-    });
-//    [self requestGetOnWork];
-    
-}
-
-
--(void)tuchHeadImgView{
-    
-    
-    HXAlbumListViewController *vc = [[HXAlbumListViewController alloc] init];
-    vc.manager = self.manager;
-    vc.delegate = self;
-    HXCustomNavigationController *nav = [[HXCustomNavigationController alloc] initWithRootViewController:vc];
-    nav.supportRotation = self.manager.configuration.supportRotation;
-    [self  presentViewController:nav animated:YES completion:nil];
-//    [_photoView directGoPhotoViewController];
-//
-//    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
-//                                                                             message:nil
-//                                                                      preferredStyle:UIAlertControllerStyleActionSheet];
-//    [alertController addAction:[UIAlertAction actionWithTitle:@"拍照"
-//                                                        style:UIAlertActionStyleDefault
-//                                                      handler:^(UIAlertAction * _Nonnull action) {
-//
-//#if (TARGET_IPHONE_SIMULATOR)
-//
-//#else
-//                                                          [self takePhoto];
-//#endif
-//
-//                                                      }]];
-//    [alertController addAction:[UIAlertAction actionWithTitle:@"从相册中选择"
-//                                                        style:UIAlertActionStyleDefault
-//                                                      handler:^(UIAlertAction * _Nonnull action) {
-//                                                          [self choosePhoto];
-//                                                      }]];
-//    [alertController addAction:[UIAlertAction actionWithTitle:@"取消"
-//                                                        style:UIAlertActionStyleCancel
-//                                                      handler:^(UIAlertAction * _Nonnull action) {
-//
-//                                                      }]];
-//    [self presentViewController:alertController animated:YES completion:nil];
-    
-}
-
-#pragma mark - < HXAlbumListViewControllerDelegate >
-- (void)albumListViewController:(HXAlbumListViewController *)albumListViewController didDoneAllImage:(NSArray<UIImage *> *)imageList {
-//    self.imageList = [NSMutableArray arrayWithArray:imageList];
-//    if ([self.delegate respondsToSelector:@selector(photoView:imageChangeComplete:)]) {
-//        [self.delegate photoView:self imageChangeComplete:imageList];
-//    }
-//    if (self.imageChangeCompleteBlock) {
-//        self.imageChangeCompleteBlock(imageList);
-//    }
-}
-
-- (void)albumListViewController:(HXAlbumListViewController *)albumListViewController didDoneAllList:(NSArray<HXPhotoModel *> *)allList photos:(NSArray<HXPhotoModel *> *)photoList videos:(NSArray<HXPhotoModel *> *)videoList original:(BOOL)original{
-    [self.toolManager getSelectedImageList:allList requestType:HXDatePhotoToolManagerRequestTypeOriginal success:^(NSArray<UIImage *> *imageList) {
-        if (imageList.count > 0) {
-            [self performSelector:@selector(saveImage:)  withObject:imageList[0] afterDelay:0.5];
-        }
-    } failed:^{
-        
-    }];
-}
-
-#pragma mark - UIImagePickerControllerDelegate
--(void)takePhoto{
-    AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
-    if (authStatus == AVAuthorizationStatusRestricted || authStatus ==AVAuthorizationStatusDenied){
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"请进入设置-隐私-相机-中打开相机权限"
-                                                                       message:nil
-                                                                preferredStyle:UIAlertControllerStyleAlert];
-        
-        UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-            nil;
         }];
-        UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"好" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
-        }];
-        [alert addAction:action1];
-        [alert addAction:action2];
-        [self presentViewController:alert animated:YES completion:nil];
-        
-        
-        return;
-    }
-    
-    
-    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-    imagePicker.delegate = self;
-    imagePicker.allowsEditing = YES;
-    imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
-    [self presentViewController:imagePicker animated:YES completion:nil];
-}
--(void)choosePhoto{
-    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-    imagePicker.delegate = self;
-    imagePicker.allowsEditing = YES;
-    imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-    [self presentViewController:imagePicker animated:YES completion:nil];
-}
-#pragma mark - UIImagePickerControllerDelegate
-
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
-{
-    if ([[info objectForKey:UIImagePickerControllerMediaType] isEqualToString:(__bridge NSString *)kUTTypeImage]) {
-        UIImage *img = [info objectForKey:UIImagePickerControllerEditedImage];
-        [self performSelector:@selector(saveImage:)  withObject:img afterDelay:0.5];
-    }
-    [picker dismissViewControllerAnimated:YES completion:nil];
-}
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
-{
-    //    [picker dismissModalViewControllerAnimated:YES];
-    [picker dismissViewControllerAnimated:YES completion:nil];
+ 
+ 
 }
 
-- (void)saveImage:(UIImage *)image {
-
-    BOOL success;
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSError *error;
-    
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *imageFilePath = [documentsDirectory stringByAppendingPathComponent:@"headImage.jpg"];
-    NSLog(@"imageFile->>%@",imageFilePath);
-    success = [fileManager fileExistsAtPath:imageFilePath];
-    if(success) {
-        success = [fileManager removeItemAtPath:imageFilePath error:&error];
-    }
-    [UIImageJPEGRepresentation(image, 1.0f) writeToFile:imageFilePath atomically:YES];//写入文件
-    UIImage *headImage = [UIImage imageWithContentsOfFile:imageFilePath];//读取图片文件
-    [self updateHeadImage:headImage];
-}
-// 改变图像的尺寸，方便上传服务器
-- (UIImage *) scaleFromImage: (UIImage *) image toSize: (CGSize) size
-{
-    UIGraphicsBeginImageContext(size);
-    [image drawInRect:CGRectMake(0, 0, size.width, size.height)];
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return newImage;
-}
 
 #pragma mark - updateImage
 -(void)updateHeadImage:(UIImage *)image{
@@ -782,17 +409,15 @@ static const CGFloat kPhotoViewMargin = 13.0;
         }
     }];
 }
--(void)setTypeList:(LPMechanismModel *)TypeList{
-    _TypeList = TypeList;
-    
-}
--(void)requestUserMaterialSelectMechanism{
-    NSDictionary *dic = @{};
-    [NetApiManager requestUserMaterialSelectMechanism:dic withHandle:^(BOOL isSuccess, id responseObject) {
+
+
+-(void)requestQueryGetMechanismTypeList{
+    NSDictionary *dic = @{@"mechanismId":self.mechanismlistDataModel.id};
+    [NetApiManager requestQueryGetMechanismTypeList:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
-                self.TypeList = [LPMechanismModel mj_objectWithKeyValues:responseObject];
+                self.TypeList = [responseObject[@"data"] mj_JSONObject];
             }else{
                 [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }

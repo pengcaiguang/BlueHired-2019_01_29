@@ -25,7 +25,7 @@
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qTu-sy-ZgG">
                                 <rect key="frame" x="13" y="20" width="80" height="60"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QO3-2d-Qat">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QO3-2d-Qat">
                                         <rect key="frame" x="0.0" y="0.0" width="80" height="60"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="6"/>
@@ -76,14 +76,14 @@
                                 <color key="textColor" red="0.23529411759999999" green="0.68627450980000004" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="已招满" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3lj-ap-g6s">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="待招聘" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3lj-ap-g6s">
                                 <rect key="frame" x="145" y="71.5" width="40" height="13.5"/>
-                                <color key="backgroundColor" red="0.8980392157" green="0.96078431369999995" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="1" green="0.5568627451" blue="0.34901960780000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="40" id="fb1-dD-lHH"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                <color key="textColor" red="0.23529411759999999" green="0.68627450980000004" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="2"/>
@@ -127,36 +127,39 @@
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="招聘状态:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qDV-NS-cNJ">
                                 <rect key="frame" x="13" y="8" width="294" height="23"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="23" id="Nsf-iB-8vx"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="招聘状态:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Exv-eb-1nu">
-                                <rect key="frame" x="13" y="31" width="294" height="22.5"/>
+                                <rect key="frame" x="13" y="31" width="294" height="23"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="招聘状态:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FDQ-kX-ZeC">
-                                <rect key="frame" x="13" y="53.5" width="61.5" height="23"/>
+                                <rect key="frame" x="13" y="54" width="61.5" height="23"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="招聘状态:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xn5-gg-a6a">
-                                <rect key="frame" x="13" y="99" width="294" height="23"/>
+                                <rect key="frame" x="13" y="100" width="294" height="23"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="招聘状态:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tli-UI-6PP">
-                                <rect key="frame" x="13" y="76.5" width="294" height="22.5"/>
+                                <rect key="frame" x="13" y="77" width="294" height="23"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qI9-H7-Blh">
-                                <rect key="frame" x="82.5" y="56.5" width="56" height="17"/>
+                                <rect key="frame" x="82.5" y="57" width="56" height="17"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="56" id="dLT-za-JVV"/>
                                 </constraints>
@@ -189,7 +192,6 @@
                             <constraint firstItem="qI9-H7-Blh" firstAttribute="leading" secondItem="FDQ-kX-ZeC" secondAttribute="trailing" constant="8" id="a1R-LD-Eua"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="qI9-H7-Blh" secondAttribute="trailing" constant="13" id="fQS-qc-XWh"/>
                             <constraint firstItem="qDV-NS-cNJ" firstAttribute="leading" secondItem="Rup-nc-ohu" secondAttribute="leading" constant="13" id="kBc-TZ-CPJ"/>
-                            <constraint firstAttribute="bottom" secondItem="xn5-gg-a6a" secondAttribute="bottom" constant="8" id="pll-Pt-9Ju"/>
                             <constraint firstItem="Exv-eb-1nu" firstAttribute="height" secondItem="qDV-NS-cNJ" secondAttribute="height" id="qyZ-6A-3l2"/>
                             <constraint firstItem="tli-UI-6PP" firstAttribute="height" secondItem="qDV-NS-cNJ" secondAttribute="height" id="r2S-sr-HzI"/>
                             <constraint firstItem="xn5-gg-a6a" firstAttribute="top" secondItem="tli-UI-6PP" secondAttribute="bottom" id="suS-oD-Rxm"/>
@@ -263,6 +265,7 @@
             <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
             <connections>
+                <outlet property="LayoutConstrain_BG_Height" destination="RZ2-ll-Af0" id="gsE-AW-Dcx"/>
                 <outlet property="ShareButton" destination="9cO-w9-2Qq" id="3iY-ko-gyn"/>
                 <outlet property="applyNumberLabel" destination="8hx-GY-uGV" id="ulm-dr-03J"/>
                 <outlet property="interviewTimeLabel" destination="Exv-eb-1nu" id="xFn-BY-gAp"/>

@@ -17,7 +17,7 @@
     [super awakeFromNib];
     // Initialization code
     self.userUrlImgView.layer.masksToBounds = YES;
-    self.userUrlImgView.layer.cornerRadius = 20;
+    self.userUrlImgView.layer.cornerRadius = LENGTH_SIZE(16);
     self.imageViewsRectArray = [NSMutableArray array];
  
 }
@@ -27,7 +27,7 @@
     [self.userUrlImgView sd_setImageWithURL:[NSURL URLWithString:model.userUrl] placeholderImage:[UIImage imageNamed:@"Head_image"]];
     self.userNameLabel.text = model.userName;
     self.commentContentLabel.text = model.commentContent;
-    self.commentContentLabel.lineBreakMode = NSLineBreakByCharWrapping;
+ 
 
     NSArray *array = [self getSeparatedLinesFromLabel:self.commentContentLabel];
     if (array.count>5) {
@@ -70,21 +70,22 @@
         }
         
         self.AllButton.hidden = NO;
-        self.LayoutConstraint_Label_Top.constant = 28;
+        self.LayoutConstraint_Label_Top.constant = LENGTH_SIZE(44);
         
     }else{
 //        NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:model.commentContent attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15.0], NSForegroundColorAttributeName:[UIColor blackColor]}];
 //        self.commentContentLabel.attributedText = attStr;
         self.AllButton.hidden = YES;
-        self.LayoutConstraint_Label_Top.constant = 8;
+        self.LayoutConstraint_Label_Top.constant = LENGTH_SIZE(14);
     }
     
-    self.workEnvironScoreLabel.text = [NSString stringWithFormat:@"工作环境：%@分",model.workEnvironScore];
-    self.sleepEnvironScoreLabel.text = [NSString stringWithFormat:@"住宿环境：%@分",model.sleepEnvironScore];
-    self.foodEnvironScoreLabel.text = [NSString stringWithFormat:@"餐饮环境：%@分",model.foodEnvironScore];
-    self.manageEnvironScoreLabel.text = [NSString stringWithFormat:@"餐饮环境：%@分",model.manageEnvironScore];
-    self.moneyEnvironScoreLabel.text = [NSString stringWithFormat:@"薪资福利：%@分",model.moneyEnvironScore];
-
+    self.workEnvironScoreLabel.text = [NSString stringWithFormat:@"工作环境：%.1f",model.workEnvironScore.floatValue];
+    self.sleepEnvironScoreLabel.text = [NSString stringWithFormat:@"住宿环境：%.1f",model.sleepEnvironScore.floatValue];
+    self.foodEnvironScoreLabel.text = [NSString stringWithFormat:@"餐饮环境：%.1f",model.foodEnvironScore.floatValue];
+    self.manageEnvironScoreLabel.text = [NSString stringWithFormat:@"餐饮环境：%.1f",model.manageEnvironScore.floatValue];
+    self.moneyEnvironScoreLabel.text = [NSString stringWithFormat:@"薪资福利：%.1f",model.moneyEnvironScore.floatValue];
+    self.perScoreLabel.text = [NSString stringWithFormat:@"%.1f",model.perScore.floatValue];
+    
     for (UIView *view in self.imageBgView.subviews) {
         [view removeFromSuperview];
     }
@@ -94,14 +95,15 @@
     }else{
         self.imageBgView.hidden = NO;
         NSArray *imageArray = [model.commentUrl componentsSeparatedByString:@";"];
-        CGFloat imgw = (SCREEN_WIDTH-28 - 10)/3;
-        CGFloat imageHeight = 260.0;
+        CGFloat imgw = (SCREEN_WIDTH- LENGTH_SIZE(57) -  LENGTH_SIZE(13))/3;
+        CGFloat imageHeight = LENGTH_SIZE(260.0);
 
         self.imageViewsRectArray = [NSMutableArray array];
         for (int i = 0; i < imageArray.count; i++) {
             UIImageView *imageView = [[UIImageView alloc]init];
-            imageView.frame = imageArray.count ==1?CGRectMake(0,0,imageHeight,imageHeight): CGRectMake((imgw + 5)* (i%3), floor(i/3)*(imgw + 5), imgw, imgw);
+            imageView.frame = imageArray.count ==1?CGRectMake(0,0,imageHeight,imageHeight): CGRectMake((imgw + LENGTH_SIZE(6))* (i%3), floor(i/3)*(imgw + LENGTH_SIZE(6)), imgw, imgw);
             imageView.contentMode = UIViewContentModeScaleAspectFill;
+            imageView.layer.cornerRadius = 6;
             imageView.clipsToBounds = YES;
        
             NSInteger  downWidth= imageView.frame.size.width +100;
@@ -112,7 +114,7 @@
                 imageStr = [NSString stringWithFormat:@"%@?imageView2/3/w/%ld/h/%ld/q/100",imageArray[i],(long)downWidth,(long)downWidth];
             }
             
-            [imageView yy_setImageWithURL:[NSURL URLWithString:imageStr]
+            [imageView yy_setImageWithURL:[NSURL URLWithString:[imageStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] ]
                               placeholder:[UIImage imageNamed:@"NoImage"]
                                   options:YYWebImageOptionProgressiveBlur | YYWebImageOptionShowNetworkActivity | YYWebImageOptionSetImageWithFadeAnimation
                                  progress:^(NSInteger receivedSize, NSInteger expectedSize) {
@@ -142,13 +144,11 @@
         if (imageArray.count ==1)
         {
             self.imageBgView_constraint_height.constant = imageHeight;
-//            self.imageBgView_constraint_right.constant = SCREEN_WIDTH-250-28;
-        }
+         }
         else
         {
-            self.imageBgView_constraint_height.constant = ceil(imageArray.count/3.0)*imgw + floor(imageArray.count/3)*5;
-//            self.imageBgView_constraint_right.constant = 14;
-         }
+            self.imageBgView_constraint_height.constant = ceil(imageArray.count/3.0)*imgw + floor(imageArray.count/3)*LENGTH_SIZE(6);
+          }
         
 //        self.imageBgView_constraint_height.constant = ceil(imageArray.count/3.0)*imgw + floor(imageArray.count/3)*5;
         
@@ -327,7 +327,8 @@
 
 - (NSArray *)getSeparatedLinesFromLabel:(UILabel *)label
 {
-    NSMutableParagraphStyle *paraStyle01 = [[NSMutableParagraphStyle alloc] init];  paraStyle01.lineBreakMode = NSLineBreakByCharWrapping;
+    NSMutableParagraphStyle *paraStyle01 = [[NSMutableParagraphStyle alloc] init];
+//    paraStyle01.lineBreakMode = NSLineBreakByCharWrapping;
     NSDictionary *attributes = @{ NSParagraphStyleAttributeName:paraStyle01,
                                   };
     
@@ -349,7 +350,7 @@
     
     CGMutablePathRef path = CGPathCreateMutable();
     //    CGPathAddRect(path, NULL, CGRectMake(0,0,rect.size.width,100000));
-    CGPathAddRect(path, NULL, CGRectMake(0,0,SCREEN_WIDTH-26,100000));
+    CGPathAddRect(path, NULL, CGRectMake(0,0,SCREEN_WIDTH - LENGTH_SIZE(70),100000));
     
     CTFrameRef frame = CTFramesetterCreateFrame(frameSetter, CFRangeMake(0, 0), path, NULL);
     

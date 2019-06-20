@@ -177,109 +177,15 @@
                                                       buttonTitles:@[]
                                                       buttonsColor:@[[UIColor baseColor]]
                                                        buttonClick:^(NSInteger buttonIndex, NSString *string) {
-                                                           
-                                                           NSString *passwordmd5 = [string md5];
-                                                           NSString *newPasswordmd5 = [[NSString stringWithFormat:@"%@lanpin123.com",passwordmd5] md5];
-                                                           
-                                                           NSDictionary *dic = @{@"bankName":self.model.data.bankName,
-                                                                                 @"bankNum":self.model.data.bankNumber,
-                                                                                 @"money":[NSString stringWithFormat:@"%.2f",money]
-                                                                                 };
-                                                           NSString *url = [NSString stringWithFormat:@"billrecord/withdraw_deposit?drawPwd=%@",newPasswordmd5];
-       [NetApiManager requestQueryBankcardwithDrawDepositWithParam:url WithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
-           NSLog(@"%@",responseObject);
-           if (isSuccess) {
-               if ([responseObject[@"code"] integerValue] ==0)
-               {
-                   if ([responseObject[@"data"] integerValue] ==1) {
-//                       [self.view showLoadingMeg:@"提现成功" time:MESSAGE_SHOW_TIME];
-//                        [self.navigationController popViewControllerAnimated:YES];
-                       self.SuccessView.hidden = NO;
-                   }else{
-                       [self.view showLoadingMeg:@"提现申请失败,请稍后再试" time:MESSAGE_SHOW_TIME];
-                   }
-               }
-               else
-               {
-                   if ([responseObject[@"code"] integerValue] == 20027) {
-                       NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-                       dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm";
-                       NSString *string = [dateFormatter stringFromDate:[NSDate date]];
-                       
-                       if (kUserDefaultsValue(ERRORTIMES)) {
-                           NSString *errorString = kUserDefaultsValue(ERRORTIMES);
-                           NSString *d = [errorString substringToIndex:16];
-                           NSString *t = [errorString substringFromIndex:17];
-                           NSString *str = [LPTools dateTimeDifferenceWithStartTime:d endTime:string];
-                           
-                           self.errorTimes = [t integerValue];
-                           if ([t integerValue] >= 3&& [str integerValue] < 10) {
-                               GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"提现密码错误次数过多，请10分钟后再试" message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"确定"] buttonsColor:@[[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
-                                   [self.navigationController popViewControllerAnimated:YES];
-                               }];
-                               [alert show];
-                           }else{
-                                GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:[NSString stringWithFormat:@"密码错误，剩余%ld次机会",2-self.errorTimes]
-                                                                                    message:nil
-                                                                              textAlignment:NSTextAlignmentCenter
-                                                                               buttonTitles:@[@"忘记密码",@"重新输入"]
-                                                                               buttonsColor:@[[UIColor colorWithHexString:@"#999999"],[UIColor baseColor]]
-                                                                    buttonsBackgroundColors:@[[UIColor whiteColor]]
-                                                                                buttonClick:^(NSInteger buttonIndex) {
-                                                                                    if (buttonIndex == 0) {
-                                                                                        LPSalarycCardBindPhoneVC *vc = [[LPSalarycCardBindPhoneVC alloc]init];
-                                                                                        vc.type = 1;
-                                                                                        vc.Phone = self.model.data.phone;
-                                                                                        [self.navigationController pushViewController:vc animated:YES];
-                                                                                    }else if (buttonIndex == 1){
-                                                                                        [self touchBt:nil];
-                                                                                    }
-                                                                                    //                               [self.navigationController popViewControllerAnimated:YES];
-                                                                                }];
-                               
-                               [alert show];
-                               
-                               self.errorTimes += 1;
-                               NSString *str = [NSString stringWithFormat:@"%@-%ld",string,self.errorTimes];
-                               kUserDefaultsSave(str, ERRORTIMES);
-                           }
-                       }else{
-                            if (self.errorTimes >2) {
-                               self.errorTimes = 0;
-                           }
-                           
-                           GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:[NSString stringWithFormat:@"密码错误，剩余%ld次机会",2-self.errorTimes]
-                                                                                message:nil
-                                                                          textAlignment:NSTextAlignmentCenter
-                                                                           buttonTitles:@[@"忘记密码",@"重新输入"]
-                                                                           buttonsColor:@[[UIColor colorWithHexString:@"#999999"],[UIColor baseColor]]
-                                                                buttonsBackgroundColors:@[[UIColor whiteColor]]
-                                                                            buttonClick:^(NSInteger buttonIndex) {
-                                                                                if (buttonIndex == 0) {
-                                                                                    LPSalarycCardBindPhoneVC *vc = [[LPSalarycCardBindPhoneVC alloc]init];
-                                                                                    vc.type = 1;
-                                                                                    vc.Phone = self.model.data.phone;
-                                                                                    [self.navigationController pushViewController:vc animated:YES];
-                                                                                }else if (buttonIndex == 1){
-                                                                                    [self touchBt:nil];
-                                                                                }
-                                                                            }];
-                           
-                           [alert show];
-                           self.errorTimes += 1;
-                           NSString *str = [NSString stringWithFormat:@"%@-%ld",string,self.errorTimes];
-                           kUserDefaultsSave(str, ERRORTIMES);
-                       }
-                   }else{
-                        [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
-                   }
-//                   [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
-               }
-
-           }else{
-               [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
-           }
-       }];
+                                                           if (string.length==6) {
+                                                               [self requestQueryBankcardwithDrawDepositWithParam:string Money:money];
+                                                           }else{
+                                                               LPSalarycCardBindPhoneVC *vc = [[LPSalarycCardBindPhoneVC alloc]init];
+                                                               vc.type = 1;
+                                                               vc.Phone = self.model.data.phone;
+                                                               [self.navigationController pushViewController:vc animated:YES];
+                                                           }
+                                                         
     }];
     [alert show];
     
@@ -288,6 +194,112 @@
 
 - (IBAction)SuccessTouch:(id)sender {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+
+#pragma mark - 验证提现秘密
+-(void)requestQueryBankcardwithDrawDepositWithParam:(NSString *)string  Money:(CGFloat) money{
+    NSString *passwordmd5 = [string md5];
+    NSString *newPasswordmd5 = [[NSString stringWithFormat:@"%@lanpin123.com",passwordmd5] md5];
+    
+    NSDictionary *dic = @{@"bankName":self.model.data.bankName,
+                          @"bankNum":self.model.data.bankNumber,
+                          @"money":[NSString stringWithFormat:@"%.2f",money]
+                          };
+    NSString *url = [NSString stringWithFormat:@"billrecord/withdraw_deposit?drawPwd=%@",newPasswordmd5];
+    [NetApiManager requestQueryBankcardwithDrawDepositWithParam:url WithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] ==0)
+            {
+                if ([responseObject[@"data"] integerValue] ==1) {
+                    //                       [self.view showLoadingMeg:@"提现成功" time:MESSAGE_SHOW_TIME];
+                    //                        [self.navigationController popViewControllerAnimated:YES];
+                    self.SuccessView.hidden = NO;
+                }else{
+                    [self.view showLoadingMeg:@"提现申请失败,请稍后再试" time:MESSAGE_SHOW_TIME];
+                }
+            }
+            else
+            {
+                if ([responseObject[@"code"] integerValue] == 20027) {
+                    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                    dateFormatter.dateFormat = @"yyyy-MM-dd HH:mm";
+                    NSString *string = [dateFormatter stringFromDate:[NSDate date]];
+                    
+                    if (kUserDefaultsValue(ERRORTIMES)) {
+                        NSString *errorString = kUserDefaultsValue(ERRORTIMES);
+                        NSString *d = [errorString substringToIndex:16];
+                        NSString *t = [errorString substringFromIndex:17];
+                        NSString *str = [LPTools dateTimeDifferenceWithStartTime:d endTime:string];
+                        
+                        self.errorTimes = [t integerValue];
+                        if ([t integerValue] >= 3&& [str integerValue] < 10) {
+                            GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"提现密码错误次数过多，请10分钟后再试" message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"确定"] buttonsColor:@[[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
+                                [self.navigationController popViewControllerAnimated:YES];
+                            }];
+                            [alert show];
+                        }else{
+                            GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:[NSString stringWithFormat:@"密码错误，剩余%ld次机会",2-self.errorTimes]
+                                                                                 message:nil
+                                                                           textAlignment:NSTextAlignmentCenter
+                                                                            buttonTitles:@[@"忘记密码",@"重新输入"]
+                                                                            buttonsColor:@[[UIColor colorWithHexString:@"#999999"],[UIColor baseColor]]
+                                                                 buttonsBackgroundColors:@[[UIColor whiteColor]]
+                                                                             buttonClick:^(NSInteger buttonIndex) {
+                                                                                 if (buttonIndex == 0) {
+                                                                                     LPSalarycCardBindPhoneVC *vc = [[LPSalarycCardBindPhoneVC alloc]init];
+                                                                                     vc.type = 1;
+                                                                                     vc.Phone = self.model.data.phone;
+                                                                                     [self.navigationController pushViewController:vc animated:YES];
+                                                                                 }else if (buttonIndex == 1){
+                                                                                     [self touchBt:nil];
+                                                                                 }
+                                                                                 
+                                                                             }];
+                            
+                            [alert show];
+                            
+                            self.errorTimes += 1;
+                            NSString *str = [NSString stringWithFormat:@"%@-%ld",string,self.errorTimes];
+                            kUserDefaultsSave(str, ERRORTIMES);
+                        }
+                    }else{
+                        if (self.errorTimes >2) {
+                            self.errorTimes = 0;
+                        }
+                        
+                        GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:[NSString stringWithFormat:@"密码错误，剩余%ld次机会",2-self.errorTimes]
+                                                                             message:nil
+                                                                       textAlignment:NSTextAlignmentCenter
+                                                                        buttonTitles:@[@"忘记密码",@"重新输入"]
+                                                                        buttonsColor:@[[UIColor colorWithHexString:@"#999999"],[UIColor baseColor]]
+                                                             buttonsBackgroundColors:@[[UIColor whiteColor]]
+                                                                         buttonClick:^(NSInteger buttonIndex) {
+                                                                             if (buttonIndex == 0) {
+                                                                                 LPSalarycCardBindPhoneVC *vc = [[LPSalarycCardBindPhoneVC alloc]init];
+                                                                                 vc.type = 1;
+                                                                                 vc.Phone = self.model.data.phone;
+                                                                                 [self.navigationController pushViewController:vc animated:YES];
+                                                                             }else if (buttonIndex == 1){
+                                                                                 [self touchBt:nil];
+                                                                             }
+                                                                         }];
+                        
+                        [alert show];
+                        self.errorTimes += 1;
+                        NSString *str = [NSString stringWithFormat:@"%@-%ld",string,self.errorTimes];
+                        kUserDefaultsSave(str, ERRORTIMES);
+                    }
+                }else{
+                    [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+                }
+            }
+            
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
 }
 
 #pragma mark - request

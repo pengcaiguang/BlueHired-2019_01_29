@@ -19,10 +19,16 @@
 
 @interface LPRegisterDataModel : NSObject
 
-@property(nonatomic,copy) NSNumber *BUserNum; //直接邀请
-@property(nonatomic,copy) NSNumber *CUserNum;//间接邀请
-@property(nonatomic,copy) NSNumber *fullMonthNum;//注册已到账人数
-@property(nonatomic,copy) NSNumber *sumNum;//注册总人数
+@property(nonatomic,copy) NSString *totalMoney;
+@property(nonatomic,copy) NSString *regMoney;
+@property(nonatomic,copy) NSString *BUserNum;
+@property(nonatomic,copy) NSString *CUserNum;
+@property(nonatomic,copy) NSString *bUserMoney;
+@property(nonatomic,copy) NSString *cUserMoney;
+@property(nonatomic,copy) NSString *fullMonthNum;
+@property(nonatomic,copy) NSString *sumNum;
+@property(nonatomic,copy) NSString *regUserMoney;
+@property(nonatomic,copy) NSString *remark;
 
 @end
 

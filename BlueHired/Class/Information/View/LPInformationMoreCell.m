@@ -54,6 +54,7 @@ static NSString *LPInformationMoreImageCollectionViewCellID = @"LPInformationMor
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     LPInformationMoreImageCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:LPInformationMoreImageCollectionViewCellID forIndexPath:indexPath];
     [cell.imgView sd_setImageWithURL:self.imageArray[indexPath.row]  placeholderImage:[UIImage imageNamed:@"NoImage"]];
+    cell.imgView.contentMode = UIViewContentModeScaleAspectFill;
     return cell;
 }
 

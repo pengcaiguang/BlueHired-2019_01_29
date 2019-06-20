@@ -67,8 +67,9 @@
 - (UIButton *)deleteBtn {
     if (!_deleteBtn) {
         _deleteBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_deleteBtn setImage:[UIImage hx_imageNamed:@"hx_compose_delete"] forState:UIControlStateNormal];
+        [_deleteBtn setImage:[UIImage hx_imageNamed:@"HX_delete"] forState:UIControlStateNormal];
         [_deleteBtn addTarget:self action:@selector(didDeleteClick) forControlEvents:UIControlEventTouchUpInside];
+        _deleteBtn.clipsToBounds = YES;
     }
     return _deleteBtn;
 }

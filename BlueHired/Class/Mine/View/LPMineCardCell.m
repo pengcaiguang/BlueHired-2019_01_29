@@ -62,10 +62,10 @@
 //        imgArray = @[@"salaryDetail",@"borrow",@"resignation",@"invitationReward",@"storefront"];
 //        titleArray = @[@"工资领取",@"蓝聘借支",@"离职通知",@"邀请奖励",@"门店管理"];
 //    }else{
-//        imgArray = @[@"salaryDetail",@"borrow",@"resignation",@"invitationReward",@"inviteFriends",@"interview",@"workingRecord",@"businessReview"];
-//        titleArray = @[@"工资领取",@"蓝聘借支",@"离职通知",@"邀请奖励",@"邀请好友",@"面试预约",@"工时记录",@"企业点评"];
-        imgArray = @[@"salaryDetail",@"borrow",@"resignation",@"invitationReward",@"inviteFriends"];
-        titleArray = @[@"工资领取",@"蓝聘借支",@"离职通知",@"邀请奖励",@"邀请好友"];
+        imgArray = @[@"salaryDetail",@"borrow",@"resignation",@"invitationReward",@"interview",@"workingRecord",@"businessReview"];
+        titleArray = @[@"工资领取",@"蓝聘借支",@"离职通知",@"邀请奖励",@"面试预约",@"工时记录",@"企业点评"];
+//        imgArray = @[@"salaryDetail",@"borrow",@"resignation",@"invitationReward",@"inviteFriends"];
+//        titleArray = @[@"工资领取",@"蓝聘借支",@"离职通知",@"邀请奖励",@"邀请好友"];
 //    }
     
     
@@ -234,49 +234,40 @@
 ////            }
 //        }else{
             if (index == 0) {
-//                LPWorkHourVC *vc = [[LPWorkHourVC alloc]init];
                 LPSalaryBreakdownVC *vc = [[LPSalaryBreakdownVC alloc]init];
                 vc.hidesBottomBarWhenPushed = YES;
+                vc.RecordDate = self.RecordArr.count?self.RecordArr[0]:nil;
                 [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
             }else if (index == 1){
-//                LPSalaryBreakdownVC *vc = [[LPSalaryBreakdownVC alloc]init];
-                if (self.userMaterialModel.data.isUserProblem.integerValue == 0) {
-                    [self initSetSecretVC];
-                    return;
-                }
-                
                 LPLendVC *vc = [[LPLendVC alloc]init];
                 vc.hidesBottomBarWhenPushed = YES;
                 [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
             }else if (index == 2){
-//                LPLendVC *vc = [[LPLendVC alloc]init];
                 LPDimissionFirmVC *vc = [[LPDimissionFirmVC alloc]init];
 
                 vc.hidesBottomBarWhenPushed = YES;
                 [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
             }else if (index == 3){
-//                LPDimissionFirmVC *vc = [[LPDimissionFirmVC alloc]init];
                 LPRegisterVC *vc = [[LPRegisterVC alloc]init];
 
                 vc.hidesBottomBarWhenPushed = YES;
                 [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
-            }else if (index == 4){
-//                LPBusinessReviewVC *vc = [[LPBusinessReviewVC alloc]init];
+            }else if (NO){
                 LPInviteVC *vc = [[LPInviteVC alloc]init];
 
                 vc.hidesBottomBarWhenPushed = YES;
                 [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
             }
-            else if (index == 5){
+            else if (index == 4){
                 LPWorkorderListVC *vc = [[LPWorkorderListVC alloc]init];
                 vc.hidesBottomBarWhenPushed = YES;
                 [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
-            }else if (index == 6){
+            }else if (index == 5){
                 LPWorkHour2VC *vc = [[LPWorkHour2VC alloc]init];
                 vc.hidesBottomBarWhenPushed = YES;
                 vc.isPush = YES;
                 [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
-            }else if (index == 7){
+            }else if (index == 6){
                 LPBusinessReviewVC *vc = [[LPBusinessReviewVC alloc] init];
                 vc.hidesBottomBarWhenPushed = YES;
                 [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
@@ -290,7 +281,7 @@
     
     NSString *str1 = @"为了您的账号安全，请先设置密保问题。";
     NSMutableAttributedString *str = [[NSMutableAttributedString alloc]initWithString:str1];
-    WEAK_SELF()
+
     GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:str
                                                          message:nil
                                                       IsShowhead:YES

@@ -9,9 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "LPEssaylistModel.h"
 
+typedef void (^LPEssayCollectionBlock)(void);
+
 @interface LPEssayDetailVC : LPBaseViewController
 @property(nonatomic,strong) LPEssaylistDataModel *essaylistDataModel;
 
 @property (nonatomic, strong) UITableView *Supertableview;
+
+@property (nonatomic, strong) LPEssayCollectionBlock CollectionBlock;
  
 @end

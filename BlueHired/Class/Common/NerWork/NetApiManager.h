@@ -238,6 +238,10 @@ typedef void (^UploadImageTempBlock)(BOOL sussess,NSMutableArray *array);
 //邀请奖励详情
 + (void)requestGetOnWorkWithParam:(id)paramer
                        withHandle:(response)responseHandle;
+//邀请注册奖励列表添加备注
++ (void)requestUpdateRelationReg:(id)paramer
+                       URLString:(NSString *)URLString
+                      withHandle:(response)responseHandle;
 //查询绑定银行卡
 + (void)requestSelectBindbankcardWithParam:(id)paramer
                                 withHandle:(response)responseHandle;
@@ -595,7 +599,7 @@ typedef void (^UploadImageTempBlock)(BOOL sussess,NSMutableArray *array);
 + (void)requestQueryGetProRecordList:(id)paramer
                           withHandle:(response)responseHandle;
 
-;//获取百度图像识别token
+//获取百度图像识别token
 + (void)requestQueryGetBiaduBankAccessToken:(id)paramer
                                  withHandle:(response)responseHandle;
 
@@ -639,6 +643,15 @@ typedef void (^UploadImageTempBlock)(BOOL sussess,NSMutableArray *array);
 
 //工资领取消息
 + (void)requestQueryGetBillRecordList:(id)paramer
+                           withHandle:(response)responseHandle;
+
+//获取企业岗位
++ (void)requestQueryGetMechanismTypeList:(id)paramer
+                              withHandle:(response)responseHandle;
+
+
+//获取电话号码
++ (void)requestQueryGetUserConcernTel:(id)paramer
                            withHandle:(response)responseHandle;
 @end
 

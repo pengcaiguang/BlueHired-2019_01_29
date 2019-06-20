@@ -12,8 +12,8 @@
 
 static NSString *LPEssayDetailCommentReplyCellID = @"LPEssayDetailCommentReplyCell";
 
-@interface LPEssayDetailCommentCell ()<UITableViewDelegate,UITableViewDataSource>
-@property (nonatomic, strong)UITableView *tableview;
+@interface LPEssayDetailCommentCell ()
+//@property (nonatomic, strong)UITableView *tableview;
 
 //@property(nonatomic,strong) UIView *replyView;
 //@property(nonatomic,strong) UILabel *nameLabel;
@@ -27,7 +27,10 @@ static NSString *LPEssayDetailCommentReplyCellID = @"LPEssayDetailCommentReplyCe
     // Initialization code
     self.replyButton.layer.borderWidth = 0.5;
     self.replyButton.layer.borderColor = [UIColor colorWithHexString:@"#939393"].CGColor;
-    self.commentDetailsLabel.copyable = YES;
+ 
+    
+    self.replyBgView.userInteractionEnabled=YES;
+ 
     
 }
 - (IBAction)touchReplyButton:(id)sender {
@@ -48,6 +51,9 @@ static NSString *LPEssayDetailCommentReplyCellID = @"LPEssayDetailCommentReplyCe
     self.commentDetailsLabel.text = model.commentDetails;
     self.timeLabel.text = [NSString compareCurrentTime:[model.time stringValue]];
     
+    self.commentDetailsLabel.copyable  = YES;
+    self.commentDetailsLabel.Deleteable = NO;
+ 
     if (model.userId.integerValue == kUserDefaultsValue(LOGINID).integerValue) {
         self.commentDetailsLabel.Deleteable = YES;
         WEAK_SELF()
@@ -63,150 +69,209 @@ static NSString *LPEssayDetailCommentReplyCellID = @"LPEssayDetailCommentReplyCe
     for (UIView *view in self.replyBgView.subviews) {
         [view removeFromSuperview];
     }
-    if (model.commentList.count > 0) {
+    if (model.commentModelList.count > 0) {
     
-        [self.replyBgView addSubview:self.tableview];
-        [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.mas_equalTo(0);
-            make.top.mas_equalTo(0);
-            make.right.mas_equalTo(0);
-            make.bottom.mas_equalTo(0);
-        }];
+//        [self.replyBgView addSubview:self.tableview];
+//        [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.left.mas_equalTo(0);
+//            make.top.mas_equalTo(0);
+//            make.right.mas_equalTo(0);
+//            make.bottom.mas_equalTo(0);
+//        }];
 //        self.replyBgView_constraint_height.constant = 27 * (model.commentList.count > 3 ? 3 : model.commentList.count);
         
         //计算tableviewheight
+        
+        NSMutableArray *CommentArray = [[NSMutableArray alloc] init];
+        
         CGFloat RowHeight = 0;
-        for (int i = 0 ;i < model.commentList.count;i++) {
-            RowHeight +=[LPTools calculateRowHeight:[NSString stringWithFormat:@"%@:  %@",model.commentList[i].userName,model.commentList[i].commentDetails]
-                                        fontSize:13 Width:SCREEN_WIDTH-78]+11;
+        for (int i = 0 ;i < model.commentModelList.count;i++) {
+            LPCommentListDataModel *m = model.commentModelList[i];
+            UILabel *commentLabel = [[UILabel alloc] init];
+            commentLabel.tag = i;
+            [self.replyBgView addSubview:commentLabel];
+            [CommentArray addObject:commentLabel];
+ 
+            commentLabel.copyable  = YES;
+            if (m.userId.integerValue == kUserDefaultsValue(LOGINID).integerValue) {
+                commentLabel.Deleteable = YES;
+                WEAK_SELF()
+                commentLabel.DeleteBlock = ^(UILabel *Label){
+                    NSLog(@"删除评论 %@",Label.text);
+                    if (weakSelf.DeleteBlock) {
+                        weakSelf.DeleteBlock([NSString stringWithFormat:@"%@",m.id]);
+                    }
+                };
+            }
+            
+
+            NSString *str = [NSString stringWithFormat:@"%@ 回复 %@: %@ ",
+                             m.userName,
+                             m.toUserName,
+                             m.commentDetails];
+            
+            NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:str];
+            NSMutableParagraphStyle *paraStyle01 = [[NSMutableParagraphStyle alloc] init];
+            paraStyle01.lineBreakMode = NSLineBreakByCharWrapping;
+            [string addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16.0 weight:UIFontWeightSemibold],
+                                    NSParagraphStyleAttributeName:paraStyle01,
+                                    NSForegroundColorAttributeName:[UIColor baseColor]}
+                            range:NSMakeRange(0, m.userName.length)];
+            
+            [string addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16.0],
+                                    NSParagraphStyleAttributeName:paraStyle01,
+                                    NSForegroundColorAttributeName:[UIColor baseColor]}
+                            range:NSMakeRange(m.userName.length+4, m.toUserName.length+1)];
+            
+            commentLabel.attributedText = string;   //切记使用富文本，颜色可以自由发挥了
+            commentLabel.numberOfLines = 0;
+            commentLabel.font = [UIFont systemFontOfSize:13];   //这个很重要,必须写在富文本下面
+            UITapGestureRecognizer *TapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(TouchUpInsidecommentLabel:)];
+            TapGestureRecognizer.cancelsTouchesInView = NO;
+            commentLabel.userInteractionEnabled=YES;
+            [commentLabel addGestureRecognizer:TapGestureRecognizer];
+            
+            
+            
+            RowHeight +=[LPTools calculateRowHeight:[NSString stringWithFormat:@"%@ 回复 %@: %@ ",
+                                                     m.userName,
+                                                     m.toUserName,
+                                                     m.commentDetails]
+                                        fontSize:13 Width:SCREEN_WIDTH-79]+8;
         }
-        self.replyBgView_constraint_height.constant = RowHeight;
-        [self.tableview reloadData];
+        
+        if (CommentArray.count>1) {
+            [CommentArray mas_distributeViewsAlongAxis:MASAxisTypeVertical withFixedSpacing:8 leadSpacing:4 tailSpacing:4];
+            [CommentArray mas_makeConstraints:^(MASConstraintMaker *make){
+                make.right.mas_offset(-8);
+                make.left.mas_offset(8);
+            }];
+        }else{
+            [CommentArray mas_makeConstraints:^(MASConstraintMaker *make){
+                make.right.mas_offset(-8);
+                make.left.mas_offset(8);
+                make.centerY.equalTo(self.replyBgView);
+            }];
+        }
+       
+        
+        self.replyBgView_constraint_height.constant = RowHeight+8;
+//        [self.tableview reloadData];
     }else{
         self.replyBgView_constraint_height.constant = 0;
     }
 }
 
 
-#pragma mark - TableViewDelegate & Datasource
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-//    return self.model.commentList.count > 3 ? 3 : self.model.commentList.count;
-    return self.model.commentList.count;
-}
 
-- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    LPEssayDetailCommentReplyCell *cell = [tableView dequeueReusableCellWithIdentifier:LPEssayDetailCommentReplyCellID];
-//    if (indexPath.row <= 1) {
-//        cell.nameLabel.text = [NSString stringWithFormat:@"%@:",self.model.commentList[0].userName];
-    cell.nameLabel.text = @"";
-    NSString *str = [NSString stringWithFormat:@"%@: %@ ",self.model.commentList[indexPath.row].userName,self.model.commentList[indexPath.row].commentDetails];
-    NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:str];
-    NSMutableParagraphStyle *paraStyle01 = [[NSMutableParagraphStyle alloc] init];
-    paraStyle01.lineBreakMode = NSLineBreakByCharWrapping;
-    [string addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:16.0 weight:UIFontWeightSemibold],
-                            NSParagraphStyleAttributeName:paraStyle01,
-                            NSForegroundColorAttributeName:[UIColor baseColor]}
-                    range:NSMakeRange(0, self.model.commentList[indexPath.row].userName.length+1)];
-//    [string addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:16.0 weight:UIFontWeightSemibold] range:NSMakeRange(0, self.model.commentList[indexPath.row].userName.length+1)];//设置Text这四个字母的字体为粗体
-
-    cell.contentLabel.attributedText = string;//切记使用富文本，颜色可以自由发挥了
-    cell.contentLabel.numberOfLines = 0;
-    cell.contentLabel.font = [UIFont systemFontOfSize:13];//这个很重要,必须写在富文本下面
-//    }else{
-//        cell.nameLabel.text = @"";
-//        cell.contentLabel.text = [NSString stringWithFormat:@"查看全部%ld条回复➡️",self.model.commentList.count];
-//    }
+-(void)TouchUpInsidecommentLabel:(UITapGestureRecognizer *)recognizer{
+    UITapGestureRecognizer *singleTap = (UITapGestureRecognizer *)recognizer;
+    UILabel *commentLabel = (UILabel *)[singleTap view];
+    NSLog(@"+++点击啦第%ld行",(long)commentLabel.tag);
     
-    LPCommentListDataModel *m = self.model.commentList[indexPath.row];
-    cell.contentLabel.copyable  = YES;
-    if (m.userId.integerValue == kUserDefaultsValue(LOGINID).integerValue) {
-        cell.contentLabel.Deleteable = YES;
-        WEAK_SELF()
-        cell.contentLabel.DeleteBlock = ^(UILabel *Label){
-            NSLog(@"删除评论 %@",Label.text);
-            if (weakSelf.DeleteBlock) {
-                weakSelf.DeleteBlock([NSString stringWithFormat:@"%@",m.id]);
+    if (!AlreadyLogin) {
+        [LPTools AlertMessageCommentLoginView];
+        return ;
+    }
+    
+    LPCommentListDataModel *m = self.model.commentModelList[commentLabel.tag];
+    
+    commentLabel.backgroundColor = [UIColor colorWithHexString:@"#d1d1d1"];
+    WEAK_SELF()
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        commentLabel.backgroundColor = [UIColor clearColor];
+        
+        [XHInputView showWithStyle:InputViewStyleLarge configurationBlock:^(XHInputView *inputView) {
+            /** 占位符文字 */
+            inputView.placeholder = [NSString stringWithFormat:@"回复 %@:",m.userName];
+            /** 设置最大输入字数 */
+            inputView.maxCount = 300;
+            /** 输入框颜色 */
+            inputView.textViewBackgroundColor = [UIColor groupTableViewBackgroundColor];
+            
+        } sendBlock:^BOOL(NSString *text) {
+            if(text.length){
+                [weakSelf requestCommentAddcomment:text
+                                       CommentType:3
+                                         CommentId:m.commentType.integerValue==2? [NSString stringWithFormat:@"%@",m.id]:[NSString stringWithFormat:@"%@",m.commentId]
+                                  selectCommentRow:commentLabel.tag
+                                       ReplyUserId:m.userId];
+                return YES;//return YES,收起键盘
+            }else{
+                NSLog(@"显示提示框-请输入要评论的的内容");
+                return NO;//return NO,不收键盘
             }
-            //            [weakSelf requestQueryDeleteComment:weakSelf.model.id];
-        };
-    }
+        }];
+
+    });
     
-    
-    return cell;
-}
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//    if (indexPath.row == 2) {
-        NSLog(@"查看全部");
-//        LPCommentDetailVC *vc = [[LPCommentDetailVC alloc]init];
-//        vc.commentListDatamodel = self.model;
-//        vc.superTabelView = self.tableview;
-//        [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
-//    }
 }
 
-//-(void)addReply{
-//    [self.replyView addSubview:self.nameLabel];
-//    [self.nameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.mas_equalTo(5);
-//        make.top.mas_equalTo(5);
-//    }];
-//
-//    [self.replyView addSubview:self.contentLabel];
-//    [self.contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.mas_equalTo(5);
-//        make.right.mas_equalTo(-5);
-//        make.bottom.mas_equalTo(-5);
-//        make.left.equalTo(self.nameLabel.mas_right).offset(5);
-//    }];
-//    [self.nameLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];  //设置水平方向抗压缩优先级高 水平方向可以正常显示
-//    [self.contentLabel setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];  //设置垂直方向挤压缩优先级高 垂直方向可以正常显示
-//
-//}
 
+#pragma mark - request
+-(void)requestCommentAddcomment:(NSString *) commentText
+                    CommentType:(NSInteger) commentType
+                      CommentId:(NSString *)commentId
+               selectCommentRow:(NSInteger) CommentRow
+                    ReplyUserId:(NSString *) ReplyUserId{
+    
+    LPUserMaterialModel *user = [LPUserDefaults getObjectByFileName:USERINFO];
+    NSDictionary *dic = @{@"commentDetails": commentText,
+                          @"commentType": @(commentType),
+                          @"commentId": commentId,
+                          @"userName": user.data.user_name,
+                          @"userId": kUserDefaultsValue(LOGINID),
+                          @"userUrl": user.data.user_url,
+                          @"versionType":@"2.1",
+                          @"replyUserId":ReplyUserId
+                          };
+    [NetApiManager requestCommentAddcommentWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                NSString *StrData = [LPTools isNullToString:responseObject[@"data"]];
+                NSArray *DataList = [StrData componentsSeparatedByString:@"-"];
+                
+                LPCommentListDataModel *m = [LPCommentListDataModel mj_objectWithKeyValues:dic];
+                if (DataList.count>=2) {
+                    if ([DataList[0] integerValue] ==1) {
+                        [LPTools AlertTopCommentView:@""];
+                    }else{
+                        
+                    }
+                    m.id = @([[LPTools isNullToString:DataList[1]] integerValue]);
+                }
+ 
+ 
+                m.identity = kUserDefaultsValue(USERIDENTIY);
+                m.id = @([DataList[1] integerValue]);
+        
+                    LPCommentListDataModel *mComment = self.model.commentModelList[CommentRow];
+                    m.toUserId = mComment.userId;
+                    m.toUserName = mComment.userName;
+                    m.toUserIdentity = mComment.identity;
+                    [self.model.commentModelList addObject:m];
 
-#pragma mark - lazy
-//-(UIView *)replyView{
-//    if (!_replyView) {
-//        _replyView = [[UIView alloc]init];
-//    }
-//    return _replyView;
-//}
-//
-//-(UILabel *)nameLabel{
-//    if (!_nameLabel) {
-//        _nameLabel = [[UILabel alloc]init];
-//        _nameLabel.textColor = [UIColor colorWithHexString:@"#1B1B1B"];
-//        _nameLabel.font = [UIFont systemFontOfSize:13];
-//    }
-//    return _nameLabel;
-//}
-//-(UILabel *)contentLabel{
-//    if (!_contentLabel) {
-//        _contentLabel = [[UILabel alloc]init];
-//        _contentLabel.textColor = [UIColor colorWithHexString:@"#444444"];
-//        _contentLabel.font = [UIFont systemFontOfSize:13];
-//        _contentLabel.numberOfLines = 0;
-//    }
-//    return _contentLabel;
-//}
-
-
-- (UITableView *)tableview{
-    if (!_tableview) {
-        _tableview = [[UITableView alloc]init];
-        _tableview.delegate = self;
-        _tableview.dataSource = self;
-        _tableview.tableFooterView = [[UIView alloc]init];
-        _tableview.rowHeight = UITableViewAutomaticDimension;
-        _tableview.estimatedRowHeight = 100;
-        _tableview.scrollEnabled = NO;
-        _tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
-        _tableview.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
-        [_tableview registerNib:[UINib nibWithNibName:LPEssayDetailCommentReplyCellID bundle:nil] forCellReuseIdentifier:LPEssayDetailCommentReplyCellID];
-
-    }
-    return _tableview;
+                if (self.AddBlock) {
+                    self.AddBlock(m);
+                }
+                
+                if (self.SuperTableView) {
+                    [self.SuperTableView reloadData];
+                }
+                
+            }else{
+                if ([responseObject[@"code"] integerValue] == 10045) {
+                    [LPTools AlertMessageView:responseObject[@"msg"]];
+                }else{
+                    [[UIWindow  visibleViewController].view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+                }
+            }
+            
+        }else{
+            [[UIWindow  visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
 }
 
  

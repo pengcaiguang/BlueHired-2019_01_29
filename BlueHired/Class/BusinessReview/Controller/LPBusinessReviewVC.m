@@ -38,7 +38,6 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.title = @"企业点评";
     
-
     self.page = 1;
     [self setTitleView];
     [self.view addSubview:self.tableview];
@@ -66,9 +65,9 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
     UIView *leftBarButtonView = [[UIView alloc]init];
     [bgView addSubview:leftBarButtonView];
     [leftBarButtonView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.mas_equalTo(44);
-        make.left.mas_equalTo(14);
-        make.top.mas_equalTo(2);
+        make.height.mas_equalTo(49);
+        make.left.mas_equalTo(18);
+        make.top.mas_equalTo(0);
     }];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(touchSelectCityButton)];
     leftBarButtonView.userInteractionEnabled = YES;
@@ -80,36 +79,37 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
     [pimageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(0);
         make.centerY.equalTo(leftBarButtonView);
-        make.size.mas_equalTo(CGSizeMake(11, 12));
+        make.size.mas_equalTo(CGSizeMake(18, 18));
     }];
-    pimageView.image = [UIImage imageNamed:@"positioning"];
+    pimageView.image = [UIImage imageNamed:@"location"];
     
     self.cityLabel = [[UILabel alloc]init];
     [leftBarButtonView addSubview:self.cityLabel];
     [self.cityLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(pimageView.mas_right).offset(3);
+        make.left.equalTo(pimageView.mas_right).offset(4);
         make.centerY.mas_equalTo(leftBarButtonView);
+        make.right.equalTo(leftBarButtonView.mas_right).offset(0);
     }];
     self.cityLabel.text = @"全国";
     self.cityLabel.font = [UIFont systemFontOfSize:15];
     self.cityLabel.textColor = [UIColor whiteColor];
     
-    UIImageView *dimageView = [[UIImageView alloc]init];
-    [leftBarButtonView addSubview:dimageView];
-    [dimageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.cityLabel.mas_right).offset(3);
-        make.centerY.equalTo(leftBarButtonView);
-        make.size.mas_equalTo(CGSizeMake(11, 6));
-        make.right.equalTo(leftBarButtonView.mas_right).offset(0);
-    }];
-    dimageView.image = [UIImage imageNamed:@"downArrow"];
+//    UIImageView *dimageView = [[UIImageView alloc]init];
+//    [leftBarButtonView addSubview:dimageView];
+//    [dimageView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.equalTo(self.cityLabel.mas_right).offset(3);
+//        make.centerY.equalTo(leftBarButtonView);
+//        make.size.mas_equalTo(CGSizeMake(11, 6));
+//        make.right.equalTo(leftBarButtonView.mas_right).offset(0);
+//    }];
+//    dimageView.image = [UIImage imageNamed:@"downArrow"];
     
     LPSearchBar *searchBar = [self addSearchBar];
     UIView *wrapView = [[UIView alloc]init];
     [bgView addSubview:wrapView];
     [wrapView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(leftBarButtonView.mas_right).offset(10);
-        make.right.mas_equalTo(-10);
+        make.left.equalTo(leftBarButtonView.mas_right).offset(15);
+        make.right.mas_equalTo(-13);
         make.top.mas_equalTo(10);
         make.height.mas_equalTo(30);
     }];
@@ -134,7 +134,7 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
     LPSearchBar *searchBar = [[LPSearchBar alloc]init];
     
     searchBar.delegate = self;
-    searchBar.placeholder = @"请输入企业名称或关键字";
+    searchBar.placeholder = @"请输入企业名称";
     [searchBar setShowsCancelButton:NO];
     [searchBar setTintColor:[UIColor lightGrayColor]];
     
@@ -279,7 +279,7 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
         _tableview.tableFooterView = [[UIView alloc]init];
         _tableview.rowHeight = UITableViewAutomaticDimension;
         _tableview.estimatedRowHeight = 100;
-        _tableview.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+        _tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableview.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
         [_tableview registerNib:[UINib nibWithNibName:LPBusinessReviewCellID bundle:nil] forCellReuseIdentifier:LPBusinessReviewCellID];
         _tableview.mj_header = [HZNormalHeader headerWithRefreshingBlock:^{

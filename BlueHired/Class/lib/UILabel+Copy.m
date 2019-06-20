@@ -71,9 +71,6 @@
         UITapGestureRecognizer *TapGestureRecognizerimageBg = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(TouchCellSelect:)];
         [self addGestureRecognizer:TapGestureRecognizerimageBg];
     }
-
-
-    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuControllerWillHide) name:UIMenuControllerWillHideMenuNotification object:nil];
 }
 
@@ -91,7 +88,7 @@
         
         [[UIMenuController sharedMenuController] setTargetRect:self.frame inView:self.superview];
         [[UIMenuController sharedMenuController] setMenuVisible:YES animated:YES];
-        self.backgroundColor = [UIColor colorWithRed:235/255.0 green:235/255.0 blue:235/255.0 alpha:1];
+        self.backgroundColor = [UIColor colorWithHexString:@"#d1d1d1"];
     }
 }
 #pragma mark 点击手势回调

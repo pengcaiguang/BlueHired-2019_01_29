@@ -141,11 +141,7 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
         }];
         [alert show];
     }
-    
-
-    
 }
-
 
 - (IBAction)touchconcern:(id)sender {
     if ([LoginUtils validationLogin:[UIWindow visibleViewController]]){
@@ -470,7 +466,8 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
  
     NSDictionary *dic = @{@"userId": self.MoodModel.userId,
                           @"type":@"1",
-                          @"page":@(self.page)
+                          @"page":@(self.page),
+                          @"versionType":@"2.3"
                            };
     [NetApiManager requestMoodListWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);

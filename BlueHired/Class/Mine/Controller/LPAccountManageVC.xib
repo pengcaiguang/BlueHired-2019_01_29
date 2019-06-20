@@ -93,24 +93,24 @@
                         <constraint firstItem="wke-eO-8tC" firstAttribute="leading" secondItem="iTs-LR-ugj" secondAttribute="leading" constant="22" id="rfQ-tR-3uB"/>
                     </constraints>
                 </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kF3-67-kjY">
-                    <rect key="frame" x="0.0" y="118" width="375" height="48"/>
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kF3-67-kjY">
+                    <rect key="frame" x="0.0" y="118" width="375" height="0.0"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="密保问题修改" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qiu-Ni-YM3">
-                            <rect key="frame" x="22" y="14.5" width="98" height="19.5"/>
+                            <rect key="frame" x="22" y="-9.5" width="98" height="19.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="WorkHourBackImage_icon" translatesAutoresizingMaskIntoConstraints="NO" id="xlI-z4-HUs">
-                            <rect key="frame" x="354" y="17" width="8" height="14"/>
+                            <rect key="frame" x="354" y="-7" width="8" height="14"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="14" id="A55-xZ-X2C"/>
                                 <constraint firstAttribute="width" constant="8" id="i1I-uJ-7g4"/>
                             </constraints>
                         </imageView>
                         <button opaque="NO" tag="1003" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cfu-vU-WSd">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="48"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="0.0"/>
                             <connections>
                                 <action selector="TouchBT:" destination="-1" eventType="touchUpInside" id="WKZ-14-buv"/>
                             </connections>
@@ -126,11 +126,11 @@
                         <constraint firstItem="Qiu-Ni-YM3" firstAttribute="leading" secondItem="kF3-67-kjY" secondAttribute="leading" constant="22" id="R0X-UH-35V"/>
                         <constraint firstAttribute="trailing" secondItem="xlI-z4-HUs" secondAttribute="trailing" constant="13" id="WMP-jw-2Wc"/>
                         <constraint firstAttribute="bottom" secondItem="Cfu-vU-WSd" secondAttribute="bottom" id="tY0-xY-B1B"/>
-                        <constraint firstAttribute="height" constant="48" id="yft-v6-Ep6"/>
+                        <constraint firstAttribute="height" id="yft-v6-Ep6"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qJX-Ec-J1f">
-                    <rect key="frame" x="0.0" y="167" width="375" height="48"/>
+                    <rect key="frame" x="0.0" y="118" width="375" height="48"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="微信绑定" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jcM-4i-nbN">
                             <rect key="frame" x="22" y="14.5" width="65.5" height="19.5"/>
@@ -185,7 +185,7 @@
                 <constraint firstItem="UUR-aV-qGz" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="GGN-GU-c5b"/>
                 <constraint firstItem="qJX-Ec-J1f" firstAttribute="trailing" secondItem="Q5M-cg-NOt" secondAttribute="trailing" id="MUl-iC-8tr"/>
                 <constraint firstItem="kF3-67-kjY" firstAttribute="top" secondItem="iTs-LR-ugj" secondAttribute="bottom" constant="1" id="V2V-Ab-meM"/>
-                <constraint firstItem="qJX-Ec-J1f" firstAttribute="top" secondItem="kF3-67-kjY" secondAttribute="bottom" constant="1" id="VGH-0Z-kLm"/>
+                <constraint firstItem="qJX-Ec-J1f" firstAttribute="top" secondItem="kF3-67-kjY" secondAttribute="bottom" id="VGH-0Z-kLm"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="UUR-aV-qGz" secondAttribute="trailing" id="ihQ-bU-vtS"/>
                 <constraint firstItem="iTs-LR-ugj" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="wWa-dj-hzw"/>
             </constraints>

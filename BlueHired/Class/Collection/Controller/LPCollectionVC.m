@@ -71,8 +71,8 @@ static NSString *LPCollectionCollectionViewCellID = @"LPCollectionCollectionView
 //    }
 //
     
-    LPCollectionCollectionViewCell *cell = (LPCollectionCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-    cell.index =self.selectType;
+//    LPCollectionCollectionViewCell *cell = (LPCollectionCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+//    cell.index =self.selectType;
 }
 
 -(void)setNavigationButton{
@@ -86,8 +86,8 @@ static NSString *LPCollectionCollectionViewCellID = @"LPCollectionCollectionView
     self.navigationItem.titleView = navigationView;
     
     self.buttonArray = [NSMutableArray array];
-//    NSArray *titleArray = @[@"资讯",@"招聘",@"视频"];
-    NSArray *titleArray = @[@"资讯",@"视频"];
+    NSArray *titleArray = @[@"资讯",@"招聘",@"视频"];
+//    NSArray *titleArray = @[@"资讯",@"视频"];
     for (int i =0; i<titleArray.count; i++) {
         UIButton *button = [[UIButton alloc]init];
         [navigationView addSubview:button];
@@ -180,12 +180,7 @@ static NSString *LPCollectionCollectionViewCellID = @"LPCollectionCollectionView
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"管理" style:UIBarButtonItemStyleDone target:self action:@selector(touchManagerButton)];
         [self.navigationItem.rightBarButtonItem setTintColor:[UIColor colorWithHexString:@"#1B1B1B"]];
         self.isSelect = NO;
-//        [self.collectionView mas_remakeConstraints:^(MASConstraintMaker *make) {
-//            make.top.mas_equalTo(0);
-//            make.left.mas_equalTo(0);
-//            make.right.mas_equalTo(0);
-//            make.bottom.mas_equalTo(0);
-//        }];
+ 
         self.allButton.hidden = YES;
         self.deleteBt.hidden = YES;
         self.allButton.selected = NO;
@@ -193,22 +188,13 @@ static NSString *LPCollectionCollectionViewCellID = @"LPCollectionCollectionView
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"取消" style:UIBarButtonItemStyleDone target:self action:@selector(touchManagerButton)];
         [self.navigationItem.rightBarButtonItem setTintColor:[UIColor colorWithHexString:@"#1B1B1B"]];
         self.isSelect = YES;
-//        [self.collectionView mas_remakeConstraints:^(MASConstraintMaker *make) {
-//            make.top.mas_equalTo(0);
-//            make.left.mas_equalTo(0);
-//            make.right.mas_equalTo(0);
-////            make.bottom.mas_equalTo(-49);
-//            if (@available(iOS 11.0, *)) {
-//                make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
-//            } else {
-//                make.bottom.mas_equalTo(0);
-//            }
-//        }];
+ 
         self.allButton.hidden = NO;
         self.deleteBt.hidden = NO;
     }
-
-    [self.collectionView reloadData];
+    LPCollectionCollectionViewCell *cell = (LPCollectionCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    cell.selectStatus =self.isSelect;
+//    [self.collectionView reloadData];
 }
 
 -(void)touchTitleButton:(UIButton *)button{
@@ -230,23 +216,13 @@ static NSString *LPCollectionCollectionViewCellID = @"LPCollectionCollectionView
         }];
         [self.lineView.superview layoutIfNeeded];
     }];
-    if (self.isSelect) {
-            [self cancelSelect];
-    }
-
-//    self.selectType = index;
+ 
 }
 -(void)cancelSelect{
     self.isSelect = NO;
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"管理" style:UIBarButtonItemStyleDone target:self action:@selector(touchManagerButton)];
     [self.navigationItem.rightBarButtonItem setTintColor:[UIColor colorWithHexString:@"#1B1B1B"]];
-//    [self.collectionView mas_remakeConstraints:^(MASConstraintMaker *make) {
-//        make.top.mas_equalTo(0);
-//        make.left.mas_equalTo(0);
-//        make.right.mas_equalTo(0);
-//        make.bottom.mas_equalTo(0);
-//    }];
-//    [self.collectionView reloadData];
+ 
     LPCollectionCollectionViewCell *cell = (LPCollectionCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     cell.selectStatus =self.isSelect;
     self.allButton.hidden = YES;
@@ -255,9 +231,19 @@ static NSString *LPCollectionCollectionViewCellID = @"LPCollectionCollectionView
     
 }
 -(void)scrollToItenIndex:(NSInteger)index{
-    [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] atScrollPosition:UICollectionViewScrollPositionNone animated:YES];
     self.selectType =index;
-    [self.collectionView reloadData];
+    LPCollectionCollectionViewCell *cell = (LPCollectionCollectionViewCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    cell.index = self.selectType;
+    if (self.isSelect) {
+        self.isSelect = NO;
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"管理" style:UIBarButtonItemStyleDone target:self action:@selector(touchManagerButton)];
+        [self.navigationItem.rightBarButtonItem setTintColor:[UIColor colorWithHexString:@"#1B1B1B"]];
+        cell.selectStatus =self.isSelect;
+        self.allButton.hidden = YES;
+        self.deleteBt.hidden = YES;
+        self.allButton.selected = NO;
+    }
+//    [self.collectionView reloadData];
     
 
 }
@@ -276,7 +262,6 @@ static NSString *LPCollectionCollectionViewCellID = @"LPCollectionCollectionView
     //    cell.labelListDataModel = self.labelListModel.data[indexPath.row];
     cell.contentView.backgroundColor = randomColor;
     cell.selectStatus = self.isSelect;
-//    cell.selectAll = self.selectAll;
     cell.AllButton = self.allButton;
     cell.index = self.selectType;
 

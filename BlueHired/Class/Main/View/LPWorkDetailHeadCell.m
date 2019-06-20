@@ -33,14 +33,18 @@
     self.lendTypeLabel.layer.cornerRadius = 2;
 //    [self addShadowToView:self.BackView withColor:[UIColor colorWithHexString:@"#12598B"]];
 
-    XHStarRateView *starRateView = [[XHStarRateView alloc] initWithFrame:CGRectMake(0,0, 100, 17) isTouch:YES];
+    XHStarRateView *starRateView = [[XHStarRateView alloc] initWithFrame:CGRectMake(0,0, LENGTH_SIZE(85), LENGTH_SIZE(13)) isTouch:YES];
     starRateView.isAnimation = YES;
     starRateView.rateStyle = HalfStar;
     starRateView.delegate = self;
     self.starRateView = starRateView;
     [self.mechanismScoreView addSubview:starRateView];
     
-    
+    self.reMoneyLabel.layer.cornerRadius = 10.5;
+    self.reMoneyLabel.layer.borderWidth = 1;
+    self.reMoneyLabel.layer.borderColor = [UIColor colorWithHexString:@"#FFD291"].CGColor;
+
+    self.ReMoneyDeclare.contentEdgeInsets = UIEdgeInsetsMake(5,0, 0, 0);
 }
 
 
@@ -56,7 +60,7 @@
     theView.layer.shadowRadius = 3;
     theView.layer.cornerRadius = 4;
     theView.layer.masksToBounds = NO;
-    
+
 }
 
 -(void)setModel:(LPWorkDetailModel *)model{
@@ -67,10 +71,20 @@
     self.starRateView.currentScore = model.data.mechanismScore.floatValue/2;
 
     if (model.data.reMoney.integerValue>0) {
-        [self.reMoneyLabel setTitle:[NSString stringWithFormat:@"返%ld",(long)model.data.reMoney.integerValue] forState:UIControlStateNormal];
+        [self.reMoneyLabel setTitle:[NSString stringWithFormat:@"    %ld   ",
+                                     (long)model.data.reMoney.integerValue]
+                           forState:UIControlStateNormal];
+        CGFloat ReMoneyWidth = [LPTools widthForString:[NSString stringWithFormat:@"    %ld   ",
+                                                        (long)model.data.reMoney.integerValue] fontSize:16 andHeight:21];
+        self.keyLabel_constraint_right.constant = 13.0+ReMoneyWidth+10;
+        
         self.reMoneyLabel.hidden = NO;
+        self.reMoneyImage.hidden = NO;
+
     }else{
         self.reMoneyLabel.hidden = YES;
+        self.reMoneyImage.hidden = YES;
+        self.keyLabel_constraint_right.constant = 13.0;
     }
     
     if ([model.data.postName isEqualToString:@"小时工"]) {
@@ -85,29 +99,22 @@
 
     
     if (model.data.status.integerValue == 1) {
+        self.workTypeNameLabel.text = [NSString stringWithFormat:@"招%@人",model.data.maxNumber];
         self.applyNumberLabel.hidden = NO;
     }else{
         self.applyNumberLabel.hidden = YES;
     }
  
-//    self.keyLabel.text =  [model.data.key stringByReplacingOccurrencesOfString:@"|" withString:@" "];
-//        CGRect rect = [model.data.key getStringSize:CGSizeMake(MAXFLOAT, MAXFLOAT) font:[UIFont systemFontOfSize:12]];
-    
-    
-//
-//    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:self.workTypeNameLabel.text];
-//    NSRange range = [[str string] rangeOfString:[NSString stringWithFormat:@"%@人",model.data.maxNumber ? model.data.maxNumber : @"0"]];
-//    [str addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#FF6666"] range:range];
-//    self.workTypeNameLabel.attributedText = str;
-    
  
-    
-    
     NSArray *imageStrArray = [model.data.imageList componentsSeparatedByString:@";"];
     NSMutableArray *imageUrlArray = [[NSMutableArray alloc] init];
-    for (NSString *str in imageStrArray) {
-        if ([str containsString:@".mp4"]) {
-            [imageUrlArray addObject:[NSString stringWithFormat:@"%@?vframe/png/offset/0.001",str]];
+    for (NSInteger i = 0 ; i < imageStrArray.count ;i++) {
+        NSString *str = imageStrArray[i];
+        if (![str containsString:@".jpg"]&&
+            ![str containsString:@".jpeg"]&&
+            ![str containsString:@".png"]&&
+            ![str containsString:@".gif"]) {
+             [imageUrlArray addObject:[NSString stringWithFormat:@"%@?vframe/png/offset/0.001",str]];
         }else{
             [imageUrlArray addObject:str];
         }
@@ -166,9 +173,12 @@
 - (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didSelectItemAtIndex:(NSInteger)index{
     NSLog(@"---点击了第%ld张图片 ", (long)index);
     NSArray *imageStrArray = [self.model.data.imageList componentsSeparatedByString:@";"];
-
+  
     NSString *url = imageStrArray[index];
-    if ([url containsString:@".mp4"]) {
+    if (![url containsString:@".jpg"]&&
+        ![url containsString:@".jpeg"]&&
+        ![url containsString:@".png"]&&
+        ![url containsString:@".gif"]) {
         WJMoviePlayerView *playerView = [[WJMoviePlayerView alloc] init];
         playerView.movieURL = [NSURL URLWithString:url];
 //        [playerView.coverView yy_setImageWithURL:[NSString stringWithFormat:@"%@?vframe/png/offset/0.001",url] options:nil];
@@ -187,6 +197,8 @@
         _cycleScrollView.pageControlAliment = SDCycleScrollViewPageContolAlimentCenter;
         _cycleScrollView.currentPageDotColor = [UIColor whiteColor]; // 自定义分页控件小圆标颜色
         _cycleScrollView.bannerImageViewContentMode = UIViewContentModeScaleAspectFill;
+        _cycleScrollView.autoScroll = NO;
+        _cycleScrollView.infiniteLoop = NO;
     }
     return _cycleScrollView;
 }
@@ -198,13 +210,16 @@
  
 
 - (NSString *)removeHTML2:(NSString *)html{
-    NSArray *components = [html componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
-    NSMutableArray *componentsToKeep = [NSMutableArray array];
-    for (int i = 0; i < [components count]; i = i + 2) {
-        [componentsToKeep addObject:[components objectAtIndex:i]];
-    }
-    NSString *plainText = [componentsToKeep componentsJoinedByString:@"\n"];
-    return plainText;
+//    NSArray *components = [html componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+//    NSMutableArray *componentsToKeep = [NSMutableArray array];
+//    for (int i = 0; i < [components count]; i = i + 2) {
+//        [componentsToKeep addObject:[components objectAtIndex:i]];
+//    }
+//    NSString *plainText = [componentsToKeep componentsJoinedByString:@"\n"];
+//    return plainText;
+    NSAttributedString * attrStr = [[NSAttributedString alloc] initWithData:[html dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
+    NSString *string = [attrStr.string stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\n"]];
+    return string;
 }
 
 @end

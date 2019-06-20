@@ -28,6 +28,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 +(void)AlertMessage2View:(NSString *)str dismiss:(CGFloat) Float;
 
++(void)AlertMessageCommentLoginView;
+
 + (NSString *)dateTimeDifferenceWithStartTime:(NSString *)startTime endTime:(NSString *)endTime;
 
 + (NSString *)URLDecodedString:(NSString *)str;

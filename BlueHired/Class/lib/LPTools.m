@@ -65,6 +65,21 @@ LPTools * LPTools_instance = nil ;
     });
 }
 
+
++(void)AlertMessageCommentLoginView{
+//    NSMutableAttributedString *Mutablestr = [[NSMutableAttributedString alloc]initWithString:@"登录后才能进行评论回复，是否进行登录？"];
+//
+//    GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:Mutablestr message:nil IsShowhead:YES textAlignment:0 buttonTitles:@[@"否",@"是"] buttonsColor:@[[UIColor blackColor],[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
+//        if (buttonIndex) {
+            [LoginUtils validationLogin:[UIWindow visibleViewController]];
+//        }
+//    }];
+//    [alert show];
+//
+}
+
+
+
 + (NSString *)dateTimeDifferenceWithStartTime:(NSString *)startTime endTime:(NSString *)endTime{
     
     NSDateFormatter *date = [[NSDateFormatter alloc]init];
@@ -508,7 +523,7 @@ LPTools * LPTools_instance = nil ;
     CGRect rect = [string boundingRectWithSize:CGSizeMake(W, 0) options:NSStringDrawingUsesLineFragmentOrigin |
                    NSStringDrawingUsesFontLeading attributes:dic context:nil];
     return ceil(rect.size.height);
-    
+
 }
 
 //获取字符串的宽度

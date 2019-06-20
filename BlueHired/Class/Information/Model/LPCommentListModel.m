@@ -19,7 +19,7 @@
 @implementation LPCommentListDataModel
 + (NSDictionary *)objectClassInArray {
     return @{
-             @"commentList": @"LPCommentListDataModel",
+             @"commentModelList": @"LPCommentListDataModel",
              };
 }
 @end

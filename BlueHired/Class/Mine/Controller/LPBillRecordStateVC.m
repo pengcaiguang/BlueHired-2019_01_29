@@ -53,7 +53,7 @@
         self.view2.hidden = YES;
         if ([self.modelstate.type integerValue] == 1)
         {
-            self.time1.text = [NSString convertStringToTime:[_modelstate.time stringValue]];
+            self.time1.text = [DataTimeTool getDataTime:[NSString convertStringToTime:[_modelstate.time stringValue]] DateFormat:@"yyyy-MM-dd HH:mm:ss" oldDateFormat:@"yyyy/MM/dd HH:mm:ss"];
             self.image1.image = [UIImage imageNamed:@"add_ record_selected"];
             self.image2.image = [UIImage imageNamed:@"add_ record_normal"];
             self.image3.image = [UIImage imageNamed:@"add_ record_normal"];
@@ -61,7 +61,6 @@
             self.lineView2.backgroundColor = [UIColor colorWithHexString:@"#C5C5C5"];
             self.Label2.text = @" ";
             self.Label3.text = @" ";
-
         }
         else
         {
@@ -69,8 +68,8 @@
             self.image2.image = [UIImage imageNamed:@"add_ record_selected"];
             self.image3.image = [UIImage imageNamed:@"add_ record_normal"];
 //            self.lineView.backgroundColor = random(78, 191, 252, 1);
-            self.time1.text = [NSString convertStringToTime:[_modelstate.time stringValue]];
-            self.time2.text = [NSString convertStringToTime:[_modelstate.set_time stringValue]];
+            self.time1.text = [DataTimeTool getDataTime:[NSString convertStringToTime:[_modelstate.time stringValue]] DateFormat:@"yyyy-MM-dd HH:mm:ss" oldDateFormat:@"yyyy/MM/dd HH:mm:ss"];
+            self.time2.text = [DataTimeTool getDataTime:[NSString convertStringToTime:[_modelstate.set_time stringValue]] DateFormat:@"yyyy-MM-dd HH:mm:ss" oldDateFormat:@"yyyy/MM/dd HH:mm:ss"];
             self.lineView2.backgroundColor = [UIColor baseColor];
             self.Label2.text = @"财务处理提现，已提交到银行进行转账";
             self.Label3.text = @" ";
@@ -86,8 +85,11 @@
             self.image3.image = [UIImage imageNamed:@"add_ record_selected"];
 
             //            self.lineView.backgroundColor = random(78, 191, 252, 1);
-            self.time1.text = [NSString convertStringToTime:[_modelstate.time stringValue]];
-            self.time2.text = [NSString convertStringToTime:[_modelstate.set_time stringValue]];
+            
+            
+            
+            self.time1.text = [DataTimeTool getDataTime:[NSString convertStringToTime:[_modelstate.time stringValue]] DateFormat:@"yyyy-MM-dd HH:mm:ss" oldDateFormat:@"yyyy/MM/dd HH:mm:ss"];
+            self.time2.text = [DataTimeTool getDataTime:[NSString convertStringToTime:[_modelstate.set_time stringValue]] DateFormat:@"yyyy-MM-dd HH:mm:ss" oldDateFormat:@"yyyy/MM/dd HH:mm:ss"];
             self.lineView2.backgroundColor = [UIColor baseColor];
             self.Label2.text = @"财务处理提现，已提交到银行进行转账";
             self.Label3.text = @"银行处理转账，具体到账时间请留意银行短信通知";
@@ -128,7 +130,7 @@
         }
         else if ([_modelstate.type integerValue] == 5)
         {
-                        str = @"注册返利到账";
+                        str = @"邀请注册奖励";
         }
         else if ([_modelstate.type integerValue] == 7)
         {
@@ -136,7 +138,7 @@
         }
         else if ([_modelstate.type integerValue] == 8)
         {
-                        str = @"邀请奖励到账";
+                        str = @"邀请入职奖励";
         }
         else if ([_modelstate.type integerValue] == 9)
         {
@@ -144,8 +146,8 @@
         }
         _typeLabel.text = str;
         _moneyLabel.text = [NSString stringWithFormat:@"+ %.2f",_model.money.floatValue];
-        _stateLabel.text = @"已到账";
-        _dateLabel.text = [NSString convertStringToTime:[_modelstate.set_time stringValue]];
+        _stateLabel.text = @"已到蓝聘账户";
+        _dateLabel.text = [DataTimeTool getDataTime:[NSString convertStringToTime:[_modelstate.set_time stringValue]] DateFormat:@"yyyy-MM-dd" oldDateFormat:@"yyyy/MM/dd HH:mm:ss"] ;
     }
 }
 

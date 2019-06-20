@@ -77,10 +77,10 @@
 -(IBAction)touchwithdrawalLabel:(id)sender{
     if ([LoginUtils validationLogin:[UIWindow visibleViewController]]) {
         
-        if (self.userMaterialModel.data.isUserProblem.integerValue == 0) {
-            [self initSetSecretVC];
-            return;
-        }
+//        if (self.userMaterialModel.data.isUserProblem.integerValue == 0) {
+//            [self initSetSecretVC];
+//            return;
+//        }
         self.showMoneyButton.enabled = NO;
         [self requestQueryBankcardwithDraw];
        
