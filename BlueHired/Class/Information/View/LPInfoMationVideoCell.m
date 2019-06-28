@@ -12,7 +12,7 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    self.userImage.layer.cornerRadius = 9.5;
+    self.userImage.layer.cornerRadius = LENGTH_SIZE(9.5);
     self.TitleBackView.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.3];
  }
 

@@ -194,6 +194,16 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     label.textColor = [UIColor colorWithHexString:@"#999999"];
     return view;
 }
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (tableView == self.Resulttableview) {
+        CGFloat KeyHeight = [self calculateKeyHeight:self.listArray[indexPath.row].key];
+        return LENGTH_SIZE(123.0) +KeyHeight ;
+    }
+    return 44.0;
+}
+
+
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
     if (tableView == self.tableview) {
         return 30;
@@ -294,7 +304,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         _Resulttableview.dataSource = self;
         _Resulttableview.tableFooterView = [[UIView alloc]init];
         _Resulttableview.rowHeight = UITableViewAutomaticDimension;
-        _Resulttableview.estimatedRowHeight = 100;
+        _Resulttableview.estimatedRowHeight = 0;
         
         _Resulttableview.separatorStyle = UITableViewCellSeparatorStyleNone;
         _Resulttableview.separatorColor = [UIColor colorWithHexString:@"#E6E6E6"];
@@ -393,6 +403,24 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     }];
 }
 
+//计算标签高度
+-(CGFloat)calculateKeyHeight:(NSString *) Key{
+    if (Key.length == 0) {
+        return 0;
+    }
+    NSArray * tagArr = [Key componentsSeparatedByString:@"|"];
+    CGFloat tagBtnX = 0;
+    CGFloat tagBtnY = 0;
+    for (int i= 0; i<tagArr.count; i++) {
+        CGSize tagTextSize = [tagArr[i] sizeWithFont:[UIFont systemFontOfSize:FontSize(12)] maxSize:CGSizeMake(SCREEN_WIDTH-LENGTH_SIZE(116), LENGTH_SIZE(17))];
+        if (tagBtnX+tagTextSize.width+14 > SCREEN_WIDTH-LENGTH_SIZE(116)) {
+            tagBtnX = 0;
+            tagBtnY += LENGTH_SIZE(17)+8;
+        }
+        tagBtnX = tagBtnX + tagTextSize.width + LENGTH_SIZE(4);
+    }
+    return tagBtnY + LENGTH_SIZE(17);
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

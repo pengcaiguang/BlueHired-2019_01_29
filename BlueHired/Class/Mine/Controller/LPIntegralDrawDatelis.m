@@ -96,11 +96,7 @@
     }];
     
     NSURL *url;
-//    if ([kUserDefaultsValue(LOGINID) integerValue]) {
-//        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@bluehired/activity.html?sign=%ld&id=%@",BaseRequestWeiXiURL,[kUserDefaultsValue(LOGINID) integerValue],self.Model.id]];
-//    }else{
-//        url =  [NSURL URLWithString:[NSString stringWithFormat:@"%@bluehired/activity.html?id=%@",BaseRequestWeiXiURL,self.Model.id]];
-//    }
+ 
     url = [NSURL URLWithString:[NSString stringWithFormat:@"%@?id=%ld",self.Integralmodel.activityImage,(long)[kUserDefaultsValue(LOGINID) integerValue]]];
 
     

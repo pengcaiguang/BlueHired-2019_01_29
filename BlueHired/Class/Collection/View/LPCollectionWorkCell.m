@@ -28,7 +28,7 @@
     [self.selectButton setImage:[UIImage imageNamed:@"add_ record_normal"] forState:UIControlStateNormal];
     [self.selectButton setImage:[UIImage imageNamed:@"add_ record_selected"] forState:UIControlStateSelected];
     
-    self.reMoneyLabel.layer.cornerRadius = 10.5;
+    self.reMoneyLabel.layer.cornerRadius = LENGTH_SIZE(10.5);
     self.reMoneyLabel.layer.borderWidth = 1;
     self.reMoneyLabel.layer.borderColor = [UIColor colorWithHexString:@"#FFD291"].CGColor;
 
@@ -52,15 +52,15 @@
                            forState:UIControlStateNormal];
         
         CGFloat ReMoneyWidth = [LPTools widthForString:[NSString stringWithFormat:@"    %ld   ",
-                                                        (long)model.reMoney.integerValue] fontSize:16 andHeight:21];
-        self.keyLabel_constraint_right.constant = 13.0+ReMoneyWidth+10;
+                                                        (long)model.reMoney.integerValue] fontSize:FontSize(16) andHeight:LENGTH_SIZE(21)];
+        self.keyLabel_constraint_right.constant = LENGTH_SIZE(13.0) + ReMoneyWidth + LENGTH_SIZE(10);
         
         self.reMoneyLabel.hidden = NO;
         self.reMoneyImage.hidden = NO;
     }else{
         self.reMoneyLabel.hidden = YES;
         self.reMoneyImage.hidden = YES;
-        self.keyLabel_constraint_right.constant = 13.0;
+        self.keyLabel_constraint_right.constant = LENGTH_SIZE(13.0);
     }
     
     self.applyNumberLabel.text = [NSString stringWithFormat:@"招%@人 / 已报名:%@人",model.maxNumber,model.applyNumber ? model.applyNumber : @"0"];
@@ -95,25 +95,34 @@
     //动态计算key标签宽度
     NSArray * tagArr = [model.key componentsSeparatedByString:@"|"];
     CGFloat tagBtnX = 0;
-    //        CGFloat tagBtnY = 0;
-    for (int i= 0; i<tagArr.count; i++) {
-        CGSize tagTextSize = [[NSString stringWithFormat:@"%@",tagArr[i]] sizeWithFont:[UIFont systemFontOfSize:12] maxSize:CGSizeMake(SCREEN_WIDTH-116, 17)];
-        if (tagBtnX+tagTextSize.width < SCREEN_WIDTH-116) {
+    CGFloat tagBtnY = 0;
+    if (model.key.length>0) {
+        for (int i= 0; i<tagArr.count; i++) {
+            CGSize tagTextSize = [[NSString stringWithFormat:@"%@",tagArr[i]] sizeWithFont:[UIFont systemFontOfSize:FontSize(11)] maxSize:CGSizeMake(SCREEN_WIDTH - LENGTH_SIZE(116) , LENGTH_SIZE(17))];
+            if (tagBtnX + tagTextSize.width + 14  > SCREEN_WIDTH - LENGTH_SIZE(116) ) {
+                tagBtnX = 0;
+                tagBtnY += LENGTH_SIZE(17)+8;
+            }
             UIButton * tagBtn = [UIButton buttonWithType:UIButtonTypeCustom];
             tagBtn.tag = 100+i;
-            tagBtn.frame = CGRectMake(tagBtnX, 0, tagTextSize.width+8, 17);
+            tagBtn.frame = CGRectMake(tagBtnX, tagBtnY, tagTextSize.width+LENGTH_SIZE(8), LENGTH_SIZE(17));
             [tagBtn setTitle:tagArr[i] forState:UIControlStateNormal];
             [tagBtn setTitleColor:[UIColor colorWithHexString:@"#808080"] forState:UIControlStateNormal];
-            tagBtn.titleLabel.font = [UIFont systemFontOfSize:11];
+            tagBtn.titleLabel.font = [UIFont systemFontOfSize:FontSize(11)];
             tagBtn.layer.cornerRadius = 2;
             tagBtn.layer.masksToBounds = YES;
             tagBtn.backgroundColor = [UIColor colorWithHexString:@"#F5F6F7"];
             [self.keyLabel addSubview:tagBtn];
-            tagBtnX = CGRectGetMaxX(tagBtn.frame)+4;
-            
+            tagBtnX = CGRectGetMaxX(tagBtn.frame)+LENGTH_SIZE(4);
         }
         
+        self.keyLabel_constraint_Height.constant = tagBtnY + LENGTH_SIZE(17);
+
+    }else{
+        self.keyLabel_constraint_Height.constant = 0;
+
     }
+
     
 }
 - (IBAction)touchSelectButton:(UIButton *)sender {
@@ -135,10 +144,10 @@
 -(void)setSelectStatus:(BOOL)selectStatus{
     if (selectStatus) {
         self.selectButton.hidden = NO;
-        self.label_contraint_width.constant = 60;
+        self.label_contraint_width.constant = LENGTH_SIZE(60);
     }else{
         self.selectButton.hidden = YES;
-        self.label_contraint_width.constant = 13;
+        self.label_contraint_width.constant = LENGTH_SIZE(13);
     }
 }
 -(void)setSelectAll:(BOOL)selectAll{

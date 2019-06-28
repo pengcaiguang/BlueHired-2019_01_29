@@ -126,16 +126,16 @@ static NSString *LPCollectionCollectionViewCellID = @"LPCollectionCollectionView
         } else {
             make.bottom.mas_equalTo(0);
         }
-        make.width.mas_equalTo(SCREEN_WIDTH - 180);
-        make.height.mas_equalTo(49);
+        make.width.mas_equalTo(SCREEN_WIDTH - LENGTH_SIZE(180) );
+        make.height.mas_equalTo(LENGTH_SIZE(49));
     }];
     [selectButton setTitle:@"全选" forState:UIControlStateNormal];
     [selectButton setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
     [selectButton setImage:[UIImage imageNamed:@"add_ record_normal"] forState:UIControlStateNormal];
     [selectButton setImage:[UIImage imageNamed:@"add_ record_selected"] forState:UIControlStateSelected];
-    selectButton.titleLabel.font = [UIFont systemFontOfSize:16];
-    selectButton.titleEdgeInsets = UIEdgeInsetsMake(0, 30, 0, 0);
-    selectButton.imageEdgeInsets = UIEdgeInsetsMake(0, 20, 0, 0);
+    selectButton.titleLabel.font = [UIFont systemFontOfSize:FontSize(16)];
+    selectButton.titleEdgeInsets = UIEdgeInsetsMake(0, LENGTH_SIZE(30), 0, 0);
+    selectButton.imageEdgeInsets = UIEdgeInsetsMake(0, LENGTH_SIZE(20), 0, 0);
     selectButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [selectButton addTarget:self action:@selector(touchSelectButton:) forControlEvents:UIControlEventTouchUpInside];
     selectButton.backgroundColor = [UIColor whiteColor];
@@ -151,13 +151,13 @@ static NSString *LPCollectionCollectionViewCellID = @"LPCollectionCollectionView
         } else {
             make.bottom.mas_equalTo(0);
         }
-        make.height.mas_equalTo(49);
-        make.width.mas_equalTo(180);
+        make.height.mas_equalTo(LENGTH_SIZE(49));
+        make.width.mas_equalTo(LENGTH_SIZE(180));
     }];
     deleteButton.backgroundColor = [UIColor colorWithHexString:@"#FF5353"];
     [deleteButton setTitle:@"删除" forState:UIControlStateNormal];
     [deleteButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    deleteButton.titleLabel.font = [UIFont systemFontOfSize:16];
+    deleteButton.titleLabel.font = [UIFont systemFontOfSize:FontSize(16)];
     [deleteButton addTarget:self action:@selector(touchDeleteButton:) forControlEvents:UIControlEventTouchUpInside];
     self.allButton.hidden = YES;
     self.deleteBt.hidden = YES;

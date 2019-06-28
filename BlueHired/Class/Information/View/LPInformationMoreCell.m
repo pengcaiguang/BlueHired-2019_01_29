@@ -28,7 +28,6 @@ static NSString *LPInformationMoreImageCollectionViewCellID = @"LPInformationMor
     [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.imgeBgView);
     }];
-    
 }
 -(void)setModel:(LPEssaylistDataModel *)model{
     _model = model;
@@ -60,7 +59,7 @@ static NSString *LPInformationMoreImageCollectionViewCellID = @"LPInformationMor
 
 #pragma mark -- UICollectionViewDelegateFlowLayout
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    return CGSizeMake((SCREEN_WIDTH-20-28)/3 , 76);
+    return CGSizeMake((SCREEN_WIDTH-LENGTH_SIZE(20+28))/3 , LENGTH_SIZE(76));
 }
 
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section{

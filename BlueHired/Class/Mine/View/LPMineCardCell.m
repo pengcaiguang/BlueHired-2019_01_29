@@ -252,13 +252,7 @@
 
                 vc.hidesBottomBarWhenPushed = YES;
                 [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
-            }else if (NO){
-                LPInviteVC *vc = [[LPInviteVC alloc]init];
-
-                vc.hidesBottomBarWhenPushed = YES;
-                [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
-            }
-            else if (index == 4){
+            }else if (index == 4){
                 LPWorkorderListVC *vc = [[LPWorkorderListVC alloc]init];
                 vc.hidesBottomBarWhenPushed = YES;
                 [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];

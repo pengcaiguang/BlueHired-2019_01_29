@@ -29,8 +29,8 @@
 @property (nonatomic, copy) NSNumber *mechanismId;
 @property (nonatomic, copy) NSString *mechanismName;
 @property (nonatomic, copy) NSNumber *postType;
-@property (nonatomic, copy) NSNumber *reMoney;
-@property (nonatomic, copy) NSNumber *reTime;
+@property (nonatomic, copy) NSString *reMoney;
+@property (nonatomic, copy) NSString *reTime;
 @property (nonatomic, copy) NSString *recruitAddress;
 @property (nonatomic, copy) NSNumber *recruitStatus;
 @property (nonatomic, copy) NSNumber *role;
@@ -54,6 +54,9 @@
 @property (nonatomic, copy) NSString *workMoney;
 @property (nonatomic, copy) NSString *workTypeName;
 @property (nonatomic, copy) NSString *postName;
+@property (nonatomic, copy) NSString *remarkStatus;
+@property (nonatomic, copy) NSString *restTime;
+@property (nonatomic, copy) NSString *restRemark;
 
 
 @end

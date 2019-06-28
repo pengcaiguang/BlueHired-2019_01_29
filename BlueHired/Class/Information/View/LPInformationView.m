@@ -370,14 +370,16 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
 
 -(SDCycleScrollView *)cycleScrollView{
     if (!_cycleScrollView) {
-        _cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 360/SCREEN_WIDTH* 180) delegate:self placeholderImage:nil];
+        _cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, LENGTH_SIZE(168))
+                                                              delegate:self
+                                                      placeholderImage:nil];
         _cycleScrollView.pageControlAliment = SDCycleScrollViewPageContolAlimentRight;
         _cycleScrollView.pageControlStyle = SDCycleScrollViewPageContolStyleNone;
         //        _cycleScrollView.currentPageDotColor = [UIColor clearColor]; // 自定义分页控件小圆标颜色
         //        _cycleScrollView.pageDotColor = [UIColor clearColor]; // 自定义分页控件小圆标颜色
         
         _cycleScrollView.showPageControl = YES;
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(SCREEN_WIDTH-50, 360/SCREEN_WIDTH* 180 -30, 50, 30)];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(SCREEN_WIDTH-50, LENGTH_SIZE(168) -30, 50, 30)];
         self.PageDotColorLabel = label;
         label.text = @"";
         label.font = [UIFont systemFontOfSize:14];

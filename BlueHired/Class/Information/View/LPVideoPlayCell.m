@@ -36,42 +36,62 @@
         
     }];
  
-    UIButton *BackBt = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - 60, 42,40, 40)];
+    UIButton *BackBt = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - LENGTH_SIZE(60),
+                                                                  LENGTH_SIZE(42),LENGTH_SIZE(40),
+                                                                  LENGTH_SIZE(40))];
     [BackBt setImage:[UIImage imageNamed:@"删除"] forState:UIControlStateNormal];
     [BackBt addTarget:self action:@selector(touchUpInside) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:BackBt];
     
-    UIImageView *User = [[UIImageView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - 60, SCREEN_HEIGHT - 391,40, 40)];
+    UIImageView *User = [[UIImageView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - LENGTH_SIZE(60),
+                                                                      SCREEN_HEIGHT -LENGTH_SIZE(391),
+                                                                      LENGTH_SIZE(40),
+                                                                      LENGTH_SIZE(40))];
     self.UserImage = User;
     User.clipsToBounds = YES;
-    User.layer.cornerRadius = 20;
+    User.layer.cornerRadius = LENGTH_SIZE(20);
       [self addSubview:User];
     
-    UIButton *LoveBt = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - 60, SCREEN_HEIGHT - 332,40, 40)];
+    UIButton *LoveBt = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - LENGTH_SIZE(60),
+                                                                  SCREEN_HEIGHT - LENGTH_SIZE(332),
+                                                                  LENGTH_SIZE(40),
+                                                                  LENGTH_SIZE(40))];
     [LoveBt setImage:[UIImage imageNamed:@"Videopraise_normal"] forState:UIControlStateNormal];
      [LoveBt setImage:[UIImage imageNamed:@"Videopraise_Selected"] forState:UIControlStateSelected];
     [LoveBt addTarget:self action:@selector(preventFlicker:) forControlEvents:UIControlEventAllTouchEvents];
     [LoveBt addTarget:self action:@selector(touchBottomButton:) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:LoveBt];
     self.LoveButton = LoveBt;
-    self.LoveLabel = [[UILabel alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - 60,SCREEN_HEIGHT - 292,40, 8)];
+    self.LoveLabel = [[UILabel alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - LENGTH_SIZE(60),
+                                                               SCREEN_HEIGHT - LENGTH_SIZE(292),
+                                                               LENGTH_SIZE(40),
+                                                               LENGTH_SIZE(10))];
     [self addSubview:self.LoveLabel];
     self.LoveLabel.textColor = [UIColor whiteColor];
     self.LoveLabel.textAlignment =NSTextAlignmentCenter;
-    self.LoveLabel.font = [UIFont systemFontOfSize:11];
+    self.LoveLabel.font = [UIFont systemFontOfSize:FontSize(11)];
     
-    UIButton *MessageBt = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - 60,SCREEN_HEIGHT - 261,40, 40)];
+    UIButton *MessageBt = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - LENGTH_SIZE(60),
+                                                                     SCREEN_HEIGHT - LENGTH_SIZE(261),
+                                                                     LENGTH_SIZE(40),
+                                                                     LENGTH_SIZE(40))];
     [MessageBt setImage:[UIImage imageNamed:@"messageImage"] forState:UIControlStateNormal];
     [MessageBt addTarget:self action:@selector(touchUpInsideMessage) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:MessageBt];
     self.MessageButton = MessageBt;
-    self.MessageLabel = [[UILabel alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - 60,SCREEN_HEIGHT - 221,40, 8)];
+    self.MessageLabel = [[UILabel alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - LENGTH_SIZE(60),
+                                                                  SCREEN_HEIGHT - LENGTH_SIZE(221),
+                                                                  LENGTH_SIZE(40),
+                                                                  LENGTH_SIZE(10))];
     [self addSubview:self.MessageLabel];
     self.MessageLabel.textColor = [UIColor whiteColor];
     self.MessageLabel.textAlignment =NSTextAlignmentCenter;
-    self.MessageLabel.font = [UIFont systemFontOfSize:11];
+    self.MessageLabel.font = [UIFont systemFontOfSize:FontSize(11)];
     
-    UIButton *CollectionBt = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - 60,SCREEN_HEIGHT - 192,40, 40)];
+    UIButton *CollectionBt = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - LENGTH_SIZE(60),
+                                                                        SCREEN_HEIGHT - LENGTH_SIZE(192),
+                                                                        LENGTH_SIZE(40),
+                                                                        LENGTH_SIZE(40))];
     [CollectionBt setImage:[UIImage imageNamed:@"Videocollection_normal"] forState:UIControlStateNormal];
     [CollectionBt setImage:[UIImage imageNamed:@"Videocollection_Selected"] forState:UIControlStateSelected];
     [CollectionBt addTarget:self action:@selector(preventFlicker:) forControlEvents:UIControlEventAllTouchEvents];
@@ -79,7 +99,10 @@
     [self addSubview:CollectionBt];
     self.CollectButton = CollectionBt;
     
-    UIButton *ShareBt = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - 60, SCREEN_HEIGHT-120,40, 40)];
+    UIButton *ShareBt = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - LENGTH_SIZE(60),
+                                                                   SCREEN_HEIGHT-LENGTH_SIZE(120),
+                                                                   LENGTH_SIZE(40),
+                                                                   LENGTH_SIZE(40))];
     [ShareBt setImage:[UIImage imageNamed:@"分享(7)"] forState:UIControlStateNormal];
     [ShareBt addTarget:self action:@selector(touchShare) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:ShareBt];
@@ -87,10 +110,10 @@
     UIImageView *titleImage = [[UIImageView alloc] init];
     [self addSubview:titleImage];
     [titleImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.mas_equalTo(-44);
-        make.left.mas_equalTo(12);
-        make.height.mas_equalTo(14);
-        make.width.mas_equalTo(14);
+        make.bottom.mas_equalTo(LENGTH_SIZE(-44) );
+        make.left.mas_equalTo(LENGTH_SIZE(12));
+        make.height.mas_equalTo(LENGTH_SIZE(14));
+        make.width.mas_equalTo(LENGTH_SIZE(14));
      }];
     titleImage.image = [UIImage imageNamed:@"VideoTitleImage"];
     
@@ -98,12 +121,12 @@
     [self addSubview:Title];
     self.TitleLabel = Title;
     [Title mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.mas_equalTo(-44);
-        make.left.mas_equalTo(34);
-        make.right.mas_equalTo(-23);
+        make.bottom.mas_equalTo(LENGTH_SIZE(-44));
+        make.left.mas_equalTo(LENGTH_SIZE(34));
+        make.right.mas_equalTo(LENGTH_SIZE(-23));
     }];
     Title.textColor = [UIColor whiteColor];
-    Title.font = [UIFont systemFontOfSize:15];
+    Title.font = [UIFont systemFontOfSize:FontSize(15)];
     Title.marqueeLabelType = KJMarqueeLabelTypeLeft;
     Title.speed = 1;
     Title.stopTime = 1;
@@ -273,42 +296,6 @@
 
 
 
--(void)WeiXinOrQQAlertView
-{
-    _CustomAlert = [[CustomIOSAlertView alloc] init];
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 300, 130)];
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, 300, 21)];
-    label.textAlignment = NSTextAlignmentCenter;
-    label.text = @"请选择分享平台";
-    
-    UIButton *weixinBt = [[UIButton alloc] initWithFrame:CGRectMake(180, 40, 60, 60)];
-    [weixinBt setBackgroundImage:[UIImage imageNamed:@"weixin"] forState:(UIControlStateNormal)];
-    [weixinBt addTarget:self action:@selector(weixinOrQQtouch:) forControlEvents:UIControlEventTouchUpInside];
-    weixinBt.tag = 1;
-    UILabel *wxlabel = [[UILabel alloc] initWithFrame:CGRectMake(180, 105, 60, 20)];
-    wxlabel.text = @"微信";
-    wxlabel.textAlignment = NSTextAlignmentCenter;
-    
-    
-    UIButton *QQBt = [[UIButton alloc] initWithFrame:CGRectMake(60, 40, 60, 60)];
-    [QQBt setBackgroundImage:[UIImage imageNamed:@"QQ"] forState:(UIControlStateNormal)];
-    [QQBt addTarget:self action:@selector(weixinOrQQtouch:) forControlEvents:UIControlEventTouchUpInside];
-    QQBt.tag = 2;
-    UILabel *qqlabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 105, 60, 20)];
-    qqlabel.text = @"qq";
-    qqlabel.textAlignment = NSTextAlignmentCenter;
-    [view addSubview:label];
-    [view addSubview:weixinBt];
-    [view addSubview:wxlabel];
-    [view addSubview:QQBt];
-    [view addSubview:qqlabel];
-    
-    [_CustomAlert setContainerView:view];
-    [_CustomAlert setButtonTitles:@[@"取消"]];
-    [_CustomAlert show];
-    
-    
-}
 
 -(void)weixinOrQQtouch:(UIButton *)sender
 {

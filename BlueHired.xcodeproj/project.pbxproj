@@ -339,6 +339,8 @@
 		88B8C62E227180AD00313854 /* LPSecurityQuestionVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 88B8C62C227180AD00313854 /* LPSecurityQuestionVC.m */; };
 		88B8C62F227180AD00313854 /* LPSecurityQuestionVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 88B8C62D227180AD00313854 /* LPSecurityQuestionVC.xib */; };
 		88B8C632227188CB00313854 /* LPUserProblemModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 88B8C631227188CB00313854 /* LPUserProblemModel.m */; };
+		88B9EBEE22BCAA390099D5BE /* LPInCommentsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 88B9EBEC22BCAA390099D5BE /* LPInCommentsVC.m */; };
+		88B9EBEF22BCAA390099D5BE /* LPInCommentsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 88B9EBED22BCAA390099D5BE /* LPInCommentsVC.xib */; };
 		88BC48882286782800B03424 /* LPMainSearchVC.m in Sources */ = {isa = PBXBuildFile; fileRef = DC30E1912138E622000C7A91 /* LPMainSearchVC.m */; };
 		88BC598822ADF02E004EAEF2 /* UILabel+YBAttributeTextTapAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 88BC598722ADF02E004EAEF2 /* UILabel+YBAttributeTextTapAction.m */; };
 		88BC598C22AE3374004EAEF2 /* LPAddressBookVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 88BC598A22AE3374004EAEF2 /* LPAddressBookVC.m */; };
@@ -538,6 +540,7 @@
 		88FC0296218493EF0080E44C /* LPAffiliationMenageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 88FC0294218493EF0080E44C /* LPAffiliationMenageCell.m */; };
 		88FC0297218493EF0080E44C /* LPAffiliationMenageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 88FC0295218493EF0080E44C /* LPAffiliationMenageCell.xib */; };
 		88FC029A2184990A0080E44C /* LPAffiliationModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 88FC02992184990A0080E44C /* LPAffiliationModel.m */; };
+		88FEF14E22BDBFB9003B95A6 /* LPWorkOrderRemarkModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 88FEF14D22BDBFB9003B95A6 /* LPWorkOrderRemarkModel.m */; };
 		BE82CAE860C97254269F44AD /* libPods-BlueHired.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB5A5321875E124A6C52C8B /* libPods-BlueHired.a */; };
 		DC13BB4D213E1C3B00800955 /* LPCityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = DC13BB4C213E1C3B00800955 /* LPCityModel.m */; };
 		DC13BB50213E1FD100800955 /* LPCityDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DC13BB4F213E1FD100800955 /* LPCityDataManager.m */; };
@@ -1381,6 +1384,9 @@
 		88B8C62D227180AD00313854 /* LPSecurityQuestionVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPSecurityQuestionVC.xib; sourceTree = "<group>"; };
 		88B8C630227188CB00313854 /* LPUserProblemModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPUserProblemModel.h; sourceTree = "<group>"; };
 		88B8C631227188CB00313854 /* LPUserProblemModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPUserProblemModel.m; sourceTree = "<group>"; };
+		88B9EBEB22BCAA390099D5BE /* LPInCommentsVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPInCommentsVC.h; sourceTree = "<group>"; };
+		88B9EBEC22BCAA390099D5BE /* LPInCommentsVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPInCommentsVC.m; sourceTree = "<group>"; };
+		88B9EBED22BCAA390099D5BE /* LPInCommentsVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPInCommentsVC.xib; sourceTree = "<group>"; };
 		88BC598622ADF02E004EAEF2 /* UILabel+YBAttributeTextTapAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+YBAttributeTextTapAction.h"; sourceTree = "<group>"; };
 		88BC598722ADF02E004EAEF2 /* UILabel+YBAttributeTextTapAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+YBAttributeTextTapAction.m"; sourceTree = "<group>"; };
 		88BC598922AE3374004EAEF2 /* LPAddressBookVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPAddressBookVC.h; sourceTree = "<group>"; };
@@ -1695,6 +1701,8 @@
 		88FC0295218493EF0080E44C /* LPAffiliationMenageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPAffiliationMenageCell.xib; sourceTree = "<group>"; };
 		88FC02982184990A0080E44C /* LPAffiliationModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPAffiliationModel.h; sourceTree = "<group>"; };
 		88FC02992184990A0080E44C /* LPAffiliationModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPAffiliationModel.m; sourceTree = "<group>"; };
+		88FEF14C22BDBFB9003B95A6 /* LPWorkOrderRemarkModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPWorkOrderRemarkModel.h; sourceTree = "<group>"; };
+		88FEF14D22BDBFB9003B95A6 /* LPWorkOrderRemarkModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPWorkOrderRemarkModel.m; sourceTree = "<group>"; };
 		92E3EB858257F39A6762B321 /* Pods-BlueHiredTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlueHiredTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlueHiredTests/Pods-BlueHiredTests.debug.xcconfig"; sourceTree = "<group>"; };
 		992D1B12C5F757999ACD5D40 /* Pods-BlueHired.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlueHired.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlueHired/Pods-BlueHired.release.xcconfig"; sourceTree = "<group>"; };
 		BBC93F1DC28C278E85E3A307 /* Pods-BlueHiredUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlueHiredUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BlueHiredUITests/Pods-BlueHiredUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -3757,6 +3765,9 @@
 				88AAEEFA21A94A2C0085EAA2 /* LPHongBaoVC.h */,
 				88AAEEFB21A94A2C0085EAA2 /* LPHongBaoVC.m */,
 				88AAEEFC21A94A2C0085EAA2 /* LPHongBaoVC.xib */,
+				88B9EBEB22BCAA390099D5BE /* LPInCommentsVC.h */,
+				88B9EBEC22BCAA390099D5BE /* LPInCommentsVC.m */,
+				88B9EBED22BCAA390099D5BE /* LPInCommentsVC.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -4173,6 +4184,8 @@
 				DC229581214106D10002A095 /* LPIsApplyOrIsCollectionModel.m */,
 				DCE1FD2221420AAB009C38BF /* LPWorkorderListModel.h */,
 				DCE1FD2321420AAB009C38BF /* LPWorkorderListModel.m */,
+				88FEF14C22BDBFB9003B95A6 /* LPWorkOrderRemarkModel.h */,
+				88FEF14D22BDBFB9003B95A6 /* LPWorkOrderRemarkModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -4656,6 +4669,7 @@
 				88C3FDDA2180A1B7003AC177 /* LPRecruitCell.xib in Resources */,
 				88C5AFC821C0B06E00B4A9E2 /* LPCollectionVideoCell.xib in Resources */,
 				88A0D997222F60A10023587E /* LPAccountPriceCell.xib in Resources */,
+				88B9EBEF22BCAA390099D5BE /* LPInCommentsVC.xib in Resources */,
 				88B1AE09222913E800EAF366 /* LPWorkHourKQWeekVC.xib in Resources */,
 				889E1F902183EF710045D247 /* LPEntryCell.xib in Resources */,
 				88D1FAA722697B6700178BFC /* LPIntegralDrawCell.xib in Resources */,
@@ -4917,6 +4931,7 @@
 				88B8035121D0BA4D00FB4D25 /* JXCategoryImageCellModel.m in Sources */,
 				DC22958B214150BC0002A095 /* LPWorkorderListVC.m in Sources */,
 				DCDB29F9215F7020008444BA /* LPSignInfoModel.m in Sources */,
+				88FEF14E22BDBFB9003B95A6 /* LPWorkOrderRemarkModel.m in Sources */,
 				DCB25E992150C79700ED2FC4 /* LPSalaryHourlyStatisticsCell.m in Sources */,
 				88DDF1AB21917542004824EA /* LPEntryCertificationVC.m in Sources */,
 				88A0F5E6222670AD00AF50EA /* LXCalendarHearder.m in Sources */,
@@ -4945,6 +4960,7 @@
 				88C3FDD421808F04003AC177 /* LPRecruitRequireCell.m in Sources */,
 				88B8035B21D0BA4D00FB4D25 /* JXCategoryBaseView.m in Sources */,
 				DCB57F7F215CBA680043AA43 /* LPQueryCheckrecordModel.m in Sources */,
+				88B9EBEE22BCAA390099D5BE /* LPInCommentsVC.m in Sources */,
 				88BD9DF6225DDDBF00816825 /* YYImageCache.m in Sources */,
 				88EADA3E228573850000299B /* SDCollectionViewCell.m in Sources */,
 				DC7A32E42138074900E09C6C /* LPSetVC.m in Sources */,

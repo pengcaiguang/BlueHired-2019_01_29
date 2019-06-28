@@ -144,18 +144,26 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
         return;
     }
     
-     self.recommendBt = [[UIButton alloc] initWithFrame:CGRectMake((SCREEN_WIDTH - 140)/2 , 42,70, 40)];
+     self.recommendBt = [[UIButton alloc] initWithFrame:CGRectMake((SCREEN_WIDTH - LENGTH_SIZE(140))/2 ,
+                                                                   LENGTH_SIZE(42),
+                                                                   LENGTH_SIZE(70),
+                                                                   LENGTH_SIZE(40))];
     //    [recommendBt setImage:[UIImage imageNamed:@"推荐"] forState:UIControlStateNormal];
     [self.recommendBt setTitle:@"推荐" forState:UIControlStateNormal];
+    self.recommendBt.titleLabel.font = [UIFont systemFontOfSize:FontSize(17)];
     [self.recommendBt addTarget:self action:@selector(touchrecommended:) forControlEvents:UIControlEventTouchUpInside];
     [self.recommendBt setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
     [self.recommendBt setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
 
     [self.view addSubview:self.recommendBt];
     
-    self.TypeBt = [[UIButton alloc] initWithFrame:CGRectMake((SCREEN_WIDTH - 140)/2+70, 42,70, 40)];
+    self.TypeBt = [[UIButton alloc] initWithFrame:CGRectMake((SCREEN_WIDTH - LENGTH_SIZE(140))/2+70,
+                                                             LENGTH_SIZE(42),
+                                                             LENGTH_SIZE(70),
+                                                             LENGTH_SIZE(40))];
     //    [TypeBt setImage:[UIImage imageNamed:@"分类"] forState:UIControlStateNormal];
     [self.TypeBt setTitle:@"分类" forState:UIControlStateNormal];
+    self.TypeBt.titleLabel.font = [UIFont systemFontOfSize:FontSize(17)];
     [self.TypeBt addTarget:self action:@selector(touchtype:) forControlEvents:UIControlEventTouchUpInside];
     [self.TypeBt setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
     [self.TypeBt setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
@@ -167,7 +175,10 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
             return;
         }
  
-        UIScrollView *scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 82, SCREEN_WIDTH, 50)];
+        UIScrollView *scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0,
+                                                                                 LENGTH_SIZE(82),
+                                                                                 SCREEN_WIDTH,
+                                                                                 LENGTH_SIZE(50))];
         [self.view addSubview:scrollView];
         self.LabelscrollView = scrollView;
         scrollView.backgroundColor = [UIColor colorWithRed:27/255.0 green:27/255.0 blue:27/255.0 alpha:1];
@@ -178,26 +189,26 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
             UILabel *label = [[UILabel alloc]init];
             label.text = TypeModel.data[i].labelName;
             label.textAlignment = NSTextAlignmentCenter;
-            label.font = [UIFont systemFontOfSize:14];
+            label.font = [UIFont systemFontOfSize:FontSize(14)];
             [scrollView addSubview:label];
             label.textColor = [UIColor whiteColor];
-            CGSize size = CGSizeMake(100, MAXFLOAT);//设置高度宽度的最大限度
+            CGSize size = CGSizeMake(LENGTH_SIZE(100), MAXFLOAT);//设置高度宽度的最大限度
             CGRect rect = [label.text boundingRectWithSize:size options:NSStringDrawingUsesFontLeading|NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:14]} context:nil];
             
-            CGFloat lw = rect.size.width + 30;
+            CGFloat lw = rect.size.width + LENGTH_SIZE(30);
             w += lw;
-            label.frame = CGRectMake(w - lw, 0, lw, 50);
+            label.frame = CGRectMake(w - lw, 0, lw, LENGTH_SIZE(50));
             label.tag = i;
             label.userInteractionEnabled = YES;
             UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(touchLabel:)];
             [label addGestureRecognizer:tap];
             [self.labelArray addObject:label];
         }
-        scrollView.contentSize = CGSizeMake(w, 50);
+        scrollView.contentSize = CGSizeMake(w, LENGTH_SIZE(50));
         
         self.lineView = [[UIView alloc]init];
         CGFloat s = CGRectGetWidth(self.labelArray[0].frame);
-        self.lineView.frame = CGRectMake(0, 48, s, 2);
+        self.lineView.frame = CGRectMake(0, LENGTH_SIZE(48), s,LENGTH_SIZE(2));
         self.lineView.backgroundColor = [UIColor baseColor];
 //        [scrollView addSubview:self.lineView];
         self.labelArray[0].textColor = [UIColor whiteColor];
@@ -220,7 +231,7 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     }
     self.labelArray[index].textColor = [UIColor whiteColor];
     [UIView animateWithDuration:0.2 animations:^{
-        self.lineView.frame = CGRectMake(x, 48, w, 2);
+        self.lineView.frame = CGRectMake(x, LENGTH_SIZE(48), w, LENGTH_SIZE(2));
     }];
     
     if (x+w>SCREEN_WIDTH) {
@@ -260,7 +271,7 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     [self.bottomBgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.mas_equalTo(0);
         make.bottom.mas_equalTo(0);
-        make.height.mas_equalTo(48);
+        make.height.mas_equalTo(LENGTH_SIZE(48));
     }];
  
     UIView *backSearch = [[UIView alloc] init];
@@ -276,19 +287,19 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
         } else {
             make.bottom.mas_equalTo(0);
         }
-        make.height.mas_equalTo(48);
+        make.height.mas_equalTo(LENGTH_SIZE(48));
     }];
     
     self.searchBgView = [[UIView alloc]init];
     [self.BacksearchView addSubview:self.searchBgView];
     [self.searchBgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(10);
-        make.right.mas_equalTo(-10);
-        make.bottom.mas_equalTo(-7);
-        make.height.mas_equalTo(34);
+        make.left.mas_equalTo(LENGTH_SIZE(10));
+        make.right.mas_equalTo(LENGTH_SIZE(-10));
+        make.bottom.mas_equalTo(LENGTH_SIZE(-7));
+        make.height.mas_equalTo(LENGTH_SIZE(34));
     }];
     self.searchBgView.layer.masksToBounds = YES;
-    self.searchBgView.layer.cornerRadius = 17;
+    self.searchBgView.layer.cornerRadius = LENGTH_SIZE(17);
     self.searchBgView.backgroundColor = [UIColor colorWithHexString:@"#F2F2F2"];
     
     UIImageView *writeImg = [[UIImageView alloc]init];
@@ -296,7 +307,7 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     [writeImg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(5);
         make.centerY.equalTo(self.searchBgView);
-        make.size.mas_equalTo(CGSizeMake(15, 14));
+        make.size.mas_equalTo(CGSizeMake(LENGTH_SIZE(15), LENGTH_SIZE(14)));
     }];
     writeImg.image = [UIImage imageNamed:@"comment_write"];
     
@@ -304,7 +315,7 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     [self.searchBgView addSubview:self.commentTextField];
     [self.commentTextField mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(writeImg.mas_right).offset(5);
-        make.right.mas_equalTo(10);
+        make.right.mas_equalTo(LENGTH_SIZE(10));
         make.height.mas_equalTo(self.searchBgView.mas_height);
         make.centerY.equalTo(self.searchBgView);
     }];
@@ -320,13 +331,13 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     self.sendButton = [[UIButton alloc]init];
     [self.bottomBgView addSubview:self.sendButton];
     [self.sendButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.commentTextField.mas_right).offset(15);
-        make.right.mas_equalTo(-15);
-        make.height.mas_equalTo(26);
+        make.left.equalTo(self.commentTextField.mas_right).offset(LENGTH_SIZE(15));
+        make.right.mas_equalTo(LENGTH_SIZE(-15));
+        make.height.mas_equalTo(LENGTH_SIZE(26));
         make.centerY.equalTo(self.bottomBgView);
     }];
     self.sendButton.layer.masksToBounds = YES;
-    self.sendButton.layer.cornerRadius = 13;
+    self.sendButton.layer.cornerRadius = LENGTH_SIZE(13);
     [self.sendButton setTitle:@"发送" forState:UIControlStateNormal];
     [self.sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.sendButton.hidden = YES;
@@ -971,8 +982,7 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
 #pragma mark lazy
 - (UITableView *)tableview{
     if (!_tableview) {
-//        _tableview = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT/3*2)];
-        _tableview = [[UITableView alloc] init];
+         _tableview = [[UITableView alloc] init];
         _tableview.delegate = self;
         _tableview.dataSource = self;
         _tableview.tableFooterView = [[UIView alloc]init];
@@ -981,20 +991,12 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
         _tableview.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         _tableview.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
          [_tableview registerNib:[UINib nibWithNibName:LPEssayDetailCommentCellID bundle:nil] forCellReuseIdentifier:LPEssayDetailCommentCellID];
-        
-        
-        //        [_tableview registerNib:[UINib nibWithNibName:LPInformationMoreCellID bundle:nil] forCellReuseIdentifier:LPInformationMoreCellID];
-        
-        //        _tableview.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        //            self.page = 1;
-        //            [self requestEssaylist];
-        //        }];
+ 
         WEAK_SELF()
         _tableview.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
             [weakSelf requestCommentList];
             NSLog(@"调用上啦刷新");
-//            weakSelf.IsAddComment = NO;
-        }];
+         }];
      }
     return _tableview;
 }
@@ -1011,6 +1013,7 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
         _collectionView.dataSource = self;
         _collectionView.delegate = self;
         _collectionView.pagingEnabled = YES;
+        _collectionView.scrollsToTop = NO;
         [_collectionView registerNib:[UINib nibWithNibName:LPVideoPlayCellID bundle:nil] forCellWithReuseIdentifier:LPVideoPlayCellID];
 //        _collectionView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
 //            [self requestQueryGetVideoList];

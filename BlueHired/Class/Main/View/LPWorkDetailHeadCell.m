@@ -21,7 +21,7 @@
     [super awakeFromNib];
     // Initialization code
     self.keyLabel.layer.masksToBounds = YES;
-    self.keyLabel.layer.cornerRadius = 5.0;
+    self.keyLabel.layer.cornerRadius = LENGTH_SIZE(5.0) ;
     [self.imageBgView addSubview:self.cycleScrollView];
     [self.cycleScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.imageBgView);
@@ -40,11 +40,11 @@
     self.starRateView = starRateView;
     [self.mechanismScoreView addSubview:starRateView];
     
-    self.reMoneyLabel.layer.cornerRadius = 10.5;
+    self.reMoneyLabel.layer.cornerRadius =  LENGTH_SIZE(10.5);
     self.reMoneyLabel.layer.borderWidth = 1;
     self.reMoneyLabel.layer.borderColor = [UIColor colorWithHexString:@"#FFD291"].CGColor;
 
-    self.ReMoneyDeclare.contentEdgeInsets = UIEdgeInsetsMake(5,0, 0, 0);
+    self.ReMoneyDeclare.contentEdgeInsets = UIEdgeInsetsMake(LENGTH_SIZE(5),0, 0, 0);
 }
 
 
@@ -75,8 +75,8 @@
                                      (long)model.data.reMoney.integerValue]
                            forState:UIControlStateNormal];
         CGFloat ReMoneyWidth = [LPTools widthForString:[NSString stringWithFormat:@"    %ld   ",
-                                                        (long)model.data.reMoney.integerValue] fontSize:16 andHeight:21];
-        self.keyLabel_constraint_right.constant = 13.0+ReMoneyWidth+10;
+                                                        (long)model.data.reMoney.integerValue] fontSize:FontSize(16) andHeight:LENGTH_SIZE(21)];
+        self.keyLabel_constraint_right.constant = LENGTH_SIZE(13.0 +10 ) +ReMoneyWidth;
         
         self.reMoneyLabel.hidden = NO;
         self.reMoneyImage.hidden = NO;
@@ -84,7 +84,7 @@
     }else{
         self.reMoneyLabel.hidden = YES;
         self.reMoneyImage.hidden = YES;
-        self.keyLabel_constraint_right.constant = 13.0;
+        self.keyLabel_constraint_right.constant = LENGTH_SIZE(13);
     }
     
     if ([model.data.postName isEqualToString:@"小时工"]) {
@@ -126,42 +126,47 @@
 
     self.keyLabel.text = @"";
     [self.keyLabel.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-
-    
     NSArray * tagArr = [model.data.key componentsSeparatedByString:@"|"];
     CGFloat tagBtnX = 0;
     CGFloat tagBtnY = 0;
-    for (int i= 0; i<tagArr.count; i++) {
-
-        CGSize tagTextSize = [tagArr[i] sizeWithFont:[UIFont systemFontOfSize:12] maxSize:CGSizeMake(SCREEN_WIDTH-13-13, 17)];
-        if (tagBtnX+tagTextSize.width+14 > SCREEN_WIDTH-13-13) {
-            tagBtnX = 0;
-            tagBtnY += 17+8;
+    
+    if (model.data.key.length >0) {
+        for (int i= 0; i<tagArr.count; i++) {
+            
+            CGSize tagTextSize = [tagArr[i] sizeWithFont:[UIFont systemFontOfSize:FontSize(12)] maxSize:CGSizeMake(SCREEN_WIDTH-LENGTH_SIZE(26), LENGTH_SIZE(17))];
+            if (tagBtnX+tagTextSize.width+14 > SCREEN_WIDTH-LENGTH_SIZE(26)) {
+                tagBtnX = 0;
+                tagBtnY += LENGTH_SIZE(17)+8;
+            }
+            UIButton * tagBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+            tagBtn.tag = 100+i;
+            tagBtn.frame = CGRectMake(tagBtnX, tagBtnY, tagTextSize.width+LENGTH_SIZE(8), LENGTH_SIZE(17));
+            [tagBtn setTitle:tagArr[i] forState:UIControlStateNormal];
+            [tagBtn setTitleColor:[UIColor colorWithHexString:@"#808080"] forState:UIControlStateNormal];
+            tagBtn.titleLabel.font = [UIFont systemFontOfSize:FontSize(11)];
+            tagBtn.layer.cornerRadius = LENGTH_SIZE(2);
+            tagBtn.layer.masksToBounds = YES;
+            tagBtn.backgroundColor = [UIColor colorWithHexString:@"#F5F6F7"];
+            [self.keyLabel addSubview:tagBtn];
+            
+            tagBtnX = CGRectGetMaxX(tagBtn.frame)+LENGTH_SIZE(4);
         }
-        UIButton * tagBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        tagBtn.tag = 100+i;
-        tagBtn.frame = CGRectMake(tagBtnX, tagBtnY, tagTextSize.width+10, 17);
-        [tagBtn setTitle:tagArr[i] forState:UIControlStateNormal];
-        [tagBtn setTitleColor:[UIColor colorWithHexString:@"#808080"] forState:UIControlStateNormal];
-        tagBtn.titleLabel.font = [UIFont systemFontOfSize:11];
-        tagBtn.layer.cornerRadius = 2;
-        tagBtn.layer.masksToBounds = YES;
-        tagBtn.backgroundColor = [UIColor colorWithHexString:@"#F5F6F7"];
-        [self.keyLabel addSubview:tagBtn];
-
-        tagBtnX = CGRectGetMaxX(tagBtn.frame)+4;
+        //    self.KeyView.backgroundColor = [UIColor redColor];
+        self.LayoutConstraint_KeyView.constant  = tagBtnY+LENGTH_SIZE(17);
+    }else{
+        self.LayoutConstraint_KeyView.constant  = 0;
     }
-//    self.KeyView.backgroundColor = [UIColor redColor];
-    self.LayoutConstraint_KeyView.constant  = tagBtnY+17;
+    
+   
     
     
     NSString *strbackmoney = [self removeHTML2:model.data.reInstruction];
     if (strbackmoney.length>0) {
         self.BackMoneylabel.text = strbackmoney;
-        CGFloat BackMoneyHeight = [LPTools calculateRowHeight:strbackmoney fontSize:14 Width:SCREEN_WIDTH - 26];
-        self.LayouConstraint_BackView_Height.constant = 153 + 44 +BackMoneyHeight+20 + tagBtnY;
+        CGFloat BackMoneyHeight = [LPTools calculateRowHeight:strbackmoney fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(26)];
+        self.LayouConstraint_BackView_Height.constant = LENGTH_SIZE(136 + 44 +20) + BackMoneyHeight + self.LayoutConstraint_KeyView.constant;
     }else{
-        self.LayouConstraint_BackView_Height.constant = 153 + tagBtnY;
+        self.LayouConstraint_BackView_Height.constant = LENGTH_SIZE(136) + self.LayoutConstraint_KeyView.constant;
     }
     
     

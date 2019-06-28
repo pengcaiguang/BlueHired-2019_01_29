@@ -339,7 +339,7 @@ static NSString *LPCollectionVideoCellID = @"LPCollectionVideoCell";
                 [self.selectArray addObject:model];
             }
             
-            if (self.selectArray.count == self.wordListArray.count) {
+            if (self.selectArray.count == self.VideoListArray.count) {
                 self.AllButton.selected = YES;
             }
             else

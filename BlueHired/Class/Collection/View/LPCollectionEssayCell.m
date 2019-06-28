@@ -44,10 +44,10 @@
 -(void)setSelectStatus:(BOOL)selectStatus{
     if (selectStatus) {
         self.selectButton.hidden = NO;
-        self.label_contraint_width.constant = 60;
+        self.label_contraint_width.constant = LENGTH_SIZE(60) ;
     }else{
         self.selectButton.hidden = YES;
-        self.label_contraint_width.constant = 13;
+        self.label_contraint_width.constant = LENGTH_SIZE(13);
     }
 }
 -(void)setSelectAll:(BOOL)selectAll{

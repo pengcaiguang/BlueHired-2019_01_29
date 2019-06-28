@@ -88,11 +88,8 @@ static NSString *LPInformationVideoCollectionViewCellID = @"LPInfoMationVideoCel
 //    }];
 
     self.ViewscrollView = [[UIScrollView alloc] init];
-    if ([DeviceUtils deviceType] == IPhone_X) {
-        self.ViewscrollView.frame = CGRectMake(0, 40, Screen_Width,  SCREEN_HEIGHT-88-40-83.0);
-     }else{
-        self.ViewscrollView.frame = CGRectMake(0, 40, Screen_Width,  SCREEN_HEIGHT-64-40-49);
-     }
+    self.ViewscrollView.frame = CGRectMake(0, LENGTH_SIZE(40), Screen_Width,  SCREEN_HEIGHT-kNavBarHeight-LENGTH_SIZE(40)-49-kBottomBarHeight);
+   
     self.ViewscrollView.delegate = self;
     self.ViewscrollView.pagingEnabled = YES;
     self.ViewscrollView.showsHorizontalScrollIndicator = FALSE;
@@ -347,7 +344,7 @@ static NSString *LPInformationVideoCollectionViewCellID = @"LPInfoMationVideoCel
  
         self.ViewscrollView.contentSize = CGSizeMake(Screen_Width*labelListModel.data.count, self.ViewscrollView.frame.size.height);
 
-        UIScrollView *scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 40)];
+        UIScrollView *scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, LENGTH_SIZE(40))];
         [self.labelListView addSubview:scrollView];
         self.LabelscrollView = scrollView;
         scrollView.showsHorizontalScrollIndicator = NO;
@@ -358,26 +355,26 @@ static NSString *LPInformationVideoCollectionViewCellID = @"LPInfoMationVideoCel
             UILabel *label = [[UILabel alloc]init];
             label.text = labelListModel.data[i].labelName;
             label.textAlignment = NSTextAlignmentCenter;
-            label.font = [UIFont systemFontOfSize:14];
+            label.font = [UIFont systemFontOfSize:FontSize(14)];
             [scrollView addSubview:label];
             label.textColor = [UIColor grayColor];
-            CGSize size = CGSizeMake(100, MAXFLOAT);//设置高度宽度的最大限度
+            CGSize size = CGSizeMake(LENGTH_SIZE(100), MAXFLOAT);//设置高度宽度的最大限度
             CGRect rect = [label.text boundingRectWithSize:size options:NSStringDrawingUsesFontLeading|NSStringDrawingTruncatesLastVisibleLine|NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:14]} context:nil];
 
-            CGFloat lw = rect.size.width + 30;
+            CGFloat lw = rect.size.width + LENGTH_SIZE(30);
             w += lw;
-            label.frame = CGRectMake(w - lw, 0, lw, 40);
+            label.frame = CGRectMake(w - lw, 0, lw, LENGTH_SIZE(40));
             label.tag = i;
             label.userInteractionEnabled = YES;
             UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(touchLabel:)];
             [label addGestureRecognizer:tap];
             [self.labelArray addObject:label];
         }
-        scrollView.contentSize = CGSizeMake(w, 40);
+        scrollView.contentSize = CGSizeMake(w, LENGTH_SIZE(40));
 
         self.lineView = [[UIView alloc]init];
         CGFloat s = CGRectGetWidth(self.labelArray[0].frame);
-        self.lineView.frame = CGRectMake(0, 38, s, 2);
+        self.lineView.frame = CGRectMake(0, LENGTH_SIZE(38), s, LENGTH_SIZE(2));
         self.lineView.backgroundColor = [UIColor baseColor];
         [scrollView addSubview:self.lineView];
         self.labelArray[0].textColor = [UIColor blackColor];
@@ -401,7 +398,7 @@ static NSString *LPInformationVideoCollectionViewCellID = @"LPInfoMationVideoCel
     }
     self.labelArray[index].textColor = [UIColor blackColor];
     [UIView animateWithDuration:0.2 animations:^{
-        self.lineView.frame = CGRectMake(x, 38, w, 2);
+        self.lineView.frame = CGRectMake(x, LENGTH_SIZE(38), w, LENGTH_SIZE(2));
     }];
  
     if (x+w>SCREEN_WIDTH) {
@@ -519,9 +516,9 @@ static NSString *LPInformationVideoCollectionViewCellID = @"LPInfoMationVideoCel
     }
     
     if ([DeviceUtils deviceType] == IPhone_X) {
-        return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-88-40-49);
+        return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-kNavBarHeight-40-49);
     }else{
-        return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-64-40-49);
+        return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-kNavBarHeight-40-49);
     }
 }
 

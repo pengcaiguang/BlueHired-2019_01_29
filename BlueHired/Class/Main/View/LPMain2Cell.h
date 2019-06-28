@@ -32,6 +32,7 @@ typedef void(^LPMainCellBlock)(void);
 
 @property (weak, nonatomic) IBOutlet UILabel *isApplyLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *keyLabel_constraint_right;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *keyLabel_constraint_Height;
 
 
 

@@ -6,7 +6,7 @@
 //  Copyright © 2019 lanpin. All rights reserved.
 //
 #import "LPWorkorderListModel.h"
-
+#import "LPInCommentsVC.h"
 #import "LPWorkOrderList2Cell.h"
 
 @implementation LPWorkOrderList2Cell
@@ -14,14 +14,17 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
-    self.selectButton.layer.cornerRadius = 12.0;
-    self.selectButton.layer.borderWidth = 1;
+    self.selectButton.layer.cornerRadius = LENGTH_SIZE(12);
+    self.selectButton.layer.borderWidth = LENGTH_SIZE(1);
     self.selectButton.layer.borderColor = [UIColor baseColor].CGColor;
     
-    self.ShareButton.layer.cornerRadius = 12.0;
-    self.ShareButton.layer.borderWidth = 1;
+    self.ShareButton.layer.cornerRadius = LENGTH_SIZE(12);
+    self.ShareButton.layer.borderWidth = LENGTH_SIZE(1);
     self.ShareButton.layer.borderColor = [UIColor baseColor].CGColor;
     
+    self.CommentButton.layer.cornerRadius = LENGTH_SIZE(12);
+    self.CommentButton.layer.borderWidth = LENGTH_SIZE(1);
+    self.CommentButton.layer.borderColor = [UIColor baseColor].CGColor;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -51,7 +54,9 @@
     
     self.isApplyLabel.hidden = YES;
  
-            self.ShareButton.hidden = YES;
+    self.ShareButton.hidden = YES;
+    self.CommentButton.hidden = YES;
+
     if ([model.status integerValue] == 1 ) {//1 通过
         self.statusLabel.text = @"入职状态：面试通过";
         [self.selectButton setTitle:@"放弃入职" forState:UIControlStateNormal];
@@ -77,7 +82,19 @@
         self.selectButton.layer.borderColor = [UIColor colorWithHexString:@"#808080"].CGColor;
         
     }else if ([model.status integerValue] == 5){//3。招满
+        
+        if (model.remarkStatus.integerValue == 0) {
+            self.CommentButton.hidden = YES;
+        }else if (model.remarkStatus.integerValue == 1 || model.remarkStatus.integerValue == 2){
+            [self.CommentButton setTitle:@"  评价  " forState:UIControlStateNormal];
+            self.CommentButton.hidden = NO;
+        }else if (model.remarkStatus.integerValue == 3 || model.remarkStatus.integerValue == 4){
+            [self.CommentButton setTitle:@" 我的评价 " forState:UIControlStateNormal];
+            self.CommentButton.hidden = NO;
+        }
+            
         self.statusLabel.text = @"面试状态：入职成功";
+
         [self.selectButton setTitle:@"删除" forState:UIControlStateNormal];
         [self.selectButton setTitleColor:[UIColor colorWithHexString:@"#808080"] forState:UIControlStateNormal];
         self.selectButton.layer.borderColor = [UIColor colorWithHexString:@"#808080"].CGColor;
@@ -102,13 +119,44 @@
     
     self.statusLabel.attributedText = string;
     
-    self.interviewTimeLabel.text = [NSString stringWithFormat:@"面试时间：%@",[LPTools isNullToString:model.interviewTime]];
-    self.recruitAddressLabel.text = [NSString stringWithFormat:@"面试地点：%@",[LPTools isNullToString:model.recruitAddress]];
+    if (([model.status integerValue] == 1 ||
+         [model.status integerValue] == 4 ||
+         [model.status integerValue] == 5 ) && model.reMoney.floatValue > 0.0 ) {
+        self.interviewTimeLabel.text = [NSString stringWithFormat:@"返费金额：%@元/月",[LPTools isNullToString:model.reMoney]];
+
+        NSMutableAttributedString *reMoneyStr = [[NSMutableAttributedString alloc] initWithString:self.interviewTimeLabel.text];
+        [reMoneyStr addAttribute:NSForegroundColorAttributeName
+                           value:[UIColor colorWithHexString:@"#3cafff"]
+                           range:[self.interviewTimeLabel.text rangeOfString:[NSString stringWithFormat:@"%@元/月",[LPTools isNullToString:model.reMoney]]]];
+        self.interviewTimeLabel.attributedText = reMoneyStr;
+
+        self.recruitAddressLabel.text = [NSString stringWithFormat:@"返费时间：%@个月",[LPTools isNullToString:model.reTime]];
+        NSMutableAttributedString *reTimeStr = [[NSMutableAttributedString alloc] initWithString:self.recruitAddressLabel.text];
+        [reTimeStr addAttribute:NSForegroundColorAttributeName
+                          value:[UIColor colorWithHexString:@"#3cafff"]
+                          range:[self.recruitAddressLabel.text rangeOfString:[NSString stringWithFormat:@"%@个月",[LPTools isNullToString:model.reTime]]]];
+        self.recruitAddressLabel.attributedText = reTimeStr;
+ 
+        self.NavBtn.hidden = YES;
+        
+    }else{
+        self.interviewTimeLabel.text = [NSString stringWithFormat:@"面试时间：%@",[LPTools isNullToString:model.interviewTime]];
+        self.recruitAddressLabel.text = [NSString stringWithFormat:@"面试地点：%@",[LPTools isNullToString:model.recruitAddress]];
+        
+        NSMutableAttributedString *reMoneyStr = [[NSMutableAttributedString alloc] initWithString:self.interviewTimeLabel.text];
+        NSMutableAttributedString *reTimeStr = [[NSMutableAttributedString alloc] initWithString:self.recruitAddressLabel.text];
+
+        self.interviewTimeLabel.attributedText = reMoneyStr;
+        self.recruitAddressLabel.attributedText = reTimeStr;
+        self.NavBtn.hidden = NO;
+
+    }
+
 
     if (model.teacherList.count == 0) {
         self.teacherNameLabel.text = [NSString stringWithFormat:@"驻厂老师：-"];
         self.teacherTelLabel.text = [NSString stringWithFormat:@"驻厂老师：-"];
-        self.LayoutConstrain_BG_Height.constant = 130-23.0*2;
+        self.LayoutConstrain_BG_Height.constant = LENGTH_SIZE(123-23.0*2);
         self.teacherNameLabel.hidden = YES;
         self.teacherTelLabel.hidden = YES;
 
@@ -117,7 +165,7 @@
                                       [LPTools isNullToString:model.teacherList[0].teacherName],
                                       [LPTools isNullToString:model.teacherList[0].teacherTel]];
         self.teacherTelLabel.text = [NSString stringWithFormat:@"驻厂老师：-"];
-        self.LayoutConstrain_BG_Height.constant = 130-23.0;
+        self.LayoutConstrain_BG_Height.constant = LENGTH_SIZE(123-23.0);
         self.teacherNameLabel.hidden = NO;
         self.teacherTelLabel.hidden = YES;
         
@@ -129,33 +177,56 @@
                                      [LPTools isNullToString:model.teacherList[1].teacherName],
                                      [LPTools isNullToString:model.teacherList[1].teacherTel]];
         
-        self.LayoutConstrain_BG_Height.constant = 130;
+        self.LayoutConstrain_BG_Height.constant = LENGTH_SIZE(123);
         self.teacherNameLabel.hidden = NO;
         self.teacherTelLabel.hidden = NO;
         
     }
     
+    if (model.restTime.length>0) {
+        self.restTimeTitle.text = @"有效时间：";
+        self.restTime.text = [LPTools isNullToString:model.restTime];
+        CGFloat RestH = [LPTools calculateRowHeight:self.restTime.text fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(99)];
+        
+        self.LayoutConstrain_RestTitle_Height.constant = LENGTH_SIZE(11)+RestH;
+        
+    }else{
+        self.restTimeTitle.text = @"";
+        self.restTime.text = @"";
+        self.LayoutConstrain_RestTitle_Height.constant = LENGTH_SIZE(11);
+    }
     
     self.timeLabel.text = [NSString stringWithFormat:@"报名时间: %@",[NSString convertStringToTime:model.time]];
 }
 
 
 - (IBAction)ToMap:(id)sender {
-    //    CLLocationCoordinate2D pt2 = {23.122012,113.26753};
-    
+ 
     NSDecimalNumber *XNumber = [NSDecimalNumber decimalNumberWithString:_model.x];
     NSDecimalNumber *YNumber = [NSDecimalNumber decimalNumberWithString:_model.y];
-    
-    
+ 
     CLLocationCoordinate2D pt2 = {[XNumber doubleValue],[YNumber doubleValue]};
     
-//    BMKLocationCoordinateType srctype = BMKLocationCoordinateTypeWGS84;
-//    BMKLocationCoordinateType destype = BMKLocationCoordinateTypeBMK09MC;
-//    CLLocationCoordinate2D cood=[BMKLocationManager BMKLocationCoordinateConvert:pt2 SrcType:destype DesType:srctype];
-    
-    self.coordinate = [self GCJ02FromBD09:pt2];
+      self.coordinate = [self GCJ02FromBD09:pt2];
     
     [self ToNavMap];
+}
+- (IBAction)TouchComment:(UIButton *)sender {
+    LPInCommentsVC *vc = [[LPInCommentsVC alloc] init];
+    vc.hidesBottomBarWhenPushed = YES;
+
+    if (self.model.remarkStatus.integerValue == 1 || self.model.remarkStatus.integerValue == 2) {
+        vc.Type = 1;
+    }else if (self.model.remarkStatus.integerValue == 3){
+        vc.Type = 2;
+    }else if (self.model.remarkStatus.integerValue == 4){
+        vc.Type = 3;
+    }
+    
+    vc.model = self.model;
+    vc.workOrderId = self.model.id.integerValue;
+    [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+
 }
 
 - (IBAction)touchSelectButton:(UIButton *)sender {
@@ -166,20 +237,19 @@
             [self.model.status integerValue] == 3 ||
             [self.model.status integerValue] == 4 ||
             [self.model.status integerValue] == 5){
-            index = 0;//删除
-            [self.delegate buttonClick:index workId:self.model.id.integerValue];
+            index = [self.model.status integerValue] == 1 ? 2 : 0 ;//删除
+            [self.delegate buttonClick:index workId:self.model];
         }else{
             index = 1;//取消
-            [self.delegate buttonClick:index workId:self.model.workId.integerValue];
+            [self.delegate buttonClick:index workId:self.model];
         }
     }
 }
 
 - (IBAction)Touchshare:(id)sender {
-    NSString *url = [NSString stringWithFormat:@"%@referral?interviewId=%ld&id=%ld",
-                     BaseRequestWeiXiURL,
-                     self.model.id.integerValue,
-                     kUserDefaultsValue(LOGINID).integerValue];
+    NSString *url = [NSString stringWithFormat:@"%@referral?interviewId=%ld",
+                     BaseRequestWeiXiURLTWO,
+                     self.model.id.integerValue];
     NSString *encodedUrl = [NSString stringWithString:[url stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     [LPTools ClickShare:encodedUrl Title:[NSString stringWithFormat:@"您的好友在蓝聘报名了%@，快来替他点赞加油，帮他获取更多返费吧！",_model.mechanismName]];
 }

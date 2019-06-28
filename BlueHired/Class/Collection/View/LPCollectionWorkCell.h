@@ -34,6 +34,7 @@ typedef void(^LPCollectionWorkCellBlock)(LPWorkCollectionDataModel *model);
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *label_contraint_width;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *keyLabel_constraint_right;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *keyLabel_constraint_Height;
 
 @property(nonatomic,strong) XHStarRateView *starRateView;
 

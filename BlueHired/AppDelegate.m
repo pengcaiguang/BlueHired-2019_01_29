@@ -208,10 +208,10 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
 
 }
 
-
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     /// Required - 注册 DeviceToken
-    [JPUSHService registerDeviceToken:deviceToken];
+ 
+     [JPUSHService registerDeviceToken:deviceToken];
 }
 - (void)application:(UIApplication *)application
  didReceiveRemoteNotification:(NSDictionary *)userInfo {
@@ -242,8 +242,7 @@ fetchCompletionHandler:
         //            [self.qqDelegate shareSuccssWithQQCode:[[path substringWithRange:NSMakeRange([path rangeOfString:@"&error="].location+[path rangeOfString:@"&error="].length, [path rangeOfString:@"&version"].location-[path rangeOfString:@"&error="].location)] integerValue]];
         //        }
         //        return [TencentOAuth HandleOpenURL:url];
-    }
-    else if([path hasPrefix:@"wx"]) {
+    } else if([path hasPrefix:@"wx"]) {
         return [WXApi handleOpenURL:url delegate:self];
     }
     

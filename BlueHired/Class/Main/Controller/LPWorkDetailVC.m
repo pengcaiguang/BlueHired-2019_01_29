@@ -72,9 +72,9 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         make.right.mas_equalTo(0);
 //        make.bottom.mas_equalTo(-48);
         if (@available(iOS 11.0, *)) {
-            make.bottom.mas_equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-48);
+            make.bottom.mas_equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(LENGTH_SIZE(-48));
         } else {
-           make.bottom.mas_equalTo(-48);
+           make.bottom.mas_equalTo(LENGTH_SIZE(-48));
         }
     }];
     [self setBottomView];
@@ -108,14 +108,14 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     [self.view addSubview:bottomBgView];
     [bottomBgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(0);
-        make.right.mas_equalTo(-136);
+        make.right.mas_equalTo(LENGTH_SIZE(-136));
 //        make.bottom.mas_equalTo(0);
         if (@available(iOS 11.0, *)) {
             make.bottom.mas_equalTo(self.view.mas_safeAreaLayoutGuideBottom);
         } else {
             make.bottom.mas_equalTo(0);
         }
-        make.height.mas_equalTo(48);
+        make.height.mas_equalTo(LENGTH_SIZE(48));
     }];
     
     self.signUpButton = [[UIButton alloc]init];
@@ -127,14 +127,14 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         } else {
             make.bottom.mas_equalTo(0);
         }
-        make.height.mas_equalTo(48);
-        make.width.mas_equalTo(136);
+        make.height.mas_equalTo(LENGTH_SIZE(48));
+        make.width.mas_equalTo(LENGTH_SIZE( 136));
     }];
     [self.signUpButton setTitle:@"入职报名" forState:UIControlStateNormal];
     [self.signUpButton setTitle:@"取消报名" forState:UIControlStateSelected];
     [self.signUpButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.signUpButton.backgroundColor = [UIColor baseColor];
-    self.signUpButton.titleLabel.font = [UIFont systemFontOfSize:17];
+    self.signUpButton.titleLabel.font = [UIFont systemFontOfSize:FontSize(17)];
     [self.signUpButton addTarget:self action:@selector(touchSiginUpButton) forControlEvents:UIControlEventTouchUpInside];
     [self.signUpButton addTarget:self action:@selector(preventFlicker:) forControlEvents:UIControlEventAllTouchEvents];
 //    if (kUserDefaultsValue(USERDATA).integerValue == 4 ||
@@ -156,7 +156,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
             [button setImage:[UIImage imageNamed:@"collection_selected"] forState:UIControlStateSelected];
             [button addTarget:self action:@selector(preventFlicker:) forControlEvents:UIControlEventAllTouchEvents];
         }
-        button.titleLabel.font = [UIFont systemFontOfSize:11];
+        button.titleLabel.font = [UIFont systemFontOfSize:FontSize(11)];
         button.tag = i;
         button.layer.borderColor = [UIColor colorWithHexString:@"#E0E0E0"].CGColor;
         button.layer.borderWidth = 0.5;
@@ -201,17 +201,17 @@ static NSString *LPMainCellID = @"LPMain2Cell";
             CustomIOSAlertView *alertView = [[CustomIOSAlertView alloc] init];
             self.CustomAlert = alertView;
             
-            UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 300, 177)];
-            view.layer.cornerRadius = 6;
+            UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, LENGTH_SIZE(300),LENGTH_SIZE(177))];
+            view.layer.cornerRadius = LENGTH_SIZE(6);
             view.backgroundColor = [UIColor whiteColor];
             
             UILabel *Title = [[UILabel alloc] init];
             [view addSubview:Title];
             [Title mas_makeConstraints:^(MASConstraintMaker *make){
                 make.left.right.mas_offset(0);
-                make.top.mas_offset(24);
+                make.top.mas_offset(LENGTH_SIZE(24));
             }];
-            Title.font = [UIFont boldSystemFontOfSize:18];
+            Title.font = [UIFont boldSystemFontOfSize:FontSize(18)];
             Title.textColor =[UIColor colorWithHexString:@"#333333"];
             Title.textAlignment = NSTextAlignmentCenter;
             Title.text = @"企业入职报名";
@@ -219,25 +219,25 @@ static NSString *LPMainCellID = @"LPMain2Cell";
             UILabel *NameLabel = [[UILabel alloc] init];
             [view addSubview:NameLabel];
             [NameLabel mas_makeConstraints:^(MASConstraintMaker *make){
-                make.left.mas_offset(20);
-                make.top.mas_offset(76);
-                make.width.mas_offset(75);
+                make.left.mas_offset(LENGTH_SIZE(20));
+                make.top.mas_offset(LENGTH_SIZE(76));
+                make.width.mas_offset(LENGTH_SIZE(75));
             }];
-            NameLabel.font = [UIFont systemFontOfSize:16];
+            NameLabel.font = [UIFont systemFontOfSize:FontSize(16)];
             NameLabel.textColor = [UIColor colorWithHexString:@"#333333"];
             NameLabel.text = @"真实姓名:";
             
             UITextField *textField = [[UITextField alloc] init];
             [view addSubview:textField];
             [textField mas_makeConstraints:^(MASConstraintMaker *make){
-                make.left.equalTo(NameLabel.mas_right).offset(8);
+                make.left.equalTo(NameLabel.mas_right).offset(LENGTH_SIZE(8));
                 make.centerY.equalTo(NameLabel);
-                make.right.mas_offset(-20);
-                make.height.mas_offset(36);
+                make.right.mas_offset(LENGTH_SIZE(-20));
+                make.height.mas_offset(LENGTH_SIZE(36));
             }];
-            textField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 8,36)];
+            textField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0,LENGTH_SIZE(8),LENGTH_SIZE(36))];
             textField.leftViewMode = UITextFieldViewModeAlways;
-            textField.layer.cornerRadius = 6;
+            textField.layer.cornerRadius = LENGTH_SIZE(6);
             textField.layer.borderWidth = 1;
             textField.layer.borderColor = [UIColor colorWithHexString:@"#E0E0E0"].CGColor;
             [textField addTarget:self action:@selector(textFieldChanged:) forControlEvents:UIControlEventEditingChanged];
@@ -246,10 +246,10 @@ static NSString *LPMainCellID = @"LPMain2Cell";
             UIButton *button =[[UIButton alloc] init];
             [view addSubview:button];
             [button mas_makeConstraints:^(MASConstraintMaker *make){
-                make.left.mas_offset(20);
-                make.right.mas_offset(-20);
-                make.bottom.mas_offset(-20);
-                make.height.mas_offset(40);
+                make.left.mas_offset(LENGTH_SIZE(20));
+                make.right.mas_offset(LENGTH_SIZE(-20));
+                make.bottom.mas_offset(LENGTH_SIZE(-20));
+                make.height.mas_offset(LENGTH_SIZE(40));
             }];
             
             button.layer.cornerRadius = 6;
@@ -323,71 +323,71 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         CustomIOSAlertView *alertView = [[CustomIOSAlertView alloc] init];
         self.CustomAlert = alertView;
         
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 300, 250)];
-        view.layer.cornerRadius = 6;
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, LENGTH_SIZE(300), LENGTH_SIZE(250))];
+        view.layer.cornerRadius = LENGTH_SIZE(6);
         view.backgroundColor = [UIColor whiteColor];
         
         UILabel *titlelabel = [[UILabel alloc] init];
         [view addSubview:titlelabel];
         [titlelabel mas_makeConstraints:^(MASConstraintMaker *make){
             make.right.left.mas_offset(0);
-            make.top.mas_offset(24);
+            make.top.mas_offset(LENGTH_SIZE(24));
         }];
         titlelabel.textAlignment = NSTextAlignmentCenter;
-        titlelabel.font = [UIFont boldSystemFontOfSize:18];
+        titlelabel.font = [UIFont boldSystemFontOfSize:FontSize(18)];
         titlelabel.text = @"驻厂联系方式";
         
         UILabel *titlelabel2 = [[UILabel alloc] init];
         [view addSubview:titlelabel2];
         [titlelabel2 mas_makeConstraints:^(MASConstraintMaker *make){
             make.right.left.mas_offset(0);
-            make.top.equalTo(titlelabel.mas_bottom).offset(12);
+            make.top.equalTo(titlelabel.mas_bottom).offset(LENGTH_SIZE(12));
         }];
         titlelabel2.textAlignment = NSTextAlignmentCenter;
-        titlelabel2.font = [UIFont systemFontOfSize:14];
+        titlelabel2.font = [UIFont systemFontOfSize:FontSize(14)];
         titlelabel2.text = @"微信搜索号码即可添加驻厂微信";
         titlelabel2.textColor = [UIColor colorWithHexString:@"#CCCCCC"];
         
         UIView *SubView = [[UIView alloc] init];
         [view addSubview:SubView];
         [SubView mas_makeConstraints:^(MASConstraintMaker *make){
-            make.top.equalTo(titlelabel2.mas_bottom).offset(19);
-            make.left.mas_offset(20);
-            make.right.mas_offset(-20);
-            make.height.mas_offset(75);
+            make.top.equalTo(titlelabel2.mas_bottom).offset(LENGTH_SIZE(19));
+            make.left.mas_offset(LENGTH_SIZE(20));
+            make.right.mas_offset(LENGTH_SIZE(-20));
+            make.height.mas_offset(LENGTH_SIZE(75));
         }];
-        SubView.layer.cornerRadius = 4;
+        SubView.layer.cornerRadius = LENGTH_SIZE(4);
         SubView.backgroundColor = [UIColor colorWithHexString:@"#F5F7FA"];
         
         
         UILabel *SubLabel1 = [[UILabel alloc] init];
         [SubView addSubview:SubLabel1];
         [SubLabel1 mas_makeConstraints:^(MASConstraintMaker *make){
-            make.top.mas_offset(13);
-            make.left.mas_offset(16);
-            make.right.mas_offset(-16);
+            make.top.mas_offset(LENGTH_SIZE(13));
+            make.left.mas_offset(LENGTH_SIZE(16));
+            make.right.mas_offset(LENGTH_SIZE(-16));
         }];
         SubLabel1.textColor = [UIColor colorWithHexString:@"#666666"];
-        SubLabel1.font = [UIFont systemFontOfSize:15];
+        SubLabel1.font = [UIFont systemFontOfSize:FontSize(15)];
         SubLabel1.text = [NSString stringWithFormat:@"姓名：%@ ",name];
         
         UILabel *SubLabel2 = [[UILabel alloc] init];
         [SubView addSubview:SubLabel2];
         [SubLabel2 mas_makeConstraints:^(MASConstraintMaker *make){
-            make.top.equalTo(SubLabel1.mas_bottom).offset(12);
-            make.left.mas_offset(16);
+            make.top.equalTo(SubLabel1.mas_bottom).offset(LENGTH_SIZE(12));
+            make.left.mas_offset(LENGTH_SIZE(16));
         }];
         SubLabel2.textColor = [UIColor colorWithHexString:@"#666666"];
-        SubLabel2.font = [UIFont systemFontOfSize:15];
+        SubLabel2.font = [UIFont systemFontOfSize:FontSize(15)];
         SubLabel2.text = [NSString stringWithFormat:@"电话：%@ ",number];
         
         UIButton *CopyBt = [[UIButton alloc] init];
         [SubView addSubview:CopyBt];
         [CopyBt mas_makeConstraints:^(MASConstraintMaker *make){
-            make.right.mas_offset(-16);
+            make.right.mas_offset(LENGTH_SIZE(-16));
             make.centerY.equalTo(SubLabel2);
         }];
-        CopyBt.titleLabel.font = [UIFont systemFontOfSize:14];
+        CopyBt.titleLabel.font = [UIFont systemFontOfSize:FontSize(14)];
         [CopyBt setTitle:@"复制号码" forState:UIControlStateNormal];
         [CopyBt setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
         [CopyBt addTarget:self action:@selector(TouchCopyBt) forControlEvents:UIControlEventTouchUpInside];
@@ -395,14 +395,14 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         UIButton *dialBt = [[UIButton alloc] init];
         [view addSubview:dialBt];
         [dialBt mas_makeConstraints:^(MASConstraintMaker *make){
-            make.top.equalTo(SubView.mas_bottom).offset(24);
-            make.right.mas_offset(-20);
-            make.left.mas_offset(20);
-            make.height.mas_offset(40);
+            make.top.equalTo(SubView.mas_bottom).offset(LENGTH_SIZE(24));
+            make.right.mas_offset(LENGTH_SIZE(-20));
+            make.left.mas_offset(LENGTH_SIZE(20));
+            make.height.mas_offset(LENGTH_SIZE(40));
         }];
         [dialBt setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [dialBt setTitle:@"立即拨打" forState:UIControlStateNormal];
-        dialBt.layer.cornerRadius = 6;
+        dialBt.layer.cornerRadius = LENGTH_SIZE(6);
         dialBt.backgroundColor = [UIColor baseColor];
         [dialBt addTarget:self action:@selector(TouchDialBt:) forControlEvents:UIControlEventTouchUpInside];
         
@@ -605,10 +605,9 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 
 -(void)CustomLeft:(UIButton *)sender{
     [self.CustomAlert close];
-    NSString *url = [NSString stringWithFormat:@"%@referral?interviewId=%ld&id=%ld",
-                     BaseRequestWeiXiURL,
-                     (long)sender.tag,
-                     kUserDefaultsValue(LOGINID).integerValue];
+    NSString *url = [NSString stringWithFormat:@"%@referral?interviewId=%ld",
+                     BaseRequestWeiXiURLTWO,
+                     (long)sender.tag];
     
     NSString *encodedUrl = [NSString stringWithString:[url stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     [LPTools ClickShare:encodedUrl Title:[NSString stringWithFormat:@"您的好友在蓝聘报名了%@，快来替他点赞加油，帮他获取更多返费吧！",_model.data.mechanismName]];
@@ -616,8 +615,13 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 }
 -(void)CustomRightBt:(UIButton *)sender{
     [self.CustomAlert close];
-    LPWorkorderListVC *vc = [[LPWorkorderListVC alloc]init];
-    [self.navigationController pushViewController:vc animated:YES];
+    if (self.isWorkOrder) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }else{
+        LPWorkorderListVC *vc = [[LPWorkorderListVC alloc]init];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+
 }
 
 
@@ -830,43 +834,44 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         NSString *strbackmoney = [self removeHTML2:self.model.data.reInstruction];
         CGFloat KeyHeight = [self calculateKeyHeight:self.model.data.key];
         if (strbackmoney.length>0) {
-            CGFloat BackMoneyHeight = [LPTools calculateRowHeight:strbackmoney fontSize:14 Width:SCREEN_WIDTH - 26];
-             return 280 + 136 + 42 +BackMoneyHeight + 20 +KeyHeight;
+            CGFloat BackMoneyHeight = [LPTools calculateRowHeight:strbackmoney fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(26)];
+             return LENGTH_SIZE(280 + 136 + 42 + 20)  + BackMoneyHeight + KeyHeight;
         }else{
-            return 280 + 136 + 13 + KeyHeight;
+            return LENGTH_SIZE(280 + 136 + 13) + KeyHeight;
         }
     }else if (indexPath.section == 1){
             if (indexPath.row == 0) {
-                CGFloat Height = [LPTools calculateRowHeight:[self removeHTML2:[self.model.data.workDemand stringByDecodingHTMLEntities]] fontSize:14 Width:SCREEN_WIDTH - 28];
-                return 51+Height;
+                CGFloat Height = [LPTools calculateRowHeight:[self removeHTML2:[self.model.data.workDemand stringByDecodingHTMLEntities]] fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(28)];
+                return LENGTH_SIZE(51)+Height;
             }else if (indexPath.row == 1){
-                CGFloat Height = [LPTools calculateRowHeight:[self removeHTML2:[self.model.data.workSalary stringByDecodingHTMLEntities]] fontSize:14 Width:SCREEN_WIDTH - 28];
-                return 51+Height;
+                CGFloat Height = [LPTools calculateRowHeight:[self removeHTML2:[self.model.data.workSalary stringByDecodingHTMLEntities]] fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(28)];
+                return LENGTH_SIZE(51)+Height;
             }else if (indexPath.row == 2){
-                CGFloat Height = [LPTools calculateRowHeight:[self removeHTML2:[self.model.data.eatSleep stringByDecodingHTMLEntities]] fontSize:14 Width:SCREEN_WIDTH - 28];
-                return 51+Height;
+                CGFloat Height = [LPTools calculateRowHeight:[self removeHTML2:[self.model.data.eatSleep stringByDecodingHTMLEntities]] fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(28)];
+                return LENGTH_SIZE(51)+Height;
             }else if (indexPath.row == 3){
-                CGFloat Height = [LPTools calculateRowHeight:[self removeHTML2:[self.model.data.workTime stringByDecodingHTMLEntities]] fontSize:14 Width:SCREEN_WIDTH - 28];
-                return 51+Height;
+                CGFloat Height = [LPTools calculateRowHeight:[self removeHTML2:[self.model.data.workTime stringByDecodingHTMLEntities]] fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(28)];
+                return LENGTH_SIZE(51)+Height;
             }else if (indexPath.row == 4){
-                CGFloat Height = [LPTools calculateRowHeight:[self removeHTML2:[self.model.data.workKnow stringByDecodingHTMLEntities]] fontSize:14 Width:SCREEN_WIDTH - 28];
-                return 51+Height;
+                CGFloat Height = [LPTools calculateRowHeight:[self removeHTML2:[self.model.data.workKnow stringByDecodingHTMLEntities]] fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(28)];
+                return LENGTH_SIZE(51)+Height;
             }else if (indexPath.row == 5){
-                CGFloat Height = [LPTools calculateRowHeight:[self removeHTML2:[self.model.data.remarks stringByDecodingHTMLEntities]] fontSize:14 Width:SCREEN_WIDTH - 28];
-                return 66+Height;
+                CGFloat Height = [LPTools calculateRowHeight:[self removeHTML2:[self.model.data.remarks stringByDecodingHTMLEntities]] fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(28)];
+                return LENGTH_SIZE(66)+Height;
             }
     }else if (indexPath.section == 2){
         if (indexPath.row == 0) {
-            CGFloat Height = [LPTools calculateRowHeight:[self removeHTML2:[self.model.data.mechanismDetails stringByDecodingHTMLEntities]] fontSize:14 Width:SCREEN_WIDTH - 28];
-            return 51+Height;
+            CGFloat Height = [LPTools calculateRowHeight:[self removeHTML2:[self.model.data.mechanismDetails stringByDecodingHTMLEntities]] fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(28)];
+            return LENGTH_SIZE(51)+Height;
         }else if (indexPath.row == 1){
-            CGFloat Height = [LPTools calculateRowHeight:[NSString stringWithFormat:@"地址：%@",self.model.data.mechanismAddress] fontSize:14 Width:SCREEN_WIDTH - 28];
-            return 66+Height;
+            CGFloat Height = [LPTools calculateRowHeight:[NSString stringWithFormat:@"地址：%@",self.model.data.mechanismAddress] fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(28)];
+            return LENGTH_SIZE(66)+Height;
         }else if (indexPath.row == 2){
-            return 44.0;
+            return LENGTH_SIZE(44.0);
         }
     } else{
-        return 140.0;
+         CGFloat KeyHeight = [self calculateKeyHeightCell:self.RecommendList[indexPath.row].key];
+        return LENGTH_SIZE(123.0) +KeyHeight ;
     }
     return 44;
 }
@@ -1151,20 +1156,41 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 
 //计算标签高度
 -(CGFloat)calculateKeyHeight:(NSString *) Key{
+    if (Key.length == 0) {
+        return 0;
+    }
     NSArray * tagArr = [Key componentsSeparatedByString:@"|"];
     CGFloat tagBtnX = 0;
-    CGFloat tagBtnY = 17;
+    CGFloat tagBtnY = 0;
     for (int i= 0; i<tagArr.count; i++) {
-        CGSize tagTextSize = [tagArr[i] sizeWithFont:[UIFont systemFontOfSize:12] maxSize:CGSizeMake(SCREEN_WIDTH-13-13, 17)];
-        if (tagBtnX+tagTextSize.width+14 > SCREEN_WIDTH-13-13) {
+        CGSize tagTextSize = [tagArr[i] sizeWithFont:[UIFont systemFontOfSize:FontSize(12)] maxSize:CGSizeMake(SCREEN_WIDTH-LENGTH_SIZE(26), LENGTH_SIZE(17))];
+        if (tagBtnX+tagTextSize.width+14 > SCREEN_WIDTH-LENGTH_SIZE(26)) {
             tagBtnX = 0;
-            tagBtnY += 17+8;
+            tagBtnY += LENGTH_SIZE(17)+8;
         }
-        tagBtnX = tagBtnX +tagTextSize.width+10 +4;
+        tagBtnX = tagBtnX + tagTextSize.width + LENGTH_SIZE(4);
     }
-    return tagBtnY;
+    return tagBtnY + LENGTH_SIZE(17);
 }
 
+//计算Cell标签高度
+-(CGFloat)calculateKeyHeightCell:(NSString *) Key{
+    if (Key.length == 0) {
+        return 0;
+    }
+    NSArray * tagArr = [Key componentsSeparatedByString:@"|"];
+    CGFloat tagBtnX = 0;
+    CGFloat tagBtnY = 0;
+    for (int i= 0; i<tagArr.count; i++) {
+        CGSize tagTextSize = [tagArr[i] sizeWithFont:[UIFont systemFontOfSize:FontSize(12)] maxSize:CGSizeMake(SCREEN_WIDTH-LENGTH_SIZE(116), LENGTH_SIZE(17))];
+        if (tagBtnX+tagTextSize.width+14 > SCREEN_WIDTH-LENGTH_SIZE(116)) {
+            tagBtnX = 0;
+            tagBtnY += LENGTH_SIZE(17)+8;
+        }
+        tagBtnX = tagBtnX + tagTextSize.width + LENGTH_SIZE(4);
+    }
+    return tagBtnY + LENGTH_SIZE(17);
+}
 
 - (NSString *)removeHTML2:(NSString *)html{
 //    NSArray *components = [html componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];

@@ -631,6 +631,7 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
                 self.LabelEssayModel = [LPEssaylistModel mj_objectWithKeyValues:responseObject];
+                [self.tableview reloadData];
             }else{
                 [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }

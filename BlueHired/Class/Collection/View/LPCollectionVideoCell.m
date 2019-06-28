@@ -13,7 +13,7 @@
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
-    self.userImage.layer.cornerRadius = 9.5;
+    self.userImage.layer.cornerRadius = LENGTH_SIZE(9.5) ;
     self.TitleBackView.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.3];
     self.selectButton.hidden = YES;
     [self.selectButton setImage:[UIImage imageNamed:@"add_ record_normal"] forState:UIControlStateNormal];
@@ -43,10 +43,10 @@
 -(void)setSelectStatus:(BOOL)selectStatus{
     if (selectStatus) {
         self.selectButton.hidden = NO;
-        self.label_contraint_width.constant = 60;
+        self.label_contraint_width.constant = LENGTH_SIZE(60) ;
     }else{
         self.selectButton.hidden = YES;
-        self.label_contraint_width.constant = 2;
+        self.label_contraint_width.constant = LENGTH_SIZE(2) ;
     }
 }
 

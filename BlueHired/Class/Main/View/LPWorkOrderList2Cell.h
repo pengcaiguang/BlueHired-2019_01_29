@@ -14,7 +14,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 @protocol LPWorkorderList2CellDelegate <NSObject>
-- (void)buttonClick:(NSInteger)buttonIndex workId:(NSInteger)workId;
+- (void)buttonClick:(NSInteger)buttonIndex workId:(LPWorkorderListDataModel *)workModel;
 @end
 
 @interface LPWorkOrderList2Cell : UITableViewCell
@@ -35,7 +35,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (weak, nonatomic) IBOutlet UIButton *selectButton;
 @property (weak, nonatomic) IBOutlet UIButton *ShareButton;
+@property (weak, nonatomic) IBOutlet UIButton *CommentButton;
+@property (weak, nonatomic) IBOutlet UIButton *NavBtn;
+
+@property (weak, nonatomic) IBOutlet UILabel *restTime;
+@property (weak, nonatomic) IBOutlet UILabel *restTimeTitle;
+
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *LayoutConstrain_BG_Height;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *LayoutConstrain_RestTitle_Height;
 
 @property(nonatomic,strong)id<LPWorkorderList2CellDelegate>delegate;
 

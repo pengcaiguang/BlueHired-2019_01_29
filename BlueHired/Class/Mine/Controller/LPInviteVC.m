@@ -49,7 +49,7 @@
     
     NSString *st = dic[@"identity"];
     
-    NSString *strutl = [NSString stringWithFormat:@"%@resident/login?identity=%@",BaseRequestWeiXiURL,st];
+    NSString *strutl = [NSString stringWithFormat:@"%@login?identity=%@",BaseRequestWeiXiURLTWO,st];
 //    NSString *strutl = [NSString stringWithFormat:@"http://192.168.0.152:8090/login?identity=%@",st];
     
     //1. 实例化二维码滤镜
@@ -89,7 +89,7 @@
 
 -(void)touchManagerButton
 {
-//    [self WeiXinOrQQAlertView];
+ 
 //    NSString *url = [NSString stringWithFormat:@"%@bluehired/login.html?identity=%@",BaseRequestWeiXiURL,st];
 //    NSString *encodedUrl = [NSString stringWithString:[url stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 //    [LPTools ClickShare:encodedUrl Title:_model.data.essayName];
@@ -100,127 +100,6 @@
     [self share:sender.tag-1000+1];//QQ好友
 }
 
-
--(void)WeiXinOrQQAlertView
-{
-    _CustomAlert = [[CustomIOSAlertView alloc] init];
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 300, 130)];
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, 300, 21)];
-    label.textAlignment = NSTextAlignmentCenter;
-    label.text = @"请选择分享平台";
-    
-    UIButton *weixinBt = [[UIButton alloc] initWithFrame:CGRectMake(180, 40, 60, 60)];
-    [weixinBt setBackgroundImage:[UIImage imageNamed:@"weixin"] forState:(UIControlStateNormal)];
-    [weixinBt addTarget:self action:@selector(weixinOrQQtouch:) forControlEvents:UIControlEventTouchUpInside];
-    weixinBt.tag = 1;
-    UILabel *wxlabel = [[UILabel alloc] initWithFrame:CGRectMake(180, 105, 60, 20)];
-    wxlabel.text = @"微信";
-    wxlabel.textAlignment = NSTextAlignmentCenter;
-    
-    
-    UIButton *QQBt = [[UIButton alloc] initWithFrame:CGRectMake(60, 40, 60, 60)];
-    [QQBt setBackgroundImage:[UIImage imageNamed:@"QQ"] forState:(UIControlStateNormal)];
-    [QQBt addTarget:self action:@selector(weixinOrQQtouch:) forControlEvents:UIControlEventTouchUpInside];
-    QQBt.tag = 2;
-    UILabel *qqlabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 105, 60, 20)];
-    qqlabel.text = @"qq";
-    qqlabel.textAlignment = NSTextAlignmentCenter;
-    [view addSubview:label];
-    [view addSubview:weixinBt];
-    [view addSubview:wxlabel];
-    [view addSubview:QQBt];
-    [view addSubview:qqlabel];
-    
-    [_CustomAlert setContainerView:view];
-    [_CustomAlert setButtonTitles:@[@"取消"]];
-    [_CustomAlert show];
-    
-    
-}
-
-
--(void)weixinOrQQtouch:(UIButton *)sender
-{
-    
-    
-    NSString *str = kUserDefaultsValue(COOKIES);
-    NSString *s = [self URLDecodedString:str];
-    
-    NSDictionary *dic = [self dictionaryWithJsonString:[s substringFromIndex:5]];
-    
-    NSString *st = dic[@"identity"];
-    
-    //    NSString *strutl = [NSString stringWithFormat:@"%@bluehired/login.html?identity=%@",BaseRequestURL,st];
-//    NSString *strutl = [NSString stringWithFormat:@"%@lanpin_h5/login.html?identity=%@",BaseRequestWeiXiURL,st];
-    
-    NSString *url = [NSString stringWithFormat:@"%@resident/bluehired/login.html?identity=%@",BaseRequestWeiXiURL,st];
-    
-    NSString *encodedUrl = [NSString stringWithString:[url stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    
-    UIImage *WxImage = [self addImage:self.imageView.image withImage:self.headImageView.image];
-    
-    if (sender.tag == 1)
-    {
-        if ([WXApi isWXAppInstalled]==NO) {
-            [self.view showLoadingMeg:@"请安装微信" time:MESSAGE_SHOW_TIME];
-            [_CustomAlert close];
-            return;
-        }
-        
-        
-//        SendMessageToWXReq *req = [[SendMessageToWXReq alloc] init];
-//        req.scene = WXSceneSession;
-//        WXMediaMessage *message = [WXMediaMessage message];
-//        message.title = @"蓝聘";
-////        message.description= _model.data.essayName;
-//        WXAppExtendObject *ext = [WXAppExtendObject object];
-//
-//        ext.url = encodedUrl;
-//        message.mediaObject = ext;
-//        req.message = message;
-//        [WXApi sendReq:req];
-        
-        
-        // 用于微信终端和第三方程序之间传递消息的多媒体消息内容
-        WXMediaMessage *message = [WXMediaMessage message];
-        // 多媒体消息中包含的图片数据对象
-        WXImageObject *imageObject = [WXImageObject object];
-         // 图片真实数据内容
-        imageObject.imageData =  UIImagePNGRepresentation(WxImage);
-        // 多媒体数据对象，可以为WXImageObject，WXMusicObject，WXVideoObject，WXWebpageObject等。
-        message.mediaObject = imageObject;
-        
-        SendMessageToWXReq *req = [[SendMessageToWXReq alloc] init];
-        req.bText = NO;
-        req.message = message;
-        req.scene = WXSceneSession;// 分享到朋友圈
-        [WXApi sendReq:req];
-  
-    }
-    else if (sender.tag == 2)
-    {
-        if (![QQApiInterface isSupportShareToQQ])
-        {
-            [self.view showLoadingMeg:@"请安装QQ" time:MESSAGE_SHOW_TIME];
-            [_CustomAlert close];
-            return;
-        }
-        NSString *title = @"蓝聘";
-        
-        QQApiImageObject *imgObj = [QQApiImageObject objectWithData:UIImagePNGRepresentation(WxImage)
-                                                    previewImageData:UIImagePNGRepresentation(WxImage)
-                                                               title:title
-                                                         description:nil];
-        
-        SendMessageToQQReq *req = [SendMessageToQQReq reqWithContent:imgObj];
-        //将内容分享到qq
-        QQApiSendResultCode sent = [QQApiInterface sendReq:req];
-        //将内容分享到qzone
-        //        QQApiSendResultCode sent = [QQApiInterface SendReqToQZone:req];
-        
-    }
-    [_CustomAlert close];
-}
 
 
 -(void)btnClickShare{
@@ -266,7 +145,7 @@
     NSDictionary *dic = [self dictionaryWithJsonString:[s substringFromIndex:5]];
     
     NSString *st = dic[@"identity"];
-    NSString *url = [NSString stringWithFormat:@"%@resident/bluehired/login.html?identity=%@",BaseRequestWeiXiURL,st];
+    NSString *url = [NSString stringWithFormat:@"%@login?identity=%@",BaseRequestWeiXiURLTWO,st];
     
     NSString *encodedUrl = [NSString stringWithString:[url stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     

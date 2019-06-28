@@ -17,7 +17,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *postNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *wageRangeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *keyLabel;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *keyLabel_constraint_width;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *keyLabel_constraint_Height;
 @property (weak, nonatomic) IBOutlet UIView *KeyView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *LayoutConstraint_KeyView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *keyLabel_constraint_right;

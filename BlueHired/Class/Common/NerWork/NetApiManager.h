@@ -653,6 +653,13 @@ typedef void (^UploadImageTempBlock)(BOOL sussess,NSMutableArray *array);
 //获取电话号码
 + (void)requestQueryGetUserConcernTel:(id)paramer
                            withHandle:(response)responseHandle;
+//获取入职评价列表
++ (void)requestQueryGetWorkOrderRemarkList:(id)paramer
+                                withHandle:(response)responseHandle;
+//首页获取弹框入职评价
++ (void)requestQueryGetWorkOrderRemarkMain:(id)paramer
+                                withHandle:(response)responseHandle;
+
 @end
 
 

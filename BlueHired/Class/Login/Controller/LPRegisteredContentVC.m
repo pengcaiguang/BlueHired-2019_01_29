@@ -44,7 +44,6 @@
     if (_isfirst) {
         NSURL *url;
             url = [NSURL URLWithString:[NSString stringWithFormat:@"%@resident/#/protocol",BaseRequestWeiXiURL]];
-      
         NSURLRequest *request = [NSURLRequest requestWithURL:url];
         [webview loadRequest:request];
     }

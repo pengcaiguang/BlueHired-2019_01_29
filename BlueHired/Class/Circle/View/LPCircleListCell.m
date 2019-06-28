@@ -287,32 +287,11 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
 
      NSArray *array = [self getSeparatedLinesFromLabel:self.moodDetailsLabel];
      if (array.count>5) {
-        //组合需要显示的文本
-//        NSString *str = @"...[查看全部]";
-//        NSString *line4String =  [array[3] stringByReplacingOccurrencesOfString:@"\n" withString:@""];
-//        NSString *line4Content = [NSString stringWithFormat:@"%@%@",line4String,str];
-//        NSString *showText;
-//        CGSize size =[line4Content sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15]}];
-//        while (size.width>SCREEN_WIDTH-73) {
-//            line4String = [line4String substringToIndex:line4String.length-1];
-//            line4Content =[NSString stringWithFormat:@"%@%@",line4String,str];
-//            size =[line4Content sizeWithAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15]}];
-//        }
-//        showText = [NSString stringWithFormat:@"%@%@%@%@", array[0], array[1], array[2], line4Content];
-//        //设置label的attributedText
-//         NSMutableParagraphStyle *paraStyle01 = [[NSMutableParagraphStyle alloc] init];
-//         paraStyle01.lineBreakMode = NSLineBreakByCharWrapping;
-//
-//        NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:showText attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15.0],
-//                                                                                                                    NSForegroundColorAttributeName:[UIColor blackColor],
-//                                                                                                                    NSParagraphStyleAttributeName:paraStyle01}];
-//        [attStr addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15.0], NSForegroundColorAttributeName:[UIColor baseColor]} range:NSMakeRange(showText.length-6, 6)];
-//        self.moodDetailsLabel.attributedText = attStr;
+     
          self.AllDetailsBt.hidden = NO;
          self.imageBgView_constraint_Top.constant = 38;
          if (model.isOpening) { // 如果需要展开
-//             _contentLabel.sd_layout.maxHeightIs(MAXFLOAT);
-             self.moodDetailsLabel.numberOfLines = 0;
+              self.moodDetailsLabel.numberOfLines = 0;
              [self.AllDetailsBt setTitle:@"收起" forState:UIControlStateNormal];
          } else {
 //             _contentLabel.sd_layout.maxHeightIs(maxContentLabelHeight);

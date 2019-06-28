@@ -15,5 +15,6 @@ typedef void (^LPWorkCollectionBlock)(void);
 
 @property(nonatomic,strong) LPWorklistDataWorkListModel *workListModel;
 @property(nonatomic,strong) LPWorkCollectionBlock CollectionBlock;
+@property(nonatomic,assign) BOOL isWorkOrder;
 
 @end

@@ -26,6 +26,7 @@
 #import "ADAlertView.h"
 #import "LPActivityModel.h"
 #import "LPActivityDatelisVC.h"
+#import "LPInCommentsVC.h"
 
 
 #define OPERATIONFORKEY @"operationGuidePage"
@@ -67,6 +68,8 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 @property(nonatomic,strong) UIView *HeaderView;
 @property(nonatomic,assign) BOOL IsShowHeaderView;
 @property(nonatomic,assign) BOOL IsShowHeader2View;
+
+@property(nonatomic,strong) CustomIOSAlertView *InCommentAlertView;
 
 @end
 
@@ -141,7 +144,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         self.page = 1;
         [self request];
     }
-    
+ 
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -152,8 +155,14 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     [self setSearchView];
     [self.tableview reloadData];
     
+    [self.RecommendScrollView setContentOffset:CGPointMake(0, 0)];
     _myTimer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(changeScrollContentOffSetY) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:_myTimer forMode:NSRunLoopCommonModes];
+    
+    if (AlreadyLogin) {
+        [self requestQueryGetWorkOrderRemarkMain];
+    }
+    
  }
 
 -(void)viewWillDisappear:(BOOL)animated{
@@ -254,6 +263,76 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     }
     return searchBar;
 }
+
+#pragma mark - 入职评价
+-(void)InCommentsInitView:(NSInteger) workOrderId{
+    CustomIOSAlertView *AlertView = [[CustomIOSAlertView alloc] init];
+    self.InCommentAlertView = AlertView;
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, LENGTH_SIZE(300), LENGTH_SIZE(326))];
+    UIImageView *bgImage = [[UIImageView alloc] init];
+    [view addSubview:bgImage];
+    [bgImage mas_makeConstraints:^(MASConstraintMaker *make){
+        make.edges.equalTo(view);
+    }];
+    bgImage.image = [UIImage imageNamed:@"In_comments_bg"];
+    
+    UILabel *titleLabel = [[UILabel alloc] init];
+    [view addSubview:titleLabel];
+    [titleLabel mas_makeConstraints:^(MASConstraintMaker *make){
+        make.top.mas_equalTo(LENGTH_SIZE(183));
+        make.centerX.equalTo(view);
+    }];
+    titleLabel.font = [UIFont boldSystemFontOfSize:FontSize(23)];
+    titleLabel.textColor = [UIColor baseColor];
+    titleLabel.text = @"恭喜您，入职成功";
+    
+    UILabel *ContentLabel = [[UILabel alloc] init];
+    [view addSubview:ContentLabel];
+    [ContentLabel mas_makeConstraints:^(MASConstraintMaker *make){
+        make.top.equalTo(titleLabel.mas_bottom).offset(LENGTH_SIZE(10));
+        make.centerX.equalTo(view);
+    }];
+    ContentLabel.font = FONT_SIZE(16);
+    ContentLabel.textColor = [UIColor colorWithHexString:@"#AFB1B3"];
+    ContentLabel.text = @"您可以对本次入职体验进行评价";
+    
+    UIButton *bt = [[UIButton alloc] init];
+    [view addSubview:bt];
+    [bt mas_makeConstraints:^(MASConstraintMaker *make){
+        make.top.equalTo(ContentLabel.mas_bottom).offset(LENGTH_SIZE(20));
+        make.centerX.equalTo(view);
+        make.width.mas_equalTo(LENGTH_SIZE(260));
+    }];
+    [bt setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    bt.layer.cornerRadius = 6;
+    bt.backgroundColor = [UIColor baseColor];
+    bt.titleLabel.font = FONT_SIZE(16);
+    [bt setTitle:@"立即评价" forState:UIControlStateNormal];
+    [bt addTarget:self action:@selector(TouchInComment:) forControlEvents:UIControlEventTouchUpInside];
+    bt.tag = workOrderId;
+    
+    AlertView.containerView = view;
+    AlertView.buttonTitles = @[];
+    [AlertView setUseMotionEffects:true];
+    [AlertView setCloseOnTouchUpOutside:true];
+    [AlertView show];
+    
+}
+
+
+-(void)TouchInComment:(UIButton *)sender{
+    NSLog(@"立即评价");
+    [self.InCommentAlertView close];
+    
+    LPInCommentsVC *vc = [[LPInCommentsVC alloc] init];
+    vc.hidesBottomBarWhenPushed = YES;
+    vc.Type = 1;
+    vc.workOrderId = sender.tag;
+    [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+    
+}
+
+
 #pragma mark - setter
 -(void)setMechanismlistModel:(LPMechanismlistModel *)mechanismlistModel{
     _mechanismlistModel = mechanismlistModel;
@@ -267,24 +346,24 @@ static NSString *LPMainCellID = @"LPMain2Cell";
             [array addObject:model.mechanismUrl];
         }
         self.cycleScrollView.imageURLStringsGroup = array;
-//        [self updataHeaderView];
-//        if (array.count>5) {
-//            self.cycleScrollView.pageControlStyle = SDCycleScrollViewPageContolStyleNone;
-//        }
+ 
         
         [self.RecommendScrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
  
         for (int i =0 ;i <self.model.data.workBarsList.count;i++) {
             LPWorklistDataWorkBarsListModel *m = self.model.data.workBarsList[i];
-            UILabel *label= [[UILabel alloc] initWithFrame:CGRectMake(38, i*36 , SCREEN_WIDTH-38, 36)];
+            UILabel *label= [[UILabel alloc] initWithFrame:CGRectMake(LENGTH_SIZE(38),
+                                                                      i*floorf(LENGTH_SIZE(36)),
+                                                                      SCREEN_WIDTH-LENGTH_SIZE(38),
+                                                                      floorf(LENGTH_SIZE(36)))];
             [self.RecommendScrollView addSubview:label];
             label.text = [NSString stringWithFormat:@"恭喜用户%@报名%@,入职成功!",m.userName,m.mechanismName];
             label.textColor = [UIColor baseColor];
-            label.font = [UIFont systemFontOfSize:13];
+            label.font = [UIFont systemFontOfSize:FontSize(13)];
             label.textAlignment = NSTextAlignmentLeft;
 //            label.backgroundColor = [UIColor redColor];
         }
-        self.RecommendScrollView.contentSize = CGSizeMake(0, self.model.data.workBarsList.count*36);
+        self.RecommendScrollView.contentSize = CGSizeMake(0, self.model.data.workBarsList.count*floorf(LENGTH_SIZE(36)));
         
         if (self.page == 1) {
             self.listArray = [NSMutableArray array];
@@ -320,22 +399,17 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         }
     }
     if (!has) {
-        LPNoDataView *noDataView = [[LPNoDataView alloc]initWithFrame:CGRectMake(0, 266, SCREEN_WIDTH, SCREEN_HEIGHT-266-49-kNavBarHeight-kBottomBarHeight)];
+        LPNoDataView *noDataView = [[LPNoDataView alloc]initWithFrame:CGRectMake(0,
+                                                                                 LENGTH_SIZE(266) ,
+                                                                                 SCREEN_WIDTH,
+                                                                                 LENGTH_SIZE(SCREEN_HEIGHT-266-49-kNavBarHeight-kBottomBarHeight))];
         [noDataView image:nil text:@"抱歉！没有相关记录！"];
         [self.tableview addSubview:noDataView];
         noDataView.hidden = hidden;
     }
 }
 
--(void)updataHeaderView{
-    if (self.model.data.slideshowList.count <= 0) {
-        return;
-    }
-    CGSize size = [UIImage getImageSizeWithURL:self.model.data.slideshowList[0].mechanismUrl];
-    CGFloat s = SCREEN_WIDTH/size.width;
-    self.tableHeaderView.frame = CGRectMake(0, 0, SCREEN_WIDTH, size.height*s + 40);
-    self.cycleScrollView.frame = CGRectMake(0, 0, SCREEN_WIDTH, size.height*s);
-}
+
 
 -(void)touchSelectCityButton{
     NSLog(@"touchSelectCityButton");
@@ -361,15 +435,15 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if ([scrollView isEqual: self.tableview]) {
-        if (self.tableview.contentOffset.y > 186) {
+        if (self.tableview.contentOffset.y > LENGTH_SIZE(186)) {
             if (self.IsShowHeaderView != YES) {
                 self.IsShowHeaderView = YES;
                 [self.tableview reloadData];
             }
         }else{
             if (self.IsShowHeaderView != NO) {
-                self.ButtonView.lx_y = 225;
-                self.screenView.lx_y = 186;
+                self.ButtonView.lx_y = LENGTH_SIZE(225);
+                self.screenView.lx_y = LENGTH_SIZE(186);
                 self.ButtonView.hidden = NO;
                 self.screenView.hidden = NO;
                 [_tableHeaderView addSubview:self.ButtonView];
@@ -380,16 +454,10 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         }
         
         if (self.tableview.contentOffset.y > _oldY) {
-//             上滑
-//            [self.HeaderView viewWithTag:1000].hidden = YES;
-//            [self.HeaderView viewWithTag:2000].hidden = NO;
-//            self.HeaderView.lx_height = 80;
+ 
         }else{
-//             下滑
-//            [self.HeaderView viewWithTag:1000].hidden = NO;
-//            [self.HeaderView viewWithTag:2000].hidden = YES;
-//            self.HeaderView.lx_height = 40;
-            self.tableview.sectionHeaderHeight = 20;
+ 
+            self.tableview.sectionHeaderHeight = LENGTH_SIZE(20);
 
         }
     }
@@ -405,7 +473,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     if (self.IsShowHeaderView) {
-        return 80;
+        return LENGTH_SIZE(80);
     }
     return 0;
     
@@ -416,7 +484,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     UIView *view = [[UIView alloc] init];
     view.backgroundColor = [UIColor whiteColor];
  
-    self.ButtonView.lx_y = 40;
+    self.ButtonView.lx_y = LENGTH_SIZE(40);
     self.screenView.lx_y = 0;
 
     [view addSubview:self.ButtonView];
@@ -427,7 +495,9 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 140.0;
+    CGFloat KeyHeight = [self calculateKeyHeight:self.listArray[indexPath.row].key];
+
+    return LENGTH_SIZE(123.0) +KeyHeight ;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -494,7 +564,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
     if (scrollView == self.RecommendScrollView) {
-        if (scrollView.contentOffset.y==scrollView.contentSize.height){
+        if (scrollView.contentOffset.y>=scrollView.contentSize.height){
             [scrollView setContentOffset:CGPointMake(0, 0)];
         }
     }
@@ -539,8 +609,8 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 }
 
 -(void)touchScreenButton:(UIButton *)button{
-    if (self.tableview.contentOffset.y < 186) {
-        CGPoint bottomOffset = CGPointMake(0, 186);
+    if (self.tableview.contentOffset.y < LENGTH_SIZE(186) ) {
+        CGPoint bottomOffset = CGPointMake(0, LENGTH_SIZE(186));
         [self.tableview setContentOffset:bottomOffset animated:NO];
     }
     
@@ -649,6 +719,25 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     }];
 }
 
+-(void)requestQueryGetWorkOrderRemarkMain{
+    NSDictionary *dic = @{};
+    [NetApiManager requestQueryGetWorkOrderRemarkMain:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if ([responseObject[@"data"] integerValue] > 0) {
+                    [self InCommentsInitView:[responseObject[@"data"] integerValue]];
+                }
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+
+
 #pragma mark lazy
 - (UITableView *)tableview{
     if (!_tableview) {
@@ -676,7 +765,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 -(UIView *)tableHeaderView{
     if (!_tableHeaderView){
         _tableHeaderView = [[UIView alloc]init];
-        _tableHeaderView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 266);
+        _tableHeaderView.frame = CGRectMake(0, 0, SCREEN_WIDTH, LENGTH_SIZE(266));
         [_tableHeaderView addSubview:self.cycleScrollView];
         [_tableHeaderView addSubview:self.RecommendScrollView];
         [_tableHeaderView addSubview:self.RecommendBackImage];
@@ -685,7 +774,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 //        [_tableHeaderView addSubview:self.sortButton];
 //        [_tableHeaderView addSubview:self.screenButton];
         UIView *lineView = [[UIView alloc]init];
-        lineView.frame = CGRectMake(0, 265.5, SCREEN_WIDTH, 0.5);
+        lineView.frame = CGRectMake(0, LENGTH_SIZE(265.5), SCREEN_WIDTH, LENGTH_SIZE(0.5));
         lineView.backgroundColor = [UIColor clearColor];
         [_tableHeaderView addSubview:lineView];
     }
@@ -694,16 +783,11 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 -(UIButton *)sortButton{
     if (!_sortButton) {
         _sortButton = [[UIButton alloc]init];
-        _sortButton.frame = CGRectMake(13, 0, 70, 40);
+        _sortButton.frame = CGRectMake(LENGTH_SIZE(13), 0, LENGTH_SIZE(70), LENGTH_SIZE(40));
         [_sortButton setTitle:@"企业列表" forState:UIControlStateNormal];
-//        [_sortButton setImage:[UIImage imageNamed:@"add_ record_normal"] forState:UIControlStateNormal];
-//        [_sortButton setImage:[UIImage imageNamed:@"add_ record_selected"] forState:UIControlStateSelected];
+ 
         [_sortButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-//        [_sortButton setTitleColor:[UIColor baseColor] forState:UIControlStateSelected];
-        _sortButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
-//        _sortButton.titleEdgeInsets = UIEdgeInsetsMake(0, -_sortButton.imageView.frame.size.width - _sortButton.frame.size.width + _sortButton.titleLabel.intrinsicContentSize.width, 0, 0);
-//        _sortButton.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, -_sortButton.titleLabel.frame.size.width - _sortButton.frame.size.width + _sortButton.imageView.frame.size.width);
-//        [_sortButton addTarget:self action:@selector(TouchBt:) forControlEvents:UIControlEventTouchUpInside];
+         _sortButton.titleLabel.font = [UIFont boldSystemFontOfSize:FontSize(16)];
         _sortButton.enabled = NO;
     }
     return _sortButton;
@@ -711,7 +795,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 -(UIButton *)screenButton{
     if (!_screenButton) {
         _screenButton = [[UIButton alloc]init];
-        _screenButton.frame = CGRectMake(SCREEN_WIDTH-75-13, 0, 75, 40);
+        _screenButton.frame = CGRectMake(SCREEN_WIDTH-LENGTH_SIZE(75+13) , 0,LENGTH_SIZE(75), LENGTH_SIZE(40));
         [_screenButton setTitle:@"全部工种" forState:UIControlStateNormal];
         [_screenButton setTitleColor:[UIColor colorWithHexString:@"#666666"] forState:UIControlStateNormal];
         [_screenButton setTitleColor:[UIColor baseColor] forState:UIControlStateSelected];
@@ -719,9 +803,9 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         [_screenButton setImage:[UIImage imageNamed:@"drop_down_sel"] forState:UIControlStateSelected];
         _screenButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
 
-        _screenButton.titleLabel.font = [UIFont systemFontOfSize:13];
-        _screenButton.titleEdgeInsets = UIEdgeInsetsMake(0, -_screenButton.imageView.frame.size.width - _screenButton.frame.size.width + _screenButton.titleLabel.intrinsicContentSize.width, 0, 20);
-        _screenButton.imageEdgeInsets = UIEdgeInsetsMake(0, 55+8, 0, 0);
+        _screenButton.titleLabel.font = [UIFont systemFontOfSize:FontSize(13)];
+        _screenButton.titleEdgeInsets = UIEdgeInsetsMake(0, -_screenButton.imageView.frame.size.width - _screenButton.frame.size.width + _screenButton.titleLabel.intrinsicContentSize.width, 0,LENGTH_SIZE(20));
+        _screenButton.imageEdgeInsets = UIEdgeInsetsMake(0,LENGTH_SIZE(55+8) , 0, 0);
         [_screenButton addTarget:self action:@selector(touchScreenButton:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _screenButton;
@@ -730,23 +814,23 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 -(UIButton *)screenTypeButton{
     if (!_screenTypeButton) {
         _screenTypeButton = [[UIButton alloc]init];
-        _screenTypeButton.frame = CGRectMake(SCREEN_WIDTH-75-13 - 80 - 10, 0, 75, 40);
+        _screenTypeButton.frame = CGRectMake(SCREEN_WIDTH-LENGTH_SIZE(75+13 + 80 + 10) , 0,LENGTH_SIZE(75),LENGTH_SIZE(40));
         [_screenTypeButton setTitle:@"全部企业" forState:UIControlStateNormal];
         [_screenTypeButton setTitleColor:[UIColor colorWithHexString:@"#666666"] forState:UIControlStateNormal];
         [_screenTypeButton setTitleColor:[UIColor baseColor] forState:UIControlStateSelected];
         [_screenTypeButton setImage:[UIImage imageNamed:@"drop_down"] forState:UIControlStateNormal];
         [_screenTypeButton setImage:[UIImage imageNamed:@"drop_down_sel"] forState:UIControlStateSelected];
 
-        _screenTypeButton.titleLabel.font = [UIFont systemFontOfSize:13];
+        _screenTypeButton.titleLabel.font = [UIFont systemFontOfSize:FontSize(13)];
         _screenTypeButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
 
         _screenTypeButton.titleEdgeInsets = UIEdgeInsetsMake(0,
                                                              -_screenTypeButton.imageView.frame.size.width - _screenTypeButton.frame.size.width + _screenTypeButton.titleLabel.intrinsicContentSize.width,
                                                              0,
-                                                             20);
+                                                             LENGTH_SIZE(20));
         
         _screenTypeButton.imageEdgeInsets = UIEdgeInsetsMake(0,
-                                                             55+8,
+                                                             LENGTH_SIZE(55+8),
                                                              0,
                                                              0);
         [_screenTypeButton addTarget:self action:@selector(touchScreenButton:) forControlEvents:UIControlEventTouchUpInside];
@@ -756,7 +840,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 
 - (UIView *)screenView{
      if (!_screenView) {
-         _screenView = [[UIView alloc] initWithFrame:CGRectMake(0, 186, SCREEN_WIDTH, 40)];
+         _screenView = [[UIView alloc] initWithFrame:CGRectMake(0, LENGTH_SIZE(186) , SCREEN_WIDTH, LENGTH_SIZE(40))];
          _screenView.tag = 2000;
          [_screenView addSubview:self.screenButton];
          [_screenView addSubview:self.screenTypeButton];
@@ -786,9 +870,10 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 
 -(SDCycleScrollView *)cycleScrollView{
     if (!_cycleScrollView) {
-        _cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 150) delegate:self placeholderImage:nil];
+        _cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, LENGTH_SIZE(150)) delegate:self placeholderImage:nil];
         _cycleScrollView.pageControlAliment = SDCycleScrollViewPageContolAlimentCenter;
         _cycleScrollView.currentPageDotColor = [UIColor whiteColor]; // 自定义分页控件小圆标颜色
+        _cycleScrollView.bannerImageViewContentMode = UIViewContentModeScaleAspectFill;
     }
     return _cycleScrollView;
     
@@ -796,24 +881,27 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 
 -(UIScrollView *)RecommendScrollView{
     if (!_RecommendScrollView) {
-        _RecommendScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0 , 150, SCREEN_WIDTH, 36)];
+        _RecommendScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0 , LENGTH_SIZE(150), SCREEN_WIDTH, floorf(LENGTH_SIZE(36)))];
         _RecommendScrollView.delegate = self;
         _RecommendScrollView.showsVerticalScrollIndicator = NO;
         _RecommendScrollView.scrollEnabled = NO;
         _RecommendScrollView.bounces = NO;
         _RecommendScrollView.backgroundColor = [UIColor colorWithHexString:@"#F5F8FA"];
+        
      }
     return _RecommendScrollView;
 }
 -(void)changeScrollContentOffSetY{
     //启动定时器
     CGPoint point = self.RecommendScrollView.contentOffset;
-    [self.RecommendScrollView setContentOffset:CGPointMake(0, point.y+CGRectGetHeight(self.RecommendScrollView.frame)) animated:YES];
+ 
+    [self.RecommendScrollView setContentOffset:CGPointMake(0, point.y+floorf(LENGTH_SIZE(36))) animated:YES];
+    
 }
 
 - (UIImageView *)RecommendBackImage{
     if (!_RecommendBackImage) {
-        _RecommendBackImage = [[UIImageView alloc] initWithFrame:CGRectMake(13, 159, 18, 18)];
+        _RecommendBackImage = [[UIImageView alloc] initWithFrame:CGRectMake(LENGTH_SIZE(13),LENGTH_SIZE(159) ,LENGTH_SIZE(18) ,LENGTH_SIZE(18))];
         _RecommendBackImage.image = [UIImage imageNamed:@"radio"];
     }
     return _RecommendBackImage;
@@ -821,7 +909,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 
 - (UIView *)ButtonView{
     if (!_ButtonView) {
-        _ButtonView = [[UIView alloc] initWithFrame:CGRectMake(13, 225, SCREEN_WIDTH-26, 42)];
+        _ButtonView = [[UIView alloc] initWithFrame:CGRectMake(LENGTH_SIZE(13),LENGTH_SIZE(225) ,SCREEN_WIDTH-LENGTH_SIZE(26) , LENGTH_SIZE(42))];
         _ButtonView.tag = 1000;
         NSArray *arr = @[@"推荐好厂",@"高薪企业",@"好评企业",@"可借支"];
         self.ButtonArr = [[NSMutableArray alloc] init];
@@ -833,25 +921,25 @@ static NSString *LPMainCellID = @"LPMain2Cell";
             [Bt setBackgroundImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"#E4F4FF"]] forState:UIControlStateSelected];
             [Bt setTitleColor:[UIColor colorWithHexString:@"#666666"] forState:UIControlStateNormal];
             [Bt setTitleColor:[UIColor colorWithHexString:@"#3CAFFF"] forState:UIControlStateSelected];
-            Bt.titleLabel.font = [UIFont systemFontOfSize:13];
-            Bt.layer.cornerRadius = 4;
+            Bt.titleLabel.font = [UIFont systemFontOfSize:FontSize(13)];
+            Bt.layer.cornerRadius =LENGTH_SIZE(4);
             Bt.clipsToBounds = YES;
             [Bt addTarget:self action:@selector(TouchBt:) forControlEvents:UIControlEventTouchUpInside];
             [self.ButtonArr addObject:Bt];
         }
         
-        [self.ButtonArr mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedSpacing:7 leadSpacing:0 tailSpacing:0];
+        [self.ButtonArr mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedSpacing:LENGTH_SIZE(7) leadSpacing:0 tailSpacing:0];
         [self.ButtonArr mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.mas_offset(6);
-            make.height.mas_equalTo(30);
+            make.top.mas_offset(LENGTH_SIZE(6));
+            make.height.mas_equalTo(LENGTH_SIZE(30));
         }];
     }
     return _ButtonView;
 }
 -(void)TouchBt:(UIButton *) sender{
     
-    if (self.tableview.contentOffset.y < 186) {
-        CGPoint bottomOffset = CGPointMake(0, 186);
+    if (self.tableview.contentOffset.y < LENGTH_SIZE(186)) {
+        CGPoint bottomOffset = CGPointMake(0, LENGTH_SIZE(186));
         [self.tableview setContentOffset:bottomOffset animated:NO];
     }
     
@@ -947,7 +1035,25 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     NSString *app_Version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
     return app_Version;
 }
-
-
+//计算标签高度
+-(CGFloat)calculateKeyHeight:(NSString *) Key{
+    
+    if (Key.length == 0) {
+        return 0;
+    }
+    
+    NSArray * tagArr = [Key componentsSeparatedByString:@"|"];
+    CGFloat tagBtnX = 0;
+    CGFloat tagBtnY = 0;
+    for (int i= 0; i<tagArr.count; i++) {
+        CGSize tagTextSize = [tagArr[i] sizeWithFont:[UIFont systemFontOfSize:FontSize(12)] maxSize:CGSizeMake(SCREEN_WIDTH-LENGTH_SIZE(116), LENGTH_SIZE(17))];
+        if (tagBtnX+tagTextSize.width+14 > SCREEN_WIDTH-LENGTH_SIZE(116)) {
+            tagBtnX = 0;
+            tagBtnY += LENGTH_SIZE(17)+8;
+        }
+        tagBtnX = tagBtnX + tagTextSize.width + LENGTH_SIZE(4);
+    }
+    return tagBtnY + LENGTH_SIZE(17);
+}
 
 @end

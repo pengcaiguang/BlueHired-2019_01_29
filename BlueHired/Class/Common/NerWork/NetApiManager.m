@@ -348,7 +348,7 @@ static QNUploadManager *upManager = NULL;
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
                                                      withHandle:responseHandle
-                                                 IsShowActiviTy:YES];
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 //删除面试预约
@@ -2287,6 +2287,30 @@ static QNUploadManager *upManager = NULL;
                                                       withParam:paramer
                                                      withHandle:responseHandle
                                                  IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//获取入职评价列表
++ (void)requestQueryGetWorkOrderRemarkList:(id)paramer
+                           withHandle:(response)responseHandle{
+    NSString * appendURLString = @"work/get_work_order_remark_list";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//首页获取弹框入职评价
++ (void)requestQueryGetWorkOrderRemarkMain:(id)paramer
+                                withHandle:(response)responseHandle{
+    NSString * appendURLString = @"work/get_work_order_remark";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
 
