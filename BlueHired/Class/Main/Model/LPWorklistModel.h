@@ -17,6 +17,7 @@
 
 @class LPWorklistDataSlideshowListModel,LPWorklistDataWorkListModel,LPWorklistDataWorkBarsListModel;
 @interface LPWorklistDataModel : NSObject
+@property (nonatomic, copy) NSString *phone;
 @property (nonatomic, copy) NSArray <LPWorklistDataWorkListModel *> *slideshowList;
 @property (nonatomic, copy) NSArray <LPWorklistDataWorkListModel *> *workList;
 @property (nonatomic, copy) NSArray <LPWorklistDataWorkBarsListModel *> *workBarsList;
@@ -95,13 +96,14 @@
 @property (nonatomic, copy) NSString *wageRange;
 @property (nonatomic, copy) NSString *workDemand;
 @property (nonatomic, copy) NSString *workKnow;
-@property (nonatomic, copy) NSNumber *workMoney;
+@property (nonatomic, copy) NSString *workMoney;
 @property (nonatomic, copy) NSString *workSalary;
 @property (nonatomic, copy) NSString *workTime;
 @property (nonatomic, copy) NSString *workTypeName;
 @property (nonatomic, copy) NSString *workUrl;
 @property (nonatomic, copy) NSString *workWatchStatus;
 @property (nonatomic, copy) NSString *reStatus;
+@property (nonatomic, copy) NSString *age;
 
 @end
 @interface LPWorklistDataWorkBarsListModel : NSObject

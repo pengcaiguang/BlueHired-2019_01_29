@@ -28,6 +28,7 @@
 #import "ADModel.h"
 #import "LPActivityDatelisVC.h"
 #import "LPActivityModel.h"
+#import <Bugly/Bugly.h>
 
 //极光
 static NSString *appKey = @"1f178d6e983414ed2ee662fb";
@@ -49,6 +50,9 @@ static NSString *OCRAk = @"afnwBt8L3Th1ZDyEkmNL7QKd";
 static NSString *OCRSK = @"AuzzqkelToqzXjsaKI4n2L6U9QaH92Vs";
 //百度地图key
 static NSString *BaiduMapKey = @"Is1tZn8s2L4SvALlxeBjef5Rzi3a7luV";
+
+//BugLy appID
+static NSString *BugLy_App_ID = @"ee0d53e516";
 
 BMKMapManager* _mapManager;
 static AFHTTPSessionManager * afHttpSessionMgr = NULL;
@@ -100,7 +104,7 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
     entity.types = JPAuthorizationOptionAlert|JPAuthorizationOptionBadge|JPAuthorizationOptionSound;
     if ([[UIDevice currentDevice].systemVersion floatValue] >= 8.0) {
         // 可以添加自定义 categories
-
+ 
     }
     [JPUSHService registerForRemoteNotificationConfig:entity delegate:self];
     NSString *advertisingId = [[[ASIdentifierManager sharedManager] advertisingIdentifier] UUIDString];
@@ -118,11 +122,18 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
     [WXApi registerApp:WXAPPID];
     _tencentOAuth = [[TencentOAuth alloc] initWithAppId:QQAPPID andDelegate:self];
     
-    
-    NSLog(@"获取微信安装地址 = %@",[WXApi getWXAppInstallUrl]);
-    
+    //BugLy
+    [Bugly startWithAppId:BugLy_App_ID];
+
+
+    [LPTools deleteWebCache];
     // 启动图片延时: 1秒
     [NSThread sleepForTimeInterval:1];
+    
+  
+   
+    
+    
     return YES;
 }
 -(void)showTabVc:(NSInteger)tabIndex{
@@ -174,6 +185,7 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
     //进入后台;
 
     NSLog(@"进入后台,请空倒计时");
+    
     
     if (_seconds>0) {
        [self.countDownTimer invalidate];
@@ -472,14 +484,13 @@ fetchCompletionHandler:
         NSLog(@"%@",responseObject);
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
-                if ([responseObject[@"data"][@"status"] integerValue] == 1) {
+                 if ([responseObject[@"data"][@"status"] integerValue] == 1) {
                     if (self.countDownTimer) {
                         [self.countDownTimer invalidate];
                         self.countDownTimer = nil;
                         self.seconds=-1;
                     }
                     self.seconds = [responseObject[@"data"][@"allTime"] integerValue];
-//                    self.seconds = 12;
                     self.countDownTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timeFireMethod) userInfo:nil repeats:YES];
                 }
             }else{

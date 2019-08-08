@@ -28,22 +28,84 @@
     self.reMoneyLabel.layer.cornerRadius = LENGTH_SIZE(10.5);
     self.reMoneyLabel.layer.borderWidth = LENGTH_SIZE(1);
     self.reMoneyLabel.layer.borderColor = [UIColor colorWithHexString:@"#FFD291"].CGColor;
+    self.AgeLabel.layer.cornerRadius = 2;
+    self.AgeLabel.layer.borderColor = [UIColor baseColor].CGColor;
+    self.AgeLabel.layer.borderWidth = 1;
+    self.AgeLabel.textColor = [UIColor baseColor];
 }
 
 
 
 - (void)setModel:(LPWorklistDataWorkListModel *)model{
     _model = model;
+    
+    if (self.CellType == 0) {
+        [self.lendTypeLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.width.mas_offset(LENGTH_SIZE(45));
+            make.height.mas_offset(LENGTH_SIZE(17));
+            make.left.equalTo(self.mechanismNameLabel.mas_left);
+            make.top.equalTo(self.applyNumberLabel.mas_bottom).offset(LENGTH_SIZE(8));
+        }];
+        self.keyLabel.hidden = NO;
+        self.AgeLabel.hidden = NO;
+        
+        [self.mechanismScoreImage mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_offset(LENGTH_SIZE(13));
+            make.centerY.equalTo(self.lendTypeLabel);
+        }];
+        
+    }else if (self.CellType == 1){
+        [self.lendTypeLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.width.mas_offset(LENGTH_SIZE(45));
+            make.height.mas_offset(LENGTH_SIZE(17));
+            make.right.mas_offset(LENGTH_SIZE(-13));
+            make.centerY.equalTo(self.applyNumberLabel);
+        }];
+        self.keyLabel.hidden = YES;
+        self.AgeLabel.hidden = YES;
+        
+        [self.mechanismScoreImage mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_offset(LENGTH_SIZE(13));
+            make.centerY.equalTo(self.wageRangeLabel);
+        }];
+    }
+    
+    if (model.age.length && self.CellType == 0) {
+        self.AgeLabel.text = [NSString stringWithFormat:@" %@ ", model.age];
+        self.AgeLabel.hidden = NO;
+    }else{
+        self.AgeLabel.hidden = YES;
+    }
+    
     self.mechanismNameLabel.text = model.mechanismName;
     self.lendTypeLabel.hidden = ![model.lendType integerValue];
     self.starRateView.currentScore = model.mechanismScore.floatValue/2;
     [self.mechanismUrlImageView sd_setImageWithURL:[NSURL URLWithString:model.mechanismUrl]];
-    self.mechanismScoreLabel.text = [NSString stringWithFormat:@"%@分",model.mechanismScore];
+    self.mechanismScoreLabel.text = [NSString stringWithFormat:@"%.1f分",model.mechanismScore.floatValue];
+    
+    if (model.lendType.integerValue) {
+        self.lendTypeLabel_constraint_Width.constant = LENGTH_SIZE(50);
+    }else{
+        self.lendTypeLabel_constraint_Width.constant = LENGTH_SIZE(0);
+    }
+    
     if ([model.postName isEqualToString:@"小时工"]) {
-        self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/时",model.workMoney];
+        self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/时",reviseString(model.workMoney)];
     }else{
         self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/月",model.wageRange];
+     }
+    
+    self.applyNumberLabel.text = [NSString stringWithFormat:@"招%@人 / 已报名%@人",model.maxNumber,model.applyNumber ? model.applyNumber : @"0"];
+ 
+    self.maxNumberLabel.text = [NSString stringWithFormat:@"%@",model.workTypeName];
+    if (model.status.integerValue == 1) {
+        self.applyNumberLabel.text = [NSString stringWithFormat:@"招%@人",model.maxNumber];
+        self.isWorkers.hidden = NO;
+    }else{
+    
+        self.isWorkers.hidden = YES;
     }
+    
     if (model.reMoney.integerValue>0) {
         [self.reMoneyLabel setTitle:[NSString stringWithFormat:@"    %ld   ",
                                      (long)model.reMoney.integerValue]
@@ -56,21 +118,40 @@
         self.reMoneyLabel.hidden = NO;
         self.reMoneyImage.hidden = NO;
         
+        if (self.CellType == 0) {
+            [self.wageRangeLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.right.mas_offset(LENGTH_SIZE(-13));
+                make.centerY.equalTo(self.applyNumberLabel);
+            }];
+        }else if (self.CellType == 1){
+            [self.wageRangeLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self.mechanismNameLabel.mas_left);
+                make.top.equalTo(self.applyNumberLabel.mas_bottom).offset(LENGTH_SIZE(8));
+            }];
+        }
+        
+       
+        
     }else{
         self.reMoneyLabel.hidden = YES;
         self.reMoneyImage.hidden = YES;
         self.keyLabel_constraint_right.constant = LENGTH_SIZE(13);
+        
+        if (self.CellType == 0) {
+            [self.wageRangeLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.right.mas_offset(LENGTH_SIZE(-13));
+                make.centerY.equalTo(self.maxNumberLabel);
+            }];
+        }else if (self.CellType == 1){
+            [self.wageRangeLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self.mechanismNameLabel.mas_left);
+                make.top.equalTo(self.applyNumberLabel.mas_bottom).offset(LENGTH_SIZE(8));
+            }];
+        }
+
     }
     
-    self.applyNumberLabel.text = [NSString stringWithFormat:@"招%@人 / 已报名:%@人",model.maxNumber,model.applyNumber ? model.applyNumber : @"0"];
-    self.maxNumberLabel.text = [NSString stringWithFormat:@"%@",model.workTypeName];
-    if (model.status.integerValue == 1) {
-        self.applyNumberLabel.text = [NSString stringWithFormat:@"招%@人",model.maxNumber];
-        self.isWorkers.hidden = NO;
-    }else{
- 
-        self.isWorkers.hidden = YES;
-    }
+   
     
 
     
@@ -87,17 +168,20 @@
     
     self.keyLabel.text = @" ";
     [self.keyLabel.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    
+     //动态计算key标签宽度
+     model.key = [model.key stringByReplacingOccurrencesOfString:@"丨" withString:@"|"];
 
-    //动态计算key标签宽度
         NSArray * tagArr = [model.key componentsSeparatedByString:@"|"];
         CGFloat tagBtnX = 0;
         CGFloat tagBtnY = 0;
     if (model.key.length>0) {
         for (int i= 0; i<tagArr.count; i++) {
-            CGSize tagTextSize = [[NSString stringWithFormat:@"%@",tagArr[i]] sizeWithFont:[UIFont systemFontOfSize:FontSize(12)] maxSize:CGSizeMake(SCREEN_WIDTH - LENGTH_SIZE(116) , LENGTH_SIZE(17))];
-            if (tagBtnX+tagTextSize.width+14 > SCREEN_WIDTH - LENGTH_SIZE(116)) {
+            CGSize tagTextSize = [[NSString stringWithFormat:@"%@",tagArr[i]] sizeWithFont:[UIFont systemFontOfSize:FontSize(12)] maxSize:CGSizeMake(SCREEN_WIDTH - LENGTH_SIZE(153) , LENGTH_SIZE(17))];
+            if (tagBtnX+tagTextSize.width+14 > SCREEN_WIDTH - LENGTH_SIZE(153)) {
                 tagBtnX = 0;
                 tagBtnY += LENGTH_SIZE(17)+8;
+                break;
             }
             UIButton * tagBtn = [UIButton buttonWithType:UIButtonTypeCustom];
             tagBtn.tag = 100+i;
@@ -112,12 +196,21 @@
             tagBtnX = CGRectGetMaxX(tagBtn.frame)+LENGTH_SIZE(4);
             
         }
-        self.keyLabel_constraint_Height.constant = tagBtnY + LENGTH_SIZE(17);
+        self.keyLabel_constraint_Height.constant = LENGTH_SIZE(17);
 
     }else{
         self.keyLabel_constraint_Height.constant = 0;
     }
     
+}
+
+-(void)setIscornerRadius:(BOOL )iscornerRadius{
+    _iscornerRadius = iscornerRadius;
+    if (iscornerRadius) {
+        self.layer.cornerRadius = 6;
+        self.layer.masksToBounds = YES;
+    }
+
 }
 
 

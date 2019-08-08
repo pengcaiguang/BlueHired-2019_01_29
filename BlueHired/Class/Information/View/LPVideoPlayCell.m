@@ -37,23 +37,24 @@
     }];
  
     UIButton *BackBt = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - LENGTH_SIZE(60),
-                                                                  LENGTH_SIZE(42),LENGTH_SIZE(40),
-                                                                  LENGTH_SIZE(40))];
+                                                                  kStatusBarHeight,
+                                                                  LENGTH_SIZE(44),
+                                                                  LENGTH_SIZE(44))];
     [BackBt setImage:[UIImage imageNamed:@"删除"] forState:UIControlStateNormal];
     [BackBt addTarget:self action:@selector(touchUpInside) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:BackBt];
     
     UIImageView *User = [[UIImageView alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - LENGTH_SIZE(60),
-                                                                      SCREEN_HEIGHT -LENGTH_SIZE(391),
-                                                                      LENGTH_SIZE(40),
-                                                                      LENGTH_SIZE(40))];
+                                                                      SCREEN_HEIGHT -LENGTH_SIZE(460),
+                                                                      LENGTH_SIZE(44),
+                                                                      LENGTH_SIZE(44))];
     self.UserImage = User;
     User.clipsToBounds = YES;
     User.layer.cornerRadius = LENGTH_SIZE(20);
       [self addSubview:User];
     
     UIButton *LoveBt = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - LENGTH_SIZE(60),
-                                                                  SCREEN_HEIGHT - LENGTH_SIZE(332),
+                                                                  SCREEN_HEIGHT - LENGTH_SIZE(397),
                                                                   LENGTH_SIZE(40),
                                                                   LENGTH_SIZE(40))];
     [LoveBt setImage:[UIImage imageNamed:@"Videopraise_normal"] forState:UIControlStateNormal];
@@ -63,7 +64,7 @@
     [self addSubview:LoveBt];
     self.LoveButton = LoveBt;
     self.LoveLabel = [[UILabel alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - LENGTH_SIZE(60),
-                                                               SCREEN_HEIGHT - LENGTH_SIZE(292),
+                                                               SCREEN_HEIGHT - LENGTH_SIZE(346),
                                                                LENGTH_SIZE(40),
                                                                LENGTH_SIZE(10))];
     [self addSubview:self.LoveLabel];
@@ -72,7 +73,7 @@
     self.LoveLabel.font = [UIFont systemFontOfSize:FontSize(11)];
     
     UIButton *MessageBt = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - LENGTH_SIZE(60),
-                                                                     SCREEN_HEIGHT - LENGTH_SIZE(261),
+                                                                     SCREEN_HEIGHT - LENGTH_SIZE(320),
                                                                      LENGTH_SIZE(40),
                                                                      LENGTH_SIZE(40))];
     [MessageBt setImage:[UIImage imageNamed:@"messageImage"] forState:UIControlStateNormal];
@@ -80,7 +81,7 @@
     [self addSubview:MessageBt];
     self.MessageButton = MessageBt;
     self.MessageLabel = [[UILabel alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - LENGTH_SIZE(60),
-                                                                  SCREEN_HEIGHT - LENGTH_SIZE(221),
+                                                                  SCREEN_HEIGHT - LENGTH_SIZE(273),
                                                                   LENGTH_SIZE(40),
                                                                   LENGTH_SIZE(10))];
     [self addSubview:self.MessageLabel];
@@ -89,7 +90,7 @@
     self.MessageLabel.font = [UIFont systemFontOfSize:FontSize(11)];
     
     UIButton *CollectionBt = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - LENGTH_SIZE(60),
-                                                                        SCREEN_HEIGHT - LENGTH_SIZE(192),
+                                                                        SCREEN_HEIGHT - LENGTH_SIZE(248),
                                                                         LENGTH_SIZE(40),
                                                                         LENGTH_SIZE(40))];
     [CollectionBt setImage:[UIImage imageNamed:@"Videocollection_normal"] forState:UIControlStateNormal];
@@ -100,7 +101,7 @@
     self.CollectButton = CollectionBt;
     
     UIButton *ShareBt = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - LENGTH_SIZE(60),
-                                                                   SCREEN_HEIGHT-LENGTH_SIZE(120),
+                                                                   SCREEN_HEIGHT-LENGTH_SIZE(173),
                                                                    LENGTH_SIZE(40),
                                                                    LENGTH_SIZE(40))];
     [ShareBt setImage:[UIImage imageNamed:@"分享(7)"] forState:UIControlStateNormal];
@@ -110,18 +111,28 @@
     UIImageView *titleImage = [[UIImageView alloc] init];
     [self addSubview:titleImage];
     [titleImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.mas_equalTo(LENGTH_SIZE(-44) );
+        make.bottom.mas_equalTo(-kBottomBarHeight-LENGTH_SIZE(15) );
         make.left.mas_equalTo(LENGTH_SIZE(12));
         make.height.mas_equalTo(LENGTH_SIZE(14));
         make.width.mas_equalTo(LENGTH_SIZE(14));
      }];
     titleImage.image = [UIImage imageNamed:@"VideoTitleImage"];
     
+    self.barrageBtn = [[UIButton alloc] initWithFrame:CGRectMake(SCREEN_WIDTH - LENGTH_SIZE(60),
+                                                                 SCREEN_HEIGHT - LENGTH_SIZE(101),
+                                                                 LENGTH_SIZE(40),
+                                                                 LENGTH_SIZE(40))];
+    [self addSubview:self.barrageBtn];
+    [self.barrageBtn setImage:[UIImage imageNamed:@"barrage_off"] forState:UIControlStateNormal];
+    [self.barrageBtn setImage:[UIImage imageNamed:@"barrage_on"] forState:UIControlStateSelected];
+    [self.barrageBtn addTarget:self action:@selector(touchBarrage:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
     KJMarqueeLabel *Title = [[KJMarqueeLabel alloc] init];
     [self addSubview:Title];
     self.TitleLabel = Title;
     [Title mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.mas_equalTo(LENGTH_SIZE(-44));
+        make.bottom.mas_equalTo(-kBottomBarHeight-LENGTH_SIZE(15));
         make.left.mas_equalTo(LENGTH_SIZE(34));
         make.right.mas_equalTo(LENGTH_SIZE(-23));
     }];
@@ -188,6 +199,13 @@
     NSLog(@"准备退出");
 
      [[UIWindow visibleViewController].navigationController popViewControllerAnimated:NO];
+}
+
+-(void)touchBarrage:(UIButton *)sender{
+    if (self.BarrageBlock) {
+        self.BarrageBlock(!sender.selected);
+    }
+    sender.selected = !sender.selected;
 }
 
 -(void)touchUpInsideMessage{

@@ -15,7 +15,6 @@
     XHStarRateView *starRateView = [[XHStarRateView alloc] initWithFrame:CGRectMake(0,0,  LENGTH_SIZE(85), LENGTH_SIZE(13)) isTouch:YES];
     starRateView.isAnimation = YES;
     starRateView.rateStyle = HalfStar;
-    starRateView.delegate = self;
     self.starRateView = starRateView;
     [self.mechanismScoreView addSubview:starRateView];
     
@@ -31,6 +30,11 @@
     self.reMoneyLabel.layer.cornerRadius = LENGTH_SIZE(10.5);
     self.reMoneyLabel.layer.borderWidth = 1;
     self.reMoneyLabel.layer.borderColor = [UIColor colorWithHexString:@"#FFD291"].CGColor;
+    
+    self.AgeLabel.layer.cornerRadius = 2;
+    self.AgeLabel.layer.borderColor = [UIColor baseColor].CGColor;
+    self.AgeLabel.layer.borderWidth = 1;
+    self.AgeLabel.textColor = [UIColor baseColor];
 
 }
 
@@ -40,9 +44,24 @@
     self.lendTypeLabel.hidden = ![model.lendType integerValue];
     self.starRateView.currentScore = model.mechanismScore.floatValue/2;
     [self.mechanismUrlImageView sd_setImageWithURL:[NSURL URLWithString:model.mechanismUrl]];
-    self.mechanismScoreLabel.text = [NSString stringWithFormat:@"%@分",model.mechanismScore];
+    self.mechanismScoreLabel.text = [NSString stringWithFormat:@"%.1f分",model.mechanismScore.floatValue];
+    
+    if (model.age.length ) {
+        self.AgeLabel.text = [NSString stringWithFormat:@" %@ ", model.age];
+        self.AgeLabel.hidden = NO;
+    }else{
+        self.AgeLabel.hidden = YES;
+    }
+    
+    
+    if (model.lendType.integerValue) {
+        self.lendTypeLabel_constraint_Width.constant = LENGTH_SIZE(45);
+    }else{
+        self.lendTypeLabel_constraint_Width.constant = LENGTH_SIZE(0);
+    }
+    
     if ([model.postName isEqualToString:@"小时工"]) {
-        self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/时",model.workMoney];
+        self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/时",reviseString(model.workMoney)];
     }else{
         self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/月",model.wageRange];
     }
@@ -57,13 +76,21 @@
         
         self.reMoneyLabel.hidden = NO;
         self.reMoneyImage.hidden = NO;
+        [self.wageRangeLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.right.mas_offset(LENGTH_SIZE(-13));
+            make.centerY.equalTo(self.applyNumberLabel);
+        }];
     }else{
         self.reMoneyLabel.hidden = YES;
         self.reMoneyImage.hidden = YES;
         self.keyLabel_constraint_right.constant = LENGTH_SIZE(13.0);
+        [self.wageRangeLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.right.mas_offset(LENGTH_SIZE(-13));
+            make.centerY.equalTo(self.postNameLabel);
+        }];
     }
     
-    self.applyNumberLabel.text = [NSString stringWithFormat:@"招%@人 / 已报名:%@人",model.maxNumber,model.applyNumber ? model.applyNumber : @"0"];
+    self.applyNumberLabel.text = [NSString stringWithFormat:@"招%@人 / 已报名%@人",model.maxNumber,model.applyNumber ? model.applyNumber : @"0"];
 
     self.postNameLabel.text = [NSString stringWithFormat:@"%@",model.workTypeName];
     if (model.status.integerValue == 1) {
@@ -71,7 +98,8 @@
 
         self.isWorkers.hidden = NO;
     }else{
- 
+     
+
         self.isWorkers.hidden = YES;
     }
     
@@ -92,6 +120,8 @@
     self.keyLabel.text = @" ";
     [self.keyLabel.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
+    model.key = [model.key stringByReplacingOccurrencesOfString:@"丨" withString:@"|"];
+
     //动态计算key标签宽度
     NSArray * tagArr = [model.key componentsSeparatedByString:@"|"];
     CGFloat tagBtnX = 0;

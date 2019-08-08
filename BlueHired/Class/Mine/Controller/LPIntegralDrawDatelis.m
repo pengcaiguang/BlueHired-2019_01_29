@@ -33,7 +33,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+//    [LPTools deleteWebCache];
     [self WebKit];
     
     self.navigationItem.title = [LPTools isNullToString:self.Integralmodel.activityName];

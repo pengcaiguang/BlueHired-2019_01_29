@@ -4,7 +4,7 @@
       "extent" : "full-screen",
       "idiom" : "iphone",
       "subtype" : "2688h",
-      "filename" : "iPhone Xs Max.jpeg",
+      "filename" : "iPhone Xs Max.png",
       "minimum-system-version" : "12.0",
       "orientation" : "portrait",
       "scale" : "3x"
@@ -13,7 +13,7 @@
       "extent" : "full-screen",
       "idiom" : "iphone",
       "subtype" : "1792h",
-      "filename" : "Phone Xʀ.jpeg",
+      "filename" : "Phone Xʀ.png",
       "minimum-system-version" : "12.0",
       "orientation" : "portrait",
       "scale" : "2x"
@@ -22,7 +22,7 @@
       "extent" : "full-screen",
       "idiom" : "iphone",
       "subtype" : "2436h",
-      "filename" : "iPhone X : iPhone Xs.jpeg",
+      "filename" : "iPhone X : iPhone Xs.png",
       "minimum-system-version" : "11.0",
       "orientation" : "portrait",
       "scale" : "3x"
@@ -31,7 +31,7 @@
       "extent" : "full-screen",
       "idiom" : "iphone",
       "subtype" : "736h",
-      "filename" : "iPhone Portrait  iOS 8+,5.5.jpeg",
+      "filename" : "iPhone Portrait  iOS 8+,5.5.png",
       "minimum-system-version" : "8.0",
       "orientation" : "portrait",
       "scale" : "3x"
@@ -40,7 +40,7 @@
       "extent" : "full-screen",
       "idiom" : "iphone",
       "subtype" : "667h",
-      "filename" : "iPhone Portrait  iOS 8+,4.7.jpeg",
+      "filename" : "iPhone Portrait  iOS 8+,4.7.png",
       "minimum-system-version" : "8.0",
       "orientation" : "portrait",
       "scale" : "2x"
@@ -48,7 +48,7 @@
     {
       "orientation" : "portrait",
       "idiom" : "iphone",
-      "filename" : "iPhone Portrait  iOS 8+@2x.jpeg",
+      "filename" : "iPhone Portrait  iOS 8+@2x.png",
       "extent" : "full-screen",
       "minimum-system-version" : "7.0",
       "scale" : "2x"
@@ -57,7 +57,7 @@
       "extent" : "full-screen",
       "idiom" : "iphone",
       "subtype" : "retina4",
-      "filename" : "iPhone Portrait  iOS 8+@4x.jpeg",
+      "filename" : "iPhone Portrait  iOS 8+@4x.png",
       "minimum-system-version" : "7.0",
       "orientation" : "portrait",
       "scale" : "2x"
@@ -65,21 +65,21 @@
     {
       "orientation" : "portrait",
       "idiom" : "iphone",
-      "filename" : "iPhone Portrait  iOS 5,6.jpeg",
+      "filename" : "iPhone Portrait  iOS 5,6.png",
       "extent" : "full-screen",
       "scale" : "1x"
     },
     {
       "orientation" : "portrait",
       "idiom" : "iphone",
-      "filename" : "iPhone Portrait  iOS 5,6@2x.jpeg",
+      "filename" : "iPhone Portrait  iOS 5,6@2x.png",
       "extent" : "full-screen",
       "scale" : "2x"
     },
     {
       "orientation" : "portrait",
       "idiom" : "iphone",
-      "filename" : "iPhone Portrait  iOS 5,6@4x.jpeg",
+      "filename" : "iPhone Portrait  iOS 5,6@4x.png",
       "extent" : "full-screen",
       "subtype" : "retina4",
       "scale" : "2x"

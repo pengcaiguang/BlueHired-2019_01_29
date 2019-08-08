@@ -44,6 +44,7 @@ static NSString *TEXT = @"请输入遇到的问题或建议...";
 }
 
 - (IBAction)touchSubmitButton:(UIButton *)sender {
+ 
     
     if (self.textView.text.length <= 0 || [self.textView.textColor isEqual:[UIColor lightGrayColor]]) {
         [self.view showLoadingMeg:@"请输入意见" time:MESSAGE_SHOW_TIME];

@@ -20,6 +20,7 @@
 #import "LPStaffManageViewController.h"
 #import "LPWStoreManageVC.h"
 #import "LPWorkHour2VC.h"
+#import "LPSalarycCard2VC.h"
 
 
 @implementation LPMineCardCell
@@ -62,8 +63,8 @@
 //        imgArray = @[@"salaryDetail",@"borrow",@"resignation",@"invitationReward",@"storefront"];
 //        titleArray = @[@"工资领取",@"蓝聘借支",@"离职通知",@"邀请奖励",@"门店管理"];
 //    }else{
-        imgArray = @[@"salaryDetail",@"borrow",@"resignation",@"invitationReward",@"interview",@"workingRecord",@"businessReview"];
-        titleArray = @[@"工资领取",@"蓝聘借支",@"离职通知",@"邀请奖励",@"面试预约",@"工时记录",@"企业点评"];
+        imgArray = @[@"salaryDetail",@"award",@"borrow",@"invitationReward",@"interview",@"workingRecord",@"businessReview",@"resignation"];
+        titleArray = @[@"工资领取",@"奖励领取",@"蓝聘借支",@"邀请奖励",@"面试预约",@"工时记录",@"企业点评",@"离职通知"];
 //        imgArray = @[@"salaryDetail",@"borrow",@"resignation",@"invitationReward",@"inviteFriends"];
 //        titleArray = @[@"工资领取",@"蓝聘借支",@"离职通知",@"邀请奖励",@"邀请好友"];
 //    }
@@ -98,6 +99,7 @@
 
 -(void)touchBgView:(UITapGestureRecognizer *)tap{
     NSInteger index = [tap view].tag;
+    NSLog(@"重复点击次数");
     if ([LoginUtils validationLogin:[UIWindow visibleViewController]]) {
 //        if (kUserDefaultsValue(USERDATA).integerValue == 4  ||
 //            kUserDefaultsValue(USERDATA).integerValue >= 8) {           //驻厂
@@ -234,22 +236,24 @@
 ////            }
 //        }else{
             if (index == 0) {
+
                 LPSalaryBreakdownVC *vc = [[LPSalaryBreakdownVC alloc]init];
                 vc.hidesBottomBarWhenPushed = YES;
                 vc.RecordDate = self.RecordArr.count?self.RecordArr[0]:nil;
                 [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+     
             }else if (index == 1){
-                LPLendVC *vc = [[LPLendVC alloc]init];
+                LPSalaryBreakdownVC *vc = [[LPSalaryBreakdownVC alloc]init];
                 vc.hidesBottomBarWhenPushed = YES;
+                vc.type = 1;
                 [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+                
             }else if (index == 2){
-                LPDimissionFirmVC *vc = [[LPDimissionFirmVC alloc]init];
-
+                LPLendVC *vc = [[LPLendVC alloc]init];
                 vc.hidesBottomBarWhenPushed = YES;
                 [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
             }else if (index == 3){
                 LPRegisterVC *vc = [[LPRegisterVC alloc]init];
-
                 vc.hidesBottomBarWhenPushed = YES;
                 [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
             }else if (index == 4){
@@ -265,36 +269,17 @@
                 LPBusinessReviewVC *vc = [[LPBusinessReviewVC alloc] init];
                 vc.hidesBottomBarWhenPushed = YES;
                 [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+            }else if (index == 7){
+
+                LPDimissionFirmVC *vc = [[LPDimissionFirmVC alloc]init];
+                vc.hidesBottomBarWhenPushed = YES;
+                [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
             }
 //        }
         
     }
 }
 
--(void)initSetSecretVC{
-    
-    NSString *str1 = @"为了您的账号安全，请先设置密保问题。";
-    NSMutableAttributedString *str = [[NSMutableAttributedString alloc]initWithString:str1];
-
-    GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:str
-                                                         message:nil
-                                                      IsShowhead:YES
-                                                     backDismiss:YES
-                                                   textAlignment:0
-                                                    buttonTitles:@[@"去设置"]
-                                                    buttonsColor:@[[UIColor baseColor]]
-                                         buttonsBackgroundColors:@[[UIColor whiteColor]]
-                                                     buttonClick:^(NSInteger buttonIndex){
-        if (buttonIndex == 0) {
-            LPChangePhoneVC *vc = [[LPChangePhoneVC alloc]init];
-            vc.type = 1;
-            vc.hidesBottomBarWhenPushed = YES;
-            [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
-        }
-    }];
-    [alert show];
-    
-}
 
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

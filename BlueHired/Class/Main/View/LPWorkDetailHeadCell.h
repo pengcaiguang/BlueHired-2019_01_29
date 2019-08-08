@@ -30,11 +30,16 @@
 @property (weak, nonatomic) IBOutlet UILabel *workTypeNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *workName;
 @property (weak, nonatomic) IBOutlet UILabel *applyNumberLabel;
+@property (weak, nonatomic) IBOutlet UILabel *AgeLabel;
 
 @property (weak, nonatomic) IBOutlet UIView *BackView;
 @property (weak, nonatomic) IBOutlet UILabel *BackMoneylabel;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *LayouConstraint_BackView_Height;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *LayouConstraint_lendTypeLabel_Width;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *LayouConstraint_lendTypeLabel_Bottom;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *LayouConstraint_AgeLabel_left;
+
 @property (strong, nonatomic) IBOutlet UIView *mechanismScoreView;
 
 @property(nonatomic,strong) LPWorkDetailModel *model;

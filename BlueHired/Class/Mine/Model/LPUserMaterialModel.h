@@ -10,6 +10,7 @@
 
 
 @class LPUserMaterialDataModel;
+@class LPUserMaterialPlanDataModel;
 @interface LPUserMaterialModel : NSObject
 @property (nonatomic, copy) NSNumber *code;
 @property (nonatomic, strong) LPUserMaterialDataModel *data;
@@ -44,5 +45,21 @@
 @property (nonatomic, copy) NSString *emValue;
 @property (nonatomic, copy) NSString *upEmValue;
 @property (nonatomic, copy) NSString *downEmValue;
+@property (nonatomic, copy) NSString *isReal;
+@property (nonatomic, copy) NSString *isBank;
+@property (nonatomic, copy) NSString *dataComplete;
+@property (nonatomic, strong) NSMutableArray <LPUserMaterialPlanDataModel *> *userMaterialPlanList;
+
+@end
+
+
+@interface LPUserMaterialPlanDataModel : NSObject
+@property (nonatomic, copy) NSString *id;
+@property (nonatomic, copy) NSString *userId;
+@property (nonatomic, copy) NSString *money;
+@property (nonatomic, copy) NSString *plan;
+@property (nonatomic, copy) NSString *delStatus;
+@property (nonatomic, copy) NSString *time;
+@property (nonatomic, copy) NSString *setTime;
 
 @end

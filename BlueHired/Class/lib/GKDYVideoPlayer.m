@@ -161,7 +161,7 @@
 #pragma mark - TXVodPlayListener
 - (void)onPlayEvent:(TXVodPlayer *)player event:(int)EvtID withParam:(NSDictionary *)param {
  
-    NSLog(@"%@                  EvtID= %d",param[@"EVT_MSG"],EvtID);
+   
     
     switch (EvtID) {
         case PLAY_EVT_PLAY_LOADING:{    // loading

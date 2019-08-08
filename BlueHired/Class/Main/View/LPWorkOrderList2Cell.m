@@ -8,6 +8,7 @@
 #import "LPWorkorderListModel.h"
 #import "LPInCommentsVC.h"
 #import "LPWorkOrderList2Cell.h"
+#import "LPWorkDetailVC.h"
 
 @implementation LPWorkOrderList2Cell
 
@@ -25,7 +26,25 @@
     self.CommentButton.layer.cornerRadius = LENGTH_SIZE(12);
     self.CommentButton.layer.borderWidth = LENGTH_SIZE(1);
     self.CommentButton.layer.borderColor = [UIColor baseColor].CGColor;
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(CellSelect:)];
+    [self.TopView addGestureRecognizer:tap];
+    
 }
+
+-(void)CellSelect:(UITapGestureRecognizer *)Tap{
+    LPWorklistDataWorkListModel *m = [[LPWorklistDataWorkListModel alloc] init];
+    m.id = self.model.workId;
+    m.isApply = self.model.isApply;
+
+    LPWorkDetailVC *vc = [[LPWorkDetailVC alloc]init];
+    vc.hidesBottomBarWhenPushed = YES;
+    vc.workListModel = m;
+    vc.isWorkOrder = YES;
+    [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+    
+}
+
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
@@ -38,17 +57,18 @@
     [self.mechanismUrlImageView sd_setImageWithURL:[NSURL URLWithString:model.mechanismUrl]];
     self.mechanismNameLabel.text = model.mechanismName;
     if ([model.postName isEqualToString:@"小时工"]) {
-        self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/时",model.workMoney];
+        self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/时",reviseString(model.workMoney)];
     }else{
         self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/月",model.wageRange];
     }
     self.maxNumberLabel.text = [NSString stringWithFormat:@"%@",model.workTypeName];
-    self.applyNumberLabel.text = [NSString stringWithFormat:@"招%@人 / 已报名:%@人",model.maxNumber,model.applyNumber ? model.applyNumber : @"0"];
+    self.applyNumberLabel.text = [NSString stringWithFormat:@"招%@人 / 已报名%@人",model.maxNumber,model.applyNumber ? model.applyNumber : @"0"];
 
     if (model.recruitStatus.integerValue == 1) {
         self.applyNumberLabel.text = [NSString stringWithFormat:@"招%@人",model.maxNumber];
         self.isWorkers.hidden = NO;
     }else{
+ 
         self.isWorkers.hidden = YES;
     }
     

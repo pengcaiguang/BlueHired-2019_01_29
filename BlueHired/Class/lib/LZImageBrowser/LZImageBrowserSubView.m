@@ -52,27 +52,32 @@
     _imageBrowserModel.bigScrollView = self.subScrollView;
     _imageBrowserModel.bigImageView = self.subImageView;
     __weak typeof (self)ws = self;
-    [self.subImageView sd_setImageWithURL:[NSURL URLWithString:[_imageBrowserModel.urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholderImage:_imageBrowserModel.smallImageView.image completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
-        if (!error) {
-            [ws updateSubScrollViewSubImageView];
-        }else{
-            [self.subImageView yy_setImageWithURL:imageURL
-                               placeholder:[UIImage imageNamed:@"NoImage"]
-                                   options:  YYWebImageOptionShowNetworkActivity |
-                                             YYWebImageOptionIgnoreImageDecoding |
-                                             YYWebImageOptionIgnoreAnimatedImage
-                                  progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+    
  
-                                  }
-                                 transform:nil
-                                completion:^(UIImage *image, NSURL *url, YYWebImageFromType from, YYWebImageStage stage, NSError *error) {
-                                    if (stage == YYWebImageStageFinished) {
-                                        [ws updateSubScrollViewSubImageView];
-                                    }
-                                }];
-        }
-    }];
-    [self updateSubScrollViewSubImageView];
+        [self.subImageView sd_setImageWithURL:[NSURL URLWithString:[_imageBrowserModel.urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]] placeholderImage:_imageBrowserModel.smallImageView.image completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL) {
+            if (!error) {
+                [ws updateSubScrollViewSubImageView];
+            }else{
+                [self.subImageView yy_setImageWithURL:imageURL
+                                          placeholder:_imageBrowserModel.smallImageView.image
+                                              options:  YYWebImageOptionShowNetworkActivity |
+                 YYWebImageOptionIgnoreImageDecoding |
+                 YYWebImageOptionIgnoreAnimatedImage
+                                             progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+                                                 
+                                             }
+                                            transform:nil
+                                           completion:^(UIImage *image, NSURL *url, YYWebImageFromType from, YYWebImageStage stage, NSError *error) {
+                                               if (stage == YYWebImageStageFinished) {
+                                                   [ws updateSubScrollViewSubImageView];
+                                               }
+                                           }];
+            }
+        }];
+
+    
+    
+        [self updateSubScrollViewSubImageView];
 }
 
 //单击 退出

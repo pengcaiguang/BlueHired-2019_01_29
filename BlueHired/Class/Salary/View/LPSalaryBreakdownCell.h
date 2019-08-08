@@ -17,6 +17,7 @@ typedef void(^LPSalaryBreakdownCellBlock)(void);
 @property (weak, nonatomic) IBOutlet UILabel *MoneyLabel;
 @property (weak, nonatomic) IBOutlet UILabel *AlreadyLabel;
 @property (weak, nonatomic) IBOutlet UIButton *DrawBt;
+@property (weak, nonatomic) IBOutlet UILabel *detailsLabel;
 @property (nonatomic,copy) LPSalaryBreakdownCellBlock block;
 
 @end

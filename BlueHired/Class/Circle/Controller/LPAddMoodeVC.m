@@ -14,6 +14,7 @@
 #import "LPMapLocCell.h"
 #import "LPMapLoctionModel.h"
 #import "LPCircleSearchVC.h"
+#import "XWScanImage.h"
 #import <AVFoundation/AVFoundation.h>
 
 static NSString *LPMapLocCellID = @"LPMapLocCell";
@@ -52,6 +53,10 @@ static const CGFloat kPhotoViewMargin = 13.0;
 @property (nonatomic,strong) AMapSearchAPI *search;
 @property (nonatomic,strong) AMapLocationManager *locationManager;
 @property (nonatomic,copy) AMapLocationReGeocode *searchcity;
+@property(nonatomic,strong)LZImageBrowserManger *imageBrowserManger;
+
+@property(nonatomic,strong) UIImageView *ShareImageView;
+
 
 @end
 
@@ -62,7 +67,11 @@ static const CGFloat kPhotoViewMargin = 13.0;
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];
     _MapArray = [[NSMutableArray alloc] init];
-    self.navigationItem.title = @"我的圈子";
+    if (self.Type == 1 || self.Type == 2) {
+        self.navigationItem.title = @"分享至我的圈子";
+    }else{
+        self.navigationItem.title = @"我的圈子";
+    }
     [self setupUI];
 //    [self requestMoodType];
 
@@ -76,7 +85,7 @@ static const CGFloat kPhotoViewMargin = 13.0;
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
         make.bottom.mas_equalTo(0);
-        make.height.mas_equalTo(335);
+        make.height.mas_equalTo(LENGTH_SIZE(335));
     }];
     self.LocationTableView.hidden = YES;
     self.bgView.hidden = YES;
@@ -202,16 +211,16 @@ static const CGFloat kPhotoViewMargin = 13.0;
     UITextView *textView = [[UITextView alloc]init];
     [self.scrollView addSubview:textView];
     [textView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(13);
-        make.left.mas_equalTo(13);
-        make.right.mas_equalTo(-13);
-        make.height.mas_equalTo(160);
+        make.top.mas_equalTo(LENGTH_SIZE(13));
+        make.left.mas_equalTo(LENGTH_SIZE(13));
+        make.right.mas_equalTo(LENGTH_SIZE(-13));
+        make.height.mas_equalTo(LENGTH_SIZE(160));
     }];
     textView.layer.borderColor = [UIColor colorWithHexString:@"#AAAAAA"].CGColor;
     textView.layer.borderWidth = 0.5;
     textView.textColor = [UIColor lightGrayColor];
     textView.text = placeholder;
-    textView.font = [UIFont systemFontOfSize:14];
+    textView.font = [UIFont systemFontOfSize:FontSize(14)];
     textView.delegate = self;
     
 //    //v1
@@ -276,11 +285,11 @@ static const CGFloat kPhotoViewMargin = 13.0;
     UIImageView *v3 = [[UIImageView alloc]init];
     [self.scrollView addSubview:v3];
     [v3 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(13);
+        make.left.mas_equalTo(LENGTH_SIZE(13));
 //        make.top.equalTo(v1.mas_bottom).offset(20);
-        make.top.equalTo(textView.mas_bottom).offset(30);
-        make.width.mas_equalTo(21);
-        make.height.mas_equalTo(21);
+        make.top.equalTo(textView.mas_bottom).offset(LENGTH_SIZE(30));
+        make.width.mas_equalTo(LENGTH_SIZE(21));
+        make.height.mas_equalTo(LENGTH_SIZE(21));
     }];
     v3.image = [UIImage imageNamed:@"区域与板块-1"];
     
@@ -288,7 +297,7 @@ static const CGFloat kPhotoViewMargin = 13.0;
     [self.scrollView addSubview:L3];
     [L3 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(0);
-        make.top.equalTo(v3.mas_bottom).offset(10);
+        make.top.equalTo(v3.mas_bottom).offset(LENGTH_SIZE(10));
         make.right.mas_equalTo(0);
         make.height.mas_equalTo(0.5);
     }];
@@ -296,7 +305,7 @@ static const CGFloat kPhotoViewMargin = 13.0;
     UILabel *label3 = [[UILabel alloc]init];
     [self.scrollView addSubview:label3];
     [label3 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(v3.mas_right).offset(7);
+        make.left.equalTo(v3.mas_right).offset(LENGTH_SIZE(7));
         make.centerY.equalTo(v3);
     }];
     label3.textColor = [UIColor colorWithHexString:@"#1B1B1B"];
@@ -306,10 +315,10 @@ static const CGFloat kPhotoViewMargin = 13.0;
     UIButton *selectButton2 = [[UIButton alloc]init];
     [self.scrollView addSubview:selectButton2];
     [selectButton2 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(label3.mas_right).offset(9);
-        make.right.mas_equalTo(-35);
+        make.left.equalTo(label3.mas_right).offset(LENGTH_SIZE(9));
+        make.right.mas_equalTo(LENGTH_SIZE(-35));
         make.centerY.equalTo(label3);
-        make.height.mas_equalTo(40);
+        make.height.mas_equalTo(LENGTH_SIZE(40));
     }];
     [selectButton2 setTitleColor:[UIColor colorWithHexString:@"#AAAAAA"] forState:UIControlStateNormal];
     selectButton2.titleLabel.font = [UIFont systemFontOfSize:13];
@@ -325,9 +334,9 @@ static const CGFloat kPhotoViewMargin = 13.0;
     UIImageView *img2 = [[UIImageView alloc]init];
     [self.scrollView addSubview:img2];
     [img2 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.mas_equalTo(-8);
+        make.right.mas_equalTo(LENGTH_SIZE(-8));
         make.centerY.equalTo(selectButton2);
-        make.size.mas_equalTo(CGSizeMake(18, 10));
+        make.size.mas_equalTo(CGSizeMake(LENGTH_SIZE(18), LENGTH_SIZE(10)));
     }];
     img2.image = [UIImage imageNamed:@"select_moodtype"];
     
@@ -336,10 +345,10 @@ static const CGFloat kPhotoViewMargin = 13.0;
     UIImageView *v2 = [[UIImageView alloc]init];
     [self.scrollView addSubview:v2];
     [v2 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(13);
-        make.top.equalTo(v3.mas_bottom).offset(20);
-        make.width.mas_equalTo(21);
-        make.height.mas_equalTo(21);
+        make.left.mas_equalTo(LENGTH_SIZE(13));
+        make.top.equalTo(v3.mas_bottom).offset(LENGTH_SIZE(20));
+        make.width.mas_equalTo(LENGTH_SIZE(21));
+        make.height.mas_equalTo(LENGTH_SIZE(21));
     }];
     v2.image = [UIImage imageNamed:@"添加图片(2)"];
     
@@ -347,7 +356,7 @@ static const CGFloat kPhotoViewMargin = 13.0;
     [self.scrollView addSubview:L2];
     [L2 mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(0);
-        make.top.equalTo(v2.mas_bottom).offset(10);
+        make.top.equalTo(v2.mas_bottom).offset(LENGTH_SIZE(10));
         make.right.mas_equalTo(0);
         make.height.mas_equalTo(0.5);
     }];
@@ -358,7 +367,7 @@ static const CGFloat kPhotoViewMargin = 13.0;
     UILabel *label2 = [[UILabel alloc]init];
     [self.scrollView addSubview:label2];
     [label2 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(v2.mas_right).offset(7);
+        make.left.equalTo(v2.mas_right).offset(LENGTH_SIZE(7));
         make.centerY.equalTo(v2);
     }];
     label2.textColor = [UIColor colorWithHexString:@"#1B1B1B"];
@@ -377,9 +386,9 @@ static const CGFloat kPhotoViewMargin = 13.0;
     [scrollView addSubview:photoView];
     self.photoView = photoView;
     [photoView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(13);
-        make.right.mas_equalTo(-13);
-        make.top.equalTo(label2.mas_bottom).offset(20);
+        make.left.mas_equalTo(LENGTH_SIZE(13));
+        make.right.mas_equalTo(LENGTH_SIZE(-13));
+        make.top.equalTo(label2.mas_bottom).offset(LENGTH_SIZE(20));
         make.width.mas_equalTo(width - kPhotoViewMargin * 2);
     }];
     [photoView.collectionView reloadData];
@@ -391,11 +400,76 @@ static const CGFloat kPhotoViewMargin = 13.0;
     [sendButton setTitle:@"发送" forState:UIControlStateNormal];
     [sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     sendButton.layer.masksToBounds = YES;
-    sendButton.layer.cornerRadius = 24;
+    sendButton.layer.cornerRadius = LENGTH_SIZE(24);
     sendButton.backgroundColor = [UIColor baseColor];
     [sendButton addTarget:self action:@selector(touchSendButton:) forControlEvents:UIControlEventTouchUpInside];
     self.sendButton = sendButton;
+    
+    if (self.Type == 1 || self.Type == 2) {
+        
+        UILabel *NOredact = [[UILabel alloc] init];
+        [self.scrollView addSubview:NOredact];
+        [NOredact mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_offset(LENGTH_SIZE(16));
+            make.left.mas_offset(LENGTH_SIZE(13));
+            make.height.mas_offset(LENGTH_SIZE(20));
+            make.width.mas_offset(74);
+        }];
+        NOredact.backgroundColor = [UIColor colorWithHexString:@"#FFEBE5"];
+        NOredact.textColor = [UIColor colorWithHexString:@"#FF5353"];
+        NOredact.text = @"不可编辑";
+        NOredact.textAlignment = NSTextAlignmentCenter;
+        NOredact.clipsToBounds = YES;
+        NOredact.layer.cornerRadius = LENGTH_SIZE(10);
+        NOredact.font = FONT_SIZE(12);
+        
+        textView.text = self.ShareString;
+        textView.editable = NO;
+        textView.layer.borderWidth = 0;
+        [textView mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(NOredact.mas_bottom).offset(LENGTH_SIZE(16));
+            make.left.mas_equalTo(LENGTH_SIZE(13));
+            make.right.mas_equalTo(LENGTH_SIZE(-13));
+            make.height.mas_equalTo(LENGTH_SIZE(160));
+        }];
+        self.moodDetails = textView.text;
+        photoView.hidden = YES;
+        
+        UIImageView *imageView = [[UIImageView alloc] init];
+        [self.scrollView addSubview:imageView];
+        self.ShareImageView = imageView;
+        [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(LENGTH_SIZE(13));
+            make.top.equalTo(label2.mas_bottom).offset(LENGTH_SIZE(20));
+            make.width.height.mas_equalTo(LENGTH_SIZE(165));
+        }];
+        imageView.image = self.ShareImage;
+        imageView.contentMode = UIViewContentModeScaleAspectFill;
+        imageView.clipsToBounds = YES;
+        UITapGestureRecognizer *tapGestureRecognizer1 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scanBigImageClick1:)];
+        [imageView addGestureRecognizer:tapGestureRecognizer1];
+        [imageView setUserInteractionEnabled:YES];
+ 
+        self.imageArray = @[self.ShareImage];
+        LZImageBrowserManger *imageBrowserManger = [LZImageBrowserManger imageBrowserMangerWithUrlStr:@[@""]
+                                                                                     originImageViews:@[imageView]
+                                                                                     originController:[UIWindow visibleViewController]
+                                                                                           forceTouch:NO forceTouchActionTitles:@[]
+                                                                             forceTouchActionComplete:^(NSInteger selectIndex, NSString *title) {
+            NSLog(@"当前选中%ld--标题%@",(long)selectIndex, title);
+        }];
+        _imageBrowserManger = imageBrowserManger;
+        
+    }
+    
 }
+
+-(void)scanBigImageClick1:(UITapGestureRecognizer *)tap{
+ 
+    [_imageBrowserManger showImageBrowser];
+}
+
+
 #pragma mark - setter
 -(void)setMoodTypeModel:(LPMoodTypeModel *)moodTypeModel{
     _moodTypeModel = moodTypeModel;
@@ -404,12 +478,16 @@ static const CGFloat kPhotoViewMargin = 13.0;
 #pragma mark - HXPhotoViewDelegate
 - (void)photoView:(HXPhotoView *)photoView updateFrame:(CGRect)frame{
     NSSLog(@"%f",CGRectGetMaxY(frame));
-    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, CGRectGetMaxY(frame) + kPhotoViewMargin + 192);
+    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, CGRectGetMaxY(frame) + kPhotoViewMargin + LENGTH_SIZE(192));
     [self.sendButton mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(13);
-        make.right.mas_equalTo(-13);
-        make.top.mas_equalTo(CGRectGetMaxY(photoView.frame)+44);
-        make.height.mas_equalTo(48);
+        make.left.mas_equalTo(LENGTH_SIZE(13));
+        make.right.mas_equalTo(LENGTH_SIZE(-13));
+        if (self.Type == 1 || self.Type == 2) {
+            make.top.equalTo(self.ShareImageView.mas_bottom).offset(LENGTH_SIZE(60));
+        }else{
+            make.top.mas_equalTo(CGRectGetMaxY(photoView.frame)+LENGTH_SIZE(44));
+        }
+        make.height.mas_equalTo(LENGTH_SIZE(48));
     }];
 }
 -(void)photoView:(HXPhotoView *)photoView changeComplete:(NSArray<HXPhotoModel *> *)allList photos:(NSArray<HXPhotoModel *> *)photos videos:(NSArray<HXPhotoModel *> *)videos original:(BOOL)isOriginal{
@@ -570,8 +648,8 @@ static const CGFloat kPhotoViewMargin = 13.0;
 //        return;
 //    }
     [DSBaActivityView showActiviTy];
-    NSSLog(@"发送圈子:%@       ",self.VideoURL);
 
+ 
     if (kArrayIsEmpty(self.imageArray) && self.VideoURL.length == 0) {
         [self requestAddMood];
     }else{
@@ -581,6 +659,9 @@ static const CGFloat kPhotoViewMargin = 13.0;
             [self requestUploadImages];
         }
     }
+ 
+    
+   
 }
 #pragma mark - textView
 -(BOOL)textViewShouldBeginEditing:(UITextView *)textView{
@@ -666,6 +747,13 @@ static const CGFloat kPhotoViewMargin = 13.0;
     if (self.imageUrlArray) {
         string = [self.imageUrlArray componentsJoinedByString:@";"];
     }
+    
+    if (self.Type == 2 && self.block) {
+        self.block(self.moodDetails, string, self.moodMap);
+        [DSBaActivityView hideActiviTy];
+        return;
+    }
+    
     NSDictionary *dic = @{
                           @"moodDetails":self.moodDetails,
                           @"moodTypeId":self.moodTypeId ? self.moodTypeId : @"",
@@ -684,10 +772,14 @@ static const CGFloat kPhotoViewMargin = 13.0;
                     }
                     [self.view showLoadingMeg:@"发送成功" time:MESSAGE_SHOW_TIME];
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        LPCircleVC *vc = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
-                        vc.isSenderBack = 4;
-                        [self.navigationController popToViewController:vc animated:YES];
-                        
+                        if (self.Type == 0){
+                            LPCircleVC *vc = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
+                            vc.isSenderBack = 4;
+                            [self.navigationController popToViewController:vc animated:YES];
+                        }else{
+                            [self.navigationController popViewControllerAnimated:YES];
+                          
+                        }
                     });
                 }else{
                     [self.view showLoadingMeg:@"发送失败" time:MESSAGE_SHOW_TIME];
@@ -705,6 +797,9 @@ static const CGFloat kPhotoViewMargin = 13.0;
         }
     }];
 }
+
+
+
 -(void)requestMoodType{
     [NetApiManager requestMoodTypeWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);

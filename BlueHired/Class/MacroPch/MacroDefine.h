@@ -29,9 +29,9 @@
 #define BaseRequestWeiXiURLTWO  @"http://192.168.0.108:8082/"
 #define BaseRequestCookie  @"192.168.0.108"
 
-
 //#define BaseRequestURL  @"http://www.lanpin123.com/lifetime/"
-//#define BaseRequestWeiXiURL  @"http://www.lanpin123.com/"
+//#define BaseRequestWeiXiURL  @"http://www.lanpin123.com/bluehired/"
+//#define BaseRequestWeiXiURLTWO  @"http://domin.lanpin123.com:1972/"
 //#define BaseRequestCookie  @"www.lanpin123.com"
 
 //#define BaseRequestURL  @"http://47.106.208.91:8180/lifetime/"
@@ -43,15 +43,13 @@
 //#define BaseRequestCookie  @"ceshi.lanpin123.com"
 
 
-//#define BaseRequestURL  @"http://192.168.0.169:8080/lifetime/"        //胡经理
-//#define BaseRequestWeiXiURL  @"http://192.168.0.169:8080/"
+//#define BaseRequestURL  @"http://192.168.0.169:8081/lifetime/"        //胡经理
+//#define BaseRequestWeiXiURL  @"http://192.168.0.169:8081/"
 //#define BaseRequestWeiXiURLTWO  @"http://192.168.0.169:8082/"
 //#define BaseRequestCookie  @"192.168.0.169"
 
 #define QiNiuBaseUrl @"http://pic.lanpin123.com/"
 
-
- 
 
 
 //UserDefaults存取

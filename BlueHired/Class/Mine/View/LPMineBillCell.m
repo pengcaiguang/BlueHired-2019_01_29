@@ -12,6 +12,7 @@
 #import "LPBankcardwithDrawModel.h"
 #import "LPSalarycCard2VC.h"
 #import "LPUndergoWebVC.h"
+#import "LPScoreMoneyVC.h"
 
 @interface LPMineBillCell()
 @property(nonatomic,strong) LPBankcardwithDrawModel *Bankmodel;
@@ -37,6 +38,18 @@
     self.showMoneyButton.titleLabel.font = FONT_SIZE(14);
 
     
+    CAGradientLayer *gl = [CAGradientLayer layer];
+    gl.frame = CGRectMake(0,0,LENGTH_SIZE(120),LENGTH_SIZE(18));
+    gl.startPoint = CGPointMake(0, 1);
+    gl.endPoint = CGPointMake(1, 1);
+    gl.colors = @[(__bridge id)[UIColor colorWithHexString:@"#FF9148"].CGColor,
+                  (__bridge id)[UIColor colorWithHexString:@"#FF6643"].CGColor];
+    gl.locations = @[@(0.0),@(1.0)];
+    
+    [self.scoreTitleLabel.layer insertSublayer:gl atIndex:0];
+    self.scoreTitleLabel.layer.cornerRadius = 4;
+ 
+    
 }
 
 -(void)setUserMaterialModel:(LPUserMaterialModel *)userMaterialModel{
@@ -48,7 +61,7 @@
         self.moneyLabel.text = @"账户余额：---";
     }
 //    _showMoneyButton.selected = NO;
-    self.scoreLabel.text = [NSString stringWithFormat:@"积分：%@",userMaterialModel.data.score ? userMaterialModel.data.score : @"--"];
+    self.scoreLabel.text = [NSString stringWithFormat:@"我的积分:%@",userMaterialModel.data.score ? userMaterialModel.data.score : @"--"];
 }
 
 - (IBAction)selectShowMoneyButton:(UIButton *)sender {
@@ -81,68 +94,70 @@
 //            [self initSetSecretVC];
 //            return;
 //        }
-        self.showMoneyButton.enabled = NO;
-        [self requestQueryBankcardwithDraw];
+//        self.showMoneyButton.enabled = NO;
+        
+        if (self.userMaterialModel.data.isBank.integerValue == 0) {        //添加银行卡
+            GJAlertMessage *alert = [[GJAlertMessage alloc]
+                                     initWithTitle:@"您还未绑定工资卡，请先绑定再提现"
+                                     message:nil
+                                     textAlignment:NSTextAlignmentCenter
+                                     buttonTitles:@[@"取消",@"去绑定"]
+                                     buttonsColor:@[[UIColor colorWithHexString:@"#999999"],[UIColor baseColor]]
+                                     buttonsBackgroundColors:@[[UIColor whiteColor],[UIColor whiteColor]]
+                                     buttonClick:^(NSInteger buttonIndex) {
+                                         if (buttonIndex) {
+                                             LPSalarycCard2VC *vc = [[LPSalarycCard2VC alloc] init];
+                                             vc.hidesBottomBarWhenPushed = YES;
+                                             [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+                                         }
+                                     }];
+            [alert show];
+        }else{
+            LPWithDrawalVC *vc = [[LPWithDrawalVC alloc]init];
+            vc.hidesBottomBarWhenPushed = YES;
+            vc.balance = self.userMaterialModel.data.money;
+            [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+        }
+        
        
     }
 }
 
 - (IBAction)TouchScore:(id)sender {
     if ([LoginUtils validationLogin:[UIWindow visibleViewController]]) {
-        LPUndergoWebVC *vc = [[LPUndergoWebVC alloc]init];
-        vc.type = 2;
+       LPScoreMoneyVC *vc = [[LPScoreMoneyVC alloc]init];
         vc.hidesBottomBarWhenPushed = YES;
-        [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
-    }
-}
-
-
-
-
-- (void)setBankmodel:(LPBankcardwithDrawModel *)Bankmodel{
-    _Bankmodel = Bankmodel;
-    
-    if (Bankmodel.data.type.integerValue == 1) {        //添加银行卡
-        GJAlertMessage *alert = [[GJAlertMessage alloc]
-                                 initWithTitle:@"您还未绑定工资卡，请先绑定再提现"
-                                 message:nil
-                                 textAlignment:NSTextAlignmentCenter
-                                 buttonTitles:@[@"取消",@"去绑定"]
-                                 buttonsColor:@[[UIColor colorWithHexString:@"#999999"],[UIColor baseColor]]
-                                 buttonsBackgroundColors:@[[UIColor whiteColor],[UIColor whiteColor]]
-                                 buttonClick:^(NSInteger buttonIndex) {
-                                     if (buttonIndex) {
-                                         LPSalarycCard2VC *vc = [[LPSalarycCard2VC alloc] init];
-                                         vc.hidesBottomBarWhenPushed = YES;
-                                         [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
-                                     }
-                                 }];
-        [alert show];
-    }else{
-        LPWithDrawalVC *vc = [[LPWithDrawalVC alloc]init];
-        vc.hidesBottomBarWhenPushed = YES;
-        vc.balance = self.userMaterialModel.data.money;
         [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
     }
     
 }
 
-#pragma mark - request
--(void)requestQueryBankcardwithDraw{
-    [NetApiManager requestQueryBankcardwithDrawWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
-        NSLog(@"%@",responseObject);
-        self.showMoneyButton.enabled = YES;
-        if (isSuccess) {
-            if ([responseObject[@"code"] integerValue] == 0) {
-                self.Bankmodel = [LPBankcardwithDrawModel mj_objectWithKeyValues:responseObject];
-            }else{
-                [[UIWindow visibleViewController].view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
-            }
-        }else{
-            [[UIWindow visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
-        }
-    }];
-}
+
+
+
+//- (void)setBankmodel:(LPBankcardwithDrawModel *)Bankmodel{
+//    _Bankmodel = Bankmodel;
+//
+//
+//
+//}
+
+//#pragma mark - request
+//-(void)requestQueryBankcardwithDraw{
+//    [NetApiManager requestQueryBankcardwithDrawWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
+//        NSLog(@"%@",responseObject);
+//        self.showMoneyButton.enabled = YES;
+//        if (isSuccess) {
+//            if ([responseObject[@"code"] integerValue] == 0) {
+//                self.Bankmodel = [LPBankcardwithDrawModel mj_objectWithKeyValues:responseObject];
+//            }else{
+//                [[UIWindow visibleViewController].view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+//            }
+//        }else{
+//            [[UIWindow visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+//        }
+//    }];
+//}
 
 
 

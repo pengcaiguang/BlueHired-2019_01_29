@@ -24,15 +24,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
-    self.navigationItem.title = @"邀请二维码";
-//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"WechatIMG2"] style:UIBarButtonItemStyleDone target:self action:@selector(touchManagerButton)];
-//    [self.navigationItem.rightBarButtonItem setTintColor:[UIColor blackColor]];
-   //    Constant.BASEURL + "bluehired/login.html?identity=" + (id == -1 ? userCookieEntity.getIdentity() : id)
-    
-    
-    
-    
+     self.navigationItem.title = @"邀请二维码";
+ 
     LPUserMaterialModel *user = [LPUserDefaults getObjectByFileName:USERINFO];
 
     if (user.data.user_url.length) {

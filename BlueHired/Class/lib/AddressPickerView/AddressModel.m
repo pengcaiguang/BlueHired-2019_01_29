@@ -9,5 +9,10 @@
 #import "AddressModel.h"
 
 @implementation AddressModel
-
++ (NSDictionary *)objectClassInArray {
+    return @{
+             @"area": @"NSString",
+             @"city": @"AddressModel",
+             };
+}
 @end

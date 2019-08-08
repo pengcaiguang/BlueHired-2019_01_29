@@ -28,7 +28,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+//    [LPTools deleteWebCache];
     [self WebKit];
     
 //    self.navigationItem.hidesBackButton = true;

@@ -10,6 +10,8 @@
 #import "LPRegisterModel.h"
 #import "LPRegisterDetailVC.h"
 #import "LPInviteVC.h"
+#import "LPRegisterEntryVC.h"
+
 
 @interface LPRegisterVC ()
 
@@ -59,15 +61,13 @@
 
 -(void)setModel:(LPRegisterModel *)model{
     _model = model;
-    self.BUserNumLabel.text = [NSString stringWithFormat:@"直接邀请：%@人",model.data.BUserNum];
-    self.CUserNumLabel.text = [NSString stringWithFormat:@"间接邀请：%@人",model.data.CUserNum];
-    self.sumNumLabel.text = [NSString stringWithFormat:@"邀请注册：%@人",model.data.sumNum];
-    self.fullMonthNumLabel.text = [NSString stringWithFormat:@"注册入职满月：%ld人",model.data.fullMonthNum.integerValue];
+    self.CUserNumLabel.text = [NSString stringWithFormat:@"报名人数：%ld人",(long)model.data.inviteNum.integerValue];
+    self.BUserNumLabel.text = [NSString stringWithFormat:@"预计奖励：%.2f元",model.data.totalMoney.floatValue];
+    
+    self.fullMonthNumLabel.text = [NSString stringWithFormat:@"注册人数：%ld人",model.data.sumNum.integerValue];
+    self.sumNumLabel.text = [NSString stringWithFormat:@"预计奖励：%.2f元",model.data.regMoney.floatValue];
 
-    self.sumAmountLabel.text = [NSString stringWithFormat:@"%.2f元",model.data.totalMoney.floatValue];
-    
-    self.unAmountLabel.text = [NSString stringWithFormat:@"%.2f元",model.data.regMoney.floatValue];
-    
+ 
     self.remarkLabel.text = model.data.remark;
     
     CGFloat RemarkLabelH = [LPTools calculateRowHeight:self.remarkLabel.text fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(2*13)];
@@ -79,13 +79,14 @@
 
 
 - (IBAction)touchDetailButton:(UIButton *)sender {
-    LPRegisterDetailVC *vc = [[LPRegisterDetailVC alloc]init];
     if (sender.tag == 1000) {
-        vc.Type = 1;
+        LPRegisterEntryVC *vc = [[LPRegisterEntryVC alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
     }else if (sender.tag == 2000){
+        LPRegisterDetailVC *vc = [[LPRegisterDetailVC alloc]init];
         vc.Type = 2;
+        [self.navigationController pushViewController:vc animated:YES];
     }
-    [self.navigationController pushViewController:vc animated:YES];
 }
 
 -(void)TouchRegister:(UIButton *)sender{
@@ -135,7 +136,7 @@
     }];
     lineLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
     lineLabel.font = FONT_SIZE(16);
-    lineLabel.text = @"奖励明细";
+    lineLabel.text = @"个人业绩";
 
     UIView *view = [[UIView alloc] init];
     [_ScrollView addSubview:view];
@@ -168,10 +169,10 @@
     UILabel *label1 = [[UILabel alloc] init];
     [view addSubview:label1];
     [label1 mas_makeConstraints:^(MASConstraintMaker *make){
-        make.top.mas_offset(LENGTH_SIZE(21));
-        make.left.mas_offset(LENGTH_SIZE(24));
+        make.centerY.equalTo(view);
+        make.left.mas_offset(LENGTH_SIZE(21));
     }];
-    label1.textColor = [UIColor baseColor];
+    label1.textColor = [UIColor colorWithHexString:@"#999999"];
     label1.font = [UIFont boldSystemFontOfSize:FontSize(16)];
     label1.text = @"邀请入职";
 
@@ -180,18 +181,19 @@
     [view addSubview:label2];
     [label2 mas_makeConstraints:^(MASConstraintMaker *make){
         make.top.equalTo(label1.mas_bottom).offset(LENGTH_SIZE(6));
-        make.left.mas_offset(LENGTH_SIZE(24));
+        make.left.mas_offset(LENGTH_SIZE(21));
     }];
     label2.textColor = [UIColor baseColor];
     label2.font = [UIFont boldSystemFontOfSize:FontSize(21)];
     label2.text = @"0.00元";
+    label2.hidden = YES;
 
     UIView *ViewLine =[[UIView alloc] init];
     [view addSubview:ViewLine];
     [ViewLine mas_makeConstraints:^(MASConstraintMaker *make){
         make.top.mas_offset(LENGTH_SIZE(16));
         make.bottom.mas_offset(LENGTH_SIZE(-16));
-        make.left.mas_offset(LENGTH_SIZE(141));
+        make.left.mas_offset(LENGTH_SIZE(102));
         make.width.mas_offset(1);
     }];
     ViewLine.backgroundColor = [UIColor colorWithHexString:@"#EBEBEB"];
@@ -200,23 +202,23 @@
     [view addSubview:label3];
     self.BUserNumLabel = label3;
     [label3 mas_makeConstraints:^(MASConstraintMaker *make){
-        make.centerY.equalTo(label1);
-        make.left.equalTo(ViewLine.mas_right).offset(LENGTH_SIZE(24));
+        make.centerY.equalTo(label1).offset(LENGTH_SIZE(17));
+        make.left.equalTo(ViewLine.mas_right).offset(LENGTH_SIZE(18));
     }];
-    label3.textColor = [UIColor colorWithHexString:@"#999999"];
-    label3.font = [UIFont boldSystemFontOfSize:FontSize(14)];
-    label3.text = @"直接邀请:0人";
+    label3.textColor = [UIColor baseColor];
+    label3.font = [UIFont boldSystemFontOfSize:FontSize(16)];
+    label3.text = @"报名人数：0人";
 
     UILabel *label4 = [[UILabel alloc] init];
     self.CUserNumLabel = label4;
     [view addSubview:label4];
     [label4 mas_makeConstraints:^(MASConstraintMaker *make){
-        make.centerY.equalTo(label2);
-        make.left.equalTo(ViewLine.mas_right).offset(LENGTH_SIZE(24));
+        make.centerY.equalTo(label1).offset(LENGTH_SIZE(-17));
+        make.left.equalTo(ViewLine.mas_right).offset(LENGTH_SIZE(18));
     }];
-    label4.textColor = [UIColor colorWithHexString:@"#999999"];
-    label4.font = [UIFont boldSystemFontOfSize:FontSize(14)];
-    label4.text = @"间接邀请:0人";
+    label4.textColor = [UIColor baseColor];
+    label4.font = [UIFont boldSystemFontOfSize:FontSize(16)];
+    label4.text = @"预计奖励：0元";
 
 
 
@@ -252,10 +254,10 @@
     UILabel *label1View2 = [[UILabel alloc] init];
     [view2 addSubview:label1View2];
     [label1View2 mas_makeConstraints:^(MASConstraintMaker *make){
-        make.top.mas_offset(LENGTH_SIZE(21));
-        make.left.mas_offset(LENGTH_SIZE(24));
+        make.centerY.equalTo(view2);
+        make.left.mas_offset(LENGTH_SIZE(21));
     }];
-    label1View2.textColor = [UIColor baseColor];
+    label1View2.textColor = [UIColor colorWithHexString:@"#999999"];
     label1View2.font = [UIFont boldSystemFontOfSize:FontSize(16)];
     label1View2.text = @"邀请注册";
 
@@ -264,18 +266,19 @@
     [view2 addSubview:label2View];
     [label2View mas_makeConstraints:^(MASConstraintMaker *make){
         make.top.equalTo(label1View2.mas_bottom).offset(LENGTH_SIZE(6));
-        make.left.mas_offset(LENGTH_SIZE(24));
+        make.left.mas_offset(LENGTH_SIZE(21));
     }];
     label2View.textColor = [UIColor baseColor];
     label2View.font = [UIFont boldSystemFontOfSize:FontSize(21)];
     label2View.text = @"0.00元";
+    label2View.hidden = YES;
 
     UIView *ViewLineView2 =[[UIView alloc] init];
     [view2 addSubview:ViewLineView2];
     [ViewLineView2 mas_makeConstraints:^(MASConstraintMaker *make){
         make.top.mas_offset(LENGTH_SIZE(16));
         make.bottom.mas_offset(LENGTH_SIZE(-16));
-        make.left.mas_offset(LENGTH_SIZE(141));
+        make.left.mas_offset(LENGTH_SIZE(102));
         make.width.mas_offset(1);
     }];
     ViewLineView2.backgroundColor = [UIColor colorWithHexString:@"#EBEBEB"];
@@ -284,23 +287,23 @@
     self.sumNumLabel = label3View2;
     [view2 addSubview:label3View2];
     [label3View2 mas_makeConstraints:^(MASConstraintMaker *make){
-        make.centerY.equalTo(label1View2);
-        make.left.equalTo(ViewLineView2.mas_right).offset(LENGTH_SIZE(24));
+        make.centerY.equalTo(label1View2).offset(LENGTH_SIZE(17));
+        make.left.equalTo(ViewLineView2.mas_right).offset(LENGTH_SIZE(18));
     }];
-    label3View2.textColor = [UIColor colorWithHexString:@"#999999"];
-    label3View2.font = [UIFont boldSystemFontOfSize:FontSize(14)];
-    label3View2.text = @"邀请注册:0人";
+    label3View2.textColor = [UIColor baseColor];
+    label3View2.font = [UIFont boldSystemFontOfSize:FontSize(16)];
+    label3View2.text = @"注册人数：0人";
 
     UILabel *label4View2 = [[UILabel alloc] init];
     self.fullMonthNumLabel = label4View2;
     [view2 addSubview:label4View2];
     [label4View2 mas_makeConstraints:^(MASConstraintMaker *make){
-        make.centerY.equalTo(label2View);
-        make.left.equalTo(ViewLineView2.mas_right).offset(LENGTH_SIZE(24));
+        make.centerY.equalTo(label1View2).offset(LENGTH_SIZE(-17));
+        make.left.equalTo(ViewLineView2.mas_right).offset(LENGTH_SIZE(18));
     }];
-    label4View2.textColor = [UIColor colorWithHexString:@"#999999"];
-    label4View2.font = [UIFont boldSystemFontOfSize:FontSize(14)];
-    label4View2.text = @"注册入职满月:0人";
+    label4View2.textColor = [UIColor baseColor];
+    label4View2.font = [UIFont boldSystemFontOfSize:FontSize(16)];
+    label4View2.text = @"预计奖励：0元";
 
     UIImageView *lineV2 = [[UIImageView alloc] init];
     [_ScrollView addSubview:lineV2];
@@ -341,7 +344,7 @@
 
 #pragma mark - request
 -(void)requestGetRegister{
-    NSDictionary *dic = @{@"versionType":@"2.3"};
+    NSDictionary *dic = @{@"versionType":@"2.3.1"};
     
     [NetApiManager requestGetRegisterWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);

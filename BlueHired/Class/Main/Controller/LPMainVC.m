@@ -27,7 +27,8 @@
 #import "LPActivityModel.h"
 #import "LPActivityDatelisVC.h"
 #import "LPInCommentsVC.h"
-
+#import "UIImage+GIF.h"
+#import "LPHotWorkVC.h"
 
 #define OPERATIONFORKEY @"operationGuidePage"
 
@@ -71,6 +72,8 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 
 @property(nonatomic,strong) CustomIOSAlertView *InCommentAlertView;
 
+@property(nonatomic,strong) UIButton *ReWrok;
+
 @end
 
 @implementation LPMainVC
@@ -80,12 +83,46 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     // Do any additional setup after loading the view.
 
 
-    [self setLeftButton];
     
     [self.view addSubview:self.tableview];
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
+    
+
+    
+    UIButton *ReWrok = [[UIButton alloc] init];
+    [self.view addSubview:ReWrok];
+    self.ReWrok = ReWrok;
+    [ReWrok mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.mas_offset(LENGTH_SIZE(4));
+        make.bottom.mas_offset(LENGTH_SIZE(3));
+        make.width.mas_offset(LENGTH_SIZE(94));
+        make.height.mas_offset(LENGTH_SIZE(0));
+    }];
+    UIImage *customImg = [UIImage animatedImageNamed:@"hot_0" duration:1.0];
+    [ReWrok setImage: customImg forState:UIControlStateNormal];
+    [ReWrok addTarget:self action:@selector(TouchReWork:) forControlEvents:UIControlEventTouchUpInside];
+    ReWrok.hidden = YES;
+    
+    UIButton *PhontBtn = [[UIButton alloc] init];
+    [self.view addSubview:PhontBtn];
+    [PhontBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.right.mas_offset(LENGTH_SIZE(-2));
+        make.centerX.equalTo(ReWrok);
+        make.bottom.equalTo(ReWrok.mas_top).offset(LENGTH_SIZE(-4));
+        make.width.height.mas_offset(LENGTH_SIZE(72));
+    }];
+    [PhontBtn setImage:[UIImage imageNamed:@"servicePhone"] forState:UIControlStateNormal];
+    [PhontBtn addTarget:self action:@selector(TouchPhoneBtn:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    [self requestQueryActivityadvert:@"3"];
+    
+    
+    
+    
+
 //    self.page = 1;
 //    self.listArray = [NSMutableArray array];
 //    [self request];
@@ -94,7 +131,12 @@ static NSString *LPMainCellID = @"LPMain2Cell";
  
     if (![[NSUserDefaults standardUserDefaults] boolForKey:OPERATIONFORKEY]) {
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:OPERATIONFORKEY];
-        GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"是否进行招工报名引导？" message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"否",@"是"] buttonsColor:@[[UIColor colorWithHexString:@"#666666"],[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor],[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
+        GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"是否进行招工报名引导？"
+                                                             message:nil
+                                                       textAlignment:NSTextAlignmentCenter buttonTitles:@[@"否",@"是"]
+                                                        buttonsColor:@[[UIColor colorWithHexString:@"#666666"],[UIColor baseColor]]
+                                             buttonsBackgroundColors:@[[UIColor whiteColor],[UIColor whiteColor]]
+                                                         buttonClick:^(NSInteger buttonIndex) {
             if (buttonIndex == 1) {
                 NSArray *imageNameArray = @[@"OperationGuidance_01",
                                             @"OperationGuidance_02",
@@ -114,12 +156,12 @@ static NSString *LPMainCellID = @"LPMain2Cell";
                 [[UIApplication sharedApplication].keyWindow addSubview:guidePage];
             }
             
-            [self requestQueryActivityadvert];
+            [self requestQueryActivityadvert:@""];
             
         }];
         [alert showToWindow];
     }else{
-        [self requestQueryActivityadvert];
+        [self requestQueryActivityadvert:@""];
     }
     
     [self requestQueryDownload];
@@ -144,12 +186,17 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         self.page = 1;
         [self request];
     }
- 
+    
+    [self setLeftButton];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationController.navigationBar.translucent = NO;
+    
+    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
+ 
+    
     self.navigationController.navigationBar.barTintColor = [UIColor baseColor];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:[UIColor baseColor]] forBarMetrics:UIBarMetricsDefault];
     [self setSearchView];
@@ -158,6 +205,9 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     [self.RecommendScrollView setContentOffset:CGPointMake(0, 0)];
     _myTimer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(changeScrollContentOffSetY) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:_myTimer forMode:NSRunLoopCommonModes];
+    
+
+
     
     if (AlreadyLogin) {
         [self requestQueryGetWorkOrderRemarkMain];
@@ -181,8 +231,10 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     UIView *leftBarButtonView = [[UIView alloc]init];
 //    leftBarButtonView.backgroundColor = [UIColor redColor];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithCustomView:leftBarButtonView];
+    NSLog(@"%f     navigationBar=%f    %f ",self.navigationController.navigationBar.frame.size.height+[[UIApplication sharedApplication] statusBarFrame].size.height,self.navigationController.navigationBar.frame.size.height,[[UIApplication sharedApplication] statusBarFrame].size.height);
     [leftBarButtonView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.mas_equalTo(self.navigationController.navigationBar.frame.size.height+[[UIApplication sharedApplication] statusBarFrame].size.height);
+       
+        make.height.mas_equalTo(self.navigationController.navigationBar.frame.size.height);
     }];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(touchSelectCityButton)];
     leftBarButtonView.userInteractionEnabled = YES;
@@ -263,6 +315,23 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     }
     return searchBar;
 }
+#pragma mark - 客服
+-(void)TouchPhoneBtn:(UIButton *)sender{
+    sender.enabled = NO;
+    NSMutableString * string = [[NSMutableString alloc] initWithFormat:@"telprompt:%@",self.model.data.phone];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:string]];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        sender.enabled = YES;
+    });
+}
+#pragma mark - 热招企业
+-(void)TouchReWork:(UIButton *)sender{
+    LPHotWorkVC *vc = [[LPHotWorkVC alloc] init];
+    vc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+
 
 #pragma mark - 入职评价
 -(void)InCommentsInitView:(NSInteger) workOrderId{
@@ -352,18 +421,24 @@ static NSString *LPMainCellID = @"LPMain2Cell";
  
         for (int i =0 ;i <self.model.data.workBarsList.count;i++) {
             LPWorklistDataWorkBarsListModel *m = self.model.data.workBarsList[i];
-            UILabel *label= [[UILabel alloc] initWithFrame:CGRectMake(LENGTH_SIZE(38),
-                                                                      i*floorf(LENGTH_SIZE(36)),
-                                                                      SCREEN_WIDTH-LENGTH_SIZE(38),
-                                                                      floorf(LENGTH_SIZE(36)))];
+            UILabel *label= [[UILabel alloc] initWithFrame:CGRectMake(LENGTH_SIZE(85),
+                                                                      i*floorf(LENGTH_SIZE(44)),
+                                                                      SCREEN_WIDTH-LENGTH_SIZE(85),
+                                                                      floorf(LENGTH_SIZE(44)))];
             [self.RecommendScrollView addSubview:label];
-            label.text = [NSString stringWithFormat:@"恭喜用户%@报名%@,入职成功!",m.userName,m.mechanismName];
+            label.text = [NSString stringWithFormat:@"恭喜%@入职成功%@",m.userName,m.mechanismName];
             label.textColor = [UIColor baseColor];
             label.font = [UIFont systemFontOfSize:FontSize(13)];
             label.textAlignment = NSTextAlignmentLeft;
-//            label.backgroundColor = [UIColor redColor];
+            
+            NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:label.text];
+            [string addAttributes:@{NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#666666"]} range:NSMakeRange(0, 2)];
+            [string addAttributes:@{NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#666666"]} range:NSMakeRange(2+m.userName.length, 4)];
+            label.attributedText = string;
+ 
+ //            label.backgroundColor = [UIColor redColor];
         }
-        self.RecommendScrollView.contentSize = CGSizeMake(0, self.model.data.workBarsList.count*floorf(LENGTH_SIZE(36)));
+        self.RecommendScrollView.contentSize = CGSizeMake(0, self.model.data.workBarsList.count*floorf(LENGTH_SIZE(44)));
         
         if (self.page == 1) {
             self.listArray = [NSMutableArray array];
@@ -400,9 +475,9 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     }
     if (!has) {
         LPNoDataView *noDataView = [[LPNoDataView alloc]initWithFrame:CGRectMake(0,
-                                                                                 LENGTH_SIZE(266) ,
+                                                                                 LENGTH_SIZE(296) ,
                                                                                  SCREEN_WIDTH,
-                                                                                 LENGTH_SIZE(SCREEN_HEIGHT-266-49-kNavBarHeight-kBottomBarHeight))];
+                                                                                 SCREEN_HEIGHT-LENGTH_SIZE(296-49)-kNavBarHeight-kBottomBarHeight)];
         [noDataView image:nil text:@"抱歉！没有相关记录！"];
         [self.tableview addSubview:noDataView];
         noDataView.hidden = hidden;
@@ -427,7 +502,11 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     }else{
         self.mechanismAddress = model.c_name;
     }
-    self.cityLabel.text = model.c_name;
+    if (model.c_name.length>3) {
+        self.cityLabel.text = [NSString stringWithFormat:@"%@…",[model.c_name substringToIndex:3]];
+    }else{
+        self.cityLabel.text = model.c_name;
+    }
     self.page = 1;
     [self request];
 }
@@ -435,15 +514,15 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if ([scrollView isEqual: self.tableview]) {
-        if (self.tableview.contentOffset.y > LENGTH_SIZE(186)) {
+        if (self.tableview.contentOffset.y > LENGTH_SIZE(216)) {
             if (self.IsShowHeaderView != YES) {
                 self.IsShowHeaderView = YES;
                 [self.tableview reloadData];
             }
         }else{
             if (self.IsShowHeaderView != NO) {
-                self.ButtonView.lx_y = LENGTH_SIZE(225);
-                self.screenView.lx_y = LENGTH_SIZE(186);
+                self.ButtonView.lx_y = LENGTH_SIZE(254);
+                self.screenView.lx_y = LENGTH_SIZE(214);
                 self.ButtonView.hidden = NO;
                 self.screenView.hidden = NO;
                 [_tableHeaderView addSubview:self.ButtonView];
@@ -495,9 +574,11 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    CGFloat KeyHeight = [self calculateKeyHeight:self.listArray[indexPath.row].key];
-
-    return LENGTH_SIZE(123.0) +KeyHeight ;
+    LPWorklistDataWorkListModel *m = self.listArray[indexPath.row];
+    if (m.key.length == 0) {
+        return LENGTH_SIZE(120) ;
+    }
+    return LENGTH_SIZE(140) ;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -514,6 +595,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 //        weakSelf.page = 1;
 //        [weakSelf request];
 //    };
+
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -522,11 +604,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     vc.hidesBottomBarWhenPushed = YES;
     vc.workListModel = self.listArray[indexPath.row];
     [self.navigationController pushViewController:vc animated:YES];
-
-    
-//    LPHongBaoVC *vc = [[LPHongBaoVC alloc] init];
-//    vc.hidesBottomBarWhenPushed = YES;
-//    [self.navigationController   pushViewController:vc animated:YES];
+ 
 }
 
 #pragma mark - search
@@ -609,8 +687,8 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 }
 
 -(void)touchScreenButton:(UIButton *)button{
-    if (self.tableview.contentOffset.y < LENGTH_SIZE(186) ) {
-        CGPoint bottomOffset = CGPointMake(0, LENGTH_SIZE(186));
+    if (self.tableview.contentOffset.y < LENGTH_SIZE(216) ) {
+        CGPoint bottomOffset = CGPointMake(0, LENGTH_SIZE(216));
         [self.tableview setContentOffset:bottomOffset animated:NO];
     }
     
@@ -765,7 +843,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 -(UIView *)tableHeaderView{
     if (!_tableHeaderView){
         _tableHeaderView = [[UIView alloc]init];
-        _tableHeaderView.frame = CGRectMake(0, 0, SCREEN_WIDTH, LENGTH_SIZE(266));
+        _tableHeaderView.frame = CGRectMake(0, 0, SCREEN_WIDTH, LENGTH_SIZE(296));
         [_tableHeaderView addSubview:self.cycleScrollView];
         [_tableHeaderView addSubview:self.RecommendScrollView];
         [_tableHeaderView addSubview:self.RecommendBackImage];
@@ -773,8 +851,9 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         [_tableHeaderView addSubview:self.screenView];
 //        [_tableHeaderView addSubview:self.sortButton];
 //        [_tableHeaderView addSubview:self.screenButton];
+        _tableHeaderView.backgroundColor = [UIColor colorWithHexString:@"#F5F5F5"];
         UIView *lineView = [[UIView alloc]init];
-        lineView.frame = CGRectMake(0, LENGTH_SIZE(265.5), SCREEN_WIDTH, LENGTH_SIZE(0.5));
+        lineView.frame = CGRectMake(0, LENGTH_SIZE(296.5), SCREEN_WIDTH, LENGTH_SIZE(0.5));
         lineView.backgroundColor = [UIColor clearColor];
         [_tableHeaderView addSubview:lineView];
     }
@@ -840,8 +919,10 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 
 - (UIView *)screenView{
      if (!_screenView) {
-         _screenView = [[UIView alloc] initWithFrame:CGRectMake(0, LENGTH_SIZE(186) , SCREEN_WIDTH, LENGTH_SIZE(40))];
+         _screenView = [[UIView alloc] initWithFrame:CGRectMake(0, LENGTH_SIZE(214) , SCREEN_WIDTH, LENGTH_SIZE(40))];
          _screenView.tag = 2000;
+         _screenView.backgroundColor = [UIColor whiteColor];
+
          [_screenView addSubview:self.screenButton];
          [_screenView addSubview:self.screenTypeButton];
          [_screenView addSubview:self.sortButton];
@@ -881,12 +962,12 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 
 -(UIScrollView *)RecommendScrollView{
     if (!_RecommendScrollView) {
-        _RecommendScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0 , LENGTH_SIZE(150), SCREEN_WIDTH, floorf(LENGTH_SIZE(36)))];
+        _RecommendScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0 , LENGTH_SIZE(160), SCREEN_WIDTH, floorf(LENGTH_SIZE(44)))];
         _RecommendScrollView.delegate = self;
         _RecommendScrollView.showsVerticalScrollIndicator = NO;
         _RecommendScrollView.scrollEnabled = NO;
         _RecommendScrollView.bounces = NO;
-        _RecommendScrollView.backgroundColor = [UIColor colorWithHexString:@"#F5F8FA"];
+        _RecommendScrollView.backgroundColor = [UIColor whiteColor];
         
      }
     return _RecommendScrollView;
@@ -895,13 +976,13 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     //启动定时器
     CGPoint point = self.RecommendScrollView.contentOffset;
  
-    [self.RecommendScrollView setContentOffset:CGPointMake(0, point.y+floorf(LENGTH_SIZE(36))) animated:YES];
+    [self.RecommendScrollView setContentOffset:CGPointMake(0, point.y+floorf(LENGTH_SIZE(44))) animated:YES];
     
 }
 
 - (UIImageView *)RecommendBackImage{
     if (!_RecommendBackImage) {
-        _RecommendBackImage = [[UIImageView alloc] initWithFrame:CGRectMake(LENGTH_SIZE(13),LENGTH_SIZE(159) ,LENGTH_SIZE(18) ,LENGTH_SIZE(18))];
+        _RecommendBackImage = [[UIImageView alloc] initWithFrame:CGRectMake(LENGTH_SIZE(0),LENGTH_SIZE(160) ,LENGTH_SIZE(69) ,LENGTH_SIZE(44))];
         _RecommendBackImage.image = [UIImage imageNamed:@"radio"];
     }
     return _RecommendBackImage;
@@ -909,9 +990,10 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 
 - (UIView *)ButtonView{
     if (!_ButtonView) {
-        _ButtonView = [[UIView alloc] initWithFrame:CGRectMake(LENGTH_SIZE(13),LENGTH_SIZE(225) ,SCREEN_WIDTH-LENGTH_SIZE(26) , LENGTH_SIZE(42))];
+        _ButtonView = [[UIView alloc] initWithFrame:CGRectMake(LENGTH_SIZE(0),LENGTH_SIZE(254) ,SCREEN_WIDTH , LENGTH_SIZE(42))];
         _ButtonView.tag = 1000;
-        NSArray *arr = @[@"推荐好厂",@"高薪企业",@"好评企业",@"可借支"];
+        _ButtonView.backgroundColor = [UIColor whiteColor];
+        NSArray *arr = @[@"在招企业",@"高薪企业",@"有返费",@"可借支"];
         self.ButtonArr = [[NSMutableArray alloc] init];
         for (int i = 0; i<arr.count; i++) {
             UIButton *Bt = [[UIButton alloc] init];
@@ -928,7 +1010,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
             [self.ButtonArr addObject:Bt];
         }
         
-        [self.ButtonArr mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedSpacing:LENGTH_SIZE(7) leadSpacing:0 tailSpacing:0];
+        [self.ButtonArr mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedSpacing:LENGTH_SIZE(7) leadSpacing:LENGTH_SIZE(13) tailSpacing:LENGTH_SIZE(13)];
         [self.ButtonArr mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.mas_offset(LENGTH_SIZE(6));
             make.height.mas_equalTo(LENGTH_SIZE(30));
@@ -938,8 +1020,8 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 }
 -(void)TouchBt:(UIButton *) sender{
     
-    if (self.tableview.contentOffset.y < LENGTH_SIZE(186)) {
-        CGPoint bottomOffset = CGPointMake(0, LENGTH_SIZE(186));
+    if (self.tableview.contentOffset.y < LENGTH_SIZE(216)) {
+        CGPoint bottomOffset = CGPointMake(0, LENGTH_SIZE(216));
         [self.tableview setContentOffset:bottomOffset animated:NO];
     }
     
@@ -958,12 +1040,12 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     sender.selected = YES;
     if ([sender.currentTitle isEqualToString:@"默认排序"]) {
         self.orderType = @"";
-    }else if ([sender.currentTitle isEqualToString:@"推荐好厂"]){
-        self.orderType = @"7";
+    }else if ([sender.currentTitle isEqualToString:@"在招企业"]){
+        self.orderType = @"10";
     }else if ([sender.currentTitle isEqualToString:@"高薪企业"]){
         self.orderType = @"8";
-    }else if ([sender.currentTitle isEqualToString:@"好评企业"]){
-        self.orderType = @"2";
+    }else if ([sender.currentTitle isEqualToString:@"有返费"]){
+        self.orderType = @"9";
     }else if ([sender.currentTitle isEqualToString:@"可借支"]){
         self.orderType = @"4";
     }
@@ -987,15 +1069,29 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 }
 */
 
--(void)requestQueryActivityadvert{
-    [NetApiManager requestQueryActivityadvert:nil withHandle:^(BOOL isSuccess, id responseObject) {
+-(void)requestQueryActivityadvert:(NSString *) type{
+    NSDictionary *dic = nil;
+    if (type.integerValue == 3) {
+        dic = @{@"type":type};
+    }
+    [NetApiManager requestQueryActivityadvert:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
                 LPAdvertModel *model = [LPAdvertModel mj_objectWithKeyValues:responseObject];
                 if (model.data.count) {
-                    self.AdvertModel = model;
-                    [ADAlertView  showInView:[UIWindow visibleViewController].view theDelegate:self theADInfo:model.data placeHolderImage:@"1"];
+                    if (type.integerValue == 3) {
+                        self.ReWrok.hidden = NO;
+                        [self.ReWrok mas_remakeConstraints:^(MASConstraintMaker *make) {
+                            make.right.mas_offset(LENGTH_SIZE(4));
+                            make.bottom.mas_offset(LENGTH_SIZE(3));
+                            make.width.mas_offset(LENGTH_SIZE(94));
+                            make.height.mas_offset(LENGTH_SIZE(94));
+                        }];
+                    }else{
+                        self.AdvertModel = model;
+                        [ADAlertView  showInView:[UIWindow visibleViewController].view theDelegate:self theADInfo:model.data placeHolderImage:@"1"];
+                    }
                 }
             }else{
                 [[UIWindow visibleViewController].view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
@@ -1035,25 +1131,6 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     NSString *app_Version = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
     return app_Version;
 }
-//计算标签高度
--(CGFloat)calculateKeyHeight:(NSString *) Key{
-    
-    if (Key.length == 0) {
-        return 0;
-    }
-    
-    NSArray * tagArr = [Key componentsSeparatedByString:@"|"];
-    CGFloat tagBtnX = 0;
-    CGFloat tagBtnY = 0;
-    for (int i= 0; i<tagArr.count; i++) {
-        CGSize tagTextSize = [tagArr[i] sizeWithFont:[UIFont systemFontOfSize:FontSize(12)] maxSize:CGSizeMake(SCREEN_WIDTH-LENGTH_SIZE(116), LENGTH_SIZE(17))];
-        if (tagBtnX+tagTextSize.width+14 > SCREEN_WIDTH-LENGTH_SIZE(116)) {
-            tagBtnX = 0;
-            tagBtnY += LENGTH_SIZE(17)+8;
-        }
-        tagBtnX = tagBtnX + tagTextSize.width + LENGTH_SIZE(4);
-    }
-    return tagBtnY + LENGTH_SIZE(17);
-}
+ 
 
 @end

@@ -41,6 +41,8 @@ target 'BlueHired' do
     pod 'SDAutoLayout'
     pod 'iCarousel'
     pod 'SDWebImage/GIF'
+    pod 'Bugly'
+    pod 'LJBarrageView'
     
   target 'BlueHiredTests' do
     inherit! :search_paths

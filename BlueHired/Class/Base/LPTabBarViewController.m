@@ -79,9 +79,7 @@
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
 {
     if ([item.title isEqualToString:@"圈子"]) {
-        NSLog(@"%@",[self.viewControllers[2] rt_topViewController].class);
-             LPCircleVC *vc = (LPCircleVC *)[self.viewControllers[2] rt_topViewController];
-            vc.isSenderBack = 1;
+     
  
     }
     

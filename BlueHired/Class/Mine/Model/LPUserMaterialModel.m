@@ -15,4 +15,12 @@ MJCodingImplementation
 
 @implementation LPUserMaterialDataModel
 MJCodingImplementation
++ (NSDictionary *)objectClassInArray {
+    return @{
+             @"userMaterialPlanList": @"LPUserMaterialPlanDataModel",
+             };
+}
+@end
+@implementation LPUserMaterialPlanDataModel
+MJCodingImplementation
 @end

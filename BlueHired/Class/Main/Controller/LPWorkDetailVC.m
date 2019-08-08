@@ -15,7 +15,9 @@
 #import "LPMain2Cell.h"
 #import "LPBusinessReviewDetailVC.h"
 #import "LPMechanismcommentMechanismlistModel.h"
-
+#import <MapKit/MapKit.h>
+#import <CoreLocation/CoreLocation.h>
+#import <BMKLocationkit/BMKLocationComponent.h>
 
 static NSString *LPWorkDetailHeadCellID = @"LPWorkDetailHeadCell";
 static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
@@ -42,7 +44,9 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 @property(nonatomic,strong) NSArray <LPWorklistDataWorkListModel *> *RecommendList;
 
 @property(nonatomic,assign) NSInteger selectIndex;
+@property (nonatomic,assign) CLLocationCoordinate2D coordinate;  //!< 要导航的坐标
 
+@property (nonatomic,strong) UITextField *NameTextField;
 
 @end
 
@@ -80,7 +84,9 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     [self setBottomView];
     
     [self request];
-
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textFiledEditChanged:)
+                                                name:UITextFieldTextDidChangeNotification object:self.NameTextField];
+ 
 //    [self requestWorkDetail];
 //    if (AlreadyLogin) {
 //        [self requestIsApplyOrIsCollection];
@@ -103,6 +109,8 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 }
 
 -(void)setBottomView{
+    
+
     
     UIView *bottomBgView = [[UIView alloc]init];
     [self.view addSubview:bottomBgView];
@@ -173,7 +181,29 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         button.titleEdgeInsets = UIEdgeInsetsMake(0, -button.imageView.frame.size.width, -button.imageView.frame.size.height, 0);
         button.imageEdgeInsets = UIEdgeInsetsMake(-button.titleLabel.intrinsicContentSize.height, 0, 0, -button.titleLabel.intrinsicContentSize.width);
     }
+    
+    UIButton *BusinessreviewBtn = [[UIButton alloc] init];
+    [self.view addSubview:BusinessreviewBtn];
+    [BusinessreviewBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.mas_offset(0);
+        make.bottom.equalTo(bottomBgView.mas_top).offset(LENGTH_SIZE(-10));
+    }];
+    [BusinessreviewBtn setImage:[UIImage imageNamed:@"btn_review"] forState:UIControlStateNormal];
+    [BusinessreviewBtn addTarget:self action:@selector(touchBusinessReview) forControlEvents:UIControlEventTouchUpInside];
 }
+
+-(void)touchBusinessReview{
+    if ([LoginUtils validationLogin:self]) {
+        LPBusinessReviewDetailVC *vc = [[LPBusinessReviewDetailVC alloc] init];
+        LPMechanismcommentMechanismlistDataModel *m = [[LPMechanismcommentMechanismlistDataModel alloc] init];
+        m.id = self.model.data.mechanismId;
+        m.mechanismName = self.model.data.mechanismName;
+        
+        vc.mechanismlistDataModel = m;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
+
 -(void)touchSiginUpButton{
     if ([LoginUtils validationLogin:self]) {
         //    LPWorkorderListVC *vc = [[LPWorkorderListVC alloc]init];
@@ -229,6 +259,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
             
             UITextField *textField = [[UITextField alloc] init];
             [view addSubview:textField];
+            self.NameTextField = textField;
             [textField mas_makeConstraints:^(MASConstraintMaker *make){
                 make.left.equalTo(NameLabel.mas_right).offset(LENGTH_SIZE(8));
                 make.centerY.equalTo(NameLabel);
@@ -269,6 +300,24 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 }
 
 
+
+- (void)textFiledEditChanged:(id)notification{
+    
+    UITextRange *selectedRange = self.NameTextField.markedTextRange;
+    UITextPosition *position = [self.NameTextField positionFromPosition:selectedRange.start offset:0];
+    
+    if (!position) { //// 没有高亮选择的字
+        //过滤非汉字字符
+        self.NameTextField.text = [self filterCharactor:self.NameTextField.text withRegex:@"[^\u4e00-\u9fa5]"];
+        
+        if (self.NameTextField.text.length >= 5) {
+            self.NameTextField.text = [self.NameTextField.text substringToIndex:4];
+        }
+    }else { //有高亮文字
+        //do nothing
+    }
+}
+
 -(void)textFieldChanged:(UITextField *)textField{
     //
     
@@ -281,6 +330,8 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     NSString *lang = [[UITextInputMode currentInputMode] primaryLanguage];
     // 中文输入的时候,可能有markedText(高亮选择的文字),需要判断这种状态
     // zh-Hans表示简体中文输入, 包括简体拼音，健体五笔，简体手写
+    textField.text = [self filterCharactor:textField.text withRegex:@"[^\u4e00-\u9fa5]"];
+
     if ([lang isEqualToString:@"zh-Hans"]) {
         UITextRange *selectedRange = [textField markedTextRange];
         //获取高亮选择部分
@@ -301,6 +352,19 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         }
     }
 }
+
+
+//根据正则，过滤特殊字符
+- (NSString *)filterCharactor:(NSString *)string withRegex:(NSString *)regexStr{
+    NSString *searchText = string;
+    NSError *error = NULL;
+    NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:regexStr options:NSRegularExpressionCaseInsensitive error:&error];
+    NSString *result = [regex stringByReplacingMatchesInString:searchText options:NSMatchingReportCompletion range:NSMakeRange(0, searchText.length) withTemplate:@""];
+    return result;
+}
+
+
+
 
 -(void)TouchApplyBt:(UIButton *)sender{
     UITextField *tf = [sender.superview viewWithTag:1000];
@@ -416,8 +480,17 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     }
     else if (button.tag == 1)
     {
-       // http://192.168.0.152:8070/#/recruitdetail?id=29
-        NSString *url = [NSString stringWithFormat:@"%@resident/#/recruitdetail?id=%@",BaseRequestWeiXiURL,self.workListModel.id];
+        LPUserMaterialModel *user = [LPUserDefaults getObjectByFileName:USERINFO];
+
+        NSString *url = @"";
+        if (AlreadyLogin) {
+            url = [NSString stringWithFormat:@"%@resident/#/recruitdetail?id=%@&identity=%@",BaseRequestWeiXiURL,self.workListModel.id,kUserDefaultsValue(USERIDENTIY)];
+        }else{
+            url = [NSString stringWithFormat:@"%@resident/#/recruitdetail?id=%@",BaseRequestWeiXiURL,self.workListModel.id];
+        }
+
+
+        // http://192.168.0.152:8070/#/recruitdetail?id=29
         
         NSString *encodedUrl = [NSString stringWithString:[url stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         [LPTools ClickShare:encodedUrl Title:[NSString stringWithFormat:@"您的好友通过蓝聘平台给您推荐了%@，快来看看吧！",_model.data.mechanismName]];
@@ -641,10 +714,11 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         self.signUpButton.backgroundColor = [UIColor colorWithHexString:@"#CCCCCC"];
         self.signUpButton.enabled = NO;
     }
-    
 
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableview reloadData];
+    });
     
-    [self.tableview reloadData];
 }
 -(void)setIsApplyOrIsCollectionModel:(LPIsApplyOrIsCollectionModel *)isApplyOrIsCollectionModel{
     _isApplyOrIsCollectionModel = isApplyOrIsCollectionModel;
@@ -800,14 +874,6 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     return nil;
 }
 
--(void)touchTextButton:(UIButton *)button{
-    NSInteger index = button.tag;
-    self.selectIndex = index;
-//    [self selectButtonAtIndex:index];
-    [self.tableview reloadData];
-//    [self scrollToItenIndex:index];
-}
-
 
 -(void)selectButtonAtIndex:(NSInteger)index{
     for (UIButton *button in self.buttonArray) {
@@ -833,11 +899,16 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     if (indexPath.section == 0) {
         NSString *strbackmoney = [self removeHTML2:self.model.data.reInstruction];
         CGFloat KeyHeight = [self calculateKeyHeight:self.model.data.key];
+        
+//        if (self.model.data.key.length == 0 && ![self.model.data.lendType integerValue]) {
+//            KeyHeight = 0;
+//        }
+        
         if (strbackmoney.length>0) {
             CGFloat BackMoneyHeight = [LPTools calculateRowHeight:strbackmoney fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(26)];
-             return LENGTH_SIZE(280 + 136 + 42 + 20)  + BackMoneyHeight + KeyHeight;
+             return LENGTH_SIZE(280 + 128 + 36 + 20)  + BackMoneyHeight + KeyHeight;
         }else{
-            return LENGTH_SIZE(280 + 136 + 13) + KeyHeight;
+            return LENGTH_SIZE(280 + 128 ) + KeyHeight;
         }
     }else if (indexPath.section == 1){
             if (indexPath.row == 0) {
@@ -864,14 +935,18 @@ static NSString *LPMainCellID = @"LPMain2Cell";
             CGFloat Height = [LPTools calculateRowHeight:[self removeHTML2:[self.model.data.mechanismDetails stringByDecodingHTMLEntities]] fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(28)];
             return LENGTH_SIZE(51)+Height;
         }else if (indexPath.row == 1){
-            CGFloat Height = [LPTools calculateRowHeight:[NSString stringWithFormat:@"地址：%@",self.model.data.mechanismAddress] fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(28)];
+            CGFloat Height = [LPTools calculateRowHeight:[NSString stringWithFormat:@"企业地址:%@\n面试地址:%@",self.model.data.mechanismAddress,self.model.data.recruitAddress] fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(28)];
             return LENGTH_SIZE(66)+Height;
         }else if (indexPath.row == 2){
             return LENGTH_SIZE(44.0);
         }
     } else{
-         CGFloat KeyHeight = [self calculateKeyHeightCell:self.RecommendList[indexPath.row].key];
-        return LENGTH_SIZE(123.0) +KeyHeight ;
+        LPWorklistDataWorkListModel *m = self.RecommendList[indexPath.row];
+        if (m.key.length == 0) {
+            return LENGTH_SIZE(120) ;
+        }
+        return LENGTH_SIZE(140) ;
+       
     }
     return 44;
 }
@@ -920,7 +995,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 
             LPWorkDetailTextCell *cell = [tableView dequeueReusableCellWithIdentifier:LPWorkDetailTextCellID];
             cell.detailTitleLabel.text = @"企业地址:";
-            cell.detailLabel.text = [NSString stringWithFormat:@"地址：%@",self.model.data.mechanismAddress];
+            cell.detailLabel.text = [NSString stringWithFormat:@"企业地址:%@\n面试地址:%@",self.model.data.mechanismAddress,self.model.data.recruitAddress];
             tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
             return cell;
         }else{
@@ -940,7 +1015,8 @@ static NSString *LPMainCellID = @"LPMain2Cell";
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.textLabel.textColor = [UIColor baseColor];
             cell.textLabel.font = [UIFont systemFontOfSize:14];
-            cell.textLabel.text = @"查看员工对该企业的点评";
+            cell.textLabel.text = @"导航查看面试地址";
+            cell.imageView.image = [UIImage imageNamed:@"guide"];
             tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
             return cell;
         }
@@ -980,15 +1056,14 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         [self.navigationController  setViewControllers:naviVCsArr animated:YES];
  
     }else if (indexPath.section == 2 && indexPath.row == 2){
-        if ([LoginUtils validationLogin:self]) {
-            LPBusinessReviewDetailVC *vc = [[LPBusinessReviewDetailVC alloc] init];
-            LPMechanismcommentMechanismlistDataModel *m = [[LPMechanismcommentMechanismlistDataModel alloc] init];
-            m.id = self.model.data.mechanismId;
-            m.mechanismName = self.model.data.mechanismName;
-            
-            vc.mechanismlistDataModel = m;
-            [self.navigationController pushViewController:vc animated:YES];
-        }
+        NSDecimalNumber *XNumber = [NSDecimalNumber decimalNumberWithString:self.model.data.x];
+        NSDecimalNumber *YNumber = [NSDecimalNumber decimalNumberWithString:self.model.data.y];
+        
+        CLLocationCoordinate2D pt2 = {[XNumber doubleValue],[YNumber doubleValue]};
+        
+        self.coordinate = [self GCJ02FromBD09:pt2];
+        
+        [self ToNavMap];
     }
 }
 
@@ -1121,7 +1196,9 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
                 self.RecommendList = [LPWorklistDataWorkListModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
-                [self.tableview reloadData];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.tableview reloadData];
+                });
             }else{
                 [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
@@ -1143,6 +1220,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         _tableview.tableFooterView = [[UIView alloc]init];
         _tableview.rowHeight = UITableViewAutomaticDimension;
         _tableview.estimatedRowHeight = 0;
+
         _tableview.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         _tableview.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
         [_tableview registerNib:[UINib nibWithNibName:LPWorkDetailHeadCellID bundle:nil] forCellReuseIdentifier:LPWorkDetailHeadCellID];
@@ -1157,20 +1235,22 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 //计算标签高度
 -(CGFloat)calculateKeyHeight:(NSString *) Key{
     if (Key.length == 0) {
-        return 0;
+        return LENGTH_SIZE(17);
     }
+    Key = [Key stringByReplacingOccurrencesOfString:@"丨" withString:@"|"];
+
     NSArray * tagArr = [Key componentsSeparatedByString:@"|"];
     CGFloat tagBtnX = 0;
     CGFloat tagBtnY = 0;
     for (int i= 0; i<tagArr.count; i++) {
-        CGSize tagTextSize = [tagArr[i] sizeWithFont:[UIFont systemFontOfSize:FontSize(12)] maxSize:CGSizeMake(SCREEN_WIDTH-LENGTH_SIZE(26), LENGTH_SIZE(17))];
-        if (tagBtnX+tagTextSize.width+14 > SCREEN_WIDTH-LENGTH_SIZE(26)) {
+        CGSize tagTextSize = [tagArr[i] sizeWithFont:[UIFont systemFontOfSize:FontSize(12)] maxSize:CGSizeMake(SCREEN_WIDTH-LENGTH_SIZE(73), LENGTH_SIZE(17))];
+        if (tagBtnX+tagTextSize.width+14 > SCREEN_WIDTH-LENGTH_SIZE(73)) {
             tagBtnX = 0;
             tagBtnY += LENGTH_SIZE(17)+8;
         }
         tagBtnX = tagBtnX + tagTextSize.width + LENGTH_SIZE(4);
     }
-    return tagBtnY + LENGTH_SIZE(17);
+    return tagBtnY + LENGTH_SIZE(17) ;
 }
 
 //计算Cell标签高度
@@ -1178,6 +1258,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     if (Key.length == 0) {
         return 0;
     }
+    Key = [Key stringByReplacingOccurrencesOfString:@"丨" withString:@"|"];
     NSArray * tagArr = [Key componentsSeparatedByString:@"|"];
     CGFloat tagBtnX = 0;
     CGFloat tagBtnY = 0;
@@ -1209,10 +1290,99 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     
 }
 
+
+
+-(void)ToNavMap
+{
+    //系统版本高于8.0，使用UIAlertController
+    
+    UIAlertController * alertController = [UIAlertController alertControllerWithTitle:@"导航到设备" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    //自带地图
+    [alertController addAction:[UIAlertAction actionWithTitle:@"苹果地图" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+        NSLog(@"alertController -- 自带地图");
+        
+        //使用自带地图导航
+        MKMapItem *currentLocation =[MKMapItem mapItemForCurrentLocation];
+        
+        MKMapItem *toLocation = [[MKMapItem alloc] initWithPlacemark:[[MKPlacemark alloc] initWithCoordinate:self.coordinate addressDictionary:nil]];
+        
+        [MKMapItem openMapsWithItems:@[currentLocation,toLocation] launchOptions:@{MKLaunchOptionsDirectionsModeKey:MKLaunchOptionsDirectionsModeDriving,
+                                                                                   MKLaunchOptionsShowsTrafficKey:[NSNumber numberWithBool:YES]}];
+        
+        
+    }]];
+    
+    //判断是否安装了高德地图，如果安装了高德地图，则使用高德地图导航
+    if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"iosamap://"]]) {
+        
+        [alertController addAction:[UIAlertAction actionWithTitle:@"高德地图" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+            NSLog(@"alertController -- 高德地图");
+            NSString *urlsting =[[NSString stringWithFormat:@"iosamap://navi?sourceApplication= &backScheme= &lat=%f&lon=%f&dev=0&style=2&dname=%@",self.coordinate.latitude,self.coordinate.longitude,self.model.data.recruitAddress]stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            [[UIApplication  sharedApplication]openURL:[NSURL URLWithString:urlsting]];
+            
+        }]];
+    }
+    
+    //判断是否安装了百度地图，如果安装了百度地图，则使用百度地图导航
+    if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"baidumap://"]]) {
+        [alertController addAction:[UIAlertAction actionWithTitle:@"百度地图" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+            NSLog(@"alertController -- 百度地图");
+            NSString *urlsting =[[NSString stringWithFormat:@"baidumap://map/direction?origin={{我的位置}}&destination=latlng:%f,%f|name=目的地&mode=driving&coord_type=gcj02&title=%@",self.coordinate.latitude,self.coordinate.longitude,self.model.data.recruitAddress] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlsting]];
+            
+        }]];
+    }
+    
+    //判断是否安装了百度地图，如果安装了百度地图，则使用百度地图导航
+    if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"qqmap://"]]) {
+        [alertController addAction:[UIAlertAction actionWithTitle:@"腾讯地图" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+            NSLog(@"alertController -- 腾讯地图");
+            
+            NSString *urlsting =[[NSString stringWithFormat:@"qqmap://map/routeplan?from=我的位置&to=%@&type=drive&tocoord=%f,%f&coord_type=1&referer={ios.blackfish.XHY}",self.model.data.recruitAddress,self.coordinate.latitude,self.coordinate.longitude] stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlsting]];
+            
+        }]];
+    }
+    
+    
+    
+    //添加取消选项
+    [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+        [alertController dismissViewControllerAnimated:YES completion:nil];
+        
+    }]];
+    
+    //显示alertController
+    [[UIWindow visibleViewController] presentViewController:alertController animated:YES completion:nil];
+    
+}
+
+
+-(CLLocationCoordinate2D)GCJ02FromBD09:(CLLocationCoordinate2D)coor
+{
+    CLLocationDegrees x_pi = 3.14159265358979324 * 3000.0 / 180.0;
+    CLLocationDegrees x = coor.longitude - 0.0065, y = coor.latitude - 0.006;
+    CLLocationDegrees z = sqrt(x * x + y * y) - 0.00002 * sin(y * x_pi);
+    CLLocationDegrees theta = atan2(y, x) - 0.000003 * cos(x * x_pi);
+    CLLocationDegrees gg_lon = z * cos(theta);
+    CLLocationDegrees gg_lat = z * sin(theta);
+    return CLLocationCoordinate2DMake(gg_lat, gg_lon);
+}
+
+
+
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 @end

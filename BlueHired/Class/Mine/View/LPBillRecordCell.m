@@ -30,18 +30,46 @@
     [formatter setDateFormat:@"yyyy-MM-dd"];
     NSString*timeStr=[formatter stringFromDate:d];
     
-    _dateLabel.text = timeStr;
+    _stateLabel.textColor = [UIColor colorWithHexString:@"#181818"];
     if ([_model.billType integerValue] == 2)
     {
         _titleLabel.text = [NSString stringWithFormat:@"账户提现: %.2f",_model.money.floatValue];
-        _stateLabel.text =  [_model.type integerValue] == 1?@"待处理": @"处理中";
-        
-        long long timeSet=[[self.model.set_time stringValue] longLongValue];
 
-        if (timeSet/1000.0+60*60*2<[NSString getNowTimestamp]/1000.0 && timeSet >0) {
-            _stateLabel.text = @"已完成";
+
+        long long time1=[[model.set_time stringValue] longLongValue];
+        NSDate *d2 = [[NSDate alloc]initWithTimeIntervalSince1970:time1/1000.0];
+        NSString*SettimeStr=[formatter stringFromDate:d2];
+        
+        if (model.status.integerValue == 1) {
+            _stateLabel.text =  @"待处理";
+            _dateLabel.text = timeStr;
+ 
+
+        }else if (model.status.integerValue == 2){
+            _stateLabel.text =  @"处理中";
+            _dateLabel.text = SettimeStr;
+
+        }else if (model.status.integerValue == 3){
+            _stateLabel.text =  @"到账成功";
+            _dateLabel.text = SettimeStr;
+
+        }else if (model.status.integerValue == 4){
+            _stateLabel.text =  @"到账失败";
+            _stateLabel.textColor = [UIColor colorWithHexString:@"#FF5353"];
+            _dateLabel.text = SettimeStr;
+
         }
+        
+
+        
+//        long long timeSet=[[self.model.set_time stringValue] longLongValue];
+
+//        if (timeSet/1000.0+60*60*2<[NSString getNowTimestamp]/1000.0 && timeSet >0) {
+//            _stateLabel.text = @"已完成";
+//        }
      }else{
+         _dateLabel.text = timeStr;
+
         if ([_model.type integerValue] == 0) {
             _titleLabel.text = [NSString stringWithFormat:@"其他到账: %.2f",_model.money.floatValue];
         }
@@ -76,6 +104,14 @@
         else if ([_model.type integerValue] == 9)
         {
             _titleLabel.text = [NSString stringWithFormat:@"蓝聘红包: %.2f",_model.money.floatValue];
+        }
+        else if ([_model.type integerValue] == 10)
+        {
+            _titleLabel.text = [NSString stringWithFormat:@"完善资料奖励: %.2f",_model.money.floatValue];
+        }
+        else if ([_model.type integerValue] == 11)
+        {
+            _titleLabel.text = [NSString stringWithFormat:@"积分兑换奖励: %.2f",_model.money.floatValue];
         }
         _stateLabel.text = @"已到蓝聘账户";
         

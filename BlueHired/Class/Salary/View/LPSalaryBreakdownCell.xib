@@ -88,6 +88,7 @@
                 <outlet property="DrawBt" destination="Uhk-gw-5WK" id="JeT-Hg-Uld"/>
                 <outlet property="MoneyLabel" destination="sH9-Wx-41o" id="XfR-7J-1aK"/>
                 <outlet property="companyNameLabel" destination="zYG-qV-T0f" id="tFN-cD-2PN"/>
+                <outlet property="detailsLabel" destination="bre-xb-Xt5" id="JCX-8i-T2G"/>
             </connections>
             <point key="canvasLocation" x="-294" y="134"/>
         </tableViewCell>

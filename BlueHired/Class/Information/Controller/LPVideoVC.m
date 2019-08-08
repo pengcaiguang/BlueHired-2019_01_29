@@ -9,11 +9,12 @@
 #import "LPVideoVC.h"
 #import "LPVideoPlayCell.h"
 #import "LPEssayDetailCommentCell.h"
+#import "UIView+LJBarrageTool.h"
 
 static NSString *LPVideoPlayCellID = @"LPVideoPlayCell";
 static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
 
-@interface LPVideoVC ()<UICollectionViewDelegate,UICollectionViewDataSource,UITableViewDelegate,UITableViewDataSource,LPEssayDetailCommentCellDelegate,UITextFieldDelegate>
+@interface LPVideoVC ()<UICollectionViewDelegate,UICollectionViewDataSource,UITableViewDelegate,UITableViewDataSource,LPEssayDetailCommentCellDelegate,UITextFieldDelegate,LJBarrageViewDelegate>
 @property (nonatomic, strong) UICollectionView *collectionView;
 
 @property (nonatomic, assign) NSInteger currentpage;
@@ -55,6 +56,11 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
 @property (nonatomic,assign) NSInteger Commentpage;
 
 @property(nonatomic,strong) LPCommentListDataModel *commentUserModel;
+@property (nonatomic, strong) LJBarrageView *barrageView;
+@property (nonatomic, assign) BOOL barrageStatus;
+
+@property (nonatomic,assign) NSInteger VideoPage;
+@property (nonatomic,assign) BOOL isRequest;
 
 @end
 
@@ -65,6 +71,7 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     self.labelArray = [NSMutableArray array];
     self.IsRecommend = @"";
     self.IsVideoType = @"";
+    self.barrageStatus = YES;
     
     self.currentpage = 0;
     [self.view addSubview:self.collectionView];
@@ -84,6 +91,35 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
         self.collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
      }
  
+    
+    //初始化展示区域界面
+    LJBarrageView *barrageView = [LJBarrageView lj_creatNormalWithFrame:CGRectMake(0, LENGTH_SIZE(82), self.view.frame.size.width, LENGTH_SIZE(96))];
+    [self.view addSubview:barrageView];
+    self.barrageView = barrageView;
+    
+    //配置参数
+    barrageView.barrageRow = 3;
+    barrageView.barrageHeightType = BarrageHeightTypeNormal;
+    barrageView.barrageShowStyle = LJBarrageShowStyleTypeShowTime;
+    barrageView.styleParameter = 6;
+    barrageView.delegate = self;
+    barrageView.barrageStyle.barrageBackgroundColor  = [UIColor clearColor];
+    barrageView.barrageStyle.barrageHeight = LENGTH_SIZE(32);
+    barrageView.barrageStyle.barrageFont = FONT_SIZE(15);
+    barrageView.barrageStyle.barrageTextAlignment = NSTextAlignmentCenter;
+    barrageView.barrageEnterInterval = 1.0;
+    barrageView.barrageShowMax = 4;
+    
+    WEAK_SELF()
+    self.barrageView.BarrageViewBlock = ^{
+        NSLog(@"弹幕库少于10条回调");
+        if (weakSelf.isRequest == NO && weakSelf.VideoPage != 0) {
+            weakSelf.VideoPage ++;
+            [weakSelf requestQueryGetVideoComment];
+        }
+    };
+    
+ 
  }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -99,10 +135,23 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
 
     LPVideoPlayCell *Playcell = (LPVideoPlayCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:self.VideoRow inSection:0]];
     Playcell.PlayImage.hidden = YES;
+    Playcell.barrageBtn.selected = self.barrageStatus;
+    if (self.barrageStatus) {
+        [self BarrageViewopen];
+    }else{
+        [self BarrageViewshut];
+    }
+    
     [self.playerCurrent removeVideo];
     LPVideoListDataModel *model = self.listArray[self.VideoRow];
     [self.playerCurrent playVideoWithView:Playcell.coverImgView url:model.videoUrl];
+   
     [self requestQuerySetVideoView:self.VideoRow];
+    
+    self.VideoPage = 1;
+    [self requestQueryGetVideoComment];
+    
+    
 //    if (self.listArray.count>1) {
 //        if (self.VideoRow == 0) {       //第一个视频进来
 //            //缓存下一个
@@ -129,11 +178,16 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     [self.playerCurrent removeVideo];
     [self.playerNext removeVideo];
     [IQKeyboardManager sharedManager].enable = YES;
-
+    [self.barrageView shut];
+ 
+ 
+    
 }
 
 - (void) dealloc{
-    
+    // 销毁界面时需释放
+    NSLog(@"VideoVC销毁界面时需释放");
+ 
 }
 
 
@@ -145,9 +199,9 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     }
     
      self.recommendBt = [[UIButton alloc] initWithFrame:CGRectMake((SCREEN_WIDTH - LENGTH_SIZE(140))/2 ,
-                                                                   LENGTH_SIZE(42),
+                                                                   kStatusBarHeight,
                                                                    LENGTH_SIZE(70),
-                                                                   LENGTH_SIZE(40))];
+                                                                   LENGTH_SIZE(44))];
     //    [recommendBt setImage:[UIImage imageNamed:@"推荐"] forState:UIControlStateNormal];
     [self.recommendBt setTitle:@"推荐" forState:UIControlStateNormal];
     self.recommendBt.titleLabel.font = [UIFont systemFontOfSize:FontSize(17)];
@@ -158,9 +212,9 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     [self.view addSubview:self.recommendBt];
     
     self.TypeBt = [[UIButton alloc] initWithFrame:CGRectMake((SCREEN_WIDTH - LENGTH_SIZE(140))/2+70,
-                                                             LENGTH_SIZE(42),
+                                                             kStatusBarHeight,
                                                              LENGTH_SIZE(70),
-                                                             LENGTH_SIZE(40))];
+                                                             LENGTH_SIZE(44))];
     //    [TypeBt setImage:[UIImage imageNamed:@"分类"] forState:UIControlStateNormal];
     [self.TypeBt setTitle:@"分类" forState:UIControlStateNormal];
     self.TypeBt.titleLabel.font = [UIFont systemFontOfSize:FontSize(17)];
@@ -176,9 +230,9 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
         }
  
         UIScrollView *scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0,
-                                                                                 LENGTH_SIZE(82),
+                                                                                 kStatusBarHeight+LENGTH_SIZE(44),
                                                                                  SCREEN_WIDTH,
-                                                                                 LENGTH_SIZE(50))];
+                                                                                 LENGTH_SIZE(40))];
         [self.view addSubview:scrollView];
         self.LabelscrollView = scrollView;
         scrollView.backgroundColor = [UIColor colorWithRed:27/255.0 green:27/255.0 blue:27/255.0 alpha:1];
@@ -197,7 +251,7 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
             
             CGFloat lw = rect.size.width + LENGTH_SIZE(30);
             w += lw;
-            label.frame = CGRectMake(w - lw, 0, lw, LENGTH_SIZE(50));
+            label.frame = CGRectMake(w - lw, 0, lw, LENGTH_SIZE(40));
             label.tag = i;
             label.userInteractionEnabled = YES;
             UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(touchLabel:)];
@@ -471,6 +525,8 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
        if (self.currentpage <page) {       //下
           LPVideoPlayCell *Playcell = (LPVideoPlayCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:page inSection:0]];
            Playcell.PlayImage.hidden = YES;
+           Playcell.barrageBtn.selected = self.barrageStatus;
+
            if ((page +2 == self.listArray.count || page +1 == self.listArray.count) && !self.isReloadData) {
                [self requestQueryGetVideoList];
                self.currentpage = page;
@@ -524,6 +580,7 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
        }else if (self.currentpage >page){       //上
            LPVideoPlayCell *Playcell = (LPVideoPlayCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:page inSection:0]];
            Playcell.PlayImage.hidden = YES;
+           Playcell.barrageBtn.selected = self.barrageStatus;
            [self.playerCurrent removeVideo];
            [self.playerCurrent playVideoWithView:Playcell.coverImgView url:self.listArray[page].videoUrl];
 
@@ -580,6 +637,8 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
        }else{           //播放当前视频
            LPVideoPlayCell *Playcell = (LPVideoPlayCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:page inSection:0]];
            Playcell.PlayImage.hidden = YES;
+           Playcell.barrageBtn.selected = self.barrageStatus;
+
 //           [self.playerCurrent resume];
                [self.playerCurrent resume];
        }
@@ -589,13 +648,28 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         LPVideoPlayCell *Playcell = (LPVideoPlayCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForRow:page inSection:0]];
         Playcell.PlayImage.hidden = YES;
+        Playcell.barrageBtn.selected = self.barrageStatus;
         [self.playerCurrent resume];
        });
     }
     NSLog(@"但是视频是否播放 = %@",self.playerCurrent.isPlaying?@"shi":@"no");
 
+    if (self.barrageStatus && self.currentpage != page) {
+        [self BarrageViewshut];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self BarrageViewopen];
+            self.VideoPage = 1;
+            [self requestQueryGetVideoComment];
+        });
+    }
+    
+    
     self.currentpage = page;
     self.VideoRow = self.currentpage;
+    
+   
+
+
 }
 
 #pragma mark -- UICollectionViewDataSource
@@ -625,10 +699,22 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
         [weakSelf TableViewHidden:NO];
     };
     cell.CollectionBlock = ^(void){
-        if (self.LPCollectionBlock){
-            self.LPCollectionBlock();
+        if (weakSelf.LPCollectionBlock){
+            weakSelf.LPCollectionBlock();
         }
     };
+    cell.barrageBtn.selected = self.barrageStatus;
+    cell.BarrageBlock = ^(BOOL Select) {
+        weakSelf.barrageStatus = Select;
+        if (Select) {
+            [weakSelf BarrageViewopen];
+            weakSelf.VideoPage = 1;
+            [weakSelf requestQueryGetVideoComment];
+        }else{
+            [weakSelf BarrageViewshut];
+        }
+    };
+    
     return cell;
 }
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -790,6 +876,7 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
         if (self.page == 1) {
             self.currentpage = 0;
             [self.listArray  removeAllObjects];
+
         }
         if (self.VideoListModel.data.count > 0) {
             self.page += 1;
@@ -813,6 +900,7 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
                 [self.playerCurrent removeVideo];
                 [self.playerCurrent playVideoWithView:Playcell.coverImgView url:model.videoUrl];
                 [self requestQuerySetVideoView:self.currentpage];
+ 
 //                [self.playerCurrent resume];
 //                [self.playerCurrent resume];
 //            if (self.listArray.count>1) {
@@ -841,6 +929,12 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
                 self.isReloadData = YES;
             }
             
+            
+            if (self.page == 2) {
+                self.VideoPage = 1;
+                [self requestQueryGetVideoComment];
+            }
+            
         }else{
 //             if (self.page == 1) {
 //                 if (self.Type == 1) {
@@ -860,6 +954,7 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
              [self.playerCurrent removeVideo];
                 [self.playerCurrent playVideoWithView:Playcell.coverImgView url:self.listArray[self.currentpage].videoUrl];
                 [self requestQuerySetVideoView:self.currentpage];
+ 
 //                [self.playerCurrent resume];
 //                [self.playerCurrent resume];
 //            if (self.listArray.count>1) {
@@ -1268,11 +1363,118 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
 
 
 
+-(void)requestQueryGetVideoComment{
+    
+
+    self.isRequest = YES;
+    NSDictionary *dic = @{@"commentId":[LPTools isNullToString:self.listArray[self.currentpage].id],
+                          @"page":[NSString stringWithFormat:@"%ld",(long)self.VideoPage]
+                          };
+    
+    [NetApiManager requestQueryGetVideoComment:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                NSArray *CommentArr = [responseObject[@"data"] mj_JSONObject];
+                if (CommentArr.count < 20) {
+                    self.VideoPage = 0;
+                }
+                [self.barrageView lj_addBarrageTexts:CommentArr];
+
+            }else{
+                [[UIWindow  visibleViewController].view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
+        }else{
+            [[UIWindow  visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+        
+        self.isRequest = NO;
+    }];
+}
+
+
+
 - (void)scrollViewToBottom:(BOOL)animated
 {
          //刷新完成
          NSIndexPath * dayOne = [NSIndexPath indexPathForRow:0 inSection:0];
         [self.tableview scrollToRowAtIndexPath:dayOne atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
- 
+
+
+#pragma mark - <LJBarrageViewDelegate>
+
+//重构弹幕样式
+- (UIView *)refactoringView:(UIView *)view text:(id)text {
+
+    view.lj_barrageLabel.textColor = arc4random_uniform(2) ? [UIColor colorWithHexString:@"#FFFFFF"] : [UIColor colorWithHexString:@"#FFDB32"];
+//
+    view.lj_barrageLabel.lx_width = view.lx_width+20;
+    view.lj_barrageLabel.layer.cornerRadius = LENGTH_SIZE(12);
+    view.lj_barrageLabel.clipsToBounds = YES;
+    
+    view.lx_width = view.lx_width+20;
+//    view.lx_y = view.lx_y + view.lx_y/LENGTH_SIZE(24)*6;
+//    view.lj_barrageLabel.lx_y = view.lj_barrageLabel.lx_y + view.lj_barrageLabel.lx_y/LENGTH_SIZE(24)*6;
+    view.lj_barrageLabel.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.4];
+   
+    [view.lj_barrageLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_offset(LENGTH_SIZE(24));
+        make.centerY.equalTo(view);
+        make.left.right.mas_offset(0);
+    }];
+    
+//    UILabel *label = [[UILabel alloc] init];
+//    [view addSubview:label];
+//    [label mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.height.mas_offset(LENGTH_SIZE(24));
+//        make.centerY.equalTo(view);
+//        make.left.right.mas_offset(0);
+//    }];
+//    label.text = text;
+//    label.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.4];
+//    label.layer.cornerRadius = LENGTH_SIZE(12);
+//    label.textColor = arc4random_uniform(2) ? [UIColor colorWithHexString:@"#FFFFFF"] : [UIColor colorWithHexString:@"#FFDB32"];
+
+
+    return view;
+}
+
+//单次点击弹幕
+- (void)clickBarrageWithView:(UIView *)view text:(id)text {
+    
+    NSLog(@"%@",text);
+}
+
+-(void)BarrageViewshut{
+    if (self.barrageView) {
+        [self.barrageView removeFromSuperview];
+        self.barrageView = nil;
+    }
+}
+
+-(void)BarrageViewopen{
+    //初始化展示区域界面
+    if (self.barrageView == nil) {
+        LJBarrageView *barrageView = [LJBarrageView lj_creatNormalWithFrame:CGRectMake(0, LENGTH_SIZE(82), self.view.frame.size.width, LENGTH_SIZE(96))];
+        [self.view addSubview:barrageView];
+        self.barrageView = barrageView;
+        
+        //配置参数
+        barrageView.barrageRow = 3;
+        barrageView.barrageHeightType = BarrageHeightTypeNormal;
+        barrageView.barrageShowStyle = LJBarrageShowStyleTypeShowTime;
+        barrageView.styleParameter = 4;
+        barrageView.delegate = self;
+        barrageView.barrageStyle.barrageBackgroundColor  = [UIColor clearColor];
+        barrageView.barrageStyle.barrageHeight = LENGTH_SIZE(32);
+        barrageView.barrageStyle.barrageFont = FONT_SIZE(15);
+        barrageView.barrageStyle.barrageTextAlignment = NSTextAlignmentCenter;
+        barrageView.barrageEnterInterval = 0.5;
+        barrageView.barrageShowMax = 13;
+    }
+    
+}
+
+
 @end

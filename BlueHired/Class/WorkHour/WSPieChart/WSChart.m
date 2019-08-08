@@ -42,22 +42,18 @@
  *  @param color    线段颜色
  */
 - (void)drawLineWithContext:(CGContextRef )context andStarPoint:(CGPoint )start andEndPoint:(CGPoint)end andIsDottedLine:(BOOL)isDotted andColor:(UIColor *)color{
-    
-    
+
     //    移动到点
     CGContextMoveToPoint(context, start.x, start.y);
     //    连接到
     CGContextAddLineToPoint(context, end.x, end.y);
     
-    
     CGContextSetLineWidth(context, 0.3);
-    
     
     [color setStroke];
     
     if (isDotted) {
         CGFloat ss[] = {1.5,2};
-        
         CGContextSetLineDash(context, 0, ss, 2);
     }
     CGContextMoveToPoint(context, end.x, end.y);

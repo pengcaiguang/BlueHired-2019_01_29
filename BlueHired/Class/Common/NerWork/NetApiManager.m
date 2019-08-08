@@ -2314,4 +2314,129 @@ static QNUploadManager *upManager = NULL;
     [NetRequestManager requestWithEnty:enty];
 }
 
+//首页弹幕内容
++ (void)requestQueryGetVideoComment:(id)paramer
+                                withHandle:(response)responseHandle{
+    NSString * appendURLString = @"comment/get_video_comment";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//领取个人资料奖励金
++ (void)requestUserMatPlan:(id)paramer
+                                withHandle:(response)responseHandle{
+    NSString * appendURLString = @"userMaterial/insert_user_mat_plan";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//查询积分兑换详情
++ (void)requestGetScoreMoney:(id)paramer
+                withHandle:(response)responseHandle{
+    NSString * appendURLString = @"prize/get_score_money";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//查询兑换记录 请求参数 String type  1为个人兑换记录  2为全部兑换记录
++ (void)requestGetScoreMoneyRecord:(id)paramer
+                        withHandle:(response)responseHandle{
+    NSString * appendURLString = @"prize/get_score_money_record";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+//积分兑换现金
++ (void)requestInsertScoremoney:(id)paramer
+                      URLString:(NSString *)URLString
+                     withHandle:(response)responseHandle{
+    NSString * appendURLString = URLString;
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//查询奖励领取列表
++ (void)requestQueryPrizeMoneyList:(id)paramer
+                             withHandle:(response)responseHandle{
+    NSString * appendURLString = @"billrecord/get_prize_money_list";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//领取奖励
++ (void)requestQueryUpdatePrizeMoney:(id)paramer
+                      URLString:(NSString *)URLString
+                     withHandle:(response)responseHandle{
+    NSString * appendURLString = URLString;
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+
+//获取银行卡信息以及手续费用
++ (void)requestQueryGetBankName:(id)paramer
+                                   withHandle:(response)responseHandle{
+    NSString * appendURLString = @"billrecord/get_bank_name";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//热门企业招聘列表
++ (void)requestWorkHotList:(id)paramer
+                      withHandle:(response)responseHandle{
+    NSString * appendURLString = @"work/get_work_hot_list";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+
+//邀请入职人员列表
++ (void)requestGetInviteWorkList:(id)paramer
+                       withHandle:(response)responseHandle{
+    NSString * appendURLString = @"/invite/get_invite_work_list";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+
+
 @end

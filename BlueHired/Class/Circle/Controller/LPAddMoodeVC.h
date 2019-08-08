@@ -7,10 +7,20 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LPPrizeMoney.h"
 
 NS_ASSUME_NONNULL_BEGIN
+typedef void(^LPAddMoodeVCBlock)(NSString *moodDetails ,NSString *moodUrl ,NSString *address);
 
 @interface LPAddMoodeVC : LPBaseViewController
+
+//Type =0 发圈子  type =1 工资分享   type =2 奖励分享
+@property (nonatomic,assign) NSInteger Type;
+@property (nonatomic,strong) NSString *ShareString;
+@property (nonatomic,strong) UIImage *ShareImage;
+@property (nonatomic,strong) LPPrizeDataMoney *Sharemodel;
+@property (nonatomic,copy) LPAddMoodeVCBlock block;
+
 
 @end
 

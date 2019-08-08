@@ -12,8 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AddressModel : NSObject
 @property (nonatomic, copy) NSString *name;
-@property (nonatomic, copy) NSString *cities;
-@property (nonatomic, copy) NSArray *msg;
+@property (nonatomic, copy) NSArray <NSString *>*area;
+@property (nonatomic, copy) NSArray <AddressModel *>*city;
+
 
 @end
 

@@ -29,7 +29,19 @@
                         </userDefinedRuntimeAttributes>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n9M-YJ-bYf">
-                        <rect key="frame" x="58.5" y="17" width="33" height="16"/>
+                        <rect key="frame" x="58.5" y="13" width="33" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="33" id="fVs-wa-j71">
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                            </constraint>
+                            <constraint firstAttribute="height" constant="20" id="ltX-x1-Edr">
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                            </constraint>
+                        </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                         <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
@@ -48,6 +60,9 @@
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uOa-vK-lOx">
                         <rect key="frame" x="271.5" y="16" width="35.5" height="17"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="35.5" id="CJz-Zq-JU2"/>
+                        </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" red="0.23529411759999999" green="0.68627450980000004" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
@@ -77,6 +92,17 @@
                             </constraint>
                         </constraints>
                     </imageView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jUf-Bq-XHd">
+                        <rect key="frame" x="91.5" y="8" width="40" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="30" id="KkF-y9-1IF"/>
+                            <constraint firstAttribute="width" constant="40" id="OaC-Ju-DYV"/>
+                        </constraints>
+                        <state key="normal" image="phone"/>
+                        <connections>
+                            <action selector="TouchPhont:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="jAw-yb-eoj"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="r2j-4g-mvZ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="15" id="0nE-Eb-GPB">
@@ -87,10 +113,18 @@
                     <constraint firstAttribute="bottom" secondItem="1eu-W6-snQ" secondAttribute="bottom" id="57x-js-Wvu"/>
                     <constraint firstItem="5IZ-gs-JSw" firstAttribute="centerY" secondItem="OFK-C8-fxk" secondAttribute="centerY" id="A4g-Ze-JLu"/>
                     <constraint firstAttribute="trailing" secondItem="uOa-vK-lOx" secondAttribute="trailing" constant="13" id="Cp3-i7-rgs"/>
+                    <constraint firstItem="uOa-vK-lOx" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="jUf-Bq-XHd" secondAttribute="trailing" constant="4" id="G5j-oE-Kyb"/>
                     <constraint firstItem="r2j-4g-mvZ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="13" id="ON4-7S-9HJ"/>
                     <constraint firstItem="uOa-vK-lOx" firstAttribute="bottom" secondItem="r2j-4g-mvZ" secondAttribute="bottom" id="RlC-41-WQH"/>
                     <constraint firstItem="1eu-W6-snQ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="VA0-HC-aR9"/>
+                    <constraint firstItem="jUf-Bq-XHd" firstAttribute="leading" secondItem="n9M-YJ-bYf" secondAttribute="trailing" id="YTQ-ai-Mtf">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
+                        </userDefinedRuntimeAttributes>
+                    </constraint>
+                    <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="5IZ-gs-JSw" secondAttribute="trailing" constant="13" id="aEU-1w-jCC"/>
                     <constraint firstItem="5IZ-gs-JSw" firstAttribute="leading" secondItem="OFK-C8-fxk" secondAttribute="trailing" constant="13" id="eqA-b1-Ymc"/>
+                    <constraint firstItem="jUf-Bq-XHd" firstAttribute="centerY" secondItem="n9M-YJ-bYf" secondAttribute="centerY" id="if5-jN-WM6"/>
                     <constraint firstAttribute="trailing" secondItem="1eu-W6-snQ" secondAttribute="trailing" id="jH7-NQ-HDb"/>
                     <constraint firstItem="n9M-YJ-bYf" firstAttribute="bottom" secondItem="r2j-4g-mvZ" secondAttribute="bottom" id="mUi-z2-lKO"/>
                     <constraint firstItem="OFK-C8-fxk" firstAttribute="top" secondItem="r2j-4g-mvZ" secondAttribute="bottom" constant="8" id="sOc-5s-tGR"/>
@@ -101,6 +135,9 @@
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
             <connections>
                 <outlet property="LayoutConstraint_Label_Top" destination="0nE-Eb-GPB" id="rjj-j8-bEj"/>
+                <outlet property="LayoutConstraint_relationMoneyLabel_width" destination="CJz-Zq-JU2" id="qhq-3e-lKw"/>
+                <outlet property="LayoutConstraint_typeLabel_width" destination="fVs-wa-j71" id="ynu-YD-cZ1"/>
+                <outlet property="phoneBtn" destination="jUf-Bq-XHd" id="2zf-Y9-5tn"/>
                 <outlet property="relationMoneyLabel" destination="uOa-vK-lOx" id="I5p-Pw-o5n"/>
                 <outlet property="remarkLabel" destination="OFK-C8-fxk" id="VA5-6t-jKS"/>
                 <outlet property="remarkiamge" destination="5IZ-gs-JSw" id="97g-sf-boM"/>
@@ -112,5 +149,6 @@
     </objects>
     <resources>
         <image name="note" width="12" height="12"/>
+        <image name="phone" width="20" height="20"/>
     </resources>
 </document>

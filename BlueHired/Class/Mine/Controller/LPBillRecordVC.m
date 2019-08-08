@@ -28,7 +28,6 @@
     self.navigationItem.title = @"个人账单";
     self.page = 1;
 
-    
     [self tableviewinit];
     [self requestQueryBillrecord];
 }

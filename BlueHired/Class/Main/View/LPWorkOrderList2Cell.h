@@ -18,6 +18,10 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @interface LPWorkOrderList2Cell : UITableViewCell
+
+@property (weak, nonatomic) IBOutlet UIView *TopView;
+
+
 @property (weak, nonatomic) IBOutlet UIImageView *mechanismUrlImageView;
 @property (weak, nonatomic) IBOutlet UILabel *mechanismNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *wageRangeLabel;

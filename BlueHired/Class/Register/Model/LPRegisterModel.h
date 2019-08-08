@@ -29,6 +29,7 @@
 @property(nonatomic,copy) NSString *sumNum;
 @property(nonatomic,copy) NSString *regUserMoney;
 @property(nonatomic,copy) NSString *remark;
+@property(nonatomic,copy) NSString *inviteNum;
 
 @end
 

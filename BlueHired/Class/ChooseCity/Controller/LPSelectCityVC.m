@@ -12,7 +12,11 @@
 #import "UITableView+SCIndexView.h"
 #import "LPCityCell.h"
 #import "LPSearchBar.h"
-#import "AddressPickerView.h"
+//#import "AddressPickerView.h"
+
+#import "AddressModel.h"
+
+
 
 static NSString *LPCityCellID = @"LPCityCell";
 
@@ -22,6 +26,7 @@ static NSString *CityRecently = @"CityRecently";
 
 @property (nonatomic, strong)UITableView *tableview;
 @property (nonatomic, strong)UITableView *Subtableview;
+@property (nonatomic, strong)UITableView *Citytableview;
 
 @property(nonatomic,strong) LPCityDataManager *manager;
 @property(nonatomic,strong) NSArray *firstLetterArray;
@@ -34,6 +39,7 @@ static NSString *CityRecently = @"CityRecently";
 @property (nonatomic ,strong) NSMutableArray * pArr;/**< 地址选择器数据源,装省份模型,每个省份模型内包含城市模型*/
 
 @property (nonatomic, assign) NSInteger selectPRow;
+@property (nonatomic, assign) NSInteger selectSRow;
 
 @end
 
@@ -56,16 +62,24 @@ static NSString *CityRecently = @"CityRecently";
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.edges.equalTo(self.view);
         make.left.top.bottom.mas_offset(0);
-        make.width.mas_offset(120);
+        make.width.mas_offset(SCREEN_WIDTH/3);
     }];
     
     [self.view addSubview:self.Subtableview];
     [self.Subtableview mas_makeConstraints:^(MASConstraintMaker *make) {
         //        make.edges.equalTo(self.view);
-        make.right.top.bottom.mas_offset(0);
+        make.width.mas_offset(SCREEN_WIDTH/3);
         make.left.equalTo(self.tableview.mas_right).offset(0);
+        make.top.bottom.mas_offset(0);
     }];
     
+    [self.view addSubview:self.Citytableview];
+    [self.Citytableview mas_makeConstraints:^(MASConstraintMaker *make) {
+        //        make.edges.equalTo(self.view);
+        make.width.mas_offset(SCREEN_WIDTH/3);
+        make.left.equalTo(self.Subtableview.mas_right).offset(0);
+        make.top.bottom.mas_offset(0);
+    }];
     
     
 //    [self setSearchView];
@@ -177,31 +191,47 @@ static NSString *CityRecently = @"CityRecently";
     }
     
     NSArray *DataArray = [str22 mj_JSONObject];
+   
+    _pArr         = [ AddressModel mj_objectArrayWithKeyValuesArray:str22];
     
-    _pArr         = [[NSMutableArray alloc]init];
+//    NSArray * reArray = @[@"北京",@"上海",@"广州",@"深圳",@"杭州",@"东莞"];\
+//    AddressModel *REp = [[AddressModel alloc] init];
+//    REp.name = @"热门城市";
+//    REp.city
+//
+//    AddressProvince * REp     = [AddressModel provinceWithName:@"热门城市"
+//                                                           cities:reArray];
+//    [_pArr addObject:REp];
+//
+//    AddressProvince * Allp     = [AddressModel provinceWithName:@"全国"
+//                                                           cities:@[@"全国"]];
+//    [_pArr addObject:Allp];
+//    [_pArr addObject:];
     
-    NSArray * reArray = @[@"北京",@"上海",@"广州",@"深圳",@"杭州",@"东莞"];
-    AddressProvince * REp     = [AddressProvince provinceWithName:@"热门城市"
-                                                           cities:reArray];
-    [_pArr addObject:REp];
-    
-    AddressProvince * Allp     = [AddressProvince provinceWithName:@"全国"
-                                                           cities:@[@"全国"]];
-    [_pArr addObject:Allp];
- 
     //省份模型数组加载各个省份模型
-    for (int i = 0 ;i < DataArray.count; i++) {
-        NSDictionary *dic = DataArray[i];
-        NSArray  * citys = [dic[@"cities"] mj_JSONObject];
-        NSMutableArray *Citys = [[NSMutableArray alloc] init];
-        for (int j = 0 ;j < citys.count; j++) {
-            NSDictionary *citysdic = citys[j];
-            [Citys addObject:citysdic[@"name"]];
-        }
-        AddressProvince * p     = [AddressProvince provinceWithName:dic[@"name"]
-                                                             cities:Citys];
-        [_pArr addObject:p];
-    }
+//    for (int i = 0 ;i < DataArray.count; i++) {
+//        AddressProvince *p = [[AddressProvince alloc] init];
+//
+//        NSDictionary *dic = DataArray[i];
+//        NSArray  * citys = [dic[@"city"] mj_JSONObject];
+//        NSMutableArray *Citys = [[NSMutableArray alloc] init];
+//
+//        for (int j = 0 ;j < citys.count; j++) {
+//            NSDictionary *citysdic = citys[j];
+//            [Citys addObject:citysdic[@"name"]];
+//
+//            NSArray  * cit = [citysdic[@"area"] mj_JSONObject];
+//            p.cityModels = cit;
+//
+//
+//        }
+////        AddressProvince * p  = [AddressProvince provinceWithName:dic[@"name"]
+////                                                             cities:Citys];
+//        p.name = dic[@"name"];
+//        p.cities = Citys;
+//
+//        [_pArr addObject:p];
+//    }
     
  
 }
@@ -314,9 +344,13 @@ static NSString *CityRecently = @"CityRecently";
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if (self.tableview == tableView) {
         return self.pArr.count;
+    }else if (self.Subtableview == tableView){
+        AddressModel * p     = self.pArr[self.selectPRow];
+//        NSLog(@"gfdwgrd%lu",(unsigned long)p.city.count);
+        return p.city.count;
     }else{
-        AddressProvince * p     = self.pArr[self.selectPRow];
-        return p.cities.count;
+        AddressModel * p  = self.pArr[self.selectPRow];
+        return p.city[self.selectSRow].area.count;
     }
 }
 //-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
@@ -327,50 +361,13 @@ static NSString *CityRecently = @"CityRecently";
 //    return self.firstLetterArray;
 //}
 
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-//    if (self.isSearch) {
-//        return 44;
-//    }
-//    if (indexPath.section == 0 || indexPath.section == 1) {
-//        NSArray <LPCityModel *>*array = self.listDic[self.firstLetterArray[indexPath.section]];
-//        CGFloat h = 30 * ceilf(array.count/3.0) + 10 * (ceilf(array.count/3.0) -1) + 40;
-//        return h;
-//    }else{
-//        return 44;
-//    }
-     return 44;
-}
+//-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+//
+//     return LENGTH_SIZE(44.0);
+//}
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-//    if (self.isSearch) {
-//        static NSString *rid=@"cell";
-//        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:rid];
-//        if(cell == nil){
-//            cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rid];
-//        }
-//        NSArray <LPCityModel *>*array = self.listDic[self.firstLetterArray[indexPath.section]];
-//        cell.textLabel.text = array[indexPath.row].c_name;
-//        return cell;
-//    }
-//    if (indexPath.section == 0 || indexPath.section == 1) {
-//        LPCityCell *cell = [tableView dequeueReusableCellWithIdentifier:LPCityCellID];
-//        NSArray <LPCityModel *>*array = self.listDic[self.firstLetterArray[indexPath.section]];
-//        cell.array = array;
-//        cell.block = ^(LPCityModel *model) {
-//            [self saveRecently:model];
-//        };
-//        return cell;
-//
-//    }else{
-//        static NSString *rid=@"cell";
-//        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:rid];
-//        if(cell == nil){
-//            cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rid];
-//        }
-//        NSArray <LPCityModel *>*array = self.listDic[self.firstLetterArray[indexPath.section]];
-//        cell.textLabel.text = array[indexPath.row].c_name;
-//        return cell;
-//    }
+ 
     static NSString *rid=@"cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:rid];
     if(cell == nil){
@@ -382,20 +379,31 @@ static NSString *CityRecently = @"CityRecently";
             make.height.mas_offset(1);
         }];
         LineV.backgroundColor = [UIColor colorWithHexString:@"#f5f5f5"];
+        cell.textLabel.textColor = [UIColor colorWithHexString:@"#333333"];
+        cell.textLabel.numberOfLines = 0;
+        cell.textLabel.font = FONT_SIZE(14);
     }
 //    NSArray <LPCityModel *>*array = self.listDic[self.firstLetterArray[indexPath.section]];
     if (self.tableview == tableView) {
-        AddressProvince * p     = self.pArr[indexPath.row];
+        AddressModel * p     = self.pArr[indexPath.row];
         cell.textLabel.text = p.name;
         if (self.selectPRow == indexPath.row) {
+            cell.contentView.backgroundColor = [UIColor colorWithHexString:@"#EBEBEB"];
+        }else{
+            cell.contentView.backgroundColor = [UIColor colorWithHexString:@"#E0E0E0"];
+        }
+    }else if (tableView == self.Subtableview){
+        AddressModel * p  = self.pArr[self.selectPRow];
+        cell.textLabel.text = p.city[indexPath.row].name;
+        if (self.selectSRow == indexPath.row) {
             cell.contentView.backgroundColor = [UIColor whiteColor];
         }else{
             cell.contentView.backgroundColor = [UIColor colorWithHexString:@"#EBEBEB"];
         }
     }else{
         cell.contentView.backgroundColor = [UIColor whiteColor];
-        AddressProvince * p     = self.pArr[self.selectPRow];
-        cell.textLabel.text = p.cities[indexPath.row];
+        AddressModel * p     = self.pArr[self.selectPRow];
+        cell.textLabel.text = p.city[self.selectSRow].area[indexPath.row];
     }
     return cell;
     
@@ -407,12 +415,45 @@ static NSString *CityRecently = @"CityRecently";
 //    [self saveRecently:model];
     if (self.tableview == tableView) {
         self.selectPRow = indexPath.row;
-        [self.Subtableview reloadData];
+        self.selectSRow = 0;
         [self.tableview reloadData];
+        [self.Subtableview reloadData];
+        [self.Citytableview reloadData];
+        
+        NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        [self.Subtableview scrollToRowAtIndexPath:scrollIndexPath
+                                atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        AddressModel * p     = self.pArr[self.selectPRow];
+        if (p.city[0].area.count != 0) {
+        [self.Citytableview scrollToRowAtIndexPath:scrollIndexPath
+                                 atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        }
+        
     }else if (self.Subtableview == tableView){
+        self.selectSRow = indexPath.row;
+        AddressModel * p     = self.pArr[self.selectPRow];
+        if (p.city[indexPath.row].area.count == 0) {
+            LPCityModel *model = [[LPCityModel alloc] init];
+            model.c_name = p.city[indexPath.row].name;
+            [self pop:model];
+            return;
+        }
+        
+        
+        [self.Subtableview reloadData];
+        [self.Citytableview reloadData];
+        NSIndexPath *scrollIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+        [self.Citytableview scrollToRowAtIndexPath:scrollIndexPath
+                                  atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        
+    }else if (self.Citytableview == tableView){
         LPCityModel *model = [[LPCityModel alloc] init];
-        AddressProvince * p     = self.pArr[self.selectPRow];
-        model.c_name = p.cities[indexPath.row];
+        AddressModel * p     = self.pArr[self.selectPRow];
+        if (indexPath.row == 0) {
+            model.c_name = p.city[self.selectSRow].name;
+        }else{
+            model.c_name = p.city[self.selectSRow].area[indexPath.row];
+        }
 //        [self saveRecently:model];
         [self pop:model];
 
@@ -491,6 +532,25 @@ static NSString *CityRecently = @"CityRecently";
         
     }
     return _Subtableview;
+}
+
+
+- (UITableView *)Citytableview{
+    if (!_Citytableview) {
+        _Citytableview = [[UITableView alloc]init];
+        _Citytableview.delegate = self;
+        _Citytableview.dataSource = self;
+        _Citytableview.tableFooterView = [[UIView alloc]init];
+        _Citytableview.rowHeight = UITableViewAutomaticDimension;
+        _Citytableview.estimatedRowHeight = 100;
+        _Citytableview.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _Citytableview.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+        [_Citytableview registerNib:[UINib nibWithNibName:LPCityCellID bundle:nil] forCellReuseIdentifier:LPCityCellID];
+        _Citytableview.backgroundColor = [UIColor colorWithHexString:@"#f5f5f5"];
+        _Citytableview.showsVerticalScrollIndicator = NO;
+ 
+    }
+    return _Citytableview;
 }
 
 

@@ -513,8 +513,8 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
     }
     
     if ( AlreadyLogin ||
-        (indexPath.section == 2 && (indexPath.row == 3||indexPath.row == 6) && self.RecordArr.count == 0) ||
-        (indexPath.section == 3 && (indexPath.row == 3||indexPath.row == 6) && self.RecordArr.count)) {
+        (indexPath.section == 2 && (indexPath.row == 6) && self.RecordArr.count == 0) ||
+        (indexPath.section == 3 && (indexPath.row == 6) && self.RecordArr.count)) {
         
         if (indexPath.section == 2 || indexPath.section == 3) {
 //            if (kUserDefaultsValue(USERDATA).integerValue == 4 ||
@@ -662,16 +662,20 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
     CNAuthorizationStatus status = [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts];
     if (status == CNAuthorizationStatusNotDetermined) {
         CNContactStore *store = [[CNContactStore alloc] init];
+        WEAK_SELF()
         [store requestAccessForEntityType:CNEntityTypeContacts completionHandler:^(BOOL granted, NSError*  _Nullable error) {
-            if (error) {
-                NSLog(@"授权失败");
-                [self showAlertViewAboutNotAuthorAccessContact];
-            }else {
-                NSLog(@"成功授权");
-                LPAddressBookVC *vc = [[LPAddressBookVC alloc]init];
-                vc.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:vc animated:YES];
-            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (error) {
+                    NSLog(@"授权失败");
+                    [weakSelf showAlertViewAboutNotAuthorAccessContact];
+                }else {
+                    NSLog(@"成功授权");
+                    LPAddressBookVC *vc = [[LPAddressBookVC alloc]init];
+                    vc.hidesBottomBarWhenPushed = YES;
+                    [weakSelf.navigationController pushViewController:vc animated:YES];
+                }
+            });
+            
         }];
     }
     else if(status == CNAuthorizationStatusRestricted)

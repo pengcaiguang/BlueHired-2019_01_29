@@ -28,15 +28,17 @@
     }];
     self.cycleScrollView.delegate = self;
     
-    self.lendTypeLabel.layer.borderColor = [UIColor baseColor].CGColor;
-    self.lendTypeLabel.layer.borderWidth = 0.5;
+//    self.lendTypeLabel.layer.borderColor = [UIColor baseColor].CGColor;
+//    self.lendTypeLabel.layer.borderWidth = 0.5;
     self.lendTypeLabel.layer.cornerRadius = 2;
+    self.lendTypeLabel.backgroundColor = [UIColor baseColor];
+    [self.lendTypeLabel setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 //    [self addShadowToView:self.BackView withColor:[UIColor colorWithHexString:@"#12598B"]];
 
     XHStarRateView *starRateView = [[XHStarRateView alloc] initWithFrame:CGRectMake(0,0, LENGTH_SIZE(85), LENGTH_SIZE(13)) isTouch:YES];
     starRateView.isAnimation = YES;
     starRateView.rateStyle = HalfStar;
-    starRateView.delegate = self;
+
     self.starRateView = starRateView;
     [self.mechanismScoreView addSubview:starRateView];
     
@@ -44,7 +46,14 @@
     self.reMoneyLabel.layer.borderWidth = 1;
     self.reMoneyLabel.layer.borderColor = [UIColor colorWithHexString:@"#FFD291"].CGColor;
 
-    self.ReMoneyDeclare.contentEdgeInsets = UIEdgeInsetsMake(LENGTH_SIZE(5),0, 0, 0);
+    [LPTools setViewShapeLayer:self.ReMoneyDeclare CornerRadii:6 byRoundingCorners:UIRectCornerBottomLeft | UIRectCornerBottomRight];
+    
+    self.AgeLabel.layer.cornerRadius = 2;
+    self.AgeLabel.layer.borderColor = [UIColor baseColor].CGColor;
+    self.AgeLabel.layer.borderWidth = 1;
+    self.AgeLabel.textColor = [UIColor baseColor];
+    
+    
 }
 
 
@@ -66,10 +75,18 @@
 -(void)setModel:(LPWorkDetailModel *)model{
     _model = model;
     self.mechanismNameLabel.text = model.data.mechanismName;
-    self.mechanismScoreLabel.text = [NSString stringWithFormat:@"%@分",model.data.mechanismScore];
+    self.mechanismScoreLabel.text = [NSString stringWithFormat:@"%.1f分",model.data.mechanismScore.floatValue];
     self.postNameLabel.text = model.data.postName;
     self.starRateView.currentScore = model.data.mechanismScore.floatValue/2;
 
+    if (model.data.age.length) {
+        self.AgeLabel.text = [NSString stringWithFormat:@" %@ ", model.data.age];
+        self.AgeLabel.hidden = NO;
+    }else{
+        self.AgeLabel.hidden = YES;
+    }
+    
+    
     if (model.data.reMoney.integerValue>0) {
         [self.reMoneyLabel setTitle:[NSString stringWithFormat:@"    %ld   ",
                                      (long)model.data.reMoney.integerValue]
@@ -77,7 +94,7 @@
         CGFloat ReMoneyWidth = [LPTools widthForString:[NSString stringWithFormat:@"    %ld   ",
                                                         (long)model.data.reMoney.integerValue] fontSize:FontSize(16) andHeight:LENGTH_SIZE(21)];
         self.keyLabel_constraint_right.constant = LENGTH_SIZE(13.0 +10 ) +ReMoneyWidth;
-        
+      
         self.reMoneyLabel.hidden = NO;
         self.reMoneyImage.hidden = NO;
 
@@ -88,16 +105,18 @@
     }
     
     if ([model.data.postName isEqualToString:@"小时工"]) {
-        self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/时",model.data.workMoney];
+        self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/时",reviseString(model.data.workMoney)];
+        [self.ReMoneyDeclare setTitle:@"补贴工价说明" forState:UIControlStateNormal];
     }else{
         self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/月",model.data.wageRange];
+        [self.ReMoneyDeclare setTitle:@"返费奖励说明" forState:UIControlStateNormal];
     }
     
     self.workTypeNameLabel.text = [NSString stringWithFormat:@"招%@人 / 已报名%@人",model.data.maxNumber,model.data.applyNumber];
     self.workName.text = model.data.workTypeName;
     self.lendTypeLabel.hidden = ![model.data.lendType integerValue];
-
-    
+    self.LayouConstraint_lendTypeLabel_Width.constant = ![model.data.lendType integerValue] ? 0 : LENGTH_SIZE(43);
+    self.LayouConstraint_AgeLabel_left.constant = ![model.data.lendType integerValue] ? LENGTH_SIZE(13) : LENGTH_SIZE(64);
     if (model.data.status.integerValue == 1) {
         self.workTypeNameLabel.text = [NSString stringWithFormat:@"招%@人",model.data.maxNumber];
         self.applyNumberLabel.hidden = NO;
@@ -122,10 +141,11 @@
 //    self.cycleScrollView = [SDCycleScrollView cycleScrollViewWithFrame:self.imageBgView.frame imageNamesGroup:imageArray];
     self.cycleScrollView.imageURLStringsGroup = imageUrlArray;
  
-
-
+ 
     self.keyLabel.text = @"";
     [self.keyLabel.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    model.data.key = [model.data.key stringByReplacingOccurrencesOfString:@"丨" withString:@"|"];
+
     NSArray * tagArr = [model.data.key componentsSeparatedByString:@"|"];
     CGFloat tagBtnX = 0;
     CGFloat tagBtnY = 0;
@@ -133,8 +153,8 @@
     if (model.data.key.length >0) {
         for (int i= 0; i<tagArr.count; i++) {
             
-            CGSize tagTextSize = [tagArr[i] sizeWithFont:[UIFont systemFontOfSize:FontSize(12)] maxSize:CGSizeMake(SCREEN_WIDTH-LENGTH_SIZE(26), LENGTH_SIZE(17))];
-            if (tagBtnX+tagTextSize.width+14 > SCREEN_WIDTH-LENGTH_SIZE(26)) {
+            CGSize tagTextSize = [tagArr[i] sizeWithFont:[UIFont systemFontOfSize:FontSize(12)] maxSize:CGSizeMake(SCREEN_WIDTH-LENGTH_SIZE(![self.model.data.lendType integerValue]?73:26), LENGTH_SIZE(17))];
+            if (tagBtnX+tagTextSize.width+14 > SCREEN_WIDTH-LENGTH_SIZE(![self.model.data.lendType integerValue]?73:26)) {
                 tagBtnX = 0;
                 tagBtnY += LENGTH_SIZE(17)+8;
             }
@@ -151,22 +171,25 @@
             
             tagBtnX = CGRectGetMaxX(tagBtn.frame)+LENGTH_SIZE(4);
         }
-        //    self.KeyView.backgroundColor = [UIColor redColor];
+ 
         self.LayoutConstraint_KeyView.constant  = tagBtnY+LENGTH_SIZE(17);
     }else{
-        self.LayoutConstraint_KeyView.constant  = 0;
+        self.LayoutConstraint_KeyView.constant  = LENGTH_SIZE(17);
     }
-    
-   
+    self.LayouConstraint_lendTypeLabel_Bottom.constant = 9;
+
+//    if (self.model.data.key.length == 0 && ![self.model.data.lendType integerValue]) {
+//        self.LayoutConstraint_KeyView.constant  = 0;
+//    }
     
     
     NSString *strbackmoney = [self removeHTML2:model.data.reInstruction];
     if (strbackmoney.length>0) {
         self.BackMoneylabel.text = strbackmoney;
         CGFloat BackMoneyHeight = [LPTools calculateRowHeight:strbackmoney fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(26)];
-        self.LayouConstraint_BackView_Height.constant = LENGTH_SIZE(136 + 44 +20) + BackMoneyHeight + self.LayoutConstraint_KeyView.constant;
+        self.LayouConstraint_BackView_Height.constant = LENGTH_SIZE(128 + 36 +20) + BackMoneyHeight + self.LayoutConstraint_KeyView.constant;
     }else{
-        self.LayouConstraint_BackView_Height.constant = LENGTH_SIZE(136) + self.LayoutConstraint_KeyView.constant;
+        self.LayouConstraint_BackView_Height.constant = LENGTH_SIZE(128) + self.LayoutConstraint_KeyView.constant;
     }
     
     
@@ -186,7 +209,6 @@
         ![url containsString:@".gif"]) {
         WJMoviePlayerView *playerView = [[WJMoviePlayerView alloc] init];
         playerView.movieURL = [NSURL URLWithString:url];
-//        [playerView.coverView yy_setImageWithURL:[NSString stringWithFormat:@"%@?vframe/png/offset/0.001",url] options:nil];
         [playerView.coverView yy_setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@?vframe/png/offset/0.001",url]]
                           placeholder:[UIImage imageNamed:@"NoImage"]];
         [playerView show];

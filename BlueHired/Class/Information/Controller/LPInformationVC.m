@@ -61,7 +61,8 @@ static NSString *LPInformationVideoCollectionViewCellID = @"LPInfoMationVideoCel
     // Do any additional setup after loading the view.
 
     self.labelArray = [NSMutableArray array];
-    
+ 
+
 //    self.extendedLayoutIncludesOpaqueBars = YES;
 //    if (@available(iOS 11.0, *)) {
 //        self.collectionView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
@@ -109,6 +110,7 @@ static NSString *LPInformationVideoCollectionViewCellID = @"LPInfoMationVideoCel
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.navigationController.navigationBar.translucent = NO;
+     [self.navigationController.navigationBar setShadowImage:[UIImage new]];
     self.navigationController.navigationBar.barTintColor = [UIColor baseColor];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:[UIColor baseColor]] forBarMetrics:UIBarMetricsDefault];
     

@@ -16,6 +16,7 @@
 #import <AVFoundation/AVCaptureDevice.h>
 #import <AVFoundation/AVMediaFormat.h>
 
+
  
 
 
@@ -935,6 +936,7 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
                                                Title:@""
                                      andImageHandler:^(UIImage *image) {
                                          [self requestQueryGetBiaduBankAccessToken:image];
+                                         
 //                                         [[AipOcrService shardService] detectIdCardFrontFromImage:image withOptions:nil successHandler:_successHandler failHandler:_failHandler];
                                         
                                      }];
@@ -1027,7 +1029,6 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
 
 
 - (void)fieldTextDidChange:(UITextField *)textField
-
 {
     /**
      *  最大输入长度,中英文字符都按一个字符计算
@@ -1396,8 +1397,9 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
     
     NSString *virValue = [DataTimeTool stringFromDate:[NSDate date] DateFormat:@"yyyy-MM-dd-HH-mm"];
     NSString *virValueData = [NSString stringWithFormat:@"%@-%@-lp",virValue,kUserDefaultsValue(LOGINID)];
-    NSData *imageData = [self jpgDataWithImage:Image sizeLimit:512000];
 
+    NSData *imageData = [self jpgDataWithImage:Image sizeLimit:512000];
+    NSLog(@"imageData = %lu",(unsigned long)imageData.length);
     
     NSDictionary *dic = @{@"image":[imageData base64EncodedStringWithOptions:0],
                           @"id_card_side":@"front",

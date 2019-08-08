@@ -24,6 +24,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+//    [LPTools deleteWebCache];
     self.navigationItem.title = @"活动详情";
     [self WebKit];
 }

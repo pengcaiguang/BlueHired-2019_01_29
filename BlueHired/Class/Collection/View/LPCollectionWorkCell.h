@@ -29,12 +29,14 @@ typedef void(^LPCollectionWorkCellBlock)(LPWorkCollectionDataModel *model);
 @property (weak, nonatomic) IBOutlet UILabel *workTypeNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *applyNumberLabel;
 @property (weak, nonatomic) IBOutlet UILabel *isWorkers;
+@property (weak, nonatomic) IBOutlet UILabel *AgeLabel;
 
 @property (weak, nonatomic) IBOutlet UIButton *selectButton;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *label_contraint_width;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *keyLabel_constraint_right;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *keyLabel_constraint_Height;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *lendTypeLabel_constraint_Width;
 
 @property(nonatomic,strong) XHStarRateView *starRateView;
 

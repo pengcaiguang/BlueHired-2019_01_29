@@ -21,6 +21,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSNumber *time;
 @property (nonatomic, strong) NSString *type;
 @property (nonatomic, strong) NSString *userId;
+@property (nonatomic, strong) NSString *status;
+@property (nonatomic, strong) NSString *chargeMoney;
+
 @end
 
 

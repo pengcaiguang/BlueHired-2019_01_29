@@ -351,13 +351,11 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
                 }];
             }
             
-       
-            
                 [imageView yy_setImageWithURL:[NSURL URLWithString:[imageStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]
                                   placeholder:[UIImage imageNamed:@"NoImage"]
                                       options:YYWebImageOptionProgressiveBlur | YYWebImageOptionShowNetworkActivity | YYWebImageOptionSetImageWithFadeAnimation
                                      progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-                                         NSLog(@"接收的当前接收大小%ld  总大小%ld",(long)receivedSize,expectedSize);
+//                                         NSLog(@"接收的当前接收大小%ld  总大小%ld",(long)receivedSize,expectedSize);
                                      }
                                     transform:^UIImage *(UIImage *image, NSURL *url) {
                                         return  image  ;

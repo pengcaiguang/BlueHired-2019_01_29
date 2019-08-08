@@ -39,6 +39,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+//    [LPTools deleteWebCache];
     // Do any additional setup after loading the view from its nib.
     self.navigationItem.title = @"签到";
     self.selectDateArray = [NSMutableArray array];

@@ -659,6 +659,46 @@ typedef void (^UploadImageTempBlock)(BOOL sussess,NSMutableArray *array);
 //首页获取弹框入职评价
 + (void)requestQueryGetWorkOrderRemarkMain:(id)paramer
                                 withHandle:(response)responseHandle;
+//首页弹幕内容
++ (void)requestQueryGetVideoComment:(id)paramer
+                         withHandle:(response)responseHandle;
+
+//领取个人资料奖励金
++ (void)requestUserMatPlan:(id)paramer
+                withHandle:(response)responseHandle;
+
+//查询积分兑换详情
++ (void)requestGetScoreMoney:(id)paramer
+                  withHandle:(response)responseHandle;
+
+//查询兑换记录 请求参数 String type  1为个人兑换记录  2为全部兑换记录
++ (void)requestGetScoreMoneyRecord:(id)paramer
+                        withHandle:(response)responseHandle;
+//积分兑换现金
++ (void)requestInsertScoremoney:(id)paramer
+                      URLString:(NSString *)URLString
+                     withHandle:(response)responseHandle;
+
+//查询奖励领取列表
++ (void)requestQueryPrizeMoneyList:(id)paramer
+                        withHandle:(response)responseHandle;
+
+//领取奖励
++ (void)requestQueryUpdatePrizeMoney:(id)paramer
+                           URLString:(NSString *)URLString
+                          withHandle:(response)responseHandle;
+
+//获取银行卡信息以及手续费用
++ (void)requestQueryGetBankName:(id)paramer
+                     withHandle:(response)responseHandle;
+//热门企业招聘列表
++ (void)requestWorkHotList:(id)paramer
+                withHandle:(response)responseHandle;
+
+
+//邀请入职人员列表
++ (void)requestGetInviteWorkList:(id)paramer
+                      withHandle:(response)responseHandle;
 
 @end
 

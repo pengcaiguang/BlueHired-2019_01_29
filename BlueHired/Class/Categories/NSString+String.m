@@ -31,7 +31,7 @@
     long long time=[timeString longLongValue];
     NSDate *d = [[NSDate alloc]initWithTimeIntervalSince1970:time/1000.0];
     NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
-    [formatter setDateFormat:@"yyyy/MM/dd HH:mm:ss"];
+    [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     NSString*timeStr=[formatter stringFromDate:d];
     return timeStr;
 }

@@ -36,6 +36,8 @@
 //#define  IS_iPhoneX ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(1125, 2436), [UIScreen mainScreen].bounds.size) || CGSizeEqualToSize(CGSizeMake(828, 1792), [UIScreen mainScreen].bounds.size)  || CGSizeEqualToSize(CGSizeMake(1242, 2688), [UIScreen mainScreen].bounds.size) : NO)
 #define kNavBarHeight              ([DeviceUtils deviceType] == IPhone_X ? 88.0 : 64.0)
 
+#define kStatusBarHeight              ([DeviceUtils deviceType] == IPhone_X ? 44.0 : 20.0)
+
 #define kBottomBarHeight        ([DeviceUtils deviceType] == IPhone_X ? 34.0 : 0)
 
 typedef NS_ENUM(NSInteger,DeviceType) {

@@ -1172,7 +1172,6 @@ static NSString *LPWorkHourTallyBookCellID = @"LPWorkHourTallyBookCell";
             }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
-            
         }
         
     }];

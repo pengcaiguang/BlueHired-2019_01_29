@@ -9,6 +9,7 @@
 #import "LPTools.h"
 #import "WHActivityView.h"
 #import <AVFoundation/AVFoundation.h>
+#import <WebKit/WebKit.h>
 
 @interface LPTools ()
 
@@ -124,7 +125,7 @@ LPTools * LPTools_instance = nil ;
 //收藏
 +(void)AlertCollectView:(NSString *)str{
     CustomIOSAlertView *alert = [[CustomIOSAlertView alloc] init];
-    UIImageView *view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 205, 182)];
+    UIImageView *view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, LENGTH_SIZE(205) , LENGTH_SIZE(182))];
     view.image = [UIImage imageNamed:@"AlertCollectImage"];
     alert.containerView = view;
     alert.buttonTitles=@[];
@@ -140,21 +141,21 @@ LPTools * LPTools_instance = nil ;
 //签到
 +(void)AlertSignInView:(NSString *)str{
     CustomIOSAlertView *alert = [[CustomIOSAlertView alloc] init];
-    UIImageView *view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 205, 182)];
+    UIImageView *view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, LENGTH_SIZE(205) , LENGTH_SIZE(182))];
     view.image = [UIImage imageNamed:@"AlertSignImage"];
     
-    UIImageView *IconImage = [[UIImageView alloc] initWithFrame:CGRectMake(79, 127, 17, 17)];
+    UIImageView *IconImage = [[UIImageView alloc] initWithFrame:CGRectMake(LENGTH_SIZE(79), LENGTH_SIZE(127), LENGTH_SIZE(17), LENGTH_SIZE(17))];
     IconImage.image = [UIImage imageNamed:@"AlertSignIcon"];
     [view addSubview:IconImage];
     
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(99, 131, 80, 10)];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(LENGTH_SIZE(99), LENGTH_SIZE(131), LENGTH_SIZE(80), LENGTH_SIZE(10))];
     label.textAlignment = NSTextAlignmentLeft;
     label.font = [UIFont systemFontOfSize:13];
     label.text = [NSString stringWithFormat:@"+%@",str];
     label.textColor = [UIColor colorWithHexString:@"#FFFFB300"];
     [view addSubview:label];
     
-    UILabel *TitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 151, 205, 15)];
+    UILabel *TitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, LENGTH_SIZE(151), LENGTH_SIZE(205), LENGTH_SIZE(15))];
     TitleLabel.font = [UIFont systemFontOfSize:16];
     TitleLabel.textAlignment = NSTextAlignmentCenter;
     TitleLabel.textColor = [UIColor colorWithHexString:@"#FF434343"];
@@ -175,7 +176,7 @@ LPTools * LPTools_instance = nil ;
 //首评成功
 +(void)AlertTopCommentView:(NSString *)str{
     CustomIOSAlertView *alert = [[CustomIOSAlertView alloc] init];
-    UIImageView *view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 205, 182)];
+    UIImageView *view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, LENGTH_SIZE(205) , LENGTH_SIZE(182))];
     view.image = [UIImage imageNamed:@"TopAlertCommentImage"];
     alert.containerView = view;
     alert.buttonTitles=@[];
@@ -190,7 +191,7 @@ LPTools * LPTools_instance = nil ;
 //评价成功
 +(void)AlertCommentView:(NSString *)str{
     CustomIOSAlertView *alert = [[CustomIOSAlertView alloc] init];
-    UIImageView *view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 205, 182)];
+    UIImageView *view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, LENGTH_SIZE(205) , LENGTH_SIZE(182))];
     view.image = [UIImage imageNamed:@"AlertCommentImage"];
     alert.containerView = view;
     alert.buttonTitles=@[];
@@ -205,7 +206,7 @@ LPTools * LPTools_instance = nil ;
 //工时记录
 +(void)AlertWorkHourView:(NSString *)str{
     CustomIOSAlertView *alert = [[CustomIOSAlertView alloc] init];
-    UIImageView *view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 205, 182)];
+    UIImageView *view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, LENGTH_SIZE(205) , LENGTH_SIZE(182))];
     view.image = [UIImage imageNamed:@"AlertWorkHourImage"];
     alert.containerView = view;
     alert.buttonTitles=@[];
@@ -220,7 +221,7 @@ LPTools * LPTools_instance = nil ;
 //发圈子
 +(void)AlertCircleView:(NSString *)str{
     CustomIOSAlertView *alert = [[CustomIOSAlertView alloc] init];
-    UIImageView *view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 205, 182)];
+    UIImageView *view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, LENGTH_SIZE(205) , LENGTH_SIZE(182))];
     view.image = [UIImage imageNamed:@"AlertCircleImage"];
     alert.containerView = view;
     alert.buttonTitles=@[];
@@ -232,10 +233,63 @@ LPTools * LPTools_instance = nil ;
     });
 }
 
+//领取个人资料奖励金
++(void)AlertUserInfoView:(NSString *)str{
+    CustomIOSAlertView *alert = [[CustomIOSAlertView alloc] init];
+    UIImageView *view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, LENGTH_SIZE(205) , LENGTH_SIZE(182))];
+    view.image = [UIImage imageNamed:@"bounced"];
+    alert.containerView = view;
+    alert.buttonTitles=@[];
+    [alert setUseMotionEffects:true];
+    [alert setCloseOnTouchUpOutside:true];
+    [alert show];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [alert close];
+    });
+}
+
+//积分兑换成功
++(void)AlertIntegralView:(NSString *)str{
+    CustomIOSAlertView *alert = [[CustomIOSAlertView alloc] init];
+    UIImageView *view = [[UIImageView alloc] initWithFrame:CGRectMake(0,
+                                                                      0,
+                                                                      LENGTH_SIZE(205) ,
+                                                                      LENGTH_SIZE(182))];
+    view.image = [UIImage imageNamed:@"integral_bg"];
+    
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(LENGTH_SIZE(0),
+                                                               LENGTH_SIZE(131),
+                                                               LENGTH_SIZE(205),
+                                                               LENGTH_SIZE(20))];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.font = [UIFont systemFontOfSize:FontSize(15)];
+    label.text = [NSString stringWithFormat:@"%@",str];
+    label.textColor = [UIColor colorWithHexString:@"#FFA21A"];
+    
+    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:label.text];
+    [string addAttributes:@{NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#434343"]} range:NSMakeRange(label.text.length-5, 5)];
+    
+    label.attributedText = string;
+    
+    [view addSubview:label];
+    
+    
+    
+    alert.containerView = view;
+    alert.buttonTitles=@[];
+    [alert setUseMotionEffects:true];
+    [alert setCloseOnTouchUpOutside:true];
+    [alert show];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [alert close];
+    });
+}
+
+
 //企业点评
 +(void)AlertBusinessView:(NSString *)str{
     CustomIOSAlertView *alert = [[CustomIOSAlertView alloc] init];
-    UIImageView *view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 205, 182)];
+    UIImageView *view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, LENGTH_SIZE(205) , LENGTH_SIZE(182))];
     view.image = [UIImage imageNamed:@"AlertBusinessImage"];
     alert.containerView = view;
     alert.buttonTitles=@[];
@@ -313,8 +367,8 @@ LPTools * LPTools_instance = nil ;
         QQApiNewsObject *newsObj = [QQApiNewsObject
                                     objectWithURL:[NSURL URLWithString:Str]
                                     title:title
-                                    description:nil
-                                    previewImageURL:nil];
+                                    description:Title
+                                    previewImageData:UIImagePNGRepresentation([UIImage imageNamed:@"logo_Information"])];
         SendMessageToQQReq *req = [SendMessageToQQReq reqWithContent:newsObj];
         //将内容分享到qq
         QQApiSendResultCode sent = [QQApiInterface sendReq:req];
@@ -328,9 +382,9 @@ LPTools * LPTools_instance = nil ;
         NSString *title = @"蓝聘";
         QQApiNewsObject *newsObj = [QQApiNewsObject
                                     objectWithURL:[NSURL URLWithString:Str]
-                                    title:title
-                                    description:nil
-                                    previewImageURL:nil];
+                                    title:Title
+                                    description:Title
+                                    previewImageData:UIImagePNGRepresentation([UIImage imageNamed:@"logo_Information"])];
         SendMessageToQQReq *req = [SendMessageToQQReq reqWithContent:newsObj];
         //将内容分享到qq
         QQApiSendResultCode sent = [QQApiInterface SendReqToQZone:req];
@@ -361,8 +415,8 @@ LPTools * LPTools_instance = nil ;
              SendMessageToWXReq *req = [[SendMessageToWXReq alloc] init];
              req.scene = WXSceneTimeline;
              WXMediaMessage *message = [WXMediaMessage message];
-             message.title = @"蓝聘";
-             message.description= Title;
+             message.title = Title;
+             message.description= @"";
              message.thumbData = UIImagePNGRepresentation([UIImage imageNamed:@"logo_Information"]);
              
              WXWebpageObject *ext = [WXWebpageObject object];
@@ -531,6 +585,35 @@ LPTools * LPTools_instance = nil ;
 {
     CGSize sizeToFit = [value sizeWithFont:[UIFont systemFontOfSize:fontSize] constrainedToSize:CGSizeMake(CGFLOAT_MAX, height) lineBreakMode:NSLineBreakByWordWrapping];//此处的换行类型（lineBreakMode）可根据自己的实际情况进行设置
     return sizeToFit.width;
+}
+
+//清楚webView缓存
++ (void)deleteWebCache {
+    //allWebsiteDataTypes清除所有缓存
+    NSSet *websiteDataTypes = [WKWebsiteDataStore allWebsiteDataTypes];
+    
+    NSDate *dateFrom = [NSDate dateWithTimeIntervalSince1970:0];
+    
+    [[WKWebsiteDataStore defaultDataStore] removeDataOfTypes:websiteDataTypes modifiedSince:dateFrom completionHandler:^{
+        
+    }];
+}
+
+//view单边圆角设置
++(void)setViewShapeLayer:(UIView *) View CornerRadii:(CGFloat) Radius byRoundingCorners:(UIRectCorner)corners{
+    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(LENGTH_SIZE(View.bounds.origin.x),
+                                                                                LENGTH_SIZE(View.bounds.origin.y),
+                                                                                LENGTH_SIZE(View.bounds.size.width),
+                                                                                LENGTH_SIZE(View.bounds.size.height))
+                                                   byRoundingCorners:corners
+                                                         cornerRadii:CGSizeMake(LENGTH_SIZE(Radius), 0.0)];
+    CAShapeLayer *maskLayer = [CAShapeLayer layer];
+    maskLayer.frame = CGRectMake(LENGTH_SIZE(View.bounds.origin.x),
+                                 LENGTH_SIZE(View.bounds.origin.y),
+                                 LENGTH_SIZE(View.bounds.size.width),
+                                 LENGTH_SIZE(View.bounds.size.height)) ;
+    maskLayer.path = maskPath.CGPath;
+    View.layer.mask = maskLayer;
 }
 
 

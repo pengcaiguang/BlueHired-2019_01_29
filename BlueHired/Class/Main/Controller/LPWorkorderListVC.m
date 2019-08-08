@@ -112,6 +112,7 @@ static NSString *LPWorkorderListCellID = @"LPWorkOrderList2Cell";
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     LPWorkOrderList2Cell *cell = [tableView dequeueReusableCellWithIdentifier:LPWorkorderListCellID];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.model = self.listArray[indexPath.row];
     cell.delegate = self;
     return cell;
@@ -119,16 +120,16 @@ static NSString *LPWorkorderListCellID = @"LPWorkOrderList2Cell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    LPWorklistDataWorkListModel *m = [[LPWorklistDataWorkListModel alloc] init];
-    m.id = self.listArray[indexPath.row].workId;
-    m.isApply = self.listArray[indexPath.row].isApply;
-    
-    LPWorkDetailVC *vc = [[LPWorkDetailVC alloc]init];
-    vc.hidesBottomBarWhenPushed = YES;
-    vc.workListModel = m;
-    vc.isWorkOrder = YES;
-    [self.navigationController pushViewController:vc animated:YES];
-    
+//    LPWorklistDataWorkListModel *m = [[LPWorklistDataWorkListModel alloc] init];
+//    m.id = self.listArray[indexPath.row].workId;
+//    m.isApply = self.listArray[indexPath.row].isApply;
+//    
+//    LPWorkDetailVC *vc = [[LPWorkDetailVC alloc]init];
+//    vc.hidesBottomBarWhenPushed = YES;
+//    vc.workListModel = m;
+//    vc.isWorkOrder = YES;
+//    [self.navigationController pushViewController:vc animated:YES];
+//    
     
 }
 

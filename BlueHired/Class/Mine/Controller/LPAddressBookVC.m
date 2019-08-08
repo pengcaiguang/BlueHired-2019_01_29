@@ -44,13 +44,14 @@ static NSString *LPAddressBookCellID = @"LPAddressBookCell";
     CNAuthorizationStatus status = [CNContactStore authorizationStatusForEntityType:CNEntityTypeContacts];
     if (status == CNAuthorizationStatusNotDetermined) {
         CNContactStore *store = [[CNContactStore alloc] init];
+        WEAK_SELF()
         [store requestAccessForEntityType:CNEntityTypeContacts completionHandler:^(BOOL granted, NSError*  _Nullable error) {
             if (error) {
                 NSLog(@"授权失败");
-                [self showAlertViewAboutNotAuthorAccessContact];
+                [weakSelf showAlertViewAboutNotAuthorAccessContact];
             }else {
                 NSLog(@"成功授权");
-                [self openContact];
+                [weakSelf openContact];
             }
         }];
     }

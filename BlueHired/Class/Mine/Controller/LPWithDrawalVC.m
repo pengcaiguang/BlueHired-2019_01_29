@@ -12,7 +12,7 @@
 #import "LPSalarycCardChangePasswordVC.h"
 #import "LPSalarycCardBindPhoneVC.h"
 #import "LPSalarycCard2VC.h"
-
+#import "LPGetBankNameModel.h"
 
 @interface LPWithDrawalVC ()<UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *addCardButton;
@@ -27,10 +27,14 @@
 @property (weak, nonatomic) IBOutlet UIButton *allButton;
 @property (weak, nonatomic) IBOutlet UIButton *determineButton;
 
+@property (weak, nonatomic) IBOutlet UILabel *remarkLabel;
+
 @property(nonatomic,strong) LPBankcardwithDrawModel *model;
+//@property(nonatomic,strong) LPGetBankNameModel *Bankmodel;
+
 @property(nonatomic,assign) NSInteger errorTimes;
 
-@property (nonatomic,strong) LPUserProblemModel *Pmodel;
+
 
 @end
 
@@ -46,31 +50,32 @@
     _textField.delegate = self;
 
     [self requestQueryBankcardwithDraw];
-//    [self requestQueryGetUserProdlemList];
+//    [self requestQueryGetBankName];
 
 }
 
--(void)AdapterView{
-    _bankLabel.font = [UIFont boldSystemFontOfSize:FontSize(16)];
-    _BankNoLabel.font = [UIFont systemFontOfSize:FontSize(13)];
-    _TitleTF.font = [UIFont systemFontOfSize:FontSize(14)];
-    _balanceLabel.font = [UIFont systemFontOfSize:FontSize(14)];
-    _allButton.titleLabel.font = [UIFont systemFontOfSize:FontSize(14)];
-
-}
 
 -(void)textFieldChanged:(UITextField *)textField{
+
+    
+    if (textField.text.floatValue>self.model.data.chargeMoney.floatValue) {
+            self.TitleTF.text = [NSString stringWithFormat:@"手续费%.2f元，实际到账%.2f元",self.model.data.chargeMoney.floatValue,
+                                 textField.text.floatValue-self.model.data.chargeMoney.floatValue];
+    }else{
+            self.TitleTF.text = [NSString stringWithFormat:@"手续费%.2f元",self.model.data.chargeMoney.floatValue];
+    }
+    
     if (textField.text.floatValue>[_balance floatValue]) {
-        _balanceLabel.text = @"金额超出可提余额";
-        _balanceLabel.textColor = [UIColor redColor];
+        self.TitleTF.text = @"金额超出可提余额";
+ 
         _determineButton.enabled = NO;
     }else{
-        _balanceLabel.text = [NSString stringWithFormat:@"可提余额%.2f元",[_balance floatValue]];
-        _balanceLabel.textColor = [UIColor colorWithHexString:@"#999999"];
+ 
         _determineButton.enabled = YES;
-
     }
-   
+    
+
+
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
@@ -92,26 +97,24 @@
     if (model.data) {
         [self initDrawlView];
     }
-//    [self initDrawlView];
-    
-//    if (model.data.type.integerValue == 1) {
-//        self.addCardButton.hidden = NO;
-//        self.DrawalView.hidden = YES;
-//        self.navigationItem.title = @"添加银行卡";
-//    }else{
-//        self.navigationItem.title = @"工资提现";
-//        self.addCardButton.hidden = YES;
-//        self.DrawalView.hidden = NO;
-//        [self initDrawlView];
-//    }
     
 }
+
+
 -(void)initDrawlView
 {
     _bankLabel.text = _model.data.bankName;
     _BankNoLabel.text = [NSString stringWithFormat:@"尾号%@%@",_model.data.bankNumber,_model.data.cardType];
     _balanceLabel.text = [NSString stringWithFormat:@"可提余额%.2f元",[_balance floatValue]];
+    self.TitleTF.text = [NSString stringWithFormat:@"手续费%.2f元",_model.data.chargeMoney.floatValue];
+    if (self.model.data.remark.length>0) {
+          self.remarkLabel.text = [NSString stringWithFormat:@"提现说明：\n\n%@",_model.data.remark];
+    }else{
+        self.remarkLabel.text = @"";
+    }
+
 }
+
 
 - (IBAction)touchAddCardButton:(UIButton *)sender {
 //    LPSalarycCardBindVC *vc = [[LPSalarycCardBindVC alloc]init];
@@ -121,7 +124,7 @@
 
 - (IBAction)touchAllButton:(id)sender {
     self.textField.text = [NSString stringWithFormat:@"%@", _balance];
-    NSLog(@"iamge = %f     %f ",self.bankImage.lx_width,self.bankImage.lx_height);
+
     
 }
 - (IBAction)touchBt:(id)sender {
@@ -319,51 +322,7 @@
     }];
 }
 
-- (void)setPmodel:(LPUserProblemModel *)Pmodel{
-    _Pmodel = Pmodel;
-    if (Pmodel.data.count == 0) {
-        NSString *str1 = @"为了您的账号安全，请先设置密保问题。";
-        NSMutableAttributedString *str = [[NSMutableAttributedString alloc]initWithString:str1];
-        WEAK_SELF()
-        GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:str message:nil IsShowhead:YES textAlignment:0 buttonTitles:@[@"去设置"] buttonsColor:@[[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
-            if (buttonIndex == 0) {
-                LPChangePhoneVC *vc = [[LPChangePhoneVC alloc]init];
-                vc.type = 1;
-                //                [self.navigationController pushViewController:vc animated:YES];
-                NSMutableArray *naviVCsArr = [[NSMutableArray alloc]initWithArray:weakSelf.navigationController.viewControllers];
-                for (UIViewController *vc in naviVCsArr) {
-                    if ([vc isKindOfClass:[weakSelf class]]) {
-                        [naviVCsArr removeObject:vc];
-                        break;
-                    }
-                }
-                [naviVCsArr addObject:vc];
-                vc.hidesBottomBarWhenPushed = YES;
-                
-                [weakSelf.navigationController  setViewControllers:naviVCsArr animated:YES];
-                
-            }
-        }];
-        [alert show];
-    }
-}
 
 
--(void)requestQueryGetUserProdlemList{
-    
-    NSDictionary *dic = @{};
-    [NetApiManager requestQueryGetUserProdlemList:dic withHandle:^(BOOL isSuccess, id responseObject) {
-        NSLog(@"%@",responseObject);
-        if (isSuccess) {
-            if ([responseObject[@"code"] integerValue] == 0) {
-                self.Pmodel = [LPUserProblemModel mj_objectWithKeyValues:responseObject];
-            }else{
-                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
-            }
-        }else{
-            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
-        }
-    }];
-}
 
 @end

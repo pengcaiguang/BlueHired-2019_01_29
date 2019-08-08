@@ -33,6 +33,8 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+     [self.navigationController.navigationBar setShadowImage:[UIImage new]];
+
     self.navigationController.navigationBar.translucent = NO;
     self.navigationController.navigationBar.barTintColor = [UIColor baseColor];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageWithColor:[UIColor baseColor]] forBarMetrics:UIBarMetricsDefault];

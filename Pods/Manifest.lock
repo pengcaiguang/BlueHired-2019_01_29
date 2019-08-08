@@ -19,6 +19,7 @@ PODS:
     - AMapFoundation (~> 1.4)
   - BaiduMapKit (4.2.0)
   - BMKLocationKit (1.3.0.2)
+  - Bugly (2.5.0)
   - Crashlytics (3.10.7):
     - Fabric (~> 1.7.11)
   - Fabric (1.7.11)
@@ -74,6 +75,7 @@ PODS:
   - iCarousel (1.8.3)
   - IQKeyboardManager (6.1.1)
   - JWNetAutoCache (0.0.2)
+  - LJBarrageView (1.0.3)
   - Masonry (1.1.0)
   - MBProgressHUD (1.1.0)
   - MJExtension (3.0.15.1)
@@ -105,6 +107,7 @@ DEPENDENCIES:
   - AMapLocation
   - BaiduMapKit
   - BMKLocationKit
+  - Bugly
   - Crashlytics (~> 3.10.7)
   - Fabric (~> 1.7.11)
   - Firebase
@@ -114,6 +117,7 @@ DEPENDENCIES:
   - iCarousel
   - IQKeyboardManager
   - JWNetAutoCache
+  - LJBarrageView
   - Masonry
   - MBProgressHUD
   - MJExtension
@@ -135,6 +139,7 @@ SPEC REPOS:
     - AMapLocation
     - BaiduMapKit
     - BMKLocationKit
+    - Bugly
     - Crashlytics
     - Fabric
     - Firebase
@@ -150,6 +155,7 @@ SPEC REPOS:
     - iCarousel
     - IQKeyboardManager
     - JWNetAutoCache
+    - LJBarrageView
     - Masonry
     - MBProgressHUD
     - MJExtension
@@ -170,6 +176,7 @@ SPEC CHECKSUMS:
   AMapLocation: cf024b53dc03663efb4ea4bcce27d4cce58bb97a
   BaiduMapKit: b6a8f31b3d2e4e5cad4084512a0d9a3878638272
   BMKLocationKit: 6c47273f985609be0a0785f2f6f12bb7c1b7e8b6
+  Bugly: 3ca9f255c01025582df26f9222893b383c7e4b4e
   Crashlytics: ccaac42660eb9351b9960c0d66106b0bcf99f4fa
   Fabric: f233c9492b3bbc1f04e3882986740f7988a58edb
   Firebase: 25812f43e7a53b11ae2f0a5f4c6d12faeb1f7cd7
@@ -185,6 +192,7 @@ SPEC CHECKSUMS:
   iCarousel: d782f635afac190c49bb8ee455882284cff8b85f
   IQKeyboardManager: 79c57795f5c2408d259d37b9da2ed07efcbb5225
   JWNetAutoCache: 434f10855da06d29a381359552ae9d27ef35cad7
+  LJBarrageView: 231a54cf79a33f0d706786e6c72cc609c3bf7f0f
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   MJExtension: 19bc33ce2eee2d319760f5622562cf581a6ff756
@@ -199,6 +207,6 @@ SPEC CHECKSUMS:
   WechatOpenSDK: 3117412f8aafde4758cac1e8d20b93c67cafcfef
   YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
 
-PODFILE CHECKSUM: d6d5f280c5dde034c243f36f10a062103acd4172
+PODFILE CHECKSUM: 8e116b0083435e50ea18f88d21bd4e806b00d21c
 
 COCOAPODS: 1.5.3

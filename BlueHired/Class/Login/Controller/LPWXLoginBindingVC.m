@@ -428,6 +428,8 @@
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
                 if ([responseObject[@"data"] integerValue] > 0) {
+                    kUserDefaultsSave(responseObject[@"data"], LOGINID);
+                    kUserDefaultsSave(@"1", kLoginStatus);
                     [self.view showLoadingMeg:@"绑定成功" time:MESSAGE_SHOW_TIME];
                     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                         [[UIWindow visibleViewController].navigationController popViewControllerAnimated:YES];

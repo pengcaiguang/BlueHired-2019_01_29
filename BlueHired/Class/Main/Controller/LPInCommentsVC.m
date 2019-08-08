@@ -46,6 +46,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+//    [LPTools deleteWebCache];
+    
     self.navigationItem.title = @"入职评价";
  
     self.TextView1.layer.cornerRadius = 2;

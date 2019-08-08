@@ -16,8 +16,12 @@
 @property (weak, nonatomic) IBOutlet UILabel *relationMoneyLabel;
 @property (weak, nonatomic) IBOutlet UILabel *remarkLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *remarkiamge;
+@property (weak, nonatomic) IBOutlet UIButton *phoneBtn;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *LayoutConstraint_Label_Top;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *LayoutConstraint_typeLabel_width;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *LayoutConstraint_relationMoneyLabel_width;
+
 
 // 1 = 邀请入职。2 = 邀请注册
 @property (nonatomic,assign) NSInteger Type;

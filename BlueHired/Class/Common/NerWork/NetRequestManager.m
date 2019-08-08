@@ -117,7 +117,7 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
                     if (dic) {
                         kUserDefaultsSave(dic[@"role"], USERDATA);
                         kUserDefaultsSave(dic[@"userId"], LOGINID);
-                        kUserDefaultsSave(dic[@"USERIDENTIY"], USERIDENTIY);
+                        kUserDefaultsSave(dic[@"identity"], USERIDENTIY);
 
                         if (dic[@"userId"]) {
                             kUserDefaultsSave(@"1", kLoginStatus);
@@ -144,7 +144,7 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
                             data.user_name = dic[@"userName"];
                             data.workStatus = dic[@"workStatus"];
                             data.grading = dic[@"grading"];
-                            userMaterialModel.data.identity = dic[@"identity"];
+                            data.identity = dic[@"identity"];
 
                             userMaterialModel.data = data;
                             
@@ -218,7 +218,7 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
                          kUserDefaultsSave(dic[@"role"], USERDATA);
                          
                          kUserDefaultsSave(dic[@"userId"], LOGINID);
-                         kUserDefaultsSave(dic[@"USERIDENTIY"], USERIDENTIY);
+                         kUserDefaultsSave(dic[@"identity"], USERIDENTIY);
                          if (dic[@"userId"]) {
                              kUserDefaultsSave(@"1", kLoginStatus);
                          }
@@ -240,7 +240,7 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
                              data.user_name = dic[@"userName"];
                              data.workStatus = dic[@"workStatus"];
                              data.grading = dic[@"grading"];
-                             userMaterialModel.data.identity = dic[@"identity"];
+                             data.identity = dic[@"identity"];
 
                              userMaterialModel.data = data;
                              [LPUserDefaults  saveObject:userMaterialModel byFileName:USERINFO];
@@ -457,6 +457,8 @@ constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         afHttpSessionMgr.requestSerializer =[AFJSONRequestSerializer serializer];
         [afHttpSessionMgr.requestSerializer setValue:@"application/json"forHTTPHeaderField:@"Accept"];
         afHttpSessionMgr.requestSerializer.timeoutInterval = TimeOutIntervalSet;
+        ((AFJSONResponseSerializer *)afHttpSessionMgr.responseSerializer).removesKeysWithNullValues = YES;
+
 //        [afHttpSessionMgr setSecurityPolicy:[self customSecurityPolicy]];
         
 //        afHttpSessionMgr = [AFHTTPSessionManager manager];

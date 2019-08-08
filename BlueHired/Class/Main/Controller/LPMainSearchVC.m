@@ -197,8 +197,12 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (tableView == self.Resulttableview) {
-        CGFloat KeyHeight = [self calculateKeyHeight:self.listArray[indexPath.row].key];
-        return LENGTH_SIZE(123.0) +KeyHeight ;
+        
+        LPWorklistDataWorkListModel *m = self.listArray[indexPath.row];
+        if (m.key.length == 0) {
+            return LENGTH_SIZE(120) ;
+        }
+        return LENGTH_SIZE(140) ;
     }
     return 44.0;
 }
@@ -408,6 +412,8 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     if (Key.length == 0) {
         return 0;
     }
+    Key = [Key stringByReplacingOccurrencesOfString:@"丨" withString:@"|"];
+
     NSArray * tagArr = [Key componentsSeparatedByString:@"|"];
     CGFloat tagBtnX = 0;
     CGFloat tagBtnY = 0;

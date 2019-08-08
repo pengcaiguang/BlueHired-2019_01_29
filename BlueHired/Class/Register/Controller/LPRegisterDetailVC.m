@@ -9,6 +9,7 @@
 #import "LPRegisterDetailVC.h"
 #import "LPRegisterDetailCell.h"
 #import "LPRegisterDetailModel.h"
+#import "LPSalaryBreakdownVC.h"
 
 static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
 
@@ -29,7 +30,7 @@ static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
 @property(nonatomic,strong) NSMutableArray <LPRegisterDetailDataListModel *>*listArray;
 
 @property(nonatomic,strong) UILabel *monthLabel;
-@property(nonatomic,strong) UILabel *moneyLabel;
+//@property(nonatomic,strong) UILabel *moneyLabel;
 @property(nonatomic,strong) CustomIOSAlertView *CustomAlert;
 @property(nonatomic,strong) UITextField *AlertTF;
 @property(nonatomic,strong) LPRegisterDetailDataListModel *selectmodel;
@@ -121,46 +122,92 @@ static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
         make.top.equalTo(bgView.mas_bottom).offset(0);
-        make.height.mas_equalTo(LENGTH_SIZE(60));
+        if (self.Type == 1) {
+            make.height.mas_equalTo(LENGTH_SIZE(0));
+        }else if (self.Type == 2){
+            make.height.mas_equalTo(LENGTH_SIZE(60));
+        }
     }];
     headView.backgroundColor = [UIColor whiteColor];
+    headView.clipsToBounds = YES;
     
     UILabel *MonthLabel = [[UILabel alloc] init];
     self.monthLabel = MonthLabel;
     [headView addSubview:MonthLabel];
     [MonthLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_offset(0);
         make.left.mas_equalTo(LENGTH_SIZE(13));
-        make.height.mas_equalTo(LENGTH_SIZE(60));
+        make.right.mas_offset(LENGTH_SIZE(-13));
+        make.centerY.equalTo(headView);
     }];
-    MonthLabel.textColor = [UIColor colorWithHexString:@"#333333"];
-    MonthLabel.font = [UIFont boldSystemFontOfSize:FontSize(16)];
+    MonthLabel.textColor = [UIColor baseColor];
+    MonthLabel.font = [UIFont boldSystemFontOfSize:FontSize(14)];
+    MonthLabel.numberOfLines = 0;
+    MonthLabel.text = @"说明：A邀请B注册，B入职满30天后才会开始计算A的邀请注册奖励。";
     
     
-    UILabel *MoneyLabel = [[UILabel alloc] init];
-    self.moneyLabel = MoneyLabel;
-    [headView addSubview:MoneyLabel];
-    [MoneyLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_offset(0);
-        make.right.mas_equalTo(LENGTH_SIZE(-13));
-        make.height.mas_equalTo(LENGTH_SIZE(60));
-    }];
-    MoneyLabel.textColor = [UIColor baseColor];
-    MoneyLabel.font = [UIFont boldSystemFontOfSize:FontSize(16)];
+//    UILabel *MoneyLabel = [[UILabel alloc] init];
+//    self.moneyLabel = MoneyLabel;
+//    [headView addSubview:MoneyLabel];
+//    [MoneyLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.mas_offset(0);
+//        make.right.mas_equalTo(LENGTH_SIZE(-13));
+//        make.height.mas_equalTo(LENGTH_SIZE(60));
+//    }];
+//    MoneyLabel.textColor = [UIColor baseColor];
+//    MoneyLabel.font = [UIFont boldSystemFontOfSize:FontSize(16)];
     
     
     [self.view addSubview:self.tableview];
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
-        make.bottom.mas_equalTo(0);
-        make.top.equalTo(headView.mas_bottom).offset(LENGTH_SIZE(10));
+        if (@available(iOS 11.0, *)) {
+            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(LENGTH_SIZE(-49));
+        } else {
+            make.bottom.mas_equalTo(LENGTH_SIZE(-49));
+        }
+        if (self.Type == 1) {
+            make.top.equalTo(headView.mas_bottom).offset(LENGTH_SIZE(0));
+        }else if (self.Type == 2){
+            make.top.equalTo(headView.mas_bottom).offset(LENGTH_SIZE(10));
+        }
     }];
+    
+    UIButton *RegBtn = [[UIButton alloc] init];
+    [self.view addSubview:RegBtn];
+    [RegBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        if (@available(iOS 11.0, *)) {
+            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(LENGTH_SIZE(0));
+        } else {
+            make.bottom.mas_equalTo(LENGTH_SIZE(0));
+        }
+        make.left.right.mas_offset(0);
+        make.height.mas_offset(LENGTH_SIZE(49));
+    }];
+    [RegBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    RegBtn.backgroundColor = [UIColor baseColor];
+    RegBtn.titleLabel.font = FONT_SIZE(17);
+    [RegBtn setTitle:@"领取奖励" forState:UIControlStateNormal];
+    [RegBtn addTarget:self action:@selector(touchRegBtn:) forControlEvents:UIControlEventTouchUpInside];
 
 }
 
 
+-(void)touchRegBtn:(UIButton *)sender{
+    LPSalaryBreakdownVC *vc = [[LPSalaryBreakdownVC alloc]init];
+    vc.hidesBottomBarWhenPushed = YES;
+    vc.RecordDate = self.currentDateString;
+    vc.type = 1;
+    [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+}
+
+
 -(void)TouchLeftBt:(UIButton *)sender{
+    
+    sender.enabled = NO;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        sender.enabled = YES;
+    });
     
     NSCalendar *calendar = [NSCalendar currentCalendar];
     NSCalendarUnit unit = NSCalendarUnitMonth;//只比较天数差异
@@ -186,6 +233,10 @@ static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
     
 }
 -(void)TouchrightBt:(UIButton *)sender{
+    sender.enabled = NO;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        sender.enabled = YES;
+    });
     NSCalendar *calendar = [NSCalendar currentCalendar];
     NSCalendarUnit unit = NSCalendarUnitMonth;//只比较天数差异
     NSDateComponents *delta = [calendar components:unit fromDate:[DataTimeTool dateFromString:self.currentDateString DateFormat:@"yyyy-MM"] toDate:[NSDate date] options:0];
@@ -299,8 +350,8 @@ static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
 -(void)setModel:(LPRegisterDetailModel *)model{
     _model = model;
 
-    self.monthLabel.text = [DataTimeTool getDataTime:self.currentDateString DateFormat:@"yyyy年MM月"];
-    self.moneyLabel.text = [NSString stringWithFormat:@"到账总计：%.2f元",model.data.totalMoney.floatValue];
+//    self.monthLabel.text = [DataTimeTool getDataTime:self.currentDateString DateFormat:@"yyyy年MM月"];
+//    self.moneyLabel.text = [NSString stringWithFormat:@"到账总计：%.2f元",model.data.totalMoney.floatValue];
     
     if ([self.model.code integerValue] == 0) {
         

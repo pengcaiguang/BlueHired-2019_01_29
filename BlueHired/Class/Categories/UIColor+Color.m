@@ -46,7 +46,14 @@
             alpha=0;
             break;
     }
-    return [UIColor colorWithRed: red green: green blue: blue alpha: alpha];
+   
+    
+    if (@available(iOS 10.0, *)) {
+        return [UIColor colorWithDisplayP3Red:red green:green blue:blue alpha:alpha];
+    } else {
+        return [UIColor colorWithRed: red green: green blue: blue alpha: alpha];
+    }
+
 }
 
 +(CGFloat) colorComponentFrom: (NSString *) string start: (NSUInteger) start length: (NSUInteger) length

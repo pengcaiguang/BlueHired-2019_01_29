@@ -21,6 +21,7 @@ typedef void(^LPMainCellBlock)(void);
 @property (weak, nonatomic) IBOutlet UILabel *keyLabel;
 @property (weak, nonatomic) IBOutlet UILabel *mechanismScoreLabel;
 @property (strong, nonatomic) IBOutlet UIView *mechanismScoreView;
+@property (strong, nonatomic) IBOutlet UIImageView *mechanismScoreImage;
 
 @property (weak, nonatomic) IBOutlet UIButton *reMoneyLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *reMoneyImage;
@@ -31,14 +32,26 @@ typedef void(^LPMainCellBlock)(void);
 @property (weak, nonatomic) IBOutlet UILabel *isWorkers;
 
 @property (weak, nonatomic) IBOutlet UILabel *isApplyLabel;
+
+@property (weak, nonatomic) IBOutlet UILabel *AgeLabel;
+
+
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *keyLabel_constraint_right;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *keyLabel_constraint_Height;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *lendTypeLabel_constraint_Width;
 
+ 
 
 
 @property(nonatomic,strong) LPWorklistDataWorkListModel *model;
 @property(nonatomic,strong) XHStarRateView *starRateView;
 @property (nonatomic,copy) LPMainCellBlock block;
+
+@property(nonatomic,assign) BOOL iscornerRadius;
+
+
+@property(nonatomic,assign) NSInteger CellType;
+
 
 @end
 

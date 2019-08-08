@@ -32,6 +32,8 @@
     [super viewDidLoad];
     self.navigationItem.title = @"用户协议";
     
+//    [LPTools deleteWebCache];
+    
      [self WebKit];
     
     

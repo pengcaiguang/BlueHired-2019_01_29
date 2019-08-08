@@ -16,6 +16,7 @@
 NS_ASSUME_NONNULL_BEGIN
 typedef void(^LPVideoPlayCellDicBlock)(void);
 typedef void(^LPVideoCollectionBlock)(void);
+typedef void(^LPVideoBarrageBlock)(BOOL Select);
 
 
 @interface LPVideoPlayCell : UICollectionViewCell
@@ -33,8 +34,10 @@ typedef void(^LPVideoCollectionBlock)(void);
 @property (nonatomic,strong) UIImageView *PlayImage;
 @property (nonatomic,strong) LPVideoTypeModel *TypeModel;
 @property (nonatomic,strong) LPVideoCollectionBlock CollectionBlock;
+@property (nonatomic,strong) LPVideoBarrageBlock BarrageBlock;
 
 -(void)ReloadComment:(LPVideoListDataModel *) model;
+@property (nonatomic,strong) UIButton *barrageBtn;
 
 @end
 

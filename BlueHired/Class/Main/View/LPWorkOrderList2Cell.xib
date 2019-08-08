@@ -118,7 +118,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MhT-gj-xLm">
                                 <rect key="frame" x="151.5" y="46" width="37.5" height="17"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
-                                <color key="textColor" red="1" green="0.37647058820000001" blue="0.37647058820000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" red="1" green="0.32549019610000002" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
@@ -619,6 +619,7 @@
                 <outlet property="LayoutConstrain_RestTitle_Height" destination="2mx-bZ-Zxk" id="dLT-bW-PBF"/>
                 <outlet property="NavBtn" destination="qI9-H7-Blh" id="6dG-YS-y0u"/>
                 <outlet property="ShareButton" destination="9cO-w9-2Qq" id="3iY-ko-gyn"/>
+                <outlet property="TopView" destination="zzB-yC-qMa" id="SML-dN-uFW"/>
                 <outlet property="applyNumberLabel" destination="8hx-GY-uGV" id="ulm-dr-03J"/>
                 <outlet property="interviewTimeLabel" destination="Exv-eb-1nu" id="xFn-BY-gAp"/>
                 <outlet property="isApplyLabel" destination="pcg-ao-RR5" id="XqZ-eT-L2J"/>

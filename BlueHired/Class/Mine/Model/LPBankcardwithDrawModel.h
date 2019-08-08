@@ -23,6 +23,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic,strong) NSString *bankNumber;
 @property(nonatomic,strong) NSString *cardType;
 @property(nonatomic,strong) NSString *phone;
+@property(nonatomic,strong) NSString *chargeMoney;
+@property(nonatomic,strong) NSString *remark;
 
 @end
 NS_ASSUME_NONNULL_END

@@ -50,12 +50,15 @@
 @property (nonatomic, copy) NSString *wageRange;
 @property (nonatomic, copy) NSString *workDemand;
 @property (nonatomic, copy) NSString *workKnow;
-@property (nonatomic, copy) NSNumber *workMoney;
+@property (nonatomic, copy) NSString *workMoney;
 @property (nonatomic, copy) NSString *workSalary;
 @property (nonatomic, copy) NSString *workTime;
 @property (nonatomic, copy) NSString *workTypeName;
 @property (nonatomic, copy) NSString *workUrl;
 @property (nonatomic, copy) NSNumber *workWatchStatus;
 @property (nonatomic, copy) NSString *reInstruction;
+@property (nonatomic, copy) NSString *age;
+@property (nonatomic, copy) NSString *x;
+@property (nonatomic, copy) NSString *y;
 
 @end

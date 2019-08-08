@@ -47,6 +47,10 @@ NS_ASSUME_NONNULL_BEGIN
 +(void)AlertWorkHourView:(NSString *)str;
 //发圈子
 +(void)AlertCircleView:(NSString *)str;
+//领取个人资料奖励金
++(void)AlertUserInfoView:(NSString *)str;
+//积分兑换成功
++(void)AlertIntegralView:(NSString *)str;
 //企业点评
 +(void)AlertBusinessView:(NSString *)str;
 //清空本地数据
@@ -71,7 +75,10 @@ NS_ASSUME_NONNULL_BEGIN
 + (CGFloat)calculateRowHeight:(NSString *)string fontSize:(NSInteger)fontSize Width:(CGFloat) W;
 //获取字符串的宽度
 +(CGFloat) widthForString:(NSString *)value fontSize:(float)fontSize andHeight:(float)height;
-
+//清楚webView缓存
++ (void)deleteWebCache;
+//view单边圆角设置
++(void)setViewShapeLayer:(UIView *) View CornerRadii:(CGFloat) Radius byRoundingCorners:(UIRectCorner)corners;
 @end
 
 NS_ASSUME_NONNULL_END

@@ -10,4 +10,6 @@
 
 @interface LPSalaryBreakdownVC : LPBaseViewController
 @property (nonatomic,strong) NSString *RecordDate;
+@property (nonatomic,assign) NSInteger type;
+
 @end
