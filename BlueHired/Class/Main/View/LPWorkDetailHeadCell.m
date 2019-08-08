@@ -106,10 +106,10 @@
     
     if ([model.data.postName isEqualToString:@"小时工"]) {
         self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/时",reviseString(model.data.workMoney)];
-        [self.ReMoneyDeclare setTitle:@"补贴工价说明" forState:UIControlStateNormal];
+        [self.ReMoneyDeclare setTitle:@"奖励说明" forState:UIControlStateNormal];
     }else{
         self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/月",model.data.wageRange];
-        [self.ReMoneyDeclare setTitle:@"返费奖励说明" forState:UIControlStateNormal];
+        [self.ReMoneyDeclare setTitle:@"奖励说明" forState:UIControlStateNormal];
     }
     
     self.workTypeNameLabel.text = [NSString stringWithFormat:@"招%@人 / 已报名%@人",model.data.maxNumber,model.data.applyNumber];
