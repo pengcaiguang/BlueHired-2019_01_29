@@ -33,7 +33,8 @@
     }else{
         self.headImageView.image = [UIImage imageNamed:@"logo_Information"];
      }
-    
+    self.headImageView.layer.borderColor = [UIColor whiteColor].CGColor;
+    self.headImageView.layer.borderWidth = 1;
     
     NSString *str = kUserDefaultsValue(COOKIES);
     NSString *s = [self URLDecodedString:str];

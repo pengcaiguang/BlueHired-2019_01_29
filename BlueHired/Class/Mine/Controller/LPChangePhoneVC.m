@@ -23,6 +23,8 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
 @property(nonatomic,strong) UIButton *getVerificationCodeButton;
 
 @property(nonatomic,strong) NSString *token;
+@property(nonatomic,strong) NSString *phone;
+
 @property (nonatomic,strong) NSString *Openid;
 @property (nonatomic,strong) LPUserMaterialModel *userData;
 
@@ -360,10 +362,16 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
             [self.view showLoadingMeg:@"请输入验证码" time:MESSAGE_SHOW_TIME];
             return;
         }
-        if (!self.token) {
-            [self.view showLoadingMeg:@"请输入正确的验证码" time:MESSAGE_SHOW_TIME];
+        if (self.token.length == 0) {
+            [self.view showLoadingMeg:@"请获取验证码" time:MESSAGE_SHOW_TIME];
             return;
         }
+        
+        if (![self.phoneTextField.text isEqualToString:self.phone]) {
+            [self.view showLoadingMeg:@"手机号错误" time:MESSAGE_SHOW_TIME];
+            return;
+        }
+        
     }
 
 
@@ -574,6 +582,7 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
             if ([responseObject[@"code"] integerValue] == 0) {
                 if (responseObject[@"data"]) {
                     self.token = responseObject[@"data"];
+                    self.phone = self.phoneTextField.text;
                 }
                 [self.view showLoadingMeg:@"验证码发送成功" time:MESSAGE_SHOW_TIME];
                 [self openCountdown];

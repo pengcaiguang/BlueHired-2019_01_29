@@ -48,11 +48,11 @@
     }
    
     
-    if (@available(iOS 10.0, *)) {
-        return [UIColor colorWithDisplayP3Red:red green:green blue:blue alpha:alpha];
-    } else {
+//    if (@available(iOS 10.0, *)) {
+//        return [UIColor colorWithDisplayP3Red:red green:green blue:blue alpha:alpha];
+//    } else {
         return [UIColor colorWithRed: red green: green blue: blue alpha: alpha];
-    }
+//    }
 
 }
 

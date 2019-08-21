@@ -30,7 +30,7 @@
     self.reMoneyLabel.layer.borderColor = [UIColor colorWithHexString:@"#FFD291"].CGColor;
     self.AgeLabel.layer.cornerRadius = 2;
     self.AgeLabel.layer.borderColor = [UIColor baseColor].CGColor;
-    self.AgeLabel.layer.borderWidth = 1;
+    self.AgeLabel.layer.borderWidth = 0.5;
     self.AgeLabel.textColor = [UIColor baseColor];
 }
 

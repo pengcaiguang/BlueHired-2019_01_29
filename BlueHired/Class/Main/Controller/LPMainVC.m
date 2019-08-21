@@ -782,15 +782,18 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     [NetApiManager requestQueryDownload:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            if (responseObject[@"data"] != nil &&
-                [responseObject[@"data"][@"version"] length]>0) {
-                if (self.version.floatValue <  [responseObject[@"data"][@"version"] floatValue]  ) {
-                    NSString *updateStr = [NSString stringWithFormat:@"发现新版本V%@\n为保证软件的正常运行\n请及时更新到最新版本",responseObject[@"data"][@"version"]];
-                    [self creatAlterView:updateStr];
+            if (responseObject[@"code"] == 0) {
+                if (responseObject[@"data"] != nil &&
+                    [responseObject[@"data"][@"version"] length]>0) {
+                    if (self.version.floatValue <  [responseObject[@"data"][@"version"] floatValue]  ) {
+                        NSString *updateStr = [NSString stringWithFormat:@"发现新版本V%@\n为保证软件的正常运行\n请及时更新到最新版本",responseObject[@"data"][@"version"]];
+                        [self creatAlterView:updateStr];
+                    }
+                }else{
+                    [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
                 }
-            }else{
-                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
+            
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }

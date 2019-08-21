@@ -1528,8 +1528,9 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
     [self.pickerView hide];
 }
 - (void)sureBtnClickReturnProvince:(NSString *)province City:(NSString *)city Area:(NSString *)area{
-    if ([province isEqualToString:city]) {
-        NSString *CityStr = [NSString stringWithFormat:@"%@",province];
+    NSString *strCity = [city stringByReplacingOccurrencesOfString:@"市" withString:@""];
+    if ([province isEqualToString:strCity]) {
+        NSString *CityStr = [NSString stringWithFormat:@"%@",city];
         self.phoneTextField.text = CityStr;
     }else{
         NSString *CityStr = [NSString stringWithFormat:@"%@%@",province,city];

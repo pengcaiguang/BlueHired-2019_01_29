@@ -7,6 +7,7 @@
 //
 
 #import "AddressPickerView.h"
+#import "AddressModel.h"
 
 #define AddressProvinceIdxName @"AddressSelectProvince"
 #define AddressCityIdxName @"AddressSelectCity"
@@ -14,6 +15,9 @@
 #define SELFSIZE self.bounds.size
 #define AD_SCREEN [UIScreen mainScreen].bounds.size
 #define AD_iPhoneX ([UIScreen mainScreen].bounds.size.width == 375.f && [UIScreen mainScreen].bounds.size.height == 812.f ? YES : NO)
+
+
+
 
 static CGFloat TITLEHEIGHT = 50.0;// 标题栏高度
 static CGFloat TITLEBUTTONWIDTH = 75;// 按钮宽度
@@ -169,9 +173,9 @@ static CGFloat CONTENTHEIGHT = 215.0;// 标题栏+选择视图高度
         _backgroundBtn.backgroundColor = self.backMaskColor;
         _backgroundBtn.alpha = self.backMaskAlpha;
         [_backgroundBtn addTarget:self
-                       action:@selector(cancelBtnClicked)
-             forControlEvents:UIControlEventTouchUpInside];
-     }
+                           action:@selector(cancelBtnClicked)
+                 forControlEvents:UIControlEventTouchUpInside];
+    }
     return _backgroundBtn;
 }
 
@@ -219,7 +223,7 @@ static CGFloat CONTENTHEIGHT = 215.0;// 标题栏+选择视图高度
     if (!_addressPickerView) {
         _addressPickerView = [[UIPickerView alloc]initWithFrame:
                               CGRectMake(0, self.titleBackgroundView.frame.origin.y + TITLEHEIGHT, SELFSIZE.width, CONTENTHEIGHT - TITLEHEIGHT)];
-//        _addressPickerView.backgroundColor = self.pickerViewColor;
+        //        _addressPickerView.backgroundColor = self.pickerViewColor;
         _addressPickerView.backgroundColor = [UIColor whiteColor];
         _addressPickerView.delegate = self;
         _addressPickerView.dataSource = self;
@@ -264,7 +268,7 @@ static CGFloat CONTENTHEIGHT = 215.0;// 标题栏+选择视图高度
 - (void)loadAddressData{
     NSString * filePath = [[NSBundle mainBundle] pathForResource:@"province"
                                                           ofType:@"json"];
-
+    
     NSError  * error;
     NSString * str22 = [NSString stringWithContentsOfFile:filePath
                                                  encoding:NSUTF8StringEncoding
@@ -274,71 +278,12 @@ static CGFloat CONTENTHEIGHT = 215.0;// 标题栏+选择视图高度
         return;
     }
     
-    _dataDict = [self dictionaryWithJsonString:str22];
     
-    if (!_dataDict) {
-        return;
+    _pArr         = [ AddressModel mj_objectArrayWithKeyValuesArray:str22];
+    
+    if (_pArr.count>2) {
+        [_pArr removeObjectsInRange:NSMakeRange(0, 2)];
     }
-    
-    NSArray *DataArray = [str22 mj_JSONObject];
-    
-    _pArr         = [[NSMutableArray alloc]init];
-    //省份模型数组加载各个省份模型
-    for (int i = 0 ;i < DataArray.count; i++) {
-        NSDictionary *dic = DataArray[i];
-        NSArray  * citys = [dic[@"cities"] mj_JSONObject];
-        NSMutableArray *Citys = [[NSMutableArray alloc] init];
-        for (int j = 0 ;j < citys.count; j++) {
-            NSDictionary *citysdic = citys[j];
-            [Citys addObject:citysdic[@"name"]];
-        }
-        AddressProvince * p     = [AddressProvince provinceWithName:dic[@"name"]
-                                                             cities:Citys];
-        [_pArr addObject:p];
-    }
-    
-    //各个省份模型加载各自的所有城市模型
-//    for (AddressProvince * p in _pArr) {
-//        NSMutableArray * areasArr = [[NSMutableArray alloc]init];
-//        for (int i = 0 ;i < p.cities.count; i++) {
-//            NSDictionary *dic = p.cities[i];
-//            NSArray  * cityArr = [dic[@"cityModels"] mj_JSONObject];
-//            NSMutableArray *CityModels = [[NSMutableArray alloc] init];
-//            for (int j=0 ; j<cityArr.count; j++) {
-//                NSDictionary *dicModels = cityArr[j];
-//                [CityModels addObject:dicModels[@"name"]];
-//            }
-//            AddressCity     * city    = [AddressCity cityWithName:dic[@"name"] areas:CityModels];
-//            [areasArr addObject:city];
-//        }
-//        p.cityModels = areasArr;
-//    }
-    
-//    _provincesArr = [_dataDict objectForKey:@"p"];
-//    _citysDict    = [_dataDict objectForKey:@"c"];
-//    _areasDict    = [_dataDict objectForKey:@"a"];
-//
-//    _pArr         = [[NSMutableArray alloc]init];
-//
-//    //省份模型数组加载各个省份模型
-//    for (int i = 0 ;i < _provincesArr.count; i++) {
-//        NSArray  * citys = [_citysDict objectForKey:_provincesArr[i]];
-//        AddressProvince * p     = [AddressProvince provinceWithName:_provincesArr[i]
-//                                               cities:citys];
-//        [_pArr addObject:p];
-//    }
-//
-//    //各个省份模型加载各自的所有城市模型
-//    for (AddressProvince * p in _pArr) {
-//        NSMutableArray * areasArr = [[NSMutableArray alloc]init];
-//        for (NSString * cityName in p.cities) {
-//            NSString * cityKey = [NSString stringWithFormat:@"%@-%@",p.name,cityName];
-//            NSArray  * cityArr = [_areasDict objectForKey:cityKey];
-//            AddressCity     * city    = [AddressCity cityWithName:cityName areas:cityArr];
-//            [areasArr addObject:city];
-//        }
-//        p.cityModels = areasArr;
-//    }
 }
 
 #pragma mark - UIPickerDatasource
@@ -348,24 +293,17 @@ static CGFloat CONTENTHEIGHT = 215.0;// 标题栏+选择视图高度
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView
 numberOfRowsInComponent:(NSInteger)component{
-    
     if (0 == component) {
         return _pArr.count;
-    }
-    else if (1 == component){
+    }else if (1 == component){
         NSInteger selectProvince = [pickerView selectedRowInComponent:0];
-        AddressProvince  * p            = _pArr[selectProvince];
-        return p.cities.count;
-    }
-    else if (2 == component){
+        AddressModel * p = self.pArr[selectProvince];
+        return p.city.count;
+    }else if (2 == component){
         NSInteger selectProvince = [pickerView selectedRowInComponent:0];
         NSInteger selectCity     = [pickerView selectedRowInComponent:1];
-        AddressProvince  * p            = _pArr[selectProvince];
-        if (selectCity > p.cityModels.count - 1) {
-            return 0;
-        }
-        AddressCity * c = p.cityModels[selectCity];
-        return c.areas.count;
+        AddressModel * p  = self.pArr[selectProvince];
+        return p.city[selectCity].area.count;
     }
     
     return 0;
@@ -377,29 +315,26 @@ numberOfRowsInComponent:(NSInteger)component{
              titleForRow:(NSInteger)row
             forComponent:(NSInteger)component{
     if (0 == component) {
-        AddressProvince * p = _pArr[row];
+        AddressModel * p = _pArr[row];
         return p.name;
-    }
-    else if (1 == component) {
-        AddressProvince * selectP = _pArr[[pickerView selectedRowInComponent:0]];
-        if (row > selectP.cities.count - 1) {
+    }else if (1 == component) {
+        AddressModel * selectP = _pArr[[pickerView selectedRowInComponent:0]];
+        if (row > selectP.city.count - 1) {
             return nil;
         }
-        NSLog(@"%@",selectP.cities[row]);
-        return selectP.cities[row];
-    }
-    else if (2 == component) {
+        return selectP.city[row].name;
+    }else if (2 == component) {
         NSInteger selectProvince = [pickerView selectedRowInComponent:0];
-        NSInteger selectCity     = [pickerView selectedRowInComponent:1];
-        AddressProvince  * p            = _pArr[selectProvince];
-        if (selectCity > p.cityModels.count - 1) {
+        NSInteger selectCity = [pickerView selectedRowInComponent:1];
+        AddressModel  *p = _pArr[selectProvince];
+        if (selectCity > p.city.count - 1) {
             return nil;
         }
-        AddressCity * c = p.cityModels[selectCity];
-        if (row > c.areas.count -1 ) {
+        AddressModel * c = p.city[selectCity];
+        if (row > c.area.count -1 ) {
             return nil;
         }
-        return c.areas[row];
+        return c.area[row];
     }
     return nil;
 }
@@ -410,17 +345,13 @@ numberOfRowsInComponent:(NSInteger)component{
        inComponent:(NSInteger)component{
     if (0 == component) {
         NSInteger selectCity = [pickerView selectedRowInComponent:1];
-//        NSInteger selectArea = [pickerView selectedRowInComponent:2];
         [pickerView reloadComponent:1];
         [pickerView selectRow:selectCity inComponent:1 animated:YES];
-//        [pickerView reloadComponent:2];
-//        [pickerView selectRow:selectArea inComponent:2 animated:YES];
+        
         
     }
     else if (1 == component){
-//        NSInteger selectArea = [pickerView selectedRowInComponent:2];
-//        [pickerView reloadComponent:2];
-//        [pickerView selectRow:selectArea inComponent:2 animated:YES];
+        
     }
 }
 
@@ -458,8 +389,8 @@ numberOfRowsInComponent:(NSInteger)component{
     NSData  * jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
     NSError * err;
     NSDictionary * dic = [NSJSONSerialization JSONObjectWithData:jsonData
-                                                        options:NSJSONReadingMutableContainers
-                                                          error:&err];
+                                                         options:NSJSONReadingMutableContainers
+                                                           error:&err];
     if(err) {
         NSLog(@"json解析失败：%@",err);
         return nil;
@@ -515,8 +446,8 @@ numberOfRowsInComponent:(NSInteger)component{
         }
         self.titleBackgroundView.frame = CGRectMake(0,selfY, self.bounds.size.width,TITLEHEIGHT);
         self.addressPickerView.frame = CGRectMake(0, self.titleBackgroundView.frame.origin.y + TITLEHEIGHT, AD_SCREEN.width, CONTENTHEIGHT - TITLEHEIGHT);
- 
-         if (AD_iPhoneX) {
+        
+        if (AD_iPhoneX) {
             self.maskingView.frame = CGRectMake(0, self.addressPickerView.frame.origin.y + self.addressPickerView.frame.size.height, AD_SCREEN.width, 34);
         }
         return;
@@ -543,8 +474,8 @@ numberOfRowsInComponent:(NSInteger)component{
         self.titleBackgroundView.frame = CGRectMake(0,selfkY, self.bounds.size.width,TITLEHEIGHT);
         self.addressPickerView.frame = CGRectMake(0, self.titleBackgroundView.frame.origin.y + TITLEHEIGHT, AD_SCREEN.width, CONTENTHEIGHT - TITLEHEIGHT);
         
-//        self.addressPickerView.frame = CGRectMake(0, selfkY,AD_SCREEN.width, CONTENTHEIGHT - TITLEHEIGHT);
-//        self.titleBackgroundView.frame = CGRectMake(0,self.addressPickerView.frame.origin.y + self.addressPickerView.frame.size.height,  self.bounds.size.width,TITLEHEIGHT);
+        //        self.addressPickerView.frame = CGRectMake(0, selfkY,AD_SCREEN.width, CONTENTHEIGHT - TITLEHEIGHT);
+        //        self.titleBackgroundView.frame = CGRectMake(0,self.addressPickerView.frame.origin.y + self.addressPickerView.frame.size.height,  self.bounds.size.width,TITLEHEIGHT);
         
         if (AD_iPhoneX) {
             self.maskingView.frame = CGRectMake(0, self.addressPickerView.frame.origin.y + self.addressPickerView.frame.size.height, AD_SCREEN.width, 34);
@@ -557,32 +488,23 @@ numberOfRowsInComponent:(NSInteger)component{
     if ([_delegate respondsToSelector:@selector(sureBtnClickReturnProvince:City:Area:)]) {
         NSInteger selectProvince = [self.addressPickerView selectedRowInComponent:0];
         NSInteger selectCity     = [self.addressPickerView selectedRowInComponent:1];
-//        NSInteger selectArea     = [self.addressPickerView selectedRowInComponent:2];
+        //        NSInteger selectArea     = [self.addressPickerView selectedRowInComponent:2];
         
-        AddressProvince * p = _pArr[selectProvince];
+        AddressModel * p = _pArr[selectProvince];
         //解决省市同时滑动未结束时点击完成按钮的数组越界问题
-        if (selectCity > p.cities.count - 1) {
-            selectCity = p.cities.count - 1;
+        if (selectCity > p.city.count - 1) {
+            selectCity = p.city.count - 1;
         }
-//        if (selectCity > p.cityModels.count - 1) {
-//            selectCity = p.cityModels.count - 1;
-//        }
-        AddressCity * c = p.cityModels[selectCity];
-        //解决省市区同时滑动未结束时点击完成按钮的数组越界问题
-//        if (selectArea > c.areas.count - 1) {
-//            selectArea = c.areas.count - 1;
-//        }
         
-        if (self.isAutoOpenLast) {
-//            [self setProvinceIdx:selectProvince cityIdx:selectC ity areaIdx:selectArea];
-        }
+        AddressModel * c = p.city[selectCity];
+        //解决省市区同时滑动未结束时点击完成按钮的数组越界问题
         [_delegate sureBtnClickReturnProvince:p.name
-                                         City:p.cities[selectCity]
+                                         City:c.name
                                          Area:@""];
-
-//        [_delegate sureBtnClickReturnProvince:p.name
-//                                         City:c.cityName
-//                                         Area:@""];
+        
+        //        [_delegate sureBtnClickReturnProvince:p.name
+        //                                         City:c.cityName
+        //                                         Area:@""];
     }
 }
 

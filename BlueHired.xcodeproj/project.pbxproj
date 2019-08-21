@@ -2675,16 +2675,16 @@
 		88A0F5EE2226762D00AF50EA /* Category */ = {
 			isa = PBXGroup;
 			children = (
-				88A0F5EF2226762D00AF50EA /* UILabel+LXLabel.h */,
-				88A0F5F02226762D00AF50EA /* UIView+LX_Frame.h */,
 				88A0F5F12226762D00AF50EA /* LxButton.h */,
-				88A0F5F22226762D00AF50EA /* UIView+FTCornerdious.m */,
-				88A0F5F32226762D00AF50EA /* UIColor+Expanded.h */,
-				88A0F5F42226762D00AF50EA /* UIView+LX_Frame.m */,
-				88A0F5F52226762D00AF50EA /* UILabel+LXLabel.m */,
 				88A0F5F62226762D00AF50EA /* LxButton.m */,
+				88A0F5F32226762D00AF50EA /* UIColor+Expanded.h */,
 				88A0F5F72226762D00AF50EA /* UIColor+Expanded.m */,
+				88A0F5EF2226762D00AF50EA /* UILabel+LXLabel.h */,
+				88A0F5F52226762D00AF50EA /* UILabel+LXLabel.m */,
 				88A0F5F82226762D00AF50EA /* UIView+FTCornerdious.h */,
+				88A0F5F22226762D00AF50EA /* UIView+FTCornerdious.m */,
+				88A0F5F02226762D00AF50EA /* UIView+LX_Frame.h */,
+				88A0F5F42226762D00AF50EA /* UIView+LX_Frame.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";

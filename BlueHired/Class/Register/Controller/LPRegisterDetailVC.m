@@ -140,7 +140,7 @@ static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
         make.centerY.equalTo(headView);
     }];
     MonthLabel.textColor = [UIColor baseColor];
-    MonthLabel.font = [UIFont boldSystemFontOfSize:FontSize(14)];
+    MonthLabel.font = [UIFont systemFontOfSize:FontSize(14)];
     MonthLabel.numberOfLines = 0;
     MonthLabel.text = @"说明：A邀请B注册，B入职满30天后才会开始计算A的邀请注册奖励。";
     
