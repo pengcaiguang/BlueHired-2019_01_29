@@ -657,7 +657,7 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
 
 
 -(void)requestQueryLendMoneyMechanism{
-    NSDictionary *dic = @{@"page":[NSString stringWithFormat:@"%ld",(long)self.page]};
+//    NSDictionary *dic = @{@"page":[NSString stringWithFormat:@"%ld",(long)self.page]};
     [NetApiManager requestQueryLendMoneyMechanism:nil withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         [self.CompanyTableView.mj_header endRefreshing];

@@ -378,14 +378,17 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
         cell.AddBlock = ^(LPCommentListDataModel *model){
             LPMoodCommentListDataModel *CommentModel = [LPMoodCommentListDataModel mj_objectWithKeyValues:[model mj_JSONObject]];
  
-            for (NSInteger i = 0 ;i<weakSelf.moodListDataModel.commentModelList.count;i++ ) {
-                LPMoodCommentListDataModel *m = weakSelf.moodListDataModel.commentModelList[i];
-                if ((m.commentType.integerValue == 2 && m.id == CommentModel.commentId) ||
-                    (m.commentType.integerValue == 3 && m.commentId == CommentModel.commentId)) {
-                    [weakSelf.moodListDataModel.commentModelList insertObject:CommentModel atIndex:i];
-                    break;
+            if (self.moodListDataModel.commentModelList.count < 5) {
+                for (NSInteger i = weakSelf.moodListDataModel.commentModelList.count ; i>0 ;i-- ) {
+                    LPMoodCommentListDataModel *m = weakSelf.moodListDataModel.commentModelList[i-1];
+                    if ((m.commentType.integerValue == 2 && m.id == CommentModel.commentId) ||
+                        (m.commentType.integerValue == 3 && m.commentId == CommentModel.commentId)) {
+                        [weakSelf.moodListDataModel.commentModelList insertObject:CommentModel atIndex:i];
+                        break;
+                    }
                 }
             }
+            
             
             for (int i = 0 ;i <weakSelf.moodListArray.count;i++) {
                 LPMoodListDataModel *com = weakSelf.moodListArray[i];
@@ -585,21 +588,20 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
                     CommentModel.id = [LPTools isNullToString:DataList[1]];
                     CommentModel.time = [NSString stringWithFormat:@"%ld",(long)[NSString getNowTimestamp]];
                     CommentModel.grading = user.data.grading;
-                    if (self.commentType == 2) {
-                        [self.moodListDataModel.commentModelList insertObject:CommentModel atIndex:0];
-                    }else if (self.commentType == 3){
+                    if (self.commentType == 2 && self.moodListDataModel.commentModelList.count < 5 ) {
+                        [self.moodListDataModel.commentModelList addObject:CommentModel];
+                    }else if (self.commentType == 3 && self.moodListDataModel.commentModelList.count < 5 ){
                         for (LPCommentListDataModel *model in self.commentListArray) {
                             if (model.id.integerValue == self.commentId.integerValue) {
                                 CommentModel.toUserId = model.userId;
                                 CommentModel.toUserName = model.userName;
                                 CommentModel.toUserIdentity = model.identity;
-
                                 break;
                             }
                         }
                         
-                        for (NSInteger i = 0 ;i<self.moodListDataModel.commentModelList.count;i++ ) {
-                            LPMoodCommentListDataModel *m = self.moodListDataModel.commentModelList[i];
+                        for (NSInteger i = self.moodListDataModel.commentModelList.count ;i>0;i-- ) {
+                            LPMoodCommentListDataModel *m = self.moodListDataModel.commentModelList[i-1];
                             if ((m.commentType.integerValue == 2 && m.id.integerValue == CommentModel.commentId.integerValue) ||
                                 (m.commentType.integerValue == 3 && m.commentId.integerValue == CommentModel.commentId.integerValue)) {
                                 [self.moodListDataModel.commentModelList insertObject:CommentModel atIndex:i];
@@ -736,7 +738,7 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
 
 -(void)requestQueryDeleteComment:(NSString *) CommentId{
     
-    NSString * appendURLString = [NSString stringWithFormat:@"comment/update_comment?id=%@&moodId=%@&versionType=2.3",CommentId,self.moodListDataModel.id];
+    NSString * appendURLString = [NSString stringWithFormat:@"comment/update_comment?id=%@&moodId=%@&versionType=2.4",CommentId,self.moodListDataModel.id];
     
     [NetApiManager requestQueryDeleteComment:nil URLString:appendURLString withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);

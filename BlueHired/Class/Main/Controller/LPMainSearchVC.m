@@ -389,6 +389,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     NSDictionary *dic = @{
                           @"type":@(0),
                           @"mechanismName":self.searchWord,
+                          @"mechanismAddress":self.mechanismAddress ? self.mechanismAddress : @"china",
                           @"page":@(self.page)
                           };
     [NetApiManager requestWorklistWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {

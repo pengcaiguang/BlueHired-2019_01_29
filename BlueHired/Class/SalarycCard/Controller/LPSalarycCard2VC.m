@@ -35,6 +35,7 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
 @property (weak, nonatomic) IBOutlet UIView *ScanningView;
 @property (weak, nonatomic) IBOutlet UILabel *ScanningTitleLable;
 @property (weak, nonatomic) IBOutlet UILabel *ManualTitleLable;
+@property (weak, nonatomic) IBOutlet UILabel *AddressTitleLable;
 
 @property (weak, nonatomic) IBOutlet UIView *TextFieldView;
 @property (weak, nonatomic) IBOutlet UIView *SetPassView;
@@ -85,7 +86,19 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
     self.headViewArr = [[NSMutableArray alloc] init];
     self.IntStep = 1;
     self.navigationItem.title = @"工资卡绑定";
-    self.TypeArray = @[@"招商银行",@"兴业银行",@"中国建设银行"];
+    self.TypeArray = @[@"招商银行",
+                       @"兴业银行",
+                       @"中国建设银行",
+                       @"中国工商银行",
+                       @"中国农业银行",
+                       @"中国银行",
+                       @"交通银行",
+                       @"中国邮政储蓄银行",
+                       @"光大银行",
+                       @"广发银行",
+                       @"平安银行",
+                       @"华夏银行",
+                       @"浙商银行"];
     self.view.backgroundColor = [UIColor colorWithHexString:@"#FFF2F2F2"];
     
     self.TextFieldViewTopBt.layer.cornerRadius = 4;
@@ -1443,8 +1456,28 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
                                     weakSelf.model.data.bankName = @"招商银行";
                                 }else if ([name containsString:@"兴业"]){
                                     weakSelf.model.data.bankName = @"兴业银行";
+                                }else if ([name containsString:@"工商"]){
+                                    weakSelf.model.data.bankName = @"中国工商银行";
+                                }else if ([name containsString:@"农业"]){
+                                    weakSelf.model.data.bankName = @"中国农业银行";
+                                }else if ([name containsString:@"中国银行"]){
+                                    weakSelf.model.data.bankName = @"中国银行";
+                                }else if ([name containsString:@"交通"]){
+                                    weakSelf.model.data.bankName = @"交通银行";
+                                }else if ([name containsString:@"邮储"]){
+                                    weakSelf.model.data.bankName = @"中国邮政储蓄银行";
+                                }else if ([name containsString:@"光大"]){
+                                    weakSelf.model.data.bankName = @"光大银行";
+                                }else if ([name containsString:@"广发"]){
+                                    weakSelf.model.data.bankName = @"广发银行";
+                                }else if ([name containsString:@"平安"]){
+                                    weakSelf.model.data.bankName = @"平安银行";
+                                }else if ([name containsString:@"华夏"]){
+                                    weakSelf.model.data.bankName = @"华夏银行";
+                                }else if ([name containsString:@"浙商"]){
+                                    weakSelf.model.data.bankName = @"浙商银行";
                                 }else{
-                                    GJAlertMessage *alert = [[GJAlertMessage alloc] initWithTitle:@"本平台工资卡绑定仅支持中国建设银行、招商银行或者兴业银行的银行卡，若没有此三种银行卡，请联系驻厂老师或者客服人员为您办理。"
+                                    GJAlertMessage *alert = [[GJAlertMessage alloc] initWithTitle:@"本平台工资卡绑定不支持该银行的银行卡！"
                                                                                           message:nil
                                                                                     textAlignment:NSTextAlignmentCenter
                                                                                      buttonTitles:@[@"确定"]

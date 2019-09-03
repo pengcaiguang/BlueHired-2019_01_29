@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface LPMainSearchVC : LPBaseViewController
+@property(nonatomic,strong) NSString *mechanismAddress;
 
 @end

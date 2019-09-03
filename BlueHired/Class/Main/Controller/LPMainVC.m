@@ -71,6 +71,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 @property(nonatomic,assign) BOOL IsShowHeader2View;
 
 @property(nonatomic,strong) CustomIOSAlertView *InCommentAlertView;
+@property(nonatomic,strong)CustomIOSAlertView *CustomAlert;
 
 @property(nonatomic,strong) UIButton *ReWrok;
 
@@ -164,7 +165,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         [self requestQueryActivityadvert:@""];
     }
     
-    [self requestQueryDownload];
+//    [self requestQueryDownload];
     [self requestMechanismlist];
 
  
@@ -317,6 +318,126 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 }
 #pragma mark - 客服
 -(void)TouchPhoneBtn:(UIButton *)sender{
+//    sender.enabled = NO;
+//    NSMutableString * string = [[NSMutableString alloc] initWithFormat:@"telprompt:%@",self.model.data.phone];
+//    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:string]];
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        sender.enabled = YES;
+//    });
+    
+    NSLog(@"咨询");
+    NSString *name = self.model.data.phone;
+    NSString *number = self.model.data.wxNum;
+    
+    CustomIOSAlertView *alertView = [[CustomIOSAlertView alloc] init];
+    self.CustomAlert = alertView;
+    
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, LENGTH_SIZE(300), LENGTH_SIZE(260))];
+    view.layer.cornerRadius = LENGTH_SIZE(6);
+    view.backgroundColor = [UIColor whiteColor];
+    
+    UILabel *titlelabel = [[UILabel alloc] init];
+    [view addSubview:titlelabel];
+    [titlelabel mas_makeConstraints:^(MASConstraintMaker *make){
+        make.right.left.mas_offset(0);
+        make.top.mas_offset(LENGTH_SIZE(24));
+    }];
+    titlelabel.textAlignment = NSTextAlignmentCenter;
+    titlelabel.font = [UIFont boldSystemFontOfSize:FontSize(18)];
+    titlelabel.text = @"联系客服";
+    
+    UILabel *titlelabel2 = [[UILabel alloc] init];
+    [view addSubview:titlelabel2];
+    [titlelabel2 mas_makeConstraints:^(MASConstraintMaker *make){
+        make.right.left.mas_offset(0);
+        make.top.equalTo(titlelabel.mas_bottom).offset(LENGTH_SIZE(12));
+    }];
+    titlelabel2.textAlignment = NSTextAlignmentCenter;
+    titlelabel2.font = [UIFont systemFontOfSize:FontSize(14)];
+    titlelabel2.text = @"微信搜索微信号即可添加客服微信";
+    titlelabel2.textColor = [UIColor colorWithHexString:@"#CCCCCC"];
+    
+    UIView *SubView = [[UIView alloc] init];
+    [view addSubview:SubView];
+    [SubView mas_makeConstraints:^(MASConstraintMaker *make){
+        make.top.equalTo(titlelabel2.mas_bottom).offset(LENGTH_SIZE(19));
+        make.left.mas_offset(LENGTH_SIZE(20));
+        make.right.mas_offset(LENGTH_SIZE(-20));
+        make.height.mas_offset(LENGTH_SIZE(75));
+    }];
+    SubView.layer.cornerRadius = LENGTH_SIZE(4);
+    SubView.backgroundColor = [UIColor colorWithHexString:@"#F5F7FA"];
+    
+    
+    UILabel *SubLabel1 = [[UILabel alloc] init];
+    [SubView addSubview:SubLabel1];
+    [SubLabel1 mas_makeConstraints:^(MASConstraintMaker *make){
+        make.top.mas_offset(LENGTH_SIZE(13));
+        make.left.mas_offset(LENGTH_SIZE(16));
+        make.right.mas_offset(LENGTH_SIZE(-16));
+    }];
+    SubLabel1.textColor = [UIColor colorWithHexString:@"#666666"];
+    SubLabel1.font = [UIFont systemFontOfSize:FontSize(15)];
+    SubLabel1.text = [NSString stringWithFormat:@"客服电话：%@ ",name];
+    
+    UILabel *SubLabel2 = [[UILabel alloc] init];
+    [SubView addSubview:SubLabel2];
+    [SubLabel2 mas_makeConstraints:^(MASConstraintMaker *make){
+        make.top.equalTo(SubLabel1.mas_bottom).offset(LENGTH_SIZE(12));
+        make.left.mas_offset(LENGTH_SIZE(16));
+    }];
+    SubLabel2.textColor = [UIColor colorWithHexString:@"#666666"];
+    SubLabel2.font = [UIFont systemFontOfSize:FontSize(15)];
+    SubLabel2.text = [NSString stringWithFormat:@"客服微信：%@ ",number];
+    
+    UIButton *CopyBt = [[UIButton alloc] init];
+    [view addSubview:CopyBt];
+    [CopyBt mas_makeConstraints:^(MASConstraintMaker *make){
+        make.top.equalTo(SubView.mas_bottom).offset(LENGTH_SIZE(24));
+        make.left.mas_offset(LENGTH_SIZE(20));
+        make.height.mas_offset(LENGTH_SIZE(40));
+    }];
+    CopyBt.titleLabel.font = [UIFont systemFontOfSize:FontSize(17)];
+    [CopyBt setTitle:@"复制微信" forState:UIControlStateNormal];
+    [CopyBt setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [CopyBt addTarget:self action:@selector(TouchCopyBt) forControlEvents:UIControlEventTouchUpInside];
+    CopyBt.layer.cornerRadius = LENGTH_SIZE(6);
+    CopyBt.backgroundColor = [UIColor colorWithHexString:@"#57CC37"];
+    
+    UIButton *dialBt = [[UIButton alloc] init];
+    [view addSubview:dialBt];
+    [dialBt mas_makeConstraints:^(MASConstraintMaker *make){
+        make.top.equalTo(SubView.mas_bottom).offset(LENGTH_SIZE(24));
+        make.right.mas_offset(LENGTH_SIZE(-20));
+        make.left.equalTo(CopyBt.mas_right).offset(LENGTH_SIZE(16));
+        make.height.mas_offset(LENGTH_SIZE(40));
+        make.width.equalTo(CopyBt.mas_width);
+    }];
+    dialBt.titleLabel.font = [UIFont systemFontOfSize:FontSize(17)];
+    [dialBt setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [dialBt setTitle:@"拨打电话" forState:UIControlStateNormal];
+    dialBt.layer.cornerRadius = LENGTH_SIZE(6);
+    dialBt.backgroundColor = [UIColor baseColor];
+    [dialBt addTarget:self action:@selector(TouchDialBt:) forControlEvents:UIControlEventTouchUpInside];
+    
+    alertView.containerView = view;
+    alertView.buttonTitles=@[];
+    [alertView setUseMotionEffects:true];
+    [alertView setCloseOnTouchUpOutside:true];
+    [alertView show];
+    
+}
+
+-(void)TouchCopyBt{
+    [self.CustomAlert close];
+    
+    UIPasteboard*pasteboard = [UIPasteboard generalPasteboard];
+    pasteboard.string = self.model.data.wxNum;
+    [self.view showLoadingMeg:@"复制成功" time:MESSAGE_SHOW_TIME];
+}
+
+-(void)TouchDialBt:(UIButton *)sender{
+    [self.CustomAlert close];
     sender.enabled = NO;
     NSMutableString * string = [[NSMutableString alloc] initWithFormat:@"telprompt:%@",self.model.data.phone];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:string]];
@@ -324,6 +445,8 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         sender.enabled = YES;
     });
 }
+
+
 #pragma mark - 热招企业
 -(void)TouchReWork:(UIButton *)sender{
     LPHotWorkVC *vc = [[LPHotWorkVC alloc] init];
@@ -516,11 +639,14 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     if ([scrollView isEqual: self.tableview]) {
         if (self.tableview.contentOffset.y > LENGTH_SIZE(216)) {
             if (self.IsShowHeaderView != YES) {
+                _tableHeaderView.lx_height = LENGTH_SIZE(214);
                 self.IsShowHeaderView = YES;
                 [self.tableview reloadData];
             }
         }else{
             if (self.IsShowHeaderView != NO) {
+                _tableHeaderView.lx_height = LENGTH_SIZE(296);
+
                 self.ButtonView.lx_y = LENGTH_SIZE(254);
                 self.screenView.lx_y = LENGTH_SIZE(214);
                 self.ButtonView.hidden = NO;
@@ -610,6 +736,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 #pragma mark - search
 -(BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar{
     LPMainSearchVC *vc = [[LPMainSearchVC alloc]init];
+    vc.mechanismAddress = self.mechanismAddress;
     vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
  
@@ -782,7 +909,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     [NetApiManager requestQueryDownload:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
-            if (responseObject[@"code"] == 0) {
+            if ([responseObject[@"code"] integerValue] == 0) {
                 if (responseObject[@"data"] != nil &&
                     [responseObject[@"data"][@"version"] length]>0) {
                     if (self.version.floatValue <  [responseObject[@"data"][@"version"] floatValue]  ) {
@@ -987,6 +1114,11 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     if (!_RecommendBackImage) {
         _RecommendBackImage = [[UIImageView alloc] initWithFrame:CGRectMake(LENGTH_SIZE(0),LENGTH_SIZE(160) ,LENGTH_SIZE(69) ,LENGTH_SIZE(44))];
         _RecommendBackImage.image = [UIImage imageNamed:@"radio"];
+        
+        UIView *lineV = [[UIView alloc] initWithFrame:CGRectMake(LENGTH_SIZE(68),LENGTH_SIZE(10) ,LENGTH_SIZE(1) ,LENGTH_SIZE(24))];
+        [_RecommendBackImage addSubview:lineV];
+        lineV.backgroundColor = [UIColor colorWithHexString:@"#F0F0F0"];
+        
     }
     return _RecommendBackImage;
 }

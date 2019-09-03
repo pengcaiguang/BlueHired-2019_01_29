@@ -36,11 +36,12 @@
     
     self.keyLabel.text = model.key;
     self.postNameLabel.text = model.postName;
-    if ([model.postName isEqualToString:@"小时工"]) {
+    if (model.postType.integerValue == 1) {
         self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/时",reviseString(model.workMoney)];
     }else{
         self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/月",model.wageRange];
     }
+    
     if (model.isApply && AlreadyLogin) {
         if ([model.isApply integerValue] == 0) {
             self.isApplyLabel.hidden = NO;

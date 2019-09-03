@@ -467,7 +467,7 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
     NSDictionary *dic = @{@"userId": self.MoodModel.userId,
                           @"type":@"1",
                           @"page":@(self.page),
-                          @"versionType":@"2.3"
+                          @"versionType":@"2.4"
                            };
     [NetApiManager requestMoodListWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);

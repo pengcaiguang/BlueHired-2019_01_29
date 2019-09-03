@@ -14,6 +14,12 @@
 		880072282266BF1E00B1E127 /* LPCircleInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 880072262266BF1E00B1E127 /* LPCircleInfoCell.xib */; };
 		8809F67121887AC800B44A95 /* LPSetReMoneyVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8809F66F21887AC800B44A95 /* LPSetReMoneyVC.m */; };
 		8809F67221887AC800B44A95 /* LPSetReMoneyVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8809F67021887AC800B44A95 /* LPSetReMoneyVC.xib */; };
+		8815C757231773AA007CBC1B /* LPReMoneyDrawModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8815C756231773AA007CBC1B /* LPReMoneyDrawModel.m */; };
+		8815C75B23179B8B007CBC1B /* LPRemoneyListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8815C75923179B8B007CBC1B /* LPRemoneyListVC.m */; };
+		8815C75C23179B8B007CBC1B /* LPRemoneyListVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8815C75A23179B8B007CBC1B /* LPRemoneyListVC.xib */; };
+		8815C76023179C23007CBC1B /* LPRemoneyListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8815C75E23179C23007CBC1B /* LPRemoneyListCell.m */; };
+		8815C76123179C23007CBC1B /* LPRemoneyListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8815C75F23179C23007CBC1B /* LPRemoneyListCell.xib */; };
+		8815C7642317EE9C007CBC1B /* LPLPEmployeeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 8815C7632317EE9B007CBC1B /* LPLPEmployeeModel.m */; };
 		88217878217D806B00C662F6 /* WSShowInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8821786E217D806A00C662F6 /* WSShowInfoView.m */; };
 		88217879217D806B00C662F6 /* WSPieForeBGView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8821786F217D806A00C662F6 /* WSPieForeBGView.m */; };
 		8821787A217D806B00C662F6 /* WSPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = 88217870217D806A00C662F6 /* WSPieChart.m */; };
@@ -71,7 +77,23 @@
 		884C480D21872C0600A3AB2E /* LPAssistantModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 884C480C21872C0600A3AB2E /* LPAssistantModel.m */; };
 		884C481121872D6100A3AB2E /* LPStoreAssistantCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 884C480F21872D6100A3AB2E /* LPStoreAssistantCell.m */; };
 		884C481221872D6100A3AB2E /* LPStoreAssistantCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 884C481021872D6100A3AB2E /* LPStoreAssistantCell.xib */; };
+		88544DAF23151ECA00ECDF83 /* LPAwardInvitationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 88544DAD23151ECA00ECDF83 /* LPAwardInvitationVC.m */; };
+		88544DB023151ECA00ECDF83 /* LPAwardInvitationVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 88544DAE23151ECA00ECDF83 /* LPAwardInvitationVC.xib */; };
+		88544DB4231520C800ECDF83 /* LPAwardInvitationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 88544DB2231520C800ECDF83 /* LPAwardInvitationCell.m */; };
+		88544DB5231520C800ECDF83 /* LPAwardInvitationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 88544DB3231520C800ECDF83 /* LPAwardInvitationCell.xib */; };
+		88544DB923152DD800ECDF83 /* LPInvitationDrawVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 88544DB723152DD800ECDF83 /* LPInvitationDrawVC.m */; };
+		88544DBA23152DD800ECDF83 /* LPInvitationDrawVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 88544DB823152DD800ECDF83 /* LPInvitationDrawVC.xib */; };
 		88547504223C8ED4000805F3 /* LPProRecirdModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 88547503223C8ED4000805F3 /* LPProRecirdModel.m */; };
+		8854B169231619C700E7980B /* LPReMoneyDrawVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8854B167231619C600E7980B /* LPReMoneyDrawVC.m */; };
+		8854B16A231619C700E7980B /* LPReMoneyDrawVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8854B168231619C600E7980B /* LPReMoneyDrawVC.xib */; };
+		8854B16E2316971A00E7980B /* LPEmployeeManageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8854B16C2316971A00E7980B /* LPEmployeeManageVC.m */; };
+		8854B16F2316971A00E7980B /* LPEmployeeManageVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8854B16D2316971A00E7980B /* LPEmployeeManageVC.xib */; };
+		8854B17323169CF800E7980B /* LPEmployeeManageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8854B17123169CF800E7980B /* LPEmployeeManageCell.m */; };
+		8854B17423169CF800E7980B /* LPEmployeeManageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8854B17223169CF800E7980B /* LPEmployeeManageCell.xib */; };
+		8854B1782316AA8200E7980B /* LPEmployeeWorkListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8854B1762316AA8200E7980B /* LPEmployeeWorkListVC.m */; };
+		8854B1792316AA8200E7980B /* LPEmployeeWorkListVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8854B1772316AA8200E7980B /* LPEmployeeWorkListVC.xib */; };
+		8854B17D2316AEAD00E7980B /* LPEmployeeWorkListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8854B17B2316AEAD00E7980B /* LPEmployeeWorkListCell.m */; };
+		8854B17E2316AEAD00E7980B /* LPEmployeeWorkListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8854B17C2316AEAD00E7980B /* LPEmployeeWorkListCell.xib */; };
 		885C0E3821E4F164008E8A08 /* ADAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 885C0E3621E4F157008E8A08 /* ADAlertView.m */; };
 		885C0E3B21E4F195008E8A08 /* ADModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 885C0E3A21E4F195008E8A08 /* ADModel.m */; };
 		885C0E3E21E4F3A1008E8A08 /* LPAdvertModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 885C0E3D21E4F3A1008E8A08 /* LPAdvertModel.m */; };
@@ -823,6 +845,16 @@
 		8809F66E21887AC800B44A95 /* LPSetReMoneyVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPSetReMoneyVC.h; sourceTree = "<group>"; };
 		8809F66F21887AC800B44A95 /* LPSetReMoneyVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPSetReMoneyVC.m; sourceTree = "<group>"; };
 		8809F67021887AC800B44A95 /* LPSetReMoneyVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPSetReMoneyVC.xib; sourceTree = "<group>"; };
+		8815C755231773AA007CBC1B /* LPReMoneyDrawModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPReMoneyDrawModel.h; sourceTree = "<group>"; };
+		8815C756231773AA007CBC1B /* LPReMoneyDrawModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPReMoneyDrawModel.m; sourceTree = "<group>"; };
+		8815C75823179B8B007CBC1B /* LPRemoneyListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPRemoneyListVC.h; sourceTree = "<group>"; };
+		8815C75923179B8B007CBC1B /* LPRemoneyListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPRemoneyListVC.m; sourceTree = "<group>"; };
+		8815C75A23179B8B007CBC1B /* LPRemoneyListVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPRemoneyListVC.xib; sourceTree = "<group>"; };
+		8815C75D23179C23007CBC1B /* LPRemoneyListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPRemoneyListCell.h; sourceTree = "<group>"; };
+		8815C75E23179C23007CBC1B /* LPRemoneyListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPRemoneyListCell.m; sourceTree = "<group>"; };
+		8815C75F23179C23007CBC1B /* LPRemoneyListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPRemoneyListCell.xib; sourceTree = "<group>"; };
+		8815C7622317EE9B007CBC1B /* LPLPEmployeeModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPLPEmployeeModel.h; sourceTree = "<group>"; };
+		8815C7632317EE9B007CBC1B /* LPLPEmployeeModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPLPEmployeeModel.m; sourceTree = "<group>"; };
 		8821786E217D806A00C662F6 /* WSShowInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSShowInfoView.m; sourceTree = "<group>"; };
 		8821786F217D806A00C662F6 /* WSPieForeBGView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSPieForeBGView.m; sourceTree = "<group>"; };
 		88217870217D806A00C662F6 /* WSPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WSPieChart.m; sourceTree = "<group>"; };
@@ -922,8 +954,32 @@
 		884C480E21872D6100A3AB2E /* LPStoreAssistantCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPStoreAssistantCell.h; sourceTree = "<group>"; };
 		884C480F21872D6100A3AB2E /* LPStoreAssistantCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPStoreAssistantCell.m; sourceTree = "<group>"; };
 		884C481021872D6100A3AB2E /* LPStoreAssistantCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPStoreAssistantCell.xib; sourceTree = "<group>"; };
+		88544DAC23151ECA00ECDF83 /* LPAwardInvitationVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPAwardInvitationVC.h; sourceTree = "<group>"; };
+		88544DAD23151ECA00ECDF83 /* LPAwardInvitationVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPAwardInvitationVC.m; sourceTree = "<group>"; };
+		88544DAE23151ECA00ECDF83 /* LPAwardInvitationVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPAwardInvitationVC.xib; sourceTree = "<group>"; };
+		88544DB1231520C800ECDF83 /* LPAwardInvitationCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPAwardInvitationCell.h; sourceTree = "<group>"; };
+		88544DB2231520C800ECDF83 /* LPAwardInvitationCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPAwardInvitationCell.m; sourceTree = "<group>"; };
+		88544DB3231520C800ECDF83 /* LPAwardInvitationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPAwardInvitationCell.xib; sourceTree = "<group>"; };
+		88544DB623152DD800ECDF83 /* LPInvitationDrawVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPInvitationDrawVC.h; sourceTree = "<group>"; };
+		88544DB723152DD800ECDF83 /* LPInvitationDrawVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPInvitationDrawVC.m; sourceTree = "<group>"; };
+		88544DB823152DD800ECDF83 /* LPInvitationDrawVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPInvitationDrawVC.xib; sourceTree = "<group>"; };
 		88547502223C8ED4000805F3 /* LPProRecirdModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPProRecirdModel.h; sourceTree = "<group>"; };
 		88547503223C8ED4000805F3 /* LPProRecirdModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPProRecirdModel.m; sourceTree = "<group>"; };
+		8854B166231619C600E7980B /* LPReMoneyDrawVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPReMoneyDrawVC.h; sourceTree = "<group>"; };
+		8854B167231619C600E7980B /* LPReMoneyDrawVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPReMoneyDrawVC.m; sourceTree = "<group>"; };
+		8854B168231619C600E7980B /* LPReMoneyDrawVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPReMoneyDrawVC.xib; sourceTree = "<group>"; };
+		8854B16B2316971A00E7980B /* LPEmployeeManageVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPEmployeeManageVC.h; sourceTree = "<group>"; };
+		8854B16C2316971A00E7980B /* LPEmployeeManageVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPEmployeeManageVC.m; sourceTree = "<group>"; };
+		8854B16D2316971A00E7980B /* LPEmployeeManageVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPEmployeeManageVC.xib; sourceTree = "<group>"; };
+		8854B17023169CF800E7980B /* LPEmployeeManageCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPEmployeeManageCell.h; sourceTree = "<group>"; };
+		8854B17123169CF800E7980B /* LPEmployeeManageCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPEmployeeManageCell.m; sourceTree = "<group>"; };
+		8854B17223169CF800E7980B /* LPEmployeeManageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPEmployeeManageCell.xib; sourceTree = "<group>"; };
+		8854B1752316AA8200E7980B /* LPEmployeeWorkListVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPEmployeeWorkListVC.h; sourceTree = "<group>"; };
+		8854B1762316AA8200E7980B /* LPEmployeeWorkListVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPEmployeeWorkListVC.m; sourceTree = "<group>"; };
+		8854B1772316AA8200E7980B /* LPEmployeeWorkListVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPEmployeeWorkListVC.xib; sourceTree = "<group>"; };
+		8854B17A2316AEAD00E7980B /* LPEmployeeWorkListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LPEmployeeWorkListCell.h; sourceTree = "<group>"; };
+		8854B17B2316AEAD00E7980B /* LPEmployeeWorkListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LPEmployeeWorkListCell.m; sourceTree = "<group>"; };
+		8854B17C2316AEAD00E7980B /* LPEmployeeWorkListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LPEmployeeWorkListCell.xib; sourceTree = "<group>"; };
 		885C0E3621E4F157008E8A08 /* ADAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ADAlertView.m; sourceTree = "<group>"; };
 		885C0E3721E4F164008E8A08 /* ADAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADAlertView.h; sourceTree = "<group>"; };
 		885C0E3921E4F193008E8A08 /* ADModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADModel.h; sourceTree = "<group>"; };
@@ -3237,6 +3293,8 @@
 				888EDFDB22EADB640084972E /* LPGetScoreMoneyRecordModel.m */,
 				88B3434F22F024C400272DB9 /* LPGetBankNameModel.h */,
 				88B3435022F024C400272DB9 /* LPGetBankNameModel.m */,
+				8815C7622317EE9B007CBC1B /* LPLPEmployeeModel.h */,
+				8815C7632317EE9B007CBC1B /* LPLPEmployeeModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -3346,6 +3404,12 @@
 				888077C122EEE77B00DF4162 /* LPPrizeMoneyCell.h */,
 				888077C222EEE77B00DF4162 /* LPPrizeMoneyCell.m */,
 				888077C322EEE77B00DF4162 /* LPPrizeMoneyCell.xib */,
+				88544DB1231520C800ECDF83 /* LPAwardInvitationCell.h */,
+				88544DB2231520C800ECDF83 /* LPAwardInvitationCell.m */,
+				88544DB3231520C800ECDF83 /* LPAwardInvitationCell.xib */,
+				8815C75D23179C23007CBC1B /* LPRemoneyListCell.h */,
+				8815C75E23179C23007CBC1B /* LPRemoneyListCell.m */,
+				8815C75F23179C23007CBC1B /* LPRemoneyListCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -4051,12 +4115,15 @@
 				88BC598922AE3374004EAEF2 /* LPAddressBookVC.h */,
 				88BC598A22AE3374004EAEF2 /* LPAddressBookVC.m */,
 				88BC598B22AE3374004EAEF2 /* LPAddressBookVC.xib */,
-				88ECAD0522E95C9600BE3F0B /* LPAwardVC.h */,
-				88ECAD0622E95C9600BE3F0B /* LPAwardVC.m */,
-				88ECAD0722E95C9600BE3F0B /* LPAwardVC.xib */,
 				888EDFD222EA8B0E0084972E /* LPScoreMoneyVC.h */,
 				888EDFD322EA8B0E0084972E /* LPScoreMoneyVC.m */,
 				888EDFD422EA8B0E0084972E /* LPScoreMoneyVC.xib */,
+				8854B16B2316971A00E7980B /* LPEmployeeManageVC.h */,
+				8854B16C2316971A00E7980B /* LPEmployeeManageVC.m */,
+				8854B16D2316971A00E7980B /* LPEmployeeManageVC.xib */,
+				8854B1752316AA8200E7980B /* LPEmployeeWorkListVC.h */,
+				8854B1762316AA8200E7980B /* LPEmployeeWorkListVC.m */,
+				8854B1772316AA8200E7980B /* LPEmployeeWorkListVC.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -4204,6 +4271,12 @@
 				888EDFDD22EADC6A0084972E /* LPScoreMoneyCell.h */,
 				888EDFDE22EADC6A0084972E /* LPScoreMoneyCell.m */,
 				888EDFDF22EADC6A0084972E /* LPScoreMoneyCell.xib */,
+				8854B17023169CF800E7980B /* LPEmployeeManageCell.h */,
+				8854B17123169CF800E7980B /* LPEmployeeManageCell.m */,
+				8854B17223169CF800E7980B /* LPEmployeeManageCell.xib */,
+				8854B17A2316AEAD00E7980B /* LPEmployeeWorkListCell.h */,
+				8854B17B2316AEAD00E7980B /* LPEmployeeWorkListCell.m */,
+				8854B17C2316AEAD00E7980B /* LPEmployeeWorkListCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -4353,6 +4426,21 @@
 				DCCC8A882147E4D00062A0F5 /* LPSalaryBreakdownVC.m */,
 				DCE2C2332148C35C00BCB9F4 /* LPSalaryDetailVC.h */,
 				DCE2C2342148C35C00BCB9F4 /* LPSalaryDetailVC.m */,
+				88ECAD0522E95C9600BE3F0B /* LPAwardVC.h */,
+				88ECAD0622E95C9600BE3F0B /* LPAwardVC.m */,
+				88ECAD0722E95C9600BE3F0B /* LPAwardVC.xib */,
+				88544DAC23151ECA00ECDF83 /* LPAwardInvitationVC.h */,
+				88544DAD23151ECA00ECDF83 /* LPAwardInvitationVC.m */,
+				88544DAE23151ECA00ECDF83 /* LPAwardInvitationVC.xib */,
+				88544DB623152DD800ECDF83 /* LPInvitationDrawVC.h */,
+				88544DB723152DD800ECDF83 /* LPInvitationDrawVC.m */,
+				88544DB823152DD800ECDF83 /* LPInvitationDrawVC.xib */,
+				8854B166231619C600E7980B /* LPReMoneyDrawVC.h */,
+				8854B167231619C600E7980B /* LPReMoneyDrawVC.m */,
+				8854B168231619C600E7980B /* LPReMoneyDrawVC.xib */,
+				8815C75823179B8B007CBC1B /* LPRemoneyListVC.h */,
+				8815C75923179B8B007CBC1B /* LPRemoneyListVC.m */,
+				8815C75A23179B8B007CBC1B /* LPRemoneyListVC.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -4364,6 +4452,8 @@
 				DCCC8A8C2147EDF50062A0F5 /* LPQuerySalarylistModel.m */,
 				888077BE22EEE53600DF4162 /* LPPrizeMoney.h */,
 				888077BF22EEE53600DF4162 /* LPPrizeMoney.m */,
+				8815C755231773AA007CBC1B /* LPReMoneyDrawModel.h */,
+				8815C756231773AA007CBC1B /* LPReMoneyDrawModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -4684,8 +4774,10 @@
 				8895F94722378E6300215EEF /* LPLeaveListVC.xib in Resources */,
 				88CB128F219D706B00EFED06 /* 组10.png in Resources */,
 				88B036552223C3DA000B939A /* LPWorkHourDetail2VC.xib in Resources */,
+				8854B1792316AA8200E7980B /* LPEmployeeWorkListVC.xib in Resources */,
 				88988DE3216DC71700042589 /* LPBusinessReviewWageVC.xib in Resources */,
 				88C1B26E21BFAC4600DBA508 /* LPCircleSearchVC.xib in Resources */,
+				8854B16A231619C700E7980B /* LPReMoneyDrawVC.xib in Resources */,
 				884C2CA42194518E0023D2E2 /* LPReportVC.xib in Resources */,
 				88CCFAE521E35F3C00C1B6FE /* LPMineBillCell.xib in Resources */,
 				88B1AE042228C01800EAF366 /* LPWorkHourBaseSalaryVC.xib in Resources */,
@@ -4712,6 +4804,7 @@
 				88ADC50921DDD7C700405699 /* province.json in Resources */,
 				88CB1291219D706B00EFED06 /* 组9.png in Resources */,
 				88A0F5E5222670AD00AF50EA /* LXCalendarHearder.xib in Resources */,
+				88544DBA23152DD800ECDF83 /* LPInvitationDrawVC.xib in Resources */,
 				88BD011822AF7CAC008F3247 /* LPAddressBookCell.xib in Resources */,
 				88C3FDCB21807A48003AC177 /* LPRecruitRequireVC.xib in Resources */,
 				DC30E1B021394055000C7A91 /* LPWorkDetailTextCell.xib in Resources */,
@@ -4722,14 +4815,17 @@
 				DC13BB5B213E5B6A00800955 /* LPCityCell.xib in Resources */,
 				884C47F22186E6B200A3AB2E /* LPWStoreManageVC.xib in Resources */,
 				88C3E62A21CDE38C00361292 /* LPPraiseListCell.xib in Resources */,
+				8854B17E2316AEAD00E7980B /* LPEmployeeWorkListCell.xib in Resources */,
 				DC73832D2133E3670055DC10 /* Assets.xcassets in Resources */,
 				8895F951223794C700215EEF /* LPLeaveEditorVC.xib in Resources */,
 				8895D9B7223A30C9006737E6 /* LPLabourCostEditVC.xib in Resources */,
 				8892F72C21A3E83800ACB169 /* LPVideoVC.xib in Resources */,
 				88DB4C7421A28A5B00A222BF /* LPUserBlackCell.xib in Resources */,
 				884C480A2187297C00A3AB2E /* LPStoreAssistantManageVC.xib in Resources */,
+				8854B17423169CF800E7980B /* LPEmployeeManageCell.xib in Resources */,
 				DCC969BB2160BAD300D9E99C /* LPBillRecordVC.xib in Resources */,
 				88AB2887218341180067F67B /* LPEntryVC.xib in Resources */,
+				8854B16F2316971A00E7980B /* LPEmployeeManageVC.xib in Resources */,
 				8895D9AA2239F6ED006737E6 /* LPWorkHourBaseSalary2VC.xib in Resources */,
 				88EADA3A228573850000299B /* LICENSE in Resources */,
 				888EDFE122EADC6A0084972E /* LPScoreMoneyCell.xib in Resources */,
@@ -4789,11 +4885,13 @@
 				88A6C0862188061E00F0EFE1 /* LPInviteUpUserVC.xib in Resources */,
 				88CB128C219D706B00EFED06 /* 组2.png in Resources */,
 				DC30E1A621393BB0000C7A91 /* LPWorkDetailHeadCell.xib in Resources */,
+				8815C75C23179B8B007CBC1B /* LPRemoneyListVC.xib in Resources */,
 				88C708E921903B5D0095FE65 /* LPRegisteredContentVC.xib in Resources */,
 				88988DE1216DC71700042589 /* LPbusinessMyReviewViewController.xib in Resources */,
 				88D1FAAC22697E3000178BFC /* LPIntegralDrawDatelis.xib in Resources */,
 				88CCFAE021E2FA5F00C1B6FE /* Untitled-3.gif in Resources */,
 				DC5C38952136682200B3CF6E /* LPCircleCollectionViewCell.xib in Resources */,
+				8815C76123179C23007CBC1B /* LPRemoneyListCell.xib in Resources */,
 				DC47E14A215DD17B003CF466 /* LPRegisterDetailCell.xib in Resources */,
 				88C5AFD221C1349E00B4A9E2 /* LPWXLoginBindingVC.xib in Resources */,
 				88CAD8DD2224DE8600AECBC9 /* LPTypeWorkHourCell.xib in Resources */,
@@ -4801,6 +4899,7 @@
 				88AD92F021D5C858001D85AD /* LPHomeCustomerServiceVC.xib in Resources */,
 				88F9F98C218314E70052DF93 /* LPLendRepulseVC.xib in Resources */,
 				88D4EF062230F5F8008A9585 /* LPWorkHourSetCell.xib in Resources */,
+				88544DB5231520C800ECDF83 /* LPAwardInvitationCell.xib in Resources */,
 				88AAEEFE21A94A2C0085EAA2 /* LPHongBaoVC.xib in Resources */,
 				88FC0292218493A60080E44C /* LPAffiliationMenageVC.xib in Resources */,
 				88F9F9962183310B0052DF93 /* LPLendDetailsCell.xib in Resources */,
@@ -4868,6 +4967,7 @@
 				889F772A21E44EE600788946 /* LPActivityDatelisVC.xib in Resources */,
 				88D4DC3322686D2A00181D7D /* LPAccountManageVC.xib in Resources */,
 				DCE72737215B751700FAB22B /* LPSalarycCardBindPhoneVC.xib in Resources */,
+				88544DB023151ECA00ECDF83 /* LPAwardInvitationVC.xib in Resources */,
 				DC2C590221548EF000741ED8 /* LPInforCollectionViewCell.xib in Resources */,
 				88B8C62F227180AD00313854 /* LPSecurityQuestionVC.xib in Resources */,
 				DCB25E9A2150C79700ED2FC4 /* LPSalaryHourlyStatisticsCell.xib in Resources */,
@@ -5031,6 +5131,7 @@
 				88B8034321D0BA4D00FB4D25 /* JXCategoryIndicatorCellModel.m in Sources */,
 				DC7A32DB2137DADD00E09C6C /* UIViewController+BackItem.m in Sources */,
 				DC5C388E213645E000B3CF6E /* LPInformationMoreImageCollectionViewCell.m in Sources */,
+				88544DAF23151ECA00ECDF83 /* LPAwardInvitationVC.m in Sources */,
 				88B8037321D0CA0E00FB4D25 /* JXPagerMainTableView.m in Sources */,
 				8895D9C0223A39E4006737E6 /* LPPieceListCell.m in Sources */,
 				88B8034A21D0BA4D00FB4D25 /* JXCategoryTitleImageCell.m in Sources */,
@@ -5106,6 +5207,7 @@
 				88A0D9A4222FA2C80023587E /* LPLeaveDetailsModel.m in Sources */,
 				889E1F8A2183EEED0045D247 /* LPFirmCell.m in Sources */,
 				88BD9DFF225DDDBF00816825 /* YYFrameImage.m in Sources */,
+				8854B169231619C700E7980B /* LPReMoneyDrawVC.m in Sources */,
 				DC61FAC5214646B30003AA61 /* LPFullTimeVC.m in Sources */,
 				88A4B555222A2A4100C75BF7 /* LPConsumeTypeCell.m in Sources */,
 				88B8034521D0BA4D00FB4D25 /* JXCategoryIndicatorView.m in Sources */,
@@ -5146,6 +5248,7 @@
 				88988DE8216DC76600042589 /* XHStarRateView.m in Sources */,
 				88AB2886218341180067F67B /* LPEntryVC.m in Sources */,
 				88A0F5EC222670AD00AF50EA /* LXCalendarMonthModel.m in Sources */,
+				88544DB923152DD800ECDF83 /* LPInvitationDrawVC.m in Sources */,
 				889E1F982184073C0045D247 /* LPEntryScreenView.m in Sources */,
 				DC5C38A421369B9B00B3CF6E /* NSString+String.m in Sources */,
 				DC2C590A2154A14700741ED8 /* LPInfoCell.m in Sources */,
@@ -5184,6 +5287,7 @@
 				886EF4CB21DC52A7005C13D0 /* LPRHFButton.m in Sources */,
 				889A5309225EE5CB00C35736 /* UIImageView+HXExtension.m in Sources */,
 				DC30E19B21391DAD000C7A91 /* LPInformationSearchResultVC.m in Sources */,
+				88544DB4231520C800ECDF83 /* LPAwardInvitationCell.m in Sources */,
 				8892F72B21A3E83800ACB169 /* LPVideoVC.m in Sources */,
 				88AB288121833F540067F67B /* LPStaffManageViewController.m in Sources */,
 				889A5318225EE5CB00C35736 /* HXPhotoViewController.m in Sources */,
@@ -5203,6 +5307,7 @@
 				88C3FDBC21801679003AC177 /* LPRecruitmentVC.m in Sources */,
 				88BD9E04225DDDC000816825 /* MKAnnotationView+YYWebImage.m in Sources */,
 				889A5312225EE5CB00C35736 /* HXPhotoModel.m in Sources */,
+				8854B17323169CF800E7980B /* LPEmployeeManageCell.m in Sources */,
 				DCE3E1E1214A465A003ADFC6 /* LPSubsidyDeductionCell.m in Sources */,
 				DC47E143215DC598003CF466 /* LPRegisterDetailVC.m in Sources */,
 				DC4AB9BB215A2131002DFD5C /* LPLendVC.m in Sources */,
@@ -5306,6 +5411,7 @@
 				DCF5D9CF213FB7D9009F5DCE /* LPBusinessReviewDetailVC.m in Sources */,
 				DCE7273B215B7F5600FAB22B /* LPSalarycCardChangePasswordVC.m in Sources */,
 				DC7383282133E33E0055DC10 /* ViewController.m in Sources */,
+				8815C76023179C23007CBC1B /* LPRemoneyListCell.m in Sources */,
 				884C48092187297C00A3AB2E /* LPStoreAssistantManageVC.m in Sources */,
 				DC47E163215E2786003CF466 /* LLPCustomerServiceCell.m in Sources */,
 				88BD9DF7225DDDBF00816825 /* YYDiskCache.m in Sources */,
@@ -5335,6 +5441,7 @@
 				DC7A32E12137E99300E09C6C /* LoginUtils.m in Sources */,
 				88C1B26521BF454F00DBA508 /* LPVideoTypeModel.m in Sources */,
 				88BD9DF8225DDDBF00816825 /* YYCache.m in Sources */,
+				8854B17D2316AEAD00E7980B /* LPEmployeeWorkListCell.m in Sources */,
 				88B5587721C72E8100AED96E /* KJMarqueeLabel.m in Sources */,
 				88C590A1221E79EE004F6576 /* LPWorkHourTallyBookCell.m in Sources */,
 				DCDB29F6215F68D7008444BA /* LPCalendarSignCell.m in Sources */,
@@ -5343,6 +5450,7 @@
 				889A531F225EE5CB00C35736 /* HXFullScreenCameraPlayView.m in Sources */,
 				88D1FAAB22697E3000178BFC /* LPIntegralDrawDatelis.m in Sources */,
 				88CCFAED21E43A6500C1B6FE /* LPActivityModel.m in Sources */,
+				8854B16E2316971A00E7980B /* LPEmployeeManageVC.m in Sources */,
 				889E1FA321844E250045D247 /* LPFirmModel.m in Sources */,
 				88C708E1218FEAC10095FE65 /* NSString+HTML.m in Sources */,
 				88B8034121D0BA4D00FB4D25 /* JXCategoryIndicatorComponentView.m in Sources */,
@@ -5407,6 +5515,7 @@
 				DCE7272F215B619300FAB22B /* NSString+Encode.m in Sources */,
 				DC5C38942136682200B3CF6E /* LPCircleCollectionViewCell.m in Sources */,
 				88CB1294219D929F00EFED06 /* HZNormalHeader.m in Sources */,
+				8854B1782316AA8200E7980B /* LPEmployeeWorkListVC.m in Sources */,
 				DC7383A22134EF300055DC10 /* UIView+MBProgressHUD.m in Sources */,
 				88BD9ABF2182FAE300D7272D /* LPTLendAuditCell.m in Sources */,
 				88A0F5FD2226762D00AF50EA /* UIColor+Expanded.m in Sources */,
@@ -5441,6 +5550,7 @@
 				88B8033F21D0BA4D00FB4D25 /* JXCategoryIndicatorImageView.m in Sources */,
 				88B8033C21D0BA4D00FB4D25 /* JXCategoryIndicatorLineView.m in Sources */,
 				88B8035721D0BA4D00FB4D25 /* JXCategoryFactory.m in Sources */,
+				8815C757231773AA007CBC1B /* LPReMoneyDrawModel.m in Sources */,
 				DCF5D9C0213FA395009F5DCE /* LPMechanismcommentMechanismlistModel.m in Sources */,
 				DCF5D9BC213F892D009F5DCE /* LPBusinessReviewVC.m in Sources */,
 				DC47E150215DD28A003CF466 /* LPRegisterDetailModel.m in Sources */,
@@ -5452,11 +5562,13 @@
 				889C4BA1217094A500C153ED /* LPDrawalStateModel.m in Sources */,
 				8895D9B1223A2F2C006737E6 /* LPLabourCostSetVC.m in Sources */,
 				88B8034D21D0BA4D00FB4D25 /* JXCategoryTitleCell.m in Sources */,
+				8815C75B23179B8B007CBC1B /* LPRemoneyListVC.m in Sources */,
 				88B8034821D0BA4D00FB4D25 /* JXCategoryDotCellModel.m in Sources */,
 				889E1FA72184582D0045D247 /* LPFirmDetailsVC.m in Sources */,
 				888EDFD522EA8B0E0084972E /* LPScoreMoneyVC.m in Sources */,
 				88C3FDCA21807A48003AC177 /* LPRecruitRequireVC.m in Sources */,
 				8821787B217D806B00C662F6 /* WSPieItemsView.m in Sources */,
+				8815C7642317EE9C007CBC1B /* LPLPEmployeeModel.m in Sources */,
 				889A5308225EE5CB00C35736 /* NSBundle+HXPhotoPicker.m in Sources */,
 				88A0D9A0222FA0E30023587E /* LPLeaveDetailsVC.m in Sources */,
 				88B8034421D0BA4D00FB4D25 /* JXCategoryIndicatorCell.m in Sources */,

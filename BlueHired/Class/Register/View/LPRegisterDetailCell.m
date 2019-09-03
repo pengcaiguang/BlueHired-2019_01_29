@@ -46,11 +46,15 @@
         if(model.delStatus.integerValue == 0){
             self.relationMoneyLabel.text = [NSString stringWithFormat:@"未到账：%.2f元",model.relationMoney.floatValue];
             self.relationMoneyLabel.textColor = [UIColor colorWithHexString:@"#FF5353"];
-            self.relationMoneyLabel.font = [UIFont systemFontOfSize:FontSize(15)];
-        }else{
-            self.relationMoneyLabel.text = [NSString stringWithFormat:@"%.2f元",model.relationMoney.floatValue];
+            self.relationMoneyLabel.font = [UIFont systemFontOfSize:FontSize(14)];
+        } else if (model.delStatus.integerValue == 1){
+            self.relationMoneyLabel.text = [NSString stringWithFormat:@"待领取：%.2f元",model.relationMoney.floatValue];
             self.relationMoneyLabel.textColor = [UIColor baseColor];
-            self.relationMoneyLabel.font = [UIFont boldSystemFontOfSize:FontSize(15)];
+            self.relationMoneyLabel.font = [UIFont systemFontOfSize:FontSize(14)];
+        } else{
+            self.relationMoneyLabel.text = [NSString stringWithFormat:@"已领取：%.2f元",model.relationMoney.floatValue];
+            self.relationMoneyLabel.textColor = [UIColor colorWithHexString:@"#999999"];
+            self.relationMoneyLabel.font = [UIFont systemFontOfSize:FontSize(14)];
         }
     }else{
         self.phoneBtn.hidden = NO;
@@ -64,14 +68,18 @@
         self.typeLabel.text = [NSString stringWithFormat:@"%@****%@",[model.userTel substringWithRange:NSMakeRange(0, 3)],[model.userTel substringWithRange:NSMakeRange(7, 4)]];
         self.LayoutConstraint_typeLabel_width.constant = [LPTools widthForString:self.typeLabel.text fontSize:FontSize(13) andHeight:20]+8;
 
-        if(model.status.integerValue != 2){
+        if(model.status.integerValue == 1 || model.status.integerValue == 0){
             self.relationMoneyLabel.text = [NSString stringWithFormat:@"未到账：%.2f元",model.relationMoney.floatValue];
             self.relationMoneyLabel.textColor = [UIColor colorWithHexString:@"#FF5353"];
-            self.relationMoneyLabel.font = [UIFont systemFontOfSize:FontSize(15)];
-        }else{
-            self.relationMoneyLabel.text = [NSString stringWithFormat:@"%.2f元",model.relationMoney.floatValue];
+            self.relationMoneyLabel.font = [UIFont systemFontOfSize:FontSize(14)];
+        }else if (model.status.integerValue == 2){
+            self.relationMoneyLabel.text = [NSString stringWithFormat:@"待领取：%.2f元",model.relationMoney.floatValue];
             self.relationMoneyLabel.textColor = [UIColor baseColor];
-            self.relationMoneyLabel.font = [UIFont boldSystemFontOfSize:FontSize(15)];
+            self.relationMoneyLabel.font = [UIFont boldSystemFontOfSize:FontSize(14)];
+        } else{
+            self.relationMoneyLabel.text = [NSString stringWithFormat:@"已领取：%.2f元",model.relationMoney.floatValue];
+            self.relationMoneyLabel.textColor = [UIColor colorWithHexString:@"#999999"];
+            self.relationMoneyLabel.font = [UIFont boldSystemFontOfSize:FontSize(14)];
         }
     }
     

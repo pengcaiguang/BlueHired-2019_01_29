@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LPSalarycCard2VC">
             <connections>
+                <outlet property="AddressTitleLable" destination="bhm-C3-SLS" id="bZf-6d-o0N"/>
                 <outlet property="BankNameField" destination="1pa-Tf-XUz" id="WaP-ur-xvY"/>
                 <outlet property="HBTextFieldView" destination="MsU-ZL-Pjt" id="bLm-Qk-M4f"/>
                 <outlet property="ManualTitleLable" destination="bZu-S4-LgF" id="KBN-GL-bF3"/>
@@ -493,6 +494,12 @@
                                 <constraint firstAttribute="height" constant="1" id="IVa-re-aNu"/>
                             </constraints>
                         </view>
+                        <label opaque="NO" userInteractionEnabled="NO" tag="3000" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="温馨提示：银行卡归属地是银行卡开户行所在地，若银行卡归属地地址填写错误，则会影响提现到账时间。" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bhm-C3-SLS">
+                            <rect key="frame" x="20" y="163" width="335" height="50.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" red="1" green="0.36470588235294116" blue="0.36470588235294116" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
@@ -525,6 +532,7 @@
                         <constraint firstAttribute="trailing" secondItem="TSz-Lp-Q6d" secondAttribute="trailing" constant="13" id="IST-pO-921"/>
                         <constraint firstItem="1pa-Tf-XUz" firstAttribute="leading" secondItem="NQp-6A-fNY" secondAttribute="trailing" id="N4t-Ke-aDT"/>
                         <constraint firstAttribute="bottom" secondItem="sOf-5o-PtP" secondAttribute="bottom" constant="13" id="OZ2-wv-USd"/>
+                        <constraint firstAttribute="trailing" secondItem="bhm-C3-SLS" secondAttribute="trailing" constant="20" id="ObB-Ss-Gad"/>
                         <constraint firstAttribute="trailing" secondItem="sOf-5o-PtP" secondAttribute="trailing" constant="13" id="PWb-DX-7hq"/>
                         <constraint firstItem="eB6-sw-w1s" firstAttribute="leading" secondItem="jDt-tZ-V9t" secondAttribute="trailing" id="UfH-LH-nOR"/>
                         <constraint firstItem="fCh-fN-eCx" firstAttribute="centerY" secondItem="TtD-ff-7Md" secondAttribute="centerY" id="VbN-iO-06B"/>
@@ -550,7 +558,9 @@
                         <constraint firstItem="LcA-U0-gcd" firstAttribute="centerY" secondItem="d26-du-hEE" secondAttribute="centerY" id="tHJ-Iq-jdy"/>
                         <constraint firstAttribute="trailing" secondItem="8kQ-Lq-bMW" secondAttribute="trailing" constant="13" id="tpE-h4-EF1"/>
                         <constraint firstAttribute="trailing" secondItem="qoU-0z-wNR" secondAttribute="trailing" constant="13" id="tva-iX-yAw"/>
+                        <constraint firstItem="bhm-C3-SLS" firstAttribute="top" secondItem="OVo-6e-yng" secondAttribute="bottom" constant="16" id="vtD-v3-NdS"/>
                         <constraint firstItem="NQp-6A-fNY" firstAttribute="leading" secondItem="z0b-gx-vNm" secondAttribute="leading" constant="13" id="vzm-7A-eVq"/>
+                        <constraint firstItem="bhm-C3-SLS" firstAttribute="leading" secondItem="z0b-gx-vNm" secondAttribute="leading" constant="20" id="wJd-lc-cDX"/>
                         <constraint firstItem="8kQ-Lq-bMW" firstAttribute="leading" secondItem="kDr-0S-Uz6" secondAttribute="trailing" id="wKA-qt-esq"/>
                         <constraint firstItem="ohS-J0-mFS" firstAttribute="leading" secondItem="GdL-LQ-jXK" secondAttribute="leading" id="xmk-g3-eYw"/>
                         <constraint firstItem="1qg-2J-xgM" firstAttribute="leading" secondItem="z0b-gx-vNm" secondAttribute="leading" constant="13" id="yX4-Zc-sIV"/>

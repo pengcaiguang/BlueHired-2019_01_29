@@ -167,6 +167,10 @@
         {
                         str = @"积分兑换奖励";
         }
+        else if ([_model.type integerValue] == 12)
+        {
+                        str = @"分享点赞奖励";
+        }
         _typeLabel.text = str;
         _moneyLabel.text = [NSString stringWithFormat:@" %.2f",_model.money.floatValue];
         _stateLabel.text = @"已到蓝聘账户";

@@ -36,7 +36,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *userName;
 @property (nonatomic, copy) NSString *grading;
 @property (nonatomic, copy) NSString *identity;
- 
+@property (nonatomic, copy) NSString *userTel;
+
 @end
 
 NS_ASSUME_NONNULL_END

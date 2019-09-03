@@ -111,7 +111,8 @@
 }
 #pragma mark - request
 -(void)requestQueryBillrecord{
-    NSDictionary *dic = @{@"page":[NSString stringWithFormat:@"%ld",(long)self.page]
+    NSDictionary *dic = @{@"page":[NSString stringWithFormat:@"%ld",(long)self.page],
+                          @"versionType":@"2.4"
                           };
     [NetApiManager requestQueryBillrecordWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);

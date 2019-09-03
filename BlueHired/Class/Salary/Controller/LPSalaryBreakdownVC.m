@@ -875,7 +875,15 @@ static NSString *LPSalaryBreakdownCellID = @"LPSalaryBreakdownCell";
     [mu removeObject:@""];
     for (NSInteger i = 0 ; i<mu.count ; i++) {
         NSString *str = [mu[i] stringByReplacingOccurrencesOfString:@" " withString:@""];
-        if ([str containsString:@"姓名"] || [str containsString:@"身份证号"]) {
+        if ([str containsString:@"姓名"] ||
+            [str containsString:@"身份证"]||
+            [str containsString:@"单价"]||
+            [str containsString:@"上月工价"]||
+            [str containsString:@"本月工价"]||
+            [str containsString:@"身份證"]||
+            [str containsString:@"單價"]||
+            [str containsString:@"上月工價"]||
+            [str containsString:@"本月工價"]) {
             [mu removeObject:mu[i]];
             i--;
         }
@@ -893,7 +901,7 @@ static NSString *LPSalaryBreakdownCellID = @"LPSalaryBreakdownCell";
         LPAddMoodeVC *vc = [[LPAddMoodeVC alloc] init];
         vc.Type = 1;
         vc.ShareImage = tableImage;
-        vc.ShareString = [NSString stringWithFormat:@"我在蓝聘平台领到了%@份的工资%.2f元。上蓝聘，找工作，更多海量高薪岗位，你还等什么呢~",[DataTimeTool getDataTime:self.currentDateString DateFormat:@"yyyy年MM月"],self.selectModel.actualPay.floatValue];
+        vc.ShareString = self.selectModel.title;
         [self.navigationController pushViewController:vc animated:YES];
         self.navigationItem.title = @"工资领取";
     });

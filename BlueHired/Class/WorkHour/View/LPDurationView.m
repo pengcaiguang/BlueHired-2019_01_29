@@ -8,8 +8,9 @@
 
 #import "LPDurationView.h"
 
-@interface LPDurationView ()
+@interface LPDurationView ()<UITableViewDelegate,UITableViewDataSource>
 
+@property (nonatomic, strong)UITableView *tableview;
 
 @property(nonatomic,strong) UILabel *titleLabel;
 
@@ -163,34 +164,83 @@
 
 -(void)setTypeArray:(NSArray *)typeArray{
     _typeArray = typeArray;
-    self.selectIndex = 0;
-    for (UIView *view in self.typebgView.subviews) {
-        [view removeFromSuperview];
-    }
-    self.typeButtonArray = [NSMutableArray array];
-    
-    self.typebgView.frame = CGRectMake(0, 48, SCREEN_WIDTH, typeArray.count * 48);
-    self.selectView.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, typeArray.count * 48 + 48);
-    
-    for (int i = 0; i<self.typeArray.count; i++) {
-        UIButton *button = [[UIButton alloc]init];
-        button.frame = CGRectMake(0,48*i, SCREEN_WIDTH, 48);
-        [button setTitle:self.typeArray[i] forState:UIControlStateNormal];
-        [button setTitleColor:[UIColor colorWithHexString:@"#929292"] forState:UIControlStateNormal];
-//        [button setTitleColor:[UIColor baseColor] forState:UIControlStateSelected];
-        [button addTarget:self action:@selector(touchTypeButton:) forControlEvents:UIControlEventTouchUpInside];
-        button.tag = i;
-        [self.typebgView addSubview:button];
-        
-        button.selected = i== self.selectIndex;
-        
-        UIView *lineV = [[UIView alloc] initWithFrame:CGRectMake(0,48*i, SCREEN_WIDTH, 1)];
-        lineV.backgroundColor = [UIColor colorWithHexString:@"#FFDDDDDD"];
-        [self.typebgView addSubview:lineV];
-
-        [self.typeButtonArray addObject:button];
-    }
+    [self.tableview reloadData];
+//    self.selectIndex = 0;
+//    for (UIView *view in self.typebgView.subviews) {
+//        [view removeFromSuperview];
+//    }
+//    self.typeButtonArray = [NSMutableArray array];
+//
+//    self.typebgView.frame = CGRectMake(0, 48, SCREEN_WIDTH, typeArray.count * 48);
+//    self.selectView.frame = CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, typeArray.count * 48 + 48);
+//
+//    for (int i = 0; i<self.typeArray.count; i++) {
+//        UIButton *button = [[UIButton alloc]init];
+//        button.frame = CGRectMake(0,48*i, SCREEN_WIDTH, 48);
+//        [button setTitle:self.typeArray[i] forState:UIControlStateNormal];
+//        [button setTitleColor:[UIColor colorWithHexString:@"#929292"] forState:UIControlStateNormal];
+////        [button setTitleColor:[UIColor baseColor] forState:UIControlStateSelected];
+//        [button addTarget:self action:@selector(touchTypeButton:) forControlEvents:UIControlEventTouchUpInside];
+//        button.tag = i;
+//        [self.typebgView addSubview:button];
+//
+//        button.selected = i== self.selectIndex;
+//
+//        UIView *lineV = [[UIView alloc] initWithFrame:CGRectMake(0,48*i, SCREEN_WIDTH, 1)];
+//        lineV.backgroundColor = [UIColor colorWithHexString:@"#FFDDDDDD"];
+//        [self.typebgView addSubview:lineV];
+//
+//        [self.typeButtonArray addObject:button];
+//    }
 }
+
+
+#pragma mark - TableViewDelegate & Datasource
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return self.typeArray.count;
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return LENGTH_SIZE(48);
+}
+- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    static NSString *rid=@"cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:rid];
+    if(cell == nil){
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rid];
+        UILabel *TitileLabel = [[UILabel alloc] init];
+        [cell.contentView addSubview:TitileLabel];
+        [TitileLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.bottom.left.right.mas_offset(0);
+        }];
+        TitileLabel.font = FONT_SIZE(14);;
+        TitileLabel.textColor = [UIColor colorWithHexString:@"#333333"];
+        TitileLabel.textAlignment = NSTextAlignmentCenter;
+        TitileLabel.tag = 1000;
+        
+        UIView *line = [[UIView alloc] init];
+        [cell.contentView addSubview:line];
+        [line mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.bottom.left.right.mas_offset(0);
+            make.height.mas_offset(LENGTH_SIZE(1));
+        }];
+        line.backgroundColor = [UIColor colorWithHexString:@"F5F5F5"];
+    }
+    UILabel *TitileLabel = [cell.contentView viewWithTag:1000];
+    TitileLabel.text = self.typeArray[indexPath.row];
+    return cell;
+}
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    //    if ([self.delegate respondsToSelector:@selector(touchTableView:)]) {
+    //        [self.delegate touchTableView:indexPath.row];
+    //        [self hidden];
+    //    }
+    NSInteger index = indexPath.row;
+    [self clearType];
+    self.selectIndex = index;
+    [self save];
+}
+
 
 #pragma mark - lazy
 -(UIView *)bgView{
@@ -204,10 +254,22 @@
     }
     return _bgView;
 }
-
+- (UITableView *)tableview{
+    if (!_tableview) {
+        _tableview = [[UITableView alloc]init];
+        _tableview.frame = CGRectMake(0, 0, SCREEN_WIDTH, LENGTH_SIZE(44)*5);
+        _tableview.delegate = self;
+        _tableview.dataSource = self;
+        _tableview.tableFooterView = [[UIView alloc]init];
+        _tableview.rowHeight = UITableViewAutomaticDimension;
+        _tableview.estimatedRowHeight = 44;
+        _tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
+    }
+    return _tableview;
+}
 -(UIView *)selectView{
     if (!_selectView) {
-        _selectView = [[UIView alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, 253)];
+        _selectView = [[UIView alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, LENGTH_SIZE(44)*5 + LENGTH_SIZE(48))];
         _selectView.backgroundColor = [UIColor whiteColor];
         
         self.titleLabel = [[UILabel alloc]init];
@@ -216,13 +278,30 @@
             make.left.mas_equalTo(0);
             make.right.mas_equalTo(0);
             make.top.mas_equalTo(0);
-            make.height.mas_equalTo(48);
+            make.height.mas_equalTo(LENGTH_SIZE(48));
         }];
+        
+        UIView *lineV = [[UIView alloc] init];
+        [_selectView addSubview:lineV];
+        [lineV mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.titleLabel.mas_bottom).offset(0);
+            make.right.left.mas_offset(0);
+            make.height.mas_offset(1);
+        }];
+        lineV.backgroundColor = [UIColor colorWithHexString:@"#F5F5F5"];
+        
 //        self.titleLabel.text = @"正常上班时长";
         self.titleLabel.textAlignment = NSTextAlignmentCenter;
-        self.titleLabel.font = [UIFont boldSystemFontOfSize:17];
+        self.titleLabel.font = [UIFont boldSystemFontOfSize:FontSize(17)];
         [self addTimeSubView];
         [self addTypeSubView];
+        
+        [_selectView addSubview:self.tableview];
+        [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.bottom.right.mas_offset(0);
+            make.top.equalTo(self.titleLabel.mas_bottom).offset(1);
+        }];
+        
         
         UIButton *cancelButton = [[UIButton alloc]init];
         [_selectView addSubview:cancelButton];

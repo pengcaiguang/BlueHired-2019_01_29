@@ -41,6 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *mechanismUrl;
 @property (nonatomic, copy) NSString *postName;
 @property (nonatomic, copy) NSNumber *postType;
+@property (nonatomic, copy) NSString *workStatus;
 @property (nonatomic, copy) NSNumber *reMoney;
 @property (nonatomic, copy) NSNumber *reTime;
 @property (nonatomic, copy) NSString *recruitAddress;
@@ -56,6 +57,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *workUrl;
 @property (nonatomic, copy) NSNumber *workWatchStatus;
 @property (nonatomic, copy) NSString *age;
+@property (nonatomic, copy) NSString *addWorkMoney;
+@property (nonatomic, copy) NSString *reStatus;
 
 @end
 

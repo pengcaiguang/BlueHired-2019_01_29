@@ -468,7 +468,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1TU-S7-43X">
-                                <rect key="frame" x="166" y="6.5" width="72" height="24"/>
+                                <rect key="frame" x="235" y="6.5" width="72" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="72" id="7my-Nr-8vB">
                                         <userDefinedRuntimeAttributes>
@@ -500,6 +500,7 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </constraint>
+                            <constraint firstAttribute="trailing" secondItem="1TU-S7-43X" secondAttribute="trailing" constant="13" id="EG3-EC-a9w"/>
                             <constraint firstItem="kya-x1-cXq" firstAttribute="centerY" secondItem="Kyv-GI-eF1" secondAttribute="centerY" id="I23-fk-sFJ">
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
@@ -516,11 +517,6 @@
                                 </userDefinedRuntimeAttributes>
                             </constraint>
                             <constraint firstItem="jhG-Gs-rXj" firstAttribute="leading" secondItem="Kyv-GI-eF1" secondAttribute="leading" constant="13" id="W1u-KH-2uP">
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
-                                </userDefinedRuntimeAttributes>
-                            </constraint>
-                            <constraint firstItem="kya-x1-cXq" firstAttribute="leading" secondItem="1TU-S7-43X" secondAttribute="trailing" constant="8" id="dOl-VG-qlc">
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
                                 </userDefinedRuntimeAttributes>

@@ -60,35 +60,75 @@
         self.lendTypeLabel_constraint_Width.constant = LENGTH_SIZE(0);
     }
     
-    if ([model.postName isEqualToString:@"小时工"]) {
+    if (model.postType.integerValue == 1) {
         self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/时",reviseString(model.workMoney)];
     }else{
         self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/月",model.wageRange];
     }
-    if (model.reMoney.integerValue>0) {
-        [self.reMoneyLabel setTitle:[NSString stringWithFormat:@"    %ld   ",
-                                     (long)model.reMoney.integerValue]
-                           forState:UIControlStateNormal];
+    
+    if ([model.postType integerValue] == 1) {
+        if (model.addWorkMoney.floatValue > 0.0  && model.reStatus.integerValue == 1 && model.reTime.integerValue>0) {
+            
+            self.reMoneyLabel.hidden = NO;
+            self.reMoneyImage.hidden = NO;
+            self.reMoneyImage.image = [UIImage imageNamed:@"reward"];
+            
+            NSString *str = [NSString stringWithFormat:@"     %.1f元/时  ",model.addWorkMoney.floatValue];
+            NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:str];
+            [string addAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:FontSize(12)]} range:[str rangeOfString:@"元/时"]];
+            [self.reMoneyLabel setAttributedTitle:string forState:UIControlStateNormal];
+            
+            CGFloat ReMoneyWidth = [LPTools widthForString:str fontSize:FontSize(13) andHeight:LENGTH_SIZE(21)];
+            self.keyLabel_constraint_right.constant = LENGTH_SIZE(13.0) + ReMoneyWidth + LENGTH_SIZE(10);
+            
+            [self.wageRangeLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.right.mas_offset(LENGTH_SIZE(-13));
+                make.centerY.equalTo(self.applyNumberLabel);
+            }];
+        }else{
+            self.reMoneyLabel.hidden = YES;
+            self.reMoneyImage.hidden = YES;
+            self.keyLabel_constraint_right.constant = LENGTH_SIZE(13.0);
+            [self.wageRangeLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.right.mas_offset(LENGTH_SIZE(-13));
+                make.centerY.equalTo(self.postNameLabel);
+            }];
+        }
         
-        CGFloat ReMoneyWidth = [LPTools widthForString:[NSString stringWithFormat:@"    %ld   ",
-                                                        (long)model.reMoney.integerValue] fontSize:FontSize(16) andHeight:LENGTH_SIZE(21)];
-        self.keyLabel_constraint_right.constant = LENGTH_SIZE(13.0) + ReMoneyWidth + LENGTH_SIZE(10);
-        
-        self.reMoneyLabel.hidden = NO;
-        self.reMoneyImage.hidden = NO;
-        [self.wageRangeLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.right.mas_offset(LENGTH_SIZE(-13));
-            make.centerY.equalTo(self.applyNumberLabel);
-        }];
+
     }else{
-        self.reMoneyLabel.hidden = YES;
-        self.reMoneyImage.hidden = YES;
-        self.keyLabel_constraint_right.constant = LENGTH_SIZE(13.0);
-        [self.wageRangeLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.right.mas_offset(LENGTH_SIZE(-13));
-            make.centerY.equalTo(self.postNameLabel);
-        }];
+        
+        if (model.reMoney.integerValue>0  && model.reStatus.integerValue == 1 && model.reTime.integerValue>0) {
+            
+            self.reMoneyLabel.hidden = NO;
+            self.reMoneyImage.hidden = NO;
+            self.reMoneyImage.image = [UIImage imageNamed:@"reward"];
+            
+            self.reMoneyImage.image = [UIImage imageNamed:@"return"];
+            NSString *str = [NSString stringWithFormat:@"     %@元  ",model.reMoney];
+            NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:str];
+            [string addAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:FontSize(12)]} range:[str rangeOfString:@"元"]];
+            [self.reMoneyLabel setAttributedTitle:string forState:UIControlStateNormal];
+            
+            CGFloat ReMoneyWidth = [LPTools widthForString:str fontSize:FontSize(13) andHeight:LENGTH_SIZE(21)];
+            self.keyLabel_constraint_right.constant = LENGTH_SIZE(13.0) + ReMoneyWidth + LENGTH_SIZE(10);
+            
+            [self.wageRangeLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.right.mas_offset(LENGTH_SIZE(-13));
+                make.centerY.equalTo(self.applyNumberLabel);
+            }];
+        }else{
+            self.reMoneyLabel.hidden = YES;
+            self.reMoneyImage.hidden = YES;
+            self.keyLabel_constraint_right.constant = LENGTH_SIZE(13.0);
+            [self.wageRangeLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+                make.right.mas_offset(LENGTH_SIZE(-13));
+                make.centerY.equalTo(self.postNameLabel);
+            }];
+        }
+        
     }
+ 
     
     self.applyNumberLabel.text = [NSString stringWithFormat:@"招%@人 / 已报名%@人",model.maxNumber,model.applyNumber ? model.applyNumber : @"0"];
 

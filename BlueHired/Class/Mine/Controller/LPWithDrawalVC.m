@@ -132,8 +132,8 @@
     {
         [self.view showLoadingMeg:@"请输入金额" time:MESSAGE_SHOW_TIME];
         return;
-    }else if (_textField.text.floatValue < 20.0){
-        [LPTools AlertMessageView:@"提现金额最低20元！"];
+    }else if (_textField.text.floatValue < 15.0){
+        [LPTools AlertMessageView:@"提现金额最低15元！"];
         return;
     }else if ([_textField.text floatValue]>[_balance floatValue]){
         [self.view showLoadingMeg:@"提现金额超出可提余额" time:MESSAGE_SHOW_TIME];
@@ -163,13 +163,12 @@
                 kUserDefaultsRemove(ERRORTIMES);
             }
         }
-       
     }
     
     float money = [_textField.text floatValue];
     
     
-    NSString *str1 = [NSString stringWithFormat:@"金额%.2f元将提现至尾号为%@%@，请注意查收",money,_model.data.bankNumber,_model.data.bankName];
+    NSString *str1 = [NSString stringWithFormat:@"金额%.2f元将提现至尾号为%@%@，请注意查收",money,[LPTools isNullToString:_model.data.bankNumber],[LPTools isNullToString:_model.data.bankName]];
     NSMutableAttributedString *str = [[NSMutableAttributedString alloc]initWithString:str1];
     //设置：在3~length-3个单位长度内的内容显示色
     [str addAttribute:NSForegroundColorAttributeName value:[UIColor baseColor] range:[str1 rangeOfString:[NSString stringWithFormat:@"%.2f",money]]];

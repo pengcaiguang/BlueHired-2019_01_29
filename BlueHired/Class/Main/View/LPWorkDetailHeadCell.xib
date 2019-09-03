@@ -192,7 +192,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </constraint>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
                                 <state key="normal" title="   ">
                                     <color key="titleColor" red="1" green="0.58039215690000001" blue="0.27058823529999998" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>

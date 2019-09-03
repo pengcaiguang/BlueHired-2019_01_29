@@ -1321,7 +1321,7 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
 
 -(void)requestQueryDeleteComment:(NSString *) CommentId{
     
-    NSString * appendURLString = [NSString stringWithFormat:@"comment/update_comment?id=%@&moodId=%@&versionType=2.3",CommentId,self.listArray[self.currentpage].id];
+    NSString * appendURLString = [NSString stringWithFormat:@"comment/update_comment?id=%@",CommentId];
     
     [NetApiManager requestQueryDeleteComment:nil URLString:appendURLString withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);

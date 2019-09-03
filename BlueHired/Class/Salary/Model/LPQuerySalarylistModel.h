@@ -25,5 +25,6 @@
 @property (nonatomic, copy) NSNumber *userId;
 @property (nonatomic, copy) NSString *actualPay;
 @property (nonatomic, copy) NSString *status;
+@property (nonatomic, copy) NSString *title;
 
 @end

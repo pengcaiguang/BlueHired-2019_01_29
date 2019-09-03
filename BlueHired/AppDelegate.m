@@ -206,8 +206,9 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    [self requestQueryGetRedPacketStatus];
+//    [self requestQueryGetRedPacketStatus];
 //    [self requestQueryActivityadvert];
+    [self requestQueryDownload];
 }
 
 
@@ -264,8 +265,7 @@ fetchCompletionHandler:
     NSString *path = [url absoluteString];
     if ([path hasPrefix:@"tencent"]){
          //        return[TencentOAuth HandleOpenURL:url];
-     }
-    else if([path hasPrefix:@"wx"]) {
+     }else if([path hasPrefix:@"wx"]) {
         return [WXApi handleOpenURL:url delegate:self];
     }
     return YES;
@@ -454,19 +454,43 @@ fetchCompletionHandler:
 }
 
 
+-(void)requestQueryDownload{
+    NSDictionary *dic = @{
+                          @"type":@"2"
+                          };
+    [NetApiManager requestQueryDownload:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if (responseObject[@"data"] != nil &&
+                    [responseObject[@"data"][@"version"] length]>0) {
+                    if (self.version.floatValue <  [responseObject[@"data"][@"version"] floatValue]  ) {
+                        NSString *updateStr = [NSString stringWithFormat:@"发现新版本V%@\n为保证软件的正常运行\n请及时更新到最新版本",responseObject[@"data"][@"version"]];
+                        [self creatAlterView:updateStr];
+                    }
+                }else{
+                    [[UIApplication sharedApplication].keyWindow showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+                }
+            }
+            
+        }else{
+            [[UIApplication sharedApplication].keyWindow showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
 
 
 //3. 弹框提示
 -(void)creatAlterView:(NSString *)msg{
     UIAlertController *alertText = [UIAlertController alertControllerWithTitle:@"更新提醒" message:msg preferredStyle:UIAlertControllerStyleAlert];
     //增加按钮
-    [alertText addAction:[UIAlertAction actionWithTitle:@"我再想想" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-    }]];
+//    [alertText addAction:[UIAlertAction actionWithTitle:@"我再想想" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+//    }]];
     [alertText addAction:[UIAlertAction actionWithTitle:@"立即更新" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         NSString *str = @"itms-apps://itunes.apple.com/cn/app/id1441365926?mt=8"; //更换id即可
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str]];
     }]];
-    [self.window.rootViewController presentViewController:alertText animated:YES completion:nil];
+    [[UIWindow visibleViewController] presentViewController:alertText animated:YES completion:nil];
 }
 //版本
 -(NSString *)version

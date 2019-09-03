@@ -14,12 +14,17 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSNumber *id;
 @property (nonatomic, copy) NSString *informationTitle;
 @property (nonatomic, copy) NSString *informationDetails;
+@property (nonatomic, copy) NSString *infoContent;
 @property (nonatomic, copy) NSNumber *userId;
 @property (nonatomic, copy) NSNumber *type;
 @property (nonatomic, copy) NSString *delStatus;
 @property (nonatomic, copy) NSNumber *time;
 @property (nonatomic, copy) NSNumber *set_time;
 @property (nonatomic, copy) NSNumber *unreadTotal;
+@property (nonatomic, copy) NSString *upIdentity;
+@property (nonatomic, copy) NSNumber *workId;
+
+@property (nonatomic, copy) NSString *userTel;
 
 @end
 

@@ -21,6 +21,7 @@
 #import "LPWStoreManageVC.h"
 #import "LPWorkHour2VC.h"
 #import "LPSalarycCard2VC.h"
+#import "LPAwardVC.h"
 
 
 @implementation LPMineCardCell
@@ -243,9 +244,9 @@
                 [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
      
             }else if (index == 1){
-                LPSalaryBreakdownVC *vc = [[LPSalaryBreakdownVC alloc]init];
+                LPAwardVC *vc = [[LPAwardVC alloc]init];
                 vc.hidesBottomBarWhenPushed = YES;
-                vc.type = 1;
+//                vc.type = 1;
                 [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
                 
             }else if (index == 2){

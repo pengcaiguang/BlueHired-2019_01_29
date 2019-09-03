@@ -1,8 +1,8 @@
 //
-//  LPAwardVC.h
+//  LPEmployeeManageVC.h
 //  BlueHired
 //
-//  Created by iMac on 2019/7/25.
+//  Created by iMac on 2019/8/28.
 //  Copyright © 2019 lanpin. All rights reserved.
 //
 
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LPAwardVC : UIViewController
+@interface LPEmployeeManageVC : LPBaseViewController
 
 @end
 

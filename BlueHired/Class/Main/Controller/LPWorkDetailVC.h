@@ -14,6 +14,9 @@ typedef void (^LPWorkCollectionBlock)(void);
 @interface LPWorkDetailVC : LPBaseViewController
 
 @property(nonatomic,strong) LPWorklistDataWorkListModel *workListModel;
+@property (nonatomic, strong) NSString *upIdentity;
+
+
 @property(nonatomic,strong) LPWorkCollectionBlock CollectionBlock;
 @property(nonatomic,assign) BOOL isWorkOrder;
 

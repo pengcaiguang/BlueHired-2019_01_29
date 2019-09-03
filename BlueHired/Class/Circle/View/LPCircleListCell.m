@@ -1030,7 +1030,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
 
 -(void)requestQueryDeleteComment:(NSString *) CommentId{
  
-    NSString * appendURLString = [NSString stringWithFormat:@"comment/update_comment?id=%@&moodId=%@&versionType=2.3",CommentId,self.model.id];
+    NSString * appendURLString = [NSString stringWithFormat:@"comment/update_comment?id=%@&moodId=%@&versionType=2.4",CommentId,self.model.id];
     
     [NetApiManager requestQueryDeleteComment:nil URLString:appendURLString withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
@@ -1108,16 +1108,16 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
                 CommentModel.identity = kUserDefaultsValue(USERIDENTIY);
                 CommentModel.id = [LPTools isNullToString:DataList[1]];
 
-                if (commentType == 2) {
-                    [self.model.commentModelList insertObject:CommentModel atIndex:0];
-                }else if (commentType == 3){
+                if (commentType == 2 ) {
+                    [self.model.commentModelList addObject:CommentModel];
+                }else if (commentType == 3 ){
                     LPMoodCommentListDataModel *m = self.model.commentModelList[CommentRow];
                     CommentModel.toUserId = m.userId;
                     CommentModel.toUserName = m.userName;
                     CommentModel.toUserIdentity = m.identity;
 //                    [self.model.commentModelList insertObject:CommentModel atIndex:CommentRow+1];
-                    for (NSInteger i = 0 ;i<self.model.commentModelList.count;i++ ) {
-                        LPMoodCommentListDataModel *m = self.model.commentModelList[i];
+                    for (NSInteger i = self.model.commentModelList.count ;i > 0;i-- ) {
+                        LPMoodCommentListDataModel *m = self.model.commentModelList[i-1];
                         if ((m.commentType.integerValue == 2 && m.id == CommentModel.commentId) ||
                             (m.commentType.integerValue == 3 && m.commentId == CommentModel.commentId)) {
                             [self.model.commentModelList insertObject:CommentModel atIndex:i];

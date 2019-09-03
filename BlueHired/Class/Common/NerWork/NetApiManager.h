@@ -699,6 +699,21 @@ typedef void (^UploadImageTempBlock)(BOOL sussess,NSMutableArray *array);
 //邀请入职人员列表
 + (void)requestGetInviteWorkList:(id)paramer
                       withHandle:(response)responseHandle;
+//获取返费列表
++ (void)requestGetbillrecordExpList:(id)paramer
+                         withHandle:(response)responseHandle;
+//员工归属管理列表
++ (void)requestGetEmployeeList:(id)paramer
+                    withHandle:(response)responseHandle;
+//在招企业信息列表
++ (void)requestGetWorkMechanismList:(id)paramer
+                         withHandle:(response)responseHandle;
+//添加备注
++ (void)requestUpdateEmpRemark:(id)paramer
+                    withHandle:(response)responseHandle;
+//发送短信
++ (void)requestSendMechanism:(id)paramer
+                  withHandle:(response)responseHandle;
 
 @end
 

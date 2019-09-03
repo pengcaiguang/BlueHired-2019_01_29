@@ -32,4 +32,10 @@
 @property (nonatomic, copy) NSString *time;
 @property (nonatomic, copy) NSNumber *x;
 @property (nonatomic, copy) NSNumber *y;
+@property (nonatomic, copy) NSString *workTypeName;
+@property (nonatomic, copy) NSString *postType;
+@property (nonatomic, copy) NSString *recommendType;//0未推荐  1已推荐
+
+
+
 @end

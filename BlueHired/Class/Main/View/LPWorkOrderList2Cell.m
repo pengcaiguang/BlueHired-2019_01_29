@@ -56,8 +56,8 @@
     _model = model;
     [self.mechanismUrlImageView sd_setImageWithURL:[NSURL URLWithString:model.mechanismUrl]];
     self.mechanismNameLabel.text = model.mechanismName;
-    if ([model.postName isEqualToString:@"小时工"]) {
-        self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/时",reviseString(model.workMoney)];
+    if (model.postType.integerValue == 1) {
+        self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/时",model.workHourMoney];
     }else{
         self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/月",model.wageRange];
     }
@@ -76,27 +76,28 @@
  
     self.ShareButton.hidden = YES;
     self.CommentButton.hidden = YES;
-
+    self.selectButton.hidden = NO;
+    
     if ([model.status integerValue] == 1 ) {//1 通过
-        self.statusLabel.text = @"入职状态：面试通过";
+        self.statusLabel.text = @"员工状态：面试通过";
         [self.selectButton setTitle:@"放弃入职" forState:UIControlStateNormal];
         [self.selectButton setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
         self.selectButton.layer.borderColor = [UIColor baseColor].CGColor;
         
     }else if ([model.status integerValue] == 2){//2。失败
-        self.statusLabel.text = @"面试状态：面试失败";
+        self.statusLabel.text = @"员工状态：面试失败";
         [self.selectButton setTitle:@"删除" forState:UIControlStateNormal];
         [self.selectButton setTitleColor:[UIColor colorWithHexString:@"#808080"] forState:UIControlStateNormal];
         self.selectButton.layer.borderColor = [UIColor colorWithHexString:@"#808080"].CGColor;
 
     }else if ([model.status integerValue] == 3){//3。招满
-        self.statusLabel.text = @"面试状态：已招满";
+        self.statusLabel.text = @"员工状态：已招满";
         [self.selectButton setTitle:@"删除" forState:UIControlStateNormal];
         [self.selectButton setTitleColor:[UIColor colorWithHexString:@"#808080"] forState:UIControlStateNormal];
         self.selectButton.layer.borderColor = [UIColor colorWithHexString:@"#808080"].CGColor;
         
     }else if ([model.status integerValue] == 4){//3。招满
-        self.statusLabel.text = @"面试状态：放弃入职";
+        self.statusLabel.text = @"员工状态：放弃入职";
         [self.selectButton setTitle:@"删除" forState:UIControlStateNormal];
         [self.selectButton setTitleColor:[UIColor colorWithHexString:@"#808080"] forState:UIControlStateNormal];
         self.selectButton.layer.borderColor = [UIColor colorWithHexString:@"#808080"].CGColor;
@@ -113,14 +114,21 @@
             self.CommentButton.hidden = NO;
         }
             
-        self.statusLabel.text = @"面试状态：入职成功";
+        self.statusLabel.text = @"员工状态：入职成功";
 
+        self.selectButton.hidden = YES;
+//        [self.selectButton setTitle:@"删除" forState:UIControlStateNormal];
+//        [self.selectButton setTitleColor:[UIColor colorWithHexString:@"#808080"] forState:UIControlStateNormal];
+//        self.selectButton.layer.borderColor = [UIColor colorWithHexString:@"#808080"].CGColor;
+        
+    }else if ([model.status integerValue] == 6){//3。招满
+        self.statusLabel.text = @"员工状态：已离职";
         [self.selectButton setTitle:@"删除" forState:UIControlStateNormal];
         [self.selectButton setTitleColor:[UIColor colorWithHexString:@"#808080"] forState:UIControlStateNormal];
         self.selectButton.layer.borderColor = [UIColor colorWithHexString:@"#808080"].CGColor;
         
     }else{
-        self.statusLabel.text = @"面试状态：面试预约中";
+        self.statusLabel.text = @"员工状态：面试预约中";
         [self.selectButton setTitle:@"取消报名" forState:UIControlStateNormal];
         [self.selectButton setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
         self.selectButton.layer.borderColor = [UIColor baseColor].CGColor;
@@ -133,6 +141,7 @@
     [string addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#ff5353"] range:[self.statusLabel.text rangeOfString:@"面试失败"]];
     [string addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#ff5353"] range:[self.statusLabel.text rangeOfString:@"放弃入职"]];
     [string addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#ff5353"] range:[self.statusLabel.text rangeOfString:@"已招满"]];
+    [string addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#ff5353"] range:[self.statusLabel.text rangeOfString:@"已离职"]];
     [string addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#3cafff"] range:[self.statusLabel.text rangeOfString:@"面试通过"]];
     [string addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithHexString:@"#3cafff"] range:[self.statusLabel.text rangeOfString:@"入职成功"]];
 
@@ -141,23 +150,56 @@
     
     if (([model.status integerValue] == 1 ||
          [model.status integerValue] == 4 ||
-         [model.status integerValue] == 5 ) && model.reMoney.floatValue > 0.0 ) {
-        self.interviewTimeLabel.text = [NSString stringWithFormat:@"返费金额：%@元/月",[LPTools isNullToString:model.reMoney]];
-
-        NSMutableAttributedString *reMoneyStr = [[NSMutableAttributedString alloc] initWithString:self.interviewTimeLabel.text];
-        [reMoneyStr addAttribute:NSForegroundColorAttributeName
-                           value:[UIColor colorWithHexString:@"#3cafff"]
-                           range:[self.interviewTimeLabel.text rangeOfString:[NSString stringWithFormat:@"%@元/月",[LPTools isNullToString:model.reMoney]]]];
-        self.interviewTimeLabel.attributedText = reMoneyStr;
-
-        self.recruitAddressLabel.text = [NSString stringWithFormat:@"返费时间：%@个月",[LPTools isNullToString:model.reTime]];
-        NSMutableAttributedString *reTimeStr = [[NSMutableAttributedString alloc] initWithString:self.recruitAddressLabel.text];
-        [reTimeStr addAttribute:NSForegroundColorAttributeName
-                          value:[UIColor colorWithHexString:@"#3cafff"]
-                          range:[self.recruitAddressLabel.text rangeOfString:[NSString stringWithFormat:@"%@个月",[LPTools isNullToString:model.reTime]]]];
-        self.recruitAddressLabel.attributedText = reTimeStr;
- 
-        self.NavBtn.hidden = YES;
+         [model.status integerValue] == 5 ||
+         [model.status integerValue] == 6)) {
+        if (model.postType.integerValue == 1 && model.addWorkMoney.floatValue > 0.0 && model.reTime.integerValue > 0 ) {
+            self.interviewTimeLabel.text = [NSString stringWithFormat:@"奖励工价：%.1f元/时", model.addWorkMoney.floatValue];
+            
+            NSMutableAttributedString *reMoneyStr = [[NSMutableAttributedString alloc] initWithString:self.interviewTimeLabel.text];
+            [reMoneyStr addAttribute:NSForegroundColorAttributeName
+                               value:[UIColor colorWithHexString:@"#3cafff"]
+                               range:[self.interviewTimeLabel.text rangeOfString:[NSString stringWithFormat:@"%.1f元/时", model.addWorkMoney.floatValue]]];
+            self.interviewTimeLabel.attributedText = reMoneyStr;
+            
+            self.recruitAddressLabel.text = [NSString stringWithFormat:@"奖励时间：%@个月",[LPTools isNullToString:model.reTime]];
+            NSMutableAttributedString *reTimeStr = [[NSMutableAttributedString alloc] initWithString:self.recruitAddressLabel.text];
+            [reTimeStr addAttribute:NSForegroundColorAttributeName
+                              value:[UIColor colorWithHexString:@"#3cafff"]
+                              range:[self.recruitAddressLabel.text rangeOfString:[NSString stringWithFormat:@"%@个月",[LPTools isNullToString:model.reTime]]]];
+            self.recruitAddressLabel.attributedText = reTimeStr;
+            
+            self.NavBtn.hidden = YES;
+        }else if (model.postType.integerValue == 0 && model.reMoney.floatValue > 0.0 && model.reTime.integerValue > 0){
+            
+            self.interviewTimeLabel.text = [NSString stringWithFormat:@"返费金额：%@元/月", model.reMoney];
+            
+            NSMutableAttributedString *reMoneyStr = [[NSMutableAttributedString alloc] initWithString:self.interviewTimeLabel.text];
+            [reMoneyStr addAttribute:NSForegroundColorAttributeName
+                               value:[UIColor colorWithHexString:@"#3cafff"]
+                               range:[self.interviewTimeLabel.text rangeOfString:[NSString stringWithFormat:@"%@元/月", model.reMoney]]];
+            self.interviewTimeLabel.attributedText = reMoneyStr;
+            
+            self.recruitAddressLabel.text = [NSString stringWithFormat:@"返费时间：%@个月",[LPTools isNullToString:model.reTime]];
+            NSMutableAttributedString *reTimeStr = [[NSMutableAttributedString alloc] initWithString:self.recruitAddressLabel.text];
+            [reTimeStr addAttribute:NSForegroundColorAttributeName
+                              value:[UIColor colorWithHexString:@"#3cafff"]
+                              range:[self.recruitAddressLabel.text rangeOfString:[NSString stringWithFormat:@"%@个月",[LPTools isNullToString:model.reTime]]]];
+            self.recruitAddressLabel.attributedText = reTimeStr;
+            
+            self.NavBtn.hidden = YES;
+            
+        }else{
+            self.interviewTimeLabel.text = [NSString stringWithFormat:@"面试时间：%@",[LPTools isNullToString:model.interviewTime]];
+            self.recruitAddressLabel.text = [NSString stringWithFormat:@"面试地点：%@",[LPTools isNullToString:model.recruitAddress]];
+            
+            NSMutableAttributedString *reMoneyStr = [[NSMutableAttributedString alloc] initWithString:self.interviewTimeLabel.text];
+            NSMutableAttributedString *reTimeStr = [[NSMutableAttributedString alloc] initWithString:self.recruitAddressLabel.text];
+            
+            self.interviewTimeLabel.attributedText = reMoneyStr;
+            self.recruitAddressLabel.attributedText = reTimeStr;
+            self.NavBtn.hidden = NO;
+        }
+        
         
     }else{
         self.interviewTimeLabel.text = [NSString stringWithFormat:@"面试时间：%@",[LPTools isNullToString:model.interviewTime]];
@@ -256,7 +298,8 @@
             [self.model.status integerValue] == 2 ||
             [self.model.status integerValue] == 3 ||
             [self.model.status integerValue] == 4 ||
-            [self.model.status integerValue] == 5){
+            [self.model.status integerValue] == 5 ||
+            [self.model.status integerValue] == 6){
             index = [self.model.status integerValue] == 1 ? 2 : 0 ;//删除
             [self.delegate buttonClick:index workId:self.model];
         }else{

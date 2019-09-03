@@ -163,8 +163,9 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
 #pragma mark - search
 -(BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar{
     LPInformationSearchVC *vc = [[LPInformationSearchVC alloc]init];
-    [self.navigationController pushViewController:vc animated:YES];
     vc.Type = 4;
+    [self.navigationController pushViewController:vc animated:YES];
+
 
     return NO;
 }
@@ -175,7 +176,12 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
     }else{
         self.mechanismAddress = model.c_name;
     }
-    self.cityLabel.text = model.c_name;
+    if (model.c_name.length>3) {
+        self.cityLabel.text = [NSString stringWithFormat:@"%@…",[model.c_name substringToIndex:3]];
+    }else{
+        self.cityLabel.text = model.c_name;
+    }
+//    self.cityLabel.text = model.c_name;
     self.page = 1;
     [self requestMechanismcommentMechanismlist];
 }

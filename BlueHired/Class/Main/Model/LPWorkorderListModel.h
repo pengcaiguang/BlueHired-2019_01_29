@@ -57,7 +57,9 @@
 @property (nonatomic, copy) NSString *remarkStatus;
 @property (nonatomic, copy) NSString *restTime;
 @property (nonatomic, copy) NSString *restRemark;
-
+@property (nonatomic, copy) NSString *workStatus;
+@property (nonatomic, copy) NSString *addWorkMoney;
+@property (nonatomic, copy) NSString *workHourMoney;
 
 @end
 

@@ -759,7 +759,8 @@ static const CGFloat kPhotoViewMargin = 13.0;
                           @"moodTypeId":self.moodTypeId ? self.moodTypeId : @"",
                           @"moodUrl":string,
                           @"address":self.moodMap,
-                          @"versionType":@"2.1"
+                          @"versionType":@"2.1",
+                          @"souce":self.Type==1?@"1":@""
                           };
     [NetApiManager requestAddMoodWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);

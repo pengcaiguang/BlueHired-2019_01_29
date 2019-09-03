@@ -66,7 +66,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 
     self.buttonArray = [NSMutableArray array];
     self.bottomButtonArray = [NSMutableArray array];
-    self.textArray = @[@"入职要求",@"薪资福利",@"住宿餐饮",@"工作时间",@"面试材料",@"其他说明"];
+    self.textArray = @[@"入职要求",@"薪资福利",@"食宿条件",@"工作时间",@"面试资料",@"其他说明"];
 
     [self.view addSubview:self.tableview];
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -904,7 +904,16 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 //            KeyHeight = 0;
 //        }
         
-        if (strbackmoney.length>0) {
+        if ((strbackmoney.length>0 &&
+             self.model.data.reTime.integerValue>0 &&
+             self.model.data.reMoney.integerValue>0 &&
+             self.model.data.reStatus.integerValue == 1 &&
+             [self.model.data.postType integerValue] == 0 )||
+            (strbackmoney.length>0 &&
+             self.model.data.reTime.integerValue>0 &&
+             self.model.data.addWorkMoney.floatValue>0.0 &&
+             self.model.data.reStatus.integerValue == 1&&
+             [self.model.data.postType integerValue] == 1)) {
             CGFloat BackMoneyHeight = [LPTools calculateRowHeight:strbackmoney fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(26)];
              return LENGTH_SIZE(280 + 128 + 36 + 20)  + BackMoneyHeight + KeyHeight;
         }else{
@@ -1142,6 +1151,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
                           @"userName":[[LPTools isNullToString:self.isApplyOrIsCollectionModel.data.userName] isEqualToString:@""] ? self.userName: self.isApplyOrIsCollectionModel.data.userName ,
                           @"workId":self.workListModel.id,
                           @"workName":self.model.data.workTypeName,
+                          @"identity":[LPTools isNullToString:self.upIdentity]
                           };
     NSString * string = @"work/entryApply?type=0";
     [NetApiManager requestEntryApplyWithUrl:string withParam:dic withHandle:^(BOOL isSuccess, id responseObject) {

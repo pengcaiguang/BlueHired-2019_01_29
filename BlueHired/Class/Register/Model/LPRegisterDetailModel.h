@@ -21,6 +21,8 @@
 @interface LPRegisterDetailDataModel : NSObject
 @property(nonatomic,copy) NSNumber *remainderMoney;
 @property(nonatomic,copy) NSNumber *totalMoney;
+@property(nonatomic,copy) NSNumber *prizeNum;
+@property(nonatomic,copy) NSNumber *recordNum;
 @property(nonatomic,copy) NSArray <LPRegisterDetailDataListModel *> *relationList;
 @end
 

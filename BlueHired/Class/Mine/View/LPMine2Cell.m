@@ -120,13 +120,20 @@
     if (AlreadyLogin) {
         self.redactButton.hidden = NO;
         self.user_nameLabel.text =  [LPTools isNullToString:userMaterialModel.data.user_name] ;
-        if ([userMaterialModel.data.workStatus integerValue] == 0) { //0待业1在职2入职中
-            self.user_nameLabel.text = [NSString stringWithFormat:@"%@ (待业)",[LPTools isNullToString:userMaterialModel.data.user_name]];
-        } else if ([userMaterialModel.data.workStatus integerValue] == 1){
-            self.user_nameLabel.text = [NSString stringWithFormat:@"%@ (在职)",[LPTools isNullToString:userMaterialModel.data.user_name]];
-        } else if ([userMaterialModel.data.workStatus integerValue] == 2){
-            self.user_nameLabel.text = [NSString stringWithFormat:@"%@ (入职中)",[LPTools isNullToString:userMaterialModel.data.user_name]];
+        
+        if (userMaterialModel.data.role.integerValue == 0) {
+            if ([userMaterialModel.data.workStatus integerValue] == 0) { //0待业1在职2入职中
+                self.user_nameLabel.text = [NSString stringWithFormat:@"%@ (待业)",[LPTools isNullToString:userMaterialModel.data.user_name]];
+            } else if ([userMaterialModel.data.workStatus integerValue] == 1){
+                self.user_nameLabel.text = [NSString stringWithFormat:@"%@ (在职)",[LPTools isNullToString:userMaterialModel.data.user_name]];
+            } else if ([userMaterialModel.data.workStatus integerValue] == 2){
+                self.user_nameLabel.text = [NSString stringWithFormat:@"%@ (入职中)",[LPTools isNullToString:userMaterialModel.data.user_name]];
+            }
+        }else{
+            self.user_nameLabel.text = [NSString stringWithFormat:@"%@",[LPTools isNullToString:userMaterialModel.data.user_name]];
         }
+
+        
         self.Slider.hidden = NO;
         self.scoreCurrentLabel.hidden = NO;
         self.scoreLabel.hidden = NO;

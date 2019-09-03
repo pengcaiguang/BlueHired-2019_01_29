@@ -168,7 +168,11 @@ static NSString *LPWorkorderListCellID = @"LPWorkOrderList2Cell";
 }
 #pragma mark - request
 -(void)requestWorkorderlist{
-    [NetApiManager requestWorkorderlistWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
+    NSDictionary *dic = @{
+                          @"versionType":@"2.4"
+                          };
+    
+    [NetApiManager requestWorkorderlistWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
@@ -201,7 +205,7 @@ static NSString *LPWorkorderListCellID = @"LPWorkOrderList2Cell";
     }];
 }
 -(void)requestDelWorkorder:(LPWorkorderListDataModel *)WorkModel{
-    NSDictionary *dic = @{
+    NSDictionary *dic = @{@"versionType":@"2.4",
                           @"workOrderId":[WorkModel.id stringValue]
                           };
     [NetApiManager requestDelWorkorderWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {

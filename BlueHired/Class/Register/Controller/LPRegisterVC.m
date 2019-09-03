@@ -61,7 +61,7 @@
 
 -(void)setModel:(LPRegisterModel *)model{
     _model = model;
-    self.CUserNumLabel.text = [NSString stringWithFormat:@"报名人数：%ld人",(long)model.data.inviteNum.integerValue];
+    self.CUserNumLabel.text = [NSString stringWithFormat:@"在职人数：%ld人",(long)model.data.inviteNum.integerValue];
     self.BUserNumLabel.text = [NSString stringWithFormat:@"预计奖励：%.2f元",model.data.totalMoney.floatValue];
     
     self.fullMonthNumLabel.text = [NSString stringWithFormat:@"注册人数：%ld人",model.data.sumNum.integerValue];
@@ -80,7 +80,8 @@
 
 - (IBAction)touchDetailButton:(UIButton *)sender {
     if (sender.tag == 1000) {
-        LPRegisterEntryVC *vc = [[LPRegisterEntryVC alloc] init];
+        LPRegisterDetailVC *vc = [[LPRegisterDetailVC alloc]init];
+        vc.Type = 1;
         [self.navigationController pushViewController:vc animated:YES];
     }else if (sender.tag == 2000){
         LPRegisterDetailVC *vc = [[LPRegisterDetailVC alloc]init];
@@ -344,7 +345,7 @@
 
 #pragma mark - request
 -(void)requestGetRegister{
-    NSDictionary *dic = @{@"versionType":@"2.3.1"};
+    NSDictionary *dic = @{@"versionType":@"2.4"};
     
     [NetApiManager requestGetRegisterWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);

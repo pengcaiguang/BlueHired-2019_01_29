@@ -10,6 +10,7 @@
 #import "LPRegisterDetailCell.h"
 #import "LPRegisterDetailModel.h"
 #import "LPSalaryBreakdownVC.h"
+#import "LPAwardInvitationVC.h"
 
 static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
 
@@ -35,6 +36,10 @@ static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
 @property(nonatomic,strong) UITextField *AlertTF;
 @property(nonatomic,strong) LPRegisterDetailDataListModel *selectmodel;
 
+@property(nonatomic,strong) UIButton *RegBtn;
+@property(nonatomic,strong) UIImageView *GIFImage;
+
+
 
 @end
 
@@ -57,10 +62,17 @@ static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
     [dateFormatter setDateFormat:@"MM"];
     self.month = [dateFormatter stringFromDate:currentDate].integerValue;
     
-    self.page = 1;
     [self setupUI];
-    [self requestGetOnWork];
+//    [self requestGetOnWork];
 }
+
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    self.page = 1;
+    [self requestGetOnWork];
+
+}
+
 -(void)setupUI{
     
     self.view.backgroundColor = [UIColor colorWithHexString:@"f5f5f5"];
@@ -162,9 +174,9 @@ static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
         if (@available(iOS 11.0, *)) {
-            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(LENGTH_SIZE(-49));
+            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(LENGTH_SIZE(0));
         } else {
-            make.bottom.mas_equalTo(LENGTH_SIZE(-49));
+            make.bottom.mas_equalTo(LENGTH_SIZE(0));
         }
         if (self.Type == 1) {
             make.top.equalTo(headView.mas_bottom).offset(LENGTH_SIZE(0));
@@ -173,8 +185,11 @@ static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
         }
     }];
     
+
+    
     UIButton *RegBtn = [[UIButton alloc] init];
     [self.view addSubview:RegBtn];
+    self.RegBtn = RegBtn;
     [RegBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         if (@available(iOS 11.0, *)) {
             make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(LENGTH_SIZE(0));
@@ -187,18 +202,31 @@ static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
     [RegBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     RegBtn.backgroundColor = [UIColor baseColor];
     RegBtn.titleLabel.font = FONT_SIZE(17);
-    [RegBtn setTitle:@"领取奖励" forState:UIControlStateNormal];
+    [RegBtn setTitle:@"查看奖励" forState:UIControlStateNormal];
     [RegBtn addTarget:self action:@selector(touchRegBtn:) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIImageView *GIFImage = [[UIImageView alloc] init];
+    [self.view addSubview:GIFImage];
+    self.GIFImage = GIFImage;
+    [GIFImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_offset(LENGTH_SIZE(231));
+        make.height.with.mas_offset(LENGTH_SIZE(21));
+        make.top.equalTo(RegBtn.mas_top).offset(LENGTH_SIZE(5));
+    }];
+    GIFImage.image = [UIImage animatedImageNamed:@"Registerlabel" duration:1.0];
 
+    
 }
 
 
 -(void)touchRegBtn:(UIButton *)sender{
-    LPSalaryBreakdownVC *vc = [[LPSalaryBreakdownVC alloc]init];
-    vc.hidesBottomBarWhenPushed = YES;
-    vc.RecordDate = self.currentDateString;
-    vc.type = 1;
-    [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+//    LPSalaryBreakdownVC *vc = [[LPSalaryBreakdownVC alloc]init];
+//    vc.hidesBottomBarWhenPushed = YES;
+//    vc.RecordDate = self.currentDateString;
+//    vc.type = 1;
+//    [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+    LPAwardInvitationVC *vc = [[LPAwardInvitationVC alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 
@@ -354,6 +382,21 @@ static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
 //    self.moneyLabel.text = [NSString stringWithFormat:@"到账总计：%.2f元",model.data.totalMoney.floatValue];
     
     if ([self.model.code integerValue] == 0) {
+        if (model.data.recordNum.integerValue > 0) {
+            self.RegBtn.hidden = NO;
+            self.GIFImage.hidden = NO;
+        } else {
+            self.RegBtn.hidden = YES;
+            self.GIFImage.hidden = YES;
+        }
+
+        if (model.data.prizeNum.integerValue > 0) {
+            [self.RegBtn setTitle:@"前往领取" forState:UIControlStateNormal];
+            self.GIFImage.hidden = NO;
+        }else{
+            [self.RegBtn setTitle:@"查看奖励" forState:UIControlStateNormal];
+            self.GIFImage.hidden = YES;
+        }
         
         if (self.page == 1) {
             self.listArray = [NSMutableArray array];
@@ -469,6 +512,7 @@ static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
         TF.layer.borderWidth = 1;
         TF.layer.cornerRadius = 6;
         TF.placeholder = @"请输入备注";
+        TF.text = self.selectmodel.remark;
         [TF addTarget:self action:@selector(textFieldChanged:) forControlEvents:UIControlEventEditingChanged];
 
         UIButton *button = [[UIButton alloc] init];
@@ -495,7 +539,7 @@ static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
 
 -(void)Touchremark:(UIButton *)sender{
     [self.CustomAlert close];
-    [self requestUpdateRelationReg:self.selectmodel.id remark:self.AlertTF.text];
+    [self requestUpdateRelationReg:self.selectmodel.id.stringValue remark:self.AlertTF.text];
 }
 
 
@@ -506,12 +550,14 @@ static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
     
     if (self.Type == 1) {
         dic = @{@"page":@(self.page),
-                @"time":self.currentDateString
+                @"time":self.currentDateString,
+                @"versionType":@"2.4"
                 };
     }else if (self.Type == 2){
         dic = @{@"page":@(self.page),
                 @"time":self.currentDateString,
-                @"type":@"1"
+                @"type":@"1",
+                @"versionType":@"2.4"
                 };
     }
     

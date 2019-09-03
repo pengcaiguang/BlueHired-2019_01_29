@@ -2428,7 +2428,7 @@ static QNUploadManager *upManager = NULL;
 //邀请入职人员列表
 + (void)requestGetInviteWorkList:(id)paramer
                        withHandle:(response)responseHandle{
-    NSString * appendURLString = @"/invite/get_invite_work_list";
+    NSString * appendURLString = @"invite/get_invite_work_list";
     NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
                                                 withRequestEnty:RequestTypeGet
                                                       withParam:paramer
@@ -2437,6 +2437,61 @@ static QNUploadManager *upManager = NULL;
     [NetRequestManager requestWithEnty:enty];
 }
 
+//获取返费列表
++ (void)requestGetbillrecordExpList:(id)paramer
+                      withHandle:(response)responseHandle{
+    NSString * appendURLString = @"billrecord/get_work_exp_list";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
 
+//员工归属管理列表
++ (void)requestGetEmployeeList:(id)paramer
+                         withHandle:(response)responseHandle{
+    NSString * appendURLString = @"invite/get_employee_list";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+//在招企业信息列表
++ (void)requestGetWorkMechanismList:(id)paramer
+                    withHandle:(response)responseHandle{
+    NSString * appendURLString = @"work/get_work_mechanism_list";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
 
+//添加备注
++ (void)requestUpdateEmpRemark:(id)paramer
+                         withHandle:(response)responseHandle{
+    NSString * appendURLString = @"invite/update_emp_remark";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+//发送短信
++ (void)requestSendMechanism:(id)paramer
+                    withHandle:(response)responseHandle{
+    NSString * appendURLString = @"invite/send_mechanism";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
 @end

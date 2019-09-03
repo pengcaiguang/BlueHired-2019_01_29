@@ -34,6 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *remark;
 @property (nonatomic, copy) NSString *userTel;
 @property (nonatomic, copy) NSString *mechanismName;
+@property (nonatomic, copy) NSString *title;
 
 
 @end

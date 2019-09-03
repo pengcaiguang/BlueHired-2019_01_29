@@ -22,18 +22,26 @@
 #import "LPMechanismcommentMechanismlistModel.h"
 #import "LPBusinessReviewCell.h"
 #import "LPBusinessReviewDetailVC.h"
+#import "LPEmployeeManageCell.h"
+#import "LPEmployeeWorkListCell.h"
+#import "LPLPEmployeeModel.h"
 
 
 static NSString *InformationSearchHistory = @"InformationSearchHistory";
 static NSString *VideoSearchHistory = @"VideoSearchHistory";
 static NSString *CircleSearchHistory = @"CircleSearchHistory";
 static NSString *BusinessReviewSearchHistory = @"BusinessReviewSearchHistory";
+static NSString *LPEmployeeManageHistory = @"LPEmployeeManageHistory";
+static NSString *LPEmployeeWorkListHistory = @"LPEmployeeWorkListHistory";
+
 
 static NSString *LPCircleListCellID = @"LPCircleListCell";
 static NSString *LPInformationSingleCellID = @"LPInformationSingleCell";
 static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
 static NSString *LPInformationVideoCollectionViewCellID = @"LPInfoMationVideoCell";
 static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
+static NSString *LPEmployeeWorkListCellID = @"LPEmployeeWorkListCell";
+static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
 
 
 @interface LPInformationSearchVC ()<UISearchBarDelegate,UITableViewDelegate,UITableViewDataSource,UICollectionViewDelegate,UICollectionViewDataSource,SDTimeLineCellDelegate>
@@ -56,6 +64,17 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
 
 @property(nonatomic,strong) LPMechanismcommentMechanismlistModel *Businessmodel;
 @property(nonatomic,strong) NSMutableArray <LPMechanismcommentMechanismlistDataModel *>*BusinesslistArray;
+
+//5
+@property(nonatomic,strong) LPLPEmployeeModel *Employeemodel;
+@property(nonatomic,strong) NSMutableArray <LPLPEmployeeDataModel *>*EmployeelistArray;
+@property(nonatomic,strong) LPLPEmployeeDataModel *selectEmployeemodel;
+@property(nonatomic,strong) CustomIOSAlertView *CustomAlert;
+@property(nonatomic,strong) UITextField *AlertTF;
+
+//6
+@property(nonatomic,strong) LPMechanismcommentMechanismlistModel *Mechanismmodel;
+@property(nonatomic,strong) NSMutableArray <LPMechanismcommentMechanismlistDataModel *>*MechanismlistArray;
 
 @property(nonatomic,strong)LPSearchBar *SearchBar;
 
@@ -101,6 +120,10 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
         self.textArray = (NSArray *)kUserDefaultsValue(CircleSearchHistory);
     }else if (self.Type == 4){
         self.textArray = (NSArray *)kUserDefaultsValue(BusinessReviewSearchHistory);
+    }else if (self.Type == 5){
+        self.textArray = (NSArray *)kUserDefaultsValue(LPEmployeeManageHistory);
+    }else if (self.Type == 6){
+        self.textArray = (NSArray *)kUserDefaultsValue(LPEmployeeWorkListHistory);
     }
     [self.tableview reloadData];
 }
@@ -181,6 +204,10 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
             self.textArray = (NSArray *)kUserDefaultsValue(CircleSearchHistory);
         }else if (self.Type == 4){
             self.textArray = (NSArray *)kUserDefaultsValue(BusinessReviewSearchHistory);
+        }else if (self.Type == 5){
+            self.textArray = (NSArray *)kUserDefaultsValue(LPEmployeeManageHistory);
+        }else if (self.Type == 6){
+            self.textArray = (NSArray *)kUserDefaultsValue(LPEmployeeWorkListHistory);
         }
         [self.tableview reloadData];
     }
@@ -215,6 +242,10 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
             kUserDefaultsSave([array copy], CircleSearchHistory);
         }else if (self.Type == 4){
             kUserDefaultsSave([array copy], BusinessReviewSearchHistory);
+        }else if (self.Type == 5){
+            kUserDefaultsSave([array copy], LPEmployeeManageHistory);
+        }else if (self.Type == 6){
+            kUserDefaultsSave([array copy], LPEmployeeWorkListHistory);
         }
      }
 }
@@ -248,6 +279,16 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
         [self requestMechanismcommentMechanismlist];
         self.Resulttableview.hidden = NO;
         self.videocollectionView.hidden = YES;
+    }else if (self.Type == 5){
+        self.page = 1;
+        [self requestGetEmployeeList];
+        self.Resulttableview.hidden = NO;
+        self.videocollectionView.hidden = YES;
+    }else if (self.Type == 6){
+        self.page = 1;
+        [self requestGetWorkMechanismList];
+        self.Resulttableview.hidden = NO;
+        self.videocollectionView.hidden = YES;
     }
     
 }
@@ -261,6 +302,10 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
         kUserDefaultsRemove(CircleSearchHistory);
     }else if (self.Type == 4){
         kUserDefaultsRemove(BusinessReviewSearchHistory);
+    }else if (self.Type == 5){
+        kUserDefaultsRemove(LPEmployeeManageHistory);
+    }else if (self.Type == 6){
+        kUserDefaultsRemove(LPEmployeeWorkListHistory);
     }
      self.textArray = nil;
     [self.tableview reloadData];
@@ -394,10 +439,70 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
 }
 
 
+-(void)setEmployeemodel:(LPLPEmployeeModel *)Employeemodel{
+    _Employeemodel = Employeemodel;
+    if ([self.Employeemodel.code integerValue] == 0) {
+        
+        if (self.page == 1) {
+            self.EmployeelistArray = [NSMutableArray array];
+        }
+        if (self.Employeemodel.data.count > 0) {
+            self.page += 1;
+            [self.EmployeelistArray addObjectsFromArray:self.Employeemodel.data];
+            [self.Resulttableview reloadData];
+            
+        }else{
+            if (self.page == 1) {
+                [self.Resulttableview reloadData];
+            }else{
+                [self.Resulttableview.mj_footer endRefreshingWithNoMoreData];
+            }
+        }
+        
+        if (self.EmployeelistArray.count == 0) {
+            [self addNodataViewHidden:NO];
+        }else{
+            [self addNodataViewHidden:YES];
+        }
+    }else{
+        [self.view showLoadingMeg:NETE_ERROR_MESSAGE time:MESSAGE_SHOW_TIME];
+    }
+}
+
+- (void)setMechanismmodel:(LPMechanismcommentMechanismlistModel *)Mechanismmodel{
+    _Mechanismmodel = Mechanismmodel;
+    if ([self.Mechanismmodel.code integerValue] == 0) {
+        
+        if (self.page == 1) {
+            self.MechanismlistArray = [NSMutableArray array];
+        }
+        if (self.Mechanismmodel.data.count > 0) {
+            self.page += 1;
+            [self.MechanismlistArray addObjectsFromArray:self.Mechanismmodel.data];
+            [self.Resulttableview reloadData];
+            
+        }else{
+            if (self.page == 1) {
+                [self.Resulttableview reloadData];
+            }else{
+                [self.Resulttableview.mj_footer endRefreshingWithNoMoreData];
+            }
+        }
+        
+        if (self.MechanismlistArray.count == 0) {
+            [self addNodataViewHidden:NO];
+        }else{
+            [self addNodataViewHidden:YES];
+        }
+    }else{
+        [self.view showLoadingMeg:NETE_ERROR_MESSAGE time:MESSAGE_SHOW_TIME];
+    }
+}
+
 -(void)addNodataViewHidden:(BOOL)hidden{
     
     BOOL has = NO;
-    if (self.Type == 1 || self.Type == 3|| self.Type == 4) {
+    if (self.Type == 1 || self.Type == 3|| self.Type == 4|| self.Type == 5|| self.Type == 6) {
         for (UIView *view in self.Resulttableview.subviews) {
             if ([view isKindOfClass:[LPNoDataView class]]) {
                 view.hidden = hidden;
@@ -415,7 +520,7 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
 
     if (!has) {
         LPNoDataView *noDataView = [[LPNoDataView alloc]initWithFrame:CGRectMake(0, 30, SCREEN_WIDTH, SCREEN_HEIGHT-30-kNavBarHeight-kBottomBarHeight)];
-        if (self.Type == 1 || self.Type == 3|| self.Type == 4) {
+        if (self.Type == 1 || self.Type == 3|| self.Type == 4|| self.Type == 5|| self.Type == 6) {
             [self.Resulttableview addSubview:noDataView];
         }else if (self.Type == 2){
             [self.videocollectionView addSubview:noDataView];
@@ -448,6 +553,10 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
             return self.listArray.count;
         }else if (self.Type == 4){
             return self.BusinesslistArray.count;
+        }else if (self.Type == 5){
+            return self.EmployeelistArray.count;
+        }else if (self.Type == 6){
+            return self.MechanismlistArray.count;
         }
     }
     return 0;
@@ -545,6 +654,10 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
             }
         }else if (self.Type == 4){
             return 77.0;
+        }else if (self.Type == 5){
+            return LENGTH_SIZE(144);
+        }else if (self.Type == 6){
+            return LENGTH_SIZE(66);
         }
     }
     return 40.0;
@@ -599,7 +712,21 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
             LPBusinessReviewCell *cell = [tableView dequeueReusableCellWithIdentifier:LPBusinessReviewCellID];
             cell.model = self.BusinesslistArray[indexPath.row];
             return cell;
-        }else{
+        }else if (self.Type == 5){
+            LPEmployeeManageCell *cell = [tableView dequeueReusableCellWithIdentifier:LPEmployeeManageCellID];
+            cell.model = self.EmployeelistArray[indexPath.row];
+            WEAK_SELF()
+            cell.remarkBlock = ^{
+                weakSelf.selectEmployeemodel = weakSelf.EmployeelistArray[indexPath.row];
+                [weakSelf initRemarkAlertView];
+            };
+            return cell;
+        }else if (self.Type == 6){
+            LPEmployeeWorkListCell *cell = [tableView dequeueReusableCellWithIdentifier:LPEmployeeWorkListCellID];
+            cell.Empmodel = self.Empmodel;
+            cell.model = self.MechanismlistArray[indexPath.row];
+            return cell;
+        } else{
             LPCircleListCell *cell = [tableView dequeueReusableCellWithIdentifier:LPCircleListCellID];
             if(cell == nil){
                 cell = [[LPCircleListCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:LPCircleListCellID];
@@ -855,7 +982,7 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
     NSDictionary *dic = @{@"page":@(self.page),
                           @"type":@(type),
                           @"moodDetails":self.searchWord,
-                          @"versionType":@"2.3"
+                          @"versionType":@"2.4"
                           };
     [NetApiManager requestMoodListWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
@@ -896,6 +1023,54 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
     }];
 }
 
+
+-(void)requestGetEmployeeList{
+    NSDictionary *dic = @{
+                          @"key":self.searchWord,
+                          @"page":[NSString stringWithFormat:@"%ld",self.page]
+                          };
+    
+    [NetApiManager requestGetEmployeeList:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        [self.Resulttableview.mj_header endRefreshing];
+        [self.Resulttableview.mj_footer endRefreshing];
+        if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.Employeemodel = [LPLPEmployeeModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+
+-(void)requestGetWorkMechanismList{
+    NSDictionary *dic = @{@"mechanismName":self.searchWord,
+                          @"mechanismAddress":self.mechanismAddress ? self.mechanismAddress : @"china",
+                          @"page":[NSString stringWithFormat:@"%ld",(long)self.page],
+                          @"userId":self.Empmodel.userId
+                          };
+    
+    [NetApiManager requestGetWorkMechanismList:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        [self.Resulttableview.mj_header endRefreshing];
+        [self.Resulttableview.mj_footer endRefreshing];
+        if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.Mechanismmodel = [LPMechanismcommentMechanismlistModel mj_objectWithKeyValues:responseObject];
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+
+
+
 #pragma mark lazy
 - (UITableView *)tableview{
     if (!_tableview) {
@@ -923,13 +1098,20 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
         }else if (self.Type == 1){
             _Resulttableview.estimatedRowHeight = 100;
         }
-        _Resulttableview.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+        if (self.Type == 5 ||self.Type == 6) {
+            _Resulttableview.separatorStyle = UITableViewCellSeparatorStyleNone;
+        }else{
+            _Resulttableview.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+        }
+
         _Resulttableview.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
         [_Resulttableview registerNib:[UINib nibWithNibName:LPInformationSingleCellID bundle:nil] forCellReuseIdentifier:LPInformationSingleCellID];
         [_Resulttableview registerNib:[UINib nibWithNibName:LPInformationMoreCellID bundle:nil] forCellReuseIdentifier:LPInformationMoreCellID];
         [_Resulttableview registerNib:[UINib nibWithNibName:LPCircleListCellID bundle:nil] forCellReuseIdentifier:LPCircleListCellID];
         [_Resulttableview registerNib:[UINib nibWithNibName:LPBusinessReviewCellID bundle:nil] forCellReuseIdentifier:LPBusinessReviewCellID];
-
+        [_Resulttableview registerNib:[UINib nibWithNibName:LPEmployeeWorkListCellID bundle:nil] forCellReuseIdentifier:LPEmployeeWorkListCellID];
+        [_Resulttableview registerNib:[UINib nibWithNibName:LPEmployeeManageCellID bundle:nil] forCellReuseIdentifier:LPEmployeeManageCellID];
+        
         _Resulttableview.mj_header = [HZNormalHeader headerWithRefreshingBlock:^{
             if (self.Type== 1) {
                 self.page = 1;
@@ -937,6 +1119,12 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
             }else if (self.Type == 3){
                 self.page = 1;
                 [self requestMoodList];
+            }else if (self.Type == 5){
+                self.page = 1;
+                [self requestGetEmployeeList];
+            }else if (self.Type == 6){
+                self.page = 1;
+                [self requestGetWorkMechanismList];
             }
             
         }];
@@ -945,6 +1133,10 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
                 [self requestEssaylist];
             }else if (self.Type == 3){
                 [self requestMoodList];
+            }else if (self.Type == 5){
+                [self requestGetEmployeeList];
+            }else if (self.Type == 6){
+                [self requestGetWorkMechanismList];
             }
         }];
     }
@@ -1056,6 +1248,132 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
     
     return floor(commentheighe + Praiseheighe);
 }
+
+
+
+- (void)initRemarkAlertView{
+    CustomIOSAlertView *alertview = [[CustomIOSAlertView alloc] init];
+    self.CustomAlert = alertview;
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0,  LENGTH_SIZE(300), LENGTH_SIZE(177))];
+    view.backgroundColor = [UIColor whiteColor];
+    UILabel *title = [[UILabel alloc] init];
+    [view addSubview:title];
+    [title mas_makeConstraints:^(MASConstraintMaker *make){
+        make.top.mas_offset(LENGTH_SIZE(22));
+        make.left.right.mas_offset(0);
+    }];
+    title.textColor = [UIColor colorWithHexString:@"#333333"];
+    title.font = [UIFont boldSystemFontOfSize:18];
+    title.text = @"编辑备注";
+    title.textAlignment = NSTextAlignmentCenter;
+    
+    UITextField *TF = [[UITextField alloc] init];
+    self.AlertTF = TF;
+    [view addSubview:TF];
+    [TF mas_makeConstraints:^(MASConstraintMaker *make){
+        make.top.mas_offset(LENGTH_SIZE(65));
+        make.left.mas_offset(LENGTH_SIZE(20));
+        make.right.mas_offset(LENGTH_SIZE(-20));
+        make.height.mas_offset(LENGTH_SIZE(36));
+    }];
+    TF.layer.borderColor = [UIColor colorWithHexString:@"#E0E0E0"].CGColor;
+    TF.layer.borderWidth = 1;
+    TF.layer.cornerRadius = 6;
+    TF.placeholder = @"请输入备注";
+    TF.text = self.selectEmployeemodel.remark;
+    [TF addTarget:self action:@selector(textFieldChanged:) forControlEvents:UIControlEventEditingChanged];
+    
+    UIButton *button = [[UIButton alloc] init];
+    [view addSubview:button];
+    [button mas_makeConstraints:^(MASConstraintMaker *make){
+        make.top.equalTo(TF.mas_bottom).offset(LENGTH_SIZE(15));
+        make.left.mas_offset(LENGTH_SIZE(20));
+        make.right.mas_offset(LENGTH_SIZE(-20));
+        make.height.mas_offset(LENGTH_SIZE(40));
+    }];
+    button.layer.cornerRadius = 6;
+    button.backgroundColor = [UIColor baseColor];
+    [button setTitleColor:[UIColor colorWithHexString:@"#FFFFFF"] forState:UIControlStateNormal];
+    [button setTitle:@"保  存" forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(Touchremark:) forControlEvents:UIControlEventTouchUpInside];
+    
+    alertview.containerView = view;
+    alertview.buttonTitles=@[];
+    [alertview setUseMotionEffects:true];
+    [alertview setCloseOnTouchUpOutside:true];
+    [alertview show];
+}
+
+-(void)Touchremark:(UIButton *)sender{
+    [self.CustomAlert close];
+    [self requestUpdateEmpRemark];
+    //    [self requestUpdateRelationReg:self.selectmodel.id.stringValue remark:self.AlertTF.text];
+}
+
+
+
+-(void)requestUpdateEmpRemark{
+    NSDictionary *dic = @{
+                          @"id":self.selectEmployeemodel.id,
+                          @"type":self.selectEmployeemodel.type,
+                          @"remark":self.AlertTF.text
+                          };
+    
+    [NetApiManager requestUpdateEmpRemark:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if ([responseObject[@"data"] integerValue] == 1) {
+                    [self.view showLoadingMeg:@"编辑备注成功" time:MESSAGE_SHOW_TIME];
+                    self.selectEmployeemodel.remark = self.AlertTF.text;
+                    [self.Resulttableview reloadData];
+                }else{
+                    [self.view showLoadingMeg:@"编辑备注失败,请稍后再试" time:MESSAGE_SHOW_TIME];
+                }
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+
+
+#pragma mark textFieldChanged
+-(void)textFieldChanged:(UITextField *)textField{
+    //
+    
+    /**
+     *  最大输入长度,中英文字符都按一个字符计算
+     */
+    int kMaxLength = 10;
+    NSString *toBeString = textField.text;
+    // 获取键盘输入模式
+    NSString *lang = [[UITextInputMode currentInputMode] primaryLanguage];
+    // 中文输入的时候,可能有markedText(高亮选择的文字),需要判断这种状态
+    // zh-Hans表示简体中文输入, 包括简体拼音，健体五笔，简体手写
+    if ([lang isEqualToString:@"zh-Hans"]) {
+        UITextRange *selectedRange = [textField markedTextRange];
+        //获取高亮选择部分
+        UITextPosition *position = [textField positionFromPosition:selectedRange.start offset:0];
+        // 没有高亮选择的字，表明输入结束,则对已输入的文字进行字数统计和限制
+        if (!position) {
+            if (toBeString.length > kMaxLength) {
+                // 截取子串
+                textField.text = [toBeString substringToIndex:kMaxLength];
+            }
+        } else { // 有高亮选择的字符串，则暂不对文字进行统计和限制
+        }
+    } else {
+        // 中文输入法以外的直接对其统计限制即可，不考虑其他语种情况
+        if (toBeString.length > kMaxLength) {
+            // 截取子串
+            textField.text = [toBeString substringToIndex:kMaxLength];
+        }
+    }
+}
+
 
 
 - (void)didReceiveMemoryWarning {
