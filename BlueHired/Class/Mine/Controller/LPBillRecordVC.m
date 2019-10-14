@@ -54,6 +54,22 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+//-(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
+//    if (self.model.data[indexPath.row].status.integerValue == 1){
+//         return NO;
+//    }
+//    return YES;
+//}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete)
+    {
+        [self requestDelUserBill:self.listArray[indexPath.row]];
+    }
+}
+
+
 - (void)setModel:(LPBillrecordModel *)model{
     _model = model;
     if ([self.model.code integerValue] == 0) {
@@ -129,6 +145,40 @@
         }
     }];
 }
+
+
+-(void)requestDelUserBill:(LPBillrecordDataModel *) m{
+    NSDictionary *dic = @{
+    };
+    NSString *urlStr = [NSString stringWithFormat:@"billrecord/del_user_bill?id=%@&type=%@",m.id,m.billType];
+
+    [NetApiManager requestDelUserBill:dic URLString:urlStr withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if([responseObject[@"data"] integerValue] == 1){
+                    [self.listArray removeObject:m];
+                    if (self.listArray.count == 0) {
+                        [self addNodataViewHidden:NO];
+                    }else{
+                        [self addNodataViewHidden:YES];
+                    }
+                    [self.tableview reloadData];
+                    [self.view showLoadingMeg:@"删除成功" time:MESSAGE_SHOW_TIME];
+                }else{
+                    [self.view showLoadingMeg:@"删除失败,请稍后再试" time:MESSAGE_SHOW_TIME];
+                }
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+
+
+
 #pragma mark lazy
 - (void)tableviewinit{
 //        _tableview = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStylePlain];

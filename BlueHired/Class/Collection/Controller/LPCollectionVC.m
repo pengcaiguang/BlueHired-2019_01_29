@@ -32,7 +32,7 @@ static NSString *LPCollectionCollectionViewCellID = @"LPCollectionCollectionView
 
     [self setNavigationButton];
     [self setupTitleView];
-    [self setBottomView];
+
     [self.view addSubview:self.collectionView];
     [self.collectionView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(0);
@@ -80,16 +80,18 @@ static NSString *LPCollectionCollectionViewCellID = @"LPCollectionCollectionView
     [self.navigationItem.rightBarButtonItem setTintColor:[UIColor colorWithHexString:@"#1B1B1B"]];
 }
 -(void)setupTitleView{
-    UIView *navigationView = [[UIView alloc]init];
+    UIView *navigationView = [[UIView alloc] init];
     navigationView.frame = CGRectMake(0, 0, SCREEN_WIDTH-120, 49);
-    navigationView.center = CGPointMake(navigationView.superview.center.x, navigationView.superview.frame.size.height/2);
+//    navigationView.backgroundColor = [UIColor redColor];
     self.navigationItem.titleView = navigationView;
-    
+
+//   navigationView.center = CGPointMake(navigationView.superview.center.x, navigationView.superview.frame.size.height/2);
+
     self.buttonArray = [NSMutableArray array];
     NSArray *titleArray = @[@"资讯",@"招聘",@"视频"];
 //    NSArray *titleArray = @[@"资讯",@"视频"];
     for (int i =0; i<titleArray.count; i++) {
-        UIButton *button = [[UIButton alloc]init];
+        UIButton *button = [[UIButton alloc]initWithFrame:CGRectMake((SCREEN_WIDTH-120-40)/titleArray.count*i+10, 0, (SCREEN_WIDTH-120-40)/titleArray.count, 49)];
         [navigationView addSubview:button];
         button.titleLabel.font = [UIFont systemFontOfSize:16];
         [button setTitle:titleArray[i] forState:UIControlStateNormal];
@@ -97,22 +99,25 @@ static NSString *LPCollectionCollectionViewCellID = @"LPCollectionCollectionView
         [button setTitleColor:[UIColor blackColor] forState:UIControlStateSelected];
         [button addTarget:self action:@selector(touchTitleButton:) forControlEvents:UIControlEventTouchUpInside];
         [self.buttonArray addObject:button];
+
     }
     self.buttonArray[0].selected = YES;
-    [self.buttonArray mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedSpacing:10 leadSpacing:10 tailSpacing:10];
-    [self.buttonArray mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.mas_equalTo(-5);
-    }];
-    
-    self.lineView = [[UIView alloc]init];
+//    [self.buttonArray mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedSpacing:10 leadSpacing:10 tailSpacing:10];
+//    [self.buttonArray mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.bottom.mas_equalTo(-5);
+//    }];
+
+    self.lineView = [[UIView alloc]initWithFrame:CGRectMake(self.buttonArray[0].lx_x, navigationView.lx_bottom-5, self.buttonArray[0].lx_width, 2)];
     [navigationView addSubview:self.lineView];
-    [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.mas_equalTo(0);
-        make.height.mas_equalTo(2);
-        make.width.mas_equalTo(self.buttonArray[0].mas_width);
-        make.centerX.equalTo(self.buttonArray[0]);
-    }];
+//    [self.lineView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.bottom.mas_equalTo(0);
+//        make.height.mas_equalTo(2);
+//        make.width.mas_equalTo(self.buttonArray[0].mas_width);
+//        make.centerX.equalTo(self.buttonArray[0]);
+//    }];
     self.lineView.backgroundColor = [UIColor baseColor];
+
+
 }
 -(void)setBottomView{
     UIButton *selectButton = [[UIButton alloc]init];
@@ -210,7 +215,7 @@ static NSString *LPCollectionCollectionViewCellID = @"LPCollectionCollectionView
     [UIView animateWithDuration:0.2 animations:^{
         [self.lineView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.bottom.mas_equalTo(0);
-            make.height.mas_equalTo(3);
+            make.height.mas_equalTo(2);
             make.width.mas_equalTo(self.buttonArray[index].mas_width);
             make.centerX.equalTo(self.buttonArray[index]);
         }];

@@ -126,6 +126,8 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
 
+    self.barrageView.frame = CGRectMake(0, LENGTH_SIZE(82), self.view.frame.size.width, LENGTH_SIZE(96));
+    
     [self.collectionView reloadData];
     [self.collectionView layoutIfNeeded];
 

@@ -118,7 +118,15 @@ static NSString *LPTLendAuditCellID = @"LPFirmCell";
     searchBar.placeholder = @"请输入姓名或者联系方式";
     [searchBar setShowsCancelButton:NO];
     [searchBar setTintColor:[UIColor lightGrayColor]];
-    UITextField *searchField = [searchBar valueForKey:@"searchField"];
+    UITextField *searchField;
+    
+    if (@available(iOS 13.0, *)) {
+        searchField = searchBar.searchTextField;
+    }else{
+        searchField = [searchBar valueForKey:@"searchField"];
+    }
+    
+    
     if (searchField) {
         [searchField setBackgroundColor:[UIColor whiteColor]];
         searchField.layer.cornerRadius = 14;

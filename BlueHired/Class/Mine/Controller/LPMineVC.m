@@ -32,6 +32,7 @@
 #import "LPAddressBookVC.h"
 #import <Contacts/Contacts.h>
 #import "LPEmployeeManageVC.h"
+#import "LPScoreStore.h"
 
 
 static NSString *LPMineCellID = @"LPMine2Cell";
@@ -206,20 +207,14 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
         if (section == 0 || section == 1|| section == 2) {
             return 1;
         }else{
-            if (kUserDefaultsValue(USERDATA).integerValue == 3 ){
-                return 8;
-            }
-            return 7;
+            return 8;
         }
     }
     
     if (section == 0 || section == 1) {
         return 1;
     }else{
-        if (kUserDefaultsValue(USERDATA).integerValue == 3 ){
-            return 8;
-        }
-        return 7;
+        return 8;
     }
 }
 
@@ -403,7 +398,7 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
             cell.textLabel.font = FONT_SIZE(14);
             cell.imageView.contentMode=UIViewContentModeScaleAspectFit;
             
-            if (kUserDefaultsValue(USERDATA).integerValue == 3 ){
+          
                 if (indexPath.row == 0) {
                     cell.imageView.image = [UIImage imageNamed:@"c_00"];
                     cell.textLabel.text = @"员工归属管理";
@@ -429,30 +424,7 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
                     cell.imageView.image = [UIImage imageNamed:@"customerService_img"];
                     cell.textLabel.text = @"专属客服";
                 }
-            }else{
-                if (indexPath.row == 0) {
-                    cell.imageView.image = [UIImage imageNamed:@"salaryCard_img"];
-                    cell.textLabel.text = @"工资卡管理";
-                }else if (indexPath.row == 1) {
-                    cell.imageView.image = [UIImage imageNamed:@"changePassword_img"];
-                    cell.textLabel.text = @"账号管理";
-                }else if (indexPath.row == 2){
-                    cell.imageView.image = [UIImage imageNamed:@"c_activity"];
-                    cell.textLabel.text = @"通讯录好友";
-                }else if (indexPath.row == 3) {
-                    cell.imageView.image = [UIImage imageNamed:@"ActivityCenterImage"];
-                    cell.textLabel.text = @"活动中心";
-                }else if (indexPath.row == 4) {
-                    cell.imageView.image = [UIImage imageNamed:@"c_integral"];
-                    cell.textLabel.text = @"幸运积分";
-                }else if (indexPath.row == 5) {
-                    cell.imageView.image = [UIImage imageNamed:@"collectionCenter_img"];
-                    cell.textLabel.text = @"收藏中心";
-                }else if (indexPath.row == 6){
-                    cell.imageView.image = [UIImage imageNamed:@"customerService_img"];
-                    cell.textLabel.text = @"专属客服";
-                }
-            }
+            
             
             //调整cell.imageView大小
             CGSize itemSize = CGSizeMake(LENGTH_SIZE(20), LENGTH_SIZE(20));//希望显示的大小
@@ -500,8 +472,7 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
             cell.textLabel.font = FONT_SIZE(14);
             cell.imageView.contentMode=UIViewContentModeScaleAspectFit;
             
-            
-            if (kUserDefaultsValue(USERDATA).integerValue == 3 ){
+  
                 if (indexPath.row == 0) {
                     cell.imageView.image = [UIImage imageNamed:@"c_00"];
                     cell.textLabel.text = @"员工归属管理";
@@ -527,30 +498,7 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
                     cell.imageView.image = [UIImage imageNamed:@"customerService_img"];
                     cell.textLabel.text = @"专属客服";
                 }
-            }else{
-                if (indexPath.row == 0) {
-                    cell.imageView.image = [UIImage imageNamed:@"salaryCard_img"];
-                    cell.textLabel.text = @"工资卡管理";
-                }else if (indexPath.row == 1) {
-                    cell.imageView.image = [UIImage imageNamed:@"changePassword_img"];
-                    cell.textLabel.text = @"账号管理";
-                }else if (indexPath.row == 2){
-                    cell.imageView.image = [UIImage imageNamed:@"c_activity"];
-                    cell.textLabel.text = @"通讯录好友";
-                }else if (indexPath.row == 3) {
-                    cell.imageView.image = [UIImage imageNamed:@"ActivityCenterImage"];
-                    cell.textLabel.text = @"活动中心";
-                }else if (indexPath.row == 4) {
-                    cell.imageView.image = [UIImage imageNamed:@"c_integral"];
-                    cell.textLabel.text = @"幸运积分";
-                }else if (indexPath.row == 5) {
-                    cell.imageView.image = [UIImage imageNamed:@"collectionCenter_img"];
-                    cell.textLabel.text = @"收藏中心";
-                }else if (indexPath.row == 6){
-                    cell.imageView.image = [UIImage imageNamed:@"customerService_img"];
-                    cell.textLabel.text = @"专属客服";
-                }
-            }
+            
             
             //调整cell.imageView大小
             CGSize itemSize = CGSizeMake(LENGTH_SIZE(20), LENGTH_SIZE(20));//希望显示的大小
@@ -579,8 +527,8 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
     }
     
     if ( AlreadyLogin ||
-        (indexPath.section == 2 && (indexPath.row == 6) && self.RecordArr.count == 0) ||
-        (indexPath.section == 3 && (indexPath.row == 6) && self.RecordArr.count)) {
+        (indexPath.section == 2 && (indexPath.row == 7) && self.RecordArr.count == 0) ||
+        (indexPath.section == 3 && (indexPath.row == 7) && self.RecordArr.count)) {
         
         if (indexPath.section == 2 || indexPath.section == 3) {
 //            if (kUserDefaultsValue(USERDATA).integerValue == 4 ||
@@ -652,7 +600,6 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
 //                }
 //
 //            }else{
-            if (kUserDefaultsValue(USERDATA).integerValue == 3){
                 if (indexPath.row == 0) {
                     LPEmployeeManageVC *vc = [[LPEmployeeManageVC alloc] init];
                     vc.hidesBottomBarWhenPushed = YES;
@@ -684,37 +631,6 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
                     vc.hidesBottomBarWhenPushed = YES;
                     [self.navigationController pushViewController:vc animated:YES];
                 }
-            }else{
-                if (indexPath.row == 0) {//工资卡管理
-                    LPSalarycCardVC *vc = [[LPSalarycCardVC alloc]init];
-                    vc.hidesBottomBarWhenPushed = YES;
-                    [self.navigationController pushViewController:vc animated:YES];
-                }else if (indexPath.row == 1) {//账号管理
-                    LPAccountManageVC *vc = [[LPAccountManageVC alloc]init];
-                    vc.hidesBottomBarWhenPushed = YES;
-                    [self.navigationController pushViewController:vc animated:YES];
-                }else if (indexPath.row == 2){ //通讯录好友
-                    [self  requestContactAuthorAfterSystemVersion9];
-                }else if (indexPath.row == 3){//活动中心
-                    
-                    LPActivityVC *vc = [[LPActivityVC alloc] init];
-                    vc.hidesBottomBarWhenPushed = YES;
-                    [self.navigationController pushViewController:vc animated:YES];
-                }else if (indexPath.row == 4){//幸运积分
-                    LPIntegralDrawVC *vc = [[LPIntegralDrawVC alloc]init];
-                    vc.hidesBottomBarWhenPushed = YES;
-                    [self.navigationController pushViewController:vc animated:YES];
-                }else if (indexPath.row == 5){//收藏
-                    LPCollectionVC *vc = [[LPCollectionVC alloc] init];
-                    vc.hidesBottomBarWhenPushed = YES;
-                    [self.navigationController pushViewController:vc animated:YES];
-                }else{//客服
-                    LPHomeCustomerServiceVC *vc = [[LPHomeCustomerServiceVC alloc] init];
-                    vc.hidesBottomBarWhenPushed = YES;
-                    [self.navigationController pushViewController:vc animated:YES];
-                }
-            }
-            
                 
 //            }
             

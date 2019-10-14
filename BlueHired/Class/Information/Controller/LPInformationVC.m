@@ -20,6 +20,7 @@
 #import "LPVideoTypeModel.h"
 #import "JXCategoryView.h"
 #import "LPInformationView.h"
+#import "UISegmentedControl+LPCommon.h"
 
 
 static NSString *LPInformationCollectionViewCellID = @"LPInformationCollectionViewCell";
@@ -255,6 +256,8 @@ static NSString *LPInformationVideoCollectionViewCellID = @"LPInfoMationVideoCel
     [Segmented addTarget:self action:@selector(Segmentedselected:) forControlEvents:UIControlEventValueChanged];
 
     self.navigationItem.titleView = Segmented;
+    [Segmented ensureiOS12Style];
+ 
 }
 
 -(void)Segmentedselected:(UISegmentedControl *) sender{
@@ -279,7 +282,15 @@ static NSString *LPInformationVideoCollectionViewCellID = @"LPInfoMationVideoCel
     [searchBar setShowsCancelButton:NO];
     [searchBar setTintColor:[UIColor lightGrayColor]];
     
-    UITextField *searchField = [searchBar valueForKey:@"searchField"];
+    UITextField *searchField;
+    
+    if (@available(iOS 13.0, *)) {
+        searchField = searchBar.searchTextField;
+    }else{
+        searchField = [searchBar valueForKey:@"searchField"];
+    }
+    
+    
     if (searchField) {
         [searchField setBackgroundColor:[UIColor whiteColor]];
         searchField.layer.cornerRadius = 14;

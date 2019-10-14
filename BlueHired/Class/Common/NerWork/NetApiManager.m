@@ -70,10 +70,14 @@ static QNUploadManager *upManager = NULL;
     
     NetRequestEnty * enty = [[NetInstance shareInstance] commonRequestEnty:requestType withAppendUrlString:appendURLString];  //通用请求配置
     NSMutableDictionary *params = [[[NetInstance shareInstance] basicParameter] mutableCopy];                          //公共请求参数
-    if(!ISNIL(paramer)){
+    if(!ISNIL(paramer) && [paramer isKindOfClass:[NSDictionary class]]){
         [params addEntriesFromDictionary:paramer];
     }
     enty.params = params;
+    
+    if ([paramer isKindOfClass:[NSMutableArray class]] ||[paramer isKindOfClass:[NSArray class]]) {
+        enty.params = paramer;
+    }
     enty.responseHandle = responseHandle;
     
     
@@ -2460,6 +2464,19 @@ static QNUploadManager *upManager = NULL;
                                                  IsShowActiviTy:NO];
     [NetRequestManager requestWithEnty:enty];
 }
+
+//员工归属管理,入职记录列表
++ (void)requestGetWorkRecordList:(id)paramer
+                         withHandle:(response)responseHandle{
+    NSString * appendURLString = @"invite/get_work_record_list";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
 //在招企业信息列表
 + (void)requestGetWorkMechanismList:(id)paramer
                     withHandle:(response)responseHandle{
@@ -2494,4 +2511,219 @@ static QNUploadManager *upManager = NULL;
                                                  IsShowActiviTy:YES];
     [NetRequestManager requestWithEnty:enty];
 }
+
+
+//获取商品列表
++ (void)requestGetProductList:(id)paramer
+                  withHandle:(response)responseHandle{
+    NSString * appendURLString = @"product/get_product_list";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//获取商品详情
++ (void)requestGetProductDetail:(id)paramer
+                  withHandle:(response)responseHandle{
+    NSString * appendURLString = @"product/get_product_detail";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//添加商品到购物车
++ (void)requestInsertCartitem:(id)paramer
+                  withHandle:(response)responseHandle{
+    NSString * appendURLString = @"cart/insert_cart_item";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+
+//获取购物车列表
++ (void)requestGetCartItemList:(id)paramer
+                  withHandle:(response)responseHandle{
+    NSString * appendURLString = @"cart/get_cart_item_list";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+
+//修改购物车中某个商品的数量接口
++ (void)requestUpdateQuantity:(id)paramer
+                    URLString:(NSString *)URLString
+                  withHandle:(response)responseHandle{
+    NSString * appendURLString = URLString;
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//批量删除和一键清空购物车
++ (void)requestDelCartItem:(id)paramer
+                 URLString:(NSString *)URLString
+                  withHandle:(response)responseHandle{
+    NSString * appendURLString = URLString;
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//获取发货地址列表
++ (void)requestGetOrderAddressList:(id)paramer
+                  withHandle:(response)responseHandle{
+    NSString * appendURLString = @"order/get_address_list";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//添加或者修改收货地址
++ (void)requestUpdateOrderAddress:(id)paramer
+                  withHandle:(response)responseHandle{
+    NSString * appendURLString = @"order/insert_or_update_address";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//删除收货地址
++ (void)requestDeleteOrderAddress:(id)paramer
+                        URLString:(NSString *)URLString
+                  withHandle:(response)responseHandle{
+    NSString * appendURLString = URLString;
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//从购物车过来确认提交订单  直接兑换提交订单
++ (void)requestOrderGenerate:(id)paramer
+                        URLString:(NSString *)URLString
+                  withHandle:(response)responseHandle{
+    NSString * appendURLString = URLString;
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//支付订单
++ (void)requestOrderPayOrder:(id)paramer
+                        URLString:(NSString *)URLString
+                  withHandle:(response)responseHandle{
+    NSString * appendURLString = URLString;
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//修改订单状态1取消订单，2删除订单以及3确认收货
++ (void)requestOrderUpdateStatus:(id)paramer
+                        URLString:(NSString *)URLString
+                  withHandle:(response)responseHandle{
+    NSString * appendURLString = URLString;
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//获取订单列表
++ (void)requestGetOrderList:(id)paramer
+                  withHandle:(response)responseHandle{
+    NSString * appendURLString = @"order/get_order_list";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+//获取购物花费积分列表
++ (void)requestGetProductScoreList:(id)paramer
+                  withHandle:(response)responseHandle{
+    NSString * appendURLString = @"order/get_product_score_list";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+
+//获取圈子首页轮播图
++ (void)requestQueryBillUserBill:(id)paramer
+                           withHandle:(response)responseHandle{
+    NSString * appendURLString = @"billrecord/get_user_bill_list";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
+// 删除积分账单 type 1->账单流水；2->提现记录；3->积分账单  需要登录
++ (void)requestDelUserBill:(id)paramer
+                 URLString:(NSString *)URLString
+                  withHandle:(response)responseHandle{
+    NSString * appendURLString = URLString;
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypePost
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:YES];
+    [NetRequestManager requestWithEnty:enty];
+}
+//获取订单详情 
++ (void)requestQueryGetOrderDetails:(id)paramer
+                           withHandle:(response)responseHandle{
+    NSString * appendURLString = @"order/get_order_detail";
+    NetRequestEnty * enty = [self createEntyWithAppendURLString:appendURLString
+                                                withRequestEnty:RequestTypeGet
+                                                      withParam:paramer
+                                                     withHandle:responseHandle
+                                                 IsShowActiviTy:NO];
+    [NetRequestManager requestWithEnty:enty];
+}
+
 @end

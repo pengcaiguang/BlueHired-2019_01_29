@@ -57,7 +57,7 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
     [bgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
-        make.right.mas_equalTo(0);
+        make.top.mas_equalTo(0);
         make.height.mas_equalTo(49);
     }];
     bgView.backgroundColor = [UIColor baseColor];
@@ -104,7 +104,6 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
 //    }];
 //    dimageView.image = [UIImage imageNamed:@"downArrow"];
     
-    LPSearchBar *searchBar = [self addSearchBar];
     UIView *wrapView = [[UIView alloc]init];
     [bgView addSubview:wrapView];
     [wrapView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -113,16 +112,20 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
         make.top.mas_equalTo(10);
         make.height.mas_equalTo(30);
     }];
-    wrapView.layer.cornerRadius = 14;
+    wrapView.backgroundColor = [UIColor whiteColor];
+    wrapView.layer.cornerRadius = 15;
+    wrapView.clipsToBounds = YES;
+    [bgView layoutIfNeeded];
     wrapView.layer.masksToBounds = YES;
-    
+    LPSearchBar *searchBar = [self addSearchBar];
+//    searchBar.frame = CGRectMake(0, 0, SCREEN_WIDTH - 78, 30);
     [wrapView addSubview:searchBar];
     [searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
         make.top.mas_equalTo(0);
         make.bottom.mas_equalTo(0);
-        
+
     }];
     
 }
@@ -137,8 +140,17 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
     searchBar.placeholder = @"请输入企业名称";
     [searchBar setShowsCancelButton:NO];
     [searchBar setTintColor:[UIColor lightGrayColor]];
+    UITextField *searchField;
     
-    UITextField *searchField = [searchBar valueForKey:@"searchField"];
+    if (@available(iOS 13.0, *)) {
+        searchField = searchBar.searchTextField;
+
+    }else{
+        searchField = [searchBar valueForKey:@"searchField"];
+
+    }
+     
+    
     if (searchField) {
         [searchField setBackgroundColor:[UIColor whiteColor]];
         searchField.layer.cornerRadius = 15;

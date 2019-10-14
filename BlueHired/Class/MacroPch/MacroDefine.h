@@ -24,15 +24,15 @@
 //http://ceshi.lanpin123.com/lifetime/comment/get_comment_list?id=38&page=1&type=1
 //#define BaseRequestURL  @"http://192.168.0.152:8080/lifetime/"
 
-//#define BaseRequestURL  @"http://192.168.0.108:8080/lifetime/"
-//#define BaseRequestWeiXiURL  @"http://192.168.0.152:8090/"
-//#define BaseRequestWeiXiURLTWO  @"http://192.168.0.152:8090/"
-//#define BaseRequestCookie  @"192.168.0.108"
+#define BaseRequestURL  @"http://192.168.0.108:8080/lifetime/"
+#define BaseRequestWeiXiURL  @"http://192.168.0.152:8090/"
+#define BaseRequestWeiXiURLTWO  @"http://192.168.0.152:8090/"
+#define BaseRequestCookie  @"192.168.0.108"
 
-#define BaseRequestURL  @"http://www.lanpin123.com/lifetime/"
-#define BaseRequestWeiXiURL  @"http://www.lanpin123.com/bluehired/"
-#define BaseRequestWeiXiURLTWO  @"http://domin.lanpin123.com:1972/"
-#define BaseRequestCookie  @"www.lanpin123.com"
+//#define BaseRequestURL  @"http://www.lanpin123.com/lifetime/"
+//#define BaseRequestWeiXiURL  @"http://www.lanpin123.com/bluehired/"
+//#define BaseRequestWeiXiURLTWO  @"http://domin.lanpin123.com:1972/"
+//#define BaseRequestCookie  @"www.lanpin123.com"
 
 //#define BaseRequestURL  @"http://47.106.208.91:8180/lifetime/"
 //#define BaseRequestWeiXiURL  @"http://47.106.208.91/"
@@ -104,7 +104,7 @@
 /**
  * 信息提示显示时间 单位为秒
  */
-#define  MESSAGE_SHOW_TIME       2.0
+#define  MESSAGE_SHOW_TIME       1.5
 
 #define TimeOutIntervalSet       15
 
@@ -155,7 +155,7 @@ __typeof__(value) __a = (value); \
 #define WhiteColor  SetColor(255, 255, 255, 1)
 #define GreenColor  SetColor(61, 199, 112, 1)
 
-#define AlertMsg(alertMsg) [[SGAlertUtil alertManager]alertNowTimeWith:alertMsg];
+#define AlertMsg(alertMsg) [[SGAlertUtil alertManager]alertNowTimeFontSizetMsg];
 #define Alert(alertMsg) [[SGAlertUtil alertManager]alertNowTimeWith:alertMsg];
 #define CurrentDeviceSn [[UIDevice currentDevice].identifierForVendor UUIDString]//手机序列号
 #define RemovernNil(alertMsg) [LPTools isNullToString:alertMsg]

@@ -408,6 +408,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
         }
     }
     
+ 
     //   点赞人名称
     NSString *PraiseStr = @"";
     if (model.praiseList.count) {
@@ -442,7 +443,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
 
             [string addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13.0],
                                     NSParagraphStyleAttributeName:paraStyle01,
-                                    NSForegroundColorAttributeName:[UIColor baseColor]
+                                    NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#356C93"]
                                     }
                             range:NSMakeRange(0, string.length-PingStr.length)];
 
@@ -482,7 +483,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
 
             [string addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13.0],
                                     NSParagraphStyleAttributeName:paraStyle01,
-                                    NSForegroundColorAttributeName:[UIColor baseColor]}
+                                    NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#356C93"]}
                             range:NSMakeRange(0, string.length)];
             
             label.attributedText = string;//切记使用富文本，颜色可以自由发挥了
@@ -497,7 +498,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
             
             NSMutableArray *ClickedArray = [[NSMutableArray alloc] init];
             for (LPMoodPraiseListDataModel *Pmodel in model.praiseList ) {
-                [ClickedArray addObject:Pmodel.userName];
+                    [ClickedArray addObject:Pmodel.userName];
             }
             WEAK_SELF()
             [label yb_addAttributeTapActionWithStrings:@[PraiseStr] tapClicked:^(UILabel *label,NSString *string, NSRange range, NSInteger index) {
@@ -573,18 +574,18 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
             if (CModel.toUserName) {
                 [string addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13.0],
                                         NSParagraphStyleAttributeName:paraStyle01,
-                                        NSForegroundColorAttributeName:[UIColor baseColor]}
+                                        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#356C93"]}
                                 range:NSMakeRange(0, CModel.userName.length)];
                 
                 [string addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13.0],
                                         NSParagraphStyleAttributeName:paraStyle01,
-                                        NSForegroundColorAttributeName:[UIColor baseColor]}
+                                        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#356C93"]}
                                 range:NSMakeRange(CModel.userName.length+4, CModel.toUserName.length+1)];
                 
             }else{
                 [string addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13.0],
                                         NSParagraphStyleAttributeName:paraStyle01,
-                                        NSForegroundColorAttributeName:[UIColor baseColor]}
+                                        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#356C93"]}
                                 range:NSMakeRange(0, CModel.userName.length+1)];
             }
 
@@ -687,7 +688,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
             }];
             commentAllLabel.font = [UIFont systemFontOfSize:13];
             commentAllLabel.text = @"查看所有评论";
-            commentAllLabel.textColor = [UIColor baseColor];
+            commentAllLabel.textColor = [UIColor colorWithHexString:@"#356C93"];
             UIImageView *CommentAllImage = [[UIImageView alloc] init];
             [self.CommentView addSubview:CommentAllImage];
             [CommentAllImage mas_makeConstraints:^(MASConstraintMaker *make) {

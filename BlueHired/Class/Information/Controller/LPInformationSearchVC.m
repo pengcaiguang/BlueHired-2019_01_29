@@ -154,7 +154,15 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
     [searchBar setTintColor:[UIColor lightGrayColor]];
     
     
-    UITextField *searchField = [searchBar valueForKey:@"searchField"];
+    UITextField *searchField;
+    
+    if (@available(iOS 13.0, *)) {
+        searchField = searchBar.searchTextField;
+    }else{
+        searchField = [searchBar valueForKey:@"searchField"];
+    }
+    
+    
     if (searchField) {
         [searchField setBackgroundColor:[UIColor colorWithHexString:@"#F2F1F0"]];
         searchField.layer.cornerRadius = 15;
@@ -1027,6 +1035,7 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
 -(void)requestGetEmployeeList{
     NSDictionary *dic = @{
                           @"key":self.searchWord,
+                          @"versionType":@"2.4",
                           @"page":[NSString stringWithFormat:@"%ld",self.page]
                           };
     

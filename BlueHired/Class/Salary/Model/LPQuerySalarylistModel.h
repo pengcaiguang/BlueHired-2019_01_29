@@ -11,7 +11,7 @@
 @class LPQuerySalarylistDataModel;
 @interface LPQuerySalarylistModel : NSObject
 @property (nonatomic, copy) NSNumber *code;
-@property (nonatomic, strong) NSArray <LPQuerySalarylistDataModel *>*data;
+@property (nonatomic, strong) NSMutableArray <LPQuerySalarylistDataModel *>*data;
 @property (nonatomic, copy) NSString *msg;
 @end
 

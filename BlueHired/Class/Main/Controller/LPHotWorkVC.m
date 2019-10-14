@@ -300,6 +300,8 @@ static NSString *LPMainCellID = @"LPMain2Cell";
  
     return cell;
 }
+
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     LPWorkDetailVC *vc = [[LPWorkDetailVC alloc]init];

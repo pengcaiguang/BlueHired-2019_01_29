@@ -84,8 +84,6 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     [self setBottomView];
     
     [self request];
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(textFiledEditChanged:)
-                                                name:UITextFieldTextDidChangeNotification object:self.NameTextField];
  
 //    [self requestWorkDetail];
 //    if (AlreadyLogin) {
@@ -109,9 +107,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 }
 
 -(void)setBottomView{
-    
 
-    
     UIView *bottomBgView = [[UIView alloc]init];
     [self.view addSubview:bottomBgView];
     [bottomBgView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -300,23 +296,6 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 }
 
 
-
-- (void)textFiledEditChanged:(id)notification{
-    
-    UITextRange *selectedRange = self.NameTextField.markedTextRange;
-    UITextPosition *position = [self.NameTextField positionFromPosition:selectedRange.start offset:0];
-    
-    if (!position) { //// 没有高亮选择的字
-        //过滤非汉字字符
-        self.NameTextField.text = [self filterCharactor:self.NameTextField.text withRegex:@"[^\u4e00-\u9fa5]"];
-        
-        if (self.NameTextField.text.length >= 5) {
-            self.NameTextField.text = [self.NameTextField.text substringToIndex:4];
-        }
-    }else { //有高亮文字
-        //do nothing
-    }
-}
 
 -(void)textFieldChanged:(UITextField *)textField{
     //

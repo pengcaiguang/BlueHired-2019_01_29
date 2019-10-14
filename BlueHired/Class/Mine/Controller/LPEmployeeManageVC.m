@@ -11,6 +11,7 @@
 #import "LPEmployeeManageCell.h"
 #import "LPInformationSearchVC.h"
 #import "LPLPEmployeeModel.h"
+#import "LPWorkRecordListVC.h"
 
 static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
 
@@ -67,9 +68,10 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
     [self.view addSubview:HeadView];
     [HeadView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.mas_offset(0);
-        make.height.mas_offset(LENGTH_SIZE(40));
+        make.height.mas_offset(LENGTH_SIZE(0));
     }];
     HeadView.backgroundColor = [UIColor whiteColor];
+    HeadView.clipsToBounds = YES;
     
     UILabel *TitleLabel = [[UILabel alloc] init];
     [HeadView addSubview:TitleLabel];
@@ -101,7 +103,7 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
         //        make.edges.equalTo(self.view);
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
-        make.top.mas_equalTo(LENGTH_SIZE(50));
+        make.top.mas_equalTo(LENGTH_SIZE(10));
         make.bottom.mas_equalTo(0);
     }];
     
@@ -148,7 +150,7 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return LENGTH_SIZE(144);
+    return LENGTH_SIZE(126);
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -164,7 +166,7 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-
+    
 }
 
 - (void)initRemarkAlertView{
@@ -282,6 +284,10 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
             self.page += 1;
             [self.listArray addObjectsFromArray:model.data];
             [self.tableview reloadData];
+            if (model.data.count<20) {
+                [self.tableview.mj_footer endRefreshingWithNoMoreData];
+                self.tableview.mj_footer.hidden = self.listArray.count<20?YES:NO;
+            }
         }else{
             if (self.page == 1) {
                 [self.tableview reloadData];
@@ -318,7 +324,7 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
             //            make.edges.equalTo(self.view);
             make.left.mas_equalTo(0);
             make.right.mas_equalTo(0);
-            make.top.mas_equalTo(LENGTH_SIZE(50));
+            make.top.mas_equalTo(LENGTH_SIZE(0));
             make.bottom.mas_equalTo(LENGTH_SIZE(0));
         }];
         noDataView.hidden = hidden;
@@ -331,8 +337,9 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
 
 -(void)requestGetEmployeeList{
     NSDictionary *dic = @{
-                          @"status":self.Type,
-                          @"page":[NSString stringWithFormat:@"%ld",self.page]
+//                          @"status":self.Type,
+                            @"versionType":@"2.4",
+                            @"page":[NSString stringWithFormat:@"%ld",self.page]
                           };
     
     [NetApiManager requestGetEmployeeList:dic withHandle:^(BOOL isSuccess, id responseObject) {

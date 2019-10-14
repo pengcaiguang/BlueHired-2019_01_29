@@ -77,6 +77,9 @@ typedef NS_ENUM(NSUInteger, GKDYVideoPlayerStatus) {
  获取播放时长
  */
 -(float)getPlayerDuration;
+
+
+
 @end
 
 NS_ASSUME_NONNULL_END

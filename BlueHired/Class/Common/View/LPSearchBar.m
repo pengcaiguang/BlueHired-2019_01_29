@@ -21,10 +21,13 @@
     [super layoutSubviews];
     for (UIView *subView in self.subviews[0].subviews) {
         
+         
+        
         if ([subView isKindOfClass:[UIImageView class]]) {
-            
+            subView.layer.contents = nil;
+
             //移除UISearchBarBackground
-            [subView removeFromSuperview];
+//            [subView removeFromSuperview];
         }
         if ([subView isKindOfClass:[UITextField class]]) {
             

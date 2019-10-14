@@ -531,7 +531,7 @@ constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
 }
 
 +(void)saveWithURL:(NetRequestEnty *)requestEnty response:(id)res{
-    if (requestEnty.params) {
+    if ([requestEnty.params isKindOfClass:[NSDictionary class]]) {
         if ([requestEnty.params objectForKey:@"page"]) {
             NSArray *arr = [requestEnty.requestUrl componentsSeparatedByString:@"/"];
             [LPUserDefaults saveObject:res byFileName:[NSString stringWithFormat:@"%@%@",arr[arr.count-1],[requestEnty.params objectForKey:@"page"]]];

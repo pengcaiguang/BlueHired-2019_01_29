@@ -33,7 +33,7 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-     [self.navigationController.navigationBar setShadowImage:[UIImage new]];
+    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
 
     self.navigationController.navigationBar.translucent = NO;
     self.navigationController.navigationBar.barTintColor = [UIColor baseColor];
@@ -58,7 +58,6 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
     
     [self selectButtonAtIndex:0];
     [self scrollToItenIndex:0];
-
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
@@ -98,11 +97,11 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
 
 
 -(void)setSearchView{
-    
-    NSLog(@"self.navigationItem.leftBarButtonItem = %f"
-          ,self.navigationItem.leftBarButtonItem.customView.frame.size.width);
+ 
     
     LPSearchBar *searchBar = [self addSearchBar];
+    searchBar.frame = CGRectMake(0, 0,  SCREEN_WIDTH - 80  , 32);
+
     UIView *wrapView = [[UIView alloc]init];
     wrapView.frame = CGRectMake(0, 0,  SCREEN_WIDTH - 80  , 32);
     wrapView.layer.cornerRadius = 16;
@@ -113,13 +112,13 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
 //    self.navigationItem.titleView.backgroundColor = [UIColor redColor];
     
     [wrapView addSubview:searchBar];
-    [searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(0);
-        make.right.mas_equalTo(0);
-        make.top.mas_equalTo(0);
-        make.bottom.mas_equalTo(0);
-        
-    }];
+//    [searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.mas_equalTo(0);
+//        make.right.mas_equalTo(0);
+//        make.top.mas_equalTo(0);
+//        make.bottom.mas_equalTo(0);
+//
+//    }];
 }
 
 - (LPSearchBar *)addSearchBar{
@@ -133,7 +132,15 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
     [searchBar setShowsCancelButton:NO];
     [searchBar setTintColor:[UIColor lightGrayColor]];
     
-    UITextField *searchField = [searchBar valueForKey:@"searchField"];
+    UITextField *searchField;
+    
+    if (@available(iOS 13.0, *)) {
+        searchField = searchBar.searchTextField;
+    }else{
+        searchField = [searchBar valueForKey:@"searchField"];
+    }
+   
+    
     if (searchField) {
         [searchField setBackgroundColor:[UIColor whiteColor]];
         searchField.layer.cornerRadius = 14;
@@ -365,6 +372,8 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
         }
     }];
 }
+
+ 
 
 
 @end

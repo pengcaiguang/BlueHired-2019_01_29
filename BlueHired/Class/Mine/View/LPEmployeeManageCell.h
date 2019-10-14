@@ -15,11 +15,13 @@ typedef void(^LPEmployeeRemarkBlock)(void);
 
 @interface LPEmployeeManageCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *UserNameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *PostLabel;
-@property (weak, nonatomic) IBOutlet UILabel *WorkNameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *StatusLabel;
-@property (weak, nonatomic) IBOutlet UILabel *StatusTitleLabel;
-@property (weak, nonatomic) IBOutlet UILabel *TimeLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *UserImage;
+
+//@property (weak, nonatomic) IBOutlet UILabel *PostLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *WorkNameLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *StatusLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *StatusTitleLabel;
+//@property (weak, nonatomic) IBOutlet UILabel *TimeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *NumLabel;
 @property (weak, nonatomic) IBOutlet UILabel *remarkLabel;
 @property (weak, nonatomic) IBOutlet UIButton *recommendBtn;

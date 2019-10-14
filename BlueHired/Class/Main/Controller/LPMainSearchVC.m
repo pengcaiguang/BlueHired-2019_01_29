@@ -77,7 +77,15 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     [searchBar setTintColor:[UIColor lightGrayColor]];
 //    searchBar.backgroundColor = [UIColor blueColor];
     
-    UITextField *searchField = [searchBar valueForKey:@"searchField"];
+    UITextField *searchField;
+    
+    if (@available(iOS 13.0, *)) {
+        searchField = searchBar.searchTextField;
+    }else{
+        searchField = [searchBar valueForKey:@"searchField"];
+    }
+    
+    
     if (searchField) {
         [searchField setBackgroundColor:[UIColor colorWithHexString:@"#F2F1F0"]];
         searchField.layer.cornerRadius = 15;

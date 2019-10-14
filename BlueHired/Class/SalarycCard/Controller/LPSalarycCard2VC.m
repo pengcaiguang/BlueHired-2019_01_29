@@ -1222,10 +1222,14 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
                     if ([responseObject[@"data"][@"res_code"] integerValue] == 0) {
-                            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        LPUserMaterialModel *userMaterialModel = [LPUserDefaults getObjectByFileName:USERINFO];
+                        userMaterialModel.data.isBank = @"1";
+                        [LPUserDefaults  saveObject:userMaterialModel byFileName:USERINFO];
+                    
+//                            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                                  [weakSelf.view bringSubviewToFront:weakSelf.SucceedView];
                                 weakSelf.SucceedView.hidden = NO;
-                            });
+//                            });
                             return ;
                     }else{
 //                        [self.view showLoadingMeg:responseObject[@"data"][@"res_msg"] time:MESSAGE_SHOW_TIME];
@@ -1521,8 +1525,6 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
         }
     }];
 }
-
-
 
 -(LPDurationView *)durationView{
     if (!_durationView) {

@@ -705,6 +705,10 @@ typedef void (^UploadImageTempBlock)(BOOL sussess,NSMutableArray *array);
 //员工归属管理列表
 + (void)requestGetEmployeeList:(id)paramer
                     withHandle:(response)responseHandle;
+//员工归属管理,入职记录列表
++ (void)requestGetWorkRecordList:(id)paramer
+                      withHandle:(response)responseHandle;
+
 //在招企业信息列表
 + (void)requestGetWorkMechanismList:(id)paramer
                          withHandle:(response)responseHandle;
@@ -714,7 +718,70 @@ typedef void (^UploadImageTempBlock)(BOOL sussess,NSMutableArray *array);
 //发送短信
 + (void)requestSendMechanism:(id)paramer
                   withHandle:(response)responseHandle;
+//获取商品列表
++ (void)requestGetProductList:(id)paramer
+                   withHandle:(response)responseHandle;
+//获取商品详情
++ (void)requestGetProductDetail:(id)paramer
+                     withHandle:(response)responseHandle;
+//添加商品到购物车
++ (void)requestInsertCartitem:(id)paramer
+                   withHandle:(response)responseHandle;
+//获取购物车列表
++ (void)requestGetCartItemList:(id)paramer
+                    withHandle:(response)responseHandle;
+//修改购物车中某个商品的数量接口
++ (void)requestUpdateQuantity:(id)paramer
+                    URLString:(NSString *)URLString
+                   withHandle:(response)responseHandle;
+//批量删除和一键清空购物车
++ (void)requestDelCartItem:(id)paramer
+                 URLString:(NSString *)URLString
+                withHandle:(response)responseHandle;
 
+//获取发货地址列表
++ (void)requestGetOrderAddressList:(id)paramer
+                        withHandle:(response)responseHandle;
+//添加或者修改收货地址
++ (void)requestUpdateOrderAddress:(id)paramer
+                       withHandle:(response)responseHandle;
+//删除收货地址
++ (void)requestDeleteOrderAddress:(id)paramer
+                        URLString:(NSString *)URLString
+                       withHandle:(response)responseHandle;
+
+//从购物车过来确认提交订单  直接兑换提交订单
++ (void)requestOrderGenerate:(id)paramer
+                        URLString:(NSString *)URLString
+                  withHandle:(response)responseHandle;
+//支付订单
++ (void)requestOrderPayOrder:(id)paramer
+                        URLString:(NSString *)URLString
+                  withHandle:(response)responseHandle;
+
+//修改订单状态1取消订单，2删除订单以及3确认收货
++ (void)requestOrderUpdateStatus:(id)paramer
+                        URLString:(NSString *)URLString
+                      withHandle:(response)responseHandle;
+
+//获取订单列表
++ (void)requestGetOrderList:(id)paramer
+                 withHandle:(response)responseHandle;
+
+//获取购物花费积分列表
++ (void)requestGetProductScoreList:(id)paramer
+                        withHandle:(response)responseHandle;
+
+//获取圈子首页轮播图
++ (void)requestQueryBillUserBill:(id)paramer
+                      withHandle:(response)responseHandle;
+// 删除积分账单 type 1->账单流水；2->提现记录；3->积分账单  需要登录
++ (void)requestDelUserBill:(id)paramer
+                 URLString:(NSString *)URLString
+                  withHandle:(response)responseHandle;
+//获取订单详情
++ (void)requestQueryGetOrderDetails:(id)paramer
+                         withHandle:(response)responseHandle;
 @end
 
 

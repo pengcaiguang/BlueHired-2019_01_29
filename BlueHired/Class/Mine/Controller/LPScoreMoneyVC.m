@@ -346,6 +346,7 @@ static NSString *LPScoreMoneyCellID = @"LPScoreMoneyCell";
     //倒计时
     
 }
+
 -(void)timeFireMethod{
     _seconds--;
     

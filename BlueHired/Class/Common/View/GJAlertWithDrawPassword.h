@@ -9,6 +9,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 typedef void (^GJAlertPasswordBlock)(NSInteger index , NSString *string);
+typedef void (^GJAlertPasswordDismissBlock)(void);
+
 
 @interface GJAlertWithDrawPassword : NSObject
 
@@ -19,6 +21,10 @@ typedef void (^GJAlertPasswordBlock)(NSInteger index , NSString *string);
         buttonClick:(void(^)(NSInteger buttonIndex , NSString * string))block;
 - (void)show;
 - (void)dismiss;
+
+@property(nonatomic,copy)GJAlertPasswordDismissBlock DismissBlock;
+
+
 @end
 
 NS_ASSUME_NONNULL_END

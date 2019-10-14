@@ -63,8 +63,8 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 @property(nonatomic,strong) UIImageView *RecommendBackImage;
 @property (strong, nonatomic) NSTimer * myTimer;//定时器管控轮播
 
-@property(nonatomic,strong) UIView *ButtonView;//定时器管控轮播
-@property(nonatomic,strong) NSMutableArray <UIButton *>*ButtonArr;//定时器管控轮播
+@property(nonatomic,strong) UIView *ButtonView;
+@property(nonatomic,strong) NSMutableArray <UIButton *>*ButtonArr;
 @property(nonatomic,assign) NSInteger oldY;
 @property(nonatomic,strong) UIView *HeaderView;
 @property(nonatomic,assign) BOOL IsShowHeaderView;
@@ -220,7 +220,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     [super viewWillDisappear:animated];
     if (self.sortAlertView.touchButton.selected) {
         [self.sortAlertView close];
-    }
+    } 
     [_myTimer invalidate];
     _myTimer = nil;
 }
@@ -228,6 +228,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 - (UIStatusBarStyle)preferredStatusBarStyle{
     return UIStatusBarStyleLightContent;
 }
+
 -(void)setLeftButton{
     UIView *leftBarButtonView = [[UIView alloc]init];
 //    leftBarButtonView.backgroundColor = [UIColor redColor];
@@ -273,22 +274,24 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 
 -(void)setSearchView{
     LPSearchBar *searchBar = [self addSearchBar];
+    searchBar.frame = CGRectMake(0, 0, SCREEN_WIDTH - 99, 32);
+
     UIView *wrapView = [[UIView alloc]init];
     wrapView.frame = CGRectMake(0, 0, SCREEN_WIDTH - 99, 32);
     wrapView.layer.cornerRadius = 16;
     wrapView.layer.masksToBounds = YES;
-//    wrapView.clipsToBounds = YES;
+    wrapView.clipsToBounds = YES;
     wrapView.backgroundColor = [UIColor whiteColor];
     self.navigationItem.titleView = wrapView;
 
     [wrapView addSubview:searchBar];
-    [searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(0);
-        make.right.mas_equalTo(0);
-        make.top.mas_equalTo(0);
-        make.bottom.mas_equalTo(0);
-        
-    }];
+//    [searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.mas_equalTo(0);
+//        make.right.mas_equalTo(0);
+//        make.height.mas_offset(32);
+//        make.centerY.equalTo(self.navigationItem.titleView);
+//
+//    }];
 }
 - (LPSearchBar *)addSearchBar{
     
@@ -301,19 +304,27 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     [searchBar setShowsCancelButton:NO];
     [searchBar setTintColor:[UIColor lightGrayColor]];
     
-    UITextField *searchField = [searchBar valueForKey:@"searchField"];
+    UITextField *searchField;
+    
+    if (@available(iOS 13.0, *)) {
+        searchField = searchBar.searchTextField;
+    }else{
+        searchField = [searchBar valueForKey:@"searchField"];
+    }
+    
+    
     if (searchField) {
         [searchField setBackgroundColor:[UIColor whiteColor]];
         searchField.layer.cornerRadius = 14;
         searchField.layer.masksToBounds = YES;
         searchField.font = [UIFont systemFontOfSize:13];
     }
-    if (YES) {
-        CGFloat height = searchBar.bounds.size.height;
-        CGFloat top = (height - 28.0) / 2.0;
-        CGFloat bottom = top;
-        searchBar.contentInset = UIEdgeInsetsMake(top, 0, bottom, 0);
-    }
+//    if (YES) {
+//        CGFloat height = searchBar.bounds.size.height;
+//        CGFloat top = (height - 28.0) / 2.0;
+//        CGFloat bottom = top;
+//        searchBar.contentInset = UIEdgeInsetsMake(top, 0, bottom, 0);
+//    }
     return searchBar;
 }
 #pragma mark - 客服

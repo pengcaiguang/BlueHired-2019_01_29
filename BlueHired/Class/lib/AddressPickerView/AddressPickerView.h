@@ -88,6 +88,10 @@
 @property(nonatomic, copy) UIColor *pickerViewColor;
 @property(nonatomic, assign) CGFloat backMaskAlpha;
 
+//是否显示区
+@property (nonatomic, assign) BOOL isShowArea;
+
+
 - (void)setTitleHeight:(CGFloat)titleHeight pickerViewHeight:(CGFloat)pickerHeight;
 
 /**

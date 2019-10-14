@@ -14,7 +14,7 @@
 #define AddressAreaIdxName @"AddressSelectArea"
 #define SELFSIZE self.bounds.size
 #define AD_SCREEN [UIScreen mainScreen].bounds.size
-#define AD_iPhoneX ([UIScreen mainScreen].bounds.size.width == 375.f && [UIScreen mainScreen].bounds.size.height == 812.f ? YES : NO)
+//#define AD_iPhoneX ([UIScreen mainScreen].bounds.size.width == 375.f && [UIScreen mainScreen].bounds.size.height == 812.f ? YES : NO)
 
 
 
@@ -115,7 +115,7 @@ static CGFloat CONTENTHEIGHT = 215.0;// 标题栏+选择视图高度
     [self loadTitle];
     //加载选择器
     [self loadPickerView];
-    if (AD_iPhoneX) {
+    if (IS_iPhoneX) {
         [self addSubview:self.maskingView];
         self.maskingView.frame = CGRectMake(0, self.addressPickerView.frame.origin.y + self.addressPickerView.frame.size.height, AD_SCREEN.width, 34);
     }
@@ -288,6 +288,9 @@ static CGFloat CONTENTHEIGHT = 215.0;// 标题栏+选择视图高度
 
 #pragma mark - UIPickerDatasource
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
+    if (self.isShowArea) {
+        return 3;
+    }
     return 2;
 }
 
@@ -347,11 +350,17 @@ numberOfRowsInComponent:(NSInteger)component{
         NSInteger selectCity = [pickerView selectedRowInComponent:1];
         [pickerView reloadComponent:1];
         [pickerView selectRow:selectCity inComponent:1 animated:YES];
-        
-        
-    }
-    else if (1 == component){
-        
+        if (self.isShowArea) {
+            NSInteger selectCity = [pickerView selectedRowInComponent:2];
+            [pickerView reloadComponent:2];
+            [pickerView selectRow:selectCity inComponent:2 animated:YES];
+        }
+    }else if (1 == component){
+        if (self.isShowArea) {
+            NSInteger selectCity = [pickerView selectedRowInComponent:2];
+            [pickerView reloadComponent:2];
+            [pickerView selectRow:selectCity inComponent:2 animated:YES];
+        }
     }
 }
 
@@ -436,7 +445,7 @@ numberOfRowsInComponent:(NSInteger)component{
         if (isShow) {
             self.backgroundBtn.hidden = NO;
             selfY = AD_SCREEN.height - CONTENTHEIGHT - TITLEHEIGHT;
-            if (AD_iPhoneX) {
+            if (IS_iPhoneX) {
                 selfY -= 34.0f;
             }
         }
@@ -447,7 +456,7 @@ numberOfRowsInComponent:(NSInteger)component{
         self.titleBackgroundView.frame = CGRectMake(0,selfY, self.bounds.size.width,TITLEHEIGHT);
         self.addressPickerView.frame = CGRectMake(0, self.titleBackgroundView.frame.origin.y + TITLEHEIGHT, AD_SCREEN.width, CONTENTHEIGHT - TITLEHEIGHT);
         
-        if (AD_iPhoneX) {
+        if (IS_iPhoneX) {
             self.maskingView.frame = CGRectMake(0, self.addressPickerView.frame.origin.y + self.addressPickerView.frame.size.height, AD_SCREEN.width, 34);
         }
         return;
@@ -463,11 +472,10 @@ numberOfRowsInComponent:(NSInteger)component{
         if (isShow) {
             self.backgroundBtn.hidden = NO;
             selfkY = AD_SCREEN.height - CONTENTHEIGHT;
-            if (AD_iPhoneX) {
+            if (IS_iPhoneX) {
                 selfkY -= 34.0f;
             }
-        }
-        else {
+        }else {
             self.backgroundBtn.hidden = YES;
             selfkY = AD_SCREEN.height;
         }
@@ -477,7 +485,7 @@ numberOfRowsInComponent:(NSInteger)component{
         //        self.addressPickerView.frame = CGRectMake(0, selfkY,AD_SCREEN.width, CONTENTHEIGHT - TITLEHEIGHT);
         //        self.titleBackgroundView.frame = CGRectMake(0,self.addressPickerView.frame.origin.y + self.addressPickerView.frame.size.height,  self.bounds.size.width,TITLEHEIGHT);
         
-        if (AD_iPhoneX) {
+        if (IS_iPhoneX) {
             self.maskingView.frame = CGRectMake(0, self.addressPickerView.frame.origin.y + self.addressPickerView.frame.size.height, AD_SCREEN.width, 34);
         }
         [UIView commitAnimations];
@@ -488,7 +496,10 @@ numberOfRowsInComponent:(NSInteger)component{
     if ([_delegate respondsToSelector:@selector(sureBtnClickReturnProvince:City:Area:)]) {
         NSInteger selectProvince = [self.addressPickerView selectedRowInComponent:0];
         NSInteger selectCity     = [self.addressPickerView selectedRowInComponent:1];
-        //        NSInteger selectArea     = [self.addressPickerView selectedRowInComponent:2];
+        NSInteger selectArea  = 0;
+        if (self.isShowArea) {
+            selectArea = [self.addressPickerView selectedRowInComponent:2];
+        }
         
         AddressModel * p = _pArr[selectProvince];
         //解决省市同时滑动未结束时点击完成按钮的数组越界问题
@@ -500,7 +511,7 @@ numberOfRowsInComponent:(NSInteger)component{
         //解决省市区同时滑动未结束时点击完成按钮的数组越界问题
         [_delegate sureBtnClickReturnProvince:p.name
                                          City:c.name
-                                         Area:@""];
+                                         Area:c.area.count > selectArea ?c.area[selectArea]:@""];
         
         //        [_delegate sureBtnClickReturnProvince:p.name
         //                                         City:c.cityName

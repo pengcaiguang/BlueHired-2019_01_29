@@ -403,6 +403,10 @@
 #pragma mark GJAlertViewTextDelegate
 - (void)contentViewClick{
     [self dismiss];
+
+    if (_DismissBlock) {
+        _DismissBlock();
+    }
 }
 - (void)buttonClick:(NSInteger)buttonIndex string:(NSString *)string{
     __weak typeof(self) weakSelf = self;

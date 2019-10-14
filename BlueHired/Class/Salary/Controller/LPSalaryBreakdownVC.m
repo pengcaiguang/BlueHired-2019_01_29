@@ -749,6 +749,22 @@ static NSString *LPSalaryBreakdownCellID = @"LPSalaryBreakdownCell";
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+//-(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
+//    if (self.model.data[indexPath.row].status.integerValue == 1){
+//         return NO;
+//    }
+//    return YES;
+//}
+//
+//- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    if (editingStyle == UITableViewCellEditingStyleDelete)
+//    {
+//        [self requestDelUserBill:self.model.data[indexPath.row]];
+//    }
+//}
+
+
 #pragma mark - 秘密验证
 -(void)requestQueryBankcardwithDrawDepositWithParam:(NSString *) string DrawModel:(LPBankcardwithDrawModel *) m{
 //    NSString *passwordmd5 = [string md5];
@@ -1030,6 +1046,10 @@ static NSString *LPSalaryBreakdownCellID = @"LPSalaryBreakdownCell";
         }
     }];
 }
+
+
+ 
+
 
 #pragma mark lazy
 - (UITableView *)tableview{

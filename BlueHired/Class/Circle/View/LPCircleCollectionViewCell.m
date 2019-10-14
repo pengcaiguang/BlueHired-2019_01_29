@@ -12,26 +12,33 @@
 #import "LPCircleListCell.h"
 #import "LPMoodDetailVC.h"
 #import "LPCircleInfoListVC.h"
+#import "LPUserBillRecordModel.h"
 
 static NSString *LPCircleListCellID = @"LPCircleListCell";
 
 @interface LPCircleCollectionViewCell ()<UITableViewDelegate,UITableViewDataSource,SDTimeLineCellDelegate>
 @property (nonatomic, strong)UITableView *tableview;
-@property(nonatomic,strong) UIView *tableHeaderView;
-@property(nonatomic,strong) UIView *tableHeader2View;
-@property(nonatomic,strong) UIButton *expandbutton;
-@property(nonatomic,assign) NSInteger page;
+@property (nonatomic,strong) UIView *tableHeaderView;
+@property (nonatomic,strong) UIView *tableHeader2View;
+@property (nonatomic,strong) UIButton *expandbutton;
+@property (nonatomic,assign) NSInteger page;
 
-@property(nonatomic,strong) LPMoodTypeModel *moodTypeModel;
-@property(nonatomic,strong) LPMoodTypeDataModel *selectMoodTypeDataModel;
+@property (nonatomic,strong) LPMoodTypeModel *moodTypeModel;
+@property (nonatomic,strong) LPMoodTypeDataModel *selectMoodTypeDataModel;
 
-@property(nonatomic,strong) NSMutableArray <UILabel *>*labelArray;
+@property (nonatomic,strong) NSMutableArray <UILabel *>*labelArray;
 
-@property(nonatomic,strong) LPMoodListModel *moodListModel;
-@property(nonatomic,strong) NSMutableArray <LPMoodListDataModel *>*moodListArray;
+@property (nonatomic,strong) LPMoodListModel *moodListModel;
+@property (nonatomic,strong) NSMutableArray <LPMoodListDataModel *>*moodListArray;
 
-@property(nonatomic,strong) UIButton *messageBT;
+@property (nonatomic,strong) UIButton *messageBT;
 @property (nonatomic,assign) NSInteger GetMoodUserID;
+
+@property (strong, nonatomic) NSTimer * myTimer;//定时器管控轮播
+@property (nonatomic,strong) UIScrollView *RecommendScrollView;
+@property (nonatomic,strong) LPUserBillRecordModel *BillModel;
+
+@property (nonatomic,strong) UIView *awardView;
 
 @end
 
@@ -52,6 +59,8 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
 //        make.right.mas_equalTo(0);
 //        make.bottom.mas_equalTo(0);
     }];
+    
+    [self requestQueryBillUserBill];
 }
 #pragma mark - setdata
 -(void)setIndex:(NSInteger)index{
@@ -145,6 +154,63 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
         self.selectMoodTypeDataModel = moodTypeModel.data[0];
 
     }
+}
+
+- (void)setBillModel:(LPUserBillRecordModel *)BillModel{
+    _BillModel = BillModel;
+    [self.RecommendScrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    
+    for (int i =0 ;i <self.BillModel.data.count;i++) {
+            LPUserBillRecordDataModel *m = self.BillModel.data[i];
+        
+            UILabel *Typelabel= [[UILabel alloc] initWithFrame:CGRectMake(LENGTH_SIZE(22),
+                                                                  i*floorf(LENGTH_SIZE(25)),
+                                                                  LENGTH_SIZE(87),
+                                                                  floorf(LENGTH_SIZE(25)))];
+            [self.RecommendScrollView addSubview:Typelabel];
+        Typelabel.textColor = [UIColor colorWithHexString:@"#FF306A"];
+        Typelabel.font = [UIFont boldSystemFontOfSize:FontSize(13)];
+        Typelabel.textAlignment = NSTextAlignmentCenter;
+        if (m.type.integerValue == 4) {
+            Typelabel.text = @"返费奖励";
+        }else if (m.type.integerValue == 5){
+            Typelabel.text = @"邀请注册奖励";
+        }else if (m.type.integerValue == 8){
+            Typelabel.text = @"邀请入职奖励";
+        }else if (m.type.integerValue == 12){
+            Typelabel.text = @"分享点赞奖励";
+        }
+              
+            UILabel *label= [[UILabel alloc] initWithFrame:CGRectMake(LENGTH_SIZE(117),
+                                                                         i*floorf(LENGTH_SIZE(25)),
+                                                                         SCREEN_WIDTH-LENGTH_SIZE(130),
+                                                                         floorf(LENGTH_SIZE(25)))];
+           [self.RecommendScrollView addSubview:label];
+           label.text = [NSString stringWithFormat:@"%@获得%@元",m.userName,m.money];
+           label.textColor = [UIColor whiteColor];
+           label.font = [UIFont boldSystemFontOfSize:FontSize(14)];
+           label.textAlignment = NSTextAlignmentLeft;
+           
+           NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:label.text];
+           [string addAttributes:@{NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#FFC4D8"],
+                                   NSFontAttributeName: FONT_SIZE(14)}
+                           range:[label.text rangeOfString:@"获得"]];
+        
+           label.attributedText = string;
+
+//            label.backgroundColor = [UIColor redColor];
+       }
+       self.RecommendScrollView.contentSize = CGSizeMake(0, self.BillModel.data.count*floorf(LENGTH_SIZE(25)));
+    
+    [_myTimer invalidate];
+    _myTimer = nil;
+    
+    if (BillModel.data.count>0) {
+        [self.RecommendScrollView setContentOffset:CGPointMake(0, 0)];
+        _myTimer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(changeScrollContentOffSetY) userInfo:nil repeats:YES];
+        [[NSRunLoop currentRunLoop] addTimer:_myTimer forMode:NSRunLoopCommonModes];
+    }
+    [self.tableview reloadData];
 }
 
 -(void)setMoodListModel:(LPMoodListModel *)moodListModel{
@@ -286,13 +352,34 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
     [self.tableview reloadData];
 }
 
+#pragma mark - UIScrollViewDelegate
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
+{
+    if (scrollView == self.RecommendScrollView) {
+        if (scrollView.contentOffset.y>=scrollView.contentSize.height){
+            [scrollView setContentOffset:CGPointMake(0, 0)];
+        }
+    }
+
+}
+
+
 #pragma mark - TableViewDelegate & Datasource
 
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    if (self.CircleMessage>0) {
-        return 47;
+    if (self.CircleMessage>0 && self.BillModel.data.count == 0 ) {
+        return LENGTH_SIZE(47);
     }
+    
+    if (self.CircleMessage == 0 && self.BillModel.data.count > 0 ) {
+        return LENGTH_SIZE(55);
+    }
+    
+    if (self.CircleMessage > 0 && self.BillModel.data.count > 0 ) {
+           return LENGTH_SIZE(55 + 47);
+       }
+    
     return 0;
 }
 
@@ -300,6 +387,19 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
     UIView *view = self.tableHeader2View;
     [self.messageBT setTitle:[NSString stringWithFormat:@"  您有%ld条新消息！ ",(long)_CircleMessage] forState:UIControlStateNormal];
 
+    if (self.CircleMessage>0 && self.BillModel.data.count == 0 ) {
+        self.awardView.lx_height = 0;
+    }
+    
+    if (self.CircleMessage == 0 && self.BillModel.data.count > 0 ) {
+        self.awardView.lx_height = LENGTH_SIZE(55);
+    }
+    
+    if (self.CircleMessage > 0 && self.BillModel.data.count > 0 ) {
+           self.awardView.lx_height = LENGTH_SIZE(55);
+    }
+    
+    
     return view;
 }
 
@@ -494,6 +594,27 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
     }];
 }
 
+-(void)requestQueryBillUserBill{
+    NSDictionary *dic = @{};
+    
+    [NetApiManager requestQueryBillUserBill:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                self.BillModel = [LPUserBillRecordModel mj_objectWithKeyValues:responseObject];
+            }else{
+                if ([responseObject[@"code"] integerValue] == 10002) {
+                    [LPTools UserDefaulatsRemove];
+                }
+                [[UIWindow visibleViewController].view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
+        }else{
+            [[UIWindow visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+
+
  
 #pragma mark lazy
 - (UITableView *)tableview{
@@ -515,6 +636,7 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
             if (AlreadyLogin) {
                 [self requestQueryInfounreadNum];
             }
+            [self requestQueryBillUserBill];
         }];
         _tableview.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
             [self requestMoodList];
@@ -535,15 +657,43 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
         _tableHeader2View = [[UIView alloc] init];
         _tableHeader2View.frame = CGRectMake(0, 0, SCREEN_WIDTH, 47);
         _tableHeader2View.backgroundColor = [UIColor whiteColor];
+        _tableHeader2View.clipsToBounds = YES;
+
+        UIView *awardView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, LENGTH_SIZE(55))];
+        [_tableHeader2View addSubview:awardView];
+        awardView.clipsToBounds = YES;
+        self.awardView = awardView;
+        
+        UIImageView *Image = [[UIImageView alloc] init];
+        [awardView addSubview:Image];
+        [Image mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.left.bottom.right.mas_offset(0);
+        }];
+        Image.image = [UIImage imageNamed:@"news_bg2"];
+        
+        UIImageView *Image2 = [[UIImageView alloc] init];
+        [awardView addSubview:Image2];
+        [Image2 mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_offset(LENGTH_SIZE(15));
+            make.left.mas_offset(LENGTH_SIZE(22));
+            make.width.mas_offset(LENGTH_SIZE(87));
+            make.height.mas_offset(LENGTH_SIZE(25));
+        }];
+        Image2.image = [UIImage imageNamed:@"news_bg1"];
+        
+        
+        [awardView addSubview:self.RecommendScrollView];
+        
         UIButton *button = [[UIButton alloc] init];
         self.messageBT = button;
         [_tableHeader2View addSubview:button];
         [button mas_makeConstraints:^(MASConstraintMaker *make){
-            make.center.equalTo(self.tableHeader2View);
-            make.height.mas_offset(30);
+            make.centerX.equalTo(self.tableHeader2View);
+            make.top.equalTo(awardView.mas_bottom).offset(LENGTH_SIZE(8.5));
+            make.height.mas_offset(LENGTH_SIZE(30));
         }];
         button.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.65];
-        button.layer.cornerRadius = 15;
+        button.layer.cornerRadius = LENGTH_SIZE(15);
         button.clipsToBounds = YES;
         [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [button addTarget:self action:@selector(TouchMoreMessage:) forControlEvents:UIControlEventTouchUpInside];
@@ -564,6 +714,29 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
     vc.hidesBottomBarWhenPushed = YES;
     [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
 
+}
+
+
+
+-(UIScrollView *)RecommendScrollView{
+    if (!_RecommendScrollView) {
+        _RecommendScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0 , LENGTH_SIZE(15), SCREEN_WIDTH, floorf(LENGTH_SIZE(25)))];
+        _RecommendScrollView.delegate = self;
+        _RecommendScrollView.showsVerticalScrollIndicator = NO;
+        _RecommendScrollView.scrollEnabled = NO;
+        _RecommendScrollView.bounces = NO;
+//        _RecommendScrollView.backgroundColor = [UIColor whiteColor];
+        
+     }
+    return _RecommendScrollView;
+}
+
+-(void)changeScrollContentOffSetY{
+    //启动定时器
+    CGPoint point = self.RecommendScrollView.contentOffset;
+ 
+    [self.RecommendScrollView setContentOffset:CGPointMake(0, point.y+floorf(LENGTH_SIZE(25))) animated:YES];
+    
 }
 
 -(UIButton *)expandbutton{

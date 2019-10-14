@@ -36,8 +36,8 @@
     NSMutableArray *normalImages = [NSMutableArray array];
     NSMutableArray *selectedImages = [NSMutableArray array];
     
-    controllers = [NSMutableArray arrayWithArray:@[@"LPMainVC",@"LPInformationVC",@"LPCircleVC",@"LPMineVC"]];
-    titleArrays = [NSMutableArray arrayWithArray:@[@"招工",@"看看",@"圈子",@"我的"]];
+    controllers = [NSMutableArray arrayWithArray:@[@"LPMainVC",@"LPInformationVC",@"LPCircleVC",@"LPScoreStore",@"LPMineVC"]];
+    titleArrays = [NSMutableArray arrayWithArray:@[@"招工",@"看看",@"圈子",@"商城",@"我的"]];
 //    controllers = [NSMutableArray arrayWithArray:@[@"LPWorkHour2VC",@"LPInformationVC",@"LPCircleVC",@"LPMineVC"]];
 //    titleArrays = [NSMutableArray arrayWithArray:@[@"工时",@"看看",@"圈子",@"我的"]];
 //
@@ -64,8 +64,8 @@
         
         navigationViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:[titleArrays objectAtIndex:index] image:normalImage selectedImage:selectedImage];
         
-        [navigationViewController.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor colorWithHexString:@"#FF3CAFFF"],NSForegroundColorAttributeName, nil] forState:UIControlStateSelected];
-        [navigationViewController.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor colorWithHexString:@"#FF5E5E5E"],NSForegroundColorAttributeName, nil] forState:UIControlStateNormal];
+        [navigationViewController.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor colorWithHexString:@"#3CAFFF"],NSForegroundColorAttributeName, nil] forState:UIControlStateSelected];
+        [navigationViewController.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor colorWithHexString:@"#333333"],NSForegroundColorAttributeName, nil] forState:UIControlStateNormal];
 
         navigationViewController.tabBarItem.tag = index;
         [viewControllers addObject:navigationViewController];
@@ -78,11 +78,6 @@
 
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
 {
-    if ([item.title isEqualToString:@"圈子"]) {
-     
- 
-    }
-    
    
 }
 
