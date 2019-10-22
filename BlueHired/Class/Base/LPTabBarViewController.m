@@ -64,8 +64,20 @@
         
         navigationViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:[titleArrays objectAtIndex:index] image:normalImage selectedImage:selectedImage];
         
-        [navigationViewController.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor colorWithHexString:@"#3CAFFF"],NSForegroundColorAttributeName, nil] forState:UIControlStateSelected];
-        [navigationViewController.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor colorWithHexString:@"#333333"],NSForegroundColorAttributeName, nil] forState:UIControlStateNormal];
+        
+
+//        if (@available(iOS 13.0, *)) {
+//            UITabBarAppearance *appearance = [UITabBarAppearance new];
+//            // 设置未被选中的颜色
+//            appearance.stackedLayoutAppearance.normal.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#333333"]};
+//            // 设置被选中时的颜色
+//            appearance.stackedLayoutAppearance.selected.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#3CAFFF"]};
+//            navigationViewController.tabBarItem.standardAppearance = appearance;
+//        } else {
+                self.tabBar.tintColor = [UIColor colorWithHexString:@"#3CAFFF"];
+            [navigationViewController.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor colorWithHexString:@"#3CAFFF"],NSForegroundColorAttributeName, nil] forState:UIControlStateSelected];
+            [navigationViewController.tabBarItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIColor colorWithHexString:@"#333333"],NSForegroundColorAttributeName, nil] forState:UIControlStateNormal];
+//        }
 
         navigationViewController.tabBarItem.tag = index;
         [viewControllers addObject:navigationViewController];

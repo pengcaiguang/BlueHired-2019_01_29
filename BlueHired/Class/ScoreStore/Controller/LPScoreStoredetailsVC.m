@@ -452,7 +452,7 @@
 
 -(UIView *)SelectSizeView{
     if (!_SelectSizeView) {
-        _SelectSizeView = [[UIView alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, LENGTH_SIZE(379))];
+        _SelectSizeView = [[UIView alloc] initWithFrame:CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, LENGTH_SIZE(379)+kBottomBarHeight)];
         _SelectSizeView.backgroundColor = [UIColor whiteColor];
         
         UILabel *UnitTitle = [[UILabel alloc] init];
@@ -514,7 +514,8 @@
         [_SelectSizeView addSubview:AddCart];
         self.SizeViewAddCartBtn = AddCart;
         [AddCart mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.bottom.left.mas_offset(0);
+            make.bottom.mas_offset(-kBottomBarHeight);
+            make.left.mas_offset(0);
             make.height.mas_offset(LENGTH_SIZE(48));
             make.width.mas_offset(SCREEN_WIDTH/2);
         }];
@@ -528,7 +529,8 @@
         [_SelectSizeView addSubview:Buy];
         self.SizeViewBuyBtn = Buy;
         [Buy mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.bottom.right.mas_offset(0);
+            make.bottom.mas_offset(-kBottomBarHeight);
+            make.right.mas_offset(0);
             make.height.mas_offset(LENGTH_SIZE(48));
             make.width.mas_offset(SCREEN_WIDTH/2);
         }];
@@ -543,6 +545,7 @@
         [_SelectSizeView addSubview:saveBtn];
         self.SizeViewSaveBtn = saveBtn;
         [saveBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.bottom.mas_offset(-kBottomBarHeight);
             make.bottom.right.left.mas_offset(0);
             make.height.mas_offset(LENGTH_SIZE(48));
         }];
@@ -638,9 +641,14 @@
                 }
                 UIButton * tagBtn = [UIButton buttonWithType:UIButtonTypeCustom];
                 tagBtn.tag = 1000+j;
+                
+                CGFloat tagBtnWidth = tagTextSize.width+LENGTH_SIZE(24) > SCREEN_WIDTH-LENGTH_SIZE(26) ?
+                SCREEN_WIDTH-LENGTH_SIZE(26) :
+                tagTextSize.width+LENGTH_SIZE(24);
+                
                 tagBtn.frame = CGRectMake(tagBtnX,
                                           tagBtnY,
-                                          tagTextSize.width+LENGTH_SIZE(24),
+                                          tagBtnWidth,
                                           LENGTH_SIZE(24));
                 [tagBtn setTitle:sp1Arr[i] forState:UIControlStateNormal];
                 [tagBtn setTitleColor:[UIColor colorWithHexString:@"#333333"] forState:UIControlStateNormal];

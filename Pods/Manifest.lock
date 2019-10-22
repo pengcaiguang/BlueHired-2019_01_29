@@ -17,6 +17,16 @@ PODS:
   - AMapFoundation (1.5.5)
   - AMapLocation (2.6.1):
     - AMapFoundation (~> 1.4)
+  - AVOSCloud (11.6.4)
+  - AVOSCloudIM (11.6.4):
+    - AVOSCloud (= 11.6.4)
+    - AVOSCloudIM/_ARC (= 11.6.4)
+    - AVOSCloudIM/_NOARC (= 11.6.4)
+  - AVOSCloudIM/_ARC (11.6.4):
+    - AVOSCloud (= 11.6.4)
+    - AVOSCloudIM/_NOARC (= 11.6.4)
+  - AVOSCloudIM/_NOARC (11.6.4):
+    - AVOSCloud (= 11.6.4)
   - BaiduMapKit (4.2.0)
   - BMKLocationKit (1.3.0.2)
   - Bugly (2.5.0)
@@ -105,6 +115,8 @@ PODS:
 DEPENDENCIES:
   - AFNetworking
   - AMapLocation
+  - AVOSCloud
+  - AVOSCloudIM
   - BaiduMapKit
   - BMKLocationKit
   - Bugly
@@ -137,6 +149,8 @@ SPEC REPOS:
     - AFNetworking
     - AMapFoundation
     - AMapLocation
+    - AVOSCloud
+    - AVOSCloudIM
     - BaiduMapKit
     - BMKLocationKit
     - Bugly
@@ -174,6 +188,8 @@ SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   AMapFoundation: 652bd70ba579f48a98bdf0c74d6e62a89a06ca58
   AMapLocation: cf024b53dc03663efb4ea4bcce27d4cce58bb97a
+  AVOSCloud: 0f5fe2be8ce99ca6eb272243041acaa9369ba8f0
+  AVOSCloudIM: dc91b6765c2eda3c73f71dd1957059e7579295b0
   BaiduMapKit: b6a8f31b3d2e4e5cad4084512a0d9a3878638272
   BMKLocationKit: 6c47273f985609be0a0785f2f6f12bb7c1b7e8b6
   Bugly: 3ca9f255c01025582df26f9222893b383c7e4b4e
@@ -207,6 +223,6 @@ SPEC CHECKSUMS:
   WechatOpenSDK: 3117412f8aafde4758cac1e8d20b93c67cafcfef
   YYText: 5c461d709e24d55a182d1441c41dc639a18a4849
 
-PODFILE CHECKSUM: 8e116b0083435e50ea18f88d21bd4e806b00d21c
+PODFILE CHECKSUM: e79d78610b0b95dbf1b00afa0a2fd86e462a0136
 
 COCOAPODS: 1.5.3

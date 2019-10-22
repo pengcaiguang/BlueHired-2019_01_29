@@ -204,8 +204,8 @@
     NSString *passwordmd5 = [string md5];
     NSString *newPasswordmd5 = [[NSString stringWithFormat:@"%@lanpin123.com",passwordmd5] md5];
     
-    NSDictionary *dic = @{@"bankName":self.model.data.bankName,
-                          @"bankNum":self.model.data.bankNumber,
+    NSDictionary *dic = @{@"bankName":[LPTools isNullToString:self.model.data.bankName],
+                          @"bankNum":[LPTools isNullToString:self.model.data.bankNumber],
                           @"money":[NSString stringWithFormat:@"%.2f",money]
                           };
     NSString *url = [NSString stringWithFormat:@"billrecord/withdraw_deposit?drawPwd=%@",newPasswordmd5];

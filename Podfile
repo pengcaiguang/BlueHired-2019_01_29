@@ -43,6 +43,9 @@ target 'BlueHired' do
     pod 'SDWebImage/GIF'
     pod 'Bugly'
     pod 'LJBarrageView'
+    pod 'AVOSCloud'   # 数据存储、短信、社交、云引擎调用等基础服务模块
+    pod 'AVOSCloudIM' # 即时通讯模块
+    
     
   target 'BlueHiredTests' do
     inherit! :search_paths

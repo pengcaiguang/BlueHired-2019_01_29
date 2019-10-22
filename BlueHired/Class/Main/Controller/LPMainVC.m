@@ -898,6 +898,8 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         }
     }];
 }
+
+//获取推荐企业
 -(void)requestMechanismlist{
     [NetApiManager requestMechanismlistWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
@@ -913,6 +915,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     }];
 }
 
+//获取系统版本号
 -(void)requestQueryDownload{
     NSDictionary *dic = @{
                           @"type":@"2"
@@ -937,7 +940,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         }
     }];
 }
-
+//首页获取弹框入职评价
 -(void)requestQueryGetWorkOrderRemarkMain{
     NSDictionary *dic = @{};
     [NetApiManager requestQueryGetWorkOrderRemarkMain:dic withHandle:^(BOOL isSuccess, id responseObject) {

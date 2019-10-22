@@ -497,46 +497,49 @@ static NSString *LPSalaryBreakdownCellID = @"LPSalaryBreakdownCell";
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+    if (tableView == self.Sharetableview) {
+        UIView *HeadView = [[UIView alloc] init];
+        
+        UIView *view = [[UIView alloc] init];
+        [HeadView addSubview:view];
+        [view mas_makeConstraints:^(MASConstraintMaker *make){
+            make.left.right.top.mas_offset(0);
+            make.height.mas_offset(LENGTH_SIZE(60));
+        }];
+        view.backgroundColor = [UIColor whiteColor];
+        UILabel *month = [[UILabel alloc] init];
+        [view addSubview:month];
+        [month mas_makeConstraints:^(MASConstraintMaker *make){
+            make.left.mas_offset(13);
+            make.centerY.equalTo(view);
+        }];
+        month.textColor = [UIColor colorWithHexString:@"#333333"];
+        month.font = [UIFont boldSystemFontOfSize:FontSize(16)];
+        month.text = [DataTimeTool getDataTime:self.currentDateString DateFormat:@"yyyy年MM月"];
+        
+        UILabel *money = [[UILabel alloc] init];
+        [view addSubview:money];
+        [money mas_makeConstraints:^(MASConstraintMaker *make){
+            make.right.mas_offset(-13);
+            make.centerY.equalTo(view);
+        }];
+        money.textColor = [UIColor baseColor];
+        money.font = [UIFont boldSystemFontOfSize:FontSize(16)];
+        money.text = [NSString stringWithFormat:@"总计：%.2f元",self.selectModel.actualPay.floatValue];
+        
+        
+        UIView *Lineview = [[UIView alloc] init];
+        [HeadView addSubview:Lineview];
+        [Lineview mas_makeConstraints:^(MASConstraintMaker *make){
+            make.left.right.bottom.mas_offset(0);
+            make.height.mas_offset(LENGTH_SIZE(10));
+        }];
+        Lineview.backgroundColor = [UIColor colorWithHexString:@"f5f5f5"];
+        return HeadView;
+    }
     
-    UIView *HeadView = [[UIView alloc] init];
+    return [[UIView alloc] init];
     
-    UIView *view = [[UIView alloc] init];
-    [HeadView addSubview:view];
-    [view mas_makeConstraints:^(MASConstraintMaker *make){
-        make.left.right.top.mas_offset(0);
-        make.height.mas_offset(LENGTH_SIZE(60));
-    }];
-    view.backgroundColor = [UIColor whiteColor];
-    UILabel *month = [[UILabel alloc] init];
-    [view addSubview:month];
-    [month mas_makeConstraints:^(MASConstraintMaker *make){
-        make.left.mas_offset(13);
-        make.centerY.equalTo(view);
-    }];
-    month.textColor = [UIColor colorWithHexString:@"#333333"];
-    month.font = [UIFont boldSystemFontOfSize:FontSize(16)];
-    month.text = [DataTimeTool getDataTime:self.currentDateString DateFormat:@"yyyy年MM月"];
-    
-    UILabel *money = [[UILabel alloc] init];
-    [view addSubview:money];
-    [money mas_makeConstraints:^(MASConstraintMaker *make){
-        make.right.mas_offset(-13);
-        make.centerY.equalTo(view);
-    }];
-    money.textColor = [UIColor baseColor];
-    money.font = [UIFont boldSystemFontOfSize:FontSize(16)];
-    money.text = [NSString stringWithFormat:@"总计：%.2f元",self.selectModel.actualPay.floatValue];
-    
-    
-    UIView *Lineview = [[UIView alloc] init];
-    [HeadView addSubview:Lineview];
-    [Lineview mas_makeConstraints:^(MASConstraintMaker *make){
-        make.left.right.bottom.mas_offset(0);
-        make.height.mas_offset(LENGTH_SIZE(10));
-    }];
-    Lineview.backgroundColor = [UIColor colorWithHexString:@"f5f5f5"];
-    
-    return HeadView;
 }
 
 //-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{

@@ -693,10 +693,31 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         self.signUpButton.backgroundColor = [UIColor colorWithHexString:@"#CCCCCC"];
         self.signUpButton.enabled = NO;
     }
+    CFAbsoluteTime start = CFAbsoluteTimeGetCurrent();
 
+      
+    //解析HTML
+    self.model.data.reInstruction = [self removeHTML2:self.model.data.reInstruction];
+    self.model.data.workDemand = [self removeHTML2:self.model.data.workDemand];
+    self.model.data.workSalary = [self removeHTML2:self.model.data.workSalary];
+    self.model.data.eatSleep = [self removeHTML2:self.model.data.eatSleep];
+    self.model.data.workTime = [self removeHTML2:self.model.data.workTime];
+    self.model.data.workKnow = [self removeHTML2:self.model.data.workKnow];
+    self.model.data.remarks = [self removeHTML2:self.model.data.remarks];
+    self.model.data.mechanismDetails = [self removeHTML2:self.model.data.mechanismDetails];
+        CFAbsoluteTime end = CFAbsoluteTimeGetCurrent();
+
+           NSLog(@"解析html耗时 - %f", end - start);
+   
+       
+    [self.tableview reloadData];
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.tableview reloadData];
+        //刷新完成，执行后续代码
+        CFAbsoluteTime end = CFAbsoluteTimeGetCurrent();
+
+        NSLog(@"刷新耗时 - %f", end - start);
     });
+    
     
 }
 -(void)setIsApplyOrIsCollectionModel:(LPIsApplyOrIsCollectionModel *)isApplyOrIsCollectionModel{
@@ -876,7 +897,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.section == 0) {
-        NSString *strbackmoney = [self removeHTML2:self.model.data.reInstruction];
+        NSString *strbackmoney = self.model.data.reInstruction;
         CGFloat KeyHeight = [self calculateKeyHeight:self.model.data.key];
         
 //        if (self.model.data.key.length == 0 && ![self.model.data.lendType integerValue]) {
@@ -900,27 +921,27 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         }
     }else if (indexPath.section == 1){
             if (indexPath.row == 0) {
-                CGFloat Height = [LPTools calculateRowHeight:[self removeHTML2:[self.model.data.workDemand stringByDecodingHTMLEntities]] fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(28)];
+                CGFloat Height = [LPTools calculateRowHeight:self.model.data.workDemand fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(28)];
                 return LENGTH_SIZE(51)+Height;
             }else if (indexPath.row == 1){
-                CGFloat Height = [LPTools calculateRowHeight:[self removeHTML2:[self.model.data.workSalary stringByDecodingHTMLEntities]] fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(28)];
+                CGFloat Height = [LPTools calculateRowHeight:self.model.data.workSalary fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(28)];
                 return LENGTH_SIZE(51)+Height;
             }else if (indexPath.row == 2){
-                CGFloat Height = [LPTools calculateRowHeight:[self removeHTML2:[self.model.data.eatSleep stringByDecodingHTMLEntities]] fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(28)];
+                CGFloat Height = [LPTools calculateRowHeight:self.model.data.eatSleep  fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(28)];
                 return LENGTH_SIZE(51)+Height;
             }else if (indexPath.row == 3){
-                CGFloat Height = [LPTools calculateRowHeight:[self removeHTML2:[self.model.data.workTime stringByDecodingHTMLEntities]] fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(28)];
+                CGFloat Height = [LPTools calculateRowHeight:self.model.data.workTime fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(28)];
                 return LENGTH_SIZE(51)+Height;
             }else if (indexPath.row == 4){
-                CGFloat Height = [LPTools calculateRowHeight:[self removeHTML2:[self.model.data.workKnow stringByDecodingHTMLEntities]] fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(28)];
+                CGFloat Height = [LPTools calculateRowHeight:self.model.data.workKnow fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(28)];
                 return LENGTH_SIZE(51)+Height;
             }else if (indexPath.row == 5){
-                CGFloat Height = [LPTools calculateRowHeight:[self removeHTML2:[self.model.data.remarks stringByDecodingHTMLEntities]] fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(28)];
+                CGFloat Height = [LPTools calculateRowHeight:self.model.data.remarks  fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(28)];
                 return LENGTH_SIZE(66)+Height;
             }
     }else if (indexPath.section == 2){
         if (indexPath.row == 0) {
-            CGFloat Height = [LPTools calculateRowHeight:[self removeHTML2:[self.model.data.mechanismDetails stringByDecodingHTMLEntities]] fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(28)];
+            CGFloat Height = [LPTools calculateRowHeight:self.model.data.mechanismDetails fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(28)];
             return LENGTH_SIZE(51)+Height;
         }else if (indexPath.row == 1){
             CGFloat Height = [LPTools calculateRowHeight:[NSString stringWithFormat:@"企业地址:%@\n面试地址:%@",self.model.data.mechanismAddress,self.model.data.recruitAddress] fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(28)];
@@ -951,24 +972,18 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         cell.detailTitleLabel.text = [NSString stringWithFormat:@"%@:",self.textArray[indexPath.row]];
         tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         if (indexPath.row == 0) {
-            NSString *string=[self removeHTML2:[self.model.data.workDemand stringByDecodingHTMLEntities]];
-            cell.detailLabel.text = string;
+            cell.detailLabel.text = self.model.data.workDemand;
 //            cell.detailLabel.text = [self.model.data.workDemand htmlUnescapedString];
         }else if (indexPath.row == 1){
-            NSString *string=[self removeHTML2:[self.model.data.workSalary stringByDecodingHTMLEntities]];
-            cell.detailLabel.text = string;
+            cell.detailLabel.text = self.model.data.workSalary;
         }else if (indexPath.row == 2){
-            NSString *string=[self removeHTML2:[self.model.data.eatSleep stringByDecodingHTMLEntities]];
-            cell.detailLabel.text = string;
+            cell.detailLabel.text = self.model.data.eatSleep;
         }else if (indexPath.row == 3){
-            NSString *string=[self removeHTML2:[self.model.data.workTime stringByDecodingHTMLEntities]];
-            cell.detailLabel.text = string;
+            cell.detailLabel.text = self.model.data.workTime;
         }else if (indexPath.row == 4){
-            NSString *string=[self removeHTML2:[self.model.data.workKnow stringByDecodingHTMLEntities]];
-            cell.detailLabel.text = string;
+            cell.detailLabel.text = self.model.data.workKnow;
         }else if (indexPath.row == 5){
-            NSString *string=[self removeHTML2:[self.model.data.remarks stringByDecodingHTMLEntities]];
-            cell.detailLabel.text = string;
+            cell.detailLabel.text = self.model.data.remarks;
         }
         
         return cell;
@@ -976,7 +991,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         if (indexPath.row == 0) {
             LPWorkDetailTextCell *cell = [tableView dequeueReusableCellWithIdentifier:LPWorkDetailTextCellID];
             cell.detailTitleLabel.text = @"企业简介:";
-            cell.detailLabel.text = [self removeHTML2:[self.model.data.mechanismDetails stringByDecodingHTMLEntities]];
+            cell.detailLabel.text = self.model.data.mechanismDetails;
             tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
             return cell;
         }else if (indexPath.row == 1){
@@ -1185,9 +1200,8 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
                 self.RecommendList = [LPWorklistDataWorkListModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"]];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.tableview reloadData];
-                });
+                [self.tableview reloadData];
+                
             }else{
                 [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
@@ -1271,11 +1285,15 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 //    NSString *plainText = [componentsToKeep componentsJoinedByString:@"\n"];
 //    return plainText;
     
+   
+    // do something
+
+
     
     NSAttributedString * attrStr = [[NSAttributedString alloc] initWithData:[html dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
     NSString *string = [attrStr.string stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\n"]];
+    
     return string;
- 
     
 }
 

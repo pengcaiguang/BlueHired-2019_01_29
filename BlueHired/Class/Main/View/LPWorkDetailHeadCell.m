@@ -216,7 +216,7 @@
 //    }
     
     
-    NSString *strbackmoney = [self removeHTML2:model.data.reInstruction];
+    NSString *strbackmoney = model.data.reInstruction;
     if ((strbackmoney.length>0 &&
          model.data.reTime.integerValue>0 &&
          model.data.reMoney.integerValue>0 &&
@@ -279,17 +279,6 @@
 }
  
 
-- (NSString *)removeHTML2:(NSString *)html{
-//    NSArray *components = [html componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
-//    NSMutableArray *componentsToKeep = [NSMutableArray array];
-//    for (int i = 0; i < [components count]; i = i + 2) {
-//        [componentsToKeep addObject:[components objectAtIndex:i]];
-//    }
-//    NSString *plainText = [componentsToKeep componentsJoinedByString:@"\n"];
-//    return plainText;
-    NSAttributedString * attrStr = [[NSAttributedString alloc] initWithData:[html dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
-    NSString *string = [attrStr.string stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\n"]];
-    return string;
-}
+
 
 @end
