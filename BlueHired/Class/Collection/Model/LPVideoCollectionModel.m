@@ -11,11 +11,8 @@
 @implementation LPVideoCollectionModel
 + (NSDictionary *)objectClassInArray {
     return @{
-             @"data": @"LPVideoCollectionDataModel",
+             @"data": @"LPRecreationVideoListModel",
              };
 }
 @end
-@implementation LPVideoCollectionDataModel
-
-
-@end
+ 

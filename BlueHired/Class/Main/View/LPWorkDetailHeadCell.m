@@ -27,14 +27,11 @@
         make.edges.equalTo(self.imageBgView);
     }];
     self.cycleScrollView.delegate = self;
-    
-//    self.lendTypeLabel.layer.borderColor = [UIColor baseColor].CGColor;
-//    self.lendTypeLabel.layer.borderWidth = 0.5;
+ 
     self.lendTypeLabel.layer.cornerRadius = 2;
     self.lendTypeLabel.backgroundColor = [UIColor baseColor];
     [self.lendTypeLabel setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-//    [self addShadowToView:self.BackView withColor:[UIColor colorWithHexString:@"#12598B"]];
-
+ 
     XHStarRateView *starRateView = [[XHStarRateView alloc] initWithFrame:CGRectMake(0,0, LENGTH_SIZE(85), LENGTH_SIZE(13)) isTouch:YES];
     starRateView.isAnimation = YES;
     starRateView.rateStyle = HalfStar;

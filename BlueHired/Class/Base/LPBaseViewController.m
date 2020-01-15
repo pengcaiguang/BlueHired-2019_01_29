@@ -31,16 +31,19 @@
 - (UIBarButtonItem *)rt_customBackItemWithTarget:(id)target action:(SEL)action {
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     [btn setImage:[UIImage imageNamed:@"BackBttonImage"] forState:UIControlStateNormal];
-    [btn setTitle:@" 返回" forState:UIControlStateNormal];
+    [btn setTitle:@"返回" forState:UIControlStateNormal];
     [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     btn.imageView.contentMode = UIViewContentModeScaleAspectFit;
     btn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [btn sizeToFit];
     [btn addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+    btn.titleLabel.font = [UIFont systemFontOfSize:15];
     self.NBackBT = btn;
     
     return [[UIBarButtonItem alloc] initWithCustomView:btn];
 }
+
+
 
 
 - (void)didReceiveMemoryWarning {
@@ -48,6 +51,19 @@
     // Dispose of any resources that can be recreated.
 }
 
+// 这个方法返回支持的方向
+-(UIInterfaceOrientationMask)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+// 这个返回是否自动旋转
+- (BOOL)shouldAutorotate{
+  return YES;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation{
+    return UIInterfaceOrientationPortrait;
+}
 /*
 #pragma mark - Navigation
 

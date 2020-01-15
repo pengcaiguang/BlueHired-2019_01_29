@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="LPRecreationVideoCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="246"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="246"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4L6-D2-vSg">
+                        <rect key="frame" x="13" y="104.5" width="37" height="37"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="37" id="cgg-jg-ItY">
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                            </constraint>
+                            <constraint firstAttribute="height" constant="37" id="dBL-Dk-uI0">
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                            </constraint>
+                        </constraints>
+                        <connections>
+                            <action selector="touchSelectButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Jpn-b1-5vq"/>
+                        </connections>
+                    </button>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="X8u-zJ-ghV">
+                        <rect key="frame" x="13" y="6" width="294" height="200"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="200" id="J19-Rq-IqJ">
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                            </constraint>
+                        </constraints>
+                    </imageView>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mask_top" translatesAutoresizingMaskIntoConstraints="NO" id="lfS-hf-r3y">
+                        <rect key="frame" x="13" y="6" width="294" height="60"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="60" id="0Ww-4b-IbN">
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                            </constraint>
+                        </constraints>
+                    </imageView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pDx-Fj-avw">
+                        <rect key="frame" x="82" y="28" width="156" height="156"/>
+                        <state key="normal" image="PlayImage"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
+                        </userDefinedRuntimeAttributes>
+                        <connections>
+                            <action selector="TouchPlayBtn:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="U5s-ve-dqG"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0TK-mE-moM">
+                        <rect key="frame" x="280" y="216" width="20" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="1UT-et-o7U">
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                            </constraint>
+                            <constraint firstAttribute="height" constant="20" id="Zr5-jI-DHq">
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                            </constraint>
+                        </constraints>
+                        <state key="normal" image="share_btn"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
+                        </userDefinedRuntimeAttributes>
+                        <connections>
+                            <action selector="TouchShareBtn:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="6Rb-Y8-Q7H"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yMr-tV-QZ3">
+                        <rect key="frame" x="240" y="216" width="20" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="cTd-PA-rBy">
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                            </constraint>
+                            <constraint firstAttribute="height" constant="20" id="p5A-kj-NY1">
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                            </constraint>
+                        </constraints>
+                        <state key="normal" image="collection_normal"/>
+                        <state key="selected" image="collection_selected"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
+                        </userDefinedRuntimeAttributes>
+                        <connections>
+                            <action selector="TouchCommonBtn:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="ljx-or-Ocd"/>
+                        </connections>
+                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o9V-UC-dxB">
+                        <rect key="frame" x="13" y="217.5" width="223" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
+                        </userDefinedRuntimeAttributes>
+                    </label>
+                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4mF-yP-1De">
+                        <rect key="frame" x="223" y="16" width="75" height="18"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="75" id="BKo-Uo-P8t">
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                            </constraint>
+                            <constraint firstAttribute="height" constant="18" id="hUz-ZP-d3W">
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                            </constraint>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                        <state key="normal" title="查看招聘信息">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </state>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
+                        </userDefinedRuntimeAttributes>
+                        <connections>
+                            <action selector="TouchWorkBtn:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="F7L-nV-xrP"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="yMr-tV-QZ3" firstAttribute="centerY" secondItem="o9V-UC-dxB" secondAttribute="centerY" id="0iE-ub-4cN">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
+                        </userDefinedRuntimeAttributes>
+                    </constraint>
+                    <constraint firstAttribute="trailing" secondItem="0TK-mE-moM" secondAttribute="trailing" constant="20" id="70Q-bT-4Jg">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
+                        </userDefinedRuntimeAttributes>
+                    </constraint>
+                    <constraint firstItem="4L6-D2-vSg" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="13" id="Dw9-Dp-aVb">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
+                        </userDefinedRuntimeAttributes>
+                    </constraint>
+                    <constraint firstItem="X8u-zJ-ghV" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="6" id="E43-YT-E8E">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
+                        </userDefinedRuntimeAttributes>
+                    </constraint>
+                    <constraint firstItem="0TK-mE-moM" firstAttribute="top" secondItem="X8u-zJ-ghV" secondAttribute="bottom" constant="10" id="Eb1-0W-GKT">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
+                        </userDefinedRuntimeAttributes>
+                    </constraint>
+                    <constraint firstAttribute="trailing" secondItem="X8u-zJ-ghV" secondAttribute="trailing" constant="13" id="FV0-QT-yzA">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
+                        </userDefinedRuntimeAttributes>
+                    </constraint>
+                    <constraint firstItem="X8u-zJ-ghV" firstAttribute="trailing" secondItem="lfS-hf-r3y" secondAttribute="trailing" id="Fam-Ji-DJl"/>
+                    <constraint firstItem="pDx-Fj-avw" firstAttribute="centerY" secondItem="X8u-zJ-ghV" secondAttribute="centerY" id="Isi-nO-Txq">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
+                        </userDefinedRuntimeAttributes>
+                    </constraint>
+                    <constraint firstItem="X8u-zJ-ghV" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="13" id="JIi-K4-qwh">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
+                        </userDefinedRuntimeAttributes>
+                    </constraint>
+                    <constraint firstItem="0TK-mE-moM" firstAttribute="centerY" secondItem="o9V-UC-dxB" secondAttribute="centerY" id="NH7-vU-GvM">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
+                        </userDefinedRuntimeAttributes>
+                    </constraint>
+                    <constraint firstItem="lfS-hf-r3y" firstAttribute="top" secondItem="X8u-zJ-ghV" secondAttribute="top" id="Sum-Ks-XTO"/>
+                    <constraint firstItem="o9V-UC-dxB" firstAttribute="leading" secondItem="X8u-zJ-ghV" secondAttribute="leading" id="USV-CN-Hgz"/>
+                    <constraint firstAttribute="trailing" secondItem="4mF-yP-1De" secondAttribute="trailing" constant="22" id="gmg-5B-XPF">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
+                        </userDefinedRuntimeAttributes>
+                    </constraint>
+                    <constraint firstItem="4L6-D2-vSg" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="iXS-Mw-ddn"/>
+                    <constraint firstItem="4mF-yP-1De" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="16" id="jMX-mz-k3O">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
+                        </userDefinedRuntimeAttributes>
+                    </constraint>
+                    <constraint firstItem="yMr-tV-QZ3" firstAttribute="leading" secondItem="o9V-UC-dxB" secondAttribute="trailing" constant="4" id="szJ-vL-KJf">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
+                        </userDefinedRuntimeAttributes>
+                    </constraint>
+                    <constraint firstItem="0TK-mE-moM" firstAttribute="leading" secondItem="yMr-tV-QZ3" secondAttribute="trailing" constant="20" id="v1Z-O0-txl">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
+                        </userDefinedRuntimeAttributes>
+                    </constraint>
+                    <constraint firstItem="pDx-Fj-avw" firstAttribute="centerX" secondItem="X8u-zJ-ghV" secondAttribute="centerX" id="wzl-Z8-gBG">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
+                        </userDefinedRuntimeAttributes>
+                    </constraint>
+                    <constraint firstItem="lfS-hf-r3y" firstAttribute="leading" secondItem="X8u-zJ-ghV" secondAttribute="leading" id="zeM-QC-vwx"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
+            <connections>
+                <outlet property="CommonBtn" destination="yMr-tV-QZ3" id="KBL-Jm-niY"/>
+                <outlet property="PlayBtn" destination="pDx-Fj-avw" id="dSr-hb-1Ss"/>
+                <outlet property="ShareBtn" destination="0TK-mE-moM" id="Xq4-0b-rUW"/>
+                <outlet property="TopMaskImage" destination="lfS-hf-r3y" id="4T7-Ud-zTd"/>
+                <outlet property="VideoImage" destination="X8u-zJ-ghV" id="66R-ub-zzL"/>
+                <outlet property="VideoName" destination="o9V-UC-dxB" id="GTf-gO-F6s"/>
+                <outlet property="WorkBtn" destination="4mF-yP-1De" id="qK9-Lt-H0S"/>
+                <outlet property="label_contraint_width" destination="JIi-K4-qwh" id="quu-sE-COK"/>
+                <outlet property="selectButton" destination="4L6-D2-vSg" id="TT8-Li-8ct"/>
+            </connections>
+            <point key="canvasLocation" x="-168.11594202898553" y="81.696428571428569"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="PlayImage" width="156" height="156"/>
+        <image name="collection_normal" width="20.5" height="19.5"/>
+        <image name="collection_selected" width="20" height="19.5"/>
+        <image name="mask_top" width="667" height="60"/>
+        <image name="share_btn" width="18" height="20"/>
+    </resources>
+</document>

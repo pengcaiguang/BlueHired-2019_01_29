@@ -7,8 +7,6 @@
 //
 
 #import "LPIntegralDrawDatelis.h"
-#import "LPLotteryHistoryVC.h"
-#import "LPWinningResultsVC.h"
 #import <WebKit/WebKit.h>
 
 
@@ -41,6 +39,21 @@
 
     [self addLeftButton];
 }
+
+// 这个方法返回支持的方向
+-(UIInterfaceOrientationMask)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+// 这个返回是否自动旋转
+- (BOOL)shouldAutorotate{
+  return YES;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation{
+    return UIInterfaceOrientationPortrait;
+}
+
 
 #pragma mark - 添加关闭按钮
 
@@ -215,13 +228,11 @@
 
 - (void)JSToHistoryVC{
 //    [LoginUtils validationLogin:self];
-    LPLotteryHistoryVC *vc =[[LPLotteryHistoryVC alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+
 }
 - (void)JSToRecordVC{
 //    [LoginUtils validationLogin:self];
-    LPWinningResultsVC *vc =[[LPWinningResultsVC alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+ 
 }
 
 

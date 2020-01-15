@@ -19,11 +19,15 @@
 
 //毫秒时间戳转时间
 + (NSString *)convertStringToTime:(NSString *)timeString;
+//毫秒时间戳转时间 yyyy-MM-dd HH:mm:ss
++ (NSString *)convertStringToTimeHHmm:(NSString *)timeString;
 //获取当前系统时间的时间戳
 +(NSInteger)getNowTimestamp;
 //获取时间的时间戳
 +(NSInteger)getNowTimestamp:(NSDate *)date;
 //毫秒时间戳转时间
+
++ (NSString *)convertStringToYYYNMM:(NSString *)timeString;
 + (NSString *)convertStringToYYYMMDD:(NSString *)timeString;
 + (NSString *)convertStringToYYYNMMYDDR:(NSString *)timeString;
 //毫秒时间戳转几天前
@@ -50,4 +54,8 @@
 + (NSString *)getDeviceName;
 
 - (NSString *)changeEndTimeByKind:(NSInteger)changeKind withNum:(int)changeNum;
+
+//时间处理
++ (NSString *)timeStringWithTimeInterval:(NSString *)timeInterval;
+
 @end

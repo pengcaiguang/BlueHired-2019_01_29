@@ -7,7 +7,7 @@
 //
 
 #import "LPMineVC.h"
-#import "LPMineCell.h"
+
 #import "LPMine2Cell.h"
 #import "LPMineCardCell.h"
 #import "LPLoginVC.h"
@@ -16,16 +16,11 @@
 #import "LPChangePasswordVC.h"
 #import "LPSalarycCardVC.h"
 #import "LPCustomerServiceVC.h"
-#import "LPAffiliationMenageVC.h"
-#import "LPWStoreManageVC.h"
-#import "LPHomeCustomerServiceVC.h"
 #import "LPMineBillCell.h"
 #import "LPActivityVC.h"
 #import "LPCollectionVC.h"
 #import "LPInfoVC.h"
 #import "LPAccountManageVC.h"
-#import "LPLotteryHistoryVC.h"
-#import "LPWinningResultsVC.h"
 #import "LPIntegralDrawDatelis.h"
 #import "LPIntegralDrawVC.h"
 #import "LPSalaryBreakdownVC.h"
@@ -33,7 +28,7 @@
 #import <Contacts/Contacts.h>
 #import "LPEmployeeManageVC.h"
 #import "LPScoreStore.h"
-
+#import "LPHXCustomerServiceVC.h"
 
 static NSString *LPMineCellID = @"LPMine2Cell";
 static NSString *LPMineBillCellID = @"LPMineBillCell";
@@ -65,7 +60,7 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
         //        make.edges.equalTo(self.view);
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
-        if ([DeviceUtils deviceType] == IPhone_X) {
+        if (IS_iPhoneX) {
             make.height.mas_equalTo(LENGTH_SIZE(200)+10+24);
             make.top.mas_equalTo(0);
         }else{
@@ -123,22 +118,7 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
 - (UIStatusBarStyle)preferredStatusBarStyle{
     return UIStatusBarStyleLightContent;
 }
-////设置状态栏颜色
-//- (void)setStatusBarBackgroundColor:(UIColor *)color {
-//    UIView *statusBar = [[[UIApplication sharedApplication] valueForKey:@"statusBarWindow"] valueForKey:@"statusBar"];
-//    if ([statusBar respondsToSelector:@selector(setBackgroundColor:)]) {
-//        statusBar.backgroundColor = color;
-//    }
-//}
-////！！！重点在viewWillAppear方法里调用下面两个方法
-//-(void)viewWillAppear:(BOOL)animated{
-//    [self preferredStatusBarStyle];
-//    [self setStatusBarBackgroundColor:[UIColor baseColor]];
-//}
-//-(void)viewWillDisappear:(BOOL)animated{
-//    [self preferredStatusBarStyle];
-//    [self setStatusBarBackgroundColor:[UIColor clearColor]];
-//}
+ 
 
 -(void)setUserMaterialModel:(LPUserMaterialModel *)userMaterialModel{
     _userMaterialModel = userMaterialModel;
@@ -169,7 +149,7 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (tableView == self.Headtableview) {
-        return [DeviceUtils deviceType] == IPhone_X ? LENGTH_SIZE(200.0) +24.0 : LENGTH_SIZE(200.0);
+        return IS_iPhoneX ? LENGTH_SIZE(200.0) +24.0 : LENGTH_SIZE(200.0);
     }else{
         if (self.RecordArr.count) {
             if (indexPath.section == 0) {
@@ -177,7 +157,7 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
             }else if (indexPath.section == 1) {
                 return LENGTH_SIZE(40);
             }else if (indexPath.section == 2){
-                return LENGTH_SIZE(172);
+                return LENGTH_SIZE(160);
             }else{
                 return LENGTH_SIZE(50);
             }
@@ -254,7 +234,6 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
         CGMutablePathRef pathRef = CGPathCreateMutable();
         // 获取cell的size
         CGRect bounds = CGRectInset(cell.bounds, 0, 0);
-        
         // CGRectGetMinY：返回对象顶点坐标
         // CGRectGetMaxY：返回对象底点坐标
         // CGRectGetMinX：返回对象左边缘坐标
@@ -350,30 +329,41 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:rid];
             if(cell == nil){
                 cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rid];
+                UIImageView *Image = [[UIImageView alloc] init];
+                [cell.contentView addSubview:Image];
+                [Image mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.centerY.equalTo(cell.contentView);
+                    make.left.mas_offset(LENGTH_SIZE(12));
+                    make.width.height.mas_offset(LENGTH_SIZE(27));
+                }];
+                Image.tag = 1000;
+                Image.contentMode=UIViewContentModeScaleAspectFit;
+
+                UILabel *label = [[UILabel alloc] init];
+                [cell.contentView addSubview:label];
+                [label mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.centerY.equalTo(cell.contentView);
+                    make.left.mas_offset(LENGTH_SIZE(12+27+8));
+                }];
+                label.textColor = [UIColor baseColor];
+                label.font = FONT_SIZE(14);
+                label.tag = 2000;
+                
             }
             cell.layer.cornerRadius = 4.0;
             cell.layer.masksToBounds = YES;
             
             cell.accessoryType = UITableViewCellAccessoryNone;
-            cell.textLabel.textColor = [UIColor baseColor];
-            cell.textLabel.font = FONT_SIZE(14);
-            cell.imageView.contentMode=UIViewContentModeScaleAspectFit;
+            UILabel *textLabel = [cell.contentView viewWithTag:2000];
+            UIImageView *ImageView = [cell.contentView viewWithTag:1000];
+           
             
-            cell.imageView.image = [UIImage imageNamed:@"notice"];
-            cell.textLabel.text = [NSString stringWithFormat:@"%@工资已到账，待领取 >>",self.RecordArr[0]];
+            ImageView.image = [UIImage imageNamed:@"notice"];
+            textLabel.text = [NSString stringWithFormat:@"%@工资已到账，待领取 >>",self.RecordArr[0]];
             
-            //调整cell.imageView大小
-            CGSize itemSize = CGSizeMake(LENGTH_SIZE(27), LENGTH_SIZE(27));//希望显示的大小
-            UIGraphicsBeginImageContextWithOptions(itemSize, NO, UIScreen.mainScreen.scale);
-            CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
-            [cell.imageView.image drawInRect:imageRect];
-            cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
-            UIGraphicsEndImageContext();
-
+ 
             return cell;
-        }
-        
-        if (indexPath.section == 2) {
+        } else if (indexPath.section == 2) {
             LPMineCardCell *cell = [tableView dequeueReusableCellWithIdentifier:LPMineCardCellID];
             if(cell == nil){
                 cell = [[LPMineCardCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:LPMineCardCellID];
@@ -383,60 +373,69 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
             cell.RecordArr = self.RecordArr;
             [cell awakeFromNib];
             return cell;
-        }
-        
-        static NSString *rid=@"cell";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:rid];
-        if(cell == nil){
-            cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rid];
-        }
-        cell.textLabel.text = [NSString stringWithFormat:@"%ld",indexPath.row];
-        
-        if (indexPath.section == 3) {
+        } else {
+            
+            static NSString *rid=@"cell";
+                   UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:rid];
+                   if(cell == nil){
+                       cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rid];
+                       UIImageView *Image = [[UIImageView alloc] init];
+                       [cell.contentView addSubview:Image];
+                       [Image mas_makeConstraints:^(MASConstraintMaker *make) {
+                           make.centerY.equalTo(cell.contentView);
+                           make.left.mas_offset(LENGTH_SIZE(15));
+                           make.width.height.mas_offset(LENGTH_SIZE(21));
+                       }];
+                       Image.tag = 1000;
+                       Image.contentMode=UIViewContentModeScaleAspectFit;
+
+                       UILabel *label = [[UILabel alloc] init];
+                       [cell.contentView addSubview:label];
+                       [label mas_makeConstraints:^(MASConstraintMaker *make) {
+                           make.centerY.equalTo(cell.contentView);
+                           make.left.mas_offset(LENGTH_SIZE(15+21+8));
+                       }];
+                       label.textColor = [UIColor colorWithHexString:@"#444444"];
+                       label.font = FONT_SIZE(15);
+                       label.tag = 2000;
+                   }
+            
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            cell.textLabel.textColor = [UIColor colorWithHexString:@"#3A3A3A"];
-            cell.textLabel.font = FONT_SIZE(14);
-            cell.imageView.contentMode=UIViewContentModeScaleAspectFit;
+            UILabel *textLabel = [cell.contentView viewWithTag:2000];
+            UIImageView *ImageView = [cell.contentView viewWithTag:1000];
             
           
                 if (indexPath.row == 0) {
-                    cell.imageView.image = [UIImage imageNamed:@"c_00"];
-                    cell.textLabel.text = @"员工归属管理";
+                    ImageView.image = [UIImage imageNamed:@"c_00"];
+                    textLabel.text = @"员工归属管理";
                 }else if (indexPath.row == 1) {
-                    cell.imageView.image = [UIImage imageNamed:@"salaryCard_img"];
-                    cell.textLabel.text = @"工资卡管理";
+                    ImageView.image = [UIImage imageNamed:@"salaryCard_img"];
+                    textLabel.text = @"工资卡管理";
                 }else if (indexPath.row == 2) {
-                    cell.imageView.image = [UIImage imageNamed:@"changePassword_img"];
-                    cell.textLabel.text = @"账号管理";
+                    ImageView.image = [UIImage imageNamed:@"changePassword_img"];
+                    textLabel.text = @"账号管理";
                 }else if (indexPath.row == 3){
-                    cell.imageView.image = [UIImage imageNamed:@"c_activity"];
-                    cell.textLabel.text = @"通讯录好友";
+                    ImageView.image = [UIImage imageNamed:@"c_activity"];
+                    textLabel.text = @"通讯录好友";
                 }else if (indexPath.row == 4) {
-                    cell.imageView.image = [UIImage imageNamed:@"ActivityCenterImage"];
-                    cell.textLabel.text = @"活动中心";
+                    ImageView.image = [UIImage imageNamed:@"ActivityCenterImage"];
+                    textLabel.text = @"活动中心";
                 }else if (indexPath.row == 5) {
-                    cell.imageView.image = [UIImage imageNamed:@"c_integral"];
-                    cell.textLabel.text = @"幸运积分";
+                    ImageView.image = [UIImage imageNamed:@"c_integral"];
+                    textLabel.text = @"幸运积分";
                 }else if (indexPath.row == 6) {
-                    cell.imageView.image = [UIImage imageNamed:@"collectionCenter_img"];
-                    cell.textLabel.text = @"收藏中心";
+                    ImageView.image = [UIImage imageNamed:@"collectionCenter_img"];
+                    textLabel.text = @"收藏中心";
                 }else if (indexPath.row == 7){
-                    cell.imageView.image = [UIImage imageNamed:@"customerService_img"];
-                    cell.textLabel.text = @"专属客服";
+                    ImageView.image = [UIImage imageNamed:@"customerService_img"];
+                    textLabel.text = @"专属客服";
                 }
             
-            
-            //调整cell.imageView大小
-            CGSize itemSize = CGSizeMake(LENGTH_SIZE(20), LENGTH_SIZE(20));//希望显示的大小
-            UIGraphicsBeginImageContextWithOptions(itemSize, NO, UIScreen.mainScreen.scale);
-            CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
-            [cell.imageView.image drawInRect:imageRect];
-            cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
-            UIGraphicsEndImageContext();
-            
+ 
+            return cell;
+
         }
         
-        return cell;
     }else{
         if (indexPath.section == 0) {
             LPMineBillCell *cell = [tableView dequeueReusableCellWithIdentifier:LPMineBillCellID];
@@ -446,8 +445,7 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.userMaterialModel = self.userMaterialModel;
             return cell;
-        }
-        if (indexPath.section == 1) {
+        } else if (indexPath.section == 1) {
             LPMineCardCell *cell = [tableView dequeueReusableCellWithIdentifier:LPMineCardCellID];
             if(cell == nil){
                 cell = [[LPMineCardCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:LPMineCardCellID];
@@ -457,61 +455,67 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
             cell.RecordArr = self.RecordArr;
             [cell awakeFromNib];
             return cell;
-        }
-        
-        static NSString *rid=@"cell";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:rid];
-        if(cell == nil){
-            cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rid];
-        }
-        cell.textLabel.text = [NSString stringWithFormat:@"%ld",indexPath.row];
-        
-        if (indexPath.section == 2) {
+        } else {
+            static NSString *rid=@"cell";
+                   UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:rid];
+                   if(cell == nil){
+                       cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:rid];
+                       UIImageView *Image = [[UIImageView alloc] init];
+                       [cell.contentView addSubview:Image];
+                       [Image mas_makeConstraints:^(MASConstraintMaker *make) {
+                           make.centerY.equalTo(cell.contentView);
+                           make.left.mas_offset(LENGTH_SIZE(15));
+                           make.width.height.mas_offset(LENGTH_SIZE(21));
+                       }];
+                       Image.tag = 1000;
+                       Image.contentMode=UIViewContentModeScaleAspectFit;
+
+                       UILabel *label = [[UILabel alloc] init];
+                       [cell.contentView addSubview:label];
+                       [label mas_makeConstraints:^(MASConstraintMaker *make) {
+                           make.centerY.equalTo(cell.contentView);
+                           make.left.mas_offset(LENGTH_SIZE(15+21+8));
+                       }];
+                       label.textColor = [UIColor colorWithHexString:@"#444444"];
+                       label.font = FONT_SIZE(15);
+                       label.tag = 2000;
+                   }
+            
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            cell.textLabel.textColor = [UIColor colorWithHexString:@"#3A3A3A"];
-            cell.textLabel.font = FONT_SIZE(14);
-            cell.imageView.contentMode=UIViewContentModeScaleAspectFit;
-            
-  
+            UILabel *textLabel = [cell.contentView viewWithTag:2000];
+            UIImageView *ImageView = [cell.contentView viewWithTag:1000];
+
                 if (indexPath.row == 0) {
-                    cell.imageView.image = [UIImage imageNamed:@"c_00"];
-                    cell.textLabel.text = @"员工归属管理";
+                    ImageView.image = [UIImage imageNamed:@"c_00"];
+                    textLabel.text = @"员工归属管理";
                 }else if (indexPath.row == 1) {
-                    cell.imageView.image = [UIImage imageNamed:@"salaryCard_img"];
-                    cell.textLabel.text = @"工资卡管理";
+                    ImageView.image = [UIImage imageNamed:@"salaryCard_img"];
+                    textLabel.text = @"工资卡管理";
                 }else if (indexPath.row == 2) {
-                    cell.imageView.image = [UIImage imageNamed:@"changePassword_img"];
-                    cell.textLabel.text = @"账号管理";
+                    ImageView.image = [UIImage imageNamed:@"changePassword_img"];
+                    textLabel.text = @"账号管理";
                 }else if (indexPath.row == 3){
-                    cell.imageView.image = [UIImage imageNamed:@"c_activity"];
-                    cell.textLabel.text = @"通讯录好友";
+                    ImageView.image = [UIImage imageNamed:@"c_activity"];
+                    textLabel.text = @"通讯录好友";
                 }else if (indexPath.row == 4) {
-                    cell.imageView.image = [UIImage imageNamed:@"ActivityCenterImage"];
-                    cell.textLabel.text = @"活动中心";
+                    ImageView.image = [UIImage imageNamed:@"ActivityCenterImage"];
+                    textLabel.text = @"活动中心";
                 }else if (indexPath.row == 5) {
-                    cell.imageView.image = [UIImage imageNamed:@"c_integral"];
-                    cell.textLabel.text = @"幸运积分";
+                    ImageView.image = [UIImage imageNamed:@"c_integral"];
+                    textLabel.text = @"幸运积分";
                 }else if (indexPath.row == 6) {
-                    cell.imageView.image = [UIImage imageNamed:@"collectionCenter_img"];
-                    cell.textLabel.text = @"收藏中心";
+                    ImageView.image = [UIImage imageNamed:@"collectionCenter_img"];
+                    textLabel.text = @"收藏中心";
                 }else if (indexPath.row == 7){
-                    cell.imageView.image = [UIImage imageNamed:@"customerService_img"];
-                    cell.textLabel.text = @"专属客服";
+                    ImageView.image = [UIImage imageNamed:@"customerService_img"];
+                    textLabel.text = @"专属客服";
                 }
-            
-            
-            //调整cell.imageView大小
-            CGSize itemSize = CGSizeMake(LENGTH_SIZE(20), LENGTH_SIZE(20));//希望显示的大小
-            UIGraphicsBeginImageContextWithOptions(itemSize, NO, UIScreen.mainScreen.scale);
-            CGRect imageRect = CGRectMake(0.0, 0.0, itemSize.width, itemSize.height);
-            [cell.imageView.image drawInRect:imageRect];
-            cell.imageView.image = UIGraphicsGetImageFromCurrentImageContext();
-            UIGraphicsEndImageContext();
-            
+ 
+                  return cell;
         }
         
         
-        return cell;
+  
     }
     
    
@@ -526,80 +530,8 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
         [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
     }
     
-    if ( AlreadyLogin ||
-        (indexPath.section == 2 && (indexPath.row == 7) && self.RecordArr.count == 0) ||
-        (indexPath.section == 3 && (indexPath.row == 7) && self.RecordArr.count)) {
-        
+    if ( AlreadyLogin ) {
         if (indexPath.section == 2 || indexPath.section == 3) {
-//            if (kUserDefaultsValue(USERDATA).integerValue == 4 ||
-//                kUserDefaultsValue(USERDATA).integerValue == 3 ||
-//                kUserDefaultsValue(USERDATA).integerValue >= 8) {
-//                if (indexPath.row == 0) {
-//                    //工资卡管理
-//                    if (self.userMaterialModel.data.isUserProblem.integerValue == 0) {
-//                        [self initSetSecretVC];
-//                        return;
-//                    }
-//                    LPSalarycCardVC *vc = [[LPSalarycCardVC alloc]init];
-//                    vc.hidesBottomBarWhenPushed = YES;
-//                    [self.navigationController pushViewController:vc animated:YES];
-//                }else if (indexPath.row == 1) {
-//                    //归属员工
-//                    LPAffiliationMenageVC *vc = [[LPAffiliationMenageVC alloc]init];
-//                    vc.hidesBottomBarWhenPushed = YES;
-//                    [self.navigationController pushViewController:vc animated:YES];
-//                }else if (indexPath.row == 2) {
-//                    //账号管理
-//                    if (self.userMaterialModel.data.isUserProblem.integerValue == 0) {
-//                        [self initSetSecretVC];
-//                        return;
-//                    }
-//                    LPAccountManageVC *vc = [[LPAccountManageVC alloc]init];
-//                    vc.hidesBottomBarWhenPushed = YES;
-//                    [self.navigationController pushViewController:vc animated:YES];
-//                }else if (indexPath.row == 3){
-//                    //活动中心
-////                    LPChangePasswordVC *vc = [[LPChangePasswordVC alloc]init];
-////                    vc.hidesBottomBarWhenPushed = YES;
-////                    [self.navigationController pushViewController:vc animated:YES];
-//                    LPActivityVC *vc = [[LPActivityVC alloc] init];
-//                    vc.hidesBottomBarWhenPushed = YES;
-//                    [self.navigationController pushViewController:vc animated:YES];
-//                }else if (indexPath.row == 4){
-//                    //幸运积分
-//                    if (self.userMaterialModel.data.isUserProblem.integerValue == 0) {
-//                        [self initSetSecretVC];
-//                        return;
-//                    }
-//
-//                    LPIntegralDrawVC *vc = [[LPIntegralDrawVC alloc]init];
-//                    vc.hidesBottomBarWhenPushed = YES;
-//                    [self.navigationController pushViewController:vc animated:YES];
-//                }else if (indexPath.row == 5){
-//                    //收藏
-//                    LPCollectionVC *vc = [[LPCollectionVC alloc] init];
-//                    vc.hidesBottomBarWhenPushed = YES;
-//                    [self.navigationController pushViewController:vc animated:YES];
-//                }else{
-////                    NSString *class = @"LPCollectionVC";
-////                    const char *className = [class cStringUsingEncoding:NSASCIIStringEncoding];
-////                    Class newClass = objc_getClass(className);
-////                    if (!newClass) {        //创建一个类
-////                        Class superClass = [NSObject class];
-////                        newClass = objc_allocateClassPair(superClass, className, 0);        //注册你创建的这个类
-////                        objc_registerClassPair(newClass);
-////                    }
-////                    // 创建对象(写到这里已经可以进行随机页面跳转了)
-////                    UIViewController *instance = [[newClass alloc] init];
-////                    instance.hidesBottomBarWhenPushed = YES;
-////                    [self.navigationController pushViewController:instance animated:YES];
-//                    //客服
-//                    LPHomeCustomerServiceVC *vc = [[LPHomeCustomerServiceVC alloc] init];
-//                    vc.hidesBottomBarWhenPushed = YES;
-//                    [self.navigationController pushViewController:vc animated:YES];
-//                }
-//
-//            }else{
                 if (indexPath.row == 0) {
                     LPEmployeeManageVC *vc = [[LPEmployeeManageVC alloc] init];
                     vc.hidesBottomBarWhenPushed = YES;
@@ -627,14 +559,12 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
                     vc.hidesBottomBarWhenPushed = YES;
                     [self.navigationController pushViewController:vc animated:YES];
                 }else{//客服
-                    LPHomeCustomerServiceVC *vc = [[LPHomeCustomerServiceVC alloc] init];
+                    LPHXCustomerServiceVC *vc = [[LPHXCustomerServiceVC alloc] init];
                     vc.hidesBottomBarWhenPushed = YES;
                     [self.navigationController pushViewController:vc animated:YES];
                 }
                 
-//            }
-            
-        }
+         }
     }else{
         [LoginUtils validationLogin:self];
     }
@@ -734,6 +664,7 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
         }
     }];
 }
+
 -(void)requestSelectCurIsSign{
     [NetApiManager requestSelectCurIsSignWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
@@ -773,7 +704,6 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
                 }
                 else if (num>9)
                 {
- 
                     [self.MessageBt setTitle:@"9+" forState:UIControlStateNormal];
                     self.MessageBt.backgroundColor = [UIColor redColor];
                 }
@@ -872,31 +802,6 @@ static NSString *LPMineCardCellID = @"LPMineCardCell";
     return _Headtableview;
 }
 
-
--(void)initSetSecretVC{
- 
-        NSString *str1 = @"为了您的账号安全，请先设置密保问题。";
-        NSMutableAttributedString *str = [[NSMutableAttributedString alloc]initWithString:str1];
-        WEAK_SELF()
-    GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:str
-                                                         message:nil
-                                                       IsShowhead:YES
-                                                     backDismiss:YES
-                                                   textAlignment:0
-                                                    buttonTitles:@[@"去设置"]
-                                                    buttonsColor:@[[UIColor baseColor]]
-                                         buttonsBackgroundColors:@[[UIColor whiteColor]]
-                                                     buttonClick:^(NSInteger buttonIndex) {
-            if (buttonIndex == 0) {
-                LPChangePhoneVC *vc = [[LPChangePhoneVC alloc]init];
-                vc.type = 1;
-                vc.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:vc animated:YES];
-            }
-        }];
-        [alert show];
-    
-}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -10,7 +10,6 @@
 #import "LPRegisteredVC.h"
 #import "LPForgetPassWordVC.h"
 #import "LPHongBaoVC.h"
-#import "LPCircleVC.h"
 #import "AppDelegate.h"
 #import "LPWXLoginBindingVC.h"
 
@@ -38,6 +37,8 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
     appDelegate.WXdelegate = self;
     [self setupUI];
     [UIWindow visibleViewController];
+    
+ 
 }
 
 -(void)setupUI{
@@ -413,11 +414,7 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
                         LPHongBaoVC *vc = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
                         vc.isLogin = YES;
                         [self.navigationController popToViewController:vc animated:YES];
-                    }else if(self.isCircleVC == YES){
-                        LPCircleVC *vc = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
-                        vc.isSenderBack = 1;
-                        [self.navigationController popToViewController:vc animated:YES];
-                    }else{
+                    } else{
                         [self.navigationController popViewControllerAnimated:YES];
                     }
                 }

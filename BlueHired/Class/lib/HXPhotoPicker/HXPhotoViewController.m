@@ -322,7 +322,9 @@ HXVideoEditViewControllerDelegate
         [self.delegate photoViewControllerDidCancel:self];
     }
     self.manager.selectPhotoing = NO;
-    [self dismissViewControllerAnimated:YES completion:nil];
+//    dispatch_async(dispatch_get_main_queue(), ^{
+            [self dismissViewControllerAnimated:YES completion:nil];
+//    });
     if (self.manager.configuration.restoreNavigationBar) {
         [UINavigationBar appearance].translucent = NO;
     }

@@ -12,5 +12,7 @@
 
 -(void)image:(UIImage *)image text:(NSString *)text;
 @property(nonatomic,assign) BOOL isShowLoginBt;
+@property(nonatomic,strong) UIImageView *imageView;
+@property(nonatomic,strong) UILabel *label;
 
 @end

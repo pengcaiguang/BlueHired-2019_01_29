@@ -9,7 +9,6 @@
 #import "LPAddMoodeVC.h"
 #import "HXPhotoPicker.h"
 #import "LPMoodTypeModel.h"
-#import "LPCircleVC.h"
 #import <BMKLocationkit/BMKLocationComponent.h>
 #import "LPMapLocCell.h"
 #import "LPMapLoctionModel.h"
@@ -215,6 +214,7 @@ static const CGFloat kPhotoViewMargin = 13.0;
         make.left.mas_equalTo(LENGTH_SIZE(13));
         make.right.mas_equalTo(LENGTH_SIZE(-13));
         make.height.mas_equalTo(LENGTH_SIZE(160));
+        make.width.mas_equalTo(SCREEN_WIDTH - LENGTH_SIZE(26));
     }];
     textView.layer.borderColor = [UIColor colorWithHexString:@"#AAAAAA"].CGColor;
     textView.layer.borderWidth = 0.5;
@@ -385,18 +385,20 @@ static const CGFloat kPhotoViewMargin = 13.0;
     photoView.backgroundColor = [UIColor whiteColor];
     [scrollView addSubview:photoView];
     self.photoView = photoView;
-    [photoView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(LENGTH_SIZE(13));
-        make.right.mas_equalTo(LENGTH_SIZE(-13));
-        make.top.equalTo(label2.mas_bottom).offset(LENGTH_SIZE(20));
-        make.width.mas_equalTo(width - kPhotoViewMargin * 2);
-    }];
+    photoView.frame = CGRectMake(LENGTH_SIZE(13), LENGTH_SIZE(296), width - kPhotoViewMargin * 2, 0);
+//    [photoView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.mas_equalTo(LENGTH_SIZE(13));
+//        make.right.mas_equalTo(LENGTH_SIZE(-13));
+//        make.top.equalTo(label2.mas_bottom).offset(LENGTH_SIZE(20));
+//        make.width.mas_equalTo(width - kPhotoViewMargin * 2);
+//    }];
     [photoView.collectionView reloadData];
     [self.photoView refreshView];
     
     UIButton *sendButton = [[UIButton alloc]init];
     [self.scrollView addSubview:sendButton];
-    
+    sendButton.frame = CGRectMake(LENGTH_SIZE(13), photoView.lx_bottom + LENGTH_SIZE(44), SCREEN_WIDTH - LENGTH_SIZE(26), LENGTH_SIZE(48));
+
     [sendButton setTitle:@"发送" forState:UIControlStateNormal];
     [sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     sendButton.layer.masksToBounds = YES;
@@ -431,6 +433,7 @@ static const CGFloat kPhotoViewMargin = 13.0;
             make.left.mas_equalTo(LENGTH_SIZE(13));
             make.right.mas_equalTo(LENGTH_SIZE(-13));
             make.height.mas_equalTo(LENGTH_SIZE(160));
+            make.width.mas_equalTo(SCREEN_WIDTH - LENGTH_SIZE(26));
         }];
         self.moodDetails = textView.text;
         photoView.hidden = YES;
@@ -450,6 +453,9 @@ static const CGFloat kPhotoViewMargin = 13.0;
         [imageView addGestureRecognizer:tapGestureRecognizer1];
         [imageView setUserInteractionEnabled:YES];
  
+        self.sendButton.lx_top =  LENGTH_SIZE(296 + 165 + 60);
+
+        
         self.imageArray = @[self.ShareImage];
         LZImageBrowserManger *imageBrowserManger = [LZImageBrowserManger imageBrowserMangerWithUrlStr:@[@""]
                                                                                      originImageViews:@[imageView]
@@ -479,16 +485,23 @@ static const CGFloat kPhotoViewMargin = 13.0;
 - (void)photoView:(HXPhotoView *)photoView updateFrame:(CGRect)frame{
     NSSLog(@"%f",CGRectGetMaxY(frame));
     self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.size.width, CGRectGetMaxY(frame) + kPhotoViewMargin + LENGTH_SIZE(192));
-    [self.sendButton mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(LENGTH_SIZE(13));
-        make.right.mas_equalTo(LENGTH_SIZE(-13));
-        if (self.Type == 1 || self.Type == 2) {
-            make.top.equalTo(self.ShareImageView.mas_bottom).offset(LENGTH_SIZE(60));
-        }else{
-            make.top.mas_equalTo(CGRectGetMaxY(photoView.frame)+LENGTH_SIZE(44));
-        }
-        make.height.mas_equalTo(LENGTH_SIZE(48));
-    }];
+    if (self.Type == 1 || self.Type == 2) {
+        self.sendButton.lx_top =  LENGTH_SIZE(296 + 165 + 60);
+    }else{
+        self.sendButton.lx_top = CGRectGetMaxY(photoView.frame)+LENGTH_SIZE(44);
+       
+    }
+      
+//    [self.sendButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+//        make.left.mas_equalTo(LENGTH_SIZE(13));
+//        make.right.mas_equalTo(LENGTH_SIZE(-13));
+//        if (self.Type == 1 || self.Type == 2) {
+//            make.top.equalTo(self.ShareImageView.mas_bottom).offset(LENGTH_SIZE(60));
+//        }else{
+//            make.top.mas_equalTo(CGRectGetMaxY(photoView.frame)+LENGTH_SIZE(44));
+//        }
+//        make.height.mas_equalTo(LENGTH_SIZE(48));
+//    }];
 }
 -(void)photoView:(HXPhotoView *)photoView changeComplete:(NSArray<HXPhotoModel *> *)allList photos:(NSArray<HXPhotoModel *> *)photos videos:(NSArray<HXPhotoModel *> *)videos original:(BOOL)isOriginal{
  
@@ -758,7 +771,7 @@ static const CGFloat kPhotoViewMargin = 13.0;
                           @"moodDetails":self.moodDetails,
                           @"moodTypeId":self.moodTypeId ? self.moodTypeId : @"",
                           @"moodUrl":string,
-                          @"address":self.moodMap,
+                          @"address":[LPTools isNullToString:self.moodMap],
                           @"versionType":@"2.1",
                           @"souce":self.Type==1?@"1":@""
                           };
@@ -772,16 +785,11 @@ static const CGFloat kPhotoViewMargin = 13.0;
                         [LPTools AlertCircleView:@""];
                     }
                     [self.view showLoadingMeg:@"发送成功" time:MESSAGE_SHOW_TIME];
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        if (self.Type == 0){
-                            LPCircleVC *vc = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
-                            vc.isSenderBack = 4;
-                            [self.navigationController popToViewController:vc animated:YES];
-                        }else{
-                            [self.navigationController popViewControllerAnimated:YES];
-                          
-                        }
-                    });
+                    if (self.Senderblock) {
+                        self.Senderblock();
+                    }
+                    [self.navigationController popViewControllerAnimated:YES];
+                     
                 }else{
                     [self.view showLoadingMeg:@"发送失败" time:MESSAGE_SHOW_TIME];
                 }
@@ -884,8 +892,7 @@ static const CGFloat kPhotoViewMargin = 13.0;
         _manager.configuration.videoCanEdit = YES;
         _manager.configuration.changeAlbumListContentView = NO;
  
-//        _manager.configuration.replaceVideoEditViewController = YES;
-        
+ 
          //        _manager.configuration.selectTogether = NO;
         [_manager preloadData];
         HXWeakSelf

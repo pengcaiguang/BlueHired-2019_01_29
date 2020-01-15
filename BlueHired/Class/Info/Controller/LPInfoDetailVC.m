@@ -39,6 +39,7 @@
 
 -(void)viewDidAppear:(BOOL)animated
 {
+    [super viewDidAppear:animated];
     if (_model.type.integerValue == 4) {
         [self requestQueryBankcardwithDraw];
     }
@@ -70,7 +71,7 @@
         make.top.equalTo(titleLabel.mas_bottom).offset(LENGTH_SIZE(10));
         make.right.mas_equalTo(LENGTH_SIZE(-13));
     }];
-    timeLabel.text = [NSString convertStringToTime:[self.DetailModel.time stringValue]];
+    timeLabel.text = [NSString convertStringToTimeHHmm:[self.DetailModel.time stringValue]];
     timeLabel.font = [UIFont systemFontOfSize:FontSize(11)];
     timeLabel.textColor = [UIColor grayColor];
     
@@ -192,7 +193,7 @@
     
     if ([self.DetailModel.informationTitle isEqualToString:@"企业推荐"] &&
         self.DetailModel.workId.integerValue > 0 &&
-        self.DetailModel.upIdentity.length >0) {
+        self.DetailModel.upIdentity.length > 0) {
         _Agreedbutton.hidden = NO;
         viewDetail.hidden = YES;
         [_Agreedbutton mas_remakeConstraints:^(MASConstraintMaker *make) {

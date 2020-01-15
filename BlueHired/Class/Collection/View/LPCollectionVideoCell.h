@@ -10,7 +10,7 @@
 #import "LPVideoCollectionModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
-typedef void(^LPCollectionVideoCellBlock)(LPVideoCollectionDataModel *model);
+//typedef void(^LPCollectionVideoCellBlock)(LPRecreationVideoListModel *model);
 
 @interface LPCollectionVideoCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *videoImage;
@@ -22,8 +22,8 @@ typedef void(^LPCollectionVideoCellBlock)(LPVideoCollectionDataModel *model);
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *label_contraint_width;
 @property (weak, nonatomic) IBOutlet UIButton *selectButton;
 
-@property(nonatomic,strong) LPVideoCollectionDataModel *model;
-@property (nonatomic,copy) LPCollectionVideoCellBlock selectBlock;
+@property(nonatomic,strong) LPRecreationVideoListModel *model;
+//@property (nonatomic,copy) LPCollectionVideoCellBlock selectBlock;
 
 @property(nonatomic,assign) BOOL selectStatus;
 @property(nonatomic,assign) BOOL selectAll;

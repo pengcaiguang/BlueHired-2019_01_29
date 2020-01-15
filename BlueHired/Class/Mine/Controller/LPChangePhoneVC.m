@@ -8,8 +8,6 @@
 
 #import "LPChangePhoneVC.h"
 #import "LPLoginVC.h"
-#import "LPSecurityQuestionVC.h"
-#import "LPSetSecretVC.h"
 #import "AppDelegate.h"
 static NSString *WXAPPID = @"wx566f19a70d573321";
 
@@ -210,15 +208,15 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
     loginButton.layer.cornerRadius = 4;
     [loginButton addTarget:self action:@selector(touchLoginButton:) forControlEvents:UIControlEventTouchUpInside];
     
-    UIButton *OthenBt = [[UIButton alloc] init];
-    [self.view addSubview:OthenBt];
-    [OthenBt mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.view);
-        make.bottom.equalTo(loginButton.mas_top).offset(-35);
-     }];
-    [OthenBt setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
-    OthenBt.titleLabel.font = [UIFont systemFontOfSize:14];
-    OthenBt.hidden = YES;
+//    UIButton *OthenBt = [[UIButton alloc] init];
+//    [self.view addSubview:OthenBt];
+//    [OthenBt mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.centerX.equalTo(self.view);
+//        make.bottom.equalTo(loginButton.mas_top).offset(-35);
+//     }];
+//    [OthenBt setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
+//    OthenBt.titleLabel.font = [UIFont systemFontOfSize:14];
+//    OthenBt.hidden = YES;
 //    if (self.type == 1 ) {
 //        if (self.userData.data.isUserProblem.integerValue == 0) {
 //            [OthenBt setTitle:@"当前手机号已丢失，请联系客服 >>" forState:UIControlStateNormal];
@@ -230,7 +228,7 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
 //    }else if (self.type == 3){
 //        OthenBt.hidden = YES;
 //    }
-    [OthenBt addTarget:self action:@selector(touchOthenBt:) forControlEvents:UIControlEventTouchUpInside];
+//    [OthenBt addTarget:self action:@selector(touchOthenBt:) forControlEvents:UIControlEventTouchUpInside];
 
     
     
@@ -313,31 +311,7 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
     });
     dispatch_resume(_timer);
 }
-
--(void)touchOthenBt:(UIButton *)button{
-    if (self.type == 1) {
-//        if (self.userData.data.isUserProblem.integerValue == 0) {
-//            button.enabled = NO;
-//            [self requestQueryGetCustomerTel];
-//            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//                button.enabled = YES;
-//            });
-//        }else{
-            LPSecurityQuestionVC *vc = [[LPSecurityQuestionVC alloc] init];
-            vc.type = self.type;
-            vc.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:vc animated:YES];
-//        }
-
-    }else if (self.type == 2 || self.type == 4) {
-        LPSecurityQuestionVC *vc = [[LPSecurityQuestionVC alloc] init];
-        vc.type = self.type;
-        vc.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:vc animated:YES];
-    }
-}
-
-
+ 
 -(void)touchGetVerificationCodeButtonButton:(UIButton *)button{
     NSLog(@"获取验证码");
     self.phoneTextField.text = [self.phoneTextField.text stringByReplacingOccurrencesOfString:@" " withString:@""];
@@ -461,9 +435,9 @@ static NSString *WXAPPID = @"wx566f19a70d573321";
                         });
                     }else{
                         if (self.type == 1) {
-                            LPSetSecretVC *vc = [[LPSetSecretVC alloc]init];
+//                            LPSetSecretVC *vc = [[LPSetSecretVC alloc]init];
                             //                                vc.model = self.model;
-                            [self.navigationController pushViewController:vc animated:YES];
+//                            [self.navigationController pushViewController:vc animated:YES];
                         }else if (self.type == 2){
                             LPChangePhoneVC *vc = [[LPChangePhoneVC alloc]init];
                             vc.Newtype = 1;

@@ -10,5 +10,7 @@
 
 @interface LPMainSearchVC : LPBaseViewController
 @property(nonatomic,strong) NSString *mechanismAddress;
+@property(nonatomic,copy) NSString *searchWord;
+-(void)touchSearchButton;
 
 @end

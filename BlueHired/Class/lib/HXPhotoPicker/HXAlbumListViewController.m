@@ -33,6 +33,7 @@ UITableViewDelegate
 - (instancetype)initWithManager:(HXPhotoManager *)manager {
     self = [super init];
     if (self) {
+        self.modalPresentationStyle = UIModalPresentationFullScreen;
         self.manager = manager;
     }
     return self;
@@ -196,7 +197,9 @@ UITableViewDelegate
     }
     self.manager.selectPhotoing = NO;
     
-    [self dismissViewControllerAnimated:YES completion:nil];
+//    dispatch_async(dispatch_get_main_queue(), ^{
+            [self dismissViewControllerAnimated:YES completion:nil];
+//    });
     if (self.manager.configuration.restoreNavigationBar) {
         [UINavigationBar appearance].translucent = NO;
     }

@@ -9,6 +9,7 @@
 #import "NSString+String.h"
 #import <CommonCrypto/CommonDigest.h>
 #import "sys/utsname.h"
+#import "NSDate+HXExtension.h"
 
 @implementation NSString (String)
 /*!
@@ -25,6 +26,15 @@
     return [decNumber stringValue];
 }
 
+//毫秒时间戳转时间 yyyy-MM-dd HH:mm:ss
++ (NSString *)convertStringToTimeHHmm:(NSString *)timeString{
+    long long time=[timeString longLongValue];
+    NSDate *d = [[NSDate alloc]initWithTimeIntervalSince1970:time/1000.0];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+    [formatter setDateFormat:@"yyyy-MM-dd HH:mm"];
+    NSString*timeStr=[formatter stringFromDate:d];
+    return timeStr;
+}
 
 //毫秒时间戳转时间
 + (NSString *)convertStringToTime:(NSString *)timeString{
@@ -145,6 +155,16 @@
     return timeStr;
 }
 
+//毫秒时间戳转时间
++ (NSString *)convertStringToYYYNMM:(NSString *)timeString{
+    long long time=[timeString longLongValue];
+    NSDate *d = [[NSDate alloc]initWithTimeIntervalSince1970:time/1000.0];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+    [formatter setDateFormat:@"yyyy年MM月"];
+    NSString*timeStr=[formatter stringFromDate:d];
+    return timeStr;
+}
+
 //毫秒时间戳转几天前
 + (NSString *) compareCurrentTime:(NSString *)str{
     long long time=[str longLongValue];
@@ -175,6 +195,38 @@
     }
     return  result;
 }
+//时间处理
++ (NSString *)timeStringWithTimeInterval:(NSString *)timeInterval
+{
+
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:timeInterval.longLongValue/1000]; //此处根据项目需求,选择是否除以1000 , 如果时间戳精确到秒则去掉1000
+
+    NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+
+    //今天
+    if ([date hx_isToday]) {
+        formatter.dateFormat = @"HH:mm";
+        return [formatter stringFromDate:date];
+    }else{
+        //昨天
+        if ([date hx_isYesterday]) {
+            formatter.dateFormat = @"昨天 HH:mm";
+            return [formatter stringFromDate:date];
+         //前天
+        }else if ([date hx_isdaybefore]){
+            formatter.dateFormat = @"前天 HH:mm";
+            return [formatter stringFromDate:date];
+            
+        } else{
+            formatter.dateFormat = @"yyyy-MM-dd";
+            return [formatter stringFromDate:date];
+        }
+    }
+    return nil;
+}
+ 
+
+
 //验证手机号
 + (BOOL)isMobilePhoneNumber:(NSString *)mobileNum {
     if (mobileNum.length != 11) {

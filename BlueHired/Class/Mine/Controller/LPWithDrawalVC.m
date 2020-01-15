@@ -7,12 +7,12 @@
 //
 
 #import "LPWithDrawalVC.h"
-#import "LPBankcardwithDrawModel.h"
 #import "LPSalarycCardBindVC.h"
 #import "LPSalarycCardChangePasswordVC.h"
 #import "LPSalarycCardBindPhoneVC.h"
 #import "LPSalarycCard2VC.h"
 #import "LPGetBankNameModel.h"
+#import "LPSelectBindbankcardModel.h"
 
 @interface LPWithDrawalVC ()<UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *addCardButton;
@@ -29,7 +29,6 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *remarkLabel;
 
-@property(nonatomic,strong) LPBankcardwithDrawModel *model;
 //@property(nonatomic,strong) LPGetBankNameModel *Bankmodel;
 
 @property(nonatomic,assign) NSInteger errorTimes;
@@ -49,8 +48,7 @@
     [_textField addTarget:self action:@selector(textFieldChanged:) forControlEvents:UIControlEventEditingChanged];
     _textField.delegate = self;
 
-    [self requestQueryBankcardwithDraw];
-//    [self requestQueryGetBankName];
+    [self initDrawlView];
 
 }
 
@@ -65,7 +63,7 @@
             self.TitleTF.text = [NSString stringWithFormat:@"手续费%.2f元",self.model.data.chargeMoney.floatValue];
     }
     
-    if (textField.text.floatValue>[_balance floatValue]) {
+    if (textField.text.floatValue>[self.model.data.accountBalance floatValue]) {
         self.TitleTF.text = @"金额超出可提余额";
  
         _determineButton.enabled = NO;
@@ -92,20 +90,13 @@
     return ![predicate0 evaluateWithObject:str] && [predicate1 evaluateWithObject:str] ? YES : NO;
 }
 
--(void)setModel:(LPBankcardwithDrawModel *)model{
-    _model = model;
-    if (model.data) {
-        [self initDrawlView];
-    }
-    
-}
-
+ 
 
 -(void)initDrawlView
 {
     _bankLabel.text = _model.data.bankName;
-    _BankNoLabel.text = [NSString stringWithFormat:@"尾号%@%@",_model.data.bankNumber,_model.data.cardType];
-    _balanceLabel.text = [NSString stringWithFormat:@"可提余额%.2f元",[_balance floatValue]];
+    _BankNoLabel.text = [NSString stringWithFormat:@"尾号%@%@",_model.data.bankNumArr,_model.data.cardType];
+    _balanceLabel.text = [NSString stringWithFormat:@"可提余额%.2f元",[self.model.data.accountBalance floatValue]];
     self.TitleTF.text = [NSString stringWithFormat:@"手续费%.2f元",_model.data.chargeMoney.floatValue];
     if (self.model.data.remark.length>0) {
           self.remarkLabel.text = [NSString stringWithFormat:@"提现说明：\n\n%@",_model.data.remark];
@@ -123,7 +114,7 @@
 }
 
 - (IBAction)touchAllButton:(id)sender {
-    self.textField.text = [NSString stringWithFormat:@"%@", _balance];
+    self.textField.text = [NSString stringWithFormat:@"%@", self.model.data.accountBalance];
 
     
 }
@@ -135,7 +126,7 @@
     }else if (_textField.text.floatValue < 15.0){
         [LPTools AlertMessageView:@"提现金额最低15元！"];
         return;
-    }else if ([_textField.text floatValue]>[_balance floatValue]){
+    }else if ([_textField.text floatValue]>[self.model.data.accountBalance floatValue]){
         [self.view showLoadingMeg:@"提现金额超出可提余额" time:MESSAGE_SHOW_TIME];
         return;
     }
@@ -168,7 +159,7 @@
     float money = [_textField.text floatValue];
     
     
-    NSString *str1 = [NSString stringWithFormat:@"金额%.2f元将提现至尾号为%@%@，请注意查收",money,[LPTools isNullToString:_model.data.bankNumber],[LPTools isNullToString:_model.data.bankName]];
+    NSString *str1 = [NSString stringWithFormat:@"金额%.2f元将提现至尾号为%@%@，请注意查收",money,[LPTools isNullToString:_model.data.bankNumArr],[LPTools isNullToString:_model.data.bankName]];
     NSMutableAttributedString *str = [[NSMutableAttributedString alloc]initWithString:str1];
     //设置：在3~length-3个单位长度内的内容显示色
     [str addAttribute:NSForegroundColorAttributeName value:[UIColor baseColor] range:[str1 rangeOfString:[NSString stringWithFormat:@"%.2f",money]]];
@@ -205,7 +196,7 @@
     NSString *newPasswordmd5 = [[NSString stringWithFormat:@"%@lanpin123.com",passwordmd5] md5];
     
     NSDictionary *dic = @{@"bankName":[LPTools isNullToString:self.model.data.bankName],
-                          @"bankNum":[LPTools isNullToString:self.model.data.bankNumber],
+                          @"bankNum":[LPTools isNullToString:self.model.data.bankNumArr],
                           @"money":[NSString stringWithFormat:@"%.2f",money]
                           };
     NSString *url = [NSString stringWithFormat:@"billrecord/withdraw_deposit?drawPwd=%@",newPasswordmd5];
@@ -217,6 +208,7 @@
                 if ([responseObject[@"data"] integerValue] ==1) {
                     //                       [self.view showLoadingMeg:@"提现成功" time:MESSAGE_SHOW_TIME];
                     //                        [self.navigationController popViewControllerAnimated:YES];
+                    self.model.data.accountBalance = [NSString stringWithFormat:@"%.2f",self.model.data.accountBalance.floatValue - money];
                     self.SuccessView.hidden = NO;
                 }else{
                     [self.view showLoadingMeg:@"提现申请失败,请稍后再试" time:MESSAGE_SHOW_TIME];
@@ -304,22 +296,7 @@
     }];
 }
 
-#pragma mark - request
--(void)requestQueryBankcardwithDraw{
-    [NetApiManager requestQueryBankcardwithDrawWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
-        NSLog(@"%@",responseObject);
-        if (isSuccess) {
-            if ([responseObject[@"code"] integerValue] == 0) {
-                  self.model = [LPBankcardwithDrawModel mj_objectWithKeyValues:responseObject];
-            }else{
-                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
-            }
-          
-        }else{
-            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
-        }
-    }];
-}
+ 
 
 
 

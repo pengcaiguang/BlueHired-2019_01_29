@@ -47,6 +47,7 @@
     [_alertView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(LENGTH_SIZE(50));
         make.right.mas_equalTo(LENGTH_SIZE(-50));
+        
         make.center.equalTo(self);
     }];
     _alertView.clipsToBounds = YES;

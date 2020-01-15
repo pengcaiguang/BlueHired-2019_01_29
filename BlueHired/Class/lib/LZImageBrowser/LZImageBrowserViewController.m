@@ -24,7 +24,7 @@
 @implementation LZImageBrowserViewController
 - (id)initWithUrlStr:(NSArray<NSString *>*)imageUrls originImageViews:(NSArray<UIImageView *>*)originImageViews selectPage:(NSInteger)selectPage {
     if (self = [super init]) {
-//        self.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+        self.modalPresentationStyle = UIModalPresentationOverCurrentContext;
         self.transitioningDelegate = self;
         self.imageUrls = imageUrls;
         self.originImageViews = originImageViews;
@@ -58,6 +58,21 @@
     [self.view addSubview:self.browserMainView];
 
 }
+
+// 这个方法返回支持的方向
+-(UIInterfaceOrientationMask)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+// 这个返回是否自动旋转
+- (BOOL)shouldAutorotate{
+  return YES;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation{
+    return UIInterfaceOrientationPortrait;
+}
+
 
 #pragma mark --LZImageBrowserMainViewDelegate
 /* 单击 后的操作 */

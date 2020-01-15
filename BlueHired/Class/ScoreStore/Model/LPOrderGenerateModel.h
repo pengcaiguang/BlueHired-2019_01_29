@@ -49,6 +49,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *time;
 @property (nonatomic, copy) NSString *setTime;
 @property (nonatomic, copy) NSString *postage;
+//@property (nonatomic, copy) NSString *shareNum;
+@property (nonatomic, copy) NSString *discountNum;
 
 @end
 
@@ -80,6 +82,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *totalQuantity;
 @property (nonatomic, copy) NSString *userTel;
 @property (nonatomic, copy) NSString *serviceTel;
+@property (nonatomic, copy) NSString *shareNum;
+@property (nonatomic, copy) NSString *discountNum;
 @property (nonatomic, copy) NSArray <LPOrderGenerateDataItemModel *> *orderItemList;
 
 @end

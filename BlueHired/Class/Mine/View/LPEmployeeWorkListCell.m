@@ -34,9 +34,12 @@
     if (model.recommendType.integerValue == 0) {        //未推荐
         [self.noteBtn setImage:[UIImage imageNamed:@"NoteMessage"] forState:UIControlStateNormal];
         [self.noteBtn setTitle:@"" forState:UIControlStateNormal];
+        self.Layout_noteBtn_right.constant = LENGTH_SIZE(0);
     }else{
         [self.noteBtn setImage:[UIImage new] forState:UIControlStateNormal];
         [self.noteBtn setTitle:@"已推荐" forState:UIControlStateNormal];
+        self.Layout_noteBtn_right.constant = LENGTH_SIZE(13);
+
     }
 }
 
@@ -48,7 +51,7 @@
     if (self.model.recommendType.integerValue == 0) {        //未推荐
         [self requestSendMechanism];
     }
-
+ 
 }
 
 -(void)requestSendMechanism{

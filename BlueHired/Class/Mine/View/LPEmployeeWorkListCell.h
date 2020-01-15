@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UILabel *PostType;
 @property (weak, nonatomic) IBOutlet UIButton *noteBtn;
 @property(nonatomic,strong) LPLPEmployeeDataModel *Empmodel;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *Layout_noteBtn_right;
 
 @property (nonatomic,strong)LPMechanismcommentMechanismlistDataModel *model;
 

@@ -85,7 +85,7 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
 
     self.headViewArr = [[NSMutableArray alloc] init];
     self.IntStep = 1;
-    self.navigationItem.title = @"工资卡绑定";
+    self.navigationItem.title = @"工资卡管理";
     self.TypeArray = @[@"招商银行",
                        @"兴业银行",
                        @"中国建设银行",
@@ -1541,9 +1541,8 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
         if (bankNumberString.length!=0) {           //换绑
             self.HeadTitleArr = @[@"工资卡信息",@"银行卡扫描",@"银行卡信息"];
             self.ClassType = 3;
-        }
-        else        //绑定
-        {
+        } else {      //绑定
+        
             self.HeadTitleArr = @[@"身份证信息",@"银行卡扫描",@"银行卡信息",@"设置提现密码"];
             self.ClassType = 2;
         }

@@ -410,6 +410,7 @@
 
 - (void)directGoPhotoViewController {
     HXCustomNavigationController *nav = [[HXCustomNavigationController alloc] initWithManager:self.manager delegate:self];
+    nav.modalPresentationStyle = UIModalPresentationFullScreen;
     [[self hx_viewController] presentViewController:nav animated:YES completion:nil]; 
 }
 #pragma mark - < HXCustomNavigationControllerDelegate >
@@ -829,7 +830,6 @@
 - (void)setupNewFrame {
     CGFloat itemW = (self.hx_w - self.spacing * (self.lineCount - 1)) / self.lineCount;
     if (itemW) self.flowLayout.itemSize = CGSizeMake(itemW, itemW);
-    
     NSInteger dataCount = self.tempShowAddCell ? self.dataList.count + 1 : self.dataList.count;
     NSInteger numOfLinesNew = 0;
     if (self.lineCount != 0) numOfLinesNew = (dataCount / self.lineCount) + 1;
@@ -843,7 +843,11 @@
             newHeight = 0;
             self.numOfLinesOld = 0;
         }
+       
+
         self.hx_h = newHeight;
+  
+
         if ([self.delegate respondsToSelector:@selector(photoView:updateFrame:)]) {
             [self.delegate photoView:self updateFrame:self.frame]; 
         }
@@ -860,12 +864,14 @@
     NSInteger numOfLinesNew = (dataCount / self.lineCount) + 1;
     
     [self setupNewFrame];
-    
+    NSLog(@"layoutSubviews");
     CGFloat width = self.frame.size.width;
     CGFloat height = self.frame.size.height;
     
     if (dataCount == 1) {
         CGFloat itemW = (width - self.spacing * (self.lineCount - 1)) / self.lineCount;
+        NSLog(@"ios bug height =%f          itemW =%f       height =%d          itemW =%d",height,itemW,(int)height,(int)itemW);
+
         if ((int)height != (int)itemW) {
             self.hx_h = itemW;
         }

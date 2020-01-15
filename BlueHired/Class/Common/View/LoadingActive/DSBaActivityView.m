@@ -31,6 +31,9 @@ static DSBaActivityView *activiyView;
         }
     });
     [[UIApplication sharedApplication].keyWindow bringSubviewToFront:activiyView];
+    [activiyView.GIFImageView stopAnimating];
+    [activiyView.GIFImageView startAnimating];
+
     activiyView.showTimes += 1;
     activiyView.alpha = 1;
 }

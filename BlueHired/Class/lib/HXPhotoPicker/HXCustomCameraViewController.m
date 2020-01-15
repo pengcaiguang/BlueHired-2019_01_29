@@ -46,6 +46,7 @@
     self = [super init];
     if (self) {
         self.statusBarShouldBeHidden = YES;
+        self.modalPresentationStyle = UIModalPresentationFullScreen;
     }
     return self;
 }

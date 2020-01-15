@@ -25,7 +25,6 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 @property(nonatomic,strong) NSMutableArray <LPWorklistDataWorkListModel *>*listArray;
 
 @property(nonatomic,copy) NSArray *textArray;
-@property(nonatomic,copy) NSString *searchWord;
 
 @property(nonatomic,strong)LPSearchBar *SearchBar;
 
@@ -50,16 +49,24 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         make.edges.equalTo(self.view);
     }];
     self.Resulttableview.hidden = YES;
+
+
 }
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.textArray = (NSArray *)kUserDefaultsValue(MainSearchHistory);
     [self.tableview reloadData];
+    
+    if (self.searchWord.length>0) {
+        [self.SearchBar resignFirstResponder];
+           [self touchSearchButton];
+       }
+   
 }
 
 -(void)setSearchView{
-    LPSearchBar *searchBar = [self addSearchBarWithFrame:CGRectMake(0, 0, SCREEN_WIDTH - 2 * 44 - 0 * 15 - 44 -5 , 44)];
+    LPSearchBar *searchBar = [self addSearchBarWithFrame:CGRectMake(0, 0, SCREEN_WIDTH - 2 * 44 - 2 * 15 - 44 -5 , 44)];
     self.SearchBar = searchBar;
     [searchBar becomeFirstResponder];
     UIView *wrapView = [[UIView alloc] initWithFrame:searchBar.frame];
@@ -159,6 +166,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 //    LPMainSearchResultVC *vc = [[LPMainSearchResultVC alloc]init];
 //    vc.string = string;
 //    [self.navigationController pushViewController:vc animated:YES];
+    [DSBaActivityView showActiviTy];
     [[[UIApplication sharedApplication] keyWindow] endEditing:YES];
     self.Resulttableview.hidden = NO;
     self.page = 1;
@@ -206,11 +214,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (tableView == self.Resulttableview) {
         
-        LPWorklistDataWorkListModel *m = self.listArray[indexPath.row];
-        if (m.key.length == 0) {
-            return LENGTH_SIZE(120) ;
-        }
-        return LENGTH_SIZE(140) ;
+        return LENGTH_SIZE(86) ;
     }
     return 44.0;
 }
@@ -404,6 +408,8 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         NSLog(@"%@",responseObject);
         [self.Resulttableview.mj_header endRefreshing];
         [self.Resulttableview.mj_footer endRefreshing];
+        [DSBaActivityView hideActiviTy];
+
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
                  self.model = [LPWorklistModel mj_objectWithKeyValues:responseObject];

@@ -14,20 +14,20 @@
     [super awakeFromNib];
     // Initialization code
     self.selectButton.hidden = YES;
-    [self.selectButton setImage:[UIImage imageNamed:@"add_ record_normal"] forState:UIControlStateNormal];
-    [self.selectButton setImage:[UIImage imageNamed:@"add_ record_selected"] forState:UIControlStateSelected];
+    [self.selectButton setImage:[UIImage imageNamed:@"add_ record_normal2"] forState:UIControlStateNormal];
+    [self.selectButton setImage:[UIImage imageNamed:@"add_ record_selected2"] forState:UIControlStateSelected];
+    self.essayUrlImageView.layer.cornerRadius = LENGTH_SIZE(6);
 }
 
 -(void)setModel:(LPEssayCollectionDataModel *)model{
     _model = model;
     self.essayNameLabel.text = model.essayName;
     NSArray *imageArray = [model.essayUrl componentsSeparatedByString:@";"];
-    [self.essayUrlImageView sd_setImageWithURL:[NSURL URLWithString:imageArray[0]]];
-    self.essayAuthorLabel.text = model.essayAuthor;
-    
-    self.viewLabel.text = model.view ? [model.view stringValue] : @"0";
-    self.commentTotalLabel.text = model.commentTotal ? [model.commentTotal stringValue] : @"0";
-    self.praiseTotalLabel.text = model.praiseTotal ? [model.praiseTotal stringValue] : @"0";
+    [self.essayUrlImageView yy_setImageWithURL:[NSURL URLWithString:imageArray[0]]
+    placeholder:[UIImage imageWithColor:[UIColor colorWithHexString:@"#E0E0E0"]]];
+
+    self.Time.text = [NSString stringWithFormat:@"发布时间：%@",[NSString convertStringToTime:model.time]];
+
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

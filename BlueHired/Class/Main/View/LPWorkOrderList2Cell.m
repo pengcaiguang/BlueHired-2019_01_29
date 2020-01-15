@@ -27,6 +27,12 @@
     self.CommentButton.layer.borderWidth = LENGTH_SIZE(1);
     self.CommentButton.layer.borderColor = [UIColor baseColor].CGColor;
     
+    self.lendTypeLabel.layer.masksToBounds = YES;
+    self.lendTypeLabel.layer.cornerRadius = LENGTH_SIZE(3.0);
+    self.lendTypeLabel.layer.borderWidth = LENGTH_SIZE(0.5);
+    self.lendTypeLabel.layer.borderColor = [UIColor baseColor].CGColor;
+    
+    
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(CellSelect:)];
     [self.TopView addGestureRecognizer:tap];
     
@@ -56,23 +62,39 @@
     _model = model;
     [self.mechanismUrlImageView sd_setImageWithURL:[NSURL URLWithString:model.mechanismUrl]];
     self.mechanismNameLabel.text = model.mechanismName;
-    if (model.postType.integerValue == 1) {
-        self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/时",model.workHourMoney];
+    
+    if ([model.lendType integerValue] == 1) {
+        self.ayoutConstraint_Lend_Right.constant = LENGTH_SIZE(8);
+        self.ayoutConstraint_Lend_width.constant = LENGTH_SIZE(38);
     }else{
-        self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/月",model.wageRange];
+        self.ayoutConstraint_Lend_Right.constant = LENGTH_SIZE(0);
+        self.ayoutConstraint_Lend_width.constant = LENGTH_SIZE(0);
     }
-    self.maxNumberLabel.text = [NSString stringWithFormat:@"%@",model.workTypeName];
-    self.applyNumberLabel.text = [NSString stringWithFormat:@"招%@人 / 已报名%@人",model.maxNumber,model.applyNumber ? model.applyNumber : @"0"];
-
-    if (model.recruitStatus.integerValue == 1) {
-        self.applyNumberLabel.text = [NSString stringWithFormat:@"招%@人",model.maxNumber];
-        self.isWorkers.hidden = NO;
+    
+    if (model.age.length) {
+        NSString *WorkTypeNameStr = [NSString stringWithFormat:@"%@  %@",model.workTypeName,model.age];
+        NSMutableAttributedString *WorkTypeString = [[NSMutableAttributedString alloc] initWithString:WorkTypeNameStr];
+        [WorkTypeString addAttributes:@{NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#999999"],
+                                        NSFontAttributeName: FONT_SIZE(11),}
+                                range:[WorkTypeNameStr rangeOfString:model.age]];
+        self.maxNumberLabel.attributedText = WorkTypeString;
     }else{
- 
+        self.maxNumberLabel.text = model.workTypeName;
+    }
+    
+    if (model.recruitStatus.integerValue == 1) {
+         self.isWorkers.hidden = NO;
+    }else{
         self.isWorkers.hidden = YES;
     }
     
-    self.isApplyLabel.hidden = YES;
+    if ([model.postType integerValue] == 1) {
+        self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/时",reviseString(model.workMoney)];
+    }else{
+        self.wageRangeLabel.text = [NSString stringWithFormat:@"%@元/月",model.wageRange];
+    }
+    
+ 
  
     self.ShareButton.hidden = YES;
     self.CommentButton.hidden = YES;

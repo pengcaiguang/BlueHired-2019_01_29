@@ -28,9 +28,9 @@
         if (HXShowLog) NSSLog(@"数组里装的不是HXPhotoModel对象或者为空");
         return;
     }
-    __block NSInteger index = 0;
-    NSInteger count = self.count;
-    __block NSMutableArray *errorArray;
+//    __block NSInteger index = 0;
+//    NSInteger count = self.count;
+//    __block NSMutableArray *errorArray;
     for (HXPhotoModel *model in self) {
         if (model.subType == HXPhotoModelMediaSubTypePhoto) {
             

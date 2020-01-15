@@ -65,7 +65,15 @@
     self.selectStock = -1;
     
     self.CartNumberLabel.layer.cornerRadius = LENGTH_SIZE(6);
-    self.gradeArr = @[@"见习职工",@"初级职工",@"中级职工",@"高级职工",@"部门精英",@"部门经理",@"区域经理",@"总经理",@"董事长"];
+    self.gradeArr = @[@"见习职工",
+                      @"初级职工",
+                      @"中级职工",
+                      @"高级职工",
+                      @"部门精英",
+                      @"部门经理",
+                      @"区域经理",
+                      @"总经理",
+                      @"董事长"];
     [self.ScrollView addSubview:self.cycleScrollView];
      
     self.cycleScrollView.delegate = self;
@@ -90,6 +98,20 @@
             LPStoreCartVC *vc = [[LPStoreCartVC alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
         }
+    }
+}
+
+- (IBAction)TouchShare:(id)sender {
+    if ([LoginUtils validationLogin:self]) {
+        NSString  *url = [NSString stringWithFormat:@"%@resident/#/commoditylike?productId=%@&shareUserId=%@",BaseRequestWeiXiURL,self.model.data.id,kUserDefaultsValue(LOGINID)];
+       NSString *encodedUrl = [NSString stringWithString:[url stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+       [LPTools ClickShare:encodedUrl Title:self.model.data.name];
+        WEAK_SELF()
+        [LPTools shareInstance].ShareBlock = ^(BOOL isSuccess, NSInteger Type) {
+            if (isSuccess) {
+                [weakSelf requestQueryInsertProductShare];
+             }
+        };
     }
 }
 
@@ -517,7 +539,7 @@
             make.bottom.mas_offset(-kBottomBarHeight);
             make.left.mas_offset(0);
             make.height.mas_offset(LENGTH_SIZE(48));
-            make.width.mas_offset(SCREEN_WIDTH/2);
+            make.width.mas_offset(0);
         }];
         [AddCart setTitle:@"加入购物车" forState:UIControlStateNormal];
         [AddCart setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -532,9 +554,9 @@
             make.bottom.mas_offset(-kBottomBarHeight);
             make.right.mas_offset(0);
             make.height.mas_offset(LENGTH_SIZE(48));
-            make.width.mas_offset(SCREEN_WIDTH/2);
+            make.width.mas_offset(SCREEN_WIDTH);
         }];
-        [Buy setTitle:@"立即购买" forState:UIControlStateNormal];
+        [Buy setTitle:@"立即兑换" forState:UIControlStateNormal];
         [Buy setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         Buy.titleLabel.font = FONT_SIZE(17);
         Buy.backgroundColor = [UIColor colorWithHexString:@"#FF5353"];
@@ -800,6 +822,29 @@
             }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+
+
+-(void)requestQueryInsertProductShare{
+
+    NSString *urlStr = [NSString stringWithFormat:@"product/insert_product_share?productId=%@",self.model.data.id];
+    
+    [NetApiManager requestQueryInsertProductShare:nil URLString:urlStr withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if ([responseObject[@"data"] integerValue] == 1) {
+
+                }else{
+//                    [[UIApplication sharedApplication].keyWindow showLoadingMeg:@"分享失败,请稍后再试" time:MESSAGE_SHOW_TIME];
+                }
+            }else{
+                [[UIApplication sharedApplication].keyWindow showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
+        }else{
+            [[UIApplication sharedApplication].keyWindow showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
     }];
 }

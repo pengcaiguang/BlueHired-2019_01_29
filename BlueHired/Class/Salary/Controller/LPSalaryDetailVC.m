@@ -37,7 +37,7 @@
     }];
     month.textColor = [UIColor colorWithHexString:@"#333333"];
     month.font = [UIFont boldSystemFontOfSize:FontSize(16)];
-    month.text = [DataTimeTool getDataTime:self.currentDateString DateFormat:@"yyyy年MM月"];
+    month.text = self.model.time;
     
     UILabel *money = [[UILabel alloc] init];
     [view addSubview:money];

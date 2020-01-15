@@ -210,4 +210,10 @@
     return platform;
     
 }
+
++(double)systemVersion{
+    NSString *version = [UIDevice currentDevice].systemVersion;
+    return version.doubleValue;
+}
+
 @end

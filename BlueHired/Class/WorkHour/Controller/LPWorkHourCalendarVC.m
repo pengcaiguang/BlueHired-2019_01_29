@@ -203,7 +203,7 @@
 //日历记加班
 -(void)initRecardView:(NSString *)currentDateString{
     
-    if ([self.baseSalary isKindOfClass:[NSNull class]]) {
+    if (ISNIL(self.baseSalary)) {
         NSString *str1 = [NSString stringWithFormat:@"您尚未设置企业底薪，如果记录工时，则企业底薪默认为0，工资单价默认为0，是否继续记录?"];
         if (self.WorkHourType == 2) {
             str1 = @"您尚未设置企业底薪，如果记录工时，则企业底薪默认为0，工资单价默认为0，是否继续记录?";
@@ -222,13 +222,13 @@
                     vc.WorkHourType = self.WorkHourType;
                     vc.hidesBottomBarWhenPushed = YES;
                     [self.navigationController pushViewController:vc animated:YES];
-                }else if (self.WorkHourType == 4){
+                } else if (self.WorkHourType == 4){
                     LPLabourCostSetVC *vc = [[LPLabourCostSetVC alloc] init];
                     vc.Type = 2;
                     vc.WorkHourType = self.WorkHourType;
                     vc.hidesBottomBarWhenPushed = YES;
                     [self.navigationController pushViewController:vc animated:YES];
-                }else{
+                } else {
                     [self requestQueryYsetInit];
                     self.RecardView.currentDateString = currentDateString;
                     self.RecardView.monthHours = self.monthHours;

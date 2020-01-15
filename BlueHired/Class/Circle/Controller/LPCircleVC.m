@@ -32,6 +32,8 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+//    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http:www.baidu.com"]];
+
     // Do any additional setup after loading the view.
     [self.navigationController.navigationBar setShadowImage:[UIImage new]];
 
@@ -229,14 +231,11 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
     UIButton *button = [[UIButton alloc]init];
     [self.view addSubview:button];
     [button mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(50, 50));
-        make.right.mas_equalTo(-20);
-        make.bottom.mas_equalTo(-34);
+        make.size.mas_equalTo(CGSizeMake(LENGTH_SIZE(70), LENGTH_SIZE(72)));
+        make.right.mas_equalTo(LENGTH_SIZE(-2));
+        make.bottom.mas_equalTo(LENGTH_SIZE(-2));
     }];
     [button setImage:[UIImage imageNamed:@"sendDynamic_img"] forState:UIControlStateNormal];
-    button.backgroundColor = [UIColor colorWithHexString:@"#FB5454"];
-    button.layer.masksToBounds = YES;
-    button.layer.cornerRadius = 25;
     [button addTarget:self action:@selector(touchSendButton) forControlEvents:UIControlEventTouchUpInside];
 }
 -(void)touchSendButton{
@@ -305,7 +304,7 @@ static NSString *LPCircleCollectionViewCellID = @"LPCircleCollectionViewCell";
 }
 #pragma mark -- UICollectionViewDelegateFlowLayout
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    if ([DeviceUtils deviceType] == IPhone_X) {
+    if (IS_iPhoneX) {
         return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-88-83.0);
     }else{
         return CGSizeMake(SCREEN_WIDTH , SCREEN_HEIGHT-64-49);

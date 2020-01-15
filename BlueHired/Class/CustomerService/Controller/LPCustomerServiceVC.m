@@ -65,10 +65,11 @@ static NSString *LLPCustomerServiceCellID = @"LLPCustomerServiceCell";
 - (UIBarButtonItem *)rt_customBackItemWithTarget:(id)target action:(SEL)action {
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     [btn setImage:[UIImage imageNamed:@"ic_back_white"] forState:UIControlStateNormal];
-    [btn setTitle:@" 返回" forState:UIControlStateNormal];
+    [btn setTitle:@"返回" forState:UIControlStateNormal];
     [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [btn sizeToFit];
     [btn addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+    btn.titleLabel.font = [UIFont systemFontOfSize:15];
     return [[UIBarButtonItem alloc] initWithCustomView:btn];
 }
 

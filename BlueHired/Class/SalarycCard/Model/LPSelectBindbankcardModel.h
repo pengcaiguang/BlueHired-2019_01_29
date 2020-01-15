@@ -31,6 +31,10 @@
 @property (nonatomic, copy) NSNumber *type;
 @property (nonatomic, copy) NSNumber *userId;
 @property (nonatomic, copy) NSString *userName;
+@property (nonatomic, copy) NSString *accountBalance;
+@property (nonatomic, copy) NSString *chargeMoney;
+@property (nonatomic, copy) NSString *remark;
+@property (nonatomic, copy) NSString *bankNumArr;
 
 @end
 

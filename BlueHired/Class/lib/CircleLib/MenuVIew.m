@@ -26,7 +26,7 @@
 - (void)setup
 {
     self.clipsToBounds = YES;
-    self.layer.cornerRadius = 15;
+    self.layer.cornerRadius = LENGTH_SIZE(15);
     self.backgroundColor = [UIColor colorWithRed:69/255.0 green:74/255.0 blue:76/255.0 alpha:1];
     
     _likeButton = [self creatButtonWithTitle:@"点赞" image:[UIImage imageNamed:@"喜欢 (1)"] selImage:[UIImage imageNamed:@""] target:self selector:@selector(likeButtonClicked)];

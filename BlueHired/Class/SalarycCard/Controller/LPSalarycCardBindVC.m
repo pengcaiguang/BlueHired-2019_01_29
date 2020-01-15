@@ -235,9 +235,7 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
                     LPSalarycCardBindPhoneVC *vc = [[LPSalarycCardBindPhoneVC alloc]init];
                     vc.type = 2;
                     [self.navigationController pushViewController:vc animated:YES];
-                }
-                else
-                {
+                } else {
                     [self requestUpdateDrawpwd];
                 }
 
@@ -611,9 +609,7 @@ static NSString *RSAPrivateKey = @"MIICeAIBADANBgkqhkiG9w0BAQEFAASCAmIwggJeAgEAA
     }];
 }
 
-- (BOOL)validateNumber:(NSString*)number
-
-{
+- (BOOL)validateNumber:(NSString*)number{
     BOOL res =YES;
     NSCharacterSet* tmpSet = [NSCharacterSet characterSetWithCharactersInString:@"0123456789X"];
     int i =0;

@@ -11,20 +11,22 @@
 #import "LPCartItemListModel.h"
 #import "LPOrderAddressModel.h"
 #import "LPOrderGenerateModel.h"
+#import "LPStoreShareModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 typedef void(^OrderModelStatusBlock)(LPOrderGenerateDataorderModel *OrderModel,NSInteger Type);
-typedef void(^CartVCBlock)(void);
+typedef void(^CartVCBlock)(LPOrderGenerateModel *GenModel);
 
 @interface LPConfirmAnOrderVC : LPBaseViewController
 
 //type == 0 ,确认订单      type == 1 ,订单详情
 @property (nonatomic,assign) NSInteger Type;
 
-//BuyType == 0 ,直接购买     BuyType == 1 ,购物车
-@property (nonatomic,assign) NSInteger BuyType;
-@property (nonatomic,strong) ProductSkuListModel *BuyModel;
-@property (nonatomic,assign) NSInteger BuyNumber;
+//BuyType == 0 ,直接购买     BuyType == 1 ,购物车   BuyType == 2 ,分享
+@property (nonatomic, assign) NSInteger BuyType;
+@property (nonatomic, strong) ProductSkuListModel *BuyModel;
+@property (nonatomic, assign) NSInteger BuyNumber;
+@property (nonatomic, strong) LPStoreShareDataModel *ShareModel;
 
 @property (nonatomic, strong) NSMutableArray <LPCartItemListDataModel *>*CartArray;
 
@@ -33,6 +35,9 @@ typedef void(^CartVCBlock)(void);
 
 //列表过来
 @property (nonatomic, strong) LPOrderGenerateDataorderModel *OrderModel;
+
+@property (nonatomic, strong) NSString *ShareOrderID;
+
 
 @property (nonatomic, copy) OrderModelStatusBlock OrderBlock;
 @property (nonatomic, copy) CartVCBlock CartBlock;

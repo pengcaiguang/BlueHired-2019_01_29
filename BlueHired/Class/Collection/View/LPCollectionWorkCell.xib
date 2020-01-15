@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -16,7 +14,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="140"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="139.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="140"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CFy-bn-5DZ">
@@ -28,23 +26,6 @@
                                     <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="6"/>
                                 </userDefinedRuntimeAttributes>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="已报名" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sbo-XG-ffk">
-                                <rect key="frame" x="0.0" y="45" width="80" height="15"/>
-                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="15" id="yxx-nV-p4Y">
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
-                                        </userDefinedRuntimeAttributes>
-                                    </constraint>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
-                                </userDefinedRuntimeAttributes>
-                            </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="待招聘" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Cq-Fz-GlT">
                                 <rect key="frame" x="0.0" y="0.0" width="40" height="13.5"/>
                                 <color key="backgroundColor" red="1" green="0.5568627451" blue="0.34901960780000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -67,11 +48,6 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="b1g-zN-6G0" firstAttribute="top" secondItem="CFy-bn-5DZ" secondAttribute="top" id="0xH-ot-J8z">
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
-                                </userDefinedRuntimeAttributes>
-                            </constraint>
-                            <constraint firstAttribute="bottom" secondItem="Sbo-XG-ffk" secondAttribute="bottom" id="Eqz-C9-gMf">
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
                                 </userDefinedRuntimeAttributes>
@@ -102,17 +78,7 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </constraint>
-                            <constraint firstAttribute="trailing" secondItem="Sbo-XG-ffk" secondAttribute="trailing" id="czb-Gs-pH0">
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
-                                </userDefinedRuntimeAttributes>
-                            </constraint>
                             <constraint firstItem="2Cq-Fz-GlT" firstAttribute="top" secondItem="CFy-bn-5DZ" secondAttribute="top" id="f3z-J7-V9u"/>
-                            <constraint firstItem="Sbo-XG-ffk" firstAttribute="leading" secondItem="CFy-bn-5DZ" secondAttribute="leading" id="jmc-Qg-rAN">
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
-                                </userDefinedRuntimeAttributes>
-                            </constraint>
                         </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="6"/>
@@ -123,37 +89,6 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                         <color key="textColor" red="1" green="0.37647058820000001" blue="0.37647058820000001" alpha="1" colorSpace="calibratedRGB"/>
-                        <nil key="highlightedColor"/>
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
-                        </userDefinedRuntimeAttributes>
-                    </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tHe-PK-dwO">
-                        <rect key="frame" x="106" y="69" width="31" height="14.5"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                        <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
-                        <nil key="highlightedColor"/>
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
-                        </userDefinedRuntimeAttributes>
-                    </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="可借支" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s8P-qz-Cpw">
-                        <rect key="frame" x="106" y="91.5" width="45" height="17"/>
-                        <color key="backgroundColor" red="0.23529411759999999" green="0.68627450980000004" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="17" id="5Ii-um-4wi">
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
-                                </userDefinedRuntimeAttributes>
-                            </constraint>
-                            <constraint firstAttribute="width" constant="45" id="Ndh-7I-ku2">
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
-                                </userDefinedRuntimeAttributes>
-                            </constraint>
-                        </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
@@ -205,7 +140,7 @@
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I2C-K9-azm">
                         <rect key="frame" x="106" y="18" width="201" height="18"/>
                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                        <nil key="textColor"/>
+                        <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
@@ -245,23 +180,11 @@
                             </constraint>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hZ8-fW-rND">
-                        <rect key="frame" x="106" y="115.5" width="31" height="14"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="14" id="Tel-LM-czQ"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                        <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
-                        <nil key="highlightedColor"/>
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
-                        </userDefinedRuntimeAttributes>
-                    </label>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="star" translatesAutoresizingMaskIntoConstraints="NO" id="22A-lx-cFe">
                         <rect key="frame" x="13" y="95" width="14" height="14"/>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5jk-qQ-N1u">
-                        <rect key="frame" x="159" y="91.5" width="31" height="17"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5jk-qQ-N1u">
+                        <rect key="frame" x="159" y="91.5" width="28.5" height="17"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="17" id="0Ax-on-x6A">
                                 <userDefinedRuntimeAttributes>
@@ -269,8 +192,37 @@
                                 </userDefinedRuntimeAttributes>
                             </constraint>
                         </constraints>
-                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
                         <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
+                        </userDefinedRuntimeAttributes>
+                    </label>
+                    <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eYS-og-wWU">
+                        <rect key="frame" x="0.0" y="139" width="320" height="1"/>
+                        <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="ig9-Ia-jsJ"/>
+                        </constraints>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="可借支" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s8P-qz-Cpw">
+                        <rect key="frame" x="169" y="19" width="45" height="17"/>
+                        <color key="backgroundColor" red="0.23529411759999999" green="0.68627450980000004" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="17" id="5Ii-um-4wi">
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                            </constraint>
+                            <constraint firstAttribute="width" constant="45" id="Ndh-7I-ku2">
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                            </constraint>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
@@ -278,13 +230,8 @@
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="tHe-PK-dwO" firstAttribute="leading" secondItem="I2C-K9-azm" secondAttribute="leading" id="0KP-QB-sGZ">
-                        <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
-                        </userDefinedRuntimeAttributes>
-                    </constraint>
                     <constraint firstItem="5jk-qQ-N1u" firstAttribute="centerY" secondItem="s8P-qz-Cpw" secondAttribute="centerY" id="BTy-DZ-GLT"/>
-                    <constraint firstItem="tHe-PK-dwO" firstAttribute="top" secondItem="ltc-KD-yl7" secondAttribute="bottom" constant="8" id="BXC-gB-HON"/>
+                    <constraint firstAttribute="trailing" secondItem="eYS-og-wWU" secondAttribute="trailing" id="BmS-pL-xsd"/>
                     <constraint firstItem="CFy-bn-5DZ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="13" id="D7O-sg-ESq">
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
@@ -308,6 +255,7 @@
                         </userDefinedRuntimeAttributes>
                     </constraint>
                     <constraint firstItem="s8P-qz-Cpw" firstAttribute="leading" secondItem="I2C-K9-azm" secondAttribute="leading" id="Fj7-hb-hVo"/>
+                    <constraint firstItem="eYS-og-wWU" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="GIZ-0v-B8Z"/>
                     <constraint firstItem="9n5-lU-Wh7" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="HCw-dt-mOa">
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
@@ -329,7 +277,6 @@
                             <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
                         </userDefinedRuntimeAttributes>
                     </constraint>
-                    <constraint firstItem="s8P-qz-Cpw" firstAttribute="top" secondItem="tHe-PK-dwO" secondAttribute="bottom" constant="8" id="cNc-q3-QYf"/>
                     <constraint firstItem="E56-um-XFU" firstAttribute="centerY" secondItem="22A-lx-cFe" secondAttribute="centerY" id="hhk-97-xmI"/>
                     <constraint firstAttribute="trailing" secondItem="I2C-K9-azm" secondAttribute="trailing" constant="13" id="imy-dR-B1k">
                         <userDefinedRuntimeAttributes>
@@ -337,9 +284,7 @@
                         </userDefinedRuntimeAttributes>
                     </constraint>
                     <constraint firstItem="ltc-KD-yl7" firstAttribute="top" secondItem="I2C-K9-azm" secondAttribute="bottom" constant="8" id="jje-bG-MAg"/>
-                    <constraint firstItem="hZ8-fW-rND" firstAttribute="top" secondItem="s8P-qz-Cpw" secondAttribute="bottom" constant="7" id="nFC-UB-hDQ"/>
-                    <constraint firstItem="hZ8-fW-rND" firstAttribute="leading" secondItem="I2C-K9-azm" secondAttribute="leading" id="noX-3Z-eBl"/>
-                    <constraint firstAttribute="bottom" secondItem="CFy-bn-5DZ" secondAttribute="bottom" constant="59.5" id="oOR-M0-ePX"/>
+                    <constraint firstAttribute="bottom" secondItem="eYS-og-wWU" secondAttribute="bottom" id="mke-wA-riU"/>
                     <constraint firstItem="5jk-qQ-N1u" firstAttribute="leading" secondItem="s8P-qz-Cpw" secondAttribute="trailing" constant="8" id="pST-3e-s1j"/>
                     <constraint firstItem="KCB-n0-oqC" firstAttribute="top" secondItem="I2C-K9-azm" secondAttribute="top" id="pjt-OV-PGC">
                         <userDefinedRuntimeAttributes>
@@ -361,11 +306,7 @@
             <viewLayoutGuide key="safeArea" id="aW0-zy-SZf"/>
             <connections>
                 <outlet property="AgeLabel" destination="5jk-qQ-N1u" id="YwR-2M-XKE"/>
-                <outlet property="applyNumberLabel" destination="tHe-PK-dwO" id="si0-ad-WCN"/>
-                <outlet property="isApplyLabel" destination="Sbo-XG-ffk" id="nK6-h9-DSc"/>
                 <outlet property="isWorkers" destination="2Cq-Fz-GlT" id="tZH-vg-zYC"/>
-                <outlet property="keyLabel" destination="hZ8-fW-rND" id="dRe-Xb-efn"/>
-                <outlet property="keyLabel_constraint_Height" destination="Tel-LM-czQ" id="yh4-Ix-UpQ"/>
                 <outlet property="keyLabel_constraint_right" destination="imy-dR-B1k" id="VVO-0j-7TV"/>
                 <outlet property="label_contraint_width" destination="D7O-sg-ESq" id="bFx-NC-SII"/>
                 <outlet property="lendTypeLabel" destination="s8P-qz-Cpw" id="i9L-MA-QE9"/>

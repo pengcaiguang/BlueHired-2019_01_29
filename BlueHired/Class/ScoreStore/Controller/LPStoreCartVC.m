@@ -204,7 +204,8 @@ static NSString *LPStoreCartCellID = @"LPStoreCartCell";
         
         [self.navigationController pushViewController:vc animated:YES];
         WEAK_SELF()
-        vc.CartBlock = ^{
+        vc.CartBlock = ^(LPOrderGenerateModel * _Nonnull GenModel) {
+
             [weakSelf.listArray removeObjectsInArray:weakSelf.selectArray];
             [weakSelf.selectArray removeObjectsInArray:weakSelf.selectArray];
             if (weakSelf.listArray.count == 0 ) {

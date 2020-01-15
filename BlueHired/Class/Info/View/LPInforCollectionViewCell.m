@@ -74,9 +74,9 @@ static NSString *LPInfoCellID = @"LPInfoCell";
         if (self.page == 1) {
             self.listArray = [NSMutableArray array];
         }
-        if (self.model.data.count > 0) {
+        if (self.model.data.list.count > 0) {
             self.page += 1;
-            [self.listArray addObjectsFromArray:self.model.data];
+            [self.listArray addObjectsFromArray:self.model.data.list];
             [self.tableview reloadData];
         }else{
             if (self.page == 1) {

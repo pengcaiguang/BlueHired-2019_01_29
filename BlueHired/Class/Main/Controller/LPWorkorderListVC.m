@@ -31,7 +31,7 @@ static NSString *LPWorkorderListCellID = @"LPWorkOrderList2Cell";
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];
-    self.navigationItem.title = @"面试预约列表";
+    self.navigationItem.title = @"报名记录";
     
     UIView *TitleView = [[UIView alloc] init];
     [self.view addSubview:TitleView];
@@ -40,6 +40,7 @@ static NSString *LPWorkorderListCellID = @"LPWorkOrderList2Cell";
         make.top.left.right.mas_offset(0);
     }];
     TitleView.backgroundColor = [UIColor colorWithHexString:@"#FFF4E0"];
+    TitleView.hidden = YES;
     
     UILabel *TitleLabel = [[UILabel alloc] init];
     [TitleView addSubview:TitleLabel];
@@ -79,15 +80,17 @@ static NSString *LPWorkorderListCellID = @"LPWorkOrderList2Cell";
             [self.listArray addObjectsFromArray:self.model.data];
             [self.tableview reloadData];
             if (model.data[0].restRemark.length>0) {
-                
+                self.TitleV.hidden = NO;
                 self.TitleL.text = model.data[0].restRemark;
             }else{
+                self.TitleV.hidden = YES;
                 [self.TitleV mas_updateConstraints:^(MASConstraintMaker *make){
                     make.height.mas_offset(0);
                 }];
             }
             
         }else{
+            self.TitleV.hidden = YES;
             [self.TitleV mas_updateConstraints:^(MASConstraintMaker *make){
                 make.height.mas_offset(0);
             }];
@@ -102,7 +105,7 @@ static NSString *LPWorkorderListCellID = @"LPWorkOrderList2Cell";
     [noDataView image:nil text:@"抱歉！没有相关记录！"];
     [self.view addSubview:noDataView];
     [noDataView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.view);
+        make.top.left.right.bottom.mas_offset(0);
     }];
 }
 #pragma mark - TableViewDelegate & Datasource
@@ -246,14 +249,6 @@ static NSString *LPWorkorderListCellID = @"LPWorkOrderList2Cell";
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ 
 
 @end

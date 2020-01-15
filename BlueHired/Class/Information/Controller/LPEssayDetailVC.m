@@ -12,43 +12,19 @@
 #import "LPEssayDetailModel.h"
 #import "LPCommentListModel.h"
 #import "LPEssaylistModel.h"
-#import "LPInformationMoreCell.h"
-#import "LPInformationSingleCell.h"
-
+ 
 static NSString *LPEssayDetailHeadCellID = @"LPEssayDetailHeadCell";
-static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
-static NSString *LPInformationSingleCellID = @"LPInformationSingleCell";
-static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
+ 
 
-@interface LPEssayDetailVC ()<UITableViewDelegate,UITableViewDataSource,UITextFieldDelegate,LPEssayDetailCommentCellDelegate>
-@property (nonatomic, strong)UITableView *tableview;
+@interface LPEssayDetailVC ()<UITableViewDelegate,UITableViewDataSource>
+@property (nonatomic, strong) UITableView *tableview;
+@property (nonatomic, strong) UIView *HeadView;
+@property (nonatomic, strong) UILabel *EssayTitle;
+@property (nonatomic, strong) UILabel *EssayTime;
+@property (nonatomic, strong) UIButton *CommonBtn;
+@property (nonatomic, strong) UIButton *shaerBtn;
 
-@property(nonatomic,strong) LPEssayDetailModel *model;
-@property(nonatomic,assign) NSInteger page;
-
-@property(nonatomic,strong) LPCommentListModel *commentListModel;
-@property(nonatomic,strong) NSMutableArray <LPCommentListDataModel *>*commentListArray;
-
-@property(nonatomic,strong) UIView *searchBgView;
-@property(nonatomic,strong) UIView *bottomBgView;
-@property (nonatomic, strong) UIView *BacksearchView;
-
-@property(nonatomic,strong) NSMutableArray <UIButton *>*bottomButtonArray;
-@property(nonatomic,strong) UITextField *commentTextField;
-@property(nonatomic,strong) UIButton *sendButton;
-
-@property(nonatomic,assign) NSInteger commentType;
-@property(nonatomic,strong) NSNumber *commentId;
-@property(nonatomic,strong) LPCommentListDataModel *commentUserModel;
-
-@property(nonatomic,strong)CustomIOSAlertView *CustomAlert;
-
-@property(nonatomic,assign) BOOL IsAddComment;
-
-@property(nonatomic,assign) CGFloat TableHeadHeight;
-
-
-@property (nonatomic,strong) LPEssaylistModel *LabelEssayModel;
+@property (nonatomic, strong) LPEssayDetailModel *model;
 
 @end
 
@@ -57,547 +33,76 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.view.backgroundColor = [UIColor whiteColor];
-    self.navigationItem.title = @"资讯详情";
-    self.IsAddComment = NO;
-    self.page = 1;
-    self.commentListArray = [NSMutableArray array];
-    self.bottomButtonArray = [NSMutableArray array];
+    self.navigationItem.title = @"新闻详情";
     
     [self.view addSubview:self.tableview];
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.edges.equalTo(self.view);
         make.top.mas_equalTo(0);
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
-//        make.bottom.mas_equalTo(-48);
-        if (@available(iOS 11.0, *)) {
-            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom).offset(-48);
-        } else {
-            make.bottom.mas_equalTo(-48);
-        }
+        make.bottom.mas_equalTo(0);
     }];
-    [self setBottomView];
-
+ 
     [self requestEssay];
-    [self requestSetEssayView];
-//    [self requestCommentList];
+ 
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-//    [self requestEssay];
-    [IQKeyboardManager sharedManager].enable = NO;
-
+ 
 }
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [IQKeyboardManager sharedManager].enable = YES;
-
-    if (self.Supertableview) {
-        [self.Supertableview reloadData];
-    }
-}
--(void)setBottomView{
     
- 
-    
-    self.bottomBgView = [[UIView alloc]init];
-    [self.view addSubview:self.bottomBgView];
-    [self.bottomBgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.mas_equalTo(0);
-//        make.bottom.mas_equalTo(0);
-        if (@available(iOS 11.0, *)) {
-            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
-        } else {
-            make.bottom.mas_equalTo(0);
-        }
-        make.height.mas_equalTo(48);
-    }];
-    
-    UIView *backSearch = [[UIView alloc] init];
-    [self.view addSubview:backSearch];
-    self.BacksearchView = backSearch;
-    self.BacksearchView.backgroundColor = [UIColor whiteColor];
-    [self.BacksearchView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(10);
-        make.right.mas_equalTo(self.bottomBgView.mas_left).offset(-5);
-//        make.bottom.mas_equalTo(0);
-        make.height.mas_equalTo(48);
-        if (@available(iOS 11.0, *)) {
-            make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
-        } else {
-            make.bottom.mas_equalTo(0);
-        }
-    }];
-    
-    self.searchBgView = [[UIView alloc]init];
-    [self.BacksearchView addSubview:self.searchBgView];
-    [self.searchBgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(10);
-//        make.right.mas_equalTo(self.bottomBgView.mas_left).offset(-5);
-        make.right.mas_equalTo(-10);
-        make.bottom.mas_equalTo(-7);
-        make.height.mas_equalTo(34);
-    }];
-    self.searchBgView.layer.masksToBounds = YES;
-    self.searchBgView.layer.cornerRadius = 17;
-    self.searchBgView.backgroundColor = [UIColor colorWithHexString:@"#F2F2F2"];
-    
-    UIImageView *writeImg = [[UIImageView alloc]init];
-    [self.searchBgView addSubview:writeImg];
-    [writeImg mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(5);
-        make.centerY.equalTo(self.searchBgView);
-        make.size.mas_equalTo(CGSizeMake(15, 14));
-    }];
-    writeImg.image = [UIImage imageNamed:@"comment_write"];
-    
-    self.commentTextField = [[UITextField alloc]init];
-    [self.searchBgView addSubview:self.commentTextField];
-    [self.commentTextField mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(writeImg.mas_right).offset(5);
-        make.right.mas_equalTo(5);
-        make.height.mas_equalTo(self.searchBgView.mas_height);
-        make.centerY.equalTo(self.searchBgView);
-    }];
-    self.commentTextField.delegate = self;
-    self.commentTextField.tintColor = [UIColor baseColor];
-    self.commentTextField.placeholder = @"Biu一下";
-    self.commentTextField.returnKeyType = UIReturnKeySend;
-    self.commentTextField.enablesReturnKeyAutomatically =YES;
-//    [self.commentTextField addTarget:self action:@selector(textFieldChanged:) forControlEvents:UIControlEventEditingChanged];
-    
-    NSArray *imgArray = @[@"collection_normal",@"praise_normal",@"share_btn",];
-    for (int i =0; i<imgArray.count; i++) {
-        UIButton *button = [[UIButton alloc]init];
-        [self.bottomBgView addSubview:button];
-        [button setImage:[UIImage imageNamed:imgArray[i]] forState:UIControlStateNormal];
-        if (i == 0) {
-            [button setImage:[UIImage imageNamed:@"collection_selected"] forState:UIControlStateSelected];
-        }else if(i == 1) {
-            [button setImage:[UIImage imageNamed:@"praise_selected"] forState:UIControlStateSelected];
-        }
-        [button addTarget:self action:@selector(preventFlicker:) forControlEvents:UIControlEventAllTouchEvents];
-        button.tag = i;
-        [button addTarget:self action:@selector(touchBottomButton:) forControlEvents:UIControlEventTouchUpInside];
-        [self.bottomButtonArray addObject:button];
-    }
-    [self.bottomButtonArray mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedSpacing:15 leadSpacing:15 tailSpacing:15];
-    [self.bottomButtonArray mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.mas_equalTo(5);
-        make.bottom.mas_equalTo(-5);
-        make.size.mas_equalTo(CGSizeMake(21, 20));
-    }];
-    
-    self.sendButton = [[UIButton alloc]init];
-    [self.bottomBgView addSubview:self.sendButton];
-    [self.sendButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.commentTextField.mas_right).offset(15);
-        make.right.mas_equalTo(-15);
-        make.height.mas_equalTo(26);
-        make.centerY.equalTo(self.bottomBgView);
-    }];
-    self.sendButton.layer.masksToBounds = YES;
-    self.sendButton.layer.cornerRadius = 13;
-    [self.sendButton setTitle:@"发送" forState:UIControlStateNormal];
-    [self.sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    self.sendButton.hidden = YES;
-    self.sendButton.enabled = NO;
-    self.sendButton.backgroundColor = [UIColor lightGrayColor];
-//    [self.sendButton addTarget:self action:@selector(touchSendButton:) forControlEvents:UIControlEventTouchUpInside];
 }
 
-- (void)preventFlicker:(UIButton *)button {
-    button.highlighted = NO;
-}
 -(void)touchBottomButton:(UIButton *)button{
     
-    if (button.tag == 2) {
-//        [self WeiXinOrQQAlertView];   http://192.168.0.152:8070/#/newsdetail?id=6353
+    if (button == self.shaerBtn) {
         NSString *url = [NSString stringWithFormat:@"%@resident/#/newsdetail?id=%@",BaseRequestWeiXiURL,self.model.data.id];
         NSString *encodedUrl = [NSString stringWithString:[url stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         [LPTools ClickShare:encodedUrl Title:_model.data.essayName];
         return;
-    }
-    
-    if ([LoginUtils validationLogin:self]) {
-        NSInteger index = button.tag;
-        if (index == 0) {
+    }else if (button == self.CommonBtn){
+        if ([LoginUtils validationLogin:self]) {
             [self requestSetCollection];
-        }else if (index == 1){
-            [self requestSocialSetlike];
         }
     }
 }
-
--(void)WeiXinOrQQAlertView
-{
-    _CustomAlert = [[CustomIOSAlertView alloc] init];
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 300, 130)];
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, 300, 21)];
-    label.textAlignment = NSTextAlignmentCenter;
-    label.text = @"请选择分享平台";
-    
-    UIButton *weixinBt = [[UIButton alloc] initWithFrame:CGRectMake(180, 40, 60, 60)];
-    [weixinBt setBackgroundImage:[UIImage imageNamed:@"weixin"] forState:(UIControlStateNormal)];
-    [weixinBt addTarget:self action:@selector(weixinOrQQtouch:) forControlEvents:UIControlEventTouchUpInside];
-    weixinBt.tag = 1;
-    UILabel *wxlabel = [[UILabel alloc] initWithFrame:CGRectMake(180, 105, 60, 20)];
-    wxlabel.text = @"微信";
-    wxlabel.textAlignment = NSTextAlignmentCenter;
-    
-    
-    UIButton *QQBt = [[UIButton alloc] initWithFrame:CGRectMake(60, 40, 60, 60)];
-    [QQBt setBackgroundImage:[UIImage imageNamed:@"QQ"] forState:(UIControlStateNormal)];
-    [QQBt addTarget:self action:@selector(weixinOrQQtouch:) forControlEvents:UIControlEventTouchUpInside];
-    QQBt.tag = 2;
-    UILabel *qqlabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 105, 60, 20)];
-    qqlabel.text = @"qq";
-    qqlabel.textAlignment = NSTextAlignmentCenter;
-    [view addSubview:label];
-    [view addSubview:weixinBt];
-    [view addSubview:wxlabel];
-    [view addSubview:QQBt];
-    [view addSubview:qqlabel];
-    
-    [_CustomAlert setContainerView:view];
-    [_CustomAlert setButtonTitles:@[@"取消"]];
-    [_CustomAlert show];
-    
-    
-}
-
-
--(void)weixinOrQQtouch:(UIButton *)sender
-{
-    NSString *url = [NSString stringWithFormat:@"%@resident/bluehired/newsdetails.html?id=%@",BaseRequestWeiXiURL,self.model.data.id];
-    NSString *encodedUrl = [NSString stringWithString:[url stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    if (sender.tag == 1)
-    {
-        if ([WXApi isWXAppInstalled]==NO) {
-            [self.view showLoadingMeg:@"请安装微信" time:MESSAGE_SHOW_TIME];
-            [_CustomAlert close];
-            return;
-        }
-        SendMessageToWXReq *req = [[SendMessageToWXReq alloc] init];
-        req.scene = WXSceneSession;
-        WXMediaMessage *message = [WXMediaMessage message];
-        message.title = @"蓝聘";
-        message.description= _model.data.essayName;
-        message.thumbData = UIImagePNGRepresentation([UIImage imageNamed:@"logo_Information"]);
-
-        WXWebpageObject *ext = [WXWebpageObject object];
-        
-        ext.webpageUrl = encodedUrl;
-        message.mediaObject = ext;
-        req.message = message;
-        [WXApi sendReq:req];
-    }
-    else if (sender.tag == 2)
-    {
-        if (![QQApiInterface isSupportShareToQQ])
-        {
-            [self.view showLoadingMeg:@"请安装QQ" time:MESSAGE_SHOW_TIME];
-            [_CustomAlert close];
-            return;
-        }
-        NSString *title = @"蓝聘";
-        QQApiNewsObject *newsObj = [QQApiNewsObject
-                                    objectWithURL:[NSURL URLWithString:encodedUrl]
-                                    title:title
-                                    description:nil
-                                    previewImageURL:nil];
-        SendMessageToQQReq *req = [SendMessageToQQReq reqWithContent:newsObj];
-        //将内容分享到qq
-        QQApiSendResultCode sent = [QQApiInterface sendReq:req];
-        //将内容分享到qzone
-        //        QQApiSendResultCode sent = [QQApiInterface SendReqToQZone:req];
-        
-    }
-    [_CustomAlert close];
-}
-
+ 
 
 -(void)setModel:(LPEssayDetailModel *)model{
     _model = model;
-    if (model.data.likeStatus  && AlreadyLogin) {
-        self.bottomButtonArray[1].selected = YES;
-    }else{
-        self.bottomButtonArray[1].selected = NO;
-    }
-    if (model.data.collectionStatus  && AlreadyLogin) {
-        self.bottomButtonArray[0].selected = YES;
-    }else{
-        self.bottomButtonArray[0].selected = NO;
-    }
-    self.commentType = 1;
-    self.commentId = self.essaylistDataModel.id;
-//    [self.tableview reloadSections:[[NSIndexSet alloc]initWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
-//    [self requestCommentList];
-
+    if (model) {
+        self.EssayTitle.text = model.data.essayName;
+        self.EssayTime.text = [NSString stringWithFormat:@"发布时间：%@",[NSString convertStringToTime:model.data.time.stringValue]];
+        if (model.data.collectionStatus.integerValue  && AlreadyLogin) {
+            self.CommonBtn.selected = YES;
+        }else{
+            self.CommonBtn.selected = NO;
+        }
+     }
     [self.tableview reloadData];
 }
--(void)setCommentListModel:(LPCommentListModel *)commentListModel{
-    _commentListModel = commentListModel;
-    if ([commentListModel.code integerValue] == 0) {
-        if (self.page == 1) {
-            self.commentListArray = [NSMutableArray array];
-        }
-        if (commentListModel.data.count > 0) {
-            self.page += 1;
-            [self.commentListArray addObjectsFromArray:commentListModel.data];
-            [self.tableview reloadData];
-        }else{
-            [self.tableview.mj_footer endRefreshingWithNoMoreData];
-        }
-        
-    }else{
-        [self.view showLoadingMeg:NETE_ERROR_MESSAGE time:MESSAGE_SHOW_TIME];
-    }
-}
-
-
-
-#pragma mark - textfield
--(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
-    if ([LoginUtils validationLogin:self]) {
-        self.commentId = self.essaylistDataModel.id;
-        self.commentType = 1;
-        self.commentUserModel = nil;
-        
-        [XHInputView showWithStyle:InputViewStyleLarge configurationBlock:^(XHInputView *inputView) {
-            /** 请在此block中设置inputView属性 */
-            
-            /** 代理 */
-            
-            /** 占位符文字 */
-            inputView.placeholder = @"评一下";
-            /** 设置最大输入字数 */
-            inputView.maxCount = 300;
-            /** 输入框颜色 */
-            inputView.textViewBackgroundColor = [UIColor groupTableViewBackgroundColor];
-            
-            /** 更多属性设置,详见XHInputView.h文件 */
-            
-        } sendBlock:^BOOL(NSString *text) {
-            if(text.length){
-                [self requestCommentAddcomment:text];
-                return YES;//return YES,收起键盘
-            }else{
-                //                NSLog(@"显示提示框-请输入要评论的的内容");
-                [self.view showLoadingMeg:@"请输入评价内容" time:MESSAGE_SHOW_TIME];
-                return NO;//return NO,不收键盘
-            }
-        }];
-    }
-    return NO;
-}
-
-
-#pragma mark - LPEssayDetailCommentCellDelegate
--(void)touchReplyButton:(LPCommentListDataModel *)model{
-    NSLog(@"回复");
-    self.commentId = model.id;
-    self.commentType = 3;
-    self.commentUserModel = model;
-
-    [XHInputView showWithStyle:InputViewStyleLarge configurationBlock:^(XHInputView *inputView) {
-        /** 请在此block中设置inputView属性 */
-        
-        /** 代理 */
-        
-        /** 占位符文字 */
-        inputView.placeholder = [NSString stringWithFormat:@"回复 %@:",model.userName];
-        /** 设置最大输入字数 */
-        inputView.maxCount = 300;
-        /** 输入框颜色 */
-        inputView.textViewBackgroundColor = [UIColor groupTableViewBackgroundColor];
-        
-        /** 更多属性设置,详见XHInputView.h文件 */
-        
-    } sendBlock:^BOOL(NSString *text) {
-        if(text.length){
-            [self requestCommentAddcomment:text];
-            return YES;//return YES,收起键盘
-        }else{
-            //                NSLog(@"显示提示框-请输入要评论的的内容");
-            [self.view showLoadingMeg:@"请输入评价内容" time:MESSAGE_SHOW_TIME];
-            return NO;//return NO,不收键盘
-        }
-    }];
-
-    
-    
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    if (scrollView == self.tableview)
-    {
-        CGFloat sectionHeaderHeight = 30.0f;
-        if (scrollView.contentOffset.y<=sectionHeaderHeight&&scrollView.contentOffset.y>=0) {
-            scrollView.contentInset = UIEdgeInsetsMake(-scrollView.contentOffset.y, 0, 0, 0);
-        } else if (scrollView.contentOffset.y>=sectionHeaderHeight) {
-            scrollView.contentInset = UIEdgeInsetsMake(-sectionHeaderHeight, 0, 0, 0);
-        }
-    }
-}
-
-
+ 
 
 #pragma mark - TableViewDelegate & Datasource
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 3;
-}
--(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
-    if (section == 0) {
-        return 0.1;
-    }else{
-        return 30;
-    }
-}
-
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.section == 0) {
-        return self.TableHeadHeight + 102 + [LPTools calculateRowHeight:self.model.data.essayName fontSize:18 Width:SCREEN_WIDTH - 32];
-    }else if (indexPath.section == 1){
-        return 110.0;
-    }
-    else{      //开始手动计算cell高度
-        LPCommentListDataModel *m = self.commentListArray[indexPath.row];
-        CGFloat cellHeigh = 92.5 + [LPTools calculateRowHeight:m.commentDetails fontSize:13 Width:SCREEN_WIDTH - 67] ;
-        //计算回复高度
-        for (int i = 0 ;i < m.commentModelList.count;i++) {
-            cellHeigh +=[LPTools calculateRowHeight:[NSString stringWithFormat:@"%@ 回复 %@: %@ ",
-                                                     m.userName,
-                                                     m.toUserName,
-                                                     m.commentDetails] fontSize:13 Width:SCREEN_WIDTH-79]+8;
-        }
-        
-        if (m.commentModelList.count) {
-            cellHeigh +=8;
-        }
-        
-        return cellHeigh;
-    }
-}
-
+ 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    if (section == 0) {
-        return 1;
-    }else if (section == 1){
-        return self.LabelEssayModel.data.count;
-    }
-    else{
-        return self.commentListArray.count;
-    }
+    return 1;
 }
-
--(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
-    if (section == 2) {
-        if (self.commentListArray.count) {
-            UIView *view = [[UIView alloc]init];
-            view.backgroundColor = [UIColor whiteColor];
-            UILabel *label = [[UILabel alloc]init];
-            label.frame = CGRectMake(16, 0, SCREEN_WIDTH-16, 30);
-            label.textColor = [UIColor colorWithHexString:@"#1B1B1B"];
-            label.font = [UIFont systemFontOfSize:12];
-            label.text = [NSString stringWithFormat:@"全部评论（%@）", self.model.data.commentTotal];
-            [view addSubview:label];
-            return view;
-        }
-        return nil;
-    }else if (section == 1){
-        if (self.LabelEssayModel.data.count) {
-            UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, Screen_Width, 30)];
-            
-            UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(12, 15, Screen_Width-24, 1)];
-            lineView.backgroundColor = [UIColor colorWithHexString:@"#FFE6E6E6"];
-            [view addSubview:lineView];
-
-            view.backgroundColor = [UIColor whiteColor];
-            UILabel *label = [[UILabel alloc]init];
-            label.frame = CGRectMake((Screen_Width-80)/2, 0, 80, 30);
-            label.textColor = [UIColor colorWithHexString:@"#1B1B1B"];
-            label.font = [UIFont systemFontOfSize:17];
-            label.text = @"相关推荐";
-            label.textAlignment = NSTextAlignmentCenter;
-            label.backgroundColor = [UIColor whiteColor];
-            [view addSubview:label];
-            return view;
-        }
-        return nil;
-    } else{
-        return nil;
-    }
-}
-
+ 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.section == 0) {
-        LPEssayDetailHeadCell *cell = [tableView dequeueReusableCellWithIdentifier:LPEssayDetailHeadCellID];
-        cell.model = self.model;
-        WEAK_SELF()
-        cell.Block = ^(CGFloat height) {
-            weakSelf.TableHeadHeight = height;
-            [self.tableview reloadData];
-            [weakSelf requestCommentList];
-        };
-        return cell;
-    }else if (indexPath.section == 1){
-        NSArray *array = @[];
-        if (self.LabelEssayModel.data.count > indexPath.row) {
-            array = [self.LabelEssayModel.data[indexPath.row].essayUrl componentsSeparatedByString:@";"];
-        }
-        if (array.count ==0) {
-            return nil;
-        }else if (array.count == 1 || array.count == 2) {
-            LPInformationSingleCell *cell = [tableView dequeueReusableCellWithIdentifier:LPInformationSingleCellID];
-            if(cell == nil){
-                cell = [[LPInformationSingleCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:LPInformationSingleCellID];
-            }
-            cell.model = self.LabelEssayModel.data[indexPath.row];
-            return cell;
-        }else{
-            LPInformationMoreCell *cell = [tableView dequeueReusableCellWithIdentifier:LPInformationMoreCellID];
-            if(cell == nil){
-                cell = [[LPInformationMoreCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:LPInformationMoreCellID];
-            }
-            cell.model = self.LabelEssayModel.data[indexPath.row];
-            return cell;
-        }
-    }else{
-        LPEssayDetailCommentCell *cell = [tableView dequeueReusableCellWithIdentifier:LPEssayDetailCommentCellID];
-        cell.model = self.commentListArray[indexPath.row];
-        cell.delegate = self;
-        cell.SuperTableView = tableView;
-        WEAK_SELF();
-        cell.DeleteBlock = ^(NSString *CommId){
-            [weakSelf requestQueryDeleteComment:CommId];
-        };
-        
-        return cell;
-    }
+    LPEssayDetailHeadCell *cell = [tableView dequeueReusableCellWithIdentifier:LPEssayDetailHeadCellID];
+    cell.model = self.model;
+    WEAK_SELF()
+    cell.Block = ^(CGFloat height) {
+        [weakSelf.tableview reloadData];
+    };
+    return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (indexPath.section ==1) {
-        LPEssayDetailVC *vc = [[LPEssayDetailVC alloc]init];
-        vc.hidesBottomBarWhenPushed = YES;
-        vc.essaylistDataModel = self.LabelEssayModel.data[indexPath.row];
-        vc.Supertableview = self.tableview;
-        
-        NSMutableArray *naviVCsArr = [[NSMutableArray alloc]initWithArray:self.navigationController.viewControllers];
-        for (UIViewController *vc in naviVCsArr) {
-            if ([vc isKindOfClass:[self class]]) {
-                [naviVCsArr removeObject:vc];
-                break;
-            }
-        }
-        [naviVCsArr addObject:vc];
-        vc.hidesBottomBarWhenPushed = YES;
-        [self.navigationController  setViewControllers:naviVCsArr animated:YES];
-
-     }
 }
 #pragma mark - request
 -(void)requestEssay{
@@ -610,86 +115,33 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
                 self.model = [LPEssayDetailModel mj_objectWithKeyValues:responseObject];
-                if (self.model.data) {
-                    [self requestEssay_Label];
-                }
-            }else{
-                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
-            }
-        }else{
-            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
-            
-        }
-        [DSBaActivityView hideActiviTy];
-    }];
-}
-
--(void)requestEssay_Label{
-    NSDictionary *dic = @{@"labelId":self.model.data.labelId?self.model.data.labelId:@""};
-     [NetApiManager requestEssay_LabelWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
-        NSLog(@"%@",responseObject);
-        if (isSuccess) {
-            if ([responseObject[@"code"] integerValue] == 0) {
-                self.LabelEssayModel = [LPEssaylistModel mj_objectWithKeyValues:responseObject];
-                [self.tableview reloadData];
-            }else{
-                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
-            }
-        }else{
-                [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
-        }
-     }];
-}
-
--(void)requestSetEssayView{
-    NSDictionary *dic = @{
-                          @"id":self.essaylistDataModel.id
-                          };
-    [NetApiManager requestSetEssayViewWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
-        [DSBaActivityView hideActiviTy];
-        if ([responseObject[@"code"] integerValue] == 0) {
-        }else{
-            [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
-        }
-    }];
-}
--(void)requestCommentList{
-    NSDictionary *dic = @{
-                          @"type":@(1),
-                          @"page":@(self.page),
-                          @"id":self.essaylistDataModel.id,
-                          @"versionType":@"2.3"
-                          };
-    [NetApiManager requestCommentListWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
-        NSLog(@"%@",responseObject);
-        [self.tableview.mj_footer endRefreshing];
-        if (isSuccess) {
-            if ([responseObject[@"code"] integerValue] == 0) {
-                self.commentListModel = [LPCommentListModel mj_objectWithKeyValues:responseObject];
             }else{
                 [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }
         }else{
             [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
         }
+        [DSBaActivityView hideActiviTy];
     }];
 }
+ 
 -(void)requestSetCollection{
     NSDictionary *dic = @{
                           @"type":@(2),
-                          @"id":self.essaylistDataModel.id
+                          @"id":self.essaylistDataModel.id,
                           };
-    
+
     [NetApiManager requestSetCollectionWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
-                
                     if ([responseObject[@"data"] integerValue] == 0) {
-                        self.bottomButtonArray[0].selected = YES;
                         [LPTools AlertCollectView:@""];
-                    }else if ([responseObject[@"data"] integerValue] == 1) {
-                        self.bottomButtonArray[0].selected = NO;
+                        self.CommonBtn.selected = YES;
+                        self.essaylistDataModel.collectionStatus = @"1";
+                    } else if ([responseObject[@"data"] integerValue] == 1) {
+                        self.CommonBtn.selected = NO;
+                        self.essaylistDataModel.collectionStatus = @"0";
                         if (self.CollectionBlock) {
                             self.CollectionBlock();
                         }
@@ -704,171 +156,6 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
     } IsShowActivity:YES];
 }
 
--(void)requestSocialSetlike{
-    NSDictionary *dic = @{
-                          @"type":@(1),
-                          @"id":self.essaylistDataModel.id
-                          };
-    [NetApiManager requestSocialSetlikeWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
-        NSLog(@"%@",responseObject);
-        if (isSuccess) {
-            if ([responseObject[@"code"] integerValue] == 0) {
-                if (!ISNIL(responseObject[@"data"])) {
-                    if ([responseObject[@"data"] integerValue] == 0) {
-                        self.bottomButtonArray[1].selected = YES;
-                        self.essaylistDataModel.likeStatus = @(1);
-                        self.essaylistDataModel.praiseTotal  =  @(self.essaylistDataModel.praiseTotal.integerValue+1);
-                        
-                    }else if ([responseObject[@"data"] integerValue] == 1) {
-                        self.bottomButtonArray[1].selected = NO;
-                        self.essaylistDataModel.likeStatus = @(0);
-                        self.essaylistDataModel.praiseTotal  =  @(self.essaylistDataModel.praiseTotal.integerValue-1);
-                    }
-                    
-                    if (self.Supertableview) {
-                        //                    [self.Supertableview reloadData];
-                    }
-                }
-            }else{
-                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
-            }
-
-        }else{
-            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
-        }
-    } IsShowActiviTy:YES];
-}
-
--(void)requestCommentAddcomment:(NSString *) commentText{
-
-    LPUserMaterialModel *user = [LPUserDefaults getObjectByFileName:USERINFO];
-    NSDictionary *dic = @{@"commentDetails": commentText,
-                          @"commentType": @(self.commentType),
-                          @"commentId": self.commentId,
-                          @"userName": [LPTools isNullToString:user.data.user_name],
-                          @"userId": [LPTools isNullToString:kUserDefaultsValue(LOGINID)],
-                          @"userUrl": [LPTools isNullToString:user.data.user_url],
-                          @"versionType":@"2.1",
-                          @"replyUserId":self.commentUserModel?@(self.commentUserModel.userId.integerValue):@""
-                          };
-    if (self.commentType ==1) {
-        self.IsAddComment = YES;
-    }
- 
-    [NetApiManager requestCommentAddcommentWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
-        NSLog(@"%@",responseObject);
-        if (isSuccess) {
-            if ([responseObject[@"code"] integerValue] == 0) {
-     
-                NSString *StrData = [LPTools isNullToString:responseObject[@"data"]];
-                NSArray *DataList = [StrData componentsSeparatedByString:@"-"];
-                
-                LPCommentListDataModel *m = [LPCommentListDataModel mj_objectWithKeyValues:dic];
-                if (DataList.count>=2) {
-                    if ([DataList[0] integerValue] ==1) {
-                        [LPTools AlertTopCommentView:@""];
-                    }else{
-//                        [LPTools AlertCommentView:@""];
-                    }
-                    m.id = @([[LPTools isNullToString:DataList[1]] integerValue]);
-                }
-                
-                 m.time = @([NSString getNowTimestamp]);
-  
-                 m.grading = user.data.grading;
-                if (self.commentType == 1) {
-                    [self.commentListArray insertObject:m atIndex:0];
-                    self.model.data.commentTotal = @(self.model.data.commentTotal.integerValue+1);
-                }else if (self.commentType == 3){
-                    for (LPCommentListDataModel *model in self.commentListArray) {
-                        if (model.id.integerValue == self.commentId.integerValue) {
-                       
-                            m.toUserId = self.commentUserModel.userId;
-                            m.toUserName = self.commentUserModel.userName;
-                            m.toUserIdentity = self.commentUserModel.identity;
-                            
-                            if (model.commentModelList.count == 0) {
-                                model.commentModelList = [[NSMutableArray alloc] init];
-                            }
-                            
-                            [model.commentModelList addObject:m];
-                             
-                            break;
-                        }
-                    }
-                }
-                
-             
-                self.commentId = self.essaylistDataModel.id;
-                self.commentType = 1;
-                
-                [self.tableview reloadData];
-                [self.tableview layoutIfNeeded];
-                [self scrollViewToBottom:YES];
-                self.essaylistDataModel.commentTotal = self.model.data.commentTotal;
- 
-                
-            }else{
-                if ([responseObject[@"code"] integerValue] == 10045) {
-                    [LPTools AlertMessageView:responseObject[@"msg"]];
-                }else{
-                   [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
-                }
-            }
-        }else{
-            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
-        }
-    }];
-}
-
-
-
-
--(void)requestQueryDeleteComment:(NSString *) CommentId{
-    
-    NSString * appendURLString = [NSString stringWithFormat:@"comment/update_comment?id=%@",CommentId];
-    
-    [NetApiManager requestQueryDeleteComment:nil URLString:appendURLString withHandle:^(BOOL isSuccess, id responseObject) {
-        NSLog(@"%@",responseObject);
-        if (isSuccess) {
-            if ([responseObject[@"code"] integerValue] == 0) {
-                if ([responseObject[@"data"][@"result"] integerValue] == 1) {
- 
-                    for (LPCommentListDataModel *model in self.commentListArray) {
-                        if (model.id.integerValue == CommentId.integerValue) {
-                            [self.commentListArray removeObject:model];
-                            break;
-                        }
-                        BOOL isDelete = NO;
-                        for (LPCommentListDataModel *m in model.commentModelList) {
-                            if (m.id.integerValue == CommentId.integerValue) {
-                            
-                                [model.commentModelList removeObject:m];
-                                isDelete = YES;
-                                break;
-                            }
-                        }
-                        if (isDelete) {
-                            break;
-                        }
-                    }
-                    [self.tableview reloadData];
-                }else{
-                    [[UIWindow  visibleViewController].view showLoadingMeg:@"删除失败" time:MESSAGE_SHOW_TIME];
-                }
-            }else{
-                [[UIWindow  visibleViewController].view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
-            }
-        }else{
-            [[UIWindow  visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
-        }
-        
-    }];
-}
-
-
-
-
 #pragma mark lazy
 - (UITableView *)tableview{
     if (!_tableview) {
@@ -877,58 +164,87 @@ static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
         _tableview.dataSource = self;
         _tableview.tableFooterView = [[UIView alloc]init];
         _tableview.rowHeight = UITableViewAutomaticDimension;
-        _tableview.estimatedRowHeight = 0;
-        _tableview.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+        _tableview.estimatedRowHeight = 44;
+        _tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableview.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
         [_tableview registerNib:[UINib nibWithNibName:LPEssayDetailHeadCellID bundle:nil] forCellReuseIdentifier:LPEssayDetailHeadCellID];
-        [_tableview registerNib:[UINib nibWithNibName:LPEssayDetailCommentCellID bundle:nil] forCellReuseIdentifier:LPEssayDetailCommentCellID];
-        [_tableview registerNib:[UINib nibWithNibName:LPInformationSingleCellID bundle:nil] forCellReuseIdentifier:LPInformationSingleCellID];
-        [_tableview registerNib:[UINib nibWithNibName:LPInformationMoreCellID bundle:nil] forCellReuseIdentifier:LPInformationMoreCellID];
-        
-//        [_tableview registerNib:[UINib nibWithNibName:LPInformationMoreCellID bundle:nil] forCellReuseIdentifier:LPInformationMoreCellID];
-        
-//        _tableview.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-//            self.page = 1;
-//            [self requestEssaylist];
-//        }];
-        WEAK_SELF()
-        _tableview.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
-            [weakSelf requestCommentList];
-            NSLog(@"调用上啦刷新");
-            weakSelf.IsAddComment = NO;
+        _tableview.tableHeaderView = self.HeadView;
+        [self.HeadView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.width.equalTo(_tableview);
         }];
- 
     }
     return _tableview;
 }
 
-- (void)scrollViewToBottom:(BOOL)animated
-{
-    if (self.IsAddComment) {
-            //刷新完成
-            self.IsAddComment = NO;
-            NSIndexPath * dayOne = [NSIndexPath indexPathForRow:0 inSection:2];
-            [self.tableview scrollToRowAtIndexPath:dayOne atScrollPosition:UITableViewScrollPositionTop animated:YES];
-
+- (UIView *)HeadView{
+    if (!_HeadView) {
+        _HeadView = [[UIView alloc] init];
+        UILabel *Title = [[UILabel alloc] init];
+        [_HeadView addSubview:Title];
+        self.EssayTitle = Title;
+        [Title mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_offset(LENGTH_SIZE(15));
+            make.left.mas_offset(LENGTH_SIZE(13));
+            make.right.mas_offset(LENGTH_SIZE(-13));
+        }];
+        Title.font = FONT_SIZE(17);
+        Title.numberOfLines = 0;
+        Title.textColor = [UIColor colorWithHexString:@"#1D1D1D"];
+        
+        UIButton *Shaer = [[UIButton alloc] init];
+        [_HeadView addSubview:Shaer];
+        self.shaerBtn = Shaer;
+        [Shaer mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(Title.mas_bottom).offset(LENGTH_SIZE(6));
+            make.right.mas_offset(LENGTH_SIZE(-16));
+            make.width.mas_offset(LENGTH_SIZE(20));
+            make.height.mas_offset(LENGTH_SIZE(20));
+        }];
+        [Shaer setImage:[UIImage imageNamed:@"share_btn"] forState:UIControlStateNormal];
+        [Shaer addTarget:self action:@selector(touchBottomButton:) forControlEvents:UIControlEventTouchUpInside];
+        
+        UIButton *common = [[UIButton alloc] init];
+        [_HeadView addSubview:common];
+        self.CommonBtn = common;
+        [common mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(Shaer);
+            make.right.mas_offset(LENGTH_SIZE(-55));
+            make.width.mas_offset(LENGTH_SIZE(20));
+            make.height.mas_offset(LENGTH_SIZE(20));
+        }];
+        [common setImage:[UIImage imageNamed:@"collection_normal"] forState:UIControlStateNormal];
+        [common setImage:[UIImage imageNamed:@"collection_selected"] forState:UIControlStateSelected];
+        [common addTarget:self action:@selector(touchBottomButton:) forControlEvents:UIControlEventTouchUpInside];
+        
+        UILabel *Time = [[UILabel alloc] init];
+        [_HeadView addSubview:Time];
+        self.EssayTime = Time;
+        [Time mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(common);
+            make.left.mas_offset(LENGTH_SIZE(13));
+            make.right.equalTo(common.mas_left).offset(LENGTH_SIZE(-4));
+        }];
+        Time.textColor = [UIColor colorWithHexString:@"#999999"];
+        Time.font = FONT_SIZE(12);
+        
+        UIView *lineV = [[UIView alloc] init];
+        [_HeadView addSubview:lineV];
+        [lineV mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(common.mas_bottom).offset(LENGTH_SIZE(8));
+            make.left.mas_offset(LENGTH_SIZE(13));
+            make.right.bottom.mas_offset(0);
+            make.height.mas_offset(LENGTH_SIZE(0.5));
+        }];
+        lineV.backgroundColor = [UIColor colorWithHexString:@"#E0E0E0"];
+        
     }
+    return _HeadView;
 }
-
- 
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
+ 
 @end

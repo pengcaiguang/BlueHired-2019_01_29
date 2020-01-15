@@ -9,9 +9,14 @@
 #import "LPInfoListModel.h"
 
 @implementation LPInfoListModel
+
+@end
+
+
+@implementation LPInfoListDataListModel
 + (NSDictionary *)objectClassInArray {
     return @{
-             @"data": @"LPInfoListDataModel",
+             @"list": @"LPInfoListDataModel",
              };
 }
 @end

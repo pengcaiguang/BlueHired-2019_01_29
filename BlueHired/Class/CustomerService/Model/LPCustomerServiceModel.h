@@ -21,6 +21,13 @@ NS_ASSUME_NONNULL_BEGIN
 @interface LPCustomerServiceDataModel : NSObject
 @property (nonatomic, copy) NSArray <LPCustomerServiceDataListModel *> *list;
 @property (nonatomic, copy) NSString *telephone;
+@property (nonatomic, copy) NSString *token;            // 环信token
+@property (nonatomic, copy) NSString *imUserName;       //环信id
+@property (nonatomic, copy) NSString *imPassword;       //环信用户密码
+@property (nonatomic, copy) NSString *workTime;       //客服时间
+
+
+    
 
 @end
 

@@ -24,8 +24,8 @@
     self.lendTypeLabel.layer.borderColor = [UIColor baseColor].CGColor;
 
     self.selectButton.hidden = YES;
-    [self.selectButton setImage:[UIImage imageNamed:@"add_ record_normal"] forState:UIControlStateNormal];
-    [self.selectButton setImage:[UIImage imageNamed:@"add_ record_selected"] forState:UIControlStateSelected];
+    [self.selectButton setImage:[UIImage imageNamed:@"add_ record_normal2"] forState:UIControlStateNormal];
+    [self.selectButton setImage:[UIImage imageNamed:@"add_ record_selected2"] forState:UIControlStateSelected];
     
     self.reMoneyLabel.layer.cornerRadius = LENGTH_SIZE(10.5);
     self.reMoneyLabel.layer.borderWidth = 1;

@@ -23,9 +23,9 @@
     [super awakeFromNib];
     // Initialization code
     self.userUrlImgView.layer.masksToBounds = YES;
-    self.userUrlImgView.layer.cornerRadius = 20.0;
+    self.userUrlImgView.layer.cornerRadius = LENGTH_SIZE(20);
     self.userConcernButton.layer.masksToBounds = YES;
-    self.userConcernButton.layer.cornerRadius = 10.0;
+    self.userConcernButton.layer.cornerRadius = LENGTH_SIZE(10);
     [self.userConcernButton setTitle:@" 关注" forState:UIControlStateNormal];
     [self.userConcernButton setTitle:@" 已关注" forState:UIControlStateSelected];
     [self.userConcernButton setImage:[UIImage imageNamed:@"user_concern_normal"] forState:UIControlStateNormal];
@@ -107,16 +107,16 @@
     }else{
         self.imageBgView.hidden = NO;
         NSArray *imageArray = [model.data.moodUrl componentsSeparatedByString:@";"];
-        CGFloat imgw = (SCREEN_WIDTH-22 - 10)/3;
-        CGFloat imageHeight = 250.0;
+        CGFloat imgw = (SCREEN_WIDTH - LENGTH_SIZE(32))/3;
+        CGFloat imageHeight = LENGTH_SIZE(250);
         self.imageViewsRectArray = [NSMutableArray new];
         for (int i = 0; i < imageArray.count; i++) {
             UIImageView *imageView = [[UIImageView alloc]init];
-            imageView.frame = imageArray.count ==1?CGRectMake(0,0,imageHeight,imageHeight): CGRectMake((imgw + 5)* (i%3), floor(i/3)*(imgw + 5), imgw, imgw);
+            imageView.frame = imageArray.count ==1?CGRectMake(0,0,imageHeight,imageHeight): CGRectMake((imgw + LENGTH_SIZE(5))* (i%3), floor(i/3)*(imgw + LENGTH_SIZE(5)), imgw, imgw);
             imageView.contentMode = UIViewContentModeScaleAspectFill;
             imageView.clipsToBounds = YES;
 //            [imageView sd_setImageWithURL:[NSURL URLWithString:imageArray[i]] placeholderImage:[UIImage imageNamed:@"NoImage"]];
-            NSInteger  downWidth= imageView.frame.size.width +100;
+            NSInteger  downWidth= imageView.frame.size.width +LENGTH_SIZE(100);
             NSString *imageStr;
             if (imageArray.count ==1) {
                 imageStr = [NSString stringWithFormat:@"%@",imageArray[i]];
@@ -131,7 +131,7 @@
                 UIImageView *palyBTImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PlayImage"]];
                 [imageView addSubview:palyBTImage];
                 [palyBTImage mas_makeConstraints:^(MASConstraintMaker *make){
-                    make.width.height.mas_offset(58);
+//                    make.width.height.mas_offset(58);
                     make.center.equalTo(imageView);
                 }];
             }
@@ -166,7 +166,7 @@
         }
         else
         {
-            self.imageBgView_constraint_height.constant = ceil(imageArray.count/3.0)*imgw + floor(imageArray.count/3)*5;
+            self.imageBgView_constraint_height.constant = ceil(imageArray.count/3.0)*imgw + floor(imageArray.count/3)*LENGTH_SIZE(5);
         }
         
         LZImageBrowserManger *imageBrowserManger = [LZImageBrowserManger imageBrowserMangerWithUrlStr:self.imageArray originImageViews:self.imageViewsRectArray originController:[UIWindow visibleViewController] forceTouch:NO forceTouchActionTitles:@[] forceTouchActionComplete:^(NSInteger selectIndex, NSString *title) {
@@ -180,8 +180,8 @@
         self.isUserConcern = NO;
         [self.userConcernButton setTitle:@"删除" forState:UIControlStateNormal];
         [self.userConcernButton setImage:nil forState:UIControlStateNormal];
-        CGRect rect = [@" 已关注" getStringSize:CGSizeMake(MAXFLOAT, MAXFLOAT) font:[UIFont systemFontOfSize:12]];
-        self.userConcern_constraint_width.constant = rect.size.width + 15;
+        CGRect rect = [@" 已关注" getStringSize:CGSizeMake(MAXFLOAT, MAXFLOAT) font:[UIFont systemFontOfSize:FontSize(12)]];
+        self.userConcern_constraint_width.constant = rect.size.width + LENGTH_SIZE(15);
         self.userConcernButton.backgroundColor = [UIColor colorWithHexString:@"#F2F2F2"];
         [self.userConcernButton setTitleColor:[UIColor colorWithHexString:@"#939393"] forState:UIControlStateNormal];
      
@@ -209,13 +209,13 @@
 -(void)setIsUserConcern:(BOOL)isUserConcern{
     _isUserConcern = isUserConcern;
     if (isUserConcern) {
-        CGRect rect = [@" 已关注" getStringSize:CGSizeMake(MAXFLOAT, MAXFLOAT) font:[UIFont systemFontOfSize:12]];
-        self.userConcern_constraint_width.constant = rect.size.width + 10 + 15;
+        CGRect rect = [@" 已关注" getStringSize:CGSizeMake(MAXFLOAT, MAXFLOAT) font:[UIFont systemFontOfSize:FontSize(12)]];
+        self.userConcern_constraint_width.constant = rect.size.width + LENGTH_SIZE(10) + LENGTH_SIZE(15);
         self.userConcernButton.selected = YES;
         self.userConcernButton.backgroundColor = [UIColor colorWithHexString:@"#F2F2F2"];
     }else{
-        CGRect rect = [@" 关注" getStringSize:CGSizeMake(MAXFLOAT, MAXFLOAT) font:[UIFont systemFontOfSize:12]];
-        self.userConcern_constraint_width.constant = rect.size.width + 10 + 15;
+        CGRect rect = [@" 关注" getStringSize:CGSizeMake(MAXFLOAT, MAXFLOAT) font:[UIFont systemFontOfSize:FontSize(12)]];
+        self.userConcern_constraint_width.constant = rect.size.width + LENGTH_SIZE(10) + LENGTH_SIZE(15);
         self.userConcernButton.selected = NO;
         self.userConcernButton.backgroundColor = [UIColor baseColor];
     }

@@ -9,13 +9,13 @@
 #import "LPMineBillCell.h"
 #import "LPBillRecordVC.h"
 #import "LPWithDrawalVC.h"
-#import "LPBankcardwithDrawModel.h"
+ 
 #import "LPSalarycCard2VC.h"
 #import "LPUndergoWebVC.h"
 #import "LPScoreMoneyVC.h"
 
 @interface LPMineBillCell()
-@property(nonatomic,strong) LPBankcardwithDrawModel *Bankmodel;
+ 
 
 @end
 
@@ -39,7 +39,7 @@
 
     
     CAGradientLayer *gl = [CAGradientLayer layer];
-    gl.frame = CGRectMake(0,0,LENGTH_SIZE(120),LENGTH_SIZE(18));
+    gl.frame = CGRectMake(0,0,LENGTH_SIZE(130),LENGTH_SIZE(18));
     gl.startPoint = CGPointMake(0, 1);
     gl.endPoint = CGPointMake(1, 1);
     gl.colors = @[(__bridge id)[UIColor colorWithHexString:@"#FF9148"].CGColor,
@@ -113,10 +113,7 @@
                                      }];
             [alert show];
         }else{
-            LPWithDrawalVC *vc = [[LPWithDrawalVC alloc]init];
-            vc.hidesBottomBarWhenPushed = YES;
-            vc.balance = self.userMaterialModel.data.money;
-            [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+             
         }
         
        
@@ -134,31 +131,7 @@
 
 
 
-
-//- (void)setBankmodel:(LPBankcardwithDrawModel *)Bankmodel{
-//    _Bankmodel = Bankmodel;
-//
-//
-//
-//}
-
-//#pragma mark - request
-//-(void)requestQueryBankcardwithDraw{
-//    [NetApiManager requestQueryBankcardwithDrawWithParam:nil withHandle:^(BOOL isSuccess, id responseObject) {
-//        NSLog(@"%@",responseObject);
-//        self.showMoneyButton.enabled = YES;
-//        if (isSuccess) {
-//            if ([responseObject[@"code"] integerValue] == 0) {
-//                self.Bankmodel = [LPBankcardwithDrawModel mj_objectWithKeyValues:responseObject];
-//            }else{
-//                [[UIWindow visibleViewController].view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
-//            }
-//        }else{
-//            [[UIWindow visibleViewController].view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
-//        }
-//    }];
-//}
-
+ 
 
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -168,30 +141,6 @@
 }
 
 
--(void)initSetSecretVC{
-    
-    NSString *str1 = @"为了您的账号安全，请先设置密保问题。";
-    NSMutableAttributedString *str = [[NSMutableAttributedString alloc]initWithString:str1];
-    WEAK_SELF()
-    GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:str
-                                                         message:nil
-                                                      IsShowhead:YES
-                                                     backDismiss:YES
-                                                   textAlignment:0
-                                                    buttonTitles:@[@"去设置"]
-                                                    buttonsColor:@[[UIColor baseColor]]
-                                         buttonsBackgroundColors:@[[UIColor whiteColor]]
-                                                     buttonClick:^(NSInteger buttonIndex){
-        if (buttonIndex == 0) {
-            LPChangePhoneVC *vc = [[LPChangePhoneVC alloc]init];
-            vc.type = 1;
-            vc.hidesBottomBarWhenPushed = YES;
-            [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
-        }
-    }];
-    [alert show];
-    
-}
 
 
 @end

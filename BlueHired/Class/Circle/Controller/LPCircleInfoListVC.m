@@ -26,9 +26,9 @@ static NSString *LPCircleInfoCellID = @"LPCircleInfoCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = @"消息";
+    self.navigationItem.title = @"圈子动态";
+    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
 
-    
     [self.view addSubview:self.tableview];
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
         //        make.edges.equalTo(self.view);
@@ -84,9 +84,9 @@ static NSString *LPCircleInfoCellID = @"LPCircleInfoCell";
         if (self.page == 1) {
             self.listArray = [NSMutableArray array];
         }
-        if (self.model.data.count > 0) {
+        if (self.model.data.list.count > 0) {
             self.page += 1;
-            [self.listArray addObjectsFromArray:self.model.data];
+            [self.listArray addObjectsFromArray:self.model.data.list];
             [self.tableview reloadData];
         }else{
             if (self.page == 1) {
@@ -104,9 +104,9 @@ static NSString *LPCircleInfoCellID = @"LPCircleInfoCell";
             [self addNodataViewHidden:YES];
             
             self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"清空" style:UIBarButtonItemStyleDone target:self action:@selector(touchDeleteButton)];
-            [self.navigationItem.rightBarButtonItem setTintColor:[UIColor colorWithHexString:@"#666666"]];
-            [self.navigationItem.rightBarButtonItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:13], NSFontAttributeName, nil] forState:UIControlStateNormal];
-            [self.navigationItem.rightBarButtonItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:13], NSFontAttributeName, nil] forState:UIControlStateSelected];
+            [self.navigationItem.rightBarButtonItem setTintColor:[UIColor colorWithHexString:@"#333333"]];
+            [self.navigationItem.rightBarButtonItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:15], NSFontAttributeName, nil] forState:UIControlStateNormal];
+            [self.navigationItem.rightBarButtonItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:15], NSFontAttributeName, nil] forState:UIControlStateSelected];
             
         }
         
@@ -143,10 +143,9 @@ static NSString *LPCircleInfoCellID = @"LPCircleInfoCell";
 -(void)requestQueryInfolist{
     NSDictionary *dic = @{
                           @"page":@(self.page),
-                          @"type":@(6),
-                          @"versionType":@"2.2"
+                          @"type":@(2)
                           };
-    [NetApiManager requestQueryInfolistWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+    [NetApiManager requestQueryGetInfolist:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         [self.tableview.mj_header endRefreshing];
         [self.tableview.mj_footer endRefreshing];
@@ -164,7 +163,7 @@ static NSString *LPCircleInfoCellID = @"LPCircleInfoCell";
 }
 -(void)requestQueryDeleteInfoMood{
     NSDictionary *dic = @{};
-    [NetApiManager requestQueryDeleteInfoMood:dic withHandle:^(BOOL isSuccess, id responseObject) {
+    [NetApiManager requestQueryUpdateInfoMood:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         if (isSuccess) {
 //            self.model = [LPInfoListModel mj_objectWithKeyValues:responseObject];
@@ -198,6 +197,11 @@ static NSString *LPCircleInfoCellID = @"LPCircleInfoCell";
         _tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableview.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
         [_tableview registerNib:[UINib nibWithNibName:LPCircleInfoCellID bundle:nil] forCellReuseIdentifier:LPCircleInfoCellID];
+        _tableview.backgroundColor = [UIColor colorWithHexString:@"F5F5F5"];
+        
+        UIView *LineV = [[UIView alloc] initWithFrame:CGRectMake(0, 0, Screen_Width, LENGTH_SIZE(10))];
+        LineV.backgroundColor = [UIColor colorWithHexString:@"F5F5F5"];
+        _tableview.tableHeaderView = LineV;
         
         _tableview.mj_header = [HZNormalHeader headerWithRefreshingBlock:^{
                 self.page = 1;

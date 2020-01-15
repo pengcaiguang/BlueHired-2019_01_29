@@ -28,7 +28,7 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="30000" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2OQ-B9-p5T">
-                        <rect key="frame" x="0.0" y="212" width="47" height="17"/>
+                        <rect key="frame" x="0.0" y="211.5" width="47" height="17"/>
                         <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                         <color key="textColor" red="1" green="0.49803921568627452" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
@@ -36,10 +36,8 @@
                             <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
                         </userDefinedRuntimeAttributes>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C5p-TG-Emm">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="澳大利亚贝拉米Bellamy’s澳大利亚贝拉米Bellamy’s" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C5p-TG-Emm">
                         <rect key="frame" x="0.0" y="178" width="170" height="31.5"/>
-                        <string key="text">澳大利亚贝拉米Bellamy’s有
-机婴幼儿奶粉3段1-3岁宝...</string>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                         <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
@@ -48,7 +46,7 @@
                         </userDefinedRuntimeAttributes>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" 积分" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yD2-Yo-j3x">
-                        <rect key="frame" x="47" y="213.5" width="28" height="14.5"/>
+                        <rect key="frame" x="47" y="213" width="28" height="14.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <color key="textColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
@@ -70,6 +68,11 @@
                         <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
                     </userDefinedRuntimeAttributes>
                 </constraint>
+                <constraint firstItem="2OQ-B9-p5T" firstAttribute="top" secondItem="C5p-TG-Emm" secondAttribute="bottom" constant="2" id="PO9-ay-CNJ">
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                </constraint>
                 <constraint firstAttribute="trailing" secondItem="C5p-TG-Emm" secondAttribute="trailing" id="PxB-za-7If">
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
@@ -81,11 +84,6 @@
                     </userDefinedRuntimeAttributes>
                 </constraint>
                 <constraint firstItem="2OQ-B9-p5T" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="cqp-du-1ew">
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
-                    </userDefinedRuntimeAttributes>
-                </constraint>
-                <constraint firstAttribute="bottom" secondItem="2OQ-B9-p5T" secondAttribute="bottom" id="dcW-YR-Bf8">
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
                     </userDefinedRuntimeAttributes>

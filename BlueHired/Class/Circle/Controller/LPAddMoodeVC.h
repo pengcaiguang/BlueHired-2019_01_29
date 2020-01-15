@@ -11,6 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 typedef void(^LPAddMoodeVCBlock)(NSString *moodDetails ,NSString *moodUrl ,NSString *address);
+typedef void(^LPSenderMoodeVCBlock)(void);
 
 @interface LPAddMoodeVC : LPBaseViewController
 
@@ -20,6 +21,7 @@ typedef void(^LPAddMoodeVCBlock)(NSString *moodDetails ,NSString *moodUrl ,NSStr
 @property (nonatomic,strong) UIImage *ShareImage;
 @property (nonatomic,strong) LPPrizeDataMoney *Sharemodel;
 @property (nonatomic,copy) LPAddMoodeVCBlock block;
+@property (nonatomic,copy) LPSenderMoodeVCBlock Senderblock;
 
 
 @end

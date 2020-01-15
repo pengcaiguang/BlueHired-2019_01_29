@@ -69,7 +69,13 @@ static NSString *LPScoreStoreBillCellID = @"LPScoreStoreBillCell";
  {
      if (editingStyle == UITableViewCellEditingStyleDelete)
      {
-         [self requestDelUserBill:self.listArray[indexPath.row]];
+         GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"是否删除该账单，一经删除，无法恢复！" message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"否",@"是"] buttonsColor:@[[UIColor colorWithHexString:@"#808080"],[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
+                if (buttonIndex) {
+                    [self requestDelUserBill:self.listArray[indexPath.row]];
+                }
+            }];
+            [alert show];
+         
      }
  }
 

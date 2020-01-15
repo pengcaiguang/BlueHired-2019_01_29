@@ -13,6 +13,7 @@
 #import "GJAlertWithDrawPassword.h"
 #import "LPSalarycCardBindPhoneVC.h"
 #import "LPSalarycCard2VC.h"
+#import "LPStotrBillDetailsModel.h"
 
 
 
@@ -40,6 +41,7 @@ static NSString *LPStoreCartCellID = @"LPStoreCartCell";
 @property (nonatomic, strong) UIView *labelView;
 @property (nonatomic, strong) NSMutableArray <UILabel *> *LabelArr;
 @property (nonatomic, strong) UILabel *ScoreLabel;
+@property (nonatomic, strong) UILabel *discountNum;
 
 @property (nonatomic, weak) NSTimer *countDownTimer;
 @property (nonatomic, assign) NSInteger seconds;//倒计时
@@ -58,8 +60,6 @@ static NSString *LPStoreCartCellID = @"LPStoreCartCell";
     
     self.view.backgroundColor = [UIColor colorWithHexString:@"F5F5F5"];
     [self initFooterView];
-     
-    
     
     if (self.countDownTimer) {
         [self.countDownTimer invalidate];
@@ -78,15 +78,19 @@ static NSString *LPStoreCartCellID = @"LPStoreCartCell";
             GenerateModel.data = GenerateDataModel;
             
             [self setGenerateModel:GenerateModel];
-        }else{
+        }else if (self.GenerateModel) {
              [self setGenerateModel:self.GenerateModel];
+        }else if (self.ShareOrderID){
+            [self requestQueryGetOrderDetails:self.ShareOrderID];
         }
 
     }else{
          [self requestGetOrderAddressList];
          if (self.BuyType == 0) {
              self.NumLabel.text = [NSString stringWithFormat:@"合计：%ld 积分",self.BuyModel.price.intValue * self.BuyNumber];
-         }else{
+         }else if (self.BuyType == 2){
+             self.NumLabel.text = [NSString stringWithFormat:@"合计：%.0f 积分",self.ShareModel.discountNum.integerValue == 0 ? self.ShareModel.price.floatValue :floor(self.ShareModel.discountNum.integerValue/100.0*self.ShareModel.price.integerValue)];
+         } else{
              NSInteger Numder = 0 ;
              for (LPCartItemListDataModel *m in self.CartArray) {
                  Numder += m.price.intValue * m.quantity.intValue;
@@ -203,42 +207,47 @@ static NSString *LPStoreCartCellID = @"LPStoreCartCell";
     
     if (self.Type == 0) {  //直接购买
         if (self.GenerateModel == nil) {
-            LPUserMaterialModel *user = [LPUserDefaults getObjectByFileName:USERINFO];
-            if (user.data.isBank.integerValue == 0) {        //添加银行卡
-                GJAlertMessage *alert = [[GJAlertMessage alloc]
-                                         initWithTitle:@"您还未绑定工资卡，请先绑定再兑换"
-                                         message:nil
-                                         textAlignment:NSTextAlignmentCenter
-                                         buttonTitles:@[@"取消",@"去绑定"]
-                                         buttonsColor:@[[UIColor colorWithHexString:@"#999999"],[UIColor baseColor]]
-                                         buttonsBackgroundColors:@[[UIColor whiteColor],[UIColor whiteColor]]
-                                         buttonClick:^(NSInteger buttonIndex) {
-                                             if (buttonIndex) {
-                                                 LPSalarycCard2VC *vc = [[LPSalarycCard2VC alloc] init];
-                                                 vc.hidesBottomBarWhenPushed = YES;
-                                                 [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
-                                             }
-                                         }];
-                [alert show];
-            }else{
-                 if (self.BuyType == 0) {
-                                NSString *urlStr = [NSString stringWithFormat:@"order/generate_order_buy_now?productSkuId=%@&quantity=%ld&addressId=%@",
-                                                    self.BuyModel.id,
-                                                    (long)self.BuyNumber,
-                                                    self.AddressModel.data[0].id];
-                                [self requestOrderGenerate:urlStr Dictionart:nil];
-                            }else if (self.BuyType == 1){
-                                NSString *urlStr = [NSString stringWithFormat:@"order/generate_order?addressId=%@",
-                                                           self.AddressModel.data[0].id];
-                                       NSMutableArray *idsArr = [[NSMutableArray alloc] init];
-                                       
-                                       for (LPCartItemListDataModel *m in self.CartArray) {
-                                           [idsArr addObject:m.id];
-                                       }
-                                       [self requestOrderGenerate:urlStr Dictionart:[idsArr mj_JSONObject]];
+             if (self.BuyType == 0) {
+                 NSString *urlStr = [NSString stringWithFormat:@"order/generate_order_buy_now?productSkuId=%@&quantity=%ld&addressId=%@",
+                                     self.BuyModel.id,
+                                     (long)self.BuyNumber,
+                                     self.AddressModel.data[0].id];
+                 [self requestOrderGenerate:urlStr Dictionart:nil];
+             }else if (self.BuyType == 1){
+                 NSString *urlStr = [NSString stringWithFormat:@"order/generate_order?addressId=%@",
+                                            self.AddressModel.data[0].id];
+                        NSMutableArray *idsArr = [[NSMutableArray alloc] init];
+                        
+                        for (LPCartItemListDataModel *m in self.CartArray) {
+                            [idsArr addObject:m.id];
+                        }
+                        [self requestOrderGenerate:urlStr Dictionart:[idsArr mj_JSONObject]];
 
-                            }
-            }
+             }else if (self.BuyType == 2){
+                 NSArray *gradeArr = @[@"见习职工",
+                                       @"初级职工",
+                                       @"中级职工",
+                                       @"高级职工",
+                                       @"部门精英",
+                                       @"部门经理",
+                                       @"区域经理",
+                                       @"总经理",
+                                       @"董事长"];
+                 
+                 LPUserMaterialModel *user = [LPUserDefaults getObjectByFileName:USERINFO];
+                 
+                 
+                 if ([gradeArr indexOfObject:self.ShareModel.grade] > [gradeArr indexOfObject:user.data.grading]) {
+                     [self.view showLoadingMeg:@"用户积分等级不足" time:MESSAGE_SHOW_TIME];
+                     return;
+                 }
+                 
+                 NSString *urlStr = [NSString stringWithFormat:@"order/generate_order_buy_now?productSkuId=%@&addressId=%@&quantity=1&productShareId=%@",
+                                     self.ShareModel.productSkuId,
+                                     self.AddressModel.data[0].id,
+                                     self.ShareModel.id];
+                 [self requestOrderGenerate:urlStr Dictionart:nil];
+             }
         }else{
             [self  initAlertWithDrawPassWord];
         }
@@ -297,16 +306,49 @@ static NSString *LPStoreCartCellID = @"LPStoreCartCell";
         }];
         [alert show];
         
-        
     }
     
 }
 
 
 #pragma mark - TableViewDelegate & Datasource
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
+    if (self.Type == 0 && self.BuyType == 2 && self.ShareModel) {
+        return LENGTH_SIZE(30);
+    }
+    return 0.01;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section{
+    if (self.Type == 0 && self.BuyType == 2 && self.ShareModel) {
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, LENGTH_SIZE(30))];
+        view.backgroundColor = [UIColor whiteColor];
+        UIView *lineV = [[UIView alloc] init];
+        [view addSubview:lineV];
+        [lineV mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.left.right.mas_offset(0);
+            make.height.mas_offset(LENGTH_SIZE(1));
+        }];
+        lineV.backgroundColor = [UIColor colorWithHexString:@"F5F5F5"];
+        
+        UILabel *Label =[[UILabel alloc] init];
+        [view addSubview:Label];
+        [Label mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(view);
+            make.right.mas_offset(LENGTH_SIZE(-13));
+        }];
+        Label.textColor = [UIColor colorWithHexString:@"#FF5353"];
+        Label.font = FONT_SIZE(12);
+        Label.text = [NSString stringWithFormat:@"该商品已有%ld人点赞，%@",(long)self.ShareModel.shareNum.integerValue,self.ShareModel.discountNum.integerValue == 0 ?@"无优惠":[NSString stringWithFormat:@"可享受%.1f折优惠",self.ShareModel.discountNum.floatValue/10]];
+        return view;
+    }
+    return nil;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if (self.Type == 0) {
-        if (self.BuyType == 0) {
+        if (self.BuyType == 0 || self.BuyType == 2) {
             return 1;
         }else if (self.BuyType == 1){
             return self.CartArray.count;
@@ -335,6 +377,8 @@ static NSString *LPStoreCartCellID = @"LPStoreCartCell";
             cell.BuyModel = self.BuyModel;
         }else if (self.BuyType == 1){
             cell.CartModel = self.CartArray[indexPath.row];
+        }else if (self.BuyType == 2){
+             cell.ShareModel = self.ShareModel;
         }
     }else{
         cell.GenerateModel = self.GenerateModel.data.orderItemList[indexPath.row];
@@ -577,6 +621,16 @@ static NSString *LPStoreCartCellID = @"LPStoreCartCell";
         }];
         View.backgroundColor = [UIColor whiteColor];
         
+        UILabel *discountNum = [[UILabel alloc] init];
+        [View addSubview:discountNum];
+        self.discountNum = discountNum;
+        [discountNum mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.mas_offset(LENGTH_SIZE(-13));
+            make.top.mas_offset(LENGTH_SIZE(12));
+        }];
+        discountNum.font = FONT_SIZE(12);
+        discountNum.textColor = [UIColor colorWithHexString:@"#FF5353"];
+        
         UILabel *ScoreLabel = [[UILabel alloc] init];
         [View addSubview:ScoreLabel];
         self.ScoreLabel = ScoreLabel;
@@ -584,7 +638,7 @@ static NSString *LPStoreCartCellID = @"LPStoreCartCell";
             make.right.mas_offset(LENGTH_SIZE(-13));
             make.centerY.equalTo(View);
         }];
-        ScoreLabel.font = FONT_SIZE(16);
+        ScoreLabel.font = FONT_SIZE(14);
         ScoreLabel.text = @"合计：0 积分";
         
         [self NumAttributedString:ScoreLabel];
@@ -656,7 +710,7 @@ static NSString *LPStoreCartCellID = @"LPStoreCartCell";
 
 
 
-- (void)initLabelView:(NSArray *) strArr{
+- (void)initLabelView:(NSArray *) strArr isDiscountNum:(CGFloat) isDiscountNum{
     
     [self.labelView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
@@ -678,11 +732,11 @@ static NSString *LPStoreCartCellID = @"LPStoreCartCell";
     }
 
     if (strArr.count == 4) {
-        self.FooterView.lx_height = LENGTH_SIZE(307);
+        self.FooterView.lx_height = LENGTH_SIZE(307 + isDiscountNum);
     }else if (strArr.count == 3){
-        self.FooterView.lx_height = LENGTH_SIZE(284);
+        self.FooterView.lx_height = LENGTH_SIZE(284 + isDiscountNum);
     }else if (strArr.count == 2){
-        self.FooterView.lx_height = LENGTH_SIZE(254);
+        self.FooterView.lx_height = LENGTH_SIZE(254 + isDiscountNum);
     }
   
 }
@@ -767,7 +821,7 @@ static NSString *LPStoreCartCellID = @"LPStoreCartCell";
     if (self.Type == 0) {
         [self initAlertWithDrawPassWord];
         if (self.CartBlock) {
-            self.CartBlock();
+            self.CartBlock(GenerateModel);
         }
     }else if (self.Type == 1){
         [self initOrderDetailsVC:GenerateModel.data.order];
@@ -823,6 +877,43 @@ static NSString *LPStoreCartCellID = @"LPStoreCartCell";
     
     self.OrderBtn.hidden = NO;
     
+    CGFloat DiscountNumHeight = 0.0;
+    
+    //是否有折扣
+    if (order.discountNum.integerValue > 0) {
+         [self.ScoreLabel.superview mas_remakeConstraints:^(MASConstraintMaker *make) {
+             make.top.mas_offset(LENGTH_SIZE(1));
+             make.left.right.mas_offset(0);
+             make.height.mas_offset(70);
+         }];
+        
+        [self.ScoreLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.right.mas_offset(LENGTH_SIZE(-13));
+            make.top.equalTo(self.discountNum.mas_bottom).offset(LENGTH_SIZE(8));
+        }];
+        [self.discountNum mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.right.mas_offset(LENGTH_SIZE(-13));
+            make.top.mas_offset(LENGTH_SIZE(12));
+        }];
+        
+        self.discountNum.text = [NSString stringWithFormat:@"该商品已有%ld人点赞，可享受%.1f折优惠",(long)order.shareNum.integerValue,order.discountNum.floatValue/10.0];
+        DiscountNumHeight = 30;
+    }else{
+        [self.ScoreLabel.superview mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.top.mas_offset(LENGTH_SIZE(1));
+            make.left.right.mas_offset(0);
+            make.height.mas_offset(40);
+        }];
+        
+        [self.ScoreLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.right.mas_offset(LENGTH_SIZE(-13));
+            make.centerY.equalTo(self.ScoreLabel.superview);
+        }];
+        
+        self.discountNum.text = @"";
+        DiscountNumHeight = 0;
+    }
+    
     self.ScoreLabel.text = [NSString stringWithFormat:@"合计：%@ 积分",order.totalAmount];
     [self NumAttributedString:self.ScoreLabel];
 
@@ -831,7 +922,7 @@ static NSString *LPStoreCartCellID = @"LPStoreCartCell";
         NSString *OrderSn = [NSString stringWithFormat:@"订单编号：%@",order.orderSn];
         NSString *timeStr = [NSString stringWithFormat:@"下单时间：%@",[NSString convertStringToTime:order.time]];
         
-        [self initLabelView: @[OrderSn,timeStr]];
+        [self initLabelView: @[OrderSn,timeStr] isDiscountNum:DiscountNumHeight];
         
         self.OrderState.text = @"待支付";
         self.OrderTitle.text = @"剩余时长：0分0秒";
@@ -883,7 +974,7 @@ static NSString *LPStoreCartCellID = @"LPStoreCartCell";
         NSString *timeStr = [NSString stringWithFormat:@"下单时间：%@",[NSString convertStringToTime:order.time]];
         NSString *paymentTimeStr = [NSString stringWithFormat:@"兑换时间：%@",[NSString convertStringToTime:order.paymentTime]];
     
-        [self initLabelView: @[OrderSn,timeStr,paymentTimeStr]];
+        [self initLabelView: @[OrderSn,timeStr,paymentTimeStr] isDiscountNum:DiscountNumHeight];
         self.OrderState.text = @"下单成功，商品等待发货";
         self.OrderTitle.text = @"客服人员正在马不停蹄的处理订单，请耐心等候";
         self.OrderBtn.hidden = YES;
@@ -894,7 +985,7 @@ static NSString *LPStoreCartCellID = @"LPStoreCartCell";
         NSString *paymentTimeStr = [NSString stringWithFormat:@"兑换时间：%@",[NSString convertStringToTime:order.paymentTime]];
         NSString *deliveryTimeStr = [NSString stringWithFormat:@"发货时间：%@",[NSString convertStringToTime:order.deliveryTime]];
         
-        [self initLabelView: @[OrderSn,timeStr,paymentTimeStr,deliveryTimeStr]];
+        [self initLabelView: @[OrderSn,timeStr,paymentTimeStr,deliveryTimeStr] isDiscountNum:DiscountNumHeight];
         self.OrderState.text = @"待收货";
         self.OrderTitle.text = @"客服人员处理完成，请等待收货";
         [self.OrderBtn setTitle:@"  确认收货  " forState:UIControlStateNormal];
@@ -906,7 +997,7 @@ static NSString *LPStoreCartCellID = @"LPStoreCartCell";
         NSString *paymentTimeStr = [NSString stringWithFormat:@"兑换时间：%@",[NSString convertStringToTime:order.paymentTime]];
         NSString *deliveryTimeStr = [NSString stringWithFormat:@"发货时间：%@",[NSString convertStringToTime:order.deliveryTime]];
         
-        [self initLabelView: @[OrderSn,timeStr,paymentTimeStr,deliveryTimeStr]];
+        [self initLabelView: @[OrderSn,timeStr,paymentTimeStr,deliveryTimeStr] isDiscountNum:DiscountNumHeight];
         
         self.OrderState.text = @"订单完成";
         self.OrderTitle.text = @"感谢您的使用，祝您生活愉快~";
@@ -919,7 +1010,7 @@ static NSString *LPStoreCartCellID = @"LPStoreCartCell";
         NSString *timeStr = [NSString stringWithFormat:@"下单时间：%@",[NSString convertStringToTime:order.time]];
         NSString *setTimeStr = [NSString stringWithFormat:@"取消时间：%@",[NSString convertStringToTime:order.setTime]];
         
-        [self initLabelView: @[OrderSn,timeStr,setTimeStr]];
+        [self initLabelView: @[OrderSn,timeStr,setTimeStr] isDiscountNum:DiscountNumHeight];
         self.OrderTitle.text = @"订单已取消";
         [self.OrderBtn setTitle:@"  删除订单  " forState:UIControlStateNormal];
     }else if (self.GenerateModel.data.order.status.intValue == 5){      //已关闭
@@ -930,7 +1021,7 @@ static NSString *LPStoreCartCellID = @"LPStoreCartCell";
         NSString *paymentTimeStr = [NSString stringWithFormat:@"兑换时间：%@",[NSString convertStringToTime:order.paymentTime]];
         NSString *backTimeStr = [NSString stringWithFormat:@"积分退还时间：%@",[NSString convertStringToTime:order.backTime]];
 
-        [self initLabelView: @[OrderSn,timeStr,paymentTimeStr,backTimeStr]];
+        [self initLabelView: @[OrderSn,timeStr,paymentTimeStr,backTimeStr] isDiscountNum:DiscountNumHeight];
         self.OrderTitle.text = @"相应积分系统会自动返还给您";
         [self.OrderBtn setTitle:@"  删除订单  " forState:UIControlStateNormal];
     }
@@ -1062,6 +1153,39 @@ static NSString *LPStoreCartCellID = @"LPStoreCartCell";
     }];
 }
 
+-(void)requestQueryGetOrderDetails:(NSString *)orderId{
+    NSDictionary *dic = @{@"orderId":orderId};
+    [NetApiManager requestQueryGetOrderDetails:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+ 
+        if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                LPStotrBillDetailsModel *DetailsModel = [LPStotrBillDetailsModel mj_objectWithKeyValues:responseObject];
+                if (DetailsModel.data == nil) {
+                    [[UIApplication sharedApplication].keyWindow showLoadingMeg:@"该条记录可能已经被删除" time:MESSAGE_SHOW_TIME];
+                    [self.navigationController popViewControllerAnimated:YES];
+                }else{
+                    LPOrderGenerateModel *GenerateModel =[[LPOrderGenerateModel alloc] init];
+                              
+                    LPOrderGenerateDataModel *GenerateDataModel =[[LPOrderGenerateDataModel alloc] init];
+                    GenerateDataModel.order = DetailsModel.data;
+                    GenerateDataModel.orderItemList = DetailsModel.data.orderItemList;
+                    GenerateDataModel.userTel = DetailsModel.data.userTel;
+                    GenerateDataModel.serviceTel = DetailsModel.data.serviceTel;
+                    
+                    GenerateModel.data = GenerateDataModel;
+                    [self setGenerateModel:GenerateModel];
+                    [self.tableview reloadData];
+
+                }
+            }else{
+                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
+        }else{
+            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
 
 -(void)requestOrderPayOrder:(NSString *) orderId DrawPwd:(NSString *) drawPwd{
  
@@ -1231,6 +1355,22 @@ static NSString *LPStoreCartCellID = @"LPStoreCartCell";
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
                 self.GenerateModel = [LPOrderGenerateModel mj_objectWithKeyValues:responseObject];
+            }else if ([responseObject[@"code"] integerValue] == 30029){  //未绑定银行卡
+                GJAlertMessage *alert = [[GJAlertMessage alloc]
+                                                        initWithTitle:responseObject[@"msg"]
+                                                        message:nil
+                                                        textAlignment:NSTextAlignmentCenter
+                                                        buttonTitles:@[@"取消",@"去绑定"]
+                                                        buttonsColor:@[[UIColor colorWithHexString:@"#999999"],[UIColor baseColor]]
+                                                        buttonsBackgroundColors:@[[UIColor whiteColor],[UIColor whiteColor]]
+                                                        buttonClick:^(NSInteger buttonIndex) {
+                                                            if (buttonIndex) {
+                                                                LPSalarycCard2VC *vc = [[LPSalarycCard2VC alloc] init];
+                                                                vc.hidesBottomBarWhenPushed = YES;
+                                                                [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+                                                            }
+                                                        }];
+                               [alert show];
             }else{
                 [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
             }

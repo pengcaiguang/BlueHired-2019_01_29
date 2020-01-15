@@ -134,7 +134,7 @@ static NSInteger rowHeight = 40;
         _tableview.estimatedRowHeight = 44;
         _tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableview.layer.borderWidth = 0.5;
-        _tableview.layer.borderColor = [UIColor colorWithHexString:@"#929292"].CGColor;
+        _tableview.layer.borderColor = [UIColor colorWithHexString:@"#e0e0e0"].CGColor;
     }
     return _tableview;
 }

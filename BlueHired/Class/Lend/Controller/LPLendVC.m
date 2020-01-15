@@ -335,7 +335,7 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
         return;
     }
     
-    if (self.lendTextField.text.floatValue==0.0) {
+    if (self.lendTextField.text.floatValue <= 0.0) {
         [self.view showLoadingMeg:@"请输入借支金额" time:MESSAGE_SHOW_TIME];
         return;
     }
@@ -437,6 +437,7 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
     imagePicker.delegate = self;
     imagePicker.allowsEditing = YES;
     imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    imagePicker.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:imagePicker animated:YES completion:nil];
 }
 
@@ -692,31 +693,7 @@ static NSString *LPMapLocCellID = @"LPMapLocCell";
 
 - (void)setPmodel:(LPUserProblemModel *)Pmodel{
     _Pmodel = Pmodel;
-    if (Pmodel.data.count == 0) {
-        NSString *str1 = @"为了您的账号安全，请先设置密保问题。";
-        NSMutableAttributedString *str = [[NSMutableAttributedString alloc]initWithString:str1];
-        WEAK_SELF()
-        GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:str message:nil IsShowhead:YES textAlignment:0 buttonTitles:@[@"去设置"] buttonsColor:@[[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
-            if (buttonIndex == 0) {
-                LPSetSecretVC *vc = [[LPSetSecretVC alloc] init];
-                //                [self.navigationController pushViewController:vc animated:YES];
-                NSMutableArray *naviVCsArr = [[NSMutableArray alloc]initWithArray:weakSelf.navigationController.viewControllers];
-                for (UIViewController *vc in naviVCsArr) {
-                    if ([vc isKindOfClass:[weakSelf class]]) {
-                        [naviVCsArr removeObject:vc];
-                        break;
-                    }
-                }
-                [naviVCsArr addObject:vc];
-                vc.hidesBottomBarWhenPushed = YES;
-                
-                [weakSelf.navigationController  setViewControllers:naviVCsArr animated:YES];
-                
-            }
-        }];
-        [alert show];
-    }else{
-    }
+   
 }
 
 

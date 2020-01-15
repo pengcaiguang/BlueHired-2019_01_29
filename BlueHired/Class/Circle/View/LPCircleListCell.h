@@ -42,6 +42,11 @@ typedef void (^LPCircleListCellVideoBlock)(NSString *VideoUrl,UIImageView *view)
 @property (weak, nonatomic) IBOutlet UILabel *commentTotalLabel;
 @property (weak, nonatomic) IBOutlet UIView *imageBgView;
 @property (weak, nonatomic) IBOutlet UIButton *ReportBt;
+
+@property (weak, nonatomic) IBOutlet UIButton *isConcernBt;
+@property (weak, nonatomic) IBOutlet UIButton *LikeBt;
+@property (weak, nonatomic) IBOutlet UIButton *CommentBt;
+
 @property (nonatomic,copy) LPCircleListCellBlock Block;
 @property (nonatomic,copy) LPCircleListCellPraiseBlock PraiseBlock;
 @property (nonatomic,copy) LPCircleListCellVideoBlock VideoBlock;
@@ -57,7 +62,7 @@ typedef void (^LPCircleListCellVideoBlock)(NSString *VideoUrl,UIImageView *view)
 @property(nonatomic,strong) LPMoodListDataModel *model;
 
 
-@property (nonatomic, strong)NSArray *imageArray;
+@property (nonatomic,strong) NSArray *imageArray;
 @property (nonatomic,strong) UIScrollView *scrollView;
 @property (nonatomic,strong) UIPageControl *pageControl;
 @property (nonatomic,strong) UIImageView *touchImage;
@@ -65,10 +70,8 @@ typedef void (^LPCircleListCellVideoBlock)(NSString *VideoUrl,UIImageView *view)
 @property (nonatomic,strong) NSMutableArray <UIImageView *>*imageViewsRectArray;
 
 @property (nonatomic,assign) NSInteger ContentType;
-@property (weak, nonatomic) IBOutlet UIView *TriangleView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *CommentView_constraint_height;
 @property (weak, nonatomic) IBOutlet UIView *CommentView;
-@property (weak, nonatomic) IBOutlet UIButton *praiseBt;
 
 @property(nonatomic,strong) NSMutableArray <LPMoodListDataModel *>*moodListArray;
 @property(nonatomic,strong) UITableView *SuperTableView;

@@ -121,6 +121,9 @@ typedef void (^UploadImageTempBlock)(BOOL sussess,NSMutableArray *array);
 //查看圈子列表
 + (void)requestMoodListWithParam:(id)paramer
                       withHandle:(response)responseHandle;
+//关注数量和粉丝数量
++ (void)requestGetUserConcernNum:(id)paramer
+                      withHandle:(response)responseHandle;
 //获取圈子详情
 + (void)requestGetMoodWithParam:(id)paramer
                      withHandle:(response)responseHandle;
@@ -782,6 +785,75 @@ typedef void (^UploadImageTempBlock)(BOOL sussess,NSMutableArray *array);
 //获取订单详情
 + (void)requestQueryGetOrderDetails:(id)paramer
                          withHandle:(response)responseHandle;
+//获取我的分享列表
++ (void)requestQueryGetProductShareList:(id)paramer
+                             withHandle:(response)responseHandle;
+//分享列表及分享详情中商品修改属性
++ (void)requestQueryUpdateProductShareSKU:(id)paramer
+                                URLString:(NSString *)URLString
+                               withHandle:(response)responseHandle;
+//删除我的分享
++ (void)requestQueryDeleteProductShare:(id)paramer
+                            withHandle:(response)responseHandle;
+//添加环信用户
++ (void)requestQueryCustomerAddimuser:(id)paramer
+                           withHandle:(response)responseHandle;
+
+//获取个人邀请榜单历史
++ (void)requestQueryinviteRecord:(id)paramer
+                      withHandle:(response)responseHandle;
+
+//获取邀请排行榜列表
++ (void)requestQueryinviteRankList:(id)paramer
+                        withHandle:(response)responseHandle;
+
+//领取排行榜积分奖励
++ (void)requestQueryinviteScore:(id)paramer
+                      URLString:(NSString *)URLString
+                     withHandle:(response)responseHandle;
+
+//分享招聘信息，个人二维码
++ (void)requestQueryAddShareRecord:(id)paramer
+                      URLString:(NSString *)URLString
+                        withHandle:(response)responseHandle;
+
+//分享商品添加分享记录
++ (void)requestQueryInsertProductShare:(id)paramer
+                      URLString:(NSString *)URLString
+                            withHandle:(response)responseHandle;
+
+//整个闪电玩整个鉴权url
++ (void)requestShanDWGETAuth:(id)paramer
+                  withHandle:(response)responseHandle;
+
+
+//取游戏列表
++ (void)requestShanDWGETGameList:(id)paramer
+                   withHandle:(response)responseHandle;
+
+//获取小说游戏是否开启
++ (void)requestGetShandeConsole:(id)paramer
+                     withHandle:(response)responseHandle;
+//获取企业视频以及新闻热点
++ (void)requestGetMechanismVideo:(id)paramer
+                      withHandle:(response)responseHandle;
+
+//快速入职
++ (void)requestInsertquickWrok:(id)paramer
+                    withHandle:(response)responseHandle;
+ 
+//获取消息中心列表
++ (void)requestQueryGetInfolist:(id)paramer
+                     withHandle:(response)responseHandle;
+
+//一键清空圈子通知或者招工通知
++ (void)requestQueryUpdateInfoMood:(id)paramer
+                        withHandle:(response)responseHandle;
+
+//消息一键全部已读
++ (void)requestQueryUpdateInfoRead:(id)paramer
+                        withHandle:(response)responseHandle;
+
 @end
 
 

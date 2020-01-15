@@ -22,6 +22,20 @@
     // Do any additional setup after loading the view.
 }
 
+// 这个方法返回支持的方向
+-(UIInterfaceOrientationMask)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+// 这个返回是否自动旋转
+- (BOOL)shouldAutorotate{
+  return YES;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation{
+    return UIInterfaceOrientationPortrait;
+}
+
 - (void)initView {
     CGFloat showImageViewW;
     CGFloat showImageViewH;

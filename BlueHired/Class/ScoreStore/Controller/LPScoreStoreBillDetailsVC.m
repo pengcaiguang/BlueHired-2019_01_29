@@ -93,7 +93,7 @@ static NSString *LPStoreBillDetailsCellID = @"LPStoreBillDetailsCell";
          if (isSuccess) {
              if ([responseObject[@"code"] integerValue] == 0) {
                  self.model = [LPStotrBillDetailsModel mj_objectWithKeyValues:responseObject];
-                 if (self.model == nil) {
+                 if (self.model.data == nil) {
                      [[UIApplication sharedApplication].keyWindow showLoadingMeg:@"该条记录可能已经被删除" time:MESSAGE_SHOW_TIME];
                      [self.navigationController popViewControllerAnimated:YES];
                  }else{

@@ -23,7 +23,10 @@
  @return yes or no
  */
 - (BOOL)hx_isYesterday;
-
+/**
+ *  是否为前天
+ */
+- (BOOL)hx_isdaybefore;
 /**
  是否今年
  

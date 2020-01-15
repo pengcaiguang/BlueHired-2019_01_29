@@ -33,7 +33,18 @@
     _stateLabel.textColor = [UIColor colorWithHexString:@"#181818"];
     if ([_model.billType integerValue] == 2)
     {
-        _titleLabel.text = [NSString stringWithFormat:@"账户提现: %.2f",_model.money.floatValue];
+        NSString *MoneyTo = @"";
+        if ([_model.moneyTo isEqualToString:@"奖励提现"]){
+            MoneyTo = @"账户提现";
+        }else if ([_model.moneyTo isEqualToString:@"借支提现"]){
+            MoneyTo = @"借支提现";
+        }else if ([_model.moneyTo isEqualToString:@"工资提现"]){
+             MoneyTo = @"工资提现";
+        }else{
+            MoneyTo = @"账户提现";
+        }
+        
+        _titleLabel.text = [NSString stringWithFormat:@"%@: %.2f",MoneyTo,_model.money.floatValue];
 
 
         long long time1=[[model.set_time stringValue] longLongValue];

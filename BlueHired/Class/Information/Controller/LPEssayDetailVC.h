@@ -7,12 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "LPEssaylistModel.h"
+#import "LPRecreationModel.h"
 
 typedef void (^LPEssayCollectionBlock)(void);
 
 @interface LPEssayDetailVC : LPBaseViewController
-@property(nonatomic,strong) LPEssaylistDataModel *essaylistDataModel;
+@property(nonatomic,strong) LPRecreationEssayListModel *essaylistDataModel;
 
 @property (nonatomic, strong) UITableView *Supertableview;
 

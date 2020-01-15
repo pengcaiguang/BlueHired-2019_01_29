@@ -11,8 +11,6 @@
 
 @interface LPNoDataView ()
 
-@property(nonatomic,strong) UIImageView *imageView;
-@property(nonatomic,strong) UILabel *label;
 @property(nonatomic,strong) UIButton *LoginBt;
 
 @end
@@ -60,21 +58,23 @@
     
     [self addSubview:self.imageView];
     [self.imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.center.equalTo(self);
+        make.centerX.equalTo(self);
+        make.centerY.equalTo(self).offset(-15);
+
     }];
     
     [self addSubview:self.label];
     [self.label mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(50);
         make.right.mas_equalTo(-50);
-        make.top.equalTo(self.imageView.mas_bottom).offset(14);
+        make.top.equalTo(self.imageView.mas_bottom).offset(LENGTH_SIZE(14));
     }];
     
     [self addSubview:self.LoginBt];
     [self.LoginBt mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.mas_equalTo(30);
-        make.width.mas_equalTo(90);
-        make.top.equalTo(self.label.mas_bottom).offset(14);
+        make.height.mas_equalTo(LENGTH_SIZE(48));
+        make.width.mas_equalTo(LENGTH_SIZE(140));
+        make.top.equalTo(self.label.mas_bottom).offset(LENGTH_SIZE(38));
         make.centerX.equalTo(self.mas_centerX);
     }];
     
@@ -93,7 +93,7 @@
         _label = [[UILabel alloc]init];
         _label.numberOfLines = 0;
         _label.textColor = [UIColor colorWithHexString:@"#444444"];
-        _label.font = [UIFont systemFontOfSize:13];
+        _label.font = [UIFont systemFontOfSize:FontSize(14)];
         _label.textAlignment = NSTextAlignmentCenter;
         _label.text = @"搜不到您要的结果，换个关键词试试哦～";
     }
@@ -104,10 +104,10 @@
     if (!_LoginBt) {
         _LoginBt = [[UIButton alloc] init];
         _LoginBt.backgroundColor = [UIColor baseColor];
-        [_LoginBt setTitle:@"立即登录" forState:UIControlStateNormal];
+        [_LoginBt setTitle:@"登录/注册" forState:UIControlStateNormal];
         [_LoginBt setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        _LoginBt.titleLabel.font = [UIFont systemFontOfSize:13];
-         _LoginBt.layer.cornerRadius = 8;
+        _LoginBt.titleLabel.font = [UIFont systemFontOfSize:FontSize(17)];
+         _LoginBt.layer.cornerRadius = LENGTH_SIZE(6);
         [_LoginBt addTarget:self action:@selector(ToLoginView) forControlEvents:UIControlEventTouchUpInside];
         _LoginBt.hidden = YES;
     }

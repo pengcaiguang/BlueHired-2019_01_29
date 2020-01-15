@@ -82,7 +82,6 @@
 
 
 - (void)textFieldChanged:(UITextField *)textField
-
 {
     /**
      *  最大输入长度,中英文字符都按一个字符计算

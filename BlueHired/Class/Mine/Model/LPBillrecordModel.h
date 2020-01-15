@@ -28,7 +28,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSString *userId;
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *errorRemark;
- 
+@property (nonatomic, strong) NSString *moneyTo;
+
 @end
 
 NS_ASSUME_NONNULL_END

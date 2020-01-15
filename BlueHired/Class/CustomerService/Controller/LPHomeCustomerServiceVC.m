@@ -9,7 +9,6 @@
 #import "LPHomeCustomerServiceVC.h"
 #import "LPCustomerServiceModel.h"
 #import "LPCustomerServiceVC.h"
-#import "LPtestViewController.h"
 #import "LPHFButton.h"
 #import "LPRHFButton.h"
 
@@ -56,10 +55,11 @@
 - (UIBarButtonItem *)rt_customBackItemWithTarget:(id)target action:(SEL)action {
     UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
     [btn setImage:[UIImage imageNamed:@"ic_back_white"] forState:UIControlStateNormal];
-    [btn setTitle:@" 返回" forState:UIControlStateNormal];
+    [btn setTitle:@"返回" forState:UIControlStateNormal];
     [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [btn sizeToFit];
     [btn addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+    btn.titleLabel.font = [UIFont systemFontOfSize:15];
     return [[UIBarButtonItem alloc] initWithCustomView:btn];
 }
 
@@ -420,7 +420,7 @@
         make.width.mas_equalTo(33);
         make.height.mas_equalTo(33);
     }];
-    AskImage.image = [UIImage imageNamed:@"Head_image"];
+    AskImage.image = [UIImage imageNamed:@"UserImage"];
 
     LPRHFButton *AskLable = [[LPRHFButton alloc] init];
     [self.scrollView addSubview:AskLable];

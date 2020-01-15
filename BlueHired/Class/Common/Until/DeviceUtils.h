@@ -37,7 +37,7 @@
 #define kNavBarHeight              ([DeviceUtils deviceType] == IPhone_X ? 88.0 : 64.0)
 
 #define kStatusBarHeight              ([DeviceUtils deviceType] == IPhone_X ? 44.0 : 20.0)
-
+#define kTabbarHeight            (49)
 #define kBottomBarHeight        ([DeviceUtils deviceType] == IPhone_X ? 34.0 : 0)
 
 typedef NS_ENUM(NSInteger,DeviceType) {
@@ -67,4 +67,8 @@ typedef NS_ENUM(NSInteger,DeviceType) {
 + (DeviceType)deviceType;
 
 + (NSString*)deviceModelName;
+
++(double)systemVersion;
+
+
 @end

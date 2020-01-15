@@ -8,14 +8,11 @@
 
 #import "LPInformationSearchVC.h"
 #import "LPSearchBar.h"
-#import "LPInformationSearchResultVC.h"
+ 
 #import "LPEssaylistModel.h"
-#import "LPInformationSingleCell.h"
-#import "LPInformationMoreCell.h"
 #import "LPEssayDetailVC.h"
 #import "LPVideoListModel.h"
-#import "LPInfoMationVideoCell.h"
-#import "LPVideoVC.h"
+//#import "LPVideoVC.h"
 #import "LPMoodListModel.h"
 #import "LPCircleListCell.h"
 #import "LPMoodDetailVC.h"
@@ -37,8 +34,6 @@ static NSString *LPEmployeeWorkListHistory = @"LPEmployeeWorkListHistory";
 
 static NSString *LPCircleListCellID = @"LPCircleListCell";
 static NSString *LPInformationSingleCellID = @"LPInformationSingleCell";
-static NSString *LPInformationMoreCellID = @"LPInformationMoreCell";
-static NSString *LPInformationVideoCollectionViewCellID = @"LPInfoMationVideoCell";
 static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
 static NSString *LPEmployeeWorkListCellID = @"LPEmployeeWorkListCell";
 static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
@@ -112,11 +107,7 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
 }
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    if (self.Type == 1) {
-        self.textArray = (NSArray *)kUserDefaultsValue(InformationSearchHistory);
-    }else if (self.Type == 2){
-        self.textArray = (NSArray *)kUserDefaultsValue(VideoSearchHistory);
-    }else if (self.Type == 3){
+    if (self.Type == 3){
         self.textArray = (NSArray *)kUserDefaultsValue(CircleSearchHistory);
     }else if (self.Type == 4){
         self.textArray = (NSArray *)kUserDefaultsValue(BusinessReviewSearchHistory);
@@ -145,9 +136,7 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
     LPSearchBar *searchBar = [[LPSearchBar alloc]initWithFrame:frame];
     searchBar.delegate = self;
     searchBar.placeholder = @"请输入搜索关键字";
-    if (self.Type == 2) {
-        searchBar.placeholder = @"请输入视频关键字";
-    }else if (self.Type == 4){
+    if (self.Type == 4){
         searchBar.placeholder = @"请输入企业名称或关键字";
     }
     [searchBar setShowsCancelButton:NO];
@@ -204,11 +193,7 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
         self.videocollectionView.hidden = YES;
         self.tableview.hidden = NO;
         
-        if (self.Type == 1) {
-            self.textArray = (NSArray *)kUserDefaultsValue(InformationSearchHistory);
-        }else if (self.Type == 2){
-            self.textArray = (NSArray *)kUserDefaultsValue(VideoSearchHistory);
-        }else if (self.Type == 3){
+        if (self.Type == 3){
             self.textArray = (NSArray *)kUserDefaultsValue(CircleSearchHistory);
         }else if (self.Type == 4){
             self.textArray = (NSArray *)kUserDefaultsValue(BusinessReviewSearchHistory);
@@ -242,11 +227,7 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
     NSMutableArray *array = [NSMutableArray arrayWithArray:self.textArray];
     if (![array containsObject:self.searchWord]) {
         [array insertObject:self.searchWord atIndex:0];
-        if (self.Type == 1) {
-            kUserDefaultsSave([array copy], InformationSearchHistory);
-        }else if (self.Type == 2){
-            kUserDefaultsSave([array copy], VideoSearchHistory);
-        }else if (self.Type == 3){
+        if (self.Type == 3){
             kUserDefaultsSave([array copy], CircleSearchHistory);
         }else if (self.Type == 4){
             kUserDefaultsSave([array copy], BusinessReviewSearchHistory);
@@ -259,25 +240,12 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
 }
 
 -(void)search:(NSString *)string{
-//    LPInformationSearchResultVC *vc = [[LPInformationSearchResultVC alloc]init];
-//    vc.Type = self.Type;
-//    vc.string = string;
-//    [self.navigationController pushViewController:vc animated:YES];
-    
+ 
+    [DSBaActivityView showActiviTy];
+
     [[[UIApplication sharedApplication] keyWindow] endEditing:YES];
     self.tableview.hidden = YES;
-    if (self.Type == 1) {
-        self.page = 1;
-        [self requestEssaylist];
-        self.Resulttableview.hidden = NO;
-        self.videocollectionView.hidden = YES;
-    }else if (self.Type == 2){
-        self.page = 1;
-        [self.VideolistArray removeAllObjects];
-        [self requestQueryGetVideoList];
-        self.Resulttableview.hidden = YES;
-        self.videocollectionView.hidden = NO;
-    }else if (self.Type == 3){
+    if (self.Type == 3){
         self.page = 1;
         [self requestMoodList];
         self.Resulttableview.hidden = NO;
@@ -302,11 +270,7 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
 }
 
 -(void)clearHistory{
-    if (self.Type == 1) {
-        kUserDefaultsRemove(InformationSearchHistory);
-    }else if (self.Type == 2){
-        kUserDefaultsRemove(VideoSearchHistory);
-    }else if (self.Type == 3){
+    if (self.Type == 3){
         kUserDefaultsRemove(CircleSearchHistory);
     }else if (self.Type == 4){
         kUserDefaultsRemove(BusinessReviewSearchHistory);
@@ -517,21 +481,12 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
                 has = YES;
             }
         }
-    }else if (self.Type == 2){
-        for (UIView *view in self.videocollectionView.subviews) {
-            if ([view isKindOfClass:[LPNoDataView class]]) {
-                view.hidden = hidden;
-                has = YES;
-            }
-        }
     }
 
     if (!has) {
         LPNoDataView *noDataView = [[LPNoDataView alloc]initWithFrame:CGRectMake(0, 30, SCREEN_WIDTH, SCREEN_HEIGHT-30-kNavBarHeight-kBottomBarHeight)];
         if (self.Type == 1 || self.Type == 3|| self.Type == 4|| self.Type == 5|| self.Type == 6) {
             [self.Resulttableview addSubview:noDataView];
-        }else if (self.Type == 2){
-            [self.videocollectionView addSubview:noDataView];
         }
         
         noDataView.hidden = hidden;
@@ -557,9 +512,7 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
     }else if (tableView == self.Resulttableview){
         if (self.Type == 3) {
             return self.moodListArray.count;
-        }else if (self.Type == 1){
-            return self.listArray.count;
-        }else if (self.Type == 4){
+        } else if (self.Type == 4){
             return self.BusinesslistArray.count;
         }else if (self.Type == 5){
             return self.EmployeelistArray.count;
@@ -630,35 +583,23 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
     if (tableView == self.Resulttableview) {
         if (self.Type == 3) {
             LPMoodListDataModel *model = self.moodListArray[indexPath.row];
-            CGFloat DetailsHeight = [LPTools calculateRowHeight:model.moodDetails fontSize:15 Width:SCREEN_WIDTH - 71];
+            CGFloat DetailsHeight = [LPTools calculateRowHeight:model.moodDetails
+                                                       fontSize:FontSize(15)
+                                                          Width:SCREEN_WIDTH - LENGTH_SIZE(71)];
             //        [self calculateCommentHeight:model];
             CGFloat CommentHeight = 0;
-            if (DetailsHeight>90) {
+                if (DetailsHeight>LENGTH_SIZE(90)) {
                 if ([[LPTools isNullToString:model.address] isEqualToString:@""] || [model.address isEqualToString:@"保密"]) {
-                    //        89 + (DetailsHeight>=80?80:DetailsHeight+5)+[self calculateImageHeight:model.moodUrl]  +CommentHeight;
-                    return   89 + (model.isOpening?DetailsHeight+43:128)+[self calculateImageHeight:model.moodUrl]  +CommentHeight;
+                    return   LENGTH_SIZE(89) + (model.isOpening?DetailsHeight+LENGTH_SIZE(43):LENGTH_SIZE(128))+[self calculateImageHeight:model.moodUrl]  +CommentHeight;
                 }else{
-                    return   107 + (model.isOpening?DetailsHeight+43:128)+[self calculateImageHeight:model.moodUrl]  +CommentHeight;
+                    return   LENGTH_SIZE(107) + (model.isOpening?DetailsHeight+LENGTH_SIZE(43):LENGTH_SIZE(128))+[self calculateImageHeight:model.moodUrl]  +CommentHeight;
                 }
             }else{
                 if ([[LPTools isNullToString:model.address] isEqualToString:@""] || [model.address isEqualToString:@"保密"]) {
-                    //        89 + (DetailsHeight>=80?80:DetailsHeight+5)+[self calculateImageHeight:model.moodUrl]  +CommentHeight;
-                    return   89 + DetailsHeight + 5 + [self calculateImageHeight:model.moodUrl]  +CommentHeight;
+                    return   LENGTH_SIZE(89) + DetailsHeight + LENGTH_SIZE(5) + [self calculateImageHeight:model.moodUrl]  + CommentHeight;
                 }else{
-                    return   107 + DetailsHeight + 5 + [self calculateImageHeight:model.moodUrl]  +CommentHeight;
+                    return   LENGTH_SIZE(107) + DetailsHeight + LENGTH_SIZE(5) + [self calculateImageHeight:model.moodUrl]  + CommentHeight;
                 }
-            }
-        }else if (self.Type == 1){
-            NSArray *array = @[];
-            if (self.listArray.count > indexPath.row) {
-                array = [self.listArray[indexPath.row].essayUrl componentsSeparatedByString:@";"];
-            }
-            if (array.count ==0) {
-                return 40.0;
-            }else if (array.count == 1|| array.count == 2){
-                return 110.0;
-            }else{
-                return 150.0;
             }
         }else if (self.Type == 4){
             return 77.0;
@@ -694,29 +635,7 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
         return cell;
     }else{
         
-        if (self.Type== 1) {
-            NSArray *array = @[];
-            if (self.listArray.count > indexPath.row) {
-                array = [self.listArray[indexPath.row].essayUrl componentsSeparatedByString:@";"];
-            }
-            if (array.count ==0) {
-                return nil;
-            }else if (array.count == 1|| array.count == 2) {
-                LPInformationSingleCell *cell = [tableView dequeueReusableCellWithIdentifier:LPInformationSingleCellID];
-                if(cell == nil){
-                    cell = [[LPInformationSingleCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:LPInformationSingleCellID];
-                }
-                cell.model = self.listArray[indexPath.row];
-                return cell;
-            }else{
-                LPInformationMoreCell *cell = [tableView dequeueReusableCellWithIdentifier:LPInformationMoreCellID];
-                if(cell == nil){
-                    cell = [[LPInformationMoreCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:LPInformationMoreCellID];
-                }
-                cell.model = self.listArray[indexPath.row];
-                return cell;
-            }
-        }else if (self.Type == 4){
+        if (self.Type == 4){
             LPBusinessReviewCell *cell = [tableView dequeueReusableCellWithIdentifier:LPBusinessReviewCellID];
             cell.model = self.BusinesslistArray[indexPath.row];
             return cell;
@@ -745,8 +664,10 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
             cell.moodListArray = self.moodListArray;
             cell.ClaaViewType = 1;
             
+            cell.LikeBt.hidden = YES;
+            cell.CommentBt.hidden = YES;
+            
             cell.CommentView.hidden = YES;
-            cell.TriangleView.hidden = YES;
             cell.operationButton.hidden = YES;
             
             cell.delegate =self;
@@ -790,202 +711,18 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
         [self search:self.textArray[indexPath.row]];
         
     }else if (tableView == self.Resulttableview){
-        if (self.Type == 1) {
-            LPEssayDetailVC *vc = [[LPEssayDetailVC alloc]init];
-            vc.essaylistDataModel = self.listArray[indexPath.row];
-            vc.Supertableview = self.Resulttableview;
-            vc.essaylistDataModel = self.listArray[indexPath.row];
-            [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
-            
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-                LPEssaylistDataModel *model = self.listArray[indexPath.row];
-                model.view = @(model.view.integerValue +1);
-                
-                NSString *viewStr = @"";
-                if (model.view.integerValue>10000) {
-                    viewStr = [NSString stringWithFormat:@"%.1fw", model.view.integerValue/10000.0] ;
-                }else{
-                    viewStr = model.view ? [model.view stringValue] : @"0";
-                }
-                
-                if ([cell isKindOfClass:[LPInformationSingleCell class]]) {
-                    LPInformationSingleCell *c = (LPInformationSingleCell *)cell;
-                    c.viewLabel.text = viewStr;
-                }else if ([cell isKindOfClass:[LPInformationMoreCell class]]) {
-                    LPInformationMoreCell *c = (LPInformationMoreCell *)cell;
-                    c.viewLabel.text = viewStr;
-                }
-            });
-        }else if (self.Type == 4){
+        if (self.Type == 4){
             LPBusinessReviewDetailVC *vc = [[LPBusinessReviewDetailVC alloc]init];
             vc.mechanismlistDataModel = self.BusinesslistArray[indexPath.row];
             [self.navigationController pushViewController:vc animated:YES];
         }
     }
 }
-
-
-#pragma mark -- UICollectionViewDataSource
-
-//  返回头视图
-- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
-{
-    UICollectionReusableView *reusableView =nil;
-    //返回段头段尾视图
-    if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
-        UICollectionReusableView *headerView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderView" forIndexPath:indexPath];
-        //添加头视图的内容
-        headerView.backgroundColor = [UIColor colorWithHexString:@"#F2F1F0"];
-        
-        UILabel *label = [[UILabel alloc]init];
-        [headerView addSubview:label];
-        [label mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.mas_equalTo(10);
-            make.centerY.equalTo(headerView);
-        }];
-        label.text = @"搜索结果";
-        label.font = [UIFont systemFontOfSize:13];
-        label.textColor = [UIColor colorWithHexString:@"#999999"];
-        
-        reusableView = headerView;
-        return reusableView;
-    }
-    //如果底部视图
-    if (kind ==UICollectionElementKindSectionFooter)
-    {
-//        UICollectionReusableView *footerview = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FooterView"forIndexPath:indexPath];
-//        footerview.backgroundColor = [UIColor purpleColor];
-//        reusableView = footerview;
-        
-    }
-    return reusableView;
-}
-
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return self.VideolistArray.count;
-}
-
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-    LPInfoMationVideoCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:LPInformationVideoCollectionViewCellID forIndexPath:indexPath];
-    cell.model = self.VideolistArray[indexPath.row];
-    return cell;
-}
-
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return 1;
-}
-
--(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
-    if (collectionView == self.videocollectionView) {
-        LPVideoVC *vc = [[LPVideoVC alloc] init];
-        vc.hidesBottomBarWhenPushed = YES;
-        vc.listArray = self.VideolistArray;
-        vc.VideoRow = indexPath.row;
-        vc.KeySuperVC = self;
-        vc.page = self.page;
-        vc.Type = 2;
-        vc.key = self.searchWord;
-        vc.isReloadData = self.isReloadData;
-        [self.navigationController pushViewController:vc animated:YES];
-    }
-}
-
-#pragma mark -- UICollectionViewDelegateFlowLayout
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
-    if ([DeviceUtils deviceType] == IPhone_X) {
-        return CGSizeMake((SCREEN_WIDTH-21)/2 ,(SCREEN_WIDTH-21)/2*230/172);
-    }else{
-        return CGSizeMake((SCREEN_WIDTH-21)/2 ,(SCREEN_WIDTH-21)/2*230/172);
-    }
-}
-
--(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section{
-    return CGSizeMake(SCREEN_WIDTH, 30);
-}
-
--(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section{
-    return CGSizeMake(0, 0);
-}
-
-- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-    return UIEdgeInsetsMake(8, 8, 8, 8);
-    
-}
-
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section{
-    return 5;
-    
-}
-
-//cell的最小列间距
-
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section{
-    return 5;
-    
-}
-
+ 
 
 #pragma mark - request
--(void)requestEssaylist{
-    NSDictionary *dic = @{
-                          @"key":self.searchWord,
-                          @"page":@(self.page)
-                          };
-    [NetApiManager requestEssaylistWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
-        NSLog(@"%@",responseObject);
-        [self.Resulttableview.mj_header endRefreshing];
-        [self.Resulttableview.mj_footer endRefreshing];
-        if (isSuccess) {
-            if ([responseObject[@"code"] integerValue] == 0) {
-                self.model = [LPEssaylistModel mj_objectWithKeyValues:responseObject];
-            }else{
-                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
-            }
-        }else{
-            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
-        }
-    }];
-}
-
-
--(void)requestQueryGetVideoList{
-    
-    //计算ids
-    NSString *ids =@"";
-    if (self.VideolistArray.count<=40) {
-        for (LPVideoListDataModel *m in self.VideolistArray) {
-            ids = [NSString stringWithFormat:@"%@%@v,",ids,m.id];
-        }
-    }else{
-        for (NSInteger i = self.VideolistArray.count-40 ; i<self.VideolistArray.count ; i++) {
-            LPVideoListDataModel *m = self.VideolistArray[i];
-            ids = [NSString stringWithFormat:@"%@%@v,",ids,m.id];
-        }
-    }
-    NSLog(@"ids = %@",ids);
-    
-    NSDictionary *dic = @{@"videoName":self.searchWord,
-                          @"page":[NSString stringWithFormat:@"%ld",(long)self.page],
-                          @"ids":ids
-                          };
-    [NetApiManager requestQueryGetVideoList:dic withHandle:^(BOOL isSuccess, id responseObject) {
-        NSLog(@"%@",responseObject);
-        [self.videocollectionView.mj_header endRefreshing];
-        [self.videocollectionView.mj_footer endRefreshing];
-        if (isSuccess) {
-            if ([responseObject[@"code"] integerValue] == 0) {
-                self.VideoListModel = [LPVideoListModel mj_objectWithKeyValues:responseObject];
-            }else{
-                [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
-            }
-        }else{
-            [self.view showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
-        }
-    }];
-}
-
 -(void)requestMoodList{
+
     NSInteger type = 0;
     NSDictionary *dic = @{@"page":@(self.page),
                           @"type":@(type),
@@ -1009,6 +746,7 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
         
     }];
 }
+
 -(void)requestMechanismcommentMechanismlist{
     NSDictionary *dic = @{
                           @"page":@(self.page),
@@ -1019,6 +757,7 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
         NSLog(@"%@",responseObject);
         [self.Resulttableview.mj_header endRefreshing];
         [self.Resulttableview.mj_footer endRefreshing];
+        [DSBaActivityView hideActiviTy];
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
                 self.Businessmodel = [LPMechanismcommentMechanismlistModel mj_objectWithKeyValues:responseObject];
@@ -1036,13 +775,14 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
     NSDictionary *dic = @{
                           @"key":self.searchWord,
                           @"versionType":@"2.4",
-                          @"page":[NSString stringWithFormat:@"%ld",self.page]
+                          @"page":@(self.page),
                           };
     
     [NetApiManager requestGetEmployeeList:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
         [self.Resulttableview.mj_header endRefreshing];
         [self.Resulttableview.mj_footer endRefreshing];
+        [DSBaActivityView hideActiviTy];
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
                 self.Employeemodel = [LPLPEmployeeModel mj_objectWithKeyValues:responseObject];
@@ -1058,7 +798,7 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
 -(void)requestGetWorkMechanismList{
     NSDictionary *dic = @{@"mechanismName":self.searchWord,
                           @"mechanismAddress":self.mechanismAddress ? self.mechanismAddress : @"china",
-                          @"page":[NSString stringWithFormat:@"%ld",(long)self.page],
+                          @"page":@(self.page),
                           @"userId":self.Empmodel.userId
                           };
     
@@ -1066,6 +806,7 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
         NSLog(@"%@",responseObject);
         [self.Resulttableview.mj_header endRefreshing];
         [self.Resulttableview.mj_footer endRefreshing];
+        [DSBaActivityView hideActiviTy];
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
                 self.Mechanismmodel = [LPMechanismcommentMechanismlistModel mj_objectWithKeyValues:responseObject];
@@ -1104,10 +845,8 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
         _Resulttableview.rowHeight = UITableViewAutomaticDimension;
         if (self.Type == 3) {
             _Resulttableview.estimatedRowHeight = 0;
-        }else if (self.Type == 1){
-            _Resulttableview.estimatedRowHeight = 100;
         }
-        if (self.Type == 5 ||self.Type == 6) {
+        if (self.Type == 5 ||self.Type == 6 ||self.Type == 3) {
             _Resulttableview.separatorStyle = UITableViewCellSeparatorStyleNone;
         }else{
             _Resulttableview.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
@@ -1115,17 +854,13 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
 
         _Resulttableview.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
         [_Resulttableview registerNib:[UINib nibWithNibName:LPInformationSingleCellID bundle:nil] forCellReuseIdentifier:LPInformationSingleCellID];
-        [_Resulttableview registerNib:[UINib nibWithNibName:LPInformationMoreCellID bundle:nil] forCellReuseIdentifier:LPInformationMoreCellID];
         [_Resulttableview registerNib:[UINib nibWithNibName:LPCircleListCellID bundle:nil] forCellReuseIdentifier:LPCircleListCellID];
         [_Resulttableview registerNib:[UINib nibWithNibName:LPBusinessReviewCellID bundle:nil] forCellReuseIdentifier:LPBusinessReviewCellID];
         [_Resulttableview registerNib:[UINib nibWithNibName:LPEmployeeWorkListCellID bundle:nil] forCellReuseIdentifier:LPEmployeeWorkListCellID];
         [_Resulttableview registerNib:[UINib nibWithNibName:LPEmployeeManageCellID bundle:nil] forCellReuseIdentifier:LPEmployeeManageCellID];
         
         _Resulttableview.mj_header = [HZNormalHeader headerWithRefreshingBlock:^{
-            if (self.Type== 1) {
-                self.page = 1;
-                [self requestEssaylist];
-            }else if (self.Type == 3){
+            if (self.Type == 3){
                 self.page = 1;
                 [self requestMoodList];
             }else if (self.Type == 5){
@@ -1138,9 +873,7 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
             
         }];
         _Resulttableview.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
-            if (self.Type == 1) {
-                [self requestEssaylist];
-            }else if (self.Type == 3){
+             if (self.Type == 3){
                 [self requestMoodList];
             }else if (self.Type == 5){
                 [self requestGetEmployeeList];
@@ -1153,37 +886,7 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
 }
 
 
-
-
-- (UICollectionView *)videocollectionView{
-    if (!_videocollectionView) {
-        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-        // 设置collectionView的滚动方向，需要注意的是如果使用了collectionview的headerview或者footerview的话， 如果设置了水平滚动方向的话，那么就只有宽度起作用了了
-//        layout.headerReferenceSize = CGSizeMake(SCREEN_WIDTH, 30.0f);  //设置headerView大小
-        layout.sectionHeadersPinToVisibleBounds = YES;//头视图悬浮
-        [layout setScrollDirection:UICollectionViewScrollDirectionVertical];
-        //         layout.minimumInteritemSpacing = 3;// 垂直方向的间距
-        //        layout.minimumLineSpacing = 3; // 水平方向的间距
-        _videocollectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
-        _videocollectionView.backgroundColor = [UIColor whiteColor];
-        _videocollectionView.showsHorizontalScrollIndicator = NO;
-        _videocollectionView.dataSource = self;
-        _videocollectionView.delegate = self;
-        _videocollectionView.pagingEnabled = NO;
-        [_videocollectionView registerNib:[UINib nibWithNibName:LPInformationVideoCollectionViewCellID bundle:nil] forCellWithReuseIdentifier:LPInformationVideoCollectionViewCellID];
-        [_videocollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderView"];  //  一定要设置
-
-        //        _videocollectionView.mj_header = [HZNormalHeader headerWithRefreshingBlock:^{
-        //            self.page = 1;
-        //            [self requestQueryGetVideoList];
-        //        }];
-        _videocollectionView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
-            [self requestQueryGetVideoList];
-        }];
-    }
-    return _videocollectionView;
-}
-
+ 
 
 //计算图片高度
 - (CGFloat)calculateImageHeight:(NSString *)string
@@ -1191,72 +894,18 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
     if (kStringIsEmpty(string)) {
         return 0;
     }
-    CGFloat imgw = (SCREEN_WIDTH-70 - 10)/3;
+    CGFloat imgw = (SCREEN_WIDTH - LENGTH_SIZE(70) - LENGTH_SIZE(10))/3;
     NSArray *imageArray = [string componentsSeparatedByString:@";"];
     if (imageArray.count ==1)
     {
-        return 250;
+        return LENGTH_SIZE(250);
     }
     else
     {
-        return ceil(imageArray.count/3.0)*imgw + floor(imageArray.count/3)*5;
+        return ceil(imageArray.count/3.0)*imgw + floor(imageArray.count/3)*LENGTH_SIZE(5);
     }
 }
-
-//计算点赞和评论高度
-- (CGFloat)calculateCommentHeight:(LPMoodListDataModel *)model
-{
-    CGFloat Praiseheighe = 0.0;
-    if (model.praiseList.count) {
-        NSString *PraiseStr = @"♡ ";
-        if (model.praiseList.count>10) {
-            for (int i = 0 ;i <10 ;i++ ) {
-                PraiseStr = [NSString stringWithFormat:@"%@%@、",PraiseStr,model.praiseList[i].userName];
-            }
-            PraiseStr = [PraiseStr substringToIndex:PraiseStr.length -1];
-            PraiseStr = [NSString stringWithFormat:@"%@等%lu人觉得很赞",PraiseStr,model.praiseList.count];
-        }else{
-            for (LPMoodPraiseListDataModel *Pmodel in model.praiseList ) {
-                PraiseStr = [NSString stringWithFormat:@"%@%@、",PraiseStr,Pmodel.userName];
-            }
-            PraiseStr = [PraiseStr substringToIndex:PraiseStr.length -1];
-        }
-        Praiseheighe = [LPTools calculateRowHeight:PraiseStr fontSize:13 Width:SCREEN_WIDTH-70-14];
-        //        Praiseheighe = Praiseheighe >48 ?48:Praiseheighe;
-        Praiseheighe = Praiseheighe + 14;
-    }else{
-        Praiseheighe = 0.0;
-    }
-    
-    CGFloat commentheighe = 0.0;
-    if (model.commentModelList.count) {
-        
-        for (int i =0; i < model.commentModelList.count; i++) {
-            LPMoodCommentListDataModel   *CModel = model.commentModelList[i];
-            NSString *CommentStr;
-            if (CModel.toUserName) {        //回复
-                CommentStr = [NSString stringWithFormat:@"%@ 回复 %@:%@",CModel.toUserName,CModel.userName,CModel.commentDetails];
-            }else{      //评论
-                CommentStr = [NSString stringWithFormat:@"%@:%@",CModel.userName,CModel.commentDetails];
-            }
-            commentheighe += [LPTools calculateRowHeight:CommentStr fontSize:13 Width:SCREEN_WIDTH-70-14]+7;
-        }
-        if (model.commentModelList.count >=5) {
-            commentheighe += 23;
-        }
-        commentheighe += 7;
-    }else{
-        commentheighe = 0.0;
-    }
-    
-    if (commentheighe || Praiseheighe) {
-        return floor(commentheighe + Praiseheighe +16);
-        
-    }
-    
-    
-    return floor(commentheighe + Praiseheighe);
-}
+ 
 
 
 
@@ -1290,6 +939,8 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
     TF.layer.cornerRadius = 6;
     TF.placeholder = @"请输入备注";
     TF.text = self.selectEmployeemodel.remark;
+    TF.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, LENGTH_SIZE(10), LENGTH_SIZE(36))];
+    TF.leftViewMode = UITextFieldViewModeAlways;
     [TF addTarget:self action:@selector(textFieldChanged:) forControlEvents:UIControlEventEditingChanged];
     
     UIButton *button = [[UIButton alloc] init];

@@ -98,14 +98,15 @@
 - (void)setState:(MJRefreshState)state{
     
     MJRefreshCheckState
-    if (state == MJRefreshStatePulling || state == MJRefreshStateRefreshing) {
+    if (state == MJRefreshStatePulling  ) {
         NSArray *images = self.stateImages[@(state)];
         [self startGIFViewAnimationWithImages:images];
+    }else if (state == MJRefreshStateRefreshing){
+        NSArray *endImages = [self getRefreshingImageArrayWithStartIndex:2 endIndex:10];
+        [self startGIFViewAnimationWithImages:endImages];
     } else if (state == MJRefreshStateIdle) {
         if (oldState == MJRefreshStateRefreshing && state == MJRefreshStateIdle) {
-            NSArray *endImages = [self getRefreshingImageArrayWithStartIndex:2 endIndex:10];
             
-            [self startGIFViewAnimationWithImages:endImages];
         }else{
             [self.stateGIFImageView stopAnimating];
         }
@@ -148,7 +149,8 @@
 }
  
 - (UIImage *)reSizeImage:(UIImage *)image toSize:(CGSize)reSize{
-    UIGraphicsBeginImageContext(CGSizeMake(reSize.width, reSize.height));
+//    UIGraphicsBeginImageContext(CGSizeMake(reSize.width, reSize.height));
+    UIGraphicsBeginImageContextWithOptions(reSize, NO, 0);
     [image drawInRect:CGRectMake(0, 0, reSize.width, reSize.height)];
     UIImage *reSizeImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();

@@ -53,6 +53,10 @@ static NSString *BaiduMapKey = @"Is1tZn8s2L4SvALlxeBjef5Rzi3a7luV";
 
 //BugLy appID
 static NSString *BugLy_App_ID = @"ee0d53e516";
+//环信
+static NSString *CEC_Appkey = @"1433191025068143#kefuchannelapp75466";
+static NSString *CEC_TenantId = @"75466";
+
 
 BMKMapManager* _mapManager;
 static AFHTTPSessionManager * afHttpSessionMgr = NULL;
@@ -72,6 +76,11 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
  
+    NSLog(@"%ld",(long)[DeviceUtils deviceType]);
+    
+    //BugLy
+    [Bugly startWithAppId:BugLy_App_ID];
+    
     _mapManager = [[BMKMapManager alloc]init];
     //百度AR识别
 //    #if !TARGET_IPHONE_SIMULATOR
@@ -84,9 +93,9 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
         NSLog(@"manager start failed!");
     }
     // 要使用百度地图，请先启动BaiduMapManager
-     [FIRApp configure];
-    [Fabric with:@[[Crashlytics class]]];
-    [Fabric.sharedSDK setDebug:YES];
+//     [FIRApp configure];
+//    [Fabric with:@[[Crashlytics class]]];
+//    [Fabric.sharedSDK setDebug:YES];
     
     //高德地图key
     [AMapServices sharedServices].apiKey = AMapKey;
@@ -118,22 +127,26 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
                  apsForProduction:isProduction
             advertisingIdentifier:advertisingId];
 
-    
-    [WXApi registerApp:WXAPPID];
+     [WXApi registerApp:WXAPPID];
     _tencentOAuth = [[TencentOAuth alloc] initWithAppId:QQAPPID andDelegate:self];
     
-    //BugLy
-    [Bugly startWithAppId:BugLy_App_ID];
 
+    //环信sdk
+    HDOptions *option = [[HDOptions alloc] init];
+    option.appkey = CEC_Appkey;
+    option.tenantId = CEC_TenantId;
+    //推送证书名字
+//    option.apnsCertName = @"your apnsCerName";//(集成离线推送必填)
+    //Kefu SDK 初始化,初始化失败后将不能使用Kefu SDK
+    HDError *initError = [[HDClient sharedClient] initializeSDKWithOptions:option];
+    if (initError) { // 初始化错误
+    }
+ 
 
     [LPTools deleteWebCache];
     // 启动图片延时: 1秒
     [NSThread sleepForTimeInterval:1];
-    
-  
-   
-    
-    
+
     return YES;
 }
 -(void)showTabVc:(NSInteger)tabIndex{
@@ -149,6 +162,9 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
     if (![[NSUserDefaults standardUserDefaults] boolForKey:BOOLFORKEY]) {
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:BOOLFORKEY];
         NSArray *imageNameArray = @[@"guideImage1",@"guideImage2",@"guideImage3",@"guideImage4"];
+        if(IS_iPhoneX){
+            imageNameArray = @[@"guideImage1_X",@"guideImage2_X",@"guideImage3_X",@"guideImage4_X"];
+        }
         // 创建并添加引导页
         DHGuidePageHUD *guidePage = [[DHGuidePageHUD alloc] dh_initWithFrame:self.window.frame imageNameArray:imageNameArray buttonIsHidden:NO isShowBt:NO isTouchNext:NO];
         guidePage.slideInto = NO;
@@ -223,7 +239,7 @@ static AFHTTPSessionManager * afHttpSessionMgr = NULL;
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     /// Required - 注册 DeviceToken
- 
+//88f08d8e2f234f994c48f985a19281a19a43489fe0def9e6e10c4dc9865e8e6e
      [JPUSHService registerDeviceToken:deviceToken];
 }
 - (void)application:(UIApplication *)application
@@ -249,19 +265,16 @@ fetchCompletionHandler:
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation{
     
     NSString *path = [url absoluteString];
+//    [[UIWindow visibleViewController].view showLoadingMeg:[NSString stringWithFormat:@"%@ \n %@ ",path,sourceApplication] time:2];
     if ([path hasPrefix:@"tencent"]) {
-        
-        //        if ([self.qqDelegate respondsToSelector:@selector(shareSuccssWithQQCode:)]) {
-        //            [self.qqDelegate shareSuccssWithQQCode:[[path substringWithRange:NSMakeRange([path rangeOfString:@"&error="].location+[path rangeOfString:@"&error="].length, [path rangeOfString:@"&version"].location-[path rangeOfString:@"&error="].location)] integerValue]];
-        //        }
-        //        return [TencentOAuth HandleOpenURL:url];
+ 
     } else if([path hasPrefix:@"wx"]) {
         return [WXApi handleOpenURL:url delegate:self];
     }
     
     return YES;
 }
--(BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url{
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url{
     NSString *path = [url absoluteString];
     if ([path hasPrefix:@"tencent"]){
          //        return[TencentOAuth HandleOpenURL:url];
@@ -430,6 +443,8 @@ fetchCompletionHandler:
     completionHandler();  // 系统要求执行这个方法
 }
 #endif
+ 
+
 
 // log NSSet with UTF8
 // if not ,log will be \Uxxx

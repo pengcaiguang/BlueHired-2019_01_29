@@ -67,12 +67,15 @@
     });
     dispatch_resume(_timer);
 }
+
 - (IBAction)getCode:(UIButton *)sender {
     [self requestSendCode];
 }
+
 - (IBAction)submit:(UIButton *)sender {
     [self requestMateCode];
 }
+
 #pragma mark - textfield
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     if (textField == self.textField) {
@@ -112,6 +115,7 @@
         }
     }];
 }
+
 -(void)requestMateCode{
     NSDictionary *dic = @{
                           @"i":@(5),
@@ -125,10 +129,8 @@
             if ([responseObject[@"code"] integerValue] == 0) {
                 if (self.type == 1)
                 {
-//                    LPSalarycCardChangePasswordVC  *vc = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
                     LPSalarycCardChangePasswordVC *vc = [[LPSalarycCardChangePasswordVC alloc] init];
                     vc.times = 1;
-//                    [self.navigationController pushViewController:vc animated:NO ];
                     NSMutableArray *naviVCsArr = [[NSMutableArray alloc]initWithArray:self.navigationController.viewControllers];
                     for (UIViewController *vc in naviVCsArr) {
                         if ([vc isKindOfClass:[self class]]) {

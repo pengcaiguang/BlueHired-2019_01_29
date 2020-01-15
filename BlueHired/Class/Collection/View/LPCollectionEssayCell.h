@@ -16,6 +16,8 @@ typedef void(^LPCollectionEssayCellBlock)(LPEssayCollectionDataModel *model);
 @interface LPCollectionEssayCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *essayNameLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *essayUrlImageView;
+@property (weak, nonatomic) IBOutlet UILabel *Time;
+
 @property (weak, nonatomic) IBOutlet UILabel *essayAuthorLabel;
 @property (weak, nonatomic) IBOutlet UILabel *viewLabel;
 @property (weak, nonatomic) IBOutlet UILabel *commentTotalLabel;

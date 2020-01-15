@@ -48,6 +48,9 @@
 @property (nonatomic, copy) NSString *isReal;
 @property (nonatomic, copy) NSString *isBank;
 @property (nonatomic, copy) NSString *dataComplete;
+@property (nonatomic, copy) NSString *rewardRecord;
+ 
+
 @property (nonatomic, strong) NSMutableArray <LPUserMaterialPlanDataModel *> *userMaterialPlanList;
 
 @end

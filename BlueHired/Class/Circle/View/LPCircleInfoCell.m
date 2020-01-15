@@ -26,11 +26,9 @@
 -(void)setModel:(LPInfoListDataModel *)model{
     _model = model;
     [self.UserImage sd_setImageWithURL:[NSURL URLWithString:model.userUrl] placeholderImage:[UIImage imageNamed:@"Head_image"]];
-
-    NSLog(@"%f,%f",self.UserImage.frame.size.width,self.UserImage.frame.size.height);
  
     self.UserName.text = model.userName;
-    self.Date.text = [NSString convertStringToTime:[NSString stringWithFormat:@"%@",model.time]];
+    self.Date.text = [NSString timeStringWithTimeInterval:[NSString stringWithFormat:@"%@",model.time]];
     self.gradingImage.image = [UIImage imageNamed:model.grading];
     self.PlayImage.hidden = YES;
     if (model.moodUrl.length) {
@@ -68,8 +66,8 @@
         self.informationDetails.text = model.informationDetails;
         self.PraiseImage.hidden = YES;
     }else{
-        self.informationDetails.text = @" ";
-        self.PraiseImage.hidden = NO;
+        self.informationDetails.text = @"点赞了我的动态";
+        self.PraiseImage.hidden = YES;
     }
     
     

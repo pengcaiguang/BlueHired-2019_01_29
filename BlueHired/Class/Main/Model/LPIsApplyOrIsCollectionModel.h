@@ -21,6 +21,7 @@
 @property (nonatomic, copy) NSNumber *isApply;
 @property (nonatomic, copy) NSNumber *isCollection;
 @property (nonatomic, copy) NSString *userName;
+@property (nonatomic, copy) NSString *isRealname;
 @property (nonatomic, strong) teacher *teacher;
 
 @end

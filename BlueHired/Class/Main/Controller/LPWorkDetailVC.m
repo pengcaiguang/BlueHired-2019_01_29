@@ -18,12 +18,20 @@
 #import <MapKit/MapKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import <BMKLocationkit/BMKLocationComponent.h>
+#import "LPWorkDetailFromCell.h"
+#import "WHActivityView.h"
+#import "LPSalarycCard2VC.h"
 
 static NSString *LPWorkDetailHeadCellID = @"LPWorkDetailHeadCell";
 static NSString *LPWorkDetailTextCellID = @"LPWorkDetailTextCell";
 static NSString *LPMainCellID = @"LPMain2Cell";
+static NSString *LPWorkDetailFromCellID = @"LPWorkDetailFromCell";
 
-@interface LPWorkDetailVC ()<UITableViewDelegate,UITableViewDataSource>
+typedef void(^AddShareRecord)(NSString *data);
+
+@interface LPWorkDetailVC ()<UITableViewDelegate,UITableViewDataSource>{
+         WHActivityView  *activityView;//分享界面
+}
 
 @property (nonatomic, strong)UITableView *tableview;
 
@@ -47,6 +55,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 @property (nonatomic,assign) CLLocationCoordinate2D coordinate;  //!< 要导航的坐标
 
 @property (nonatomic,strong) UITextField *NameTextField;
+@property (nonatomic, strong) AddShareRecord Record;
 
 @end
 
@@ -66,7 +75,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
 
     self.buttonArray = [NSMutableArray array];
     self.bottomButtonArray = [NSMutableArray array];
-    self.textArray = @[@"入职要求",@"薪资福利",@"食宿条件",@"工作时间",@"面试资料",@"其他说明"];
+    self.textArray = @[@"岗位要求",@"薪资福利",@"食宿条件",@"工作时间",@"面试资料"];
 
     [self.view addSubview:self.tableview];
     [self.tableview mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -174,18 +183,18 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     }];
     
     for (UIButton *button in self.bottomButtonArray) {
-        button.titleEdgeInsets = UIEdgeInsetsMake(0, -button.imageView.frame.size.width, -button.imageView.frame.size.height, 0);
+        button.titleEdgeInsets = UIEdgeInsetsMake(5, -button.imageView.frame.size.width, -button.imageView.frame.size.height, 0);
         button.imageEdgeInsets = UIEdgeInsetsMake(-button.titleLabel.intrinsicContentSize.height, 0, 0, -button.titleLabel.intrinsicContentSize.width);
     }
     
-    UIButton *BusinessreviewBtn = [[UIButton alloc] init];
-    [self.view addSubview:BusinessreviewBtn];
-    [BusinessreviewBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.mas_offset(0);
-        make.bottom.equalTo(bottomBgView.mas_top).offset(LENGTH_SIZE(-10));
-    }];
-    [BusinessreviewBtn setImage:[UIImage imageNamed:@"btn_review"] forState:UIControlStateNormal];
-    [BusinessreviewBtn addTarget:self action:@selector(touchBusinessReview) forControlEvents:UIControlEventTouchUpInside];
+//    UIButton *BusinessreviewBtn = [[UIButton alloc] init];
+//    [self.view addSubview:BusinessreviewBtn];
+//    [BusinessreviewBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.right.mas_offset(0);
+//        make.bottom.equalTo(bottomBgView.mas_top).offset(LENGTH_SIZE(-10));
+//    }];
+//    [BusinessreviewBtn setImage:[UIImage imageNamed:@"btn_review"] forState:UIControlStateNormal];
+//    [BusinessreviewBtn addTarget:self action:@selector(touchBusinessReview) forControlEvents:UIControlEventTouchUpInside];
 }
 
 -(void)touchBusinessReview{
@@ -214,15 +223,18 @@ static NSString *LPMainCellID = @"LPMain2Cell";
             [alert show];
             return;
         }
-        if (kStringIsEmpty(self.isApplyOrIsCollectionModel.data.userName)) {
-//            GJAlertText *alert = [[GJAlertText alloc]initWithTitle:@"企业入职报名，请填写您的真实姓名！" message:@"请填写真实姓名" buttonTitles:@[@"取消",@"确定"] buttonsColor:@[[UIColor colorWithHexString:@"#666666"],[UIColor baseColor]] MaxLength:5 NilTitel:@"请填写真实姓名" buttonClick:^(NSInteger buttonIndex , NSString * string) {
-//                if (buttonIndex == 0) {
-//                }else{
-//                    self.userName = string;
-//                    [self requestEntryApply];
-//                }
-//            }];
-//            [alert show];
+        
+        if (self.isApplyOrIsCollectionModel.data.isRealname.integerValue == 1) {
+            GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"请先实名认证，再入职报名" message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"取消",@"去实名"] buttonsColor:@[[UIColor colorWithHexString:@"#999999"],[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor],[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
+                if (buttonIndex == 1) {
+                    LPSalarycCard2VC *vc = [[LPSalarycCard2VC alloc] init];
+                    vc.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+            }];
+            [alert show];
+            return;
+        }else if (kStringIsEmpty(self.isApplyOrIsCollectionModel.data.userName)) {
             
             CustomIOSAlertView *alertView = [[CustomIOSAlertView alloc] init];
             self.CustomAlert = alertView;
@@ -303,7 +315,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     /**
      *  最大输入长度,中英文字符都按一个字符计算
      */
-    int kMaxLength = 5;
+    int kMaxLength = 6;
     NSString *toBeString = textField.text;
     // 获取键盘输入模式
     NSString *lang = [[UITextInputMode currentInputMode] primaryLanguage];
@@ -459,20 +471,16 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     }
     else if (button.tag == 1)
     {
-        LPUserMaterialModel *user = [LPUserDefaults getObjectByFileName:USERINFO];
-
-        NSString *url = @"";
-        if (AlreadyLogin) {
-            url = [NSString stringWithFormat:@"%@resident/#/recruitdetail?id=%@&identity=%@",BaseRequestWeiXiURL,self.workListModel.id,kUserDefaultsValue(USERIDENTIY)];
-        }else{
-            url = [NSString stringWithFormat:@"%@resident/#/recruitdetail?id=%@",BaseRequestWeiXiURL,self.workListModel.id];
+        if ([LoginUtils validationLogin:self]) {
+                    NSString *url = @"";
+                    if (AlreadyLogin) {
+                        url = [NSString stringWithFormat:@"%@resident/#/recruitdetail?id=%@&identity=%@",BaseRequestWeiXiURL,self.workListModel.id,kUserDefaultsValue(USERIDENTIY)];
+                    }else{
+                        url = [NSString stringWithFormat:@"%@resident/#/recruitdetail?id=%@",BaseRequestWeiXiURL,self.workListModel.id];
+                    }
+                    NSString *encodedUrl = [NSString stringWithString:[url stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+                    [self btnClickShare:encodedUrl Title:[NSString stringWithFormat:@"您的好友通过蓝聘平台给您推荐了%@，快来看看吧！",_model.data.mechanismName]];
         }
-
-
-        // http://192.168.0.152:8070/#/recruitdetail?id=29
-        
-        NSString *encodedUrl = [NSString stringWithString:[url stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-        [LPTools ClickShare:encodedUrl Title:[NSString stringWithFormat:@"您的好友通过蓝聘平台给您推荐了%@，快来看看吧！",_model.data.mechanismName]];
         return;
 
     }
@@ -484,6 +492,73 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         }
     }
 }
+
+
+-(void)btnClickShare:(NSString *)StrUrl Title:(NSString *)Title{
+    //更多。用于分享及编辑
+    for (UIView *sub in [activityView subviews]) {
+        [sub removeFromSuperview];
+    }
+    [activityView removeFromSuperview];
+    activityView=nil;
+    if (!activityView)
+    {
+        activityView = [[WHActivityView alloc]initWithTitle:nil referView:[[UIWindow visibleViewController].view window] isNeed:YES];
+        //横屏会变成一行6个, 竖屏无法一行同时显示6个, 会自动使用默认一行4个的设置.
+        activityView.numberOfButtonPerLine = 4;
+        activityView.titleLabel.text = @"请选择分享平台";
+        __weak __typeof(self) weakSelf = self;
+        ButtonView *bv = [[ButtonView alloc]initWithText:@"QQ" image:[UIImage imageNamed:@"QQLogo"] handler:^(ButtonView *buttonView){
+                if (![QQApiInterface isSupportShareToQQ])
+                {
+                    [LPTools AlertMessageView:@"请安装QQ" dismiss:1.0];
+                    return;
+                }
+            [weakSelf requestQueryAddShareRecord:^(NSString *data) {
+                [[LPTools shareInstance] share:1 Url:StrUrl Title:Title];
+            }];
+            
+         }];
+        [activityView addButtonView:bv];
+        bv = [[ButtonView alloc]initWithText:@"QQ空间"  image:[UIImage imageNamed:@"QQSpace"] handler:^(ButtonView *buttonView){
+             if (![QQApiInterface isSupportShareToQQ])
+                            {
+                                [LPTools AlertMessageView:@"请安装QQ" dismiss:1.0];
+                                return;
+                            }
+            [weakSelf requestQueryAddShareRecord:^(NSString *data) {
+                [[LPTools shareInstance] share:2 Url:StrUrl Title:Title];
+            }];
+            
+        }];
+        [activityView addButtonView:bv];
+        bv = [[ButtonView alloc]initWithText:@"微信"  image:[UIImage imageNamed:@"weixinLogo"] handler:^(ButtonView *buttonView){
+             if ([WXApi isWXAppInstalled]==NO) {
+                 [LPTools AlertMessageView:@"请安装微信" dismiss:1.0];
+                 return;
+             }
+            [weakSelf requestQueryAddShareRecord:^(NSString *data) {
+                           [[LPTools shareInstance] share:3 Url:StrUrl Title:Title];
+                       }];
+            
+        }];
+        [activityView addButtonView:bv];
+        bv = [[ButtonView alloc]initWithText:@"朋友圈"  image:[UIImage imageNamed:@"WXSpace"] handler:^(ButtonView *buttonView){
+             if ([WXApi isWXAppInstalled]==NO) {
+                 [LPTools AlertMessageView:@"请安装微信" dismiss:1.0];
+                 return;
+             }
+            [weakSelf requestQueryAddShareRecord:^(NSString *data) {
+                [[LPTools shareInstance] share:4 Url:StrUrl Title:Title];
+            }];
+        }];
+        [activityView addButtonView:bv];
+    
+        [activityView show];
+    }
+}
+ 
+
 
 -(void)TouchCopyBt{
     [self.CustomAlert close];
@@ -798,7 +873,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     if (section == 0) {
         return 1;
     }else if (section == 1){
-        return 6;
+        return 1;
     }else if (section == 2){
         return 3;
     } else{
@@ -920,25 +995,8 @@ static NSString *LPMainCellID = @"LPMain2Cell";
             return LENGTH_SIZE(280 + 128 ) + KeyHeight;
         }
     }else if (indexPath.section == 1){
-            if (indexPath.row == 0) {
-                CGFloat Height = [LPTools calculateRowHeight:self.model.data.workDemand fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(28)];
-                return LENGTH_SIZE(51)+Height;
-            }else if (indexPath.row == 1){
-                CGFloat Height = [LPTools calculateRowHeight:self.model.data.workSalary fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(28)];
-                return LENGTH_SIZE(51)+Height;
-            }else if (indexPath.row == 2){
-                CGFloat Height = [LPTools calculateRowHeight:self.model.data.eatSleep  fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(28)];
-                return LENGTH_SIZE(51)+Height;
-            }else if (indexPath.row == 3){
-                CGFloat Height = [LPTools calculateRowHeight:self.model.data.workTime fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(28)];
-                return LENGTH_SIZE(51)+Height;
-            }else if (indexPath.row == 4){
-                CGFloat Height = [LPTools calculateRowHeight:self.model.data.workKnow fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(28)];
-                return LENGTH_SIZE(51)+Height;
-            }else if (indexPath.row == 5){
-                CGFloat Height = [LPTools calculateRowHeight:self.model.data.remarks  fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(28)];
-                return LENGTH_SIZE(66)+Height;
-            }
+ 
+            return [self calculateFromViewHeight];
     }else if (indexPath.section == 2){
         if (indexPath.row == 0) {
             CGFloat Height = [LPTools calculateRowHeight:self.model.data.mechanismDetails fontSize:FontSize(14) Width:SCREEN_WIDTH - LENGTH_SIZE(28)];
@@ -950,12 +1008,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
             return LENGTH_SIZE(44.0);
         }
     } else{
-        LPWorklistDataWorkListModel *m = self.RecommendList[indexPath.row];
-        if (m.key.length == 0) {
-            return LENGTH_SIZE(120) ;
-        }
-        return LENGTH_SIZE(140) ;
-       
+        return LENGTH_SIZE(86) ;
     }
     return 44;
 }
@@ -968,23 +1021,26 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         return cell;
     }else if (indexPath.section == 1){
  
-        LPWorkDetailTextCell *cell = [tableView dequeueReusableCellWithIdentifier:LPWorkDetailTextCellID];
-        cell.detailTitleLabel.text = [NSString stringWithFormat:@"%@:",self.textArray[indexPath.row]];
-        tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        if (indexPath.row == 0) {
-            cell.detailLabel.text = self.model.data.workDemand;
-//            cell.detailLabel.text = [self.model.data.workDemand htmlUnescapedString];
-        }else if (indexPath.row == 1){
-            cell.detailLabel.text = self.model.data.workSalary;
-        }else if (indexPath.row == 2){
-            cell.detailLabel.text = self.model.data.eatSleep;
-        }else if (indexPath.row == 3){
-            cell.detailLabel.text = self.model.data.workTime;
-        }else if (indexPath.row == 4){
-            cell.detailLabel.text = self.model.data.workKnow;
-        }else if (indexPath.row == 5){
-            cell.detailLabel.text = self.model.data.remarks;
-        }
+//        LPWorkDetailTextCell *cell = [tableView dequeueReusableCellWithIdentifier:LPWorkDetailTextCellID];
+//        cell.detailTitleLabel.text = [NSString stringWithFormat:@"%@:",self.textArray[indexPath.row]];
+//        tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+//        if (indexPath.row == 0) {
+//            cell.detailLabel.text = self.model.data.workDemand;
+////            cell.detailLabel.text = [self.model.data.workDemand htmlUnescapedString];
+//        }else if (indexPath.row == 1){
+//            cell.detailLabel.text = self.model.data.workSalary;
+//        }else if (indexPath.row == 2){
+//            cell.detailLabel.text = self.model.data.eatSleep;
+//        }else if (indexPath.row == 3){
+//            cell.detailLabel.text = self.model.data.workTime;
+//        }else if (indexPath.row == 4){
+//            cell.detailLabel.text = self.model.data.workKnow;
+//        }else if (indexPath.row == 5){
+//            cell.detailLabel.text = self.model.data.remarks;
+//        }
+        
+        LPWorkDetailFromCell *cell = [tableView dequeueReusableCellWithIdentifier:LPWorkDetailFromCellID];
+        cell.model = self.model;
         
         return cell;
     }else if (indexPath.section == 2){
@@ -1190,6 +1246,38 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     }];
 }
 
+-(void)requestQueryAddShareRecord:(AddShareRecord)Record{
+
+    NSString *urlStr = [NSString stringWithFormat:@"invite/add_share_record?type=0"];
+    self.Record = Record;
+
+    [NetApiManager requestQueryAddShareRecord:nil URLString:urlStr withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                CGFloat Time = 0.0;
+                if ([responseObject[@"data"] integerValue] >0 ) {
+                    [[UIApplication sharedApplication].keyWindow showLoadingMeg:@"恭喜获得20积分，请去个人中心查看" time:MESSAGE_SHOW_TIME];
+                    Time = 1.0;
+                }
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(Time * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    if (self.Record) {
+                        self.Record(responseObject[@"data"]) ;
+                    }
+                });
+                
+                
+            }else{
+                [[UIApplication sharedApplication].keyWindow showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
+        }else{
+            [[UIApplication sharedApplication].keyWindow showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+
+
+
 -(void)request{
     NSDictionary *dic = @{@"id":self.workListModel.id
                           };
@@ -1229,7 +1317,7 @@ static NSString *LPMainCellID = @"LPMain2Cell";
         [_tableview registerNib:[UINib nibWithNibName:LPWorkDetailHeadCellID bundle:nil] forCellReuseIdentifier:LPWorkDetailHeadCellID];
         [_tableview registerNib:[UINib nibWithNibName:LPWorkDetailTextCellID bundle:nil] forCellReuseIdentifier:LPWorkDetailTextCellID];
         [_tableview registerNib:[UINib nibWithNibName:LPMainCellID bundle:nil] forCellReuseIdentifier:LPMainCellID];
-
+        [_tableview registerNib:[UINib nibWithNibName:LPWorkDetailFromCellID bundle:nil] forCellReuseIdentifier:LPWorkDetailFromCellID];
     }
     return _tableview;
 }
@@ -1275,20 +1363,60 @@ static NSString *LPMainCellID = @"LPMain2Cell";
     }
     return tagBtnY + LENGTH_SIZE(17);
 }
+//计算from高度
+-(CGFloat)calculateFromViewHeight{
+    NSArray *TypeDataArr = @[[LPTools isNullToString:self.model.data.sexAge],
+                             [LPTools isNullToString:self.model.data.tattooHair],
+                             [LPTools isNullToString:self.model.data.medicalFee],
+                             [LPTools isNullToString:self.model.data.vision],
+                             [LPTools isNullToString:self.model.data.culturalSkills],
+                             [LPTools isNullToString:self.model.data.nation],
+                             [LPTools isNullToString:self.model.data.idCard],
+                             [LPTools isNullToString:self.model.data.postOther],
+                             [self.model.data.postType integerValue] == 0 ? [LPTools isNullToString:self.model.data.workingPrice] : [LPTools isNullToString:self.model.data.hoursPrice],
+                             [LPTools isNullToString:self.model.data.overtimeDetails],
+                             [LPTools isNullToString:self.model.data.subsidyDetails],
+                             [LPTools isNullToString:self.model.data.payrollTime],
+                             [LPTools isNullToString:self.model.data.salaryOther],
+                             [LPTools isNullToString:self.model.data.accConditions],
+                             [LPTools isNullToString:self.model.data.diet],
+                             [LPTools isNullToString:self.model.data.accOther],
+                             [LPTools isNullToString:self.model.data.workSystem],
+                             [LPTools isNullToString:self.model.data.shiftTime],
+                             [LPTools isNullToString:self.model.data.workOther],
+                             [LPTools isNullToString:self.model.data.interviewData],
+                             [LPTools isNullToString:self.model.data.interviewOther]];
+    
+    CGFloat FromHeight = LENGTH_SIZE(78) + LENGTH_SIZE(34) * 5 ;
+    for (NSInteger i =0; i<TypeDataArr.count; i++) {
+        NSString *str = TypeDataArr[i];
+        if (str.length == 0) {
+            str = @"无";
+        }
+        
+        CGFloat RowHeight = [LPTools calculateRowHeight:str fontSize:FontSize(13) Width:SCREEN_WIDTH - LENGTH_SIZE(145)];
+        
+        FromHeight += LENGTH_SIZE(7+7+1) + RowHeight;
+
+    }
+    
+    if ([self.model.data.postType integerValue] == 1) {
+        NSString *str = self.model.data.overtimeDetails;
+        if (str.length == 0) {
+            str = @"无";
+        }
+        
+        CGFloat overtimewHeight = [LPTools calculateRowHeight:str fontSize:FontSize(13) Width:SCREEN_WIDTH - LENGTH_SIZE(145)];
+        FromHeight -= LENGTH_SIZE(14) + overtimewHeight + 1;
+    }
+    
+    return FromHeight;
+    
+}
+
 
 - (NSString *)removeHTML2:(NSString *)html{
-//    NSArray *components = [html componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
-//    NSMutableArray *componentsToKeep = [NSMutableArray array];
-//    for (int i = 0; i < [components count]; i = i + 2) {
-//        [componentsToKeep addObject:[components objectAtIndex:i]];
-//    }
-//    NSString *plainText = [componentsToKeep componentsJoinedByString:@"\n"];
-//    return plainText;
-    
-   
-    // do something
-
-
+ 
     
     NSAttributedString * attrStr = [[NSAttributedString alloc] initWithData:[html dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
     NSString *string = [attrStr.string stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\n"]];

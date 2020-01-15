@@ -45,7 +45,7 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
 //        make.edges.equalTo(self.view);
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
-        make.top.mas_equalTo(49);
+        make.top.mas_equalTo(LENGTH_SIZE(44));
         make.bottom.mas_equalTo(0);
     }];
     [self requestMechanismcommentMechanismlist];
@@ -58,15 +58,15 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
         make.top.mas_equalTo(0);
-        make.height.mas_equalTo(49);
+        make.height.mas_equalTo(LENGTH_SIZE(44));
     }];
     bgView.backgroundColor = [UIColor baseColor];
     
     UIView *leftBarButtonView = [[UIView alloc]init];
     [bgView addSubview:leftBarButtonView];
     [leftBarButtonView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.mas_equalTo(49);
-        make.left.mas_equalTo(18);
+        make.height.mas_equalTo(LENGTH_SIZE(44));
+        make.left.mas_equalTo(LENGTH_SIZE(13));
         make.top.mas_equalTo(0);
     }];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(touchSelectCityButton)];
@@ -79,19 +79,19 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
     [pimageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.mas_equalTo(0);
         make.centerY.equalTo(leftBarButtonView);
-        make.size.mas_equalTo(CGSizeMake(18, 18));
+        make.size.mas_equalTo(CGSizeMake(LENGTH_SIZE(18), LENGTH_SIZE(18)));
     }];
     pimageView.image = [UIImage imageNamed:@"location"];
     
     self.cityLabel = [[UILabel alloc]init];
     [leftBarButtonView addSubview:self.cityLabel];
     [self.cityLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(pimageView.mas_right).offset(4);
+        make.left.equalTo(pimageView.mas_right).offset(LENGTH_SIZE(4));
         make.centerY.mas_equalTo(leftBarButtonView);
         make.right.equalTo(leftBarButtonView.mas_right).offset(0);
     }];
     self.cityLabel.text = @"全国";
-    self.cityLabel.font = [UIFont systemFontOfSize:15];
+    self.cityLabel.font = [UIFont systemFontOfSize:FontSize(16)];
     self.cityLabel.textColor = [UIColor whiteColor];
     
 //    UIImageView *dimageView = [[UIImageView alloc]init];
@@ -107,13 +107,13 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
     UIView *wrapView = [[UIView alloc]init];
     [bgView addSubview:wrapView];
     [wrapView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(leftBarButtonView.mas_right).offset(15);
-        make.right.mas_equalTo(-13);
-        make.top.mas_equalTo(10);
-        make.height.mas_equalTo(30);
+        make.left.equalTo(leftBarButtonView.mas_right).offset(LENGTH_SIZE(13));
+        make.right.mas_equalTo(LENGTH_SIZE(-13));
+        make.top.mas_equalTo(LENGTH_SIZE(7));
+        make.height.mas_equalTo(LENGTH_SIZE(30));
     }];
     wrapView.backgroundColor = [UIColor whiteColor];
-    wrapView.layer.cornerRadius = 15;
+    wrapView.layer.cornerRadius = LENGTH_SIZE(15);
     wrapView.clipsToBounds = YES;
     [bgView layoutIfNeeded];
     wrapView.layer.masksToBounds = YES;
@@ -153,9 +153,9 @@ static NSString *LPBusinessReviewCellID = @"LPBusinessReviewCell";
     
     if (searchField) {
         [searchField setBackgroundColor:[UIColor whiteColor]];
-        searchField.layer.cornerRadius = 15;
+        searchField.layer.cornerRadius = LENGTH_SIZE(15);
         searchField.layer.masksToBounds = YES;
-        searchField.font = [UIFont systemFontOfSize:13];
+        searchField.font = [UIFont systemFontOfSize:FontSize(14)];
     }
     if (YES) {
         CGFloat height = searchBar.bounds.size.height;

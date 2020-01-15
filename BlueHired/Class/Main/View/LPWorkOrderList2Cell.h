@@ -24,12 +24,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (weak, nonatomic) IBOutlet UIImageView *mechanismUrlImageView;
 @property (weak, nonatomic) IBOutlet UILabel *mechanismNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *lendTypeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *wageRangeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *maxNumberLabel;
-@property (weak, nonatomic) IBOutlet UILabel *applyNumberLabel;
-@property (weak, nonatomic) IBOutlet UILabel *isWorkers;
-@property (weak, nonatomic) IBOutlet UILabel *isApplyLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *isWorkers;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *ayoutConstraint_Lend_width;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *ayoutConstraint_Lend_Right;
 
+ 
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;
 @property (weak, nonatomic) IBOutlet UILabel *interviewTimeLabel;
 @property (weak, nonatomic) IBOutlet UILabel *recruitAddressLabel;

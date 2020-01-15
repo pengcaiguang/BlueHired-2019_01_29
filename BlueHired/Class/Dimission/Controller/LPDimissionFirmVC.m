@@ -41,18 +41,9 @@ static NSString *NORMALSTRING = @"请输入离职原因及想要离职的日期"
     self.textView.textColor = [UIColor lightGrayColor];
     self.textView.text = NORMALSTRING;
     self.textView.delegate = self;
-    
-    LPUserMaterialModel *userMaterialModel = [LPUserDefaults getObjectByFileName:USERINFO];
-    if (userMaterialModel.data.workStatus) {
-        if ([userMaterialModel.data.workStatus integerValue] != 1) { //0待业1在职2入职中
-            GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"你尚未入职，暂不支持离职通知" message:nil backDismiss:NO textAlignment:0 buttonTitles:@[@"确定"] buttonsColor:@[[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
-                [self.navigationController popViewControllerAnimated:YES];
-            }];
-            [alert show];
-        }else{
-            [self requestGetNotice];
-        }
-    }
+          
+    [self requestGetNotice];
+       
 }
 
 -(BOOL)textViewShouldBeginEditing:(UITextView *)textView{
@@ -97,29 +88,37 @@ static NSString *NORMALSTRING = @"请输入离职原因及想要离职的日期"
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
                 if ([responseObject[@"data"] isKindOfClass:[NSDictionary class]]) {
-                    if (responseObject[@"data"][@"isNotice"]) {
-                        if ([responseObject[@"data"][@"isNotice"] integerValue] == 1){
-                            self.detailsLabel.hidden = NO;
-                            self.cancelButton.hidden = NO;
-                            
-                            self.textView.hidden = YES;
-                            self.submitButton.hidden = YES;
-                            self.backButton.hidden = YES;
-                            self.textLabel.hidden = YES;
-                            
-                            if (responseObject[@"data"][@"details"]){
-                                self.detailsLabel.text = responseObject[@"data"][@"details"];
+                    if ([responseObject[@"data"][@"workExp"] integerValue] == 1) {
+                        if (responseObject[@"data"][@"isNotice"]) {
+                            if ([responseObject[@"data"][@"isNotice"] integerValue] == 1){
+                                self.detailsLabel.hidden = NO;
+                                self.cancelButton.hidden = NO;
+                                
+                                self.textView.hidden = YES;
+                                self.submitButton.hidden = YES;
+                                self.backButton.hidden = YES;
+                                self.textLabel.hidden = YES;
+                                
+                                if (responseObject[@"data"][@"details"]){
+                                    self.detailsLabel.text = responseObject[@"data"][@"details"];
+                                }
+                            }else{
+                                self.detailsLabel.hidden = YES;
+                                self.cancelButton.hidden = YES;
+                                
+                                self.textView.hidden = NO;
+                                self.submitButton.hidden = NO;
+                                self.backButton.hidden = NO;
+                                self.textLabel.hidden = NO;
                             }
-                        }else{
-                            self.detailsLabel.hidden = YES;
-                            self.cancelButton.hidden = YES;
-                            
-                            self.textView.hidden = NO;
-                            self.submitButton.hidden = NO;
-                            self.backButton.hidden = NO;
-                            self.textLabel.hidden = NO;
                         }
+                    }else{
+                        GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"你尚未入职，暂不支持离职通知" message:nil backDismiss:NO textAlignment:0 buttonTitles:@[@"确定"] buttonsColor:@[[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
+                            [self.navigationController popViewControllerAnimated:YES];
+                        }];
+                        [alert show];
                     }
+                    
                 }
             }else{
                 [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];

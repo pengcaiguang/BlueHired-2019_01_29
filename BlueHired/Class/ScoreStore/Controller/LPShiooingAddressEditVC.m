@@ -190,7 +190,7 @@
      */
     static int kMaxLength = 12;
     if (textField == self.userNameTF) {
-        kMaxLength = 5;
+        kMaxLength = 6;
     }else if (textField == self.userTelTF){
         kMaxLength = 11;
     }

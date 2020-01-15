@@ -11,7 +11,7 @@
 #import "LPEssayDetailCommentCell.h"
 #import "LPMoodDetailHeaderCell.h"
 #import "LPCommentListModel.h"
-#import "LPCircleVC.h"
+
 #import "LPReportVC.h"
 
 static NSString *LPMoodDetailHeaderCellID = @"LPMoodDetailHeaderCell";
@@ -59,7 +59,7 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
         make.top.mas_equalTo(0);
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
-        make.bottom.mas_equalTo(-48);
+        make.bottom.mas_equalTo(LENGTH_SIZE(-48));
     }];
     [self setBottomView];
     
@@ -85,7 +85,7 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     [self.bottomBgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.mas_equalTo(0);
 //        make.bottom.mas_equalTo(0);
-        make.height.mas_equalTo(48);
+        make.height.mas_equalTo(LENGTH_SIZE(48));
         if (@available(iOS 11.0, *)) {
             make.bottom.equalTo(self.view.mas_safeAreaLayoutGuideBottom);
         } else {
@@ -98,9 +98,9 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     self.BacksearchView = backSearch;
     self.BacksearchView.backgroundColor = [UIColor whiteColor];
     [self.BacksearchView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(10);
+        make.left.mas_equalTo(LENGTH_SIZE(10));
 //        make.right.mas_equalTo(self.bottomBgView.mas_left).offset(-5);
-        make.right.mas_equalTo(-40);
+        make.right.mas_equalTo(LENGTH_SIZE(-40));
 //        make.bottom.mas_equalTo(0);
  
         if (@available(iOS 11.0, *)) {
@@ -108,36 +108,36 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
         } else {
             make.bottom.mas_equalTo(0);
         }
-        make.height.mas_equalTo(48);
+        make.height.mas_equalTo(LENGTH_SIZE(48));
     }];
  
     self.searchBgView = [[UIView alloc]init];
     [self.BacksearchView addSubview:self.searchBgView];
     [self.searchBgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(10);
+        make.left.mas_equalTo(LENGTH_SIZE(10));
 //        make.right.mas_equalTo(self.bottomBgView.mas_left).offset(-5);
-        make.right.mas_equalTo(-10);
-        make.bottom.mas_equalTo(-7);
-        make.height.mas_equalTo(34);
+        make.right.mas_equalTo(LENGTH_SIZE(-10));
+        make.bottom.mas_equalTo(LENGTH_SIZE(-7));
+        make.height.mas_equalTo(LENGTH_SIZE(34));
     }];
     self.searchBgView.layer.masksToBounds = YES;
-    self.searchBgView.layer.cornerRadius = 17;
+    self.searchBgView.layer.cornerRadius = LENGTH_SIZE(17);
     self.searchBgView.backgroundColor = [UIColor colorWithHexString:@"#F2F2F2"];
     
     UIImageView *writeImg = [[UIImageView alloc]init];
     [self.searchBgView addSubview:writeImg];
     [writeImg mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(5);
+        make.left.mas_equalTo(LENGTH_SIZE(5));
         make.centerY.equalTo(self.searchBgView);
-        make.size.mas_equalTo(CGSizeMake(15, 14));
+        make.size.mas_equalTo(CGSizeMake(LENGTH_SIZE(15), LENGTH_SIZE(14)));
     }];
     writeImg.image = [UIImage imageNamed:@"comment_write"];
     
     self.commentTextField = [[UITextField alloc]init];
     [self.searchBgView addSubview:self.commentTextField];
     [self.commentTextField mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(writeImg.mas_right).offset(5);
-        make.right.mas_equalTo(-5);
+        make.left.equalTo(writeImg.mas_right).offset(LENGTH_SIZE(5));
+        make.right.mas_equalTo(LENGTH_SIZE(-5));
         make.height.mas_equalTo(self.searchBgView.mas_height);
         make.centerY.equalTo(self.searchBgView);
     }];
@@ -151,9 +151,9 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     UIButton *button = [[UIButton alloc]init];
     [self.bottomBgView addSubview:button];
     [button mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(5);
-        make.right.mas_equalTo(-5);
-        make.size.mas_equalTo(CGSizeMake(40, 20));
+        make.left.mas_equalTo(LENGTH_SIZE(5));
+        make.right.mas_equalTo(LENGTH_SIZE(-5));
+        make.size.mas_equalTo(CGSizeMake(LENGTH_SIZE(40), LENGTH_SIZE(20)));
         make.center.equalTo(self.bottomBgView);
     }];
     [button setImage:[UIImage imageNamed:@"praise_normal"] forState:UIControlStateNormal];
@@ -173,13 +173,13 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     self.sendButton = [[UIButton alloc]init];
     [self.bottomBgView addSubview:self.sendButton];
     [self.sendButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.commentTextField.mas_right).offset(15);
-        make.right.mas_equalTo(-15);
-        make.height.mas_equalTo(26);
+        make.left.equalTo(self.commentTextField.mas_right).offset(LENGTH_SIZE(15));
+        make.right.mas_equalTo(LENGTH_SIZE(-15));
+        make.height.mas_equalTo(LENGTH_SIZE(26));
         make.centerY.equalTo(self.bottomBgView);
     }];
     self.sendButton.layer.masksToBounds = YES;
-    self.sendButton.layer.cornerRadius = 13;
+    self.sendButton.layer.cornerRadius = LENGTH_SIZE(13);
     [self.sendButton setTitle:@"发送" forState:UIControlStateNormal];
     [self.sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.sendButton.hidden = YES;
@@ -321,7 +321,7 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
     if (section == 0) {
         return 0.1;
     }else{
-        return 30;
+        return LENGTH_SIZE(30);
     }
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -337,9 +337,9 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
         UIView *view = [[UIView alloc]init];
         view.backgroundColor = [UIColor whiteColor];
         UILabel *label = [[UILabel alloc]init];
-        label.frame = CGRectMake(16, 0, SCREEN_WIDTH-16, 30);
+        label.frame = CGRectMake(LENGTH_SIZE(16), 0, SCREEN_WIDTH-LENGTH_SIZE(16), LENGTH_SIZE(30));
         label.textColor = [UIColor colorWithHexString:@"#1B1B1B"];
-        label.font = [UIFont systemFontOfSize:12];
+        label.font = [UIFont systemFontOfSize:FontSize(12)];
         label.text = [NSString stringWithFormat:@"全部评论（%ld）",self.commentListArray.count];
         [view addSubview:label];
         return view;
@@ -372,8 +372,9 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
         cell.delegate = self;
         cell.SuperTableView = tableView;
         WEAK_SELF();
-        cell.DeleteBlock = ^(NSString *CommId){
-            [weakSelf requestQueryDeleteComment:CommId];
+        cell.DeleteBlock = ^(LPCommentListDataModel *CommentModel) {
+            [weakSelf requestQueryDeleteComment:CommentModel.id.stringValue commentType:CommentModel.commentType.stringValue];
+
         };
         cell.AddBlock = ^(LPCommentListDataModel *model){
             LPMoodCommentListDataModel *CommentModel = [LPMoodCommentListDataModel mj_objectWithKeyValues:[model mj_JSONObject]];
@@ -441,19 +442,15 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
                 self.model = [LPGetMoodModel mj_objectWithKeyValues:responseObject];
                 if (self.model.data == nil)
                 {
+                    if (self.moodListArray.count) {
+                        [self.moodListArray removeObject:self.moodListDataModel];
+                    }
+                    if (self.SuperTableView) {
+                        [self.SuperTableView reloadData];
+                    }
+                    
                     [self  addNodataViewHidden:NO];
-                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                        
-                        if ([[self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2] isKindOfClass:[LPCircleVC class]]) {
-                            LPCircleVC *vc = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
-                            vc.isSenderBack = 3;
-                            [self.moodListArray removeObject:self.moodListDataModel];
-                            [self.SuperTableView reloadData];
-                        }else{
-                            [self.navigationController popViewControllerAnimated:YES];
-                        }
-                        
-                    });
+//                    [self.navigationController popViewControllerAnimated:YES];
                 }
             }else{
                 [self.view showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
@@ -736,7 +733,7 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
 }
 
 
--(void)requestQueryDeleteComment:(NSString *) CommentId{
+-(void)requestQueryDeleteComment:(NSString *) CommentId commentType:(NSString *) type{
     
     NSString * appendURLString = [NSString stringWithFormat:@"comment/update_comment?id=%@&moodId=%@&versionType=2.4",CommentId,self.moodListDataModel.id];
     
@@ -748,10 +745,15 @@ static NSString *LPEssayDetailCommentCellID = @"LPEssayDetailCommentCell";
                     NSMutableArray <LPMoodCommentListDataModel *>*CommArr = [LPMoodCommentListDataModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"commentList"]];
                     self.moodListDataModel.commentModelList = CommArr;
                     
+                    if (type.integerValue == 2) {
+                        self.moodListDataModel.commentTotal = @(self.moodListDataModel.commentTotal.integerValue -1);
+                    }
+                    
                     for (int i =0 ; i < self.moodListArray.count ; i++) {
                         LPMoodListDataModel *DataModel = self.moodListArray[i];
                         if (DataModel.id.integerValue == self.moodListDataModel.id.integerValue) {
                             DataModel.commentModelList = CommArr;
+                            DataModel.commentTotal = self.moodListDataModel.commentTotal;
                             break;
                         }
                     }

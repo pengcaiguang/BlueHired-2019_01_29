@@ -17,6 +17,9 @@
 #import "ApiKeys.h"
 #import "Heads.h"
 
+#ifdef __OBJC__
+#import <HelpDesk/HelpDesk.h>
+#endif
 
 
 #endif /* LPPrefixHeader_pch */

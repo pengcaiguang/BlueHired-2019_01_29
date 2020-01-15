@@ -14,6 +14,7 @@
 #import "LPMyOrderVC.h"
 #import "LPProductListModel.h"
 
+
 static NSString *LPScoreStoreCellID = @"LPScoreStoreCell";
 static NSString *LPScoreStoreHeadReusableViewID = @"LPScoreStoreHeadReusableView";
 
@@ -30,12 +31,7 @@ static NSString *LPScoreStoreHeadReusableViewID = @"LPScoreStoreHeadReusableView
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @"积分商城";
-//    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
-
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"地址管理" style:UIBarButtonItemStylePlain target:self action:@selector(TouchesRightBar)];
-    [self.navigationItem.rightBarButtonItem setTintColor:[UIColor colorWithHexString:@"#333333"]];
-    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:FONT_SIZE(13),NSFontAttributeName, nil] forState:UIControlStateNormal];
-    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:FONT_SIZE(13),NSFontAttributeName, nil] forState:UIControlStateSelected];
+   
 
     
     [self.view addSubview:self.collectionView];
@@ -48,6 +44,27 @@ static NSString *LPScoreStoreHeadReusableViewID = @"LPScoreStoreHeadReusableView
     
     self.page = 1;
     [self requestGetProductList];
+}
+
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.navigationItem.title = @"积分商城";
+
+ 
+       [self.navigationController.navigationBar setShadowImage:[UIImage new]];
+
+       self.navigationController.navigationBar.translucent = NO;
+ 
+       
+       self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"地址管理" style:UIBarButtonItemStylePlain target:self action:@selector(TouchesRightBar)];
+       [self.navigationItem.rightBarButtonItem setTintColor:[UIColor colorWithHexString:@"#333333"]];
+       [self.navigationItem.rightBarButtonItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:FONT_SIZE(13),NSFontAttributeName, nil] forState:UIControlStateNormal];
+       [self.navigationItem.rightBarButtonItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:FONT_SIZE(13),NSFontAttributeName, nil] forState:UIControlStateSelected];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleDefault;
 }
 
 #pragma mark --Touches

@@ -19,7 +19,10 @@ typedef void(^LPInfoCellSelectBlock)(LPInfoListDataModel *model);
 @property (weak, nonatomic) IBOutlet UILabel *informationTitleLabel;
 @property (weak, nonatomic) IBOutlet UILabel *informationDetailsLabel;
 @property (weak, nonatomic) IBOutlet UILabel *timeLabel;
+@property (weak, nonatomic) IBOutlet UILabel *RedLabel;
+
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *img_contraint_width;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *Time_contraint_width;
 
 @property(nonatomic,strong) LPInfoListDataModel *model;
 @property (nonatomic,copy) LPInfoCellSelectBlock selectBlock;

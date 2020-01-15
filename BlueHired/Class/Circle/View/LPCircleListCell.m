@@ -19,12 +19,13 @@
 #import <UIView+SDAutoLayout.h>
 #import "LPMoodDetailVC.h"
 #import "LPCommentListModel.h"
+#import "LPUsermaterialMoodModel.h"
 
 //弹框监听
 NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLineCellOperationButtonClickedNotification";
 
 
-#define TextFont 13
+#define TextFont FontSize(13)
 @interface LPCircleListCell ()<UIScrollViewDelegate,YBAttributeTapActionDelegate>
 {
     MenuVIew *_operationMenu;
@@ -49,13 +50,16 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
     [super awakeFromNib];
     // Initialization code
     self.userUrlImgView.layer.masksToBounds = YES;
-    self.userUrlImgView.layer.cornerRadius = 20;
+    self.userUrlImgView.layer.cornerRadius = LENGTH_SIZE(20);
     self.imageViewsRectArray = [NSMutableArray array];
     self.moodDetailsLabel.copyable = YES;
     self.moodDetailsLabel.TouchBlock = ^(void){
         [self TouchCellSelect:nil];
     };
     self.userUrlImgView.userInteractionEnabled=YES;
+    
+    self.isConcernBt.layer.borderWidth = LENGTH_SIZE(1);
+    self.isConcernBt.layer.cornerRadius = LENGTH_SIZE(10.5);
     
     UITapGestureRecognizer *TapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(TouchUpInside:)];
     [self.userUrlImgView addGestureRecognizer:TapGestureRecognizer];
@@ -64,14 +68,14 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
 //    TapGestureRecognizerimageBg.delegate = self;
      [self.imageBgView addGestureRecognizer:TapGestureRecognizerimageBg];
    
-    self.TriangleView.transform = CGAffineTransformMakeRotation(45 *M_PI / 180.0);
+ 
     
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveOperationButtonClickedNotification:) name:kSDTimeLineCellOperationButtonClickedNotification object:nil];
     _operationMenu = [MenuVIew new];
     __weak typeof(self) weakSelf = self;
     [_operationMenu setLikeButtonClickedOperation:^{
-        [weakSelf touchPraise:nil];
+        [weakSelf TouchLikeBtn:nil];
         if ([weakSelf.delegate respondsToSelector:@selector(didClickLikeButtonInCell:)]) {
 //            [weakSelf.delegate didClickLikeButtonInCell:weakSelf];
         }
@@ -123,8 +127,8 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
     [self.AllDetailsBt setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
     
     _operationMenu.sd_layout
-    .rightSpaceToView(_operationButton, 10)
-    .heightIs(30)
+    .rightSpaceToView(_operationButton, LENGTH_SIZE(10))
+    .heightIs(LENGTH_SIZE(30))
     .centerYEqualToView(_operationButton)
     .widthIs(0);
     
@@ -133,7 +137,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
     /**
      *判断如果点击的是tableView的cell，就把手势给关闭了 不是点击cell手势开启
      **/
-    NSLog(@"ouch.view class %@",[touch.view class]);
+ 
     if ([NSStringFromClass([touch.view class]) isEqualToString:@"UITableViewCellContentView"]) {
         return NO;
     }
@@ -187,7 +191,20 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
 }
 - (IBAction)touchReport:(id)sender {
     
+    [self requestUserMaterialSelect];
+    
+}
+
+- (void)touchReportAlert:(NSInteger) Concern{
     UIAlertController *alertCont = [UIAlertController  alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *concernAction = [UIAlertAction actionWithTitle:Concern == 1?@"取消关注":@"关注" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action){
+           if ([LoginUtils validationLogin:[UIWindow visibleViewController]]){
+                [self requestSetUserConcern];
+           }
+        }];
+    
+    
     UIAlertAction *BlackAction = [UIAlertAction actionWithTitle:@"屏蔽该用户" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action){
         if ([LoginUtils validationLogin:[UIWindow visibleViewController]]){
             if ([self.model.userId integerValue] ==[kUserDefaultsValue(LOGINID) integerValue]){
@@ -216,19 +233,15 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
         }
     }];
     UIAlertAction *CancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+    [alertCont addAction:concernAction];
     [alertCont addAction:BlackAction];
     [alertCont addAction:ReportAction];
     [alertCont addAction:CancelAction];
 
     [[UIWindow visibleViewController] presentViewController:alertCont animated:YES completion:nil];
-    
 }
 
-- (IBAction)touchPraise:(UIButton *)sender {
-    if ([LoginUtils validationLogin:[UIWindow visibleViewController]]) {
-        [self requestSocialSetlike];
-    }
-}
+ 
 
 -(void)setModel:(LPMoodListDataModel *)model{
     _model = model;
@@ -240,18 +253,49 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
     if ([[LPTools isNullToString:model.address] isEqualToString:@""] || [model.address isEqualToString:@"保密"]) {
         self.AddressLabel.text = @"";
         self.AddressImage.hidden = YES;
-        self.Address_constraint_height.constant = 15;
+        self.Address_constraint_height.constant = LENGTH_SIZE(15);
     }else{
         self.AddressLabel.text = model.address;
         self.AddressImage.hidden = NO;
-        self.Address_constraint_height.constant = 33;
+        self.Address_constraint_height.constant = LENGTH_SIZE(33);
     }
+    [self.LikeBt setTitle:[NSString stringWithFormat:@" %@",model.praiseTotal.integerValue>0?model.praiseTotal.stringValue:@""]
+                 forState:UIControlStateNormal];
+    [self.CommentBt setTitle:[NSString stringWithFormat:@" %@",model.commentTotal.integerValue>0?model.commentTotal.stringValue:@""]
+                    forState:UIControlStateNormal];
+
+    if ([model.isPraise integerValue] == 0 && AlreadyLogin){
+        self.LikeBt.selected = YES;
+    }else{
+        self.LikeBt.selected = NO;
+    }
+    
+    
+    if ([model.userId integerValue] ==[kUserDefaultsValue(LOGINID) integerValue] || !AlreadyLogin){
+        self.ReportBt.hidden = YES;
+//        self.isConcernBt.hidden = YES;
+    }else{
+        self.ReportBt.hidden = NO;
+    }
+    
+    
+//    if (model.isConcern.intValue && [model.userId integerValue] !=[kUserDefaultsValue(LOGINID) integerValue]) {
+//        [self.isConcernBt setTitle:@"+ 关注" forState:UIControlStateNormal];
+//        [self.isConcernBt setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
+//        self.isConcernBt.layer.borderColor = [UIColor baseColor].CGColor;
+//        self.isConcernBt.hidden = NO;
+//
+//    }else{
+//        [self.isConcernBt setTitle:@"已关注" forState:UIControlStateNormal];
+//        [self.isConcernBt setTitleColor:[UIColor colorWithHexString:@"#999999"] forState:UIControlStateNormal];
+//        self.isConcernBt.layer.borderColor = [UIColor colorWithHexString:@"#999999"].CGColor;
+//    }
+    
 //    self.AddressLabel.text = model.address;
     self.viewLabel.text = model.view ? [model.view stringValue] : @"0";
     self.praiseTotalLabel.text = model.praiseTotal ? [model.praiseTotal stringValue] : @"0";
     self.commentTotalLabel.text = model.commentTotal ? [model.commentTotal stringValue] : @"0";
     self.moodDetailsLabel.lineBreakMode = NSLineBreakByClipping;
-    self.praiseBt.selected = !model.isPraise.integerValue;
     self.gradingiamge.image = [UIImage imageNamed:model.grading];
 //
 //    if (model.score.integerValue >=0 && model.score.integerValue <3000) {
@@ -289,7 +333,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
      if (array.count>5) {
      
          self.AllDetailsBt.hidden = NO;
-         self.imageBgView_constraint_Top.constant = 38;
+         self.imageBgView_constraint_Top.constant = LENGTH_SIZE(38);
          if (model.isOpening) { // 如果需要展开
               self.moodDetailsLabel.numberOfLines = 0;
              [self.AllDetailsBt setTitle:@"收起" forState:UIControlStateNormal];
@@ -300,16 +344,9 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
          }
      }else{
          self.AllDetailsBt.hidden = YES;
-         self.imageBgView_constraint_Top.constant = 8;
+         self.imageBgView_constraint_Top.constant = LENGTH_SIZE(8);
      }
-
-    
-    
-    if ([model.userId integerValue] ==[kUserDefaultsValue(LOGINID) integerValue]){
-        self.ReportBt.hidden = YES;
-    }else{
-        self.ReportBt.hidden = NO;
-    }
+ 
     
     for (UIView *view in self.imageBgView.subviews) {
         [view removeFromSuperview];
@@ -322,15 +359,15 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
         self.imageViewsRectArray = [NSMutableArray array];
         self.imageBgView.hidden = NO;
         NSArray *imageArray = [model.moodUrl componentsSeparatedByString:@";"];
-        CGFloat imgw = (SCREEN_WIDTH-70 - 10)/3;
-        CGFloat imageHeight = 250.0;
+        CGFloat imgw = (SCREEN_WIDTH- LENGTH_SIZE(70) - LENGTH_SIZE(10))/3;
+        CGFloat imageHeight = LENGTH_SIZE(250.0);
         for (int i = 0; i < imageArray.count; i++) {
             UIImageView *imageView = [[UIImageView alloc]init];
-            imageView.frame = imageArray.count ==1?CGRectMake(0,0,imageHeight,imageHeight): CGRectMake((imgw + 5)* (i%3), floor(i/3)*(imgw + 5), imgw, imgw);
+            imageView.frame = imageArray.count ==1?CGRectMake(0,0,imageHeight,imageHeight): CGRectMake((imgw + LENGTH_SIZE(5))* (i%3), floor(i/3)*(imgw + LENGTH_SIZE(5)), imgw, imgw);
             imageView.contentMode = UIViewContentModeScaleAspectFill;
             imageView.clipsToBounds = YES;
  
-            NSInteger  downWidth= imageView.frame.size.width +100;
+            NSInteger  downWidth= imageView.frame.size.width +LENGTH_SIZE(100);
             NSString *imageStr;
             if (imageArray.count ==1) {
                 imageStr = [NSString stringWithFormat:@"%@",imageArray[i]];
@@ -346,7 +383,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
                 UIImageView *palyBTImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PlayImage"]];
                 [imageView addSubview:palyBTImage];
                 [palyBTImage mas_makeConstraints:^(MASConstraintMaker *make){
-                    make.width.height.mas_offset(58);
+//                    make.width.height.mas_offset(58);
                     make.center.equalTo(imageView);
                 }];
             }
@@ -380,15 +417,15 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
         if (imageArray.count ==1)
         {
             self.imageBgView_constraint_height.constant = imageHeight;
-            self.imageBgView_constraint_right.constant = SCREEN_WIDTH-250-60;
+            self.imageBgView_constraint_right.constant = SCREEN_WIDTH-LENGTH_SIZE(250)-LENGTH_SIZE(60);
         }
         else
         {
-            self.imageBgView_constraint_height.constant = ceil(imageArray.count/3.0)*imgw + floor(imageArray.count/3)*5;
+            self.imageBgView_constraint_height.constant = ceil(imageArray.count/3.0)*imgw + floor(imageArray.count/3)*LENGTH_SIZE(5);
             if (imageArray.count<=2) {
-                self.imageBgView_constraint_right.constant = SCREEN_WIDTH-imgw*imageArray.count-60;
+                self.imageBgView_constraint_right.constant = SCREEN_WIDTH-imgw*imageArray.count-LENGTH_SIZE(60);
             }else{
-                self.imageBgView_constraint_right.constant = 11;
+                self.imageBgView_constraint_right.constant = LENGTH_SIZE(11);
             }
         }
         
@@ -403,23 +440,21 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
     
     //评价和点赞view
     for (UIView *view in self.CommentView.subviews) {
-        if (view != self.TriangleView) {
             [view removeFromSuperview];
-        }
     }
     
  
     //   点赞人名称
     NSString *PraiseStr = @"";
     if (model.praiseList.count) {
-        PraiseStr = @"♡ ";
+        PraiseStr = @"";
         if (model.praiseList.count>10) {
             for (int i = 0 ;i <10 ;i++ ) {
-                PraiseStr = [NSString stringWithFormat:@"%@%@、",PraiseStr,model.praiseList[i].userName];
+                PraiseStr = [NSString stringWithFormat:@"%@%@，",PraiseStr,model.praiseList[i].userName];
             }
         }else{
             for (LPMoodPraiseListDataModel *Pmodel in model.praiseList ) {
-                PraiseStr = [NSString stringWithFormat:@"%@%@、",PraiseStr,Pmodel.userName];
+                PraiseStr = [NSString stringWithFormat:@"%@%@，",PraiseStr,Pmodel.userName];
             }
         }
         PraiseStr = [PraiseStr substringToIndex:PraiseStr.length -1];
@@ -429,8 +464,13 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
         label.tag = 10000;
         label.lineBreakMode = NSLineBreakByCharWrapping;
         label.text =[PraiseStr stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+ 
+        UIImageView *LikeImage = [[UIImageView alloc] initWithFrame:CGRectMake(LENGTH_SIZE(9), LENGTH_SIZE(9) , LENGTH_SIZE(12), LENGTH_SIZE(12))];
+        LikeImage.image = [UIImage imageNamed:@"Circle_like"];
+        LikeImage.contentMode = UIViewContentModeScaleAspectFill;
+        [self.CommentView addSubview:LikeImage];
         
-         if (model.praiseList.count>10) {
+        if (model.praiseList.count>10) {
             NSString *PingStr = [NSString stringWithFormat:@"等%lu人觉得很赞",(unsigned long)model.praiseList.count];
  
             NSString *LabelShowText;
@@ -441,20 +481,20 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
             NSMutableParagraphStyle *paraStyle01 = [[NSMutableParagraphStyle alloc] init];
             paraStyle01.lineBreakMode = NSLineBreakByCharWrapping;
 
-            [string addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13.0],
+            [string addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:FontSize(13)],
                                     NSParagraphStyleAttributeName:paraStyle01,
-                                    NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#356C93"]
+                                    NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#335E80"]
                                     }
                             range:NSMakeRange(0, string.length-PingStr.length)];
 
             label.attributedText = string;//切记使用富文本，颜色可以自由发挥了
             label.numberOfLines = 0;
-            label.font = [UIFont systemFontOfSize:TextFont];//这个很重要,必须写在富文本下面
+            label.font = [UIFont boldSystemFontOfSize:TextFont];//这个很重要,必须写在富文本下面
             [self.CommentView addSubview:label];
             [label mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.mas_equalTo(7);
-                make.left.mas_equalTo(7);
-                make.right.mas_equalTo(-7);
+                make.top.mas_equalTo(LENGTH_SIZE(7));
+                make.left.mas_equalTo(LENGTH_SIZE(30));
+                make.right.mas_equalTo(LENGTH_SIZE(-7));
             }];
 
             NSMutableArray *ClickedArray = [[NSMutableArray alloc] init];
@@ -474,26 +514,27 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
             label.enabledTapEffect = NO;
 
             
-           CommentViewHeight += [self hideLabelLayoutHeight:PraiseStr withTextFontSize:13]+7;
+           CommentViewHeight += [self hideLabelLayoutHeight:PraiseStr withTextFontSize:FontSize(13)]+LENGTH_SIZE(7);
             
         }else{
 //            PraiseStr = [PraiseStr substringToIndex:PraiseStr.length-1];
             NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:PraiseStr];
-            NSMutableParagraphStyle *paraStyle01 = [[NSMutableParagraphStyle alloc] init];  paraStyle01.lineBreakMode = NSLineBreakByCharWrapping;
+            NSMutableParagraphStyle *paraStyle01 = [[NSMutableParagraphStyle alloc] init];
+            paraStyle01.lineBreakMode = NSLineBreakByCharWrapping;
 
-            [string addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13.0],
+            [string addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:FontSize(13)],
                                     NSParagraphStyleAttributeName:paraStyle01,
-                                    NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#356C93"]}
+                                    NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#335E80"]}
                             range:NSMakeRange(0, string.length)];
             
             label.attributedText = string;//切记使用富文本，颜色可以自由发挥了
             label.numberOfLines = 0;
-            label.font = [UIFont systemFontOfSize:TextFont];//这个很重要,必须写在富文本下面
+            label.font = [UIFont boldSystemFontOfSize:TextFont];//这个很重要,必须写在富文本下面
             [self.CommentView addSubview:label];
             [label mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.mas_equalTo(7);
-                make.left.mas_equalTo(7);
-                make.right.mas_equalTo(-7);
+                make.top.mas_equalTo(LENGTH_SIZE(7));
+                make.left.mas_equalTo(LENGTH_SIZE(30));
+                make.right.mas_equalTo(LENGTH_SIZE(-7));
             }];
             
             NSMutableArray *ClickedArray = [[NSMutableArray alloc] init];
@@ -511,7 +552,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
             }];
             label.enabledTapEffect = NO;
 
-            CommentViewHeight += [self hideLabelLayoutHeight:PraiseStr withTextFontSize:13] +7;
+            CommentViewHeight += [self hideLabelLayoutHeight:PraiseStr withTextFontSize:FontSize(13)] +LENGTH_SIZE(7);
 
         }
  
@@ -528,10 +569,10 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
             UIView *lineView = [[UIView alloc] init];
             [self.CommentView addSubview:lineView];
             [lineView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(label.mas_bottom).offset(7);
-                make.left.mas_equalTo(7);
-                make.right.mas_equalTo(-7);
-                make.height.mas_offset(0.5);
+                make.top.equalTo(label.mas_bottom).offset(LENGTH_SIZE(7));
+                make.left.mas_equalTo(LENGTH_SIZE(7));
+                make.right.mas_equalTo(LENGTH_SIZE(-7));
+                make.height.mas_offset(LENGTH_SIZE(0.5));
             }];
             lineView.backgroundColor = [UIColor colorWithRed:225/255.0 green:225/255.0 blue:225/255.0 alpha:0.9];
         }
@@ -555,65 +596,65 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
                 
                 commentLabel.DeleteBlock = ^(UILabel *Label){
                     NSLog(@"删除评论 %@",Label.text);
-                    [weakSelf requestQueryDeleteComment:weakSelf.model.commentModelList[Label.tag-1000].id];
+                    [weakSelf requestQueryDeleteComment:weakSelf.model.commentModelList[Label.tag-1000].id commentType:weakSelf.model.commentModelList[Label.tag-1000].commentType];
                 };
             }
 
             NSString *CommentStr;
             
             if (CModel.toUserName) {        //回复
-                CommentStr = [NSString stringWithFormat:@"%@ 回复 %@:%@",CModel.userName,CModel.toUserName,CModel.commentDetails];
+                CommentStr = [NSString stringWithFormat:@"%@回复%@：%@",CModel.userName,CModel.toUserName,CModel.commentDetails];
              }else{      //评论
-                 CommentStr = [NSString stringWithFormat:@"%@:%@",CModel.userName,CModel.commentDetails];
+                 CommentStr = [NSString stringWithFormat:@"%@：%@",CModel.userName,CModel.commentDetails];
             }
-           
+           commentLabel.font = [UIFont systemFontOfSize:TextFont];//这个很重要,必须写在富文本下面
+
             
             NSMutableAttributedString *string = [[NSMutableAttributedString alloc]initWithString:CommentStr];
             NSMutableParagraphStyle *paraStyle01 = [[NSMutableParagraphStyle alloc] init];
             paraStyle01.lineBreakMode = NSLineBreakByCharWrapping;
             if (CModel.toUserName) {
-                [string addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13.0],
+                [string addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:FontSize(13)],
                                         NSParagraphStyleAttributeName:paraStyle01,
-                                        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#356C93"]}
+                                        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#335E80"]}
                                 range:NSMakeRange(0, CModel.userName.length)];
                 
-                [string addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13.0],
+                [string addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:FontSize(13)],
                                         NSParagraphStyleAttributeName:paraStyle01,
-                                        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#356C93"]}
-                                range:NSMakeRange(CModel.userName.length+4, CModel.toUserName.length+1)];
+                                        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#335E80"]}
+                                range:NSMakeRange(CModel.userName.length+2, CModel.toUserName.length+1)];
                 
             }else{
-                [string addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13.0],
+                [string addAttributes:@{NSFontAttributeName:[UIFont boldSystemFontOfSize:FontSize(13)],
                                         NSParagraphStyleAttributeName:paraStyle01,
-                                        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#356C93"]}
+                                        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#335E80"]}
                                 range:NSMakeRange(0, CModel.userName.length+1)];
             }
 
             
             commentLabel.attributedText = string;//切记使用富文本，颜色可以自由发挥了
             commentLabel.numberOfLines = 0;
-            commentLabel.font = [UIFont systemFontOfSize:TextFont];//这个很重要,必须写在富文本下面
             [self.CommentView addSubview:commentLabel];
             
             if (label) {
                 [commentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
                     if (i==0) {
-                        make.top.equalTo(label.mas_bottom).offset(14);
+                        make.top.equalTo(label.mas_bottom).offset(LENGTH_SIZE(14));
                     }else{
-                        make.top.equalTo(TopComment.mas_bottom).offset(7);
+                        make.top.equalTo(TopComment.mas_bottom).offset(LENGTH_SIZE(7));
                     }
-                    make.left.mas_equalTo(7);
-                    make.right.mas_equalTo(-7);
+                    make.left.mas_equalTo(LENGTH_SIZE(7));
+                    make.right.mas_equalTo(LENGTH_SIZE(-7));
                 }];
             }else{
                 [commentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
                     if (i==0) {
-                        make.top.mas_equalTo(7);
+                        make.top.mas_equalTo(LENGTH_SIZE(7));
                     }else{
-                        make.top.equalTo(TopComment.mas_bottom).offset(7);
+                        make.top.equalTo(TopComment.mas_bottom).offset(LENGTH_SIZE(7));
                     }
-                    make.left.mas_equalTo(7);
-                    make.right.mas_equalTo(-7);
+                    make.left.mas_equalTo(LENGTH_SIZE(7));
+                    make.right.mas_equalTo(LENGTH_SIZE(-7));
                 }];
             }
             
@@ -632,49 +673,14 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
  
             
             UITapGestureRecognizer *TapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(TouchUpInsidecommentLabel:)];
-            //            TapGestureRecognizer.delegate = self;
-            TapGestureRecognizer.cancelsTouchesInView = NO;
-            //            commentLabel.userInteractionEnabled = YES;
-            [commentLabel addGestureRecognizer:TapGestureRecognizer];
+             TapGestureRecognizer.cancelsTouchesInView = NO;
+             [commentLabel addGestureRecognizer:TapGestureRecognizer];
 
-            
-//            [commentLabel yb_addAttributeTapActionWithStrings:ClickArray tapClicked:^(NSString *string, NSRange range, NSInteger index) {
-//                NSLog(@"%@ %ld",string,(long)commentLabel.tag);
-//
-//                NSInteger ControllerCount = 0 ;
-//                 for (RTContainerController *v in [UIWindow visibleViewController].navigationController.viewControllers) {
-//                    if ([v.contentViewController isKindOfClass:[LPReportVC class]]) {
-//                        ControllerCount +=1;
-//                    }
-//                }
-//                if (ControllerCount >= 3) {
-//                    [LPTools AlertMessageView:@"当前页面跳转过深，请回退！"];
-//                    return;
-//                }
-//
-//                LPMoodListDataModel *Moodmodel = [[LPMoodListDataModel alloc] init];
-//                LPMoodCommentListDataModel *CModel = weakSelf.model.commentModelList[commentLabel.tag -1000];
-//                     if (index == 0) {
-//                        Moodmodel.userId = @(CModel.userId.integerValue);
-//                        Moodmodel.userName = CModel.userName;
-//                        Moodmodel.identity = CModel.identity;
-//                    }else{
-//                        Moodmodel.userId = @(CModel.toUserId.integerValue);
-//                        Moodmodel.userName = CModel.toUserName;
-//                        Moodmodel.identity = CModel.toUserIdentity;
-//                    }
-//                LPReportVC *vc = [[LPReportVC alloc] init];
-//                vc.hidesBottomBarWhenPushed = YES;
-//                vc.MoodModel = Moodmodel;
-//                vc.SupermoodListArray = self.moodListArray;
-//                vc.SuperTableView = self.SuperTableView;
-//                [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
-//
-//            }];
+             
             TopComment = commentLabel;
             commentLabel.enabledTapEffect = NO;
 
-            CommentViewHeight += [self hideLabelLayoutHeight:CommentStr withTextFontSize:13] +7;
+            CommentViewHeight += [self hideLabelLayoutHeight:CommentStr withTextFontSize:FontSize(13)] + LENGTH_SIZE(7);
 
         }
         
@@ -682,23 +688,22 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
             UILabel *commentAllLabel = [[UILabel alloc] init];
             [self.CommentView addSubview:commentAllLabel];
             [commentAllLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(TopComment.mas_bottom).offset(7);
-                make.left.mas_equalTo(7);
-                //                    make.right.mas_equalTo(-7);
-            }];
-            commentAllLabel.font = [UIFont systemFontOfSize:13];
+                make.top.equalTo(TopComment.mas_bottom).offset(LENGTH_SIZE(7));
+                make.left.mas_equalTo(LENGTH_SIZE(7));
+             }];
+            commentAllLabel.font = [UIFont boldSystemFontOfSize:FontSize(13)];
             commentAllLabel.text = @"查看所有评论";
-            commentAllLabel.textColor = [UIColor colorWithHexString:@"#356C93"];
+            commentAllLabel.textColor = [UIColor colorWithHexString:@"#335E80"];
             UIImageView *CommentAllImage = [[UIImageView alloc] init];
             [self.CommentView addSubview:CommentAllImage];
             [CommentAllImage mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.centerY.equalTo(commentAllLabel);
-                make.left.equalTo(commentAllLabel.mas_right).offset(6);
-                make.height.mas_equalTo(10);
-                make.width.mas_equalTo(10);
+                make.left.equalTo(commentAllLabel.mas_right).offset(LENGTH_SIZE(6));
+                make.height.mas_equalTo(LENGTH_SIZE(10));
+                make.width.mas_equalTo(LENGTH_SIZE(10));
             }];
             CommentAllImage.image = [UIImage imageNamed:@"CommentAllImage"];
-            CommentViewHeight += 23;
+            CommentViewHeight += LENGTH_SIZE(23);
             [commentAllLabel yb_addAttributeTapActionWithStrings:@[@"查看所有评论"] tapClicked:^(UILabel *label,NSString *string, NSRange range, NSInteger index) {
                 LPMoodDetailVC *vc = [[LPMoodDetailVC alloc]init];
                  vc.hidesBottomBarWhenPushed = YES;
@@ -713,20 +718,16 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
             commentAllLabel.enabledTapEffect = NO;
 
         }
-        CommentViewHeight += 7;
+        CommentViewHeight += LENGTH_SIZE(7);
     }else{
         
     }
    
 //    self.CommentView_constraint_height.constant = floor(CommentViewHeight);
 
-        self.CommentView_constraint_height.constant = floor([self calculateCommentHeight:model]-14);
+        self.CommentView_constraint_height.constant = floor([self calculateCommentHeight:model]-LENGTH_SIZE(14));
 
-    if (self.CommentView_constraint_height.constant >0) {
-        self.TriangleView.hidden = NO;
-     }else{
-         self.TriangleView.hidden = YES;
-     }
+    
 }
 
 
@@ -789,7 +790,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
                 [XHInputView showWithStyle:InputViewStyleLarge configurationBlock:^(XHInputView *inputView) {
                     
                     /** 占位符文字 */
-                    inputView.placeholder = [NSString stringWithFormat:@"回复 %@:",CModel.userName];
+                    inputView.placeholder = [NSString stringWithFormat:@"回复 %@：",CModel.userName];
                     /** 设置最大输入字数 */
                     inputView.maxCount = 300;
                     /** 输入框颜色 */
@@ -939,8 +940,51 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
     // Configure the view for the selected state
 }
 
-#pragma mark - request
+- (IBAction)TouchisConcernBtn:(id)sender {
+    [self requestSetUserConcern];
+}
 
+- (IBAction)TouchLikeBtn:(id)sender {
+    if ([LoginUtils validationLogin:[UIWindow visibleViewController]]) {
+        [self requestSocialSetlike];
+    }
+}
+
+- (IBAction)TouchCommentBtn:(id)sender {
+    if ([LoginUtils validationLogin:[UIWindow visibleViewController]]) {
+        WEAK_SELF()
+        [XHInputView showWithStyle:InputViewStyleLarge configurationBlock:^(XHInputView *inputView) {
+            /** 请在此block中设置inputView属性 */
+            /** 代理 */
+            //        inputView.delegate = self;
+            
+            /** 占位符文字 */
+            inputView.placeholder = @"请输入评论...";
+            /** 设置最大输入字数 */
+            inputView.maxCount = 300;
+            /** 输入框颜色 */
+            inputView.textViewBackgroundColor = [UIColor groupTableViewBackgroundColor];
+            
+            /** 更多属性设置,详见XHInputView.h文件 */
+            
+        } sendBlock:^BOOL(NSString *text) {
+            if(text.length){
+                [weakSelf requestCommentAddcomment:text
+                                       CommentType:2
+                                         CommentId:[NSString stringWithFormat:@"%@",weakSelf.model.id]
+                                  selectCommentRow:0
+                                       ReplyUserId:@""];
+                return YES;//return YES,收起键盘
+            }else{
+                NSLog(@"显示提示框-请输入要评论的的内容");
+                return NO;//return NO,不收键盘
+            }
+        }];
+
+    }
+}
+
+#pragma mark - request
 -(void)requestQueryDefriendPullBlack{
     NSDictionary *dic = @{@"identity":[LPTools isNullToString:self.model.identity],
                           @"type":@"1"
@@ -974,8 +1018,9 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
                 if (!ISNIL(responseObject[@"data"])) {
                     LPUserMaterialModel *user = [LPUserDefaults getObjectByFileName:USERINFO];
                     if ([responseObject[@"data"] integerValue] == 0) {
-                        self.praiseBt.selected = YES;
+                        self.LikeBt.selected = YES;
                         self.model.praiseTotal = @(self.model.praiseTotal.integerValue+1);
+                        [self.LikeBt setTitle:[NSString stringWithFormat:@" %@",self.model.praiseTotal] forState:UIControlStateNormal];
                         self.model.isPraise = @([responseObject[@"data"] integerValue]);
                         LPMoodPraiseListDataModel *Pmodel = [[LPMoodPraiseListDataModel alloc] init];
                         Pmodel.grading = user.data.grading;
@@ -988,7 +1033,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
                         [self.model.praiseList insertObject:Pmodel atIndex:0];
                         
                     }else if ([responseObject[@"data"] integerValue] == 1) {
-                        self.praiseBt.selected = NO;
+                        self.LikeBt.selected = NO;
                         self.model.praiseTotal = @(self.model.praiseTotal.integerValue-1);
                         self.model.isPraise = @([responseObject[@"data"] integerValue]);
                         for (LPMoodPraiseListDataModel *m in self.model.praiseList) {
@@ -1029,7 +1074,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
 
 
 
--(void)requestQueryDeleteComment:(NSString *) CommentId{
+-(void)requestQueryDeleteComment:(NSString *) CommentId commentType:(NSString *) Type{
  
     NSString * appendURLString = [NSString stringWithFormat:@"comment/update_comment?id=%@&moodId=%@&versionType=2.4",CommentId,self.model.id];
     
@@ -1038,6 +1083,10 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
         if (isSuccess) {
             if ([responseObject[@"code"] integerValue] == 0) {
                 if ([responseObject[@"data"][@"result"] integerValue] == 1) {
+                    if (Type.integerValue == 2) {
+                        self.model.commentTotal = @(self.model.commentTotal.integerValue -1);
+                    }
+                    
                     NSMutableArray <LPMoodCommentListDataModel *>*CommArr = [LPMoodCommentListDataModel mj_objectArrayWithKeyValuesArray:responseObject[@"data"][@"commentList"]];
                     self.model.commentModelList =  CommArr;
                     for (int i =0 ; i < self.moodListArray.count ; i++) {
@@ -1110,6 +1159,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
                 CommentModel.id = [LPTools isNullToString:DataList[1]];
 
                 if (commentType == 2 ) {
+                    self.model.commentTotal = @(self.model.commentTotal.integerValue +1);
                     [self.model.commentModelList addObject:CommentModel];
                 }else if (commentType == 3 ){
                     LPMoodCommentListDataModel *m = self.model.commentModelList[CommentRow];
@@ -1152,6 +1202,63 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
 }
 
 
+-(void)requestSetUserConcern{
+    NSDictionary *dic = @{
+                          @"concernUserId":self.model.userId,
+                          };
+    [NetApiManager requestSetUserConcernWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                if (!ISNIL(responseObject[@"data"])) {
+                       //0已经关注 1没有关注
+                    self.model.isConcern = responseObject[@"data"];
+                        
+//                    if (self.model.isConcern.intValue && [self.model.userId integerValue] !=[kUserDefaultsValue(LOGINID) integerValue]) {
+//                        [self.isConcernBt setTitle:@"+ 关注" forState:UIControlStateNormal];
+//                        [self.isConcernBt setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
+//                        self.isConcernBt.layer.borderColor = [UIColor baseColor].CGColor;
+//                        self.isConcernBt.hidden = NO;
+//                    }else{
+//                        [self.isConcernBt setTitle:@"已关注" forState:UIControlStateNormal];
+//                        [self.isConcernBt setTitleColor:[UIColor colorWithHexString:@"#999999"] forState:UIControlStateNormal];
+//                        self.isConcernBt.layer.borderColor = [UIColor colorWithHexString:@"#999999"].CGColor;
+//                    }
+                }
+            }else{
+                [[UIApplication sharedApplication].keyWindow showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
+
+        }else{
+            [[UIApplication sharedApplication].keyWindow showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+    }];
+}
+
+-(void)requestUserMaterialSelect{
+    NSDictionary *dic = @{
+                          @"id":[NSString stringWithFormat:@"%@", self.model.userId]
+                          };
+    [NetApiManager requestQueryUserMaterialSelect:dic withHandle:^(BOOL isSuccess, id responseObject) {
+        NSLog(@"%@",responseObject);
+        if (isSuccess) {
+            if ([responseObject[@"code"] integerValue] == 0) {
+                LPUsermaterialMoodModel *m = [LPUsermaterialMoodModel mj_objectWithKeyValues:responseObject];
+                [self touchReportAlert:m.data.isConcern.integerValue];
+            }else{
+                [[UIApplication sharedApplication].keyWindow showLoadingMeg:responseObject[@"msg"] time:MESSAGE_SHOW_TIME];
+            }
+        }else{
+            [[UIApplication sharedApplication].keyWindow showLoadingMeg:NETE_REQUEST_ERROR time:MESSAGE_SHOW_TIME];
+        }
+       
+    }];
+}
+
+
+
+
+
 - (NSArray *)getSeparatedLinesFromLabel:(UILabel *)label
 {
     NSMutableParagraphStyle *paraStyle01 = [[NSMutableParagraphStyle alloc] init];  paraStyle01.lineBreakMode = NSLineBreakByCharWrapping;
@@ -1176,7 +1283,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
     
     CGMutablePathRef path = CGPathCreateMutable();
 //    CGPathAddRect(path, NULL, CGRectMake(0,0,rect.size.width,100000));
-    CGPathAddRect(path, NULL, CGRectMake(0,0,SCREEN_WIDTH-78,100000));
+    CGPathAddRect(path, NULL, CGRectMake(0,0,SCREEN_WIDTH-LENGTH_SIZE(78),100000));
 
     CTFrameRef frame = CTFramesetterCreateFrame(frameSetter, CFRangeMake(0, 0), path, NULL);
     
@@ -1261,7 +1368,7 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
 //    return attSize.height;
     NSDictionary *dic = @{NSFontAttributeName:[UIFont systemFontOfSize:mFontSize]};
     /*计算高度要先指定宽度*/
-    CGRect rect = [content boundingRectWithSize:CGSizeMake(SCREEN_WIDTH-70-14, 0) options:NSStringDrawingUsesLineFragmentOrigin |
+    CGRect rect = [content boundingRectWithSize:CGSizeMake(SCREEN_WIDTH-LENGTH_SIZE(70)-LENGTH_SIZE(14), 0) options:NSStringDrawingUsesLineFragmentOrigin |
                    NSStringDrawingUsesFontLeading attributes:dic context:nil];
     return ceil(rect.size.height);
 }
@@ -1269,23 +1376,23 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
 {
     CGFloat Praiseheighe = 0.0;
     if (model.praiseList.count) {
-        NSString *PraiseStr = @"♡ ";
+        NSString *PraiseStr = @"";
         if (model.praiseList.count>10) {
             for (int i = 0 ;i <10 ;i++ ) {
-                PraiseStr = [NSString stringWithFormat:@"%@%@、",PraiseStr,model.praiseList[i].userName];
+                PraiseStr = [NSString stringWithFormat:@"%@%@，",PraiseStr,model.praiseList[i].userName];
             }
             PraiseStr = [PraiseStr substringToIndex:PraiseStr.length -1];
             PraiseStr = [NSString stringWithFormat:@"%@等%lu人觉得很赞",PraiseStr,model.praiseList.count];
         }else{
             for (LPMoodPraiseListDataModel *Pmodel in model.praiseList ) {
-                PraiseStr = [NSString stringWithFormat:@"%@%@、",PraiseStr,Pmodel.userName];
+                PraiseStr = [NSString stringWithFormat:@"%@%@，",PraiseStr,Pmodel.userName];
             }
             PraiseStr = [PraiseStr substringToIndex:PraiseStr.length -1];
         }
  
-        Praiseheighe = [LPTools calculateRowHeight:PraiseStr fontSize:13 Width:SCREEN_WIDTH-70-14];
+        Praiseheighe = [LPTools calculateRowHeight:PraiseStr fontSize:FontSize(13) Width:SCREEN_WIDTH-LENGTH_SIZE(70)-LENGTH_SIZE(37)];
 //        Praiseheighe = Praiseheighe >48 ?48:Praiseheighe;
-        Praiseheighe = Praiseheighe + 14;
+        Praiseheighe = Praiseheighe + LENGTH_SIZE(14);
     }else{
         Praiseheighe = 0.0;
     }
@@ -1297,22 +1404,22 @@ NSString *const kSDTimeLineCellOperationButtonClickedNotification = @"SDTimeLine
             LPMoodCommentListDataModel   *CModel = model.commentModelList[i];
             NSString *CommentStr;
             if (CModel.toUserName) {        //回复
-                CommentStr = [NSString stringWithFormat:@"%@ 回复 %@:%@",CModel.toUserName,CModel.userName,CModel.commentDetails];
+                CommentStr = [NSString stringWithFormat:@"%@回复%@：%@",CModel.toUserName,CModel.userName,CModel.commentDetails];
             }else{      //评论
-                CommentStr = [NSString stringWithFormat:@"%@:%@",CModel.userName,CModel.commentDetails];
+                CommentStr = [NSString stringWithFormat:@"%@：%@",CModel.userName,CModel.commentDetails];
             }
-            commentheighe += [LPTools calculateRowHeight:CommentStr fontSize:13 Width:SCREEN_WIDTH-70-14]+7;
+            commentheighe += [LPTools calculateRowHeight:CommentStr fontSize:FontSize(13) Width:SCREEN_WIDTH-LENGTH_SIZE(70)-LENGTH_SIZE(14)]+LENGTH_SIZE(7);
         }
         if (model.commentModelList.count >=5) {
-            commentheighe += 23;
+            commentheighe += LENGTH_SIZE(23);
         }
-        commentheighe += 7;
+        commentheighe += LENGTH_SIZE(7);
     }else{
         commentheighe = 0.0;
     }
     
     if (commentheighe || Praiseheighe) {
-        return floor(commentheighe + Praiseheighe +16);
+        return floor(commentheighe + Praiseheighe +LENGTH_SIZE(16));
         
     }
     

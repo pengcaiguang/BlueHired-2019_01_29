@@ -25,8 +25,10 @@
 
 @property (strong, nonatomic) UIWindow *window;
 
-@property (strong,nonatomic) MoninNet* moninNet;
-@property (nonatomic,assign)id <LPWxLoginHBDelegate>WXdelegate;
+@property (strong, nonatomic) MoninNet* moninNet;
+@property (nonatomic, assign) id <LPWxLoginHBDelegate>WXdelegate;
+@property (nonatomic, assign) BOOL allowRotation;
+
 
 //退出登录
 - (void)LoginOut;

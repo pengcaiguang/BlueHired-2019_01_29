@@ -41,14 +41,8 @@
                   completionHandler:^(id result, NSError *_Nullable error) {
                       CGFloat documentHeight = [result doubleValue];
                       NSLog(@"%f",documentHeight);
-                      weakSelf.webBgView_constraint_height.constant = documentHeight;
-                      
-                      weakSelf.essayNameLabel.text = weakSelf.model.data.essayName;
-                      weakSelf.essayAuthorLabel.text = weakSelf.model.data.essayAuthor;
-                      weakSelf.timeLabel.text = [NSString convertStringToTime:[weakSelf.model.data.time stringValue]];
-                      weakSelf.viewLabel.text = weakSelf.model.data.view ? [weakSelf.model.data.view stringValue] : @"0";
-                      weakSelf.commentTotalLabel.text = weakSelf.model.data.commentTotal ? [weakSelf.model.data.commentTotal stringValue] : @"0";
-                      weakSelf.praiseTotalLabel.text = weakSelf.model.data.praiseTotal ? [weakSelf.model.data.praiseTotal stringValue] : @"0";
+                      self.layout_height.constant = documentHeight;
+
  
                       if (weakSelf.Block) {
                           weakSelf.Block(documentHeight);
@@ -97,16 +91,7 @@
                      completionHandler:^(id result, NSError *_Nullable error) {
                          CGFloat documentHeight = [result doubleValue];
                          NSLog(@"%f",documentHeight);
-                         weakSelf.webBgView_constraint_height.constant = documentHeight;
-                         
-                         weakSelf.essayNameLabel.text = weakSelf.model.data.essayName;
-                         weakSelf.essayAuthorLabel.text = weakSelf.model.data.essayAuthor;
-                         weakSelf.timeLabel.text = [NSString convertStringToTime:[weakSelf.model.data.time stringValue]];
-                         weakSelf.viewLabel.text = weakSelf.model.data.view ? [weakSelf.model.data.view stringValue] : @"0";
-                         weakSelf.commentTotalLabel.text = weakSelf.model.data.commentTotal ? [weakSelf.model.data.commentTotal stringValue] : @"0";
-                         weakSelf.praiseTotalLabel.text = weakSelf.model.data.praiseTotal ? [weakSelf.model.data.praiseTotal stringValue] : @"0";
-                         
-                         
+                        self.layout_height.constant = documentHeight;
                          
                          if (weakSelf.Block) {
                              weakSelf.Block(documentHeight);

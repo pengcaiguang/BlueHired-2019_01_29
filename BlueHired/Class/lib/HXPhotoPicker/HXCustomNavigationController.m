@@ -37,10 +37,12 @@
     if (!manager.cameraRollAlbumModel) {
         [manager preloadData];
     }
-    
+
     if (manager.configuration.albumShowMode == HXPhotoAlbumShowModeDefault) {
         HXAlbumListViewController *vc = [[HXAlbumListViewController alloc] initWithManager:manager];
         self = [super initWithRootViewController:vc];
+        vc.modalPresentationStyle = UIModalPresentationFullScreen;
+
         if (self) {
             self.hx_delegate = delegate;
             self.manager = manager;
@@ -55,6 +57,8 @@
         HXPhotoViewController *vc = [[HXPhotoViewController alloc] init];
         vc.manager = manager;
         self = [super initWithRootViewController:vc];
+        vc.modalPresentationStyle = UIModalPresentationFullScreen;
+
         if (self) {
             self.hx_delegate = delegate;
             self.manager = manager;

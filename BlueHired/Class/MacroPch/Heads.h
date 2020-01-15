@@ -9,13 +9,16 @@
 #ifndef Heads_h
 #define Heads_h
 
+
 #import "LPBaseViewController.h"
 #import "RTRootNavigationController.h"
 #import "IQKeyboardManager.h"
+#define MAS_SHORTHAND_GLOBALS
 #import "Masonry.h"
 #import "MJRefresh.h"
 #import "MJExtension.h"
 #import "AFNetworking.h"
+
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <SDWebImage/FLAnimatedImageView+WebCache.h>
 #import "FSCalendar.h"
@@ -74,9 +77,15 @@
 #import "NSString+Extension.h"
 #import "WJMoviePlayerView.h"
 #import "LPUserProblemModel.h"
-#import "LPSetSecretVC.h"
 #import "LPChangePhoneVC.h"
 #import "XHInputView.h"
 #import "UILabel+YBAttributeTextTapAction.h"
+#import "RSAEncryptor.h"
+#import <ReactiveObjC.h>
+
+
+
+
+
 
 #endif /* Heads_h */

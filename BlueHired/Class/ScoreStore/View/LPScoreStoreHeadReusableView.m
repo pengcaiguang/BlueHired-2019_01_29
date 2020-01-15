@@ -12,6 +12,8 @@
 #import "LPMyOrderVC.h"
 #import "LPScoreStoredetailsVC.h"
 #import "LPScoreStoreBillVC.h"
+#import "LPStoreShareVC.h"
+#import "LPIntegralDrawVC.h"
 
 @interface LPScoreStoreHeadReusableView ()<SDCycleScrollViewDelegate>
 @property(nonatomic,strong) SDCycleScrollView *cycleScrollView;
@@ -43,7 +45,7 @@
 //    self.cycleScrollView.imageURLStringsGroup = array;
 }
 
-- (IBAction)TouchBill:(id)sender {
+- (IBAction)TouchBill:(id)sender {  //积分账单
     if ([LoginUtils validationLogin:[UIWindow visibleViewController]]) {
         LPScoreStoreBillVC *vc = [[LPScoreStoreBillVC alloc] init];
         vc.hidesBottomBarWhenPushed = YES;
@@ -54,7 +56,7 @@
 
 - (IBAction)TouchCart:(id)sender {
     if ([LoginUtils validationLogin:[UIWindow visibleViewController]]) {
-        LPStoreCartVC *vc = [[LPStoreCartVC alloc] init];
+        LPIntegralDrawVC *vc = [[LPIntegralDrawVC alloc] init];
         vc.hidesBottomBarWhenPushed = YES;
         [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
     }
@@ -67,6 +69,15 @@
         [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
     }
 }
+
+- (IBAction)TouchShare:(id)sender {
+    if ([LoginUtils validationLogin:[UIWindow visibleViewController]]) {
+        LPStoreShareVC *vc = [[LPStoreShareVC alloc] init];
+        vc.hidesBottomBarWhenPushed = YES;
+        [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+    }
+}
+
 
 
 #pragma mark - SDCycleScrollViewDelegate

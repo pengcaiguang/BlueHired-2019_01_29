@@ -301,7 +301,7 @@ static NSString *LPStoreCartCellID = @"LPStoreCartCell";
     cell.Type = 3;
     cell.LayoutConstraint_selectBtn_Width.constant = 0;
 //    cell.LayoutConstraint_Content_height.constant = LENGTH_SIZE(120);
-    cell.GenerateModel = self.listArray[indexPath.section].orderItemList[indexPath.row];
+     cell.GenerateModel = self.listArray[indexPath.section].orderItemList[indexPath.row];
      cell.LayoutConstraint_Content_Top.constant = LENGTH_SIZE(1);
      cell.LayoutConstraint_Content_bottom.constant = LENGTH_SIZE(20);
     

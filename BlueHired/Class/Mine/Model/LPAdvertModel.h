@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSArray <LPAdvertDataModel *> *data;
 @property (nonatomic, copy) NSString *msg;
 @end
+
 @interface LPAdvertDataModel : NSObject
 @property (nonatomic, copy) NSString *activityBeginTime;
 @property (nonatomic, copy) NSString *activityDetails;

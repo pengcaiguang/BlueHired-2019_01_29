@@ -10,13 +10,18 @@
 #import "LPBillrecordModel.h"
 #import "LPBillRecordCell.h"
 #import "LPBillRecordStateVC.h"
+#import "LPMainSortAlertView.h"
 
-@interface LPBillRecordVC ()<UITableViewDelegate,UITableViewDataSource>
+@interface LPBillRecordVC ()<UITableViewDelegate,UITableViewDataSource,LPMainSortAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
+@property (weak, nonatomic) IBOutlet UIButton *selectBtn;
 @property(nonatomic,assign) NSInteger page;
 
 @property(nonatomic,strong) LPBillrecordModel *model;
 @property(nonatomic,strong) NSMutableArray <LPBillrecordDataModel *>*listArray;
+@property(nonatomic,strong) NSString *Status;
+@property(nonatomic,strong) LPMainSortAlertView *sortAlertView;
+@property(nonatomic,strong) NSArray *StatusArr;
 
 @end
 
@@ -26,10 +31,45 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.navigationItem.title = @"个人账单";
+    self.StatusArr = @[@"全部账单",@"邀请奖励",@"平台奖励",@"账户提现",@"借支到账",@"工资到账",@"返费到账",@"其他"];
+    self.Status = @"0";
     self.page = 1;
+    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
 
     [self tableviewinit];
     [self requestQueryBillrecord];
+}
+#pragma mark - Touch
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [self.sortAlertView close];
+}
+
+- (IBAction)TouchSelectType:(UIButton *)sender {
+    self.sortAlertView.titleArray  = self.StatusArr;
+    sender.selected = !sender.isSelected;
+    self.sortAlertView.touchButton = sender;
+    self.sortAlertView.selectTitle = sender.tag;
+    self.sortAlertView.hidden = !sender.isSelected;
+}
+
+#pragma mark - LPMainSortAlertViewDelegate
+-(void)touchTableView:(NSInteger)index{
+    [self.selectBtn setTitle:self.StatusArr[index] forState:UIControlStateNormal];
+    self.selectBtn.tag = index;
+    self.Status = [NSString stringWithFormat:@"%ld",(long)index];
+    self.page = 1;
+    [self requestQueryBillrecord];
+}
+
+#pragma mark - LPMainSortAlertView
+-(LPMainSortAlertView *)sortAlertView{
+    if (!_sortAlertView) {
+        _sortAlertView = [[LPMainSortAlertView alloc]init];
+        _sortAlertView.touchButton = self.selectBtn;
+        _sortAlertView.delegate = self;
+    }
+    return _sortAlertView;
 }
 
 #pragma mark - TableViewDelegate & Datasource
@@ -38,7 +78,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath  {
-    return 60;
+    return LENGTH_SIZE(70);
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -65,7 +105,12 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        [self requestDelUserBill:self.listArray[indexPath.row]];
+        GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:@"是否删除该账单，一经删除，无法恢复！" message:nil textAlignment:NSTextAlignmentCenter buttonTitles:@[@"否",@"是"] buttonsColor:@[[UIColor colorWithHexString:@"#808080"],[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
+            if (buttonIndex) {
+                [self requestDelUserBill:self.listArray[indexPath.row]];
+            }
+        }];
+        [alert show];        
     }
 }
 
@@ -105,30 +150,25 @@
 }
 -(void)addNodataViewHidden:(BOOL)hidden{
     BOOL has = NO;
-    for (UIView *view in self.view.subviews) {
+    for (UIView *view in self.tableview.subviews) {
         if ([view isKindOfClass:[LPNoDataView class]]) {
             view.hidden = hidden;
             has = YES;
         }
     }
     if (!has) {
-        LPNoDataView *noDataView = [[LPNoDataView alloc]initWithFrame:CGRectZero];
+        LPNoDataView *noDataView = [[LPNoDataView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, CGRectGetHeight(self.tableview.frame))];
         [noDataView image:nil text:@"抱歉！没有相关记录！"];
-        [self.view addSubview:noDataView];
-        [noDataView mas_makeConstraints:^(MASConstraintMaker *make) {
-            //            make.edges.equalTo(self.view);
-            make.left.mas_equalTo(0);
-            make.right.mas_equalTo(0);
-            make.top.mas_equalTo(0);
-            make.bottom.mas_equalTo(-48);
-        }];
+        [self.tableview addSubview:noDataView];
+        
         noDataView.hidden = hidden;
     }
 }
 #pragma mark - request
 -(void)requestQueryBillrecord{
     NSDictionary *dic = @{@"page":[NSString stringWithFormat:@"%ld",(long)self.page],
-                          @"versionType":@"2.4"
+                          @"versionType":@"2.4",
+                          @"status":self.Status
                           };
     [NetApiManager requestQueryBillrecordWithParam:dic withHandle:^(BOOL isSuccess, id responseObject) {
         NSLog(@"%@",responseObject);
@@ -197,6 +237,10 @@
         _tableview.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
             [self requestQueryBillrecord];
         }];
+        
+    UIView *headView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, LENGTH_SIZE(10))];
+    headView.backgroundColor = [UIColor colorWithHexString:@"#F5F5F5"];
+    _tableview.tableHeaderView = headView;
 }
 
 /*

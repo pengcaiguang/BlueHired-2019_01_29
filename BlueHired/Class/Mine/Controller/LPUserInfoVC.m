@@ -435,6 +435,7 @@ static NSString* LPUserInfoCellID = @"LPUserInfoCell";
         nil;
     }];
 }
+
 -(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
     if (self.selectIndex == 4 || self.selectIndex == 7) {
         return 2;
@@ -930,6 +931,7 @@ static NSString* LPUserInfoCellID = @"LPUserInfoCell";
     imagePicker.delegate = self;
     imagePicker.allowsEditing = YES;
     imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+    imagePicker.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:imagePicker animated:YES completion:nil];
 }
 -(void)choosePhoto{
@@ -937,6 +939,7 @@ static NSString* LPUserInfoCellID = @"LPUserInfoCell";
     imagePicker.delegate = self;
     imagePicker.allowsEditing = YES;
     imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    imagePicker.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:imagePicker animated:YES completion:nil];
 }
 #pragma mark - UIImagePickerControllerDelegate

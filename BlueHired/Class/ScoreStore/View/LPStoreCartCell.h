@@ -10,6 +10,7 @@
 #import "LPCartItemListModel.h"
 #import "LPScoreStoreDetalisModel.h"
 #import "LPOrderGenerateModel.h"
+#import "LPStoreShareModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 typedef void(^LPStoreCartCelBlock)(LPCartItemListDataModel *model);
@@ -20,6 +21,7 @@ typedef void(^LPStoreCartCelAddRoSubBlock)(void);
 @property (weak, nonatomic) IBOutlet UILabel *commodityName;
 @property (weak, nonatomic) IBOutlet UILabel *commoditySize;
 @property (weak, nonatomic) IBOutlet UILabel *commodityUnit;
+@property (weak, nonatomic) IBOutlet UILabel *commodityUnits;
 @property (weak, nonatomic) IBOutlet UILabel *commodityCount;
 @property (weak, nonatomic) IBOutlet UILabel *BuyCount;
 
@@ -53,6 +55,8 @@ typedef void(^LPStoreCartCelAddRoSubBlock)(void);
 
 @property (nonatomic,strong) ProductSkuListModel *BuyModel;
 @property (nonatomic,assign) NSInteger BuyNumber;
+
+@property (nonatomic, strong) LPStoreShareDataModel *ShareModel;
 
 @end
 

@@ -335,18 +335,23 @@ LPTools * LPTools_instance = nil ;
         activityView.titleLabel.text = @"请选择分享平台";
         __weak __typeof(self) weakSelf = self;
         ButtonView *bv = [[ButtonView alloc]initWithText:@"QQ" image:[UIImage imageNamed:@"QQLogo"] handler:^(ButtonView *buttonView){
+             
             [weakSelf share:1 Url:StrUrl    Title:Title];//QQ好友
+           
         }];
         [activityView addButtonView:bv];
         bv = [[ButtonView alloc]initWithText:@"QQ空间"  image:[UIImage imageNamed:@"QQSpace"] handler:^(ButtonView *buttonView){
+             
             [weakSelf share:2 Url:StrUrl Title:Title];//QQ空间
         }];
         [activityView addButtonView:bv];
         bv = [[ButtonView alloc]initWithText:@"微信"  image:[UIImage imageNamed:@"weixinLogo"] handler:^(ButtonView *buttonView){
+             
             [weakSelf share:3 Url:StrUrl Title:Title];//微信
         }];
         [activityView addButtonView:bv];
         bv = [[ButtonView alloc]initWithText:@"朋友圈"  image:[UIImage imageNamed:@"WXSpace"] handler:^(ButtonView *buttonView){
+             
             [weakSelf share:4 Url:StrUrl Title:Title];//微信朋友圈
         }];
         [activityView addButtonView:bv];
@@ -361,6 +366,9 @@ LPTools * LPTools_instance = nil ;
         if (![QQApiInterface isSupportShareToQQ])
         {
             [LPTools AlertMessageView:@"请安装QQ" dismiss:1.0];
+            if ([LPTools shareInstance].ShareBlock) {
+                [LPTools shareInstance].ShareBlock(NO, type);
+            }
              return;
         }
         NSString *title = @"蓝聘";
@@ -377,6 +385,9 @@ LPTools * LPTools_instance = nil ;
         if (![QQApiInterface isSupportShareToQQ])
         {
             [LPTools AlertMessageView:@"请安装QQ" dismiss:1.0];
+            if ([LPTools shareInstance].ShareBlock) {
+                [LPTools shareInstance].ShareBlock(NO, type);
+            }
             return;
         }
         NSString *title = @"蓝聘";
@@ -392,6 +403,9 @@ LPTools * LPTools_instance = nil ;
     }else if (type == 3){       //  wx
         if ([WXApi isWXAppInstalled]==NO) {
             [LPTools AlertMessageView:@"请安装微信" dismiss:1.0];
+            if ([LPTools shareInstance].ShareBlock) {
+                [LPTools shareInstance].ShareBlock(NO, type);
+            }
             return;
         }
              SendMessageToWXReq *req = [[SendMessageToWXReq alloc] init];
@@ -410,6 +424,9 @@ LPTools * LPTools_instance = nil ;
     }else if (type == 4){       //朋友圈
         if ([WXApi isWXAppInstalled]==NO) {
             [LPTools AlertMessageView:@"请安装微信" dismiss:1.0];
+            if ([LPTools shareInstance].ShareBlock) {
+                [LPTools shareInstance].ShareBlock(NO, type);
+            }
             return;
         }
              SendMessageToWXReq *req = [[SendMessageToWXReq alloc] init];
@@ -425,6 +442,10 @@ LPTools * LPTools_instance = nil ;
              message.mediaObject = ext;
              req.message = message;
              [WXApi sendReq:req];
+    }
+    
+    if ([LPTools shareInstance].ShareBlock) {
+        [LPTools shareInstance].ShareBlock(YES, type);
     }
 }
 

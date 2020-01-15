@@ -13,8 +13,8 @@
 #import "LPSalarycCard2VC.h"
 
 @interface LPSalarycCardVC ()<UITableViewDelegate,UITableViewDataSource>
-@property (nonatomic, strong)UITableView *tableview;
-@property(nonatomic,strong) LPBankcardwithDrawModel *model;
+@property (nonatomic,strong) UITableView *tableview;
+@property (nonatomic,strong) LPBankcardwithDrawModel *model;
 @property (nonatomic,strong) LPUserProblemModel *Pmodel;
 
 @end
@@ -129,31 +129,7 @@
 
 - (void)setPmodel:(LPUserProblemModel *)Pmodel{
     _Pmodel = Pmodel;
-    if (Pmodel.data.count == 0) {
-        NSString *str1 = @"为了您的账号安全，请先设置密保问题。";
-        NSMutableAttributedString *str = [[NSMutableAttributedString alloc]initWithString:str1];
-        WEAK_SELF()
-        GJAlertMessage *alert = [[GJAlertMessage alloc]initWithTitle:str message:nil IsShowhead:YES textAlignment:0 buttonTitles:@[@"去设置"] buttonsColor:@[[UIColor baseColor]] buttonsBackgroundColors:@[[UIColor whiteColor]] buttonClick:^(NSInteger buttonIndex) {
-            if (buttonIndex == 0) {
-                LPChangePhoneVC *vc = [[LPChangePhoneVC alloc]init];
-                vc.type = 1;
-                //                [self.navigationController pushViewController:vc animated:YES];
-                NSMutableArray *naviVCsArr = [[NSMutableArray alloc]initWithArray:weakSelf.navigationController.viewControllers];
-                for (UIViewController *vc in naviVCsArr) {
-                    if ([vc isKindOfClass:[weakSelf class]]) {
-                        [naviVCsArr removeObject:vc];
-                        break;
-                    }
-                }
-                [naviVCsArr addObject:vc];
-                vc.hidesBottomBarWhenPushed = YES;
-                
-                [weakSelf.navigationController  setViewControllers:naviVCsArr animated:YES];
-                
-            }
-        }];
-        [alert show];
-    }
+   
 }
 
 

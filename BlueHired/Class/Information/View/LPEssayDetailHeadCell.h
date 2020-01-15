@@ -12,14 +12,10 @@
 typedef void(^LPAddRecordCellDicBlock)(CGFloat height);
 
 @interface LPEssayDetailHeadCell : UITableViewCell
-@property (weak, nonatomic) IBOutlet UILabel *essayNameLabel;
-@property (weak, nonatomic) IBOutlet UILabel *essayAuthorLabel;
-@property (weak, nonatomic) IBOutlet UILabel *timeLabel;
+ 
 @property (weak, nonatomic) IBOutlet UIView *webBgView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *webBgView_constraint_height;
-@property (weak, nonatomic) IBOutlet UILabel *viewLabel;
-@property (weak, nonatomic) IBOutlet UILabel *commentTotalLabel;
-@property (weak, nonatomic) IBOutlet UILabel *praiseTotalLabel;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *layout_height;
+
 @property (nonatomic,copy) LPAddRecordCellDicBlock Block;
 
 @property(nonatomic,strong) LPEssayDetailModel *model;

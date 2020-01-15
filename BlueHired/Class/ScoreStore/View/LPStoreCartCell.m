@@ -15,6 +15,8 @@
     // Initialization code
     self.commodityImage.layer.borderColor = [UIColor colorWithHexString:@"#EBEBEB"].CGColor;
     self.commodityImage.layer.borderWidth = LENGTH_SIZE(1);
+    self.commodityUnits.hidden = NO;
+
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -121,6 +123,58 @@
  
 }
 
+- (void)setShareModel:(LPStoreShareDataModel *)ShareModel{
+    _ShareModel = ShareModel;
+    NSArray *imageArr = [ShareModel.productPic componentsSeparatedByString:@","];
+
+    [self.commodityImage yy_setImageWithURL:[NSURL URLWithString:imageArr[0]]
+                                placeholder:[UIImage imageWithColor:[UIColor colorWithHexString:@"#F5F5F5"]]];
+    self.commodityName.text = ShareModel.productName;
+   NSMutableArray *SizeArr = [[NSMutableArray alloc] initWithArray:@[[LPTools isNullToString:ShareModel.sp1],
+                                                                     [LPTools isNullToString:ShareModel.sp2],
+                                                                     [LPTools isNullToString:ShareModel.sp3]]];
+    [SizeArr removeObject:@""];
+       
+    self.commoditySize.text = [NSString stringWithFormat:@"%@  规格:%@",
+                               ShareModel.postage.integerValue == 0 ? @"包邮" : @"到付",
+                               [SizeArr componentsJoinedByString:@","]];
+    self.commodityUnits.hidden = YES;
+    self.BuyCount.text = @"x1";
+ 
+    if (ShareModel.discountNum.integerValue == 0) {
+        self.commodityUnit.text = [NSString stringWithFormat:@"%@ 积分",ShareModel.price];
+        NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:self.commodityUnit.text];
+        [string addAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:FontSize(14)],
+                         NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#FF7F00"]}
+                 range:NSMakeRange(0, self.commodityUnit.text.length - 2)];
+ 
+        [string addAttributes:@{NSFontAttributeName: FONT_SIZE(12),
+                         NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#808080"]} range:NSMakeRange(self.commodityUnit.text.length - 2, 2)];
+        self.commodityUnit.attributedText = string;
+
+     }else{
+ 
+         NSString *discountNumStr = [NSString stringWithFormat:@"折后%.0f积分",floor(ShareModel.discountNum.integerValue/100.0*ShareModel.price.integerValue)];
+         self.commodityUnit.text = [NSString stringWithFormat:@"%@积分  %@",ShareModel.price,discountNumStr];
+
+        NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:self.commodityUnit.text];
+        [string addAttribute:NSStrikethroughStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:NSMakeRange(0, self.commodityUnit.text.length - discountNumStr.length - 2)];
+        [string addAttribute:NSStrikethroughColorAttributeName value:[UIColor colorWithHexString:@"#999999"] range:NSMakeRange(0, self.commodityUnit.text.length - discountNumStr.length - 2)]; // 删除线颜色
+        
+        [string addAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:FontSize(14)],
+                                NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#999999"]}
+                        range:NSMakeRange(0, self.commodityUnit.text.length - discountNumStr.length - 2 )];
+         
+         [string addAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:FontSize(14)],
+                                 NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#FF5353"]}
+                         range:NSMakeRange(self.commodityUnit.text.length - discountNumStr.length, discountNumStr.length )];
+         
+        self.commodityUnit.attributedText = string;
+    }
+
+}
+
+
 - (void)setGenerateModel:(LPOrderGenerateDataItemModel *)GenerateModel{
     _GenerateModel = GenerateModel;
     [self.commodityImage yy_setImageWithURL:[NSURL URLWithString:GenerateModel.productPic]
@@ -134,8 +188,42 @@
        self.commoditySize.text = [NSString stringWithFormat:@"%@  规格:%@",
                                   GenerateModel.postage.integerValue == 0 ? @"包邮" : @"到付",
                                   [SizeArr componentsJoinedByString:@","]];
-       self.commodityUnit.text = GenerateModel.productPrice;
-        self.BuyCount.text = [NSString stringWithFormat:@"x%@",GenerateModel.productQuantity];
+        
+    self.BuyCount.text = [NSString stringWithFormat:@"x%@",GenerateModel.productQuantity];
+    
+    self.commodityUnits.hidden = YES;
+ 
+       if (GenerateModel.discountNum.integerValue == 0) {
+           self.commodityUnit.text = [NSString stringWithFormat:@"%@ 积分",GenerateModel.productPrice];
+           NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:self.commodityUnit.text];
+           [string addAttributes:@{NSFontAttributeName: [UIFont boldSystemFontOfSize:FontSize(14)],
+                            NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#FF7F00"]}
+                    range:NSMakeRange(0, self.commodityUnit.text.length - 2)];
+    
+           [string addAttributes:@{NSFontAttributeName: FONT_SIZE(12),
+                            NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#808080"]} range:NSMakeRange(self.commodityUnit.text.length - 2, 2)];
+           self.commodityUnit.attributedText = string;
+
+        }else{
+    
+            NSString *discountNumStr = [NSString stringWithFormat:@"折后%.0f积分",floor(GenerateModel.discountNum.integerValue/100.0*GenerateModel.productPrice.integerValue)];
+            self.commodityUnit.text = [NSString stringWithFormat:@"%@积分  %@",GenerateModel.productPrice,discountNumStr];
+
+           NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:self.commodityUnit.text];
+           [string addAttribute:NSStrikethroughStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:NSMakeRange(0, self.commodityUnit.text.length - discountNumStr.length - 2)];
+           [string addAttribute:NSStrikethroughColorAttributeName value:[UIColor colorWithHexString:@"#999999"] range:NSMakeRange(0, self.commodityUnit.text.length - discountNumStr.length - 2)]; // 删除线颜色
+           
+           [string addAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:FontSize(14)],
+                                   NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#999999"]}
+                           range:NSMakeRange(0, self.commodityUnit.text.length - discountNumStr.length - 2 )];
+            
+            [string addAttributes:@{NSFontAttributeName: [UIFont systemFontOfSize:FontSize(14)],
+                                    NSForegroundColorAttributeName: [UIColor colorWithHexString:@"#FF5353"]}
+                            range:NSMakeRange(self.commodityUnit.text.length - discountNumStr.length, discountNumStr.length )];
+            
+           self.commodityUnit.attributedText = string;
+       }
+    
 }
 
 //选择商品数量

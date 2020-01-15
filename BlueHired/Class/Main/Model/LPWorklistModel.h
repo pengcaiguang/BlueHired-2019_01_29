@@ -19,6 +19,7 @@
 @interface LPWorklistDataModel : NSObject
 @property (nonatomic, copy) NSString *phone;
 @property (nonatomic, copy) NSString *wxNum;
+@property (nonatomic, copy) NSString *workTime;
 @property (nonatomic, copy) NSArray <LPWorklistDataWorkListModel *> *slideshowList;
 @property (nonatomic, copy) NSArray <LPWorklistDataWorkListModel *> *workList;
 @property (nonatomic, copy) NSArray <LPWorklistDataWorkBarsListModel *> *workBarsList;

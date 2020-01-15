@@ -12,6 +12,6 @@
 @interface LPSalaryDetailVC : LPBaseViewController
 
 @property(nonatomic,strong) LPQuerySalarylistDataModel *model;
-@property(nonatomic,strong) NSString *currentDateString;
+ 
 
 @end

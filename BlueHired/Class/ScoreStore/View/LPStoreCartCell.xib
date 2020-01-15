@@ -316,6 +316,7 @@
                 <outlet property="commodityName" destination="KJS-V9-bA8" id="ElW-Sg-gkL"/>
                 <outlet property="commoditySize" destination="7y9-ng-SES" id="3HT-YO-dzd"/>
                 <outlet property="commodityUnit" destination="UxP-ft-K7H" id="DdL-zq-JTW"/>
+                <outlet property="commodityUnits" destination="BLQ-yL-tZp" id="rzY-ty-mMW"/>
                 <outlet property="selectButton" destination="Xdx-Cy-WP6" id="c3I-8o-tiu"/>
             </connections>
             <point key="canvasLocation" x="47.826086956521742" y="34.486607142857139"/>

@@ -55,24 +55,24 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     LPMoodListDataModel *model = self.moodListArray[indexPath.row];
-    CGFloat DetailsHeight = [LPTools calculateRowHeight:model.moodDetails fontSize:15 Width:SCREEN_WIDTH - 71];
+    CGFloat DetailsHeight = [LPTools calculateRowHeight:model.moodDetails
+                                               fontSize:FontSize(15)
+                                                  Width:SCREEN_WIDTH - LENGTH_SIZE(71)];
 //    [self calculateCommentHeight:model];
     CGFloat CommentHeight = 0;
-    if (DetailsHeight>90) {
-        if ([[LPTools isNullToString:model.address] isEqualToString:@""] || [model.address isEqualToString:@"保密"]) {
-            //        89 + (DetailsHeight>=80?80:DetailsHeight+5)+[self calculateImageHeight:model.moodUrl]  +CommentHeight;
-            return   89 + (model.isOpening?DetailsHeight+43:128)+[self calculateImageHeight:model.moodUrl]  +CommentHeight;
-        }else{
-            return   107 + (model.isOpening?DetailsHeight+43:128)+[self calculateImageHeight:model.moodUrl]  +CommentHeight;
-        }
-    }else{
-        if ([[LPTools isNullToString:model.address] isEqualToString:@""] || [model.address isEqualToString:@"保密"]) {
-            //        89 + (DetailsHeight>=80?80:DetailsHeight+5)+[self calculateImageHeight:model.moodUrl]  +CommentHeight;
-            return   89 + DetailsHeight + 5 + [self calculateImageHeight:model.moodUrl]  +CommentHeight;
-        }else{
-            return   107 + DetailsHeight + 5 + [self calculateImageHeight:model.moodUrl]  +CommentHeight;
-        }
-    }
+    if (DetailsHeight>LENGTH_SIZE(90)) {
+           if ([[LPTools isNullToString:model.address] isEqualToString:@""] || [model.address isEqualToString:@"保密"]) {
+               return   LENGTH_SIZE(89) + (model.isOpening?DetailsHeight+LENGTH_SIZE(43):LENGTH_SIZE(128))+[self calculateImageHeight:model.moodUrl]  +CommentHeight;
+           }else{
+               return   LENGTH_SIZE(107) + (model.isOpening?DetailsHeight+LENGTH_SIZE(43):LENGTH_SIZE(128))+[self calculateImageHeight:model.moodUrl]  +CommentHeight;
+           }
+       }else{
+           if ([[LPTools isNullToString:model.address] isEqualToString:@""] || [model.address isEqualToString:@"保密"]) {
+               return   LENGTH_SIZE(89) + DetailsHeight + LENGTH_SIZE(5) + [self calculateImageHeight:model.moodUrl]  + CommentHeight;
+           }else{
+               return   LENGTH_SIZE(107) + DetailsHeight + LENGTH_SIZE(5) + [self calculateImageHeight:model.moodUrl]  + CommentHeight;
+           }
+       }
     
     
 }
@@ -91,8 +91,10 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
     
     cell.delegate =self;
     
+    cell.LikeBt.hidden = YES;
+    cell.CommentBt.hidden = YES;
+    
     cell.CommentView.hidden = YES;
-    cell.TriangleView.hidden = YES;
     cell.operationButton.hidden = YES;
     
     
@@ -236,7 +238,7 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
         _tableview.rowHeight = UITableViewAutomaticDimension;
         //        _tableview.estimatedRowHeight = 100;
         _tableview.estimatedRowHeight = 0;
-        _tableview.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+        _tableview.separatorStyle = UITableViewCellSeparatorStyleNone;
         _tableview.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
         [_tableview registerNib:[UINib nibWithNibName:LPCircleListCellID bundle:nil] forCellReuseIdentifier:LPCircleListCellID];
         
@@ -261,72 +263,17 @@ static NSString *LPCircleListCellID = @"LPCircleListCell";
     if (kStringIsEmpty(string)) {
         return 0;
     }
-    CGFloat imgw = (SCREEN_WIDTH-70 - 10)/3;
+    CGFloat imgw = (SCREEN_WIDTH - LENGTH_SIZE(70) - LENGTH_SIZE(10))/3;
     NSArray *imageArray = [string componentsSeparatedByString:@";"];
     if (imageArray.count ==1)
     {
-        return 250;
+        return LENGTH_SIZE(250);
     }
     else
     {
-        return ceil(imageArray.count/3.0)*imgw + floor(imageArray.count/3)*5;
+        return ceil(imageArray.count/3.0)*imgw + floor(imageArray.count/3)*LENGTH_SIZE(5);
     }
-}
-
-//计算点赞和评论高度
-- (CGFloat)calculateCommentHeight:(LPMoodListDataModel *)model
-{
-    CGFloat Praiseheighe = 0.0;
-    if (model.praiseList.count) {
-        NSString *PraiseStr = @"♡ ";
-        if (model.praiseList.count>10) {
-            for (int i = 0 ;i <10 ;i++ ) {
-                PraiseStr = [NSString stringWithFormat:@"%@%@、",PraiseStr,model.praiseList[i].userName];
-            }
-            PraiseStr = [PraiseStr substringToIndex:PraiseStr.length -1];
-            PraiseStr = [NSString stringWithFormat:@"%@等%lu人觉得很赞",PraiseStr,model.praiseList.count];
-        }else{
-            for (LPMoodPraiseListDataModel *Pmodel in model.praiseList ) {
-                PraiseStr = [NSString stringWithFormat:@"%@%@、",PraiseStr,Pmodel.userName];
-            }
-            PraiseStr = [PraiseStr substringToIndex:PraiseStr.length -1];
-        }
-        Praiseheighe = [LPTools calculateRowHeight:PraiseStr fontSize:13 Width:SCREEN_WIDTH-70-14];
-        //        Praiseheighe = Praiseheighe >48 ?48:Praiseheighe;
-        Praiseheighe = Praiseheighe + 14;
-    }else{
-        Praiseheighe = 0.0;
-    }
-    
-    CGFloat commentheighe = 0.0;
-    if (model.commentModelList.count) {
-        
-        for (int i =0; i < model.commentModelList.count; i++) {
-            LPMoodCommentListDataModel   *CModel = model.commentModelList[i];
-            NSString *CommentStr;
-            if (CModel.toUserName) {        //回复
-                CommentStr = [NSString stringWithFormat:@"%@ 回复 %@:%@",CModel.toUserName,CModel.userName,CModel.commentDetails];
-            }else{      //评论
-                CommentStr = [NSString stringWithFormat:@"%@:%@",CModel.userName,CModel.commentDetails];
-            }
-            commentheighe += [LPTools calculateRowHeight:CommentStr fontSize:13 Width:SCREEN_WIDTH-70-14]+7;
-        }
-        if (model.commentModelList.count >=5) {
-            commentheighe += 23;
-        }
-        commentheighe += 7;
-    }else{
-        commentheighe = 0.0;
-    }
-    
-    if (commentheighe || Praiseheighe) {
-        return floor(commentheighe + Praiseheighe +16);
-        
-    }
-    
-    
-    return floor(commentheighe + Praiseheighe);
-}
-
+ }
+ 
 
 @end

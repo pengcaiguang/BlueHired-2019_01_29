@@ -38,8 +38,9 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @"员工归属管理";
-    self.TypeArr = @[@"全部状态",@"未报名",@"已报名",@"面试失败",@"面试通过",@"放弃入职",@"在职",@"离职"];
-    self.TypeIndexArr = @[@"-1",@"7",@"0",@"2",@"1",@"4",@"5",@"6"];
+    self.TypeArr = @[@"全部",@"未报名",@"待入职",@"在职"];
+    self.TypeIndexArr = @[@"-1",@"2",@"1",@"0"];
+    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
 
     self.Type = @"-1";
     [self setViewUI];
@@ -68,7 +69,7 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
     [self.view addSubview:HeadView];
     [HeadView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.left.right.mas_offset(0);
-        make.height.mas_offset(LENGTH_SIZE(0));
+        make.height.mas_offset(LENGTH_SIZE(40));
     }];
     HeadView.backgroundColor = [UIColor whiteColor];
     HeadView.clipsToBounds = YES;
@@ -86,11 +87,11 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
     _screenButton = [[UIButton alloc]init];
     [HeadView addSubview:_screenButton];
     _screenButton.frame = CGRectMake(SCREEN_WIDTH-LENGTH_SIZE(75+13) , 0,LENGTH_SIZE(75), LENGTH_SIZE(40));
-    [_screenButton setTitle:@"全部状态" forState:UIControlStateNormal];
-    [_screenButton setTitleColor:[UIColor colorWithHexString:@"#666666"] forState:UIControlStateNormal];
-    [_screenButton setTitleColor:[UIColor baseColor] forState:UIControlStateSelected];
-    [_screenButton setImage:[UIImage imageNamed:@"drop_down"] forState:UIControlStateNormal];
-    [_screenButton setImage:[UIImage imageNamed:@"drop_down_sel"] forState:UIControlStateSelected];
+    [_screenButton setTitle:@"全部" forState:UIControlStateNormal];
+//    [_screenButton setTitleColor:[UIColor colorWithHexString:@"#666666"] forState:UIControlStateNormal];
+    [_screenButton setTitleColor:[UIColor baseColor] forState:UIControlStateNormal];
+//    [_screenButton setImage:[UIImage imageNamed:@"drop_down"] forState:UIControlStateNormal];
+    [_screenButton setImage:[UIImage imageNamed:@"drop_down_sel"] forState:UIControlStateNormal];
     _screenButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     
     _screenButton.titleLabel.font = [UIFont systemFontOfSize:FontSize(13)];
@@ -103,7 +104,7 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
         //        make.edges.equalTo(self.view);
         make.left.mas_equalTo(0);
         make.right.mas_equalTo(0);
-        make.top.mas_equalTo(LENGTH_SIZE(10));
+        make.top.mas_equalTo(LENGTH_SIZE(40));
         make.bottom.mas_equalTo(0);
     }];
     
@@ -199,6 +200,8 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
     TF.layer.cornerRadius = 6;
     TF.placeholder = @"请输入备注";
     TF.text = self.selectmodel.remark;
+    TF.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, LENGTH_SIZE(10), LENGTH_SIZE(36))];
+    TF.leftViewMode = UITextFieldViewModeAlways;
     [TF addTarget:self action:@selector(textFieldChanged:) forControlEvents:UIControlEventEditingChanged];
     
     UIButton *button = [[UIButton alloc] init];
@@ -310,23 +313,17 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
 
 -(void)addNodataViewHidden:(BOOL)hidden{
     BOOL has = NO;
-    for (UIView *view in self.view.subviews) {
+    for (UIView *view in self.tableview.subviews) {
         if ([view isKindOfClass:[LPNoDataView class]]) {
             view.hidden = hidden;
             has = YES;
         }
     }
     if (!has) {
-        LPNoDataView *noDataView = [[LPNoDataView alloc]init];
-        [self.view addSubview:noDataView];
+        LPNoDataView *noDataView = [[LPNoDataView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, CGRectGetHeight(self.tableview.frame))];
+        [self.tableview addSubview:noDataView];
         [noDataView image:nil text:@"没有相关数据~"];
-        [noDataView mas_makeConstraints:^(MASConstraintMaker *make) {
-            //            make.edges.equalTo(self.view);
-            make.left.mas_equalTo(0);
-            make.right.mas_equalTo(0);
-            make.top.mas_equalTo(LENGTH_SIZE(0));
-            make.bottom.mas_equalTo(LENGTH_SIZE(0));
-        }];
+ 
         noDataView.hidden = hidden;
     }
 }
@@ -337,7 +334,7 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
 
 -(void)requestGetEmployeeList{
     NSDictionary *dic = @{
-//                          @"status":self.Type,
+                          @"type":self.Type,
                             @"versionType":@"2.4",
                             @"page":[NSString stringWithFormat:@"%ld",self.page]
                           };
@@ -400,6 +397,11 @@ static NSString *LPEmployeeManageCellID = @"LPEmployeeManageCell";
         _tableview.separatorColor = [UIColor colorWithHexString:@"#E6E6E6"];
         _tableview.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
         [_tableview registerNib:[UINib nibWithNibName:LPEmployeeManageCellID bundle:nil] forCellReuseIdentifier:LPEmployeeManageCellID];
+        _tableview.backgroundColor = [UIColor colorWithHexString:@"F5F5F5"];
+
+        UIView *headView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, LENGTH_SIZE(10))];
+        headView.backgroundColor = [UIColor colorWithHexString:@"F5F5F5"];
+        _tableview.tableHeaderView = headView;
         
         _tableview.mj_header = [HZNormalHeader headerWithRefreshingBlock:^{
             self.page = 1;

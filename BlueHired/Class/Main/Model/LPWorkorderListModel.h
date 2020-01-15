@@ -60,6 +60,8 @@
 @property (nonatomic, copy) NSString *workStatus;
 @property (nonatomic, copy) NSString *addWorkMoney;
 @property (nonatomic, copy) NSString *workHourMoney;
+@property (nonatomic, copy) NSString *lendType;
+@property (nonatomic, copy) NSString *age;
 
 @end
 

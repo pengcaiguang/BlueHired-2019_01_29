@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -15,22 +13,22 @@
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="156" id="KGk-i7-Jjw" customClass="LPMineBillCell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="117"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="116.5"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="117"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sfg-Ml-wcv">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="117"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="余额宝" translatesAutoresizingMaskIntoConstraints="NO" id="i6Y-9e-ktd">
-                                <rect key="frame" x="16" y="24" width="22" height="22"/>
+                                <rect key="frame" x="15" y="24" width="20" height="20"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="22" id="MAv-0s-amk">
+                                    <constraint firstAttribute="width" constant="20" id="MAv-0s-amk">
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
                                         </userDefinedRuntimeAttributes>
                                     </constraint>
-                                    <constraint firstAttribute="height" constant="22" id="axT-ZQ-aSx">
+                                    <constraint firstAttribute="height" constant="20" id="axT-ZQ-aSx">
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
                                         </userDefinedRuntimeAttributes>
@@ -38,20 +36,20 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="账户余额：" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e0W-Lz-K6O">
-                                <rect key="frame" x="46" y="18" width="71.5" height="17"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <rect key="frame" x="43" y="18" width="76.5" height="18"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ve9-dh-r2F">
-                                <rect key="frame" x="46" y="70" width="274" height="1"/>
-                                <color key="backgroundColor" red="0.90196078431372551" green="0.90196078431372551" blue="0.90196078431372551" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <rect key="frame" x="43" y="70" width="277" height="0.5"/>
+                                <color key="backgroundColor" red="0.8784313725490196" green="0.8784313725490196" blue="0.8784313725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="1" id="WPS-hL-9bf"/>
+                                    <constraint firstAttribute="height" constant="0.29999999999999999" id="WPS-hL-9bf"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jkH-ZO-pcG">
-                                <rect key="frame" x="251" y="22" width="53" height="26"/>
+                                <rect key="frame" x="251" y="21" width="53" height="26"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="53" id="MUF-C6-uX1">
                                         <userDefinedRuntimeAttributes>
@@ -64,7 +62,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </constraint>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <state key="normal" title="提现">
                                     <color key="titleColor" red="0.23529411759999999" green="0.68627450980000004" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
@@ -74,8 +72,8 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rg9-J2-ZBU">
-                                <rect key="frame" x="46" y="35" width="65" height="28"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <rect key="frame" x="43" y="36" width="70" height="29"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <state key="normal" title="查看账单 &gt;">
                                     <color key="titleColor" red="0.27977949380874634" green="0.74544161558151245" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
@@ -87,14 +85,14 @@
                                 </connections>
                             </button>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IfW-Rn-yPa">
-                                <rect key="frame" x="171" y="86" width="120" height="18"/>
+                                <rect key="frame" x="161" y="84.5" width="130" height="18"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="18" id="I4v-hL-gPS">
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
                                         </userDefinedRuntimeAttributes>
                                     </constraint>
-                                    <constraint firstAttribute="width" constant="120" id="o0l-Bf-V9f">
+                                    <constraint firstAttribute="width" constant="130" id="o0l-Bf-V9f">
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
                                         </userDefinedRuntimeAttributes>
@@ -108,20 +106,20 @@
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Xt-rz-oQu">
-                                <rect key="frame" x="114" y="71" width="206" height="46"/>
+                                <rect key="frame" x="115" y="70.5" width="205" height="46.5"/>
                                 <connections>
                                     <action selector="TouchScore:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="A0H-wP-2t3"/>
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="wallet_integral" translatesAutoresizingMaskIntoConstraints="NO" id="EwW-k8-TgL">
-                                <rect key="frame" x="16" y="84" width="22" height="22"/>
+                                <rect key="frame" x="15" y="83.5" width="20" height="20"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="22" id="0wI-ju-28c">
+                                    <constraint firstAttribute="height" constant="20" id="0wI-ju-28c">
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
                                         </userDefinedRuntimeAttributes>
                                     </constraint>
-                                    <constraint firstAttribute="width" constant="22" id="sHW-0X-t5X">
+                                    <constraint firstAttribute="width" constant="20" id="sHW-0X-t5X">
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
                                         </userDefinedRuntimeAttributes>
@@ -129,29 +127,29 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3178积分" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lhE-r6-rRs">
-                                <rect key="frame" x="46" y="86.5" width="60" height="17"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <rect key="frame" x="43" y="84.5" width="64" height="18"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <color key="textColor" red="0.20392152667045593" green="0.20392152667045593" blue="0.20392155647277832" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="WorkHourBackImage_icon" translatesAutoresizingMaskIntoConstraints="NO" id="Fxe-PI-LRx">
-                                <rect key="frame" x="299" y="88.5" width="8" height="13.5"/>
+                                <rect key="frame" x="299" y="86.5" width="8" height="13.5"/>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="积分换钱，火热开启 " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SBa-QW-xHX">
-                                <rect key="frame" x="171" y="86" width="120" height="18"/>
+                                <rect key="frame" x="161" y="84.5" width="130" height="18"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="18" id="3gy-GH-F9H">
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
                                         </userDefinedRuntimeAttributes>
                                     </constraint>
-                                    <constraint firstAttribute="width" constant="120" id="PYE-NZ-V40">
+                                    <constraint firstAttribute="width" constant="130" id="PYE-NZ-V40">
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="adapterScreen" value="YES"/>
                                         </userDefinedRuntimeAttributes>
                                     </constraint>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                                 <userDefinedRuntimeAttributes>
@@ -191,7 +189,7 @@
                             <constraint firstItem="rg9-J2-ZBU" firstAttribute="top" secondItem="e0W-Lz-K6O" secondAttribute="bottom" id="hVz-id-rCK"/>
                             <constraint firstItem="lhE-r6-rRs" firstAttribute="leading" secondItem="e0W-Lz-K6O" secondAttribute="leading" id="hW3-QD-ww9"/>
                             <constraint firstAttribute="bottom" secondItem="6Xt-rz-oQu" secondAttribute="bottom" id="jei-bA-po4"/>
-                            <constraint firstItem="i6Y-9e-ktd" firstAttribute="leading" secondItem="Sfg-Ml-wcv" secondAttribute="leading" constant="16" id="kBB-yA-qXp"/>
+                            <constraint firstItem="i6Y-9e-ktd" firstAttribute="leading" secondItem="Sfg-Ml-wcv" secondAttribute="leading" constant="15" id="kBB-yA-qXp"/>
                             <constraint firstItem="Fxe-PI-LRx" firstAttribute="centerY" secondItem="EwW-k8-TgL" secondAttribute="centerY" id="nBz-tB-66O"/>
                             <constraint firstAttribute="trailing" secondItem="Ve9-dh-r2F" secondAttribute="trailing" id="tt3-e3-qoU"/>
                             <constraint firstAttribute="trailing" secondItem="Fxe-PI-LRx" secondAttribute="trailing" constant="13" id="vcc-47-IEX"/>

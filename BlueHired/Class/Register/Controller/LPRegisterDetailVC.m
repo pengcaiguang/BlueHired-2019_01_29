@@ -49,9 +49,9 @@ static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     if (self.Type == 1) {
-        self.navigationItem.title = @"邀请入职奖励";
+        self.navigationItem.title = @"邀请入职";
     }else if (self.Type == 2){
-        self.navigationItem.title = @"邀请注册奖励";
+        self.navigationItem.title = @"邀请注册";
     }
     
     NSDate *currentDate = [NSDate date];
@@ -154,7 +154,7 @@ static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
     MonthLabel.textColor = [UIColor baseColor];
     MonthLabel.font = [UIFont systemFontOfSize:FontSize(14)];
     MonthLabel.numberOfLines = 0;
-    MonthLabel.text = @"说明：A邀请B注册，B入职满30天后才会开始计算A的邀请注册奖励。";
+    MonthLabel.text = @"说明：A邀请B注册，在B入职满一个月后即发放邀请注册奖励给A";
     
     
 //    UILabel *MoneyLabel = [[UILabel alloc] init];
@@ -202,9 +202,10 @@ static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
     [RegBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     RegBtn.backgroundColor = [UIColor baseColor];
     RegBtn.titleLabel.font = FONT_SIZE(17);
-    [RegBtn setTitle:@"查看奖励" forState:UIControlStateNormal];
+    [RegBtn setTitle:@"查看领取记录" forState:UIControlStateNormal];
     [RegBtn addTarget:self action:@selector(touchRegBtn:) forControlEvents:UIControlEventTouchUpInside];
-    
+    RegBtn.hidden = YES;
+
     UIImageView *GIFImage = [[UIImageView alloc] init];
     [self.view addSubview:GIFImage];
     self.GIFImage = GIFImage;
@@ -214,7 +215,7 @@ static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
         make.top.equalTo(RegBtn.mas_top).offset(LENGTH_SIZE(5));
     }];
     GIFImage.image = [UIImage animatedImageNamed:@"Registerlabel" duration:1.0];
-
+    GIFImage.hidden = YES;
     
 }
 
@@ -394,7 +395,7 @@ static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
             [self.RegBtn setTitle:@"前往领取" forState:UIControlStateNormal];
             self.GIFImage.hidden = NO;
         }else{
-            [self.RegBtn setTitle:@"查看奖励" forState:UIControlStateNormal];
+            [self.RegBtn setTitle:@"查看领取记录" forState:UIControlStateNormal];
             self.GIFImage.hidden = YES;
         }
         
@@ -513,6 +514,8 @@ static NSString *LPRegisterDetailCellID = @"LPRegisterDetailCell";
         TF.layer.cornerRadius = 6;
         TF.placeholder = @"请输入备注";
         TF.text = self.selectmodel.remark;
+        TF.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, LENGTH_SIZE(10), LENGTH_SIZE(36))];
+        TF.leftViewMode = UITextFieldViewModeAlways;
         [TF addTarget:self action:@selector(textFieldChanged:) forControlEvents:UIControlEventEditingChanged];
 
         UIButton *button = [[UIButton alloc] init];

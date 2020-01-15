@@ -16,12 +16,12 @@
     self.userImage.layer.cornerRadius = LENGTH_SIZE(9.5) ;
     self.TitleBackView.backgroundColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.3];
     self.selectButton.hidden = YES;
-    [self.selectButton setImage:[UIImage imageNamed:@"add_ record_normal"] forState:UIControlStateNormal];
-    [self.selectButton setImage:[UIImage imageNamed:@"add_ record_selected"] forState:UIControlStateSelected];
+    [self.selectButton setImage:[UIImage imageNamed:@"add_ record_normal2"] forState:UIControlStateNormal];
+    [self.selectButton setImage:[UIImage imageNamed:@"add_ record_selected2"] forState:UIControlStateSelected];
 }
 
 
-- (void)setModel:(LPVideoCollectionDataModel *)model{
+- (void)setModel:(LPRecreationVideoListModel *)model{
     _model = model;
     [self.videoImage sd_setImageWithURL:[NSURL URLWithString:model.videoImage] placeholderImage:[UIImage imageNamed:@"NoImage"]];
     [self.userImage sd_setImageWithURL:[NSURL URLWithString:model.labelUrl] placeholderImage:[UIImage imageNamed:@"Head_image"]];
@@ -31,9 +31,9 @@
 
 - (IBAction)touchSelectButton:(UIButton *)sender {
     sender.selected = !sender.isSelected;
-    if (self.selectBlock) {
-        self.selectBlock(self.model);
-    }
+//    if (self.selectBlock) {
+//        self.selectBlock(self.model);
+//    }
 }
 
 -(void)setSelectAll:(BOOL)selectAll{

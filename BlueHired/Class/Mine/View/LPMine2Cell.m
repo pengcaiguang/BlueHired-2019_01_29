@@ -34,7 +34,7 @@
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(touchBgView)];
     [self.user_urlImgView addGestureRecognizer:tap];
 
-    if ([DeviceUtils deviceType] == IPhone_X) {
+    if (IS_iPhoneX) {
         self.BackView1_Height.constant = LENGTH_SIZE(139) + 24;
         self.Edit_Top.constant = LENGTH_SIZE(30) +24;
     }else{
@@ -119,7 +119,7 @@
     _userMaterialModel = userMaterialModel;
     if (AlreadyLogin) {
         self.redactButton.hidden = NO;
-        self.user_nameLabel.text =  [LPTools isNullToString:userMaterialModel.data.user_name] ;
+        self.user_nameLabel.text =  [LPTools isNullToString:userMaterialModel.data.user_name];
         
         if (userMaterialModel.data.role.integerValue == 0) {
             if ([userMaterialModel.data.workStatus integerValue] == 0) { //0待业1在职2入职中
@@ -158,17 +158,7 @@
     self.concernNumLabel.text = [NSString stringWithFormat:@"粉丝: %@",userMaterialModel.data.concernNum ? userMaterialModel.data.concernNum : @"--"];
     self.workStatusLabel.text = [NSString stringWithFormat:@"关注: %@",userMaterialModel.data.attentionNum ? userMaterialModel.data.attentionNum : @"--"];
 
-//    if (userMaterialModel.data.workStatus) {
-//        if ([userMaterialModel.data.workStatus integerValue] == 0) { //0待业1在职2入职中
-//            self.workStatusLabel.text = @"状态：待业";
-//        } else if ([userMaterialModel.data.workStatus integerValue] == 1){
-//            self.workStatusLabel.text = @"状态：在职";
-//        } else if ([userMaterialModel.data.workStatus integerValue] == 2){
-//            self.workStatusLabel.text = @"状态：入职中";
-//        }
-//    }else{
-//        self.workStatusLabel.text = @"状态：--";
-//    }
+ 
     
     if (userMaterialModel.data.money) {
         self.moneyLabel.text = [NSString stringWithFormat:@"账户余额：%.2f",userMaterialModel.data.money.floatValue];
@@ -233,8 +223,7 @@
         
         
     }else{
-//        self.gradingLabel.hidden = NO;
-        self.gradingiamge.hidden = YES;
+         self.gradingiamge.hidden = YES;
     }
     
     if ([userMaterialModel.data.user_sex integerValue] == 0) {//0未知1男2女
@@ -244,10 +233,9 @@
     }else if ([userMaterialModel.data.user_sex integerValue] == 2) {
         self.user_sexImgView.image = [UIImage imageNamed:@"female"];
     }
-    
-    
-//    self.scoreLabel.text = [NSString stringWithFormat:@"积分：%@",userMaterialModel.data.score ? userMaterialModel.data.score : @"--"];
+ 
 }
+
 -(void)setSignin:(BOOL)signin{
     _signin = signin;
     if (AlreadyLogin) {
@@ -308,6 +296,7 @@
     vc.hidesBottomBarWhenPushed = YES;
     [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
 }
+
 -(void)touchBgView{
     if ([LoginUtils validationLogin:[UIWindow visibleViewController]]) {
         LPUserInfoVC *vc = [[LPUserInfoVC alloc]init];
@@ -326,10 +315,7 @@
 //提现
 -(IBAction)touchwithdrawalLabel:(id)sender{
     if ([LoginUtils validationLogin:[UIWindow visibleViewController]]) {
-        LPWithDrawalVC *vc = [[LPWithDrawalVC alloc]init];
-        vc.hidesBottomBarWhenPushed = YES;
-        vc.balance = self.userMaterialModel.data.money;
-        [[UIWindow visibleViewController].navigationController pushViewController:vc animated:YES];
+    
     }
 }
  

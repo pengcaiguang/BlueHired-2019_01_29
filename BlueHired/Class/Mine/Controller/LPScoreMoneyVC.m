@@ -241,7 +241,7 @@ static NSString *LPScoreMoneyCellID = @"LPScoreMoneyCell";
     
     NSArray *ruleArr = [model.data.rule componentsSeparatedByString:@"#"];
     if (ruleArr.count>=3) {
-            self.RuleTextView.text = [NSString stringWithFormat:@"1. 每天有两次兑换时间，分别为：%@。每次发放固定的兑换额度，先兑先的，兑完为止。\n\n2.  使用积分兑换余额的兑换比例为：%@；但每人每天的兑换上限为%@；\n\n3. 凡通过非正常手段获取积分或者进行积分兑换行为，一经查证，我们将不再对其提供相应服务。",ruleArr[0],ruleArr[1],ruleArr[2]];
+            self.RuleTextView.text = [NSString stringWithFormat:@"1. 每天有两次兑换时间，分别为：%@。每次发放固定的兑换额度，先兑先得，兑完为止。\n\n2.  使用积分兑换余额的兑换比例为：%@；但每人每天的兑换上限为%@；\n\n3. 凡通过非正常手段获取积分或者进行积分兑换行为，一经查证，我们将不再对其提供相应服务。",ruleArr[0],ruleArr[1],ruleArr[2]];
     }
     
     self.TotalMoneyLabel.text = [NSString stringWithFormat:@"本次剩余兑换金额 %.1f 元",model.data.totalMoney.floatValue];

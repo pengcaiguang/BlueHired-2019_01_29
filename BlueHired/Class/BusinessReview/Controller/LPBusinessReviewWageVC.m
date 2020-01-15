@@ -22,14 +22,9 @@
 
 @property(nonatomic,strong) NSArray *pickerArray;
 
-
 @property(nonatomic,assign) NSInteger select1;
 
-
-
-
 @property(nonatomic,assign) NSInteger selectIndex;
-
 
 @property (weak, nonatomic) HXPhotoView *photoView;
 
@@ -81,11 +76,13 @@
     photoView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:photoView];
     self.photoView = photoView;
-    [photoView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.mas_equalTo(LENGTH_SIZE(-13));
-        make.top.equalTo(self.salaryMonthTF.mas_bottom).offset(LENGTH_SIZE(16));
-        make.width.height.mas_equalTo(LENGTH_SIZE(114));
-    }];
+    photoView.frame = CGRectMake(SCREEN_WIDTH - LENGTH_SIZE(13 + 114), LENGTH_SIZE(261), LENGTH_SIZE(114), LENGTH_SIZE(114));
+
+//    [photoView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.right.mas_equalTo(LENGTH_SIZE(-13));
+//        make.top.equalTo(self.salaryMonthTF.mas_bottom).offset(LENGTH_SIZE(16));
+//        make.width.height.mas_equalTo(LENGTH_SIZE(114));
+//    }];
     [self.photoView refreshView];
     [self requestQueryGetMechanismTypeList];
 

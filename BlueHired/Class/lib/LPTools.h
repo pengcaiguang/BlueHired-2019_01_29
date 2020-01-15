@@ -11,10 +11,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void(^ClickShare)(BOOL isSuccess,NSInteger Type);
+
 @interface LPTools : NSObject
 {
      WHActivityView  *activityView;//分享界面
 }
+
+@property (nonatomic, copy) ClickShare ShareBlock;
 
 @property(nonatomic,assign) NSInteger UserRole;
 
@@ -59,6 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
 //分享按钮：
 +(void)ClickShare:(NSString *)Url  Title:(NSString *)Title;
 
+-(void)share:(int)type Url:(NSString *)Str  Title:(NSString *)Title;
 //时间比对
 + (NSInteger)compareOneDay:(NSDate *)oneDay withAnotherDay:(NSDate *)anotherDay;
 

@@ -11,6 +11,7 @@
 #import "LPRegisterDetailVC.h"
 #import "LPInviteVC.h"
 #import "LPRegisterEntryVC.h"
+#import "LPRegisterRankingVC.h"
 
 
 @interface LPRegisterVC ()
@@ -42,8 +43,7 @@
     self.ScrollView.showsHorizontalScrollIndicator = NO;
     self.ScrollView.showsVerticalScrollIndicator = NO;
     [self.view addSubview:self.ScrollView];
-    [self.ScrollView layoutIfNeeded];
-    self.ScrollView.contentSize = CGSizeMake(SCREEN_WIDTH, LENGTH_SIZE(798));
+//    [self.ScrollView layoutIfNeeded];
     
     
     [self ScrollViewSub];
@@ -95,16 +95,22 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+
+- (void)TouchRankingBtn:(UIButton *)sender{
+    LPRegisterRankingVC *vc = [[LPRegisterRankingVC alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 #pragma mark lazy
 -(void)ScrollViewSub{
 
-    NSLog(@"%f   %f",self.ScrollView.contentSize.width,_ScrollView.contentSize.width);
+ 
     
     UIImageView *headImage = [[UIImageView alloc] init];
     [_ScrollView addSubview:headImage];
     [headImage mas_makeConstraints:^(MASConstraintMaker *make){
-        make.top.left.mas_offset(0);
-        make.height.mas_offset(LENGTH_SIZE(362));
+        make.top.left.right.mas_offset(0);
+        make.height.mas_offset(LENGTH_SIZE(282));
         make.width.mas_offset(SCREEN_WIDTH);
     }];
     headImage.image = [UIImage imageNamed:@"bg_Register"];
@@ -114,7 +120,7 @@
     [button mas_makeConstraints:^(MASConstraintMaker *make){
         make.top.equalTo(headImage.mas_bottom).offset(0);
         make.left.mas_offset(LENGTH_SIZE(27));
-        make.width.mas_offset(LENGTH_SIZE(320));
+        make.right.mas_offset(LENGTH_SIZE(-27));
         make.height.mas_offset(LENGTH_SIZE(48));
     }];
     [button setImage:[UIImage imageNamed:@"btn_Register"] forState:UIControlStateNormal];
@@ -125,7 +131,7 @@
     [lineV mas_makeConstraints:^(MASConstraintMaker *make){
         make.top.equalTo(button.mas_bottom).offset(LENGTH_SIZE(28));
         make.left.mas_offset(LENGTH_SIZE(13));
-        make.width.mas_offset(LENGTH_SIZE(351));
+        make.right.mas_offset(LENGTH_SIZE(-13));
         make.height.mas_offset(LENGTH_SIZE(18));
     }];
     lineV.image = [UIImage imageNamed:@"divide"];
@@ -135,7 +141,7 @@
     [lineLabel mas_makeConstraints:^(MASConstraintMaker *make){
         make.center.equalTo(lineV);
     }];
-    lineLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
+    lineLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF" alpha:0.8];
     lineLabel.font = FONT_SIZE(16);
     lineLabel.text = @"个人业绩";
 
@@ -144,7 +150,7 @@
     [view mas_makeConstraints:^(MASConstraintMaker *make){
         make.top.equalTo(lineV.mas_bottom).offset(LENGTH_SIZE(19));
         make.left.mas_offset(LENGTH_SIZE(13));
-        make.width.mas_offset(LENGTH_SIZE(351));
+        make.right.mas_offset(LENGTH_SIZE(-13));
         make.height.mas_offset(LENGTH_SIZE(92));
     }];
     view.backgroundColor = [UIColor colorWithHexString:@"#FCFEFF"];
@@ -228,7 +234,7 @@
     [view2 mas_makeConstraints:^(MASConstraintMaker *make){
         make.top.equalTo(view.mas_bottom).offset(LENGTH_SIZE(13));
         make.left.mas_offset(LENGTH_SIZE(13));
-        make.width.mas_offset(LENGTH_SIZE(351));
+        make.right.mas_offset(LENGTH_SIZE(-13));
         make.height.mas_offset(LENGTH_SIZE(92));
     }];
     view2.backgroundColor = [UIColor colorWithHexString:@"#FCFEFF"];
@@ -306,12 +312,29 @@
     label4View2.font = [UIFont boldSystemFontOfSize:FontSize(16)];
     label4View2.text = @"预计奖励：0元";
 
+    
+    UIButton *RankingBtn = [[UIButton alloc] init];
+    [_ScrollView addSubview:RankingBtn];
+    [RankingBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(view2.mas_bottom).offset(LENGTH_SIZE(24));
+        make.left.mas_offset(LENGTH_SIZE(88));
+        make.right.mas_offset(LENGTH_SIZE(-88));
+        make.height.mas_offset(LENGTH_SIZE(36));
+    }];
+    RankingBtn.layer.borderColor = [UIColor colorWithHexString:@"#FCFEFF"].CGColor;
+    RankingBtn.layer.borderWidth = LENGTH_SIZE(1.5);
+    RankingBtn.layer.cornerRadius = LENGTH_SIZE(18);
+    [RankingBtn setTitleColor:[UIColor colorWithHexString:@"#FCFEFF"] forState:UIControlStateNormal];
+    [RankingBtn setTitle:@"查看邀请注册月排名 >>" forState:UIControlStateNormal];
+    RankingBtn.titleLabel.font = [UIFont boldSystemFontOfSize:FontSize(14)];
+    [RankingBtn addTarget:self action:@selector(TouchRankingBtn:) forControlEvents:UIControlEventTouchUpInside];
+    
     UIImageView *lineV2 = [[UIImageView alloc] init];
     [_ScrollView addSubview:lineV2];
     [lineV2 mas_makeConstraints:^(MASConstraintMaker *make){
-        make.top.equalTo(view2.mas_bottom).offset(LENGTH_SIZE(28));
+        make.top.equalTo(RankingBtn.mas_bottom).offset(LENGTH_SIZE(34));
         make.left.mas_offset(LENGTH_SIZE(13));
-        make.width.mas_offset(LENGTH_SIZE(351));
+        make.right.mas_offset(LENGTH_SIZE(-13));
         make.height.mas_offset(LENGTH_SIZE(18));
     }];
     lineV2.image = [UIImage imageNamed:@"divide"];
@@ -321,7 +344,7 @@
     [lineLabel2 mas_makeConstraints:^(MASConstraintMaker *make){
         make.center.equalTo(lineV2);
     }];
-    lineLabel2.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
+    lineLabel2.textColor = [UIColor colorWithHexString:@"#FFFFFF" alpha:0.8 ];
     lineLabel2.font = FONT_SIZE(16);
     lineLabel2.text = @"奖励规则";
 
@@ -331,9 +354,9 @@
     [DetailsLabel mas_makeConstraints:^(MASConstraintMaker *make){
         make.top.equalTo(lineV2.mas_bottom).offset(LENGTH_SIZE(20));
         make.left.mas_offset(LENGTH_SIZE(13));
-//        make.right.mas_offset(LENGTH_SIZE(-13));
-        make.width.mas_offset(SCREEN_WIDTH - LENGTH_SIZE(2*13));
-//        make.bottom.mas_offset(LENGTH_SIZE(-61));
+        make.right.mas_offset(LENGTH_SIZE(-13));
+
+        make.bottom.mas_offset(LENGTH_SIZE(-73));
     }];
     DetailsLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF"];
     DetailsLabel.font = FONT_SIZE(14);

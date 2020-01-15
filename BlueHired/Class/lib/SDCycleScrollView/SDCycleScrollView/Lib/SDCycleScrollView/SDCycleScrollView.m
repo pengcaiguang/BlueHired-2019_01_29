@@ -601,7 +601,7 @@ NSString * const ID = @"SDCycleScrollViewCell";
             UIImageView *palyBTImage = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"PlayImage"]];
             [cell.imageView addSubview:palyBTImage];
             [palyBTImage mas_makeConstraints:^(MASConstraintMaker *make){
-                make.width.height.mas_offset(58);
+//                make.width.height.mas_offset(58);
                 make.center.equalTo(cell.imageView);
             }];
             

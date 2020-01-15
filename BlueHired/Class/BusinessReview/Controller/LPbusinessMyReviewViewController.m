@@ -59,13 +59,13 @@ static const CGFloat kPhotoViewMargin = 13.0;
     photoView.backgroundColor = [UIColor whiteColor];
     [self.scrollView addSubview:photoView];
     self.photoView = photoView;
-    [photoView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.mas_equalTo(floorf(LENGTH_SIZE(13)));
-        make.right.mas_equalTo(floorf(LENGTH_SIZE(-13)));
-        make.top.equalTo(label2.mas_bottom).offset(LENGTH_SIZE(25));
-//        make.width.mas_equalTo(SCREEN_WIDTH - LENGTH_SIZE(kPhotoViewMargin * 2));
-
-    }];
+    photoView.frame = CGRectMake(floorf(LENGTH_SIZE(13)) , LENGTH_SIZE(385), floorf( SCREEN_WIDTH - LENGTH_SIZE(26)), 0);
+//    [photoView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.mas_equalTo(floorf(LENGTH_SIZE(13)));
+//        make.right.mas_equalTo(floorf(LENGTH_SIZE(-13)));
+//        make.top.equalTo(label2.mas_bottom).offset(LENGTH_SIZE(25));
+//
+//    }];
     [self.photoView refreshView];
     
 

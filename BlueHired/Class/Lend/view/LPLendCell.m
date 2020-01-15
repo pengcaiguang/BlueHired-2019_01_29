@@ -62,7 +62,6 @@
         self.text3.text = [NSString stringWithFormat:@"%@",[LPTools isNullToString:model.data.remarks]];
         self.Title3.text = @"审核通过，系统已转账，请注意查收";
         [self.bottomButton setTitle:@"再借一笔" forState:UIControlStateNormal];
-        
 
     }else if (model.data.status.integerValue == 2){
 

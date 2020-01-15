@@ -24,15 +24,15 @@
 //http://ceshi.lanpin123.com/lifetime/comment/get_comment_list?id=38&page=1&type=1
 //#define BaseRequestURL  @"http://192.168.0.152:8080/lifetime/"
 
-//#define BaseRequestURL  @"http://192.168.0.108:8080/lifetime/"
-//#define BaseRequestWeiXiURL  @"http://192.168.0.152:8090/"
-//#define BaseRequestWeiXiURLTWO  @"http://192.168.0.152:8090/"
-//#define BaseRequestCookie  @"192.168.0.108"
+#define BaseRequestURL  @"http://192.168.0.108:8080/lifetime/"
+#define BaseRequestWeiXiURL  @"http://192.168.0.108:8080/"
+#define BaseRequestWeiXiURLTWO  @"http://192.168.0.108:8082/"
+#define BaseRequestCookie  @"192.168.0.108"
 
-#define BaseRequestURL  @"http://www.lanpin123.com/lifetime/"
-#define BaseRequestWeiXiURL  @"http://www.lanpin123.com/bluehired/"
-#define BaseRequestWeiXiURLTWO  @"http://domin.lanpin123.com:1972/"
-#define BaseRequestCookie  @"www.lanpin123.com"
+//#define BaseRequestURL  @"http://www.lanpin123.com/lifetime/"
+//#define BaseRequestWeiXiURL  @"http://www.lanpin123.com/bluehired/"
+//#define BaseRequestWeiXiURLTWO  @"http://domin.lanpin123.com:1972/"
+//#define BaseRequestCookie  @"www.lanpin123.com"
 
 //#define BaseRequestURL  @"http://47.106.208.91:8180/lifetime/"
 //#define BaseRequestWeiXiURL  @"http://47.106.208.91/"
@@ -49,6 +49,7 @@
 
 #define QiNiuBaseUrl @"http://pic.lanpin123.com/"
 
+#define CECServiceIMNumber @"kefuchannelimid_898614"
 
 
 //UserDefaults存取
@@ -159,6 +160,20 @@ __typeof__(value) __a = (value); \
 #define Alert(alertMsg) [[SGAlertUtil alertManager]alertNowTimeWith:alertMsg];
 #define CurrentDeviceSn [[UIDevice currentDevice].identifierForVendor UUIDString]//手机序列号
 #define RemovernNil(alertMsg) [LPTools isNullToString:alertMsg]
+
+
+//Ext keyWord 环信
+#define kMesssageExtWeChat @"weichat"
+#define kMesssageExtWeChat_ctrlType @"ctrlType"
+#define kMesssageExtWeChat_ctrlType_enquiry @"enquiry"
+#define kMesssageExtWeChat_ctrlType_inviteEnquiry @"inviteEnquiry"
+#define kMesssageExtWeChat_ctrlType_transferToKf_HasTransfer @"hasTransfer"
+#define kMesssageExtWeChat_ctrlArgs @"ctrlArgs"
+#define kMesssageExtWeChat_ctrlType_transferToKfHint  @"TransferToKfHint"
+#define kMesssageExtWeChat_ctrlArgs_inviteId @"inviteId"
+#define kMesssageExtWeChat_ctrlArgs_serviceSessionId @"serviceSessionId"
+#define kMesssageExtWeChat_ctrlArgs_detail @"detail"
+#define kMesssageExtWeChat_ctrlArgs_summary @"summary"
 
 static inline CGFloat FontSize(CGFloat fontSize){
     if (SCREEN_WIDTH==320) {

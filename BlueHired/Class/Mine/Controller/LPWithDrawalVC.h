@@ -7,11 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LPSelectBindbankcardModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface LPWithDrawalVC : LPBaseViewController
-@property(nonatomic,copy) NSNumber *balance;
+
+@property(nonatomic,strong) LPSelectBindbankcardModel *model;
+
 @end
 
 NS_ASSUME_NONNULL_END

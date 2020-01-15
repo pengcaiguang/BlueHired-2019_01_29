@@ -27,11 +27,11 @@ target 'BlueHired' do
     pod 'Firebase/Core'
     pod 'Fabric', '~> 1.7.11'
     pod 'Crashlytics', '~> 3.10.7'
-    pod 'TXLiteAVSDK_Player'  # 腾讯云播放器-独立播放器版
+#    pod 'TXLiteAVSDK_Player'  # 腾讯云播放器-独立播放器版
     pod 'YYText'   
     pod 'BaiduMapKit'
     pod 'BMKLocationKit'
-    pod 'SDWebImage'
+    pod 'SDWebImage', '~> 4.0'
     pod 'JWNetAutoCache'
     pod 'Qiniu', '~> 7.1'
 #    pod 'QFDatePicker'
@@ -43,10 +43,9 @@ target 'BlueHired' do
     pod 'SDWebImage/GIF'
     pod 'Bugly'
     pod 'LJBarrageView'
-    pod 'AVOSCloud'   # 数据存储、短信、社交、云引擎调用等基础服务模块
-    pod 'AVOSCloudIM' # 即时通讯模块
-    
-    
+    pod 'ReactiveObjC'
+    pod 'LookinServer', :configurations => ['Debug']
+
   target 'BlueHiredTests' do
     inherit! :search_paths
     # Pods for testing

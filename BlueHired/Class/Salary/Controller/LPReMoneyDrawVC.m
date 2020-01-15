@@ -53,6 +53,7 @@
 
 - (void)setNavigationButton{
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithTitle:@"历史记录" style:UIBarButtonItemStyleDone target:self action:@selector(touchBarButton)];
+    [self.navigationItem.rightBarButtonItem setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:15],NSFontAttributeName, nil] forState:UIControlStateNormal];
     [self.navigationItem.rightBarButtonItem setTintColor:[UIColor baseColor]];
 }
 
